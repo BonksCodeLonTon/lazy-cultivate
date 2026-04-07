@@ -1,0 +1,164 @@
+[
+  {
+    "key": "ConstitutionVanTuong",
+    "vi": "Vạn Tượng Thể",
+    "en": "Ten-Thousand Forms Body",
+    "cost_merit": 0,
+    "priority_stats": ["hp_max", "mp_max"],
+    "passive_description_vi": "Thân thể cân bằng vạn tượng, mọi thuộc tính đều được tăng cường đều đặn. Phù hợp với tu sĩ toàn năng.",
+    "stat_bonuses": {
+      "hp_pct": 0.05,
+      "mp_pct": 0.05,
+      "crit_rating": 50
+    },
+    "special_requirements": null
+  },
+  {
+    "key": "ConstitutionPhaTien",
+    "vi": "Phá Thiên Thần Thể",
+    "en": "Heaven Shattering Divine Body",
+    "cost_merit": 50000,
+    "priority_stats": ["final_dmg_bonus", "crit_rating", "crit_dmg_rating"],
+    "passive_description_vi": "Thần thể phá thiên, mỗi đòn tấn công đều mang sức mạnh hủy diệt. Sát thương cuối cùng và tỷ lệ bạo kích được đẩy lên đỉnh cao.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.15,
+      "crit_rating": 200,
+      "crit_dmg_rating": 150
+    },
+    "special_requirements": null
+  },
+  {
+    "key": "ConstitutionHauTo",
+    "vi": "Hậu Thổ Thần Thể",
+    "en": "Primal Earth Divine Body",
+    "cost_merit": 50000,
+    "priority_stats": ["hp_max", "res_all"],
+    "passive_description_vi": "Hậu thổ kiên cố như đại địa, thân thể như núi thái sơn không thể lay chuyển. Sinh lực và kháng nguyên tố đều tăng vượt trội.",
+    "stat_bonuses": {
+      "hp_pct": 0.25,
+      "res_all": 80
+    },
+    "special_requirements": null
+  },
+  {
+    "key": "ConstitutionNgheDinh",
+    "vi": "Nghê Đình Thần Thể",
+    "en": "Thunder Peak Divine Body",
+    "cost_merit": 50000,
+    "priority_stats": ["crit_rating", "final_dmg_bonus", "spd_bonus"],
+    "passive_description_vi": "Nghê Đình lôi oanh, thân mang lôi điện, mỗi cú đánh tích lũy thiên lôi. Tỷ lệ bạo kích và tốc độ hành động đều tăng mạnh.",
+    "stat_bonuses": {
+      "crit_rating": 300,
+      "final_dmg_bonus": 0.10,
+      "spd_bonus": 5
+    },
+    "special_requirements": null
+  },
+  {
+    "key": "ConstitutionTieuDao",
+    "vi": "Tiêu Dao Thần Thể",
+    "en": "Carefree Divine Body",
+    "cost_merit": 50000,
+    "priority_stats": ["spd_bonus", "evasion_rating", "crit_rating"],
+    "passive_description_vi": "Tiêu dao tự tại như gió mây, thân pháp biến ảo vô thường. Tốc độ và né tránh đạt cảnh giới cao nhất.",
+    "stat_bonuses": {
+      "spd_bonus": 8,
+      "evasion_rating": 250,
+      "crit_rating": 100
+    },
+    "special_requirements": null
+  },
+  {
+    "key": "ConstitutionKhiHai",
+    "vi": "Khí Hải Thần Thể",
+    "en": "Qi Ocean Divine Body",
+    "cost_merit": 50000,
+    "priority_stats": ["mp_max", "cooldown_reduce"],
+    "passive_description_vi": "Khí hải vô tận, linh khí như đại dương không bao giờ cạn. Linh khí tối đa và tốc độ giải hạn chiêu thức đều vượt trội.",
+    "stat_bonuses": {
+      "mp_pct": 0.30,
+      "cooldown_reduce": 0.15
+    },
+    "special_requirements": null
+  },
+  {
+    "key": "ConstitutionBatDiet",
+    "vi": "Bất Diệt Thần Thể",
+    "en": "Undying Divine Body",
+    "cost_merit": 50000,
+    "priority_stats": ["hp_max", "hp_regen_pct"],
+    "passive_description_vi": "Bất diệt bất hoại, thân thể tự hồi phục không ngừng. Sinh lực tối đa và tốc độ hồi phục sinh lực đều vượt bậc.",
+    "stat_bonuses": {
+      "hp_pct": 0.20,
+      "hp_regen_pct": 0.02
+    },
+    "special_requirements": null
+  },
+  {
+    "key": "ConstitutionTranGioi",
+    "vi": "Trấn Giới Thần Thể",
+    "en": "World Suppressing Divine Body",
+    "cost_merit": 50000,
+    "priority_stats": ["crit_res_rating", "res_all", "hp_max"],
+    "passive_description_vi": "Trấn giới chi thể, kháng cự mọi đòn bạo kích của kẻ thù. Khả năng chống bạo kích và kháng nguyên tố đều cực cao.",
+    "stat_bonuses": {
+      "crit_res_rating": 300,
+      "res_all": 50,
+      "hp_pct": 0.15
+    },
+    "special_requirements": null
+  },
+  {
+    "key": "ConstitutionLinhLung",
+    "vi": "Linh Lung Thần Thể",
+    "en": "Spirit Luminous Divine Body",
+    "cost_merit": 50000,
+    "priority_stats": ["luck", "comprehension", "merit_bonus"],
+    "passive_description_vi": "Linh lung thông suốt, vận may và ngộ tính đều xuất sắc. Nhận được nhiều công đức và ngộ đạo nhanh hơn người thường.",
+    "stat_bonuses": {
+      "luck": 100,
+      "comprehension": 100,
+      "merit_bonus": 0.10
+    },
+    "special_requirements": null
+  },
+  {
+    "key": "ConstitutionThaiDuong",
+    "vi": "Thái Dương Thần Thể",
+    "en": "Supreme Yang Divine Body",
+    "cost_merit": 50000,
+    "priority_stats": ["final_dmg_bonus", "crit_dmg_rating"],
+    "passive_description_vi": "Thái dương thần thể, dương lực cực thịnh. Sát thương cuối cùng và bội số bạo kích đều đạt đỉnh cao cực dương.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.20,
+      "crit_dmg_rating": 300
+    },
+    "special_requirements": "requires_dao_ti_yang"
+  },
+  {
+    "key": "ConstitutionThaiAm",
+    "vi": "Thái Âm Thần Thể",
+    "en": "Supreme Yin Divine Body",
+    "cost_merit": 50000,
+    "priority_stats": ["mp_max", "cooldown_reduce", "evasion_rating"],
+    "passive_description_vi": "Thái âm thần thể, âm lực cực thịnh. Linh khí, tốc độ giải chiêu và né tránh đều đạt cảnh giới cực âm.",
+    "stat_bonuses": {
+      "mp_pct": 0.20,
+      "cooldown_reduce": 0.20,
+      "evasion_rating": 200
+    },
+    "special_requirements": "requires_dao_ti_yin"
+  },
+  {
+    "key": "ConstitutionHonDon",
+    "vi": "Hỗn Độn Đạo Thể",
+    "en": "Primordial Chaos Dao Body",
+    "cost_merit": 0,
+    "priority_stats": ["hp_max", "mp_max", "final_dmg_bonus", "crit_rating", "res_all"],
+    "passive_description_vi": "Hỗn độn chi thể, hội tụ đạo lý nguyên thủy của thiên địa. Tất cả passive của các thần thể khác đều được tăng cường 1.5 lần. Yêu cầu giác ngộ toàn bộ đạo ti.",
+    "stat_bonuses": {
+      "all_passives_multiplier": 1.5
+    },
+    "special_requirements": "requires_all_dao_ti"
+  }
+]

@@ -1,0 +1,777 @@
+[
+  {
+    "key": "BossHoaLinh",
+    "vi": "Hỏa Linh Thần Thú",
+    "en": "Fire Spirit Divine Beast",
+    "rank": "chi_ton",
+    "element": "hoa",
+    "base_hp": 50000,
+    "base_spd": 15,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkHoa3",
+      "SkillAtkHoa2"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatHoaThanDan",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "ChestDia",
+        "weight": 20,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "ItemHonNguyen",
+        "weight": 3,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "BossLoiLong",
+    "vi": "Lôi Bá Thần Long",
+    "en": "Thunder Lord Divine Dragon",
+    "rank": "chi_ton",
+    "element": "loi",
+    "base_hp": 60000,
+    "base_spd": 18,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkLoi3",
+      "SkillAtkLoi2"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatHuKhongTinh",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "ChestDia",
+        "weight": 20,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "ItemHonNguyen",
+        "weight": 3,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "BossBangHon",
+    "vi": "Băng Hồn Cổ Thần",
+    "en": "Ice Soul Ancient God",
+    "rank": "chi_ton",
+    "element": "thuy",
+    "base_hp": 55000,
+    "base_spd": 16,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkBang3",
+      "SkillAtkBang2"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatHopDaoNgoc",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "ChestDia",
+        "weight": 20,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "ItemHonNguyen",
+        "weight": 3,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "BossHonNguyen",
+    "vi": "Hỗn Nguyên Ma Thần",
+    "en": "Primordial Demon God",
+    "rank": "chi_ton",
+    "element": null,
+    "base_hp": 80000,
+    "base_spd": 20,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkHoa3",
+      "SkillAtkLoi3",
+      "SkillAtkBang3"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatDaiThuaKinh",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "ChestThien",
+        "weight": 10,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "ItemHonNguyen",
+        "weight": 30,
+        "qty_min": 1,
+        "qty_max": 3
+      }
+    ]
+  },
+  {
+    "key": "EliteKimGiap",
+    "vi": "Kim Giáp Thiết Tượng",
+    "en": "Metal Armor Iron Elephant",
+    "rank": "dai_nang",
+    "element": "kim",
+    "base_hp": 3000,
+    "base_spd": 8,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkKim2",
+      "SkillDefKim"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatCotHoa",
+        "weight": 30,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemKim_2",
+        "weight": 15,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "ChestHuyen",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "EliteMocLinh",
+    "vi": "Mộc Linh Thụ Tinh",
+    "en": "Wood Spirit Tree Essence",
+    "rank": "dai_nang",
+    "element": "moc",
+    "base_hp": 2800,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkMoc2",
+      "SkillDefMoc"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatNguTang",
+        "weight": 30,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemMoc_2",
+        "weight": 15,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "ChestHuyen",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "EliteThuyGiao",
+    "vi": "Thủy Long Giao Long",
+    "en": "Water Dragon Flood Dragon",
+    "rank": "dai_nang",
+    "element": "thuy",
+    "base_hp": 3200,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkThuy2",
+      "SkillDefThuy"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatKimDanNguyen",
+        "weight": 25,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemThuy_2",
+        "weight": 15,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "ChestHuyen",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "ElitePhongLinh",
+    "vi": "Phong Ảnh Linh Hồ",
+    "en": "Wind Shadow Spirit Fox",
+    "rank": "dai_nang",
+    "element": "phong",
+    "base_hp": 2500,
+    "base_spd": 14,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkPhong2",
+      "SkillSupSpeed"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatNguyenAnhThach",
+        "weight": 25,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemPhong_2",
+        "weight": 15,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "ChestHuyen",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "EliteToNham",
+    "vi": "Thổ Nham Cự Linh",
+    "en": "Earth Rock Giant Spirit",
+    "rank": "dai_nang",
+    "element": "tho",
+    "base_hp": 4000,
+    "base_spd": 6,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkTo2",
+      "SkillDefTo"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatHoaThanDan",
+        "weight": 25,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemTo_2",
+        "weight": 15,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "ChestHuyen",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "StrongHoaLoi",
+    "vi": "Hỏa Lôi Xà Tinh",
+    "en": "Fire Thunder Serpent",
+    "rank": "cuong_gia",
+    "element": "hoa",
+    "base_hp": 800,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkHoa1",
+      "SkillAtkLoi1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatCanNguyen",
+        "weight": 40,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemHoa_1",
+        "weight": 20,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "DanHoiHPMid",
+        "weight": 15,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "StrongBangPhong",
+    "vi": "Băng Phong Lang Tinh",
+    "en": "Ice Wind Wolf",
+    "rank": "cuong_gia",
+    "element": "thuy",
+    "base_hp": 700,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkBang1",
+      "SkillAtkPhong1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatCotHoa",
+        "weight": 40,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemBang_1",
+        "weight": 20,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "DanHoiMPMid",
+        "weight": 15,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "StrongKimMoc",
+    "vi": "Kim Mộc Linh Thú",
+    "en": "Metal Wood Spirit Beast",
+    "rank": "cuong_gia",
+    "element": "kim",
+    "base_hp": 900,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkKim1",
+      "SkillAtkMoc1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatBiPhach",
+        "weight": 40,
+        "qty_min": 1,
+        "qty_max": 3
+      },
+      {
+        "item_key": "GemKim_1",
+        "weight": 20,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "DanHoiHPMid",
+        "weight": 15,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "StrongThuyHoa",
+    "vi": "Thủy Hỏa Huyền Quy",
+    "en": "Water Fire Mystic Tortoise",
+    "rank": "cuong_gia",
+    "element": "thuy",
+    "base_hp": 1000,
+    "base_spd": 7,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkThuy1",
+      "SkillDefThuy"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatNguTang",
+        "weight": 35,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemThuy_1",
+        "weight": 20,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "DanHoiHPMid",
+        "weight": 15,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "StrongLoiTo",
+    "vi": "Lôi Thổ Cự Thú",
+    "en": "Thunder Earth Giant Beast",
+    "rank": "cuong_gia",
+    "element": "loi",
+    "base_hp": 850,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkLoi1",
+      "SkillAtkTo1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatCanNguyen",
+        "weight": 35,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemLoi_1",
+        "weight": 20,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "DanHoiMPMid",
+        "weight": 15,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "StrongPhongMoc",
+    "vi": "Phong Mộc Linh Điểu",
+    "en": "Wind Wood Spirit Bird",
+    "rank": "cuong_gia",
+    "element": "phong",
+    "base_hp": 650,
+    "base_spd": 15,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkPhong1",
+      "SkillAtkMoc1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatBiPhach",
+        "weight": 40,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemPhong_1",
+        "weight": 20,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "DanCurePoison",
+        "weight": 25,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "CommonHoaThu",
+    "vi": "Hỏa Thử Linh",
+    "en": "Fire Mouse Spirit",
+    "rank": "pho_thong",
+    "element": "hoa",
+    "base_hp": 200,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkHoa1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatHuyetTinh",
+        "weight": 60,
+        "qty_min": 1,
+        "qty_max": 3
+      },
+      {
+        "item_key": "DanHoiHPSmall",
+        "weight": 25,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemHoa_1",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "CommonMocThao",
+    "vi": "Mộc Khẩu Linh Thảo",
+    "en": "Wood Mouth Spirit Grass",
+    "rank": "pho_thong",
+    "element": "moc",
+    "base_hp": 180,
+    "base_spd": 8,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkMoc1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatHuyetTinh",
+        "weight": 55,
+        "qty_min": 1,
+        "qty_max": 3
+      },
+      {
+        "item_key": "MatKhiTuDan",
+        "weight": 30,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemMoc_1",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "CommonBangTho",
+    "vi": "Băng Linh Thỏ",
+    "en": "Ice Spirit Rabbit",
+    "rank": "pho_thong",
+    "element": "thuy",
+    "base_hp": 160,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkBang1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatBiPhach",
+        "weight": 50,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "DanHoiMPSmall",
+        "weight": 30,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemBang_1",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "CommonToRua",
+    "vi": "Thổ Nham Rùa",
+    "en": "Earth Rock Turtle",
+    "rank": "pho_thong",
+    "element": "tho",
+    "base_hp": 300,
+    "base_spd": 5,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkTo1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatHuyetTinh",
+        "weight": 60,
+        "qty_min": 1,
+        "qty_max": 3
+      },
+      {
+        "item_key": "DanHoiHPSmall",
+        "weight": 20,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "GemTo_1",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "CommonKimBo",
+    "vi": "Kim Giáp Bọ",
+    "en": "Metal Armor Beetle",
+    "rank": "pho_thong",
+    "element": "kim",
+    "base_hp": 220,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkKim1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatHuyetTinh",
+        "weight": 55,
+        "qty_min": 1,
+        "qty_max": 3
+      },
+      {
+        "item_key": "MatKhiTuDan",
+        "weight": 25,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemKim_1",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "CommonLoiTinh",
+    "vi": "Lôi Tước Linh Điểu",
+    "en": "Thunder Sparrow Spirit Bird",
+    "rank": "pho_thong",
+    "element": "loi",
+    "base_hp": 190,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkLoi1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatBiPhach",
+        "weight": 50,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "DanHoiMPSmall",
+        "weight": 25,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemLoi_1",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "CommonPhongHo",
+    "vi": "Phong Linh Hồ",
+    "en": "Wind Spirit Fox",
+    "rank": "pho_thong",
+    "element": "phong",
+    "base_hp": 170,
+    "base_spd": 14,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkPhong1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatHuyetTinh",
+        "weight": 55,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "DanHoiHPSmall",
+        "weight": 25,
+        "qty_min": 1,
+        "qty_max": 1
+      },
+      {
+        "item_key": "GemPhong_1",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  },
+  {
+    "key": "CommonThuyLinhCua",
+    "vi": "Thủy Linh Cua",
+    "en": "Water Spirit Crab",
+    "rank": "pho_thong",
+    "element": "thuy",
+    "base_hp": 210,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "SkillAtkThuy1"
+    ],
+    "drop_table": [
+      {
+        "item_key": "MatHuyetTinh",
+        "weight": 55,
+        "qty_min": 1,
+        "qty_max": 3
+      },
+      {
+        "item_key": "DanHoiHPSmall",
+        "weight": 25,
+        "qty_min": 1,
+        "qty_max": 2
+      },
+      {
+        "item_key": "GemThuy_1",
+        "weight": 5,
+        "qty_min": 1,
+        "qty_max": 1
+      }
+    ]
+  }
+]

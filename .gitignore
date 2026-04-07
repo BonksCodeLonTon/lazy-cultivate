@@ -1,0 +1,55 @@
+# Environment & secrets
+.env
+*.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code session files
+.claude/
+
+# Alembic — keep migrations but ignore local env overrides
+# (alembic.ini is committed)

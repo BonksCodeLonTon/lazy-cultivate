@@ -1,0 +1,110 @@
+[
+  {
+    "key": "DungeonLuyenKhi",
+    "vi": "Luyện Khí Tiểu Bí Cảnh",
+    "en": "Qi Refining Minor Secret Realm",
+    "description": "Bí cảnh sơ cấp ẩn sâu trong rừng linh mạch. Các yêu thú sơ cấp trú ngụ nơi đây.",
+    "required_qi_realm": 0,
+    "enemy_keys": ["CommonHoaThu", "CommonMocThao", "CommonToRua"],
+    "boss_key": "CommonToRua",
+    "merit_reward": 100,
+    "stone_reward": 0,
+    "cooldown_hours": 4
+  },
+  {
+    "key": "DungeonTrucCo",
+    "vi": "Trúc Cơ Bí Cảnh",
+    "en": "Foundation Establishment Secret Realm",
+    "description": "Bí cảnh cấp trung ẩn trong dãy núi linh khí. Yêu thú cường giả đang ngủ yên tại đây.",
+    "required_qi_realm": 1,
+    "enemy_keys": ["CommonKimBo", "StrongHoaLoi", "StrongBangPhong"],
+    "boss_key": "StrongBangPhong",
+    "merit_reward": 300,
+    "stone_reward": 0,
+    "cooldown_hours": 6
+  },
+  {
+    "key": "DungeonKimDan",
+    "vi": "Kim Đan Bí Cảnh",
+    "en": "Golden Core Secret Realm",
+    "description": "Hang động cổ đại ẩn chứa dược liệu quý hiếm. Các yêu thú cường giả canh giữ kho báu.",
+    "required_qi_realm": 2,
+    "enemy_keys": ["StrongHoaLoi", "StrongThuyHoa", "StrongKimMoc"],
+    "boss_key": "StrongKimMoc",
+    "merit_reward": 800,
+    "stone_reward": 50,
+    "cooldown_hours": 8
+  },
+  {
+    "key": "DungeonNguyenAnh",
+    "vi": "Nguyên Anh Bí Cảnh",
+    "en": "Nascent Soul Secret Realm",
+    "description": "Không gian kẹt giữa hư thực, nơi các đại năng cổ đại từng chiến đấu.",
+    "required_qi_realm": 3,
+    "enemy_keys": ["StrongLoiTo", "StrongPhongMoc", "ElitePhongLinh"],
+    "boss_key": "ElitePhongLinh",
+    "merit_reward": 2000,
+    "stone_reward": 150,
+    "cooldown_hours": 8
+  },
+  {
+    "key": "DungeonHoaThan",
+    "vi": "Hóa Thần Bí Cảnh",
+    "en": "Spirit Transformation Secret Realm",
+    "description": "Bí địa cổ xưa ẩn sâu dưới lòng đất, nơi linh khí tụ hội mạnh mẽ nhất.",
+    "required_qi_realm": 4,
+    "enemy_keys": ["StrongPhongMoc", "ElitePhongLinh", "EliteKimGiap"],
+    "boss_key": "EliteKimGiap",
+    "merit_reward": 5000,
+    "stone_reward": 300,
+    "cooldown_hours": 12
+  },
+  {
+    "key": "DungeonLuyenHu",
+    "vi": "Luyện Hư Bí Cảnh",
+    "en": "Void Refinement Secret Realm",
+    "description": "Khe hở trong không gian, nơi quy tắc thiên đạo biến đổi khôn lường.",
+    "required_qi_realm": 5,
+    "enemy_keys": ["EliteKimGiap", "EliteMocLinh", "EliteToNham"],
+    "boss_key": "EliteToNham",
+    "merit_reward": 12000,
+    "stone_reward": 600,
+    "cooldown_hours": 12
+  },
+  {
+    "key": "DungeonHopDao",
+    "vi": "Hợp Đạo Bí Cảnh",
+    "en": "Dao Integration Secret Realm",
+    "description": "Thánh địa cổ đại nơi thần thú ngủ ngàn năm. Chỉ những cao thủ thực sự mới dám đặt chân vào.",
+    "required_qi_realm": 6,
+    "enemy_keys": ["EliteToNham", "EliteThuyGiao", "BossHoaLinh"],
+    "boss_key": "BossHoaLinh",
+    "merit_reward": 30000,
+    "stone_reward": 1500,
+    "cooldown_hours": 18
+  },
+  {
+    "key": "DungeonDaiThua",
+    "vi": "Đại Thừa Bí Cảnh",
+    "en": "Mahayana Secret Realm",
+    "description": "Vùng không gian bị phong ấn bởi thần minh thượng cổ. Thần thú bên trong đã trải qua vạn năm khổ luyện.",
+    "required_qi_realm": 7,
+    "enemy_keys": ["EliteThuyGiao", "BossHoaLinh", "BossLoiLong"],
+    "boss_key": "BossLoiLong",
+    "merit_reward": 80000,
+    "stone_reward": 5000,
+    "cooldown_hours": 24
+  },
+  {
+    "key": "DungeonDangTien",
+    "vi": "Đăng Tiên Bí Cảnh",
+    "en": "Immortal Ascension Secret Realm",
+    "description": "Cửa ải cuối cùng trước khi chứng đắc tiên đạo. Hỗn Nguyên Ma Thần canh gác cổng thiên đình.",
+    "required_qi_realm": 8,
+    "enemy_keys": ["BossHoaLinh", "BossBangHon", "BossHonNguyen"],
+    "boss_key": "BossHonNguyen",
+    "merit_reward": 200000,
+    "stone_reward": 15000,
+    "cooldown_hours": 48
+  }
+]

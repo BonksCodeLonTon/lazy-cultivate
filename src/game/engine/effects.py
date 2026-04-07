@@ -1,0 +1,510 @@
+"""Combat effects registry — 23 buffs + 19 debuffs/CC.
+
+Provides:
+  EFFECTS                 dict[key → EffectMeta]
+  get_combat_modifiers    sum all active effect stat modifiers on a combatant
+  get_periodic_damage     list of (effect_key, damage) for active DoTs
+  check_cc_skip_turn      returns CC key if combatant should skip turn, else None
+  check_prevents_skills   returns CC key if combatant cannot use skills, else None
+  default_duration        default turn duration for an effect
+"""
+from __future__ import annotations
+
+import random
+from dataclasses import dataclass, field
+from enum import StrEnum
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.game.systems.combatant import Combatant
+
+
+class EffectKind(StrEnum):
+    BUFF = "buff"
+    DEBUFF = "debuff"
+    CC = "cc"
+
+
+@dataclass(frozen=True)
+class EffectMeta:
+    key: str
+    vi: str                          # Vietnamese name
+    en: str                          # English name
+    kind: EffectKind
+    description_vi: str
+    # Stat modifiers while effect is active (see stat key docs below)
+    # Positive = bonus, negative = penalty. Applied to the combatant who holds the effect.
+    # Stat keys: final_dmg_bonus, final_dmg_reduce, crit_rating, crit_dmg_rating,
+    #            evasion_rating, crit_res_rating, spd_pct, hp_regen_pct, res_all
+    stat_bonus: dict[str, float] = field(default_factory=dict)
+    # Periodic damage per turn as fraction of holder's hp_max (DoT effects)
+    dot_pct: float = 0.0
+    # Whether this CC effect causes the holder to skip their turn (deterministic)
+    skips_turn: bool = False
+    # Whether this effect prevents skill usage (silence / interrupt)
+    prevents_skills: bool = False
+    # Display emoji
+    emoji: str = "✨"
+
+
+# ── Buff definitions (23) ─────────────────────────────────────────────────────
+
+_BUFFS: list[EffectMeta] = [
+    EffectMeta(
+        key="BuffKiemKhi",
+        vi="Kiếm Khí", en="Sword Qi",
+        kind=EffectKind.BUFF,
+        description_vi="Tụ kiếm khí, tăng sát thương và tỉ lệ bạo kích.",
+        stat_bonus={"final_dmg_bonus": 0.15, "crit_rating": 150},
+        emoji="⚔️",
+    ),
+    EffectMeta(
+        key="BuffKiemY",
+        vi="Kiếm Ý", en="Sword Intent",
+        kind=EffectKind.BUFF,
+        description_vi="Kiếm ý sung mãn, tăng mạnh sát thương.",
+        stat_bonus={"final_dmg_bonus": 0.25},
+        emoji="🗡️",
+    ),
+    EffectMeta(
+        key="BuffVoNgaKiemTam",
+        vi="Vô Ngã Kiếm Tâm", en="Selfless Sword Heart",
+        kind=EffectKind.BUFF,
+        description_vi="Đạt cảnh giới vô ngã, tăng tối đa sát thương kiếm.",
+        stat_bonus={"final_dmg_bonus": 0.40},
+        emoji="✨",
+    ),
+    EffectMeta(
+        key="BuffNhietTinh",
+        vi="Nhiệt Tình", en="Blazing Passion",
+        kind=EffectKind.BUFF,
+        description_vi="Chiến ý bùng cháy, tăng công kích và sát thương bạo kích.",
+        stat_bonus={"final_dmg_bonus": 0.20, "crit_dmg_rating": 200},
+        emoji="🔥",
+    ),
+    EffectMeta(
+        key="BuffHoaThan",
+        vi="Hỏa Thần Giáng Lâm", en="Fire God Descent",
+        kind=EffectKind.BUFF,
+        description_vi="Hỏa thần tạm hạ phàm, tăng sát thương và xác suất thiêu đốt.",
+        stat_bonus={"final_dmg_bonus": 0.20},
+        emoji="🔥",
+    ),
+    EffectMeta(
+        key="BuffLietDiem",
+        vi="Liệt Diệm Hộ Thể", en="Blazing Flame Guard",
+        kind=EffectKind.BUFF,
+        description_vi="Lửa thiêu đốt bảo vệ cơ thể, giảm sát thương nhận vào.",
+        stat_bonus={"final_dmg_reduce": 0.10},
+        emoji="🛡️",
+    ),
+    EffectMeta(
+        key="BuffBangGiap",
+        vi="Băng Giáp", en="Ice Armor",
+        kind=EffectKind.BUFF,
+        description_vi="Băng giáp bao phủ, giảm đáng kể sát thương nhận vào.",
+        stat_bonus={"final_dmg_reduce": 0.20},
+        emoji="🧊",
+    ),
+    EffectMeta(
+        key="BuffThuyKinh",
+        vi="Thủy Kính Thân", en="Water Mirror Body",
+        kind=EffectKind.BUFF,
+        description_vi="Thân như gương nước, phản chiếu và giảm sát thương.",
+        stat_bonus={"final_dmg_reduce": 0.15},
+        emoji="💧",
+    ),
+    EffectMeta(
+        key="BuffHanKhi",
+        vi="Hàn Khí Tỏa Thân", en="Cold Aura",
+        kind=EffectKind.BUFF,
+        description_vi="Hàn khí tỏa ra, làm chậm kẻ địch và giảm sát thương nhận.",
+        stat_bonus={"final_dmg_reduce": 0.10},
+        emoji="❄️",
+    ),
+    EffectMeta(
+        key="BuffLoiThan",
+        vi="Lôi Thần Giáng", en="Thunder God Strike",
+        kind=EffectKind.BUFF,
+        description_vi="Lôi thần gia hộ, mỗi đòn có thể gây tê liệt.",
+        stat_bonus={"crit_rating": 100},
+        emoji="⚡",
+    ),
+    EffectMeta(
+        key="BuffTocLoi",
+        vi="Tốc Lôi", en="Speed Lightning",
+        kind=EffectKind.BUFF,
+        description_vi="Tốc độ như sét đánh, tăng mạnh tốc độ hành động.",
+        stat_bonus={"spd_pct": 0.50},
+        emoji="⚡",
+    ),
+    EffectMeta(
+        key="BuffNguPhong",
+        vi="Ngự Phong", en="Wind Mastery",
+        kind=EffectKind.BUFF,
+        description_vi="Điều khiển gió, tăng cao khả năng né tránh.",
+        stat_bonus={"evasion_rating": 200},
+        emoji="🌬️",
+    ),
+    EffectMeta(
+        key="BuffPhongVu",
+        vi="Phong Vũ Tương Hòa", en="Wind Rain Harmony",
+        kind=EffectKind.BUFF,
+        description_vi="Phong vũ hòa quyện, tăng cả né tránh lẫn bạo kích.",
+        stat_bonus={"evasion_rating": 100, "crit_rating": 100},
+        emoji="🌧️",
+    ),
+    EffectMeta(
+        key="BuffSinhCo",
+        vi="Sinh Cơ Sung Mãn", en="Vitality Overflow",
+        kind=EffectKind.BUFF,
+        description_vi="Sinh cơ dồi dào, hồi phục HP mỗi lượt.",
+        stat_bonus={"hp_regen_pct": 0.05},
+        emoji="💚",
+    ),
+    EffectMeta(
+        key="BuffCanCo",
+        vi="Căn Cơ Bất Động", en="Immovable Foundation",
+        kind=EffectKind.BUFF,
+        description_vi="Căn cơ vững chắc như núi, giảm sát thương nhận vào.",
+        stat_bonus={"final_dmg_reduce": 0.15},
+        emoji="🪨",
+    ),
+    EffectMeta(
+        key="BuffKimCuong",
+        vi="Kim Cương Thể", en="Diamond Body",
+        kind=EffectKind.BUFF,
+        description_vi="Thân như kim cương, giảm mạnh sát thương nhận vào.",
+        stat_bonus={"final_dmg_reduce": 0.20},
+        emoji="💎",
+    ),
+    EffectMeta(
+        key="BuffHoangKim",
+        vi="Hoàng Kim Hộ", en="Golden Guard",
+        kind=EffectKind.BUFF,
+        description_vi="Khiên vàng bảo hộ, giảm sát thương và tăng kháng cự toàn nguyên tố.",
+        stat_bonus={"final_dmg_reduce": 0.15, "res_all": 100},
+        emoji="🟡",
+    ),
+    EffectMeta(
+        key="BuffDaiDia",
+        vi="Đại Địa Thần Hộ", en="Great Earth Divine Guard",
+        kind=EffectKind.BUFF,
+        description_vi="Đại địa thần hộ trì, giảm tối đa sát thương nhận vào.",
+        stat_bonus={"final_dmg_reduce": 0.25},
+        emoji="🌍",
+    ),
+    EffectMeta(
+        key="BuffTrongTo",
+        vi="Trọng Thổ", en="Heavy Earth",
+        kind=EffectKind.BUFF,
+        description_vi="Thổ khí nặng trịch, tăng phòng thủ và kháng cự.",
+        stat_bonus={"final_dmg_reduce": 0.10, "res_all": 50},
+        emoji="🪨",
+    ),
+    EffectMeta(
+        key="BuffBatTu",
+        vi="Bất Tử", en="Immortality",
+        kind=EffectKind.BUFF,
+        description_vi="Nhận lấy bất tử nhất thời, ngăn cái chết một lần.",
+        stat_bonus={},
+        emoji="💫",
+    ),
+    EffectMeta(
+        key="BuffTangToc",
+        vi="Tăng Tốc", en="Haste",
+        kind=EffectKind.BUFF,
+        description_vi="Tốc độ hành động tăng mạnh.",
+        stat_bonus={"spd_pct": 0.30},
+        emoji="⚡",
+    ),
+    EffectMeta(
+        key="BuffHoPhap",
+        vi="Hộ Pháp", en="Dharma Protection",
+        kind=EffectKind.BUFF,
+        description_vi="Hộ pháp bảo vệ toàn diện, giảm sát thương và tăng kháng bạo kích.",
+        stat_bonus={"final_dmg_reduce": 0.25, "crit_res_rating": 100},
+        emoji="🔮",
+    ),
+    EffectMeta(
+        key="BuffHuKhong",
+        vi="Hư Không Thân", en="Void Body",
+        kind=EffectKind.BUFF,
+        description_vi="Thân nhập hư không, né tránh cực cao.",
+        stat_bonus={"evasion_rating": 250},
+        emoji="👻",
+    ),
+]
+
+# ── Debuff / CC definitions (19) ─────────────────────────────────────────────
+
+_DEBUFFS_CC: list[EffectMeta] = [
+    EffectMeta(
+        key="DebuffThieuDot",
+        vi="Thiêu Đốt", en="Burning",
+        kind=EffectKind.DEBUFF,
+        description_vi="Lửa đốt cháy cơ thể, gây sát thương mỗi lượt.",
+        dot_pct=0.04,
+        emoji="🔥",
+    ),
+    EffectMeta(
+        key="DebuffTeLiet",
+        vi="Tê Liệt", en="Paralysis",
+        kind=EffectKind.CC,
+        description_vi="Cơ thể tê liệt, 50% mất lượt.",
+        emoji="⚡",
+    ),
+    EffectMeta(
+        key="DebuffDotChay",
+        vi="Đốt Cháy Nội Tạng", en="Internal Burning",
+        kind=EffectKind.DEBUFF,
+        description_vi="Lửa đốt nội tạng, gây sát thương nặng mỗi lượt.",
+        dot_pct=0.08,
+        emoji="💥",
+    ),
+    EffectMeta(
+        key="DebuffDocTo",
+        vi="Độc Tố", en="Poison",
+        kind=EffectKind.DEBUFF,
+        description_vi="Độc tố ăn mòn cơ thể, gây sát thương mỗi lượt.",
+        dot_pct=0.04,
+        emoji="☠️",
+    ),
+    EffectMeta(
+        key="DebuffBaoMon",
+        vi="Bào Mòn", en="Corrosion",
+        kind=EffectKind.DEBUFF,
+        description_vi="Bào mòn kháng cự, giảm khả năng chịu đòn.",
+        stat_bonus={"res_all": -50},
+        emoji="🧪",
+    ),
+    EffectMeta(
+        key="DebuffTroBuoc",
+        vi="Trói Buộc", en="Bind",
+        kind=EffectKind.DEBUFF,
+        description_vi="Bị trói buộc, giảm tốc độ và không thể tháo chạy.",
+        stat_bonus={"spd_pct": -0.50},
+        emoji="⛓️",
+    ),
+    EffectMeta(
+        key="DebuffLunDat",
+        vi="Lún Đất", en="Quicksand",
+        kind=EffectKind.DEBUFF,
+        description_vi="Lún xuống đất, giảm mạnh tốc độ.",
+        stat_bonus={"spd_pct": -0.30},
+        emoji="🌱",
+    ),
+    EffectMeta(
+        key="EffectNgungDong",
+        vi="Ngưng Đọng", en="Stagnation",
+        kind=EffectKind.DEBUFF,
+        description_vi="Khí trường ngưng đọng, giảm tốc độ.",
+        stat_bonus={"spd_pct": -0.25},
+        emoji="💨",
+    ),
+    EffectMeta(
+        key="DebuffLamCham",
+        vi="Làm Chậm", en="Slow",
+        kind=EffectKind.DEBUFF,
+        description_vi="Tốc độ bị giảm.",
+        stat_bonus={"spd_pct": -0.25},
+        emoji="🐢",
+    ),
+    EffectMeta(
+        key="DebuffDongBang",
+        vi="Đóng Băng", en="Frozen",
+        kind=EffectKind.CC,
+        description_vi="Bị đông cứng, mất lượt hành động.",
+        skips_turn=True,
+        emoji="🧊",
+    ),
+    EffectMeta(
+        key="DebuffChayMau",
+        vi="Chảy Máu", en="Bleed",
+        kind=EffectKind.DEBUFF,
+        description_vi="Máu chảy không ngừng, gây sát thương mỗi lượt.",
+        dot_pct=0.033,
+        emoji="🩸",
+    ),
+    EffectMeta(
+        key="DebuffPhaGiap",
+        vi="Phá Giáp", en="Armor Break",
+        kind=EffectKind.DEBUFF,
+        description_vi="Giáp phòng thủ bị phá vỡ, giảm khả năng chịu đòn.",
+        stat_bonus={"final_dmg_reduce": -0.15},
+        emoji="🔨",
+    ),
+    EffectMeta(
+        key="DebuffXeRach",
+        vi="Xé Rách", en="Lacerate",
+        kind=EffectKind.DEBUFF,
+        description_vi="Xé nát kháng cự, giảm mạnh kháng nguyên tố.",
+        stat_bonus={"res_all": -80},
+        emoji="🗡️",
+    ),
+    EffectMeta(
+        key="DebuffCuonBay",
+        vi="Cuốn Bay", en="Knock Up",
+        kind=EffectKind.CC,
+        description_vi="Bị cuốn bay lên, mất lượt hành động.",
+        skips_turn=True,
+        emoji="💨",
+    ),
+    EffectMeta(
+        key="DebuffCatDut",
+        vi="Cắt Đứt Linh Khí", en="Qi Severance",
+        kind=EffectKind.DEBUFF,
+        description_vi="Linh khí bị cắt đứt, giảm hiệu quả hồi sinh lực.",
+        stat_bonus={"hp_regen_pct": -0.03},
+        emoji="✂️",
+    ),
+    EffectMeta(
+        key="CCMuted",
+        vi="Câm Lặng", en="Silence",
+        kind=EffectKind.CC,
+        description_vi="Bị câm lặng, không thể sử dụng kỹ năng.",
+        prevents_skills=True,
+        emoji="🔇",
+    ),
+    EffectMeta(
+        key="CCStun",
+        vi="Choáng", en="Stun",
+        kind=EffectKind.CC,
+        description_vi="Bị choáng, mất lượt hành động.",
+        skips_turn=True,
+        emoji="💫",
+    ),
+    EffectMeta(
+        key="CCInterrupt",
+        vi="Ngắt Kỹ Năng", en="Interrupt",
+        kind=EffectKind.CC,
+        description_vi="Kỹ năng bị ngắt, lượt này không thể sử dụng kỹ năng.",
+        prevents_skills=True,
+        emoji="⛔",
+    ),
+    EffectMeta(
+        key="CCLockBreak",
+        vi="Khóa Đột Phá", en="Breakthrough Lock",
+        kind=EffectKind.CC,
+        description_vi="Đột phá bị khóa bởi trạng thái khống chế.",
+        emoji="🔒",
+    ),
+    EffectMeta(
+        key="DebuffSetDanh",
+        vi="Sét Đánh", en="Lightning Strike",
+        kind=EffectKind.DEBUFF,
+        description_vi="Bị sét đánh, chịu thêm sát thương sét mỗi lượt.",
+        dot_pct=0.05,
+        emoji="⚡",
+    ),
+]
+
+# ── Build registry ────────────────────────────────────────────────────────────
+
+EFFECTS: dict[str, EffectMeta] = {m.key: m for m in _BUFFS + _DEBUFFS_CC}
+
+# ── Default durations ─────────────────────────────────────────────────────────
+
+_DEFAULT_DURATIONS: dict[str, int] = {
+    # Buffs — typically 3–4 turns
+    "BuffKiemKhi": 3, "BuffKiemY": 4, "BuffVoNgaKiemTam": 3,
+    "BuffNhietTinh": 3, "BuffHoaThan": 3, "BuffLietDiem": 3,
+    "BuffBangGiap": 4, "BuffThuyKinh": 3, "BuffHanKhi": 3,
+    "BuffLoiThan": 3, "BuffTocLoi": 2, "BuffNguPhong": 3,
+    "BuffPhongVu": 3, "BuffSinhCo": 4, "BuffCanCo": 3,
+    "BuffKimCuong": 3, "BuffHoangKim": 3, "BuffDaiDia": 3,
+    "BuffTrongTo": 4, "BuffBatTu": 1, "BuffTangToc": 3,
+    "BuffHoPhap": 4, "BuffHuKhong": 2,
+    # Debuffs — typically 2–3 turns
+    "DebuffThieuDot": 3, "DebuffTeLiet": 2, "DebuffDotChay": 3,
+    "DebuffDocTo": 3, "DebuffBaoMon": 3, "DebuffTroBuoc": 2,
+    "DebuffLunDat": 2, "EffectNgungDong": 2, "DebuffLamCham": 2,
+    "DebuffDongBang": 2, "DebuffChayMau": 3, "DebuffPhaGiap": 3,
+    "DebuffXeRach": 2, "DebuffCuonBay": 1, "DebuffCatDut": 3,
+    "CCMuted": 2, "CCStun": 1, "CCInterrupt": 1,
+    "CCLockBreak": 3, "DebuffSetDanh": 2,
+}
+
+
+def default_duration(effect_key: str) -> int:
+    """Return the default turn duration for an effect."""
+    return _DEFAULT_DURATIONS.get(effect_key, 3)
+
+
+# ── Stat computation helpers ──────────────────────────────────────────────────
+
+def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
+    """Aggregate all active effect stat bonuses/penalties on a combatant.
+
+    Returns a dict with signed float values per stat key:
+      final_dmg_bonus, final_dmg_reduce, crit_rating, crit_dmg_rating,
+      evasion_rating, crit_res_rating, spd_pct, hp_regen_pct, res_all
+    """
+    result: dict[str, float] = {}
+    for effect_key in combatant.effects:
+        meta = EFFECTS.get(effect_key)
+        if not meta:
+            continue
+        for stat, val in meta.stat_bonus.items():
+            result[stat] = result.get(stat, 0.0) + val
+    return result
+
+
+def get_periodic_damage(combatant: "Combatant") -> list[tuple[str, int]]:
+    """Return list of (effect_key, damage) for all active DoT effects.
+
+    Damage is computed as dot_pct × hp_max, floored at 1.
+    Poison is skipped if the combatant has poison_immunity.
+    """
+    results: list[tuple[str, int]] = []
+    for effect_key in list(combatant.effects.keys()):
+        meta = EFFECTS.get(effect_key)
+        if not meta or meta.dot_pct <= 0:
+            continue
+        if effect_key == "DebuffDocTo" and combatant.poison_immunity:
+            continue
+        dmg = max(1, int(combatant.hp_max * meta.dot_pct))
+        results.append((effect_key, dmg))
+    return results
+
+
+def check_cc_skip_turn(
+    combatant: "Combatant", rng: random.Random
+) -> str | None:
+    """Return the CC effect key that causes the combatant to skip their turn.
+
+    Returns None if the combatant can act normally.
+    DebuffTeLiet (paralysis) has a 50% chance to skip.
+    All other skips_turn effects are deterministic.
+    """
+    for effect_key in combatant.effects:
+        meta = EFFECTS.get(effect_key)
+        if not meta:
+            continue
+        if meta.skips_turn:
+            return effect_key
+        if effect_key == "DebuffTeLiet" and rng.random() < 0.50:
+            return effect_key
+    return None
+
+
+def check_prevents_skills(combatant: "Combatant") -> str | None:
+    """Return the CC effect key that prevents skill use, or None."""
+    for effect_key in combatant.effects:
+        meta = EFFECTS.get(effect_key)
+        if meta and meta.prevents_skills:
+            return effect_key
+    return None
+
+
+def format_active_effects(combatant: "Combatant") -> str:
+    """Format active effects for display in Discord embeds."""
+    if not combatant.effects:
+        return "—"
+    parts: list[str] = []
+    for key, turns in combatant.effects.items():
+        meta = EFFECTS.get(key)
+        name = meta.vi if meta else key
+        emoji = meta.emoji if meta else "❓"
+        parts.append(f"{emoji}{name}({turns}t)")
+    return " ".join(parts)
