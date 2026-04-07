@@ -26,6 +26,8 @@ class Combatant:
     final_dmg_reduce: float = 0.0
     # Per-turn HP regen as fraction of hp_max (e.g. 0.02 = 2%/turn)
     hp_regen_pct: float = 0.0
+    # Per-turn MP regen as fraction of mp_max (e.g. 0.03 = 3%/turn)
+    mp_regen_pct: float = 0.0
     # Healing effectiveness multiplier (from Quang Linh Căn passive)
     heal_pct: float = 0.0
     # Cooldown reduction multiplier (e.g. 0.15 → CD * 0.85)

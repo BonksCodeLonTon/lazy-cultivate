@@ -245,13 +245,14 @@ class StatusView(discord.ui.View):
         self._discord_id = discord_id
 
         configs = [
-            ("🌀 Tu Luyện",  discord.ButtonStyle.primary,   self._cultivate_cb),
-            ("⚡ Đột Phá",   discord.ButtonStyle.success,   self._breakthrough_cb),
-            ("⚔️ Chiến Đấu", discord.ButtonStyle.danger,    self._fight_cb),
-            ("🗺️ Bí Cảnh",   discord.ButtonStyle.secondary, self._dungeon_cb),
+            ("🌀 Tu Luyện",  discord.ButtonStyle.secondary, self._cultivate_cb,    0),
+            ("⚡ Đột Phá",   discord.ButtonStyle.secondary, self._breakthrough_cb, 0),
+            ("⚔️ Chiến Đấu", discord.ButtonStyle.secondary, self._fight_cb,        0),
+            ("🗺️ Bí Cảnh",   discord.ButtonStyle.secondary, self._dungeon_cb,      0),
+            ("🎯 Kỹ Năng",   discord.ButtonStyle.secondary, self._skills_cb,       1),
         ]
-        for label, style, cb in configs:
-            btn = discord.ui.Button(label=label, style=style, row=0)
+        for label, style, cb, row in configs:
+            btn = discord.ui.Button(label=label, style=style, row=row)
             btn.callback = cb
             self.add_item(btn)
 
@@ -332,6 +333,16 @@ class StatusView(discord.ui.View):
         from src.bot.cogs.dungeon import DungeonListView, _dungeon_list_embed
         embed = _dungeon_list_embed(qi_realm)
         view = DungeonListView(self._discord_id, qi_realm, back_fn=_show_status)
+        await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _skills_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        from src.bot.cogs.combat import _build_skilllist
+        embed, view = _build_skilllist(discord_id=self._discord_id, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
 
 

@@ -17,6 +17,7 @@ from src.data.registry import registry
 from src.game.engine.damage import calculate_damage, DamageResult
 from src.game.engine.effects import (
     EFFECTS,
+    EffectMeta,
     check_cc_skip_turn,
     check_prevents_skills,
     default_duration,
@@ -416,6 +417,12 @@ class CombatSession:
                 combatant.hp = min(combatant.hp_max, combatant.hp + regen)
                 self.log.append(f"  💚 **{combatant.name}** hồi sinh lực +{regen} HP")
 
+            # MP regen: base passive per turn
+            if combatant.mp_regen_pct > 0 and combatant.mp < combatant.mp_max:
+                mp_regen = max(1, int(combatant.mp_max * combatant.mp_regen_pct))
+                combatant.mp = min(combatant.mp_max, combatant.mp + mp_regen)
+                self.log.append(f"  💙 **{combatant.name}** hồi linh lực +{mp_regen} MP")
+
         combatant.tick_effects()
 
     def _roll_loot(self) -> list[dict]:
@@ -537,6 +544,7 @@ def build_player_combatant(
         final_dmg_bonus=char.stats.final_dmg_bonus + bonuses.get("final_dmg_bonus", 0.0) + realm_power_bonus,
         final_dmg_reduce=bonuses.get("final_dmg_reduce", 0.0),
         hp_regen_pct=bonuses.get("hp_regen_pct", 0.0),
+        mp_regen_pct=0.01 + bonuses.get("mp_regen_pct", 0.0),
         heal_pct=bonuses.get("heal_pct", 0.0),
         cooldown_reduce=char.stats.cooldown_reduce + bonuses.get("cooldown_reduce", 0.0),
         burn_on_hit_pct=bonuses.get("burn_on_hit_pct", 0.0),
