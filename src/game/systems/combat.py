@@ -17,6 +17,7 @@ from src.data.registry import registry
 from src.game.engine.damage import calculate_damage, DamageResult
 from src.game.engine.effects import (
     EFFECTS,
+    EffectMeta,
     check_cc_skip_turn,
     check_prevents_skills,
     default_duration,
