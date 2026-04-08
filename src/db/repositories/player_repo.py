@@ -71,6 +71,33 @@ class PlayerRepository:
         player.hp_current = compute_hp_max(char)
         player.mp_current = compute_mp_max(char)
 
+        # Assign one starting skill that matches a random element from the player's Linh Căn
+        from src.data.registry import registry as _registry
+        from src.db.models.skill import CharacterSkill
+
+        # Try each element in the player's linh căn (shuffled for randomness)
+        shuffled_elements = list(linh_can_list)
+        random.shuffle(shuffled_elements)
+        start_skill_key: str | None = None
+        for elem in shuffled_elements:
+            candidates = [
+                s["key"] for s in _registry.skills.values()
+                if s.get("element") == elem
+                and s.get("type") == "thien"
+                and s.get("mp_cost", 999) <= 15
+            ]
+            if candidates:
+                start_skill_key = random.choice(candidates)
+                break
+
+        if start_skill_key:
+            self._session.add(CharacterSkill(
+                player_id=player.id,
+                skill_key=start_skill_key,
+                slot_index=0,
+            ))
+            await self._session.flush()
+
         return player
 
     async def exists(self, discord_id: int) -> bool:

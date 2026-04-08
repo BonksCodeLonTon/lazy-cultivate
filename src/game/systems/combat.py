@@ -1,10 +1,12 @@
 """Turn-based combat engine.
 
 Rules:
-- No base ATK/DEF — damage = BaseSkill + MPCost (flat)
+- Physical skills scale with ATK; magical skills scale with MATK
+- Luyện Thể path gains most ATK; Luyện Khí path gains most MATK
+- Physical damage reduced by DEF (diminishing returns: def/(def+500), capped 75%)
+- Magical damage reduced by elemental resistance only
+- Out of mana or silenced → triggers physical auto-attack instead
 - SPD determines turn order
-- Defense via elemental resistance + shield only
-- Rating system for crit/evasion (already in engine/rating.py)
 """
 from __future__ import annotations
 
@@ -190,7 +192,9 @@ class CombatSession:
 
         skill_key = self._choose_skill(actor)
         if not skill_key:
-            self.log.append(f"  💤 **{actor.name}** không có kỹ năng khả dụng.")
+            # No skill available (out of mana or all on cooldown) → fall back to auto-attack
+            self.log.append(f"  💤 **{actor.name}** không đủ linh lực — tấn công cơ bản.")
+            self._auto_attack(actor, target)
             return
 
         skill_data = registry.get_skill(skill_key)
@@ -227,7 +231,7 @@ class CombatSession:
         )
 
         if base_dmg > 0:
-            from src.game.models.skill import Skill, SkillType
+            from src.game.models.skill import AttackType, Skill, SkillType
             mock_skill = Skill(
                 key=skill_key,
                 vi=skill_data.get("vi", ""),
@@ -237,18 +241,23 @@ class CombatSession:
                 cooldown=skill_data.get("cooldown", 1),
                 base_dmg=base_dmg,
                 element=skill_data.get("element"),
+                attack_type=AttackType(skill_data.get("attack_type", "magical")),
+                atk_scale=float(skill_data.get("atk_scale", 1.0)),
             )
             mock_stats = CharacterStats(
                 crit_rating=effective_crit_rating,
                 crit_dmg_rating=effective_crit_dmg_rating,
                 evasion_rating=effective_evasion_rating,
                 final_dmg_bonus=effective_final_dmg_bonus,
+                atk=actor.atk,
+                matk=actor.matk,
             )
             # Pre-damage: Kim Linh Căn — may gain elemental penetration this hit
             pen_pct = kim.get_pen_pct(actor, self.rng, self.log)
             result = calculate_damage(
                 mock_skill, mock_stats, effective_target_res, effective_crit_res, self.rng,
                 pen_pct=pen_pct,
+                defender_def=target.def_stat,
             )
             dmg = result.final
             crit_tag = " 💥BẠOCHÍ!" if result.is_crit else ""
@@ -378,9 +387,13 @@ class CombatSession:
         )
 
     def _auto_attack(self, actor: Combatant, target: Combatant) -> None:
-        dmg = max(1, actor.crit_rating // 10 + 5)
+        """Physical auto-attack using ATK stat, reduced by target physical defense."""
+        from src.game.engine.damage.physical import apply_physical_defense
+        raw = max(1, int(actor.atk * self.rng.uniform(0.85, 1.15) + 5))
+        dmg = apply_physical_defense(raw, "physical", target.def_stat)
         if target.final_dmg_reduce > 0:
             dmg = int(dmg * (1.0 - target.final_dmg_reduce))
+        dmg = max(1, dmg)
         target.hp = max(0, target.hp - dmg)
         self.log.append(f"  👊 **{actor.name}** tấn công cơ bản → -{dmg} HP")
 
@@ -467,6 +480,7 @@ def build_player_combatant(
     """Build a Combatant from a Character dataclass, applying formation + constitution bonuses."""
     from src.game.systems.cultivation import (
         compute_hp_max, compute_mp_max,
+        compute_atk, compute_matk, compute_def_stat,
         compute_formation_bonuses, compute_constitution_bonuses, merge_bonuses,
     )
 
@@ -482,6 +496,9 @@ def build_player_combatant(
 
     hp_max = compute_hp_max(char, bonuses)
     mp_max = compute_mp_max(char, bonuses)
+    atk = compute_atk(char, bonuses)
+    matk = compute_matk(char, bonuses)
+    def_stat = compute_def_stat(char, bonuses)
 
     # Realm power: +0.8% damage per total cultivation stage (max ~+194% at full 243 stages)
     total_stages = (
@@ -537,6 +554,9 @@ def build_player_combatant(
         mp_max=mp_max,
         spd=spd_final,
         element=None,
+        atk=atk,
+        matk=matk,
+        def_stat=def_stat,
         crit_rating=char.stats.crit_rating + bonuses.get("crit_rating", 0),
         crit_dmg_rating=char.stats.crit_dmg_rating + bonuses.get("crit_dmg_rating", 0),
         evasion_rating=char.stats.evasion_rating + bonuses.get("evasion_rating", 0),
@@ -567,11 +587,20 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
     if not enemy_data:
         return None
 
+    rank = enemy_data.get("rank", "pho_thong")
     realm_scale = 1.0 + (player_realm_total / 81) * 2.0
     hp_scale = enemy_data.get("hp_scale", 1.0)
     hp = int(enemy_data["base_hp"] * realm_scale * hp_scale)
     spd = enemy_data.get("base_spd", 8)
     enemy_dmg_bonus = (player_realm_total / 81) * 1.5
+
+    # ATK/MATK/DEF scaled by rank and realm — fallback values by rank if not in data
+    _rank_atk  = {"pho_thong": 30, "cuong_gia": 60, "dai_nang": 100, "chi_ton": 180}
+    _rank_matk = {"pho_thong": 30, "cuong_gia": 60, "dai_nang": 100, "chi_ton": 180}
+    _rank_def  = {"pho_thong": 20, "cuong_gia": 40, "dai_nang": 60,  "chi_ton": 100}
+    atk      = int(enemy_data.get("base_atk",  _rank_atk.get(rank,  30)) * realm_scale)
+    matk     = int(enemy_data.get("base_matk", _rank_matk.get(rank, 30)) * realm_scale)
+    def_stat = int(enemy_data.get("base_def",  _rank_def.get(rank,  20)) * realm_scale)
 
     res: dict[str, int] = {}
     elem = enemy_data.get("element")
@@ -587,6 +616,9 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
         mp_max=hp // 3,
         spd=spd,
         element=elem,
+        atk=atk,
+        matk=matk,
+        def_stat=def_stat,
         resistances=res,
         skill_keys=enemy_data.get("skill_keys", []),
         final_dmg_bonus=enemy_dmg_bonus,

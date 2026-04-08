@@ -17,6 +17,10 @@ class Combatant:
     spd: int
     element: Optional[str]
     resistances: dict[str, int] = field(default_factory=dict)
+    # Attack and defense stats — computed from cultivation path progression
+    atk: int = 0       # Physical attack power (Luyện Thể path gives most ATK)
+    matk: int = 0      # Magic attack power (Luyện Khí path gives most MATK)
+    def_stat: int = 0  # Physical defense (Luyện Thể path gives most DEF)
     crit_rating: int = 0
     crit_dmg_rating: int = 0
     evasion_rating: int = 0

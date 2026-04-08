@@ -208,7 +208,10 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
     # ── Show result ───────────────────────────────────────────────────────────
     if result.reason == CombatEndReason.PLAYER_WIN:
         color = 0x00FF00
-        loot_str = ", ".join(f"{d['item_key']}×{d['quantity']}" for d in result.loot) or "—"
+        loot_str = ", ".join(
+            f"{(registry.get_item(d['item_key']) or {}).get('vi', d['item_key'])}×{d['quantity']}"
+            for d in result.loot
+        ) or "—"
         result_line = (
             f"✅ Chiến thắng sau **{result.turns}** lượt\n"
             f"✨ +{result.merit_gained:,} Công Đức | 🎁 {loot_str}"
@@ -368,13 +371,20 @@ def _find_usable_scroll(inv_items: list, skill_data: dict) -> tuple[str, int] | 
     return None
 
 
-def _filtered_skills(skill_type: str | None, element: str | None) -> list[dict]:
-    """Return sorted skills filtered by type and element."""
+def _filtered_skills(
+    skill_type: str | None,
+    element: str | None,
+    linh_can: list[str] | None = None,
+) -> list[dict]:
+    """Return sorted skills filtered by type, element, and optionally learnable linh căn."""
     skills = list(registry.skills.values())
     if skill_type:
         skills = [s for s in skills if s.get("type") == skill_type]
     if element:
         skills = [s for s in skills if s.get("element") == element]
+    if linh_can is not None:
+        # Only show skills whose element matches the player's linh căn (null element = universal)
+        skills = [s for s in skills if s.get("element") is None or s.get("element") in linh_can]
     return sorted(skills, key=lambda s: (s.get("type", ""), s.get("mp_cost", 0)))
 
 
@@ -384,8 +394,9 @@ def _build_skilllist(
     element: str | None = None,
     page: int = 0,
     back_fn=None,
+    linh_can: list[str] | None = None,
 ) -> tuple[discord.Embed, "SkillListView"]:
-    skills = _filtered_skills(skill_type, element)
+    skills = _filtered_skills(skill_type, element, linh_can)
     total = len(skills)
     total_pages = max(1, (total + _SKILL_LIST_PAGE_SIZE - 1) // _SKILL_LIST_PAGE_SIZE)
     page = max(0, min(page, total_pages - 1))
@@ -394,12 +405,12 @@ def _build_skilllist(
     page_skills = skills[slice_start: slice_start + _SKILL_LIST_PAGE_SIZE]
 
     type_label = _TYPE_LABEL.get(skill_type or "", "Tất Cả") if skill_type else "Tất Cả"
-    title = f"📜 Kỹ Năng: {type_label}"
+    title = f"📚 Tàng Kinh Các: {type_label}"
     if element:
         title += f" [{_ELEM_EMOJI.get(element, element)}]"
 
     if not page_skills:
-        embed = base_embed(title, "Không tìm thấy kỹ năng phù hợp.", color=0x9B59B6)
+        embed = base_embed(title, "Không tìm thấy kỹ năng phù hợp với Linh Căn của bạn.", color=0x9B59B6)
     else:
         lines: list[str] = []
         for i, s in enumerate(page_skills):
@@ -425,6 +436,7 @@ def _build_skilllist(
         total_pages=total_pages,
         page_skills=page_skills,
         back_fn=back_fn,
+        linh_can=linh_can,
     )
     return embed, view
 
@@ -454,6 +466,7 @@ class SkillListView(discord.ui.View):
         total_pages: int,
         page_skills: list[dict] | None = None,
         back_fn=None,
+        linh_can: list[str] | None = None,
     ) -> None:
         super().__init__(timeout=180)
         self._discord_id = discord_id
@@ -462,6 +475,7 @@ class SkillListView(discord.ui.View):
         self._page = page
         self._total_pages = total_pages
         self._back_fn = back_fn
+        self._linh_can = linh_can
 
         # Row 0 — type filter buttons
         for typ, label, style in _SKILL_TYPE_BUTTONS:
@@ -470,7 +484,11 @@ class SkillListView(discord.ui.View):
             btn.callback = self._make_type_cb(typ)
             self.add_item(btn)
 
-        # Row 1 — element dropdown
+        # Row 1 — element dropdown (restricted to player's linh căn when available)
+        elem_options = [("", "— Tất Cả Nguyên Tố —")] + [
+            (val, label) for val, label in self._ELEM_OPTIONS[1:]
+            if linh_can is None or val in linh_can
+        ]
         select = discord.ui.Select(
             placeholder="🌍 Lọc nguyên tố…",
             options=[
@@ -479,7 +497,7 @@ class SkillListView(discord.ui.View):
                     value=val or "__all__",
                     default=(val == (element or "")),
                 )
-                for val, label in self._ELEM_OPTIONS
+                for val, label in elem_options
             ],
             row=1,
         )
@@ -587,11 +605,13 @@ class SkillListView(discord.ui.View):
             snap_type, snap_elem, snap_page = self._skill_type, self._element, self._page
             outer_back_fn = self._back_fn
             did = self._discord_id
+            snap_lc = self._linh_can
 
             async def back_to_list(ia: discord.Interaction) -> None:
                 emb, v = _build_skilllist(
                     discord_id=did, skill_type=snap_type,
-                    element=snap_elem, page=snap_page, back_fn=outer_back_fn,
+                    element=snap_elem, page=snap_page,
+                    back_fn=outer_back_fn, linh_can=snap_lc,
                 )
                 await ia.edit_original_response(embed=emb, view=v)
 
@@ -641,6 +661,7 @@ class SkillListView(discord.ui.View):
                 element=self._element,
                 page=0,
                 back_fn=self._back_fn,
+                linh_can=self._linh_can,
             )
             await interaction.response.edit_message(embed=embed, view=view)
         return _cb
@@ -657,6 +678,7 @@ class SkillListView(discord.ui.View):
             element=element,
             page=0,
             back_fn=self._back_fn,
+            linh_can=self._linh_can,
         )
         await interaction.response.edit_message(embed=embed, view=view)
 
@@ -670,6 +692,7 @@ class SkillListView(discord.ui.View):
             element=self._element,
             page=self._page - 1,
             back_fn=self._back_fn,
+            linh_can=self._linh_can,
         )
         await interaction.response.edit_message(embed=embed, view=view)
 
@@ -683,6 +706,7 @@ class SkillListView(discord.ui.View):
             element=self._element,
             page=self._page + 1,
             back_fn=self._back_fn,
+            linh_can=self._linh_can,
         )
         await interaction.response.edit_message(embed=embed, view=view)
 
@@ -820,8 +844,7 @@ def _build_skills_embed_view(
     if not equipped:
         embed.description = (
             "Chưa trang bị kỹ năng nào.\n"
-            "Dùng `/skilllist` để xem danh sách kỹ năng.\n"
-            "Dùng `/learn` để học kỹ năng từ Ngọc Giản."
+            "Nhấn **📚 Tàng Kinh Các** để xem và học kỹ năng phù hợp Linh Căn."
         )
     else:
         for s in equipped:
@@ -868,7 +891,7 @@ class SkillsView(discord.ui.View):
             self.add_item(btn)
 
         if back_fn:
-            back_btn = discord.ui.Button(label="◀ Trở về DS Kỹ Năng", style=discord.ButtonStyle.secondary, row=4)
+            back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=4)
             back_btn.callback = self._back_cb
             self.add_item(back_btn)
 
@@ -954,9 +977,17 @@ class CombatCog(commands.Cog, name="Combat"):
         embed, view = _build_skills_embed_view(equipped, interaction.user.id)
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
-    @app_commands.command(name="skilllist", description="Xem danh sách kỹ năng có thể học")
+    @app_commands.command(name="skilllist", description="Xem danh sách kỹ năng có thể học (Tàng Kinh Các)")
     async def skilllist(self, interaction: discord.Interaction) -> None:
-        embed, view = _build_skilllist(discord_id=interaction.user.id)
+        from src.game.constants.linh_can import parse_linh_can
+        async with get_session() as session:
+            prepo = PlayerRepository(session)
+            player = await prepo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
+                return
+            linh_can = parse_linh_can(player.linh_can or "")
+        embed, view = _build_skilllist(discord_id=interaction.user.id, linh_can=linh_can)
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
     @app_commands.command(name="forget", description="Xoá kỹ năng khỏi slot trang bị")

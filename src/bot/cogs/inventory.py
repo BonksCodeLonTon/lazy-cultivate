@@ -342,6 +342,24 @@ class InventoryCog(commands.Cog, name="Inventory"):
                 await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
 
+            # Validate Linh Căn element compatibility
+            from src.game.constants.linh_can import parse_linh_can, LINH_CAN_DATA
+            skill_element = skill_data.get("element")
+            if skill_element is not None:
+                player_linh_can = parse_linh_can(player.linh_can or "")
+                if skill_element not in player_linh_can:
+                    elem_vi = LINH_CAN_DATA.get(skill_element, {}).get("vi", skill_element)
+                    elem_emoji = LINH_CAN_DATA.get(skill_element, {}).get("emoji", "")
+                    await interaction.response.send_message(
+                        embed=error_embed(
+                            f"Kỹ năng **{skill_data['vi']}** yêu cầu Linh Căn "
+                            f"**{elem_emoji} {elem_vi}**.\n"
+                            f"Linh Căn của bạn không phù hợp để học kỹ năng này."
+                        ),
+                        ephemeral=True,
+                    )
+                    return
+
             # Check scroll in inventory
             scroll_grade_enum = Grade(scroll_grade)
             irepo = InventoryRepository(session)

@@ -13,6 +13,12 @@ class SkillType(StrEnum):
     FORMATION = "tran_phap"  # Formation-specific
 
 
+class AttackType(StrEnum):
+    PHYSICAL = "physical"  # Scales with ATK, reduced by physical defense
+    MAGICAL = "magical"    # Scales with MATK, reduced by elemental resistance only
+    TRUE = "true"          # Ignores all resistance
+
+
 @dataclass(frozen=True)
 class Skill:
     key: str
@@ -25,3 +31,5 @@ class Skill:
     element: Optional[str] = None
     effect_keys: tuple[str, ...] = ()
     formation_key: Optional[str] = None  # required if type == FORMATION
+    attack_type: AttackType = AttackType.MAGICAL  # physical or magical scaling
+    atk_scale: float = 1.0  # multiplier applied to ATK/MATK before adding to base

@@ -62,6 +62,18 @@ AXIS_MP_WEIGHT = {"body": 0.16, "qi": 0.31, "formation": 0.52}
 BASE_HP_PER_LEVEL = 500
 BASE_MP_PER_LEVEL = 150
 
+# ATK/MATK/DEF distribution per axis
+# Luyện Thể: strongest physical attacker — 60% of total ATK, 55% of total DEF
+# Luyện Khí: strongest magic attacker — 60% of total MATK
+# Trận Đạo: balanced secondary contributions
+AXIS_ATK_WEIGHT = {"body": 0.60, "qi": 0.25, "formation": 0.15}
+AXIS_MATK_WEIGHT = {"body": 0.15, "qi": 0.60, "formation": 0.25}
+AXIS_DEF_WEIGHT = {"body": 0.55, "qi": 0.25, "formation": 0.20}
+
+BASE_ATK_PER_LEVEL = 8
+BASE_MATK_PER_LEVEL = 8
+BASE_DEF_PER_LEVEL = 4
+
 
 def compute_hp_max(character: Character, bonuses: dict | None = None) -> int:
     body_stages = character.body_realm * LEVELS_PER_REALM + character.body_level
@@ -93,6 +105,60 @@ def compute_mp_max(character: Character, bonuses: dict | None = None) -> int:
     if bonuses:
         result = int(result * (1.0 + bonuses.get("mp_pct", 0.0)))
     return max(1, result)
+
+
+def compute_atk(character: Character, bonuses: dict | None = None) -> int:
+    """Physical attack — Luyện Thể (body) axis contributes 60%."""
+    body_stages = character.body_realm * LEVELS_PER_REALM + character.body_level
+    qi_stages = character.qi_realm * LEVELS_PER_REALM + character.qi_level
+    form_stages = character.formation_realm * LEVELS_PER_REALM + character.formation_level
+
+    base = (
+        body_stages * BASE_ATK_PER_LEVEL * AXIS_ATK_WEIGHT["body"]
+        + qi_stages * BASE_ATK_PER_LEVEL * AXIS_ATK_WEIGHT["qi"]
+        + form_stages * BASE_ATK_PER_LEVEL * AXIS_ATK_WEIGHT["formation"]
+    )
+    result = max(1, int(base))
+    if bonuses:
+        result += int(bonuses.get("atk_bonus", 0))
+        result = int(result * (1.0 + bonuses.get("atk_pct", 0.0)))
+    return max(1, result)
+
+
+def compute_matk(character: Character, bonuses: dict | None = None) -> int:
+    """Magic attack — Luyện Khí (qi) axis contributes 60%."""
+    body_stages = character.body_realm * LEVELS_PER_REALM + character.body_level
+    qi_stages = character.qi_realm * LEVELS_PER_REALM + character.qi_level
+    form_stages = character.formation_realm * LEVELS_PER_REALM + character.formation_level
+
+    base = (
+        body_stages * BASE_MATK_PER_LEVEL * AXIS_MATK_WEIGHT["body"]
+        + qi_stages * BASE_MATK_PER_LEVEL * AXIS_MATK_WEIGHT["qi"]
+        + form_stages * BASE_MATK_PER_LEVEL * AXIS_MATK_WEIGHT["formation"]
+    )
+    result = max(1, int(base))
+    if bonuses:
+        result += int(bonuses.get("matk_bonus", 0))
+        result = int(result * (1.0 + bonuses.get("matk_pct", 0.0)))
+    return max(1, result)
+
+
+def compute_def_stat(character: Character, bonuses: dict | None = None) -> int:
+    """Physical defense — Luyện Thể (body) axis contributes 55%."""
+    body_stages = character.body_realm * LEVELS_PER_REALM + character.body_level
+    qi_stages = character.qi_realm * LEVELS_PER_REALM + character.qi_level
+    form_stages = character.formation_realm * LEVELS_PER_REALM + character.formation_level
+
+    base = (
+        body_stages * BASE_DEF_PER_LEVEL * AXIS_DEF_WEIGHT["body"]
+        + qi_stages * BASE_DEF_PER_LEVEL * AXIS_DEF_WEIGHT["qi"]
+        + form_stages * BASE_DEF_PER_LEVEL * AXIS_DEF_WEIGHT["formation"]
+    )
+    result = max(0, int(base))
+    if bonuses:
+        result += int(bonuses.get("def_bonus", 0))
+        result = int(result * (1.0 + bonuses.get("def_pct", 0.0)))
+    return max(0, result)
 
 
 def compute_formation_bonuses(formation_key: str | None, gem_count: int) -> dict:
