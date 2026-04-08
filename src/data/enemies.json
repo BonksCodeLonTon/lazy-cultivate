@@ -8,30 +8,8 @@
     "base_hp": 50000,
     "base_spd": 15,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkHoa3",
-      "SkillAtkHoa2"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatHoaThanDan",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "ChestDia",
-        "weight": 20,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "ItemHonNguyen",
-        "weight": 3,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkHoa3", "SkillAtkHoa2"],
+    "loot_table_key": "LootBossHoaLinh"
   },
   {
     "key": "BossLoiLong",
@@ -42,30 +20,8 @@
     "base_hp": 60000,
     "base_spd": 18,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkLoi3",
-      "SkillAtkLoi2"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatHuKhongTinh",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "ChestDia",
-        "weight": 20,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "ItemHonNguyen",
-        "weight": 3,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkLoi3", "SkillAtkLoi2"],
+    "loot_table_key": "LootBossLoiLong"
   },
   {
     "key": "BossBangHon",
@@ -76,30 +32,8 @@
     "base_hp": 55000,
     "base_spd": 16,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkBang3",
-      "SkillAtkBang2"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatHopDaoNgoc",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "ChestDia",
-        "weight": 20,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "ItemHonNguyen",
-        "weight": 3,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkBang3", "SkillAtkBang2"],
+    "loot_table_key": "LootBossBangHon"
   },
   {
     "key": "BossHonNguyen",
@@ -110,32 +44,10 @@
     "base_hp": 80000,
     "base_spd": 20,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkHoa3",
-      "SkillAtkLoi3",
-      "SkillAtkBang3"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatDaiThuaKinh",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "ChestThien",
-        "weight": 10,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "ItemHonNguyen",
-        "weight": 30,
-        "qty_min": 1,
-        "qty_max": 3
-      }
-    ]
+    "skill_keys": ["SkillAtkHoa3", "SkillAtkLoi3", "SkillAtkBang3"],
+    "loot_table_key": "LootBossHonNguyen"
   },
+
   {
     "key": "EliteKimGiap",
     "vi": "Kim Giáp Thiết Tượng",
@@ -145,30 +57,8 @@
     "base_hp": 3000,
     "base_spd": 8,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkKim2",
-      "SkillDefKim"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatCotHoa",
-        "weight": 30,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemKim_2",
-        "weight": 15,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "ChestHuyen",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkKim2", "SkillDefKim"],
+    "loot_table_key": "LootEliteKimGiap"
   },
   {
     "key": "EliteMocLinh",
@@ -179,30 +69,8 @@
     "base_hp": 2800,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkMoc2",
-      "SkillDefMoc"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatNguTang",
-        "weight": 30,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemMoc_2",
-        "weight": 15,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "ChestHuyen",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkMoc2", "SkillDefMoc"],
+    "loot_table_key": "LootEliteMocLinh"
   },
   {
     "key": "EliteThuyGiao",
@@ -213,30 +81,8 @@
     "base_hp": 3200,
     "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkThuy2",
-      "SkillDefThuy"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatKimDanNguyen",
-        "weight": 25,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemThuy_2",
-        "weight": 15,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "ChestHuyen",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkThuy2", "SkillDefThuy"],
+    "loot_table_key": "LootEliteThuyGiao"
   },
   {
     "key": "ElitePhongLinh",
@@ -247,30 +93,8 @@
     "base_hp": 2500,
     "base_spd": 14,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkPhong2",
-      "SkillSupSpeed"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatNguyenAnhThach",
-        "weight": 25,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemPhong_2",
-        "weight": 15,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "ChestHuyen",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkPhong2", "SkillSupSpeed"],
+    "loot_table_key": "LootElitePhongLinh"
   },
   {
     "key": "EliteToNham",
@@ -281,31 +105,10 @@
     "base_hp": 4000,
     "base_spd": 6,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkTo2",
-      "SkillDefTo"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatHoaThanDan",
-        "weight": 25,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemTo_2",
-        "weight": 15,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "ChestHuyen",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkTo2", "SkillDefTo"],
+    "loot_table_key": "LootEliteToNham"
   },
+
   {
     "key": "StrongHoaLoi",
     "vi": "Hỏa Lôi Xà Tinh",
@@ -315,30 +118,8 @@
     "base_hp": 800,
     "base_spd": 11,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkHoa1",
-      "SkillAtkLoi1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatCanNguyen",
-        "weight": 40,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemHoa_1",
-        "weight": 20,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "DanHoiHPMid",
-        "weight": 15,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkHoa1", "SkillAtkLoi1"],
+    "loot_table_key": "LootStrongHoaLoi"
   },
   {
     "key": "StrongBangPhong",
@@ -349,30 +130,8 @@
     "base_hp": 700,
     "base_spd": 13,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkBang1",
-      "SkillAtkPhong1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatCotHoa",
-        "weight": 40,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemBang_1",
-        "weight": 20,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "DanHoiMPMid",
-        "weight": 15,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkBang1", "SkillAtkPhong1"],
+    "loot_table_key": "LootStrongBangPhong"
   },
   {
     "key": "StrongKimMoc",
@@ -383,30 +142,8 @@
     "base_hp": 900,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkKim1",
-      "SkillAtkMoc1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatBiPhach",
-        "weight": 40,
-        "qty_min": 1,
-        "qty_max": 3
-      },
-      {
-        "item_key": "GemKim_1",
-        "weight": 20,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "DanHoiHPMid",
-        "weight": 15,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkKim1", "SkillAtkMoc1"],
+    "loot_table_key": "LootStrongKimMoc"
   },
   {
     "key": "StrongThuyHoa",
@@ -417,30 +154,8 @@
     "base_hp": 1000,
     "base_spd": 7,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkThuy1",
-      "SkillDefThuy"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatNguTang",
-        "weight": 35,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemThuy_1",
-        "weight": 20,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "DanHoiHPMid",
-        "weight": 15,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkThuy1", "SkillDefThuy"],
+    "loot_table_key": "LootStrongThuyHoa"
   },
   {
     "key": "StrongLoiTo",
@@ -451,30 +166,8 @@
     "base_hp": 850,
     "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkLoi1",
-      "SkillAtkTo1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatCanNguyen",
-        "weight": 35,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemLoi_1",
-        "weight": 20,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "DanHoiMPMid",
-        "weight": 15,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkLoi1", "SkillAtkTo1"],
+    "loot_table_key": "LootStrongLoiTo"
   },
   {
     "key": "StrongPhongMoc",
@@ -485,31 +178,10 @@
     "base_hp": 650,
     "base_spd": 15,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkPhong1",
-      "SkillAtkMoc1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatBiPhach",
-        "weight": 40,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemPhong_1",
-        "weight": 20,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "DanCurePoison",
-        "weight": 25,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkPhong1", "SkillAtkMoc1"],
+    "loot_table_key": "LootStrongPhongMoc"
   },
+
   {
     "key": "CommonHoaThu",
     "vi": "Hỏa Thử Linh",
@@ -519,29 +191,8 @@
     "base_hp": 200,
     "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkHoa1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatHuyetTinh",
-        "weight": 60,
-        "qty_min": 1,
-        "qty_max": 3
-      },
-      {
-        "item_key": "DanHoiHPSmall",
-        "weight": 25,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemHoa_1",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkHoa1"],
+    "loot_table_key": "LootCommonHoaThu"
   },
   {
     "key": "CommonMocThao",
@@ -552,29 +203,8 @@
     "base_hp": 180,
     "base_spd": 8,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkMoc1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatHuyetTinh",
-        "weight": 55,
-        "qty_min": 1,
-        "qty_max": 3
-      },
-      {
-        "item_key": "MatKhiTuDan",
-        "weight": 30,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemMoc_1",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkMoc1"],
+    "loot_table_key": "LootCommonMocThao"
   },
   {
     "key": "CommonBangTho",
@@ -585,29 +215,8 @@
     "base_hp": 160,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkBang1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatBiPhach",
-        "weight": 50,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "DanHoiMPSmall",
-        "weight": 30,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemBang_1",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkBang1"],
+    "loot_table_key": "LootCommonBangTho"
   },
   {
     "key": "CommonToRua",
@@ -618,29 +227,8 @@
     "base_hp": 300,
     "base_spd": 5,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkTo1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatHuyetTinh",
-        "weight": 60,
-        "qty_min": 1,
-        "qty_max": 3
-      },
-      {
-        "item_key": "DanHoiHPSmall",
-        "weight": 20,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "GemTo_1",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkTo1"],
+    "loot_table_key": "LootCommonToRua"
   },
   {
     "key": "CommonKimBo",
@@ -651,29 +239,8 @@
     "base_hp": 220,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkKim1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatHuyetTinh",
-        "weight": 55,
-        "qty_min": 1,
-        "qty_max": 3
-      },
-      {
-        "item_key": "MatKhiTuDan",
-        "weight": 25,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemKim_1",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkKim1"],
+    "loot_table_key": "LootCommonKimBo"
   },
   {
     "key": "CommonLoiTinh",
@@ -684,29 +251,8 @@
     "base_hp": 190,
     "base_spd": 11,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkLoi1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatBiPhach",
-        "weight": 50,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "DanHoiMPSmall",
-        "weight": 25,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemLoi_1",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkLoi1"],
+    "loot_table_key": "LootCommonLoiTinh"
   },
   {
     "key": "CommonPhongHo",
@@ -717,29 +263,8 @@
     "base_hp": 170,
     "base_spd": 14,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkPhong1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatHuyetTinh",
-        "weight": 55,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "DanHoiHPSmall",
-        "weight": 25,
-        "qty_min": 1,
-        "qty_max": 1
-      },
-      {
-        "item_key": "GemPhong_1",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkPhong1"],
+    "loot_table_key": "LootCommonPhongHo"
   },
   {
     "key": "CommonThuyLinhCua",
@@ -750,28 +275,7 @@
     "base_hp": 210,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": [
-      "SkillAtkThuy1"
-    ],
-    "drop_table": [
-      {
-        "item_key": "MatHuyetTinh",
-        "weight": 55,
-        "qty_min": 1,
-        "qty_max": 3
-      },
-      {
-        "item_key": "DanHoiHPSmall",
-        "weight": 25,
-        "qty_min": 1,
-        "qty_max": 2
-      },
-      {
-        "item_key": "GemThuy_1",
-        "weight": 5,
-        "qty_min": 1,
-        "qty_max": 1
-      }
-    ]
+    "skill_keys": ["SkillAtkThuy1"],
+    "loot_table_key": "LootCommonThuyLinhCua"
   }
 ]

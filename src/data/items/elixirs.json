@@ -1,0 +1,308 @@
+[
+  {
+    "key": "DanHoiHPSmall",
+    "vi": "Tiểu Hồi Huyết Đan",
+    "en": "Minor Blood Pill",
+    "type": "elixir",
+    "grade": 1,
+    "shop_price_merit": 300,
+    "description_vi": "Đan dược hồi huyết nhỏ, khôi phục sinh lực ít."
+  },
+  {
+    "key": "DanHoiHPMid",
+    "vi": "Trung Hồi Huyết Đan",
+    "en": "Medium Blood Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 800,
+    "description_vi": "Đan dược hồi huyết vừa, khôi phục sinh lực trung bình."
+  },
+  {
+    "key": "DanHoiHPLarge",
+    "vi": "Đại Hồi Huyết Đan",
+    "en": "Major Blood Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "description_vi": "Đan dược hồi huyết lớn, khôi phục sinh lực nhiều."
+  },
+  {
+    "key": "DanHoiHPFull",
+    "vi": "Mãn Huyết Đan",
+    "en": "Full Blood Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 5000,
+    "description_vi": "Đan dược mãn huyết, hồi phục toàn bộ sinh lực."
+  },
+  {
+    "key": "DanHoiHPDot",
+    "vi": "Tục Mệnh Huyết Đan",
+    "en": "Life Continuation Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 1500,
+    "description_vi": "Đan dược tục mệnh, hồi phục sinh lực theo thời gian."
+  },
+  {
+    "key": "DanHoiHPMiss",
+    "vi": "Hồi Huyết Tinh Đan",
+    "en": "Missing HP Recovery Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 4000,
+    "description_vi": "Đan dược tinh hoa hồi huyết, hồi phục theo % máu mất."
+  },
+  {
+    "key": "DanHoiMPSmall",
+    "vi": "Tiểu Tụ Khí Đan",
+    "en": "Minor Qi Pill",
+    "type": "elixir",
+    "grade": 1,
+    "shop_price_merit": 300,
+    "description_vi": "Đan dược tụ khí nhỏ, bổ sung linh khí ít."
+  },
+  {
+    "key": "DanHoiMPMid",
+    "vi": "Trung Tụ Khí Đan",
+    "en": "Medium Qi Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 800,
+    "description_vi": "Đan dược tụ khí vừa, bổ sung linh khí trung bình."
+  },
+  {
+    "key": "DanHoiMPLarge",
+    "vi": "Đại Tụ Khí Đan",
+    "en": "Major Qi Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "description_vi": "Đan dược tụ khí lớn, bổ sung linh khí nhiều."
+  },
+  {
+    "key": "DanHoiMPRegen",
+    "vi": "Vô Tận Linh Khí Đan",
+    "en": "Infinite Spirit Qi Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 6000,
+    "description_vi": "Đan dược vô tận linh khí, phục hồi linh khí liên tục."
+  },
+  {
+    "key": "DanHoiMPMiss",
+    "vi": "Hồi Khí Tinh Đan",
+    "en": "Missing MP Recovery Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 4000,
+    "description_vi": "Đan dược tinh hoa hồi khí, hồi phục theo % khí mất."
+  },
+  {
+    "key": "DanHoiHPMP",
+    "vi": "Song Phục Đan",
+    "en": "Dual Recovery Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 1500,
+    "description_vi": "Đan dược song phục, đồng thời hồi huyết và hồi khí."
+  },
+  {
+    "key": "DanHoiFull",
+    "vi": "Đại Phục Nguyên Đan",
+    "en": "Great Restoration Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 8000,
+    "description_vi": "Đại đan phục nguyên, hồi phục hoàn toàn huyết và khí."
+  },
+  {
+    "key": "DanRegenAll",
+    "vi": "Trường Xuân Đan",
+    "en": "Eternal Spring Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 10000,
+    "description_vi": "Đan dược trường xuân, tái sinh toàn diện liên tục."
+  },
+  {
+    "key": "DanBuffHP",
+    "vi": "Cường Thể Đan",
+    "en": "Body Fortification Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "description_vi": "Đan dược cường thể, tạm thời tăng thể lực tối đa."
+  },
+  {
+    "key": "DanBuffMP",
+    "vi": "Tụ Linh Đan",
+    "en": "Spirit Gathering Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "description_vi": "Đan dược tụ linh, tạm thời tăng linh khí tối đa."
+  },
+  {
+    "key": "DanBuffCrit",
+    "vi": "Bạo Kích Đan",
+    "en": "Critical Strike Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 3000,
+    "description_vi": "Đan dược bạo kích, tạm thời tăng tỷ lệ bạo kích."
+  },
+  {
+    "key": "DanBuffSpeed",
+    "vi": "Tốc Hành Đan",
+    "en": "Swift Action Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 2500,
+    "description_vi": "Đan dược tốc hành, tạm thời tăng tốc độ hành động."
+  },
+  {
+    "key": "DanBuffFDmg",
+    "vi": "Phá Giáp Đan",
+    "en": "Armor Shatter Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 5000,
+    "description_vi": "Đan dược phá giáp, tạm thời tăng sát thương cuối cùng."
+  },
+  {
+    "key": "DanBuffRes",
+    "vi": "Kháng Nguyên Đan",
+    "en": "Elemental Resistance Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 2500,
+    "description_vi": "Đan dược kháng nguyên, tạm thời tăng kháng nguyên tố."
+  },
+  {
+    "key": "DanBuffShield",
+    "vi": "Hộ Thể Kim Đan",
+    "en": "Body Guard Golden Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 6000,
+    "description_vi": "Đan dược hộ thể kim, tạo lá chắn bảo vệ thân thể."
+  },
+  {
+    "key": "DanDebuffFire",
+    "vi": "Hỏa Độc Đan",
+    "en": "Fire Poison Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Đan dược hỏa độc, gây thiêu đốt cho địch thủ. Chỉ dùng nghiệp lực."
+  },
+  {
+    "key": "DanDebuffIce",
+    "vi": "Băng Phong Đan",
+    "en": "Ice Wind Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Đan dược băng phong, đóng băng địch thủ. Chỉ dùng nghiệp lực."
+  },
+  {
+    "key": "DanDebuffMute",
+    "vi": "Câm Lặng Đan",
+    "en": "Silencing Pill",
+    "type": "elixir",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Đan dược câm lặng, bịt miệng địch thủ. Chỉ dùng nghiệp lực."
+  },
+  {
+    "key": "DanCurePoison",
+    "vi": "Giải Độc Đan",
+    "en": "Antidote Pill",
+    "type": "elixir",
+    "grade": 1,
+    "shop_price_merit": 500,
+    "description_vi": "Đan dược giải độc, loại bỏ trạng thái trúng độc."
+  },
+  {
+    "key": "DanCureCC",
+    "vi": "Giải Phong Đan",
+    "en": "CC Cure Pill",
+    "type": "elixir",
+    "grade": 1,
+    "shop_price_merit": 500,
+    "description_vi": "Đan dược giải phong, phá vỡ kiểm soát đám đông."
+  },
+  {
+    "key": "DanCureBleeds",
+    "vi": "Giải Chảy Máu Đan",
+    "en": "Bleed Cure Pill",
+    "type": "elixir",
+    "grade": 1,
+    "shop_price_merit": 400,
+    "description_vi": "Đan dược giải chảy máu, cầm máu lập tức."
+  },
+  {
+    "key": "DanComprehend",
+    "vi": "Ngộ Đạo Đan",
+    "en": "Enlightenment Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 15000,
+    "description_vi": "Đan dược ngộ đạo, tăng tốc độ ngộ đạo và tu vi."
+  },
+  {
+    "key": "DanMeritUp",
+    "vi": "Công Đức Thăng Hoa Đan",
+    "en": "Merit Ascension Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 20000,
+    "description_vi": "Đan dược thăng hoa công đức, tăng cường công đức tích lũy."
+  },
+  {
+    "key": "DanKarmaDown",
+    "vi": "Nghiệp Tiêu Đan",
+    "en": "Karma Reduction Pill",
+    "type": "elixir",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Đan dược tiêu nghiệp, giảm nghiệp chướng. Chỉ dùng nghiệp lực."
+  },
+  {
+    "key": "DanOpenRoot",
+    "vi": "Linh Căn Khai Mở Đan",
+    "en": "Spiritual Root Opening Pill",
+    "type": "elixir",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Đại đan khai mở linh căn, giác ngộ căn cơ tiên thiên."
+  },
+  {
+    "key": "DanAllRound",
+    "vi": "Càn Khôn Nhất Khí Đan",
+    "en": "Heaven-Earth Unity Pill",
+    "type": "elixir",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Đại đan càn khôn, hợp nhất thiên địa nhất khí."
+  },
+  {
+    "key": "DanImmortal",
+    "vi": "Vô Thượng Trường Sinh Đan",
+    "en": "Supreme Longevity Pill",
+    "type": "elixir",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Tối thượng đan dược, ban phát trường sinh bất tử."
+  },
+  {
+    "key": "DanTransform",
+    "vi": "Hỗn Nguyên Hóa Hình Đan",
+    "en": "Primordial Transformation Pill",
+    "type": "elixir",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Đan hỗn nguyên hóa hình, biến hóa hình thái nguyên thủy."
+  }
+]

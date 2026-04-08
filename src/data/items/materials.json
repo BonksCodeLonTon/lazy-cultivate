@@ -1,0 +1,182 @@
+[
+  {
+    "key": "MatHuyetTinh",
+    "vi": "Huyết Tinh",
+    "en": "Blood Crystal",
+    "type": "material",
+    "grade": 1,
+    "shop_price_merit": 500,
+    "description_vi": "Tinh hoa từ huyết mạch, dùng luyện thể cấp thấp."
+  },
+  {
+    "key": "MatBiPhach",
+    "vi": "Bì Phách",
+    "en": "Skin Essence",
+    "type": "material",
+    "grade": 1,
+    "shop_price_merit": 600,
+    "description_vi": "Tinh hoa da thịt, củng cố thể phách."
+  },
+  {
+    "key": "MatCanNguyen",
+    "vi": "Cân Nguyên Thạch",
+    "en": "Tendon Origin Stone",
+    "type": "material",
+    "grade": 2,
+    "shop_price_merit": 1200,
+    "description_vi": "Đá chứa nguyên khí gân cốt, dùng luyện cân mạch."
+  },
+  {
+    "key": "MatCotHoa",
+    "vi": "Cốt Hoa",
+    "en": "Bone Blossom",
+    "type": "material",
+    "grade": 2,
+    "shop_price_merit": 1500,
+    "description_vi": "Tinh hoa xương cốt, tăng cường cốt lực."
+  },
+  {
+    "key": "MatNguTang",
+    "vi": "Ngũ Tạng Tinh",
+    "en": "Five Organs Essence",
+    "type": "material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "description_vi": "Tinh hoa ngũ tạng, bồi bổ nội phủ."
+  },
+  {
+    "key": "MatPhaTuongKinh",
+    "vi": "Pháp Tướng Kinh",
+    "en": "Dharma Form Scripture",
+    "type": "material",
+    "grade": 3,
+    "shop_price_merit": 5000,
+    "description_vi": "Bí kinh pháp tướng, kiến tạo pháp thể."
+  },
+  {
+    "key": "MatKimThanDan",
+    "vi": "Kim Thân Đan",
+    "en": "Golden Body Pill",
+    "type": "material",
+    "grade": 3,
+    "shop_price_merit": 8000,
+    "description_vi": "Đan dược đúc Kim Thân bất hoại."
+  },
+  {
+    "key": "MatSieuPhamTinh",
+    "vi": "Siêu Phàm Tinh",
+    "en": "Transcendent Crystal",
+    "type": "material",
+    "grade": 3,
+    "shop_price_merit": 12000,
+    "description_vi": "Tinh thể siêu phàm, vượt giới hạn phàm nhân."
+  },
+  {
+    "key": "MatChanLinhNgoc",
+    "vi": "Chân Linh Ngọc",
+    "en": "True Spirit Jade",
+    "type": "material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc bội chân linh, cực phẩm vô giá."
+  },
+  {
+    "key": "MatKhiTuDan",
+    "vi": "Khí Tụ Đan",
+    "en": "Qi Gathering Pill",
+    "type": "material",
+    "grade": 1,
+    "shop_price_merit": 400,
+    "description_vi": "Đan dược tụ khí, khai mở khí mạch."
+  },
+  {
+    "key": "MatTrucCoDan",
+    "vi": "Trúc Cơ Đan",
+    "en": "Foundation Establishment Pill",
+    "type": "material",
+    "grade": 1,
+    "shop_price_merit": 800,
+    "description_vi": "Đan dược trúc cơ, xây dựng căn cơ tu luyện."
+  },
+  {
+    "key": "MatKimDanNguyen",
+    "vi": "Kim Đan Nguyên",
+    "en": "Golden Core Origin",
+    "type": "material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "description_vi": "Nguyên khí kim đan, ngưng tụ kim đan."
+  },
+  {
+    "key": "MatNguyenAnhThach",
+    "vi": "Nguyên Anh Thạch",
+    "en": "Nascent Soul Stone",
+    "type": "material",
+    "grade": 2,
+    "shop_price_merit": 3000,
+    "description_vi": "Đá nguyên anh, nuôi dưỡng nguyên anh."
+  },
+  {
+    "key": "MatHoaThanDan",
+    "vi": "Hóa Thần Đan",
+    "en": "Spirit Transformation Pill",
+    "type": "material",
+    "grade": 2,
+    "shop_price_merit": 5000,
+    "description_vi": "Đan hóa thần, chuyển hóa thần thức."
+  },
+  {
+    "key": "MatHuKhongTinh",
+    "vi": "Hư Không Tinh",
+    "en": "Void Crystal",
+    "type": "material",
+    "grade": 3,
+    "shop_price_merit": 8000,
+    "description_vi": "Tinh thể hư không, thấm đẫm hư không chi lực."
+  },
+  {
+    "key": "MatHopDaoNgoc",
+    "vi": "Hợp Đạo Ngọc",
+    "en": "Dao Integration Jade",
+    "type": "material",
+    "grade": 3,
+    "shop_price_merit": 12000,
+    "description_vi": "Ngọc hợp đạo, phụ trợ ngộ đạo hợp nhất."
+  },
+  {
+    "key": "MatDaiThuaKinh",
+    "vi": "Đại Thừa Kinh",
+    "en": "Mahayana Scripture",
+    "type": "material",
+    "grade": 3,
+    "shop_price_merit": 20000,
+    "description_vi": "Đại thừa bí kinh, dẫn đường lên tiên."
+  },
+  {
+    "key": "MatDangTienPhu",
+    "vi": "Đăng Tiên Phù",
+    "en": "Ascension Talisman",
+    "type": "material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Phù lục đăng tiên, cực phẩm vô giá."
+  },
+  {
+    "key": "MatThaiDuongTinh",
+    "vi": "Thái Dương Tinh",
+    "en": "Solar Yang Crystal",
+    "type": "material",
+    "grade": 3,
+    "shop_price_merit": 15000,
+    "description_vi": "Tinh thể thái dương, chứa đựng dương khí thuần túy."
+  },
+  {
+    "key": "MatThaiAmTinh",
+    "vi": "Thái Âm Tinh",
+    "en": "Lunar Yin Crystal",
+    "type": "material",
+    "grade": 3,
+    "shop_price_merit": 15000,
+    "description_vi": "Tinh thể thái âm, chứa đựng âm khí thuần túy."
+  }
+]

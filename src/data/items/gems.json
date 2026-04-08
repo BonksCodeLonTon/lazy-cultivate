@@ -1,0 +1,614 @@
+[
+  {
+    "key": "GemKim_1",
+    "vi": "Ngọc Kim Hoàng Phẩm",
+    "en": "Metal Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc kim hoàng phẩm, tăng cường kim hệ."
+  },
+  {
+    "key": "GemKim_2",
+    "vi": "Ngọc Kim Huyền Phẩm",
+    "en": "Metal Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc kim huyền phẩm, tăng cường kim hệ mạnh hơn."
+  },
+  {
+    "key": "GemKim_3",
+    "vi": "Ngọc Kim Địa Phẩm",
+    "en": "Metal Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc kim địa phẩm, tinh hoa kim hệ."
+  },
+  {
+    "key": "GemKim_4",
+    "vi": "Ngọc Kim Thiên Phẩm",
+    "en": "Metal Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc kim thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemMoc_1",
+    "vi": "Ngọc Mộc Hoàng Phẩm",
+    "en": "Wood Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc mộc hoàng phẩm, tăng cường mộc hệ."
+  },
+  {
+    "key": "GemMoc_2",
+    "vi": "Ngọc Mộc Huyền Phẩm",
+    "en": "Wood Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc mộc huyền phẩm, tăng cường mộc hệ mạnh hơn."
+  },
+  {
+    "key": "GemMoc_3",
+    "vi": "Ngọc Mộc Địa Phẩm",
+    "en": "Wood Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc mộc địa phẩm, tinh hoa mộc hệ."
+  },
+  {
+    "key": "GemMoc_4",
+    "vi": "Ngọc Mộc Thiên Phẩm",
+    "en": "Wood Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc mộc thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemThuy_1",
+    "vi": "Ngọc Thủy Hoàng Phẩm",
+    "en": "Water Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc thủy hoàng phẩm, tăng cường thủy hệ."
+  },
+  {
+    "key": "GemThuy_2",
+    "vi": "Ngọc Thủy Huyền Phẩm",
+    "en": "Water Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc thủy huyền phẩm, tăng cường thủy hệ mạnh hơn."
+  },
+  {
+    "key": "GemThuy_3",
+    "vi": "Ngọc Thủy Địa Phẩm",
+    "en": "Water Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc thủy địa phẩm, tinh hoa thủy hệ."
+  },
+  {
+    "key": "GemThuy_4",
+    "vi": "Ngọc Thủy Thiên Phẩm",
+    "en": "Water Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc thủy thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemHoa_1",
+    "vi": "Ngọc Hỏa Hoàng Phẩm",
+    "en": "Fire Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc hỏa hoàng phẩm, tăng cường hỏa hệ."
+  },
+  {
+    "key": "GemHoa_2",
+    "vi": "Ngọc Hỏa Huyền Phẩm",
+    "en": "Fire Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc hỏa huyền phẩm, tăng cường hỏa hệ mạnh hơn."
+  },
+  {
+    "key": "GemHoa_3",
+    "vi": "Ngọc Hỏa Địa Phẩm",
+    "en": "Fire Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc hỏa địa phẩm, tinh hoa hỏa hệ."
+  },
+  {
+    "key": "GemHoa_4",
+    "vi": "Ngọc Hỏa Thiên Phẩm",
+    "en": "Fire Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc hỏa thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemTo_1",
+    "vi": "Ngọc Thổ Hoàng Phẩm",
+    "en": "Earth Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc thổ hoàng phẩm, tăng cường thổ hệ."
+  },
+  {
+    "key": "GemTo_2",
+    "vi": "Ngọc Thổ Huyền Phẩm",
+    "en": "Earth Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc thổ huyền phẩm, tăng cường thổ hệ mạnh hơn."
+  },
+  {
+    "key": "GemTo_3",
+    "vi": "Ngọc Thổ Địa Phẩm",
+    "en": "Earth Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc thổ địa phẩm, tinh hoa thổ hệ."
+  },
+  {
+    "key": "GemTo_4",
+    "vi": "Ngọc Thổ Thiên Phẩm",
+    "en": "Earth Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc thổ thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemLoi_1",
+    "vi": "Ngọc Lôi Hoàng Phẩm",
+    "en": "Thunder Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc lôi hoàng phẩm, tăng cường lôi hệ."
+  },
+  {
+    "key": "GemLoi_2",
+    "vi": "Ngọc Lôi Huyền Phẩm",
+    "en": "Thunder Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc lôi huyền phẩm, tăng cường lôi hệ mạnh hơn."
+  },
+  {
+    "key": "GemLoi_3",
+    "vi": "Ngọc Lôi Địa Phẩm",
+    "en": "Thunder Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc lôi địa phẩm, tinh hoa lôi hệ."
+  },
+  {
+    "key": "GemLoi_4",
+    "vi": "Ngọc Lôi Thiên Phẩm",
+    "en": "Thunder Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc lôi thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemBang_1",
+    "vi": "Ngọc Băng Hoàng Phẩm",
+    "en": "Ice Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc băng hoàng phẩm, tăng cường băng hệ."
+  },
+  {
+    "key": "GemBang_2",
+    "vi": "Ngọc Băng Huyền Phẩm",
+    "en": "Ice Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc băng huyền phẩm, tăng cường băng hệ mạnh hơn."
+  },
+  {
+    "key": "GemBang_3",
+    "vi": "Ngọc Băng Địa Phẩm",
+    "en": "Ice Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc băng địa phẩm, tinh hoa băng hệ."
+  },
+  {
+    "key": "GemBang_4",
+    "vi": "Ngọc Băng Thiên Phẩm",
+    "en": "Ice Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc băng thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemPhong_1",
+    "vi": "Ngọc Phong Hoàng Phẩm",
+    "en": "Wind Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc phong hoàng phẩm, tăng cường phong hệ."
+  },
+  {
+    "key": "GemPhong_2",
+    "vi": "Ngọc Phong Huyền Phẩm",
+    "en": "Wind Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc phong huyền phẩm, tăng cường phong hệ mạnh hơn."
+  },
+  {
+    "key": "GemPhong_3",
+    "vi": "Ngọc Phong Địa Phẩm",
+    "en": "Wind Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc phong địa phẩm, tinh hoa phong hệ."
+  },
+  {
+    "key": "GemPhong_4",
+    "vi": "Ngọc Phong Thiên Phẩm",
+    "en": "Wind Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc phong thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemKiem_1",
+    "vi": "Ngọc Kiếm Hoàng Phẩm",
+    "en": "Sword Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc kiếm hoàng phẩm, tăng cường kiếm đạo."
+  },
+  {
+    "key": "GemKiem_2",
+    "vi": "Ngọc Kiếm Huyền Phẩm",
+    "en": "Sword Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc kiếm huyền phẩm, lợi kiếm như phong."
+  },
+  {
+    "key": "GemKiem_3",
+    "vi": "Ngọc Kiếm Địa Phẩm",
+    "en": "Sword Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc kiếm địa phẩm, tinh hoa kiếm đạo."
+  },
+  {
+    "key": "GemKiem_4",
+    "vi": "Ngọc Kiếm Thiên Phẩm",
+    "en": "Sword Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc kiếm thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemHon_1",
+    "vi": "Ngọc Hồn Hoàng Phẩm",
+    "en": "Soul Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc hồn hoàng phẩm, bồi dưỡng thần hồn."
+  },
+  {
+    "key": "GemHon_2",
+    "vi": "Ngọc Hồn Huyền Phẩm",
+    "en": "Soul Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc hồn huyền phẩm, tăng cường hồn lực."
+  },
+  {
+    "key": "GemHon_3",
+    "vi": "Ngọc Hồn Địa Phẩm",
+    "en": "Soul Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc hồn địa phẩm, tinh hoa hồn đạo."
+  },
+  {
+    "key": "GemHon_4",
+    "vi": "Ngọc Hồn Thiên Phẩm",
+    "en": "Soul Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc hồn thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemSinh_1",
+    "vi": "Ngọc Sinh Hoàng Phẩm",
+    "en": "Life Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc sinh hoàng phẩm, tăng cường sinh lực."
+  },
+  {
+    "key": "GemSinh_2",
+    "vi": "Ngọc Sinh Huyền Phẩm",
+    "en": "Life Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc sinh huyền phẩm, sinh khí vượng thịnh."
+  },
+  {
+    "key": "GemSinh_3",
+    "vi": "Ngọc Sinh Địa Phẩm",
+    "en": "Life Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc sinh địa phẩm, tinh hoa sinh mệnh."
+  },
+  {
+    "key": "GemSinh_4",
+    "vi": "Ngọc Sinh Thiên Phẩm",
+    "en": "Life Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc sinh thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemHo_1",
+    "vi": "Ngọc Hộ Hoàng Phẩm",
+    "en": "Guard Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc hộ hoàng phẩm, tăng cường phòng thủ."
+  },
+  {
+    "key": "GemHo_2",
+    "vi": "Ngọc Hộ Huyền Phẩm",
+    "en": "Guard Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc hộ huyền phẩm, phòng thủ kiên cố."
+  },
+  {
+    "key": "GemHo_3",
+    "vi": "Ngọc Hộ Địa Phẩm",
+    "en": "Guard Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc hộ địa phẩm, tinh hoa hộ thể."
+  },
+  {
+    "key": "GemHo_4",
+    "vi": "Ngọc Hộ Thiên Phẩm",
+    "en": "Guard Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc hộ thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemPha_1",
+    "vi": "Ngọc Phá Hoàng Phẩm",
+    "en": "Break Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc phá hoàng phẩm, phá giáp phá phòng."
+  },
+  {
+    "key": "GemPha_2",
+    "vi": "Ngọc Phá Huyền Phẩm",
+    "en": "Break Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc phá huyền phẩm, xuyên phá phòng thủ."
+  },
+  {
+    "key": "GemPha_3",
+    "vi": "Ngọc Phá Địa Phẩm",
+    "en": "Break Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc phá địa phẩm, tinh hoa phá giáp."
+  },
+  {
+    "key": "GemPha_4",
+    "vi": "Ngọc Phá Thiên Phẩm",
+    "en": "Break Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc phá thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemDoc_1",
+    "vi": "Ngọc Độc Hoàng Phẩm",
+    "en": "Poison Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc độc hoàng phẩm, hạ độc địch thủ."
+  },
+  {
+    "key": "GemDoc_2",
+    "vi": "Ngọc Độc Huyền Phẩm",
+    "en": "Poison Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc độc huyền phẩm, độc lực mạnh hơn."
+  },
+  {
+    "key": "GemDoc_3",
+    "vi": "Ngọc Độc Địa Phẩm",
+    "en": "Poison Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc độc địa phẩm, tinh hoa độc đạo."
+  },
+  {
+    "key": "GemDoc_4",
+    "vi": "Ngọc Độc Thiên Phẩm",
+    "en": "Poison Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc độc thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemHonNguyen_1",
+    "vi": "Ngọc Hỗn Nguyên Hoàng Phẩm",
+    "en": "Primordial Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc hỗn nguyên hoàng phẩm, nguyên khí hỗn độn."
+  },
+  {
+    "key": "GemHonNguyen_2",
+    "vi": "Ngọc Hỗn Nguyên Huyền Phẩm",
+    "en": "Primordial Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc hỗn nguyên huyền phẩm, nguyên lực hùng hậu."
+  },
+  {
+    "key": "GemHonNguyen_3",
+    "vi": "Ngọc Hỗn Nguyên Địa Phẩm",
+    "en": "Primordial Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc hỗn nguyên địa phẩm, tinh hoa nguyên đạo."
+  },
+  {
+    "key": "GemHonNguyen_4",
+    "vi": "Ngọc Hỗn Nguyên Thiên Phẩm",
+    "en": "Primordial Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc hỗn nguyên thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemAm_1",
+    "vi": "Ngọc Âm Hoàng Phẩm",
+    "en": "Yin Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc âm hoàng phẩm, tăng cường âm lực."
+  },
+  {
+    "key": "GemAm_2",
+    "vi": "Ngọc Âm Huyền Phẩm",
+    "en": "Yin Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc âm huyền phẩm, âm khí thâm trầm."
+  },
+  {
+    "key": "GemAm_3",
+    "vi": "Ngọc Âm Địa Phẩm",
+    "en": "Yin Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc âm địa phẩm, tinh hoa âm đạo."
+  },
+  {
+    "key": "GemAm_4",
+    "vi": "Ngọc Âm Thiên Phẩm",
+    "en": "Yin Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc âm thiên phẩm, cực phẩm vô giá."
+  },
+  {
+    "key": "GemDuong_1",
+    "vi": "Ngọc Dương Hoàng Phẩm",
+    "en": "Yang Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc dương hoàng phẩm, tăng cường dương lực."
+  },
+  {
+    "key": "GemDuong_2",
+    "vi": "Ngọc Dương Huyền Phẩm",
+    "en": "Yang Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc dương huyền phẩm, dương khí sung mãn."
+  },
+  {
+    "key": "GemDuong_3",
+    "vi": "Ngọc Dương Địa Phẩm",
+    "en": "Yang Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc dương địa phẩm, tinh hoa dương đạo."
+  },
+  {
+    "key": "GemDuong_4",
+    "vi": "Ngọc Dương Thiên Phẩm",
+    "en": "Yang Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc dương thiên phẩm, cực phẩm vô giá."
+  }
+]

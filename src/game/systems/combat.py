@@ -446,8 +446,8 @@ class CombatSession:
         enemy_data = registry.get_enemy(self.enemy.key)
         if not enemy_data:
             return []
-        result = roll_drops(enemy_data.get("drop_table", []), self.rng)
-        return result.merge()
+        drop_table = registry.get_loot_table(enemy_data.get("loot_table_key", ""))
+        return roll_drops(drop_table, self.rng).merge()
 
     def _victory(self) -> CombatResult:
         loot = self._roll_loot()

@@ -1,0 +1,119 @@
+[
+  {
+    "key": "ScrollAtkHoang",
+    "vi": "Ngọc Giản Tấn Công Hoàng",
+    "en": "Yellow Attack Scroll",
+    "type": "scroll",
+    "grade": 1,
+    "shop_price_merit": 1000,
+    "description_vi": "Ngọc giản tấn công hoàng phẩm, ghi chép kỹ năng tấn công."
+  },
+  {
+    "key": "ScrollDefHoang",
+    "vi": "Ngọc Giản Phòng Thủ Hoàng",
+    "en": "Yellow Defense Scroll",
+    "type": "scroll",
+    "grade": 1,
+    "shop_price_merit": 1000,
+    "description_vi": "Ngọc giản phòng thủ hoàng phẩm, ghi chép kỹ năng phòng thủ."
+  },
+  {
+    "key": "ScrollSupHoang",
+    "vi": "Ngọc Giản Hỗ Trợ Hoàng",
+    "en": "Yellow Support Scroll",
+    "type": "scroll",
+    "grade": 1,
+    "shop_price_merit": 1000,
+    "description_vi": "Ngọc giản hỗ trợ hoàng phẩm, ghi chép kỹ năng hỗ trợ."
+  },
+  {
+    "key": "ScrollAtkHuyen",
+    "vi": "Ngọc Giản Tấn Công Huyền",
+    "en": "Mystic Attack Scroll",
+    "type": "scroll",
+    "grade": 2,
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc giản tấn công huyền phẩm, kỹ năng tấn công bậc trung."
+  },
+  {
+    "key": "ScrollDefHuyen",
+    "vi": "Ngọc Giản Phòng Thủ Huyền",
+    "en": "Mystic Defense Scroll",
+    "type": "scroll",
+    "grade": 2,
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc giản phòng thủ huyền phẩm, kỹ năng phòng thủ bậc trung."
+  },
+  {
+    "key": "ScrollSupHuyen",
+    "vi": "Ngọc Giản Hỗ Trợ Huyền",
+    "en": "Mystic Support Scroll",
+    "type": "scroll",
+    "grade": 2,
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc giản hỗ trợ huyền phẩm, kỹ năng hỗ trợ bậc trung."
+  },
+  {
+    "key": "ScrollAtkDia",
+    "vi": "Ngọc Giản Tấn Công Địa",
+    "en": "Earth Attack Scroll",
+    "type": "scroll",
+    "grade": 3,
+    "shop_price_merit": 8000,
+    "description_vi": "Ngọc giản tấn công địa phẩm, kỹ năng tấn công cao cấp."
+  },
+  {
+    "key": "ScrollDefDia",
+    "vi": "Ngọc Giản Phòng Thủ Địa",
+    "en": "Earth Defense Scroll",
+    "type": "scroll",
+    "grade": 3,
+    "shop_price_merit": 8000,
+    "description_vi": "Ngọc giản phòng thủ địa phẩm, kỹ năng phòng thủ cao cấp."
+  },
+  {
+    "key": "ScrollSupDia",
+    "vi": "Ngọc Giản Hỗ Trợ Địa",
+    "en": "Earth Support Scroll",
+    "type": "scroll",
+    "grade": 3,
+    "shop_price_merit": 8000,
+    "description_vi": "Ngọc giản hỗ trợ địa phẩm, kỹ năng hỗ trợ cao cấp."
+  },
+  {
+    "key": "ScrollAtkThien",
+    "vi": "Ngọc Giản Tấn Công Thiên",
+    "en": "Heaven Attack Scroll",
+    "type": "scroll",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc giản tấn công thiên phẩm, cực phẩm kỹ năng tấn công."
+  },
+  {
+    "key": "ScrollDefThien",
+    "vi": "Ngọc Giản Phòng Thủ Thiên",
+    "en": "Heaven Defense Scroll",
+    "type": "scroll",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc giản phòng thủ thiên phẩm, cực phẩm kỹ năng phòng thủ."
+  },
+  {
+    "key": "ScrollSupThien",
+    "vi": "Ngọc Giản Hỗ Trợ Thiên",
+    "en": "Heaven Support Scroll",
+    "type": "scroll",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc giản hỗ trợ thiên phẩm, cực phẩm kỹ năng hỗ trợ."
+  },
+  {
+    "key": "ScrollFrmThien",
+    "vi": "Ngọc Giản Trận Pháp Thiên",
+    "en": "Heaven Formation Scroll",
+    "type": "scroll",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc giản trận pháp thiên phẩm, bí quyết trận pháp thiên cấp."
+  }
+]

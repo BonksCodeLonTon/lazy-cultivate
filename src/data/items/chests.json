@@ -1,0 +1,38 @@
+[
+  {
+    "key": "ChestHoang",
+    "vi": "Rương Hoàng Phẩm",
+    "en": "Yellow Grade Chest",
+    "type": "chest",
+    "grade": 1,
+    "shop_price_merit": 0,
+    "description_vi": "Rương vật phẩm hoàng phẩm, chứa đựng vật phẩm cấp thấp."
+  },
+  {
+    "key": "ChestHuyen",
+    "vi": "Rương Huyền Phẩm",
+    "en": "Mystic Grade Chest",
+    "type": "chest",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Rương vật phẩm huyền phẩm, chứa đựng vật phẩm bậc trung."
+  },
+  {
+    "key": "ChestDia",
+    "vi": "Rương Địa Phẩm",
+    "en": "Earth Grade Chest",
+    "type": "chest",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Rương vật phẩm địa phẩm, chứa đựng vật phẩm cao cấp."
+  },
+  {
+    "key": "ChestThien",
+    "vi": "Rương Thiên Phẩm",
+    "en": "Heaven Grade Chest",
+    "type": "chest",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Rương vật phẩm thiên phẩm, chứa đựng vật phẩm cực phẩm."
+  }
+]
