@@ -4,6 +4,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from datetime import datetime, timezone, timedelta
+from typing import Any
 
 import discord
 from discord import app_commands
@@ -87,6 +88,83 @@ def _fmt_cooldown(cd: timedelta) -> str:
     return f"{hours}h {minutes}m" if hours else f"{minutes}m"
 
 
+def _format_loot(loot: list[dict]) -> str:
+    """Merge duplicate item drops and display using item names."""
+    merged: dict[str, int] = {}
+    for drop in loot:
+        merged[drop["item_key"]] = merged.get(drop["item_key"], 0) + drop["quantity"]
+    parts = []
+    for key, qty in merged.items():
+        item_data = registry.get_item(key)
+        name = item_data["vi"] if item_data else key
+        parts.append(f"{name}×{qty}")
+    return ", ".join(parts) or "*(không có vật phẩm)*"
+
+
+def _dungeon_prep_embed(wave_idx: int, total_waves: int, player_c, effect_msg: str = "") -> discord.Embed:
+    """Embed shown between dungeon waves during the prepare phase."""
+    hp_pct = int(player_c.hp / player_c.hp_max * 100) if player_c.hp_max > 0 else 0
+    mp_pct = int(player_c.mp / player_c.mp_max * 100) if player_c.mp_max > 0 else 0
+    desc = (
+        f"**Đợt {wave_idx}/{total_waves}** đã hoàn thành! Chuẩn bị cho đợt tiếp theo.\n\n"
+        f"❤️ HP: **{player_c.hp:,} / {player_c.hp_max:,}** ({hp_pct}%)\n"
+        f"💙 MP: **{player_c.mp:,} / {player_c.mp_max:,}** ({mp_pct}%)"
+    )
+    if effect_msg:
+        desc += f"\n\n✨ {effect_msg}"
+    return base_embed("⏸️ Nghỉ Ngơi Giữa Trận", desc, color=0x3498DB)
+
+
+def _heal_combatant(player_c, item_key: str) -> str:
+    """Apply one use of a healing elixir to a Combatant. Returns effect description."""
+    k = item_key
+    hp_max = player_c.hp_max
+    mp_max = player_c.mp_max
+    if "HoiHPFull" in k:
+        player_c.hp = hp_max
+        return f"❤️ HP hồi đầy: {hp_max:,}"
+    if "HoiFull" in k:
+        player_c.hp = hp_max
+        player_c.mp = mp_max
+        return "❤️💙 Hồi đầy cả HP và MP"
+    if "HoiHPLarge" in k:
+        heal = int(hp_max * 0.5)
+        player_c.hp = min(hp_max, player_c.hp + heal)
+        return f"❤️ +{heal:,} HP"
+    if "HoiHPMid" in k:
+        heal = int(hp_max * 0.25)
+        player_c.hp = min(hp_max, player_c.hp + heal)
+        return f"❤️ +{heal:,} HP"
+    if "HoiHPSmall" in k:
+        heal = int(hp_max * 0.10)
+        player_c.hp = min(hp_max, player_c.hp + heal)
+        return f"❤️ +{heal:,} HP"
+    if "HoiHPMiss" in k:
+        missing = hp_max - player_c.hp
+        heal = int(missing * 0.5)
+        player_c.hp = min(hp_max, player_c.hp + heal)
+        return f"❤️ +{heal:,} HP (50% thiếu)"
+    if "HoiHPMP" in k:
+        heal = int(hp_max * 0.15)
+        regen = int(mp_max * 0.15)
+        player_c.hp = min(hp_max, player_c.hp + heal)
+        player_c.mp = min(mp_max, player_c.mp + regen)
+        return f"❤️ +{heal:,} HP | 💙 +{regen:,} MP"
+    if "HoiMPLarge" in k:
+        regen = int(mp_max * 0.5)
+        player_c.mp = min(mp_max, player_c.mp + regen)
+        return f"💙 +{regen:,} MP"
+    if "HoiMPMid" in k:
+        regen = int(mp_max * 0.25)
+        player_c.mp = min(mp_max, player_c.mp + regen)
+        return f"💙 +{regen:,} MP"
+    if "HoiMPSmall" in k:
+        regen = int(mp_max * 0.10)
+        player_c.mp = min(mp_max, player_c.mp + regen)
+        return f"💙 +{regen:,} MP"
+    return "✨ Hiệu ứng đã áp dụng."
+
+
 def _dungeon_list_embed(player_qi_realm: int) -> discord.Embed:
     all_dungeons = sorted(registry.dungeons.values(), key=lambda d: d.get("required_qi_realm", 0))
     unlocked = sum(1 for d in all_dungeons if d.get("required_qi_realm", 0) <= player_qi_realm)
@@ -167,10 +245,7 @@ def _build_result_embeds(
         log_embeds.append(base_embed(title, chunk, color=color))
 
     if result.success:
-        loot_str = (
-            ", ".join(f"{drop['item_key']}×{drop['quantity']}" for drop in result.loot)
-            or "*(không có vật phẩm)*"
-        )
+        loot_str = _format_loot(result.loot)
         stone_line = f"\n💎 **+{result.stone_gained:,} Hỗn Nguyên Thạch**" if result.stone_gained else ""
         summary_embed = success_embed(
             f"✅ **{player_name}** chinh phục **{dungeon_name}**!\n"
@@ -181,10 +256,7 @@ def _build_result_embeds(
         summary_embed.title = f"🏆 Chinh Phục {dungeon_name}"
     else:
         died_line = f" bởi **{result.died_on}**" if result.died_on else ""
-        loot_str = (
-            "\n🎁 " + ", ".join(f"{drop['item_key']}×{drop['quantity']}" for drop in result.loot)
-            if result.loot else ""
-        )
+        loot_str = f"\n🎁 {_format_loot(result.loot)}" if result.loot else ""
         summary_embed = error_embed(
             f"💀 **{player_name}** đã thất bại{died_line}!\n"
             f"Hoàn thành {result.waves_cleared}/{result.total_waves} đợt.\n\n"
@@ -217,8 +289,6 @@ async def _execute_dungeon(
     char: CharModel | None = None
     skill_keys: list[str] = []
     player_name = ""
-    hp_max_val = 0
-    mp_max_val = 0
     gem_count = 0
 
     async with get_session() as session:
@@ -245,9 +315,11 @@ async def _execute_dungeon(
                     gem_count = len(f.gem_slots)
                     break
 
+        from src.game.constants.linh_can import compute_linh_can_bonuses
         bonuses = merge_bonuses(
             compute_formation_bonuses(player.active_formation, gem_count),
             compute_constitution_bonuses(player.constitution_type),
+            compute_linh_can_bonuses(char.linh_can),
         )
         if player.hp_current <= 0:
             player.hp_current = compute_hp_max(char, bonuses)
@@ -255,8 +327,6 @@ async def _execute_dungeon(
 
         skill_keys = [s.skill_key for s in player.skills] if player.skills else ["SkillAtkKim1"]
         player_name = player.name
-        hp_max_val = compute_hp_max(char, bonuses)
-        mp_max_val = compute_mp_max(char, bonuses)
 
     # Realm total for enemy scaling (computed from char to be always fresh)
     _realm_total = (
@@ -284,7 +354,28 @@ async def _execute_dungeon(
     dungeon_success = False
     stone_gained = 0
 
+    player_db_id: int = char.player_id
+
     for wave_idx, enemy_key in enumerate(enemy_keys):
+        # ── Inter-wave prepare phase (not before first wave) ──────────────────
+        if wave_idx > 0:
+            elixirs = await _load_elixirs(player_db_id)
+            prep_view = DungeonPrepView(
+                interaction.user.id, player_db_id, player_c,
+                elixirs, wave_idx, total_waves,
+            )
+            await interaction.edit_original_response(
+                embed=_dungeon_prep_embed(wave_idx, total_waves, player_c),
+                view=prep_view,
+            )
+            try:
+                await asyncio.wait_for(prep_view.done_event.wait(), timeout=120.0)
+            except asyncio.TimeoutError:
+                pass  # treat timeout as "continue"
+
+            if prep_view.abandoned:
+                break
+
         is_boss = enemy_key == boss_key
         edata = registry.get_enemy(enemy_key)
         wave_label = (
@@ -294,12 +385,6 @@ async def _execute_dungeon(
 
         all_logs.append(f"\n{'═' * 20}")
         all_logs.append(f"⚔️ **{wave_label}**")
-
-        if wave_idx > 0:
-            restore_hp = player_c.hp_max // 2
-            player_c.hp = min(player_c.hp_max, player_c.hp + restore_hp)
-            player_c.mp = min(player_c.mp_max, player_c.mp + player_c.mp_max // 3)
-            all_logs.append(f"💚 Hồi phục: +{restore_hp:,} HP | ❤️ {player_c.hp:,}/{player_c.hp_max:,}")
 
         enemy_c = build_enemy_combatant(enemy_key, _realm_total)
         if not enemy_c:
@@ -378,8 +463,14 @@ async def _execute_dungeon(
             player.merit = min(player.merit + merit_total, CURRENCY_CAP)
             if stone_gained:
                 player.primordial_stones = min(player.primordial_stones + stone_gained, CURRENCY_CAP)
-            player.hp_current = hp_max_val
-            player.mp_current = mp_max_val
+            if dungeon_success:
+                # Restore to full HP/MP using the combatant's actual max (includes all bonuses)
+                player.hp_current = player_c.hp_max
+                player.mp_current = player_c.mp_max
+            else:
+                # Preserve the HP/MP the player had (minimum 1 HP to avoid dead state)
+                player.hp_current = max(1, player_c.hp)
+                player.mp_current = max(0, player_c.mp)
 
             if all_loot:
                 irepo = InventoryRepository(session)
@@ -401,7 +492,131 @@ async def _execute_dungeon(
     await interaction.edit_original_response(embed=summary_embed, view=view)
 
 
+# ── Helpers for prep phase ────────────────────────────────────────────────────
+
+async def _load_elixirs(player_db_id: int) -> list[dict[str, Any]]:
+    """Return list of elixir dicts the player currently owns."""
+    elixirs = []
+    async with get_session() as session:
+        irepo = InventoryRepository(session)
+        items = await irepo.get_all(player_db_id)
+        for inv_item in items:
+            item_data = registry.get_item(inv_item.item_key)
+            if item_data and item_data.get("type") == "elixir":
+                elixirs.append({
+                    "key": inv_item.item_key,
+                    "grade": inv_item.grade,
+                    "qty": inv_item.quantity,
+                    "name": item_data.get("vi", inv_item.item_key),
+                })
+    return elixirs
+
+
 # ── Discord UI Components ─────────────────────────────────────────────────────
+
+class DungeonPrepView(discord.ui.View):
+    """Shown between dungeon waves — lets player use elixirs, continue, or abandon."""
+
+    def __init__(
+        self,
+        discord_id: int,
+        player_db_id: int,
+        player_c: Any,
+        elixirs: list[dict],
+        wave_idx: int,
+        total_waves: int,
+    ) -> None:
+        super().__init__(timeout=120)
+        self.discord_id = discord_id
+        self.player_db_id = player_db_id
+        self.player_c = player_c
+        self.elixirs = list(elixirs)
+        self.wave_idx = wave_idx
+        self.total_waves = total_waves
+        self.done_event = asyncio.Event()
+        self.abandoned = False
+        self._build_items()
+
+    def _build_items(self) -> None:
+        self.clear_items()
+        if self.elixirs:
+            options = [
+                discord.SelectOption(
+                    label=f"{e['name']} × {e['qty']}"[:100],
+                    value=e["key"],
+                    description=f"Dùng 1 × {e['name']}"[:100],
+                )
+                for e in self.elixirs[:25]
+            ]
+            sel = discord.ui.Select(
+                placeholder="💊 Dùng Đan Dược...",
+                options=options,
+                row=0,
+            )
+            sel.callback = self._use_elixir_cb
+            self.add_item(sel)
+
+        continue_btn = discord.ui.Button(
+            label="▶ Tiếp tục", style=discord.ButtonStyle.green, row=1
+        )
+        continue_btn.callback = self._continue_cb
+        self.add_item(continue_btn)
+
+        abandon_btn = discord.ui.Button(
+            label="🚪 Bỏ cuộc", style=discord.ButtonStyle.red, row=1
+        )
+        abandon_btn.callback = self._abandon_cb
+        self.add_item(abandon_btn)
+
+    async def _use_elixir_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self.discord_id:
+            await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
+            return
+
+        item_key = interaction.data["values"][0]
+        elixir = next((e for e in self.elixirs if e["key"] == item_key), None)
+        if not elixir:
+            await interaction.response.defer()
+            return
+
+        # Remove one from DB
+        async with get_session() as session:
+            irepo = InventoryRepository(session)
+            removed = await irepo.remove_item(self.player_db_id, item_key, Grade(elixir["grade"]))
+            if not removed:
+                await interaction.response.send_message("Không còn vật phẩm này.", ephemeral=True)
+                return
+
+        # Apply healing to in-memory combatant
+        effect_msg = _heal_combatant(self.player_c, item_key)
+
+        # Update local elixir count
+        elixir["qty"] -= 1
+        if elixir["qty"] <= 0:
+            self.elixirs = [e for e in self.elixirs if e["key"] != item_key]
+
+        self._build_items()
+        embed = _dungeon_prep_embed(self.wave_idx, self.total_waves, self.player_c, effect_msg)
+        await interaction.response.edit_message(embed=embed, view=self)
+
+    async def _continue_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self.discord_id:
+            await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        self.done_event.set()
+
+    async def _abandon_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self.discord_id:
+            await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        self.abandoned = True
+        self.done_event.set()
+
+    async def on_timeout(self) -> None:
+        self.done_event.set()
+
 
 class DungeonSelect(discord.ui.Select):
     """Dropdown listing all dungeons; selecting one transitions to the detail view."""

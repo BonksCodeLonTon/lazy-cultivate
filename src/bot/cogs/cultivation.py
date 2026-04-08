@@ -245,13 +245,15 @@ class StatusView(discord.ui.View):
         self._discord_id = discord_id
 
         configs = [
-            ("🌀 Tu Luyện",  discord.ButtonStyle.primary,   self._cultivate_cb),
-            ("⚡ Đột Phá",   discord.ButtonStyle.success,   self._breakthrough_cb),
-            ("⚔️ Chiến Đấu", discord.ButtonStyle.danger,    self._fight_cb),
-            ("🗺️ Bí Cảnh",   discord.ButtonStyle.secondary, self._dungeon_cb),
+            ("🌀 Tu Luyện",      discord.ButtonStyle.secondary, self._cultivate_cb,      0),
+            ("⚡ Đột Phá",       discord.ButtonStyle.secondary, self._breakthrough_cb,   0),
+            ("🗺️ Bí Cảnh",       discord.ButtonStyle.secondary, self._dungeon_cb,        0),
+            ("🎯 Kỹ Năng",       discord.ButtonStyle.secondary, self._skills_cb,         1),
+            ("📚 Tàng Kinh Các", discord.ButtonStyle.secondary, self._tang_kinh_cac_cb,  1),
+            ("🎒 Túi Đồ",        discord.ButtonStyle.secondary, self._inventory_cb,      1),
         ]
-        for label, style, cb in configs:
-            btn = discord.ui.Button(label=label, style=style, row=0)
+        for label, style, cb, row in configs:
+            btn = discord.ui.Button(label=label, style=style, row=row)
             btn.callback = cb
             self.add_item(btn)
 
@@ -304,16 +306,54 @@ class StatusView(discord.ui.View):
         view = BreakthroughView(self._discord_id, readiness, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
 
-    async def _fight_cb(self, interaction: discord.Interaction) -> None:
+    async def _inventory_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
         await interaction.response.defer()
-        # Lazy import avoids any module-level circularity
-        from src.bot.cogs.combat import FightRankView
-        embed = base_embed("⚔️ Chọn Hạng Quái", "Chọn hạng quái muốn giao chiến:", color=0xFF6B35)
-        view = FightRankView(self._discord_id, back_fn=_show_status)
-        await interaction.edit_original_response(embed=embed, view=view)
+
+        from src.data.registry import registry as _registry
+        from src.db.repositories.inventory_repo import InventoryRepository
+
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            irepo = InventoryRepository(session)
+            items = await irepo.get_all(player.id)
+
+        _GRADE_EMOJI = {1: "🟡", 2: "🟣", 3: "🟢", 4: "🔴"}
+        _TYPE_EMOJI = {
+            "material": "🪨", "gem": "💠", "scroll": "📜",
+            "chest": "📦", "elixir": "⚗️", "special": "⭐", "artifact": "🗡️",
+        }
+
+        if not items:
+            embed = base_embed("🎒 Túi Đồ", "Túi đồ trống.", color=0x95A5A6)
+        else:
+            lines = []
+            for inv_item in sorted(items, key=lambda x: (x.grade, x.item_key)):
+                item_data = _registry.get_item(inv_item.item_key)
+                name = item_data["vi"] if item_data else inv_item.item_key
+                t_emoji = _TYPE_EMOJI.get(item_data.get("type", ""), "❓") if item_data else "❓"
+                g_emoji = _GRADE_EMOJI.get(inv_item.grade, "⚪")
+                lines.append(f"{t_emoji}{g_emoji} **{name}** × {inv_item.quantity}")
+            embed = base_embed("🎒 Túi Đồ", f"Tổng: **{len(items)}** loại vật phẩm", color=0x95A5A6)
+            embed.add_field(name="\u200b", value="\n".join(lines[:20]) or "—", inline=False)
+            if len(lines) > 20:
+                embed.set_footer(text=f"... và {len(lines) - 20} loại khác.")
+
+        back_view = discord.ui.View(timeout=120)
+        back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary)
+        async def _back_to_status(inter: discord.Interaction) -> None:
+            await inter.response.defer()
+            await _show_status(inter)
+        back_btn.callback = _back_to_status
+        back_view.add_item(back_btn)
+
+        await interaction.edit_original_response(embed=embed, view=back_view)
 
     async def _dungeon_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
@@ -332,6 +372,50 @@ class StatusView(discord.ui.View):
         from src.bot.cogs.dungeon import DungeonListView, _dungeon_list_embed
         embed = _dungeon_list_embed(qi_realm)
         view = DungeonListView(self._discord_id, qi_realm, back_fn=_show_status)
+        await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _skills_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            equipped = [
+                type("S", (), {"slot_index": s.slot_index, "skill_key": s.skill_key})()
+                for s in sorted(player.skills or [], key=lambda x: x.slot_index)
+            ]
+
+        from src.bot.cogs.combat import _build_skills_embed_view
+        embed, view = _build_skills_embed_view(equipped, self._discord_id, back_fn=_show_status)
+        await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _tang_kinh_cac_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        from src.game.constants.linh_can import parse_linh_can
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            linh_can = parse_linh_can(player.linh_can or "")
+
+        from src.bot.cogs.combat import _build_skilllist
+        embed, view = _build_skilllist(
+            discord_id=self._discord_id,
+            back_fn=_show_status,
+            linh_can=linh_can,
+        )
         await interaction.edit_original_response(embed=embed, view=view)
 
 

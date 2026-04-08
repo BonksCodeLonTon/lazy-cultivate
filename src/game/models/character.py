@@ -18,6 +18,11 @@ class CharacterStats:
     evasion_rating: int = 0
     crit_res_rating: int = 0
 
+    # Attack and defense stats — scale with cultivation path
+    atk: int = 0       # Physical attack (Luyện Thể path focused)
+    matk: int = 0      # Magic attack (Luyện Khí path focused)
+    def_stat: int = 0  # Physical defense → converted to physical resistance via formula
+
     # Direct modifiers
     final_dmg_bonus: float = 0.0   # additive %
     true_dmg: int = 0

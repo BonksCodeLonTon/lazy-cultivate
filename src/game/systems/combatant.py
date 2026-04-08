@@ -17,6 +17,10 @@ class Combatant:
     spd: int
     element: Optional[str]
     resistances: dict[str, int] = field(default_factory=dict)
+    # Attack and defense stats — computed from cultivation path progression
+    atk: int = 0       # Physical attack power (Luyện Thể path gives most ATK)
+    matk: int = 0      # Magic attack power (Luyện Khí path gives most MATK)
+    def_stat: int = 0  # Physical defense (Luyện Thể path gives most DEF)
     crit_rating: int = 0
     crit_dmg_rating: int = 0
     evasion_rating: int = 0
@@ -26,6 +30,8 @@ class Combatant:
     final_dmg_reduce: float = 0.0
     # Per-turn HP regen as fraction of hp_max (e.g. 0.02 = 2%/turn)
     hp_regen_pct: float = 0.0
+    # Per-turn MP regen as fraction of mp_max (e.g. 0.03 = 3%/turn)
+    mp_regen_pct: float = 0.0
     # Healing effectiveness multiplier (from Quang Linh Căn passive)
     heal_pct: float = 0.0
     # Cooldown reduction multiplier (e.g. 0.15 → CD * 0.85)
