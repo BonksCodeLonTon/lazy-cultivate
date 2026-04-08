@@ -23,6 +23,7 @@ from src.game.constants.balance import (
 )
 from src.game.constants.effects import EffectKey
 from src.game.engine.damage import calculate_damage, DamageResult, AttackStats, DefenseStats
+from src.game.engine.drop import roll_drops
 from src.game.engine.effects import (
     EFFECTS,
     EffectMeta,
@@ -445,12 +446,8 @@ class CombatSession:
         enemy_data = registry.get_enemy(self.enemy.key)
         if not enemy_data:
             return []
-        loot = []
-        for drop in enemy_data.get("drop_table", []):
-            if self.rng.randint(1, 100) <= drop.get("weight", 10):
-                qty = self.rng.randint(drop.get("qty_min", 1), drop.get("qty_max", 1))
-                loot.append({"item_key": drop["item_key"], "quantity": qty})
-        return loot
+        result = roll_drops(enemy_data.get("drop_table", []), self.rng)
+        return result.merge()
 
     def _victory(self) -> CombatResult:
         loot = self._roll_loot()
