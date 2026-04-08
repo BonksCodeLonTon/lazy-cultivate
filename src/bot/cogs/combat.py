@@ -1041,8 +1041,8 @@ class CombatCog(commands.Cog, name="Combat"):
                 await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
             char = _orm_to_charmodel(player)
-            player.hp_current = compute_hp_max(char)
-            player.mp_current = compute_mp_max(char)
+            player.hp_current = compute_hp_max(char, bonuses=compute_constitution_bonuses(char.constitution_type))
+            player.mp_current = compute_mp_max(char, bonuses=compute_constitution_bonuses(char.constitution_type))
             await prepo.save(player)
 
         await interaction.response.send_message(
