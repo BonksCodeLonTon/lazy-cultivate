@@ -15,6 +15,8 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import TYPE_CHECKING
 
+from src.game.constants.effects import EffectKey
+
 if TYPE_CHECKING:
     from src.game.systems.combatant import Combatant
 
@@ -407,22 +409,22 @@ EFFECTS: dict[str, EffectMeta] = {m.key: m for m in _BUFFS + _DEBUFFS_CC}
 
 _DEFAULT_DURATIONS: dict[str, int] = {
     # Buffs — typically 3–4 turns
-    "BuffKiemKhi": 3, "BuffKiemY": 4, "BuffVoNgaKiemTam": 3,
-    "BuffNhietTinh": 3, "BuffHoaThan": 3, "BuffLietDiem": 3,
-    "BuffBangGiap": 4, "BuffThuyKinh": 3, "BuffHanKhi": 3,
-    "BuffLoiThan": 3, "BuffTocLoi": 2, "BuffNguPhong": 3,
-    "BuffPhongVu": 3, "BuffSinhCo": 4, "BuffCanCo": 3,
-    "BuffKimCuong": 3, "BuffHoangKim": 3, "BuffDaiDia": 3,
-    "BuffTrongTo": 4, "BuffBatTu": 1, "BuffTangToc": 3,
-    "BuffHoPhap": 4, "BuffHuKhong": 2,
+    EffectKey.BUFF_KIEM_KHI: 3, EffectKey.BUFF_KIEM_Y: 4, EffectKey.BUFF_VO_NGA_KIEM_TAM: 3,
+    EffectKey.BUFF_NHIET_TINH: 3, EffectKey.BUFF_HOA_THAN: 3, EffectKey.BUFF_LIET_DIEM: 3,
+    EffectKey.BUFF_BANG_GIAP: 4, EffectKey.BUFF_THUY_KINH: 3, EffectKey.BUFF_HAN_KHI: 3,
+    EffectKey.BUFF_LOI_THAN: 3, EffectKey.BUFF_TOC_LOI: 2, EffectKey.BUFF_NGU_PHONG: 3,
+    EffectKey.BUFF_PHONG_VU: 3, EffectKey.BUFF_SINH_CO: 4, EffectKey.BUFF_CAN_CO: 3,
+    EffectKey.BUFF_KIM_CUONG: 3, EffectKey.BUFF_HOANG_KIM: 3, EffectKey.BUFF_DAI_DIA: 3,
+    EffectKey.BUFF_TRONG_TO: 4, EffectKey.BUFF_BAT_TU: 1, EffectKey.BUFF_TANG_TOC: 3,
+    EffectKey.BUFF_HO_PHAP: 4, EffectKey.BUFF_HU_KHONG: 2,
     # Debuffs — typically 2–3 turns
-    "DebuffThieuDot": 3, "DebuffTeLiet": 2, "DebuffDotChay": 3,
-    "DebuffDocTo": 3, "DebuffBaoMon": 3, "DebuffTroBuoc": 2,
-    "DebuffLunDat": 2, "EffectNgungDong": 2, "DebuffLamCham": 2,
-    "DebuffDongBang": 2, "DebuffChayMau": 3, "DebuffPhaGiap": 3,
-    "DebuffXeRach": 2, "DebuffCuonBay": 1, "DebuffCatDut": 3,
-    "CCMuted": 2, "CCStun": 1, "CCInterrupt": 1,
-    "CCLockBreak": 3, "DebuffSetDanh": 2,
+    EffectKey.DEBUFF_THIEU_DOT: 3, EffectKey.DEBUFF_TE_LIET: 2, EffectKey.DEBUFF_DOT_CHAY: 3,
+    EffectKey.DEBUFF_DOC_TO: 3, EffectKey.DEBUFF_BAO_MON: 3, EffectKey.DEBUFF_TRO_BUOC: 2,
+    EffectKey.DEBUFF_LUN_DAT: 2, EffectKey.EFFECT_NGUNG_DONG: 2, EffectKey.DEBUFF_LAM_CHAM: 2,
+    EffectKey.DEBUFF_DONG_BANG: 2, EffectKey.DEBUFF_CHAY_MAU: 3, EffectKey.DEBUFF_PHA_GIAP: 3,
+    EffectKey.DEBUFF_XE_RACH: 2, EffectKey.DEBUFF_CUON_BAY: 1, EffectKey.DEBUFF_CAT_DUT: 3,
+    EffectKey.CC_MUTED: 2, EffectKey.CC_STUN: 1, EffectKey.CC_INTERRUPT: 1,
+    EffectKey.CC_LOCK_BREAK: 3, EffectKey.DEBUFF_SET_DANH: 2,
 }
 
 
@@ -461,7 +463,7 @@ def get_periodic_damage(combatant: "Combatant") -> list[tuple[str, int]]:
         meta = EFFECTS.get(effect_key)
         if not meta or meta.dot_pct <= 0:
             continue
-        if effect_key == "DebuffDocTo" and combatant.poison_immunity:
+        if effect_key == EffectKey.DEBUFF_DOC_TO and combatant.poison_immunity:
             continue
         dmg = max(1, int(combatant.hp_max * meta.dot_pct))
         results.append((effect_key, dmg))
@@ -483,7 +485,7 @@ def check_cc_skip_turn(
             continue
         if meta.skips_turn:
             return effect_key
-        if effect_key == "DebuffTeLiet" and rng.random() < 0.50:
+        if effect_key == EffectKey.DEBUFF_TE_LIET and rng.random() < 0.50:
             return effect_key
     return None
 

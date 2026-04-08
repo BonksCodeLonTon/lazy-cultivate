@@ -16,7 +16,13 @@ from enum import StrEnum
 from typing import Optional
 
 from src.data.registry import registry
-from src.game.engine.damage import calculate_damage, DamageResult
+from src.game.constants.balance import (
+    ENEMY_RANK_BASE_ATK, ENEMY_RANK_BASE_MATK, ENEMY_RANK_BASE_DEF, ENEMY_RANK_BASE_EVASION,
+    ENEMY_SCALE_MAX, ENEMY_HP_SCALE_FACTOR, ENEMY_DMG_BONUS_SCALE, ENEMY_BASE_ELEM_RES,
+    REALM_POWER_BONUS_PER_STAGE, BASE_MP_REGEN_PCT, MAX_FINAL_DMG_REDUCE,
+)
+from src.game.constants.effects import EffectKey
+from src.game.engine.damage import calculate_damage, DamageResult, AttackStats, DefenseStats
 from src.game.engine.effects import (
     EFFECTS,
     EffectMeta,
@@ -27,7 +33,7 @@ from src.game.engine.effects import (
     get_periodic_damage,
 )
 from src.game.engine.linh_can_effects import am, hoa, kim, loi, phong, quang, tho, thuy
-from src.game.models.character import Character, CharacterStats
+from src.game.models.character import Character
 from src.game.systems.combatant import Combatant
 
 
@@ -211,28 +217,24 @@ class CombatSession:
 
         # Compute effective actor stats (base + active buff modifiers)
         actor_mods = get_combat_modifiers(actor)
-        effective_crit_rating = actor.crit_rating + int(actor_mods.get("crit_rating", 0))
-        effective_crit_dmg_rating = actor.crit_dmg_rating + int(actor_mods.get("crit_dmg_rating", 0))
-        effective_evasion_rating = actor.evasion_rating + int(actor_mods.get("evasion_rating", 0))
         effective_final_dmg_bonus = actor.final_dmg_bonus + actor_mods.get("final_dmg_bonus", 0.0)
 
-        # Compute effective target resistances (base + debuff penalties on target)
+        # Compute effective target stats (base + debuff/buff modifiers on target)
         target_mods = get_combat_modifiers(target)
         res_all_mod = int(target_mods.get("res_all", 0))
         effective_target_res = {
             elem: max(0, res + res_all_mod)
             for elem, res in target.resistances.items()
         }
-        effective_crit_res = target.crit_res_rating + int(target_mods.get("crit_res_rating", 0))
         # Target's effective damage reduction (buffs increase it, debuffs like DebuffPhaGiap reduce it)
         effective_target_dr = min(
-            0.75,
+            MAX_FINAL_DMG_REDUCE,
             max(0.0, target.final_dmg_reduce + target_mods.get("final_dmg_reduce", 0.0)),
         )
 
         if base_dmg > 0:
             from src.game.models.skill import AttackType, Skill, SkillType
-            mock_skill = Skill(
+            skill_obj = Skill(
                 key=skill_key,
                 vi=skill_data.get("vi", ""),
                 en=skill_data.get("en", ""),
@@ -244,23 +246,24 @@ class CombatSession:
                 attack_type=AttackType(skill_data.get("attack_type", "magical")),
                 atk_scale=float(skill_data.get("atk_scale", 1.0)),
             )
-            mock_stats = CharacterStats(
-                crit_rating=effective_crit_rating,
-                crit_dmg_rating=effective_crit_dmg_rating,
-                evasion_rating=effective_evasion_rating,
+            attack_stats = AttackStats(
+                crit_rating=actor.crit_rating + int(actor_mods.get("crit_rating", 0)),
+                crit_dmg_rating=actor.crit_dmg_rating + int(actor_mods.get("crit_dmg_rating", 0)),
                 final_dmg_bonus=effective_final_dmg_bonus,
                 atk=actor.atk,
                 matk=actor.matk,
             )
+            defense_stats = DefenseStats(
+                evasion_rating=target.evasion_rating + int(target_mods.get("evasion_rating", 0)),
+                crit_res_rating=target.crit_res_rating + int(target_mods.get("crit_res_rating", 0)),
+                def_stat=target.def_stat,
+                resistances=effective_target_res,
+            )
             # Pre-damage: Kim Linh Căn — may gain elemental penetration this hit
             pen_pct = kim.get_pen_pct(actor, self.rng, self.log)
-            result = calculate_damage(
-                mock_skill, mock_stats, effective_target_res, effective_crit_res, self.rng,
-                pen_pct=pen_pct,
-                defender_def=target.def_stat,
-            )
+            result = calculate_damage(skill_obj, attack_stats, defense_stats, self.rng, pen_pct)
             dmg = result.final
-            crit_tag = " 💥BẠOCHÍ!" if result.is_crit else ""
+            crit_tag = " 💥BẠO KÍCH!" if result.is_crit else ""
 
             if result.is_evaded:
                 self.log.append(
@@ -279,9 +282,9 @@ class CombatSession:
                         self.log.append(f"    🛡️ Khiên [Thổ] hấp thụ {absorbed:,} sát thương!")
 
                 # BuffBatTu — prevent killing blow once
-                if dmg >= target.hp and target.has_effect("BuffBatTu"):
+                if dmg >= target.hp and target.has_effect(EffectKey.BUFF_BAT_TU):
                     dmg = target.hp - 1
-                    target.effects.pop("BuffBatTu", None)
+                    target.effects.pop(EffectKey.BUFF_BAT_TU, None)
                     self.log.append(f"    💫 **{target.name}** kích hoạt **Bất Tử** — sống sót!")
 
                 target.hp = max(0, target.hp - dmg)
@@ -292,19 +295,19 @@ class CombatSession:
 
                 # On-hit formation procs
                 if actor.burn_on_hit_pct > 0 and self.rng.random() < actor.burn_on_hit_pct:
-                    dur = default_duration("DebuffThieuDot")
-                    target.apply_effect("DebuffThieuDot", dur)
+                    dur = default_duration(EffectKey.DEBUFF_THIEU_DOT)
+                    target.apply_effect(EffectKey.DEBUFF_THIEU_DOT, dur)
                     self.log.append(f"    🔥 Thiêu Đốt kích hoạt!")
                 if actor.slow_on_hit_pct > 0 and self.rng.random() < actor.slow_on_hit_pct:
-                    dur = default_duration("DebuffLamCham")
-                    target.apply_effect("DebuffLamCham", dur)
+                    dur = default_duration(EffectKey.DEBUFF_LAM_CHAM)
+                    target.apply_effect(EffectKey.DEBUFF_LAM_CHAM, dur)
                     self.log.append(f"    🐢 Làm Chậm kích hoạt!")
                 if result.is_crit and actor.paralysis_on_crit:
-                    target.apply_effect("CCStun", default_duration("CCStun"))
+                    target.apply_effect(EffectKey.CC_STUN, default_duration(EffectKey.CC_STUN))
                     self.log.append(f"    ⚡ Tê Liệt khi Bạo Kích kích hoạt!")
                 if actor.freeze_on_skill and self.rng.random() < 0.15:
-                    dur = default_duration("DebuffDongBang")
-                    target.apply_effect("DebuffDongBang", dur)
+                    dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
+                    target.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
                     self.log.append(f"    🧊 Đông Băng kích hoạt!")
 
                 # On-hit: Linh Căn procs
@@ -377,7 +380,7 @@ class CombatSession:
         self, effect_key: str, meta: "EffectMeta", target: Combatant
     ) -> None:
         """Apply a debuff or CC to target, respecting immunities."""
-        if effect_key == "DebuffDocTo" and target.poison_immunity:
+        if effect_key == EffectKey.DEBUFF_DOC_TO and target.poison_immunity:
             self.log.append(f"    💚 **{target.name}** miễn dịch Độc Tố!")
             return
         dur = default_duration(effect_key)
@@ -506,7 +509,7 @@ def build_player_combatant(
         + char.qi_realm * 9 + char.qi_level
         + char.formation_realm * 9 + char.formation_level
     )
-    realm_power_bonus = total_stages * 0.008
+    realm_power_bonus = total_stages * REALM_POWER_BONUS_PER_STAGE
 
     # Base resistances from character stats (9 elements — mirrors Linh Căn)
     resistances: dict[str, int] = {
@@ -564,7 +567,7 @@ def build_player_combatant(
         final_dmg_bonus=char.stats.final_dmg_bonus + bonuses.get("final_dmg_bonus", 0.0) + realm_power_bonus,
         final_dmg_reduce=bonuses.get("final_dmg_reduce", 0.0),
         hp_regen_pct=bonuses.get("hp_regen_pct", 0.0),
-        mp_regen_pct=0.01 + bonuses.get("mp_regen_pct", 0.0),
+        mp_regen_pct=BASE_MP_REGEN_PCT + bonuses.get("mp_regen_pct", 0.0),
         heal_pct=bonuses.get("heal_pct", 0.0),
         cooldown_reduce=char.stats.cooldown_reduce + bonuses.get("cooldown_reduce", 0.0),
         burn_on_hit_pct=bonuses.get("burn_on_hit_pct", 0.0),
@@ -588,24 +591,22 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
         return None
 
     rank = enemy_data.get("rank", "pho_thong")
-    realm_scale = 1.0 + (player_realm_total / 81) * 2.0
+    realm_scale = 1.0 + (player_realm_total / ENEMY_SCALE_MAX) * ENEMY_HP_SCALE_FACTOR
     hp_scale = enemy_data.get("hp_scale", 1.0)
     hp = int(enemy_data["base_hp"] * realm_scale * hp_scale)
     spd = enemy_data.get("base_spd", 8)
-    enemy_dmg_bonus = (player_realm_total / 81) * 1.5
+    enemy_dmg_bonus = (player_realm_total / ENEMY_SCALE_MAX) * ENEMY_DMG_BONUS_SCALE
 
-    # ATK/MATK/DEF scaled by rank and realm — fallback values by rank if not in data
-    _rank_atk  = {"pho_thong": 30, "cuong_gia": 60, "dai_nang": 100, "chi_ton": 180}
-    _rank_matk = {"pho_thong": 30, "cuong_gia": 60, "dai_nang": 100, "chi_ton": 180}
-    _rank_def  = {"pho_thong": 20, "cuong_gia": 40, "dai_nang": 60,  "chi_ton": 100}
-    atk      = int(enemy_data.get("base_atk",  _rank_atk.get(rank,  30)) * realm_scale)
-    matk     = int(enemy_data.get("base_matk", _rank_matk.get(rank, 30)) * realm_scale)
-    def_stat = int(enemy_data.get("base_def",  _rank_def.get(rank,  20)) * realm_scale)
+    # Combat stats scaled by rank and realm — fallback values by rank if not in enemy data
+    atk          = int(enemy_data.get("base_atk",     ENEMY_RANK_BASE_ATK.get(rank,     30)) * realm_scale)
+    matk         = int(enemy_data.get("base_matk",    ENEMY_RANK_BASE_MATK.get(rank,    30)) * realm_scale)
+    def_stat     = int(enemy_data.get("base_def",     ENEMY_RANK_BASE_DEF.get(rank,     20)) * realm_scale)
+    evasion_rating = int(enemy_data.get("base_evasion", ENEMY_RANK_BASE_EVASION.get(rank, 0)) * realm_scale)
 
     res: dict[str, int] = {}
     elem = enemy_data.get("element")
     if elem:
-        res[elem] = int(20 * realm_scale)
+        res[elem] = int(ENEMY_BASE_ELEM_RES * realm_scale)
 
     return Combatant(
         key=enemy_key,
@@ -619,6 +620,7 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
         atk=atk,
         matk=matk,
         def_stat=def_stat,
+        evasion_rating=evasion_rating,
         resistances=res,
         skill_keys=enemy_data.get("skill_keys", []),
         final_dmg_bonus=enemy_dmg_bonus,

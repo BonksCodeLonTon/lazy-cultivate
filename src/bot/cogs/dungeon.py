@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from datetime import datetime, timezone, timedelta
 from typing import Any
 
 import discord
@@ -28,9 +27,6 @@ from src.utils.embed_builder import base_embed, battle_embed, error_embed, succe
 log = logging.getLogger(__name__)
 
 RANK_EMOJIS = {"pho_thong": "🐾", "cuong_gia": "⚔️", "dai_nang": "🔥", "chi_ton": "💀"}
-
-# In-memory cooldown: (discord_id, dungeon_key) → datetime of last clear
-_dungeon_cooldowns: dict[tuple[int, str], datetime] = {}
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -69,23 +65,6 @@ def _orm_to_model(player) -> CharModel:
         linh_can=parse_linh_can(player.linh_can or ""),
     )
 
-
-def _cooldown_remaining(discord_id: int, dungeon_key: str) -> timedelta | None:
-    """Return remaining cooldown timedelta, or None if ready."""
-    d = registry.get_dungeon(dungeon_key)
-    if not d:
-        return None
-    last_run = _dungeon_cooldowns.get((discord_id, dungeon_key))
-    if not last_run:
-        return None
-    remaining = last_run + timedelta(hours=d.get("cooldown_hours", 4)) - datetime.now(timezone.utc)
-    return remaining if remaining.total_seconds() > 0 else None
-
-
-def _fmt_cooldown(cd: timedelta) -> str:
-    hours, rem = divmod(int(cd.total_seconds()), 3600)
-    minutes = rem // 60
-    return f"{hours}h {minutes}m" if hours else f"{minutes}m"
 
 
 def _format_loot(loot: list[dict]) -> str:
@@ -206,10 +185,6 @@ def _dungeon_detail_embed(
         reward_lines.append(f"💎 {stones:,} Hỗn Nguyên Thạch")
     embed.add_field(name="Phần Thưởng", value="\n".join(reward_lines), inline=True)
 
-    cd = _cooldown_remaining(discord_id, dungeon_key)
-    cd_val = f"⏳ Còn {_fmt_cooldown(cd)}" if cd else f"✅ Sẵn sàng (CD: {d.get('cooldown_hours', 4)}h)"
-    embed.add_field(name="Hồi Chiêu", value=cd_val, inline=True)
-
     # Wave list — show scaled HP based on player realm
     realm_scale = 1.0 + (player_realm_total / 81) * 2.0
     enemy_keys: list[str] = d.get("enemy_keys", [])
@@ -275,15 +250,6 @@ async def _execute_dungeon(
     back_fn=None,
 ) -> None:
     """Run dungeon with real-time turn-by-turn battle display."""
-    cd = _cooldown_remaining(interaction.user.id, dungeon_key)
-    if cd:
-        d = registry.get_dungeon(dungeon_key)
-        name = d["vi"] if d else dungeon_key
-        await interaction.edit_original_response(
-            embed=error_embed(f"**{name}** đang hồi phục.\nCòn **{_fmt_cooldown(cd)}** nữa."),
-            view=None,
-        )
-        return
 
     # ── Load player data ──────────────────────────────────────────────────────
     char: CharModel | None = None
@@ -480,9 +446,6 @@ async def _execute_dungeon(
                     await irepo.add_item(player.id, drop["item_key"], Grade(grade_val), drop["quantity"])
 
             await repo.save(player)
-
-    if dungeon_success:
-        _dungeon_cooldowns[(interaction.user.id, dungeon_key)] = datetime.now(timezone.utc)
 
     summary_embed, log_embeds = _build_result_embeds(dungeon_key, result_obj, player_name)
     view = DungeonResultView(
