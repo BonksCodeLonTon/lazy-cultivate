@@ -1,0 +1,38 @@
+[
+  {
+    "key": "ItemPhaCanh",
+    "vi": "Phá Cảnh Đan",
+    "en": "Realm Breaker Pill",
+    "type": "special",
+    "grade": 3,
+    "shop_price_merit": 50000,
+    "description_vi": "Đan dược phá cảnh, giúp đột phá bức tường tu vi."
+  },
+  {
+    "key": "ItemTayNghiep",
+    "vi": "Tẩy Nghiệp Đan",
+    "en": "Karma Cleanse Pill",
+    "type": "special",
+    "grade": 3,
+    "shop_price_merit": 80000,
+    "description_vi": "Đan dược tẩy nghiệp, thanh trừ nghiệp chướng tích tụ."
+  },
+  {
+    "key": "ItemHonNguyen",
+    "vi": "Hỗn Nguyên Thạch",
+    "en": "Primordial Stone",
+    "type": "special",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Đá hỗn nguyên, vật liệu siêu phàm vô giá."
+  },
+  {
+    "key": "BuffMeritX2_30days",
+    "vi": "Thiên Đạo Phù Nghịch",
+    "en": "Celestial Dao Reverse Talisman",
+    "type": "special",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Phù lục thiên đạo, nhân đôi công đức nhận được trong 30 ngày."
+  }
+]

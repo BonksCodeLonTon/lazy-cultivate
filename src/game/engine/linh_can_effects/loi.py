@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import random
 
+from src.game.constants.effects import EffectKey
 from src.game.systems.combatant import Combatant
 
 _PROC_CHANCE = 0.12
@@ -25,5 +26,5 @@ def on_hit(
     if "loi" not in actor.linh_can or dmg <= 0 or not is_crit:
         return
     if rng.random() < _PROC_CHANCE:
-        target.apply_effect("CCStun", _DURATION)
+        target.apply_effect(EffectKey.CC_STUN, _DURATION)
         log.append(f"    ⚡ **{actor.name}** [Lôi] Tê Liệt — choáng {_DURATION} lượt!")

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import random
 
+from src.game.constants.effects import EffectKey
 from src.game.systems.combatant import Combatant
 
 _PROC_CHANCE = 0.20
@@ -18,5 +19,5 @@ def on_hit(actor: Combatant, target: Combatant, dmg: int, rng: random.Random, lo
     if "hoa" not in actor.linh_can or dmg <= 0:
         return
     if rng.random() < _PROC_CHANCE:
-        target.apply_effect("DebuffThieuDot", _DURATION)
+        target.apply_effect(EffectKey.DEBUFF_THIEU_DOT, _DURATION)
         log.append(f"    🔥 **{actor.name}** [Hỏa] Bạo Liệt — Thiêu Đốt {_DURATION} lượt!")

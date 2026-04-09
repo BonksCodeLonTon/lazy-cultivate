@@ -1,6 +1,11 @@
 """Cultivation system — manages 3-axis progression."""
 from __future__ import annotations
 
+from src.game.constants.balance import (
+    AXIS_ATK_WEIGHT, AXIS_DEF_WEIGHT, AXIS_HP_WEIGHT, AXIS_MATK_WEIGHT, AXIS_MP_WEIGHT,
+    BASE_ATK_PER_LEVEL, BASE_DEF_PER_LEVEL, BASE_HP_PER_LEVEL,
+    BASE_MATK_PER_LEVEL, BASE_MP_PER_LEVEL,
+)
 from src.game.constants.currencies import (
     FORMATION_MERIT_COST_BASE,
     TURNS_PER_CULT_LEVEL,
@@ -52,27 +57,6 @@ FORMATION_BREAKTHROUGH_MERIT: dict[int, int] = {
 }
 
 
-# HP/MP distribution per axis (% of total stats)
-# Luyện Thể: 50% HP, 16% MP
-# Luyện Khí:  34% HP, 31% MP
-# Trận Đạo:  16% HP, 52% MP
-AXIS_HP_WEIGHT = {"body": 0.50, "qi": 0.34, "formation": 0.16}
-AXIS_MP_WEIGHT = {"body": 0.16, "qi": 0.31, "formation": 0.52}
-
-BASE_HP_PER_LEVEL = 500
-BASE_MP_PER_LEVEL = 150
-
-# ATK/MATK/DEF distribution per axis
-# Luyện Thể: strongest physical attacker — 60% of total ATK, 55% of total DEF
-# Luyện Khí: strongest magic attacker — 60% of total MATK
-# Trận Đạo: balanced secondary contributions
-AXIS_ATK_WEIGHT = {"body": 0.60, "qi": 0.25, "formation": 0.15}
-AXIS_MATK_WEIGHT = {"body": 0.15, "qi": 0.60, "formation": 0.25}
-AXIS_DEF_WEIGHT = {"body": 0.55, "qi": 0.25, "formation": 0.20}
-
-BASE_ATK_PER_LEVEL = 8
-BASE_MATK_PER_LEVEL = 8
-BASE_DEF_PER_LEVEL = 4
 
 
 def compute_hp_max(character: Character, bonuses: dict | None = None) -> int:
