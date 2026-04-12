@@ -286,6 +286,37 @@ def can_breakthrough(
     return True, ""
 
 
+def consume_breakthrough_costs(
+    character: Character,
+    axis: str,
+    inventory: dict[str, int] | None = None,
+) -> None:
+    realm = getattr(character, f"{axis}_realm") if axis != "formation" else character.formation_realm
+    reqs = get_breakthrough_requirements(axis, realm)
+
+    if axis == "formation":
+        character.merit -= reqs["merit_cost"]
+    else:
+        if inventory is not None and reqs["item_key"]:
+            inventory[reqs["item_key"]] = inventory.get(reqs["item_key"], 0) - reqs["quantity"]
+
+def apply_realm_up(character: Character, axis: str) -> None:
+    if axis == "body":
+        character.body_realm += 1
+        character.body_level = 1
+        character.body_xp = 0
+        if character.body_realm == len(BODY_REALMS) - 1 and not character.dao_ti_unlocked:
+            character.dao_ti_unlocked = True
+    elif axis == "qi":
+        character.qi_realm += 1
+        character.qi_level = 1
+        character.qi_xp = 0
+    elif axis == "formation":
+        character.formation_realm += 1
+        character.formation_level = 1
+        character.formation_xp = 0
+
+
 def apply_breakthrough(
     character: Character,
     axis: str,
@@ -296,6 +327,8 @@ def apply_breakthrough(
     Mutates *character* (realm, level, merit) and *inventory* in-place.
     Assumes ``can_breakthrough`` has already been called successfully.
     """
+    consume_breakthrough_costs(character, axis, inventory)
+    apply_realm_up(character, axis)
     realm: int
     if axis == "body":
         realm = character.body_realm
