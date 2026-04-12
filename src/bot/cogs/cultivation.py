@@ -596,14 +596,12 @@ class BreakthroughView(discord.ui.View):
                         await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                         return
 
-                    # 1. Chuẩn bị dữ liệu kiểm tra
                     inventory_map: dict[str, int] = {}
                     for inv_item in player.inventory:
                         inventory_map[inv_item.item_key] = inventory_map.get(inv_item.item_key, 0) + inv_item.quantity
 
                     char = _orm_to_model(player)
                     
-                    # 2. Kiểm tra điều kiện cơ bản (XP, vật phẩm)
                     ok, reason = can_breakthrough(char, axis, inventory=inventory_map)
                     if not ok:
                         await interaction.edit_original_response(
@@ -612,16 +610,12 @@ class BreakthroughView(discord.ui.View):
                         )
                         return
 
-                    # 3. KIỂM TRA VÀ CHẠY THIÊN KIẾP
                     from src.game.systems.tribulation import TribulationManager
                     trib_manager = TribulationManager()
                     
-                    # Nếu mốc này cần độ kiếp
                     if trib_manager.check_needs_tribulation(char, axis):
-                        # Lấy kỹ năng và linh thạch để build combatant
-                        equipped_skill_keys = [s.skill_key for s in player.skills] # Hoặc lọc is_equipped nếu có
+                        equipped_skill_keys = [s.skill_key for s in player.skills]
                         
-                        # Tính gem_count của trận pháp hiện tại
                         gem_count = 0
                         if player.active_formation and player.formations:
                             for f in player.formations:
@@ -648,25 +642,19 @@ class BreakthroughView(discord.ui.View):
                             await repo.save(player)
                             return
                         
-                        # Nếu thắng, gửi một thông báo nhỏ vào channel
-                        await interaction.followup.send(f"🎊 **{player.name}** đã vượt qua Thiên Kiếp, chuẩn bị thăng hoa cảnh giới!")
+                        await interaction.followup.send(f"**{player.name}** đã vượt qua Thiên Kiếp của cảnh giới **{realm_name}**!")
 
-                    # 4. THỰC HIỆN ĐỘT PHÁ (Khi thắng hoặc không cần độ kiếp)
                     from src.db.repositories.inventory_repo import InventoryRepository
                     inv_repo = InventoryRepository(session)
                     
-                    # Lưu realm cũ để trừ vật phẩm
                     old_realm_idx = _pre_breakthrough_realm(player, axis)
                     reqs = get_breakthrough_requirements(axis, old_realm_idx)
                     
-                    # Áp dụng thay đổi vào model logic
                     apply_breakthrough(char, axis, inventory=inventory_map)
 
-                    # Cập nhật DB (Trừ item)
                     if reqs["item_key"] and reqs["quantity"]:
                         await inv_repo.remove_item(player.id, reqs["item_key"], Grade.HOANG, reqs["quantity"])
 
-                    # Sync từ model Char về ORM Player
                     player.body_realm      = char.body_realm
                     player.body_level      = char.body_level
                     player.body_xp         = char.body_xp
@@ -679,13 +667,11 @@ class BreakthroughView(discord.ui.View):
                     player.merit           = char.merit
                     player.dao_ti_unlocked = char.dao_ti_unlocked
 
-                    # Hồi phục trạng thái khi lên cảnh giới mới
-                    player.hp_current = compute_hp_max(char, {}) # Hoặc tính đầy đủ bonuses nếu muốn
+                    player.hp_current = compute_hp_max(char, {})
                     player.mp_current = compute_mp_max(char, {})
 
                     await repo.save(player)
 
-                    # 5. Cập nhật giao diện thành công
                     new_readiness = {}
                     for ax in ("body", "qi", "formation"):
                         ready, _ = can_breakthrough(char, ax, inventory=inventory_map)

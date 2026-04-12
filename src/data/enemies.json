@@ -281,7 +281,7 @@
     "en": "Heavenly Tribulation",
     "rank": "thien_kiep",
     "element": "loi",
-    "base_hp": 1500,
+    "base_hp": 500,
     "base_spd": 12,
     "hp_scale": 1.5,
     "skill_keys": ["SkillAtkLoi1", "SkillAtkLoi2"]
@@ -292,7 +292,7 @@
     "en": "Foundation Est. Tribulation",
     "rank": "thien_kiep",
     "element": "loi",
-    "base_hp": 2500,
+    "base_hp": 1000,
     "base_spd": 12,
     "hp_scale": 1.5,
     "skill_keys": ["SkillAtkLoi1", "SkillAtkLoi2"]
@@ -303,7 +303,7 @@
     "en": "Golden Core Tribulation",
     "rank": "thien_kiep",
     "element": "loi",
-    "base_hp": 6000,
+    "base_hp": 2000,
     "base_spd": 14,
     "hp_scale": 1.8,
     "skill_keys": ["SkillAtkLoi2", "SkillAtkLoi3"]
@@ -314,7 +314,7 @@
     "en": "Nascent Soul Tribulation",
     "rank": "thien_kiep",
     "element": "loi",
-    "base_hp": 15000,
+    "base_hp": 1000,
     "base_spd": 16,
     "hp_scale": 2.0,
     "skill_keys": ["SkillAtkLoi3"]
