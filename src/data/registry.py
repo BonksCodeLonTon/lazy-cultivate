@@ -32,34 +32,35 @@ class GameRegistry:
 
     # Danh mục file item nằm trong thư mục con src/data/items/
     _ITEM_FILES = ("chests", "elixirs", "gems", "materials", "scrolls", "specials")
+    # Skill sub-files loaded from src/data/skills/
+    _SKILL_FILES = ("thien", "dia", "nhan", "tran_phap")
 
     def load(self) -> None:
-        """Thực hiện load toàn bộ dữ liệu từ các file JSON."""
-        try:
-            self.items = self._load_items()
-            self.skills = self._load_keyed("skills.json")
-            self.enemies = self._load_keyed("enemies.json")
-            self.formations = self._load_keyed("formations.json")
-            self.constitutions = self._load_keyed("constitutions.json")
-            self.dungeons = self._load_keyed("dungeons.json")
-            self.loot_tables = self._load_dict("loot_tables.json")
-            self._loaded = True
-            log.info("GameRegistry: Toàn bộ dữ liệu đã được tải thành công.")
-        except Exception as e:
-            log.error(f"GameRegistry: Lỗi khi tải dữ liệu: {e}")
+        self.items = self._load_items()
+        self.skills = self._load_skills()
+        self.enemies = self._load_keyed("enemies.json")
+        self.formations = self._load_keyed("formations.json")
+        self.constitutions = self._load_keyed("constitutions.json")
+        self.dungeons = self._load_keyed("dungeons.json")
+        self.loot_tables = self._load_dict("loot_tables.json")
+        self._loaded = True
 
     def _load_items(self) -> dict[str, dict]:
-        """Gộp tất cả các file item nhỏ thành một dictionary duy nhất."""
+        """Merge all per-type item files from src/data/items/ into one dict."""
+        return self._merge_subdir("items", self._ITEM_FILES)
+
+    def _load_skills(self) -> dict[str, dict]:
+        """Merge all per-type skill files from src/data/skills/ into one dict."""
+        return self._merge_subdir("skills", self._SKILL_FILES)
+
+    def _merge_subdir(self, subdir: str, filenames: tuple[str, ...]) -> dict[str, dict]:
+        """Load and merge JSON arrays from a data subdirectory, keyed by 'key' field."""
         merged: dict[str, dict] = {}
-        items_dir = DATA_DIR / "items"
-        for name in self._ITEM_FILES:
-            path = items_dir / f"{name}.json"
-            if path.exists():
-                data = json.loads(path.read_text(encoding="utf-8"))
-                for item in data:
-                    merged[item["key"]] = item
-            else:
-                log.warning(f"GameRegistry: Không tìm thấy file item: {path}")
+        base = DATA_DIR / subdir
+        for name in filenames:
+            data = json.loads((base / f"{name}.json").read_text(encoding="utf-8"))
+            for entry in data:
+                merged[entry["key"]] = entry
         return merged
 
     def _load_keyed(self, filename: str) -> dict[str, dict]:

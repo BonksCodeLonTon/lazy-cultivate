@@ -92,7 +92,7 @@
     "base_hp": 2500,
     "base_spd": 14,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkPhong2", "SkillSupSpeed"],
+    "skill_keys": ["SkillAtkPhong2", "SkillSupPhong"],
     "loot_table_key": "LootElitePhongLinh"
   },
   {
