@@ -9,25 +9,32 @@ from src.game.constants.currencies import (
     KARMA_PER_NORMAL_TURN,
     MERIT_PER_BONUS_TURN,
     MERIT_PER_NORMAL_TURN,
+    SECONDS_PER_TURN,
     TURNS_PER_DAY,
     KARMA_TITLE_THRESHOLDS,
 )
+from src.game.models import character
 from src.game.models.character import Character
 from src.game.systems.cultivation import advance_cultivation_xp
 
 
 def compute_offline_ticks(character: Character, last_tick_at: datetime) -> dict:
-    """Calculate turns elapsed since *last_tick_at*, apply currency gains and
-    advance cultivation XP on the character's *active_axis*.
-
-    Returns a summary dict of all changes applied.
-    """
     now = datetime.now(timezone.utc)
-    elapsed_minutes = int((now - last_tick_at).total_seconds() / 60)
-    turns = min(elapsed_minutes, TURNS_PER_DAY - character.turns_today)
+
+    elapsed_seconds = (now - last_tick_at).total_seconds()
+
+    turns = int(elapsed_seconds // SECONDS_PER_TURN)
+
+    turns = min(turns, TURNS_PER_DAY - character.turns_today)
+    
 
     if turns <= 0:
-        return {"turns": 0, "merit_gained": 0, "karma_gained": 0, "cult_result": {}}
+        return {
+            "turns": 0,
+            "merit_gained": 0,
+            "karma_gained": 0,
+            "cult_result": {}
+        }
 
     bonus_turns_used = min(turns, character.bonus_turns_remaining)
     normal_turns     = turns - bonus_turns_used
@@ -38,21 +45,24 @@ def compute_offline_ticks(character: Character, last_tick_at: datetime) -> dict:
     )
     karma_gained = normal_turns * KARMA_PER_NORMAL_TURN
 
-    # Apply currencies first (so formation level-ups can draw from fresh merit)
     new_merit = min(character.merit + merit_gained, CURRENCY_CAP)
     actual_merit = new_merit - character.merit
     character.merit = new_merit
-    character.karma_accum  = min(character.karma_accum  + karma_gained, KARMA_ACCUM_CAP)
+
+    character.karma_accum  = min(character.karma_accum + karma_gained, KARMA_ACCUM_CAP)
     character.karma_usable = min(character.karma_usable + karma_gained, CURRENCY_CAP)
+
     character.turns_today += turns
-    character.bonus_turns_remaining = max(0, character.bonus_turns_remaining - bonus_turns_used)
+    character.bonus_turns_remaining = max(
+        0, character.bonus_turns_remaining - bonus_turns_used
+    )
 
     evil_title = _compute_evil_title(character.karma_accum)
     if evil_title:
         character.evil_title = evil_title
 
-    # Advance cultivation XP on the active axis
     cult_result = advance_cultivation_xp(character, turns)
+
 
     return {
         "turns":        turns,
