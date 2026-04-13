@@ -47,7 +47,6 @@
     "skill_keys": ["SkillAtkHoa3", "SkillAtkLoi3", "SkillAtkBang3"],
     "loot_table_key": "LootBossHonNguyen"
   },
-
   {
     "key": "EliteKimGiap",
     "vi": "Kim Giáp Thiết Tượng",
@@ -108,7 +107,6 @@
     "skill_keys": ["SkillAtkTo2", "SkillDefTo"],
     "loot_table_key": "LootEliteToNham"
   },
-
   {
     "key": "StrongHoaLoi",
     "vi": "Hỏa Lôi Xà Tinh",
@@ -181,7 +179,6 @@
     "skill_keys": ["SkillAtkPhong1", "SkillAtkMoc1"],
     "loot_table_key": "LootStrongPhongMoc"
   },
-
   {
     "key": "CommonHoaThu",
     "vi": "Hỏa Thử Linh",
@@ -277,5 +274,49 @@
     "hp_scale": 1.5,
     "skill_keys": ["SkillAtkThuy1"],
     "loot_table_key": "LootCommonThuyLinhCua"
+  },
+  {
+    "key": "default_heavenly_trib",
+    "vi": "Thiên Kiếp (Vô Danh)",
+    "en": "Heavenly Tribulation",
+    "rank": "thien_kiep",
+    "element": "loi",
+    "base_hp": 500,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "skill_keys": ["SkillAtkLoi1", "SkillAtkLoi2"]
+  },
+  {
+    "key": "trib_qi_1",
+    "vi": "Trúc Cơ Thiên Kiếp",
+    "en": "Foundation Est. Tribulation",
+    "rank": "thien_kiep",
+    "element": "loi",
+    "base_hp": 1000,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "skill_keys": ["SkillAtkLoi1", "SkillAtkLoi2"]
+  },
+  {
+    "key": "trib_qi_2",
+    "vi": "Kim Đan Thiên Kiếp",
+    "en": "Golden Core Tribulation",
+    "rank": "thien_kiep",
+    "element": "loi",
+    "base_hp": 2000,
+    "base_spd": 14,
+    "hp_scale": 1.8,
+    "skill_keys": ["SkillAtkLoi2", "SkillAtkLoi3"]
+  },
+  {
+    "key": "trib_qi_3",
+    "vi": "Nguyên Anh Thiên Kiếp",
+    "en": "Nascent Soul Tribulation",
+    "rank": "thien_kiep",
+    "element": "loi",
+    "base_hp": 1000,
+    "base_spd": 16,
+    "hp_scale": 2.0,
+    "skill_keys": ["SkillAtkLoi3"]
   }
 ]
