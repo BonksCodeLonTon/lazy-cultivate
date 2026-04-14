@@ -42,6 +42,10 @@ class Combatant:
     paralysis_on_crit: bool = False
     freeze_on_skill: bool = False
     poison_immunity: bool = False
+    # Flat chance (0.0–1.0) to resist any incoming debuff or CC proc.
+    # e.g. 0.20 → 20% of debuffs that would land are blocked.
+    # Stacks additively from formation, constitution, and linh_can bonuses.
+    debuff_immune_pct: float = 0.0
     # Immunity / special flags
     active_flags: dict[str, bool] = field(default_factory=dict)
     # Active effects: effect_key → turns_remaining

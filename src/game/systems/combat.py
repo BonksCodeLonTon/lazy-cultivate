@@ -19,6 +19,7 @@ from src.data.registry import registry
 from src.game.constants.balance import (
     ENEMY_RANK_BASE_ATK, ENEMY_RANK_BASE_MATK, ENEMY_RANK_BASE_DEF, ENEMY_RANK_BASE_EVASION,
     ENEMY_SCALE_MAX, ENEMY_HP_SCALE_FACTOR, ENEMY_DMG_BONUS_SCALE, ENEMY_BASE_ELEM_RES,
+    ENEMY_REALM_LEVEL_STAT_MULT,
     REALM_POWER_BONUS_PER_STAGE, BASE_MP_REGEN_PCT, MAX_FINAL_DMG_REDUCE,
 )
 from src.game.constants.effects import EffectKey
@@ -332,6 +333,7 @@ class CombatSession:
         self, skill_data: dict, actor: Combatant, target: Combatant
     ) -> None:
         """Handle a support/defense skill: instant heals and buff application."""
+        effect_chances: dict[str, float] = skill_data.get("effect_chances", {})
         for effect_key in skill_data.get("effects", []):
             meta = EFFECTS.get(effect_key)
 
@@ -358,13 +360,21 @@ class CombatSession:
                 )
 
             elif meta and meta.kind.value in ("debuff", "cc"):
-                # CC skills with base_dmg=0 and debuff target (e.g. CCBind skill)
-                self._inflict_debuff(effect_key, meta, target)
+                # CC skills with base_dmg=0 that debuff the target (e.g. CCBind skill)
+                base_chance = effect_chances.get(effect_key, 1.0)
+                effective_chance = base_chance * (1.0 - target.debuff_immune_pct)
+                if effective_chance >= 1.0 or self.rng.random() < effective_chance:
+                    self._inflict_debuff(effect_key, meta, target)
 
     def _apply_skill_effects(
         self, skill_data: dict, actor: Combatant, target: Combatant, hit: bool
     ) -> None:
-        """Apply all effect_keys from a skill's effects list to the appropriate target."""
+        """Apply all effect_keys from a skill's effects list to the appropriate target.
+
+        For debuffs/CC: checks the skill's effect_chances dict (default 1.0) multiplied
+        by (1 - target.debuff_immune_pct) to get the effective proc probability.
+        """
+        effect_chances: dict[str, float] = skill_data.get("effect_chances", {})
         for effect_key in skill_data.get("effects", []):
             meta = EFFECTS.get(effect_key)
             if not meta:
@@ -375,7 +385,10 @@ class CombatSession:
                 actor.apply_effect(effect_key, dur)
                 self.log.append(f"    {meta.emoji} **{actor.name}** nhận **{meta.vi}** ({dur}t)")
             elif hit and meta.kind.value in ("debuff", "cc"):
-                self._inflict_debuff(effect_key, meta, target)
+                base_chance = effect_chances.get(effect_key, 1.0)
+                effective_chance = base_chance * (1.0 - target.debuff_immune_pct)
+                if effective_chance >= 1.0 or self.rng.random() < effective_chance:
+                    self._inflict_debuff(effect_key, meta, target)
 
     def _inflict_debuff(
         self, effect_key: str, meta: "EffectMeta", target: Combatant
@@ -582,7 +595,12 @@ def build_player_combatant(
 
 
 def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant | None:
-    """Build enemy Combatant scaled to player realm, using per-enemy hp_scale."""
+    """Build enemy Combatant scaled to player realm, using per-enemy hp_scale.
+
+    realm_level (1-10) in enemy data applies an additional combat-stat multiplier on top
+    of the existing player-realm-based scaling, letting enemies within the same rank feel
+    meaningfully different in power.
+    """
     enemy_data = registry.get_enemy(enemy_key)
     if not enemy_data:
         return None
@@ -594,11 +612,15 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
     spd = enemy_data.get("base_spd", 8)
     enemy_dmg_bonus = (player_realm_total / ENEMY_SCALE_MAX) * ENEMY_DMG_BONUS_SCALE
 
-    # Combat stats scaled by rank and realm — fallback values by rank if not in enemy data
-    atk          = int(enemy_data.get("base_atk",     ENEMY_RANK_BASE_ATK.get(rank,     30)) * realm_scale)
-    matk         = int(enemy_data.get("base_matk",    ENEMY_RANK_BASE_MATK.get(rank,    30)) * realm_scale)
-    def_stat     = int(enemy_data.get("base_def",     ENEMY_RANK_BASE_DEF.get(rank,     20)) * realm_scale)
-    evasion_rating = int(enemy_data.get("base_evasion", ENEMY_RANK_BASE_EVASION.get(rank, 0)) * realm_scale)
+    # Additional multiplier from realm_level (1-10) — differentiates enemies within same rank
+    realm_level = enemy_data.get("realm_level", 1)
+    rl_mult = ENEMY_REALM_LEVEL_STAT_MULT.get(realm_level, 1.0)
+
+    # Combat stats: rank-based fallback × player-realm scale × realm-level scale
+    atk          = int(enemy_data.get("base_atk",     ENEMY_RANK_BASE_ATK.get(rank,     30)) * realm_scale * rl_mult)
+    matk         = int(enemy_data.get("base_matk",    ENEMY_RANK_BASE_MATK.get(rank,    30)) * realm_scale * rl_mult)
+    def_stat     = int(enemy_data.get("base_def",     ENEMY_RANK_BASE_DEF.get(rank,     20)) * realm_scale * rl_mult)
+    evasion_rating = int(enemy_data.get("base_evasion", ENEMY_RANK_BASE_EVASION.get(rank, 0)) * realm_scale * rl_mult)
 
     res: dict[str, int] = {}
     elem = enemy_data.get("element")

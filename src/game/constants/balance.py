@@ -84,6 +84,15 @@ ENEMY_RANK_BASE_EVASION: dict[str, int] = {
     "pho_thong": 0, "cuong_gia": 50, "dai_nang": 100, "chi_ton": 200,
 }
 
+# ── Enemy realm levels (1-10) ─────────────────────────────────────────────────
+# Additional combat-stat multiplier per realm level (HP unaffected — calibrated in JSON).
+# Level 1 = weakest (early game / pho_thong), Level 10 = strongest (late / chi_ton).
+# Applied on top of the existing player-realm-based scaling in build_enemy_combatant.
+ENEMY_REALM_LEVEL_STAT_MULT: dict[int, float] = {
+    1: 1.00, 2: 1.05, 3: 1.12, 4: 1.20, 5: 1.30,
+    6: 1.42, 7: 1.56, 8: 1.72, 9: 1.90, 10: 2.10,
+}
+
 # ── Player defaults ───────────────────────────────────────────────────────────
 BASE_MP_REGEN_PCT: float = 0.01   # 1 % MP per turn baseline (before bonuses)
 MAX_FINAL_DMG_REDUCE: float = 0.75  # damage-reduction hard cap (buffs + debuffs)
