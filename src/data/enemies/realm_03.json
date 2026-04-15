@@ -1,0 +1,62 @@
+[
+  {
+    "key": "TinhHoaLoi",
+    "vi": "Hỏa Lôi Tinh Linh",
+    "en": "Fire Thunder Spirit",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "hoa",
+    "base_hp": 480,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyHoa_T1", "EnemyLoi_T1"]
+  },
+  {
+    "key": "TinhBangMoc",
+    "vi": "Băng Mộc Sơn Thú",
+    "en": "Ice Wood Mountain Beast",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "thuy",
+    "base_hp": 520,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyBang_T1", "EnemyMoc_T1"]
+  },
+  {
+    "key": "TinhKimTho",
+    "vi": "Kim Thổ Bạch Hổ",
+    "en": "Metal Earth White Tiger",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "kim",
+    "base_hp": 580,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyKim_T1", "EnemyTho_T1"]
+  },
+  {
+    "key": "TinhThuyPhong",
+    "vi": "Thủy Phong Kình Ngư",
+    "en": "Water Wind Whale Fish",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "thuy",
+    "base_hp": 500,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyThuy_T1", "EnemyPhong_T1"]
+  },
+  {
+    "key": "TinhLoiMoc",
+    "vi": "Lôi Mộc Ngân Điểu",
+    "en": "Thunder Wood Silver Bird",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "loi",
+    "base_hp": 460,
+    "base_spd": 14,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyLoi_T1", "EnemyMoc_T1"]
+  }
+]

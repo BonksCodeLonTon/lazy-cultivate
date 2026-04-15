@@ -1,0 +1,14 @@
+[
+  {
+    "key": "trib_qi_1",
+    "vi": "Trúc Cơ Thiên Kiếp",
+    "en": "Foundation Est. Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 2,
+    "element": "loi",
+    "base_hp": 1000,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyTribLoi_T1", "EnemyTribLoi_T2"]
+  }
+]

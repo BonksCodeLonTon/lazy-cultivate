@@ -1,0 +1,28 @@
+{
+  "LootZone_4": [
+    { "item_key": "MatCanNguyen",  "weight": 50, "qty_min": 1, "qty_max": 2 },
+    { "item_key": "MatCotHoa",     "weight": 45, "qty_min": 1, "qty_max": 2 },
+    { "item_key": "MatNguTang",    "weight": 35, "qty_min": 1, "qty_max": 2 },
+    { "item_key": "MatBiPhach",    "weight": 40, "qty_min": 1, "qty_max": 3 },
+    { "item_key": "DanHoiHPMid",   "weight": 20, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanHoiMPMid",   "weight": 18, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanCurePoison", "weight": 15, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "GemHoa_1",   "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem1" },
+    { "item_key": "GemMoc_1",   "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem1" },
+    { "item_key": "GemBang_1",  "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem1" },
+    { "item_key": "GemKim_1",   "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem1" },
+    { "item_key": "GemLoi_1",   "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem1" },
+    { "item_key": "GemPhong_1", "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem1" },
+    { "item_key": "GemThuy_1",  "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem1" },
+    { "item_key": "GemTo_1",    "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem1" },
+    { "item_key": "GemHoa_2",   "weight": 5, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem2" },
+    { "item_key": "GemKim_2",   "weight": 5, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem2" },
+    { "item_key": "GemBang_2",  "weight": 5, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem2" },
+    { "item_key": "GemLoi_2",   "weight": 5, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem2" },
+    { "item_key": "GemPhong_2", "weight": 5, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem2" },
+    { "item_key": "GemMoc_2",   "weight": 5, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem2" },
+    { "item_key": "GemThuy_2",  "weight": 5, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem2" },
+    { "item_key": "GemTo_2",    "weight": 5, "qty_min": 1, "qty_max": 1, "pool_id": "zone4_gem2" },
+    { "item_key": "ChestHoang", "weight": 3, "qty_min": 1, "qty_max": 1 }
+  ]
+}

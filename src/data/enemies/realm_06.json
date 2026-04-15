@@ -1,0 +1,62 @@
+[
+  {
+    "key": "HungHoaKim",
+    "vi": "Hỏa Kim Linh Thú",
+    "en": "Fire Metal Spirit Beast",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "hoa",
+    "base_hp": 1800,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyHoa_T2", "EnemyKim_T2"]
+  },
+  {
+    "key": "HungThuyLoi",
+    "vi": "Thủy Lôi Hải Kình",
+    "en": "Water Thunder Sea Whale",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "thuy",
+    "base_hp": 2200,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyThuy_T2", "EnemyLoi_T2"]
+  },
+  {
+    "key": "HungPhongMoc",
+    "vi": "Phong Mộc Đại Bằng",
+    "en": "Wind Wood Great Roc",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "phong",
+    "base_hp": 1600,
+    "base_spd": 16,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyPhong_T2", "EnemyMoc_T2"]
+  },
+  {
+    "key": "HungToHoa",
+    "vi": "Thổ Hỏa Nham Long",
+    "en": "Earth Fire Lava Dragon",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "tho",
+    "base_hp": 2500,
+    "base_spd": 8,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyTho_T2", "EnemyHoa_T2"]
+  },
+  {
+    "key": "HungBangKim",
+    "vi": "Băng Kim Sương Long",
+    "en": "Ice Metal Frost Dragon",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "thuy",
+    "base_hp": 2000,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyBang_T2", "EnemyKim_T2"]
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "key": "StrongHoaLoi",
+    "vi": "Hỏa Lôi Xà Tinh",
+    "en": "Fire Thunder Serpent",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "hoa",
+    "base_hp": 800,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyHoa_T2", "EnemyLoi_T2"]
+  },
+  {
+    "key": "StrongBangPhong",
+    "vi": "Băng Phong Lang Tinh",
+    "en": "Ice Wind Wolf",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "thuy",
+    "base_hp": 700,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyBang_T2", "EnemyPhong_T2"]
+  },
+  {
+    "key": "StrongKimMoc",
+    "vi": "Kim Mộc Linh Thú",
+    "en": "Metal Wood Spirit Beast",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "kim",
+    "base_hp": 900,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyKim_T2", "EnemyMoc_T2"]
+  },
+  {
+    "key": "StrongThuyHoa",
+    "vi": "Thủy Hỏa Huyền Quy",
+    "en": "Water Fire Mystic Tortoise",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "thuy",
+    "base_hp": 1000,
+    "base_spd": 7,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyThuy_T2", "SkillDefThuy"]
+  },
+  {
+    "key": "StrongLoiTo",
+    "vi": "Lôi Thổ Cự Thú",
+    "en": "Thunder Earth Giant Beast",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "loi",
+    "base_hp": 850,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyLoi_T2", "EnemyTho_T2"]
+  },
+  {
+    "key": "StrongPhongMoc",
+    "vi": "Phong Mộc Linh Điểu",
+    "en": "Wind Wood Spirit Bird",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "phong",
+    "base_hp": 650,
+    "base_spd": 15,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyPhong_T2", "EnemyMoc_T2"]
+  }
+]
