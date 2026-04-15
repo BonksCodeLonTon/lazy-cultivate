@@ -14,6 +14,7 @@ from src.db.repositories.player_repo import PlayerRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.game.constants.currencies import CURRENCY_CAP
 from src.game.constants.grades import Grade, GRADE_LABELS
+from src.game.constants.linh_can import compute_linh_can_bonuses
 from src.game.models.character import Character as CharModel
 from src.game.systems.combat import (
     CombatSession, CombatEndReason,
@@ -1041,8 +1042,21 @@ class CombatCog(commands.Cog, name="Combat"):
                 await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
             char = _orm_to_charmodel(player)
-            player.hp_current = compute_hp_max(char, bonuses=compute_constitution_bonuses(char.constitution_type))
-            player.mp_current = compute_mp_max(char, bonuses=compute_constitution_bonuses(char.constitution_type))
+        
+            if player.active_formation and player.formations:
+                for f in player.formations:
+                    if f.formation_key == player.active_formation:
+                        gem_count = len(f.gem_slots)
+                        break
+
+            bonuses = merge_bonuses(
+                compute_formation_bonuses(player.active_formation, gem_count),
+                compute_constitution_bonuses(player.constitution_type),
+                compute_linh_can_bonuses(char.linh_can),
+            )
+            
+            player.hp_current = compute_hp_max(char, bonuses=bonuses)
+            player.mp_current = compute_mp_max(char, bonuses=bonuses)
             await prepo.save(player)
 
         await interaction.response.send_message(

@@ -2,14 +2,15 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 import discord
 from discord import app_commands
 from discord.ext import commands
 
 from src.db.connection import get_session
-from src.db.repositories.player_repo import PlayerRepository
+from src.db.repositories.player_repo import PlayerRepository, _player_to_model
+from src.game.constants.currencies import SECONDS_PER_TURN
 from src.game.constants.realms import BODY_REALMS, QI_REALMS, FORMATION_REALMS, realm_label
 from src.game.systems.cultivation import (
     can_breakthrough,
@@ -81,35 +82,54 @@ def _pre_breakthrough_realm(player, axis: str) -> int:
     return player.formation_realm
 
 
+
 async def _apply_ticks_to_player(player, repo, axis: str) -> dict:
-    """Set active axis, compute offline ticks, sync fields, save. Returns tick result."""
     player.active_axis = axis
     tracker = player.turn_tracker
     result: dict = {}
 
-    if tracker and tracker.last_tick_at:
-        char = _orm_to_model(player)
-        result = compute_offline_ticks(char, tracker.last_tick_at)
-        player.merit          = char.merit
-        player.karma_accum    = char.karma_accum
-        player.karma_usable   = char.karma_usable
-        if char.evil_title:
-            player.evil_title = char.evil_title
-        player.body_xp         = char.body_xp
-        player.qi_xp           = char.qi_xp
-        player.formation_xp    = char.formation_xp
-        player.body_level      = char.body_level
-        player.qi_level        = char.qi_level
-        player.formation_level = char.formation_level
-        if tracker:
-            tracker.turns_today           = char.turns_today
-            tracker.bonus_turns_remaining = char.bonus_turns_remaining
+    if not tracker:
+        await repo.save(player)
+        return result
 
-    if tracker:
-        tracker.last_tick_at = datetime.now(timezone.utc)
+    now = datetime.now(timezone.utc)
+
+    if not tracker.last_tick_at:
+        tracker.last_tick_at = now
+        await repo.save(player)
+        return result
+
+    char = _orm_to_model(player)
+
+    result = compute_offline_ticks(char, tracker.last_tick_at)
+
+    # ===== APPLY DATA =====
+    player.merit        = char.merit
+    player.karma_accum  = char.karma_accum
+    player.karma_usable = char.karma_usable
+
+    if char.evil_title:
+        player.evil_title = char.evil_title
+
+    player.body_xp      = char.body_xp
+    player.qi_xp        = char.qi_xp
+    player.formation_xp = char.formation_xp
+
+    player.body_level      = char.body_level
+    player.qi_level        = char.qi_level
+    player.formation_level = char.formation_level
+
+    tracker.turns_today           = char.turns_today
+    tracker.bonus_turns_remaining = char.bonus_turns_remaining
+
+    elapsed_seconds = (now - tracker.last_tick_at).total_seconds()
+    consumed_seconds = int(elapsed_seconds // SECONDS_PER_TURN) * SECONDS_PER_TURN
+
+    tracker.last_tick_at = tracker.last_tick_at + timedelta(seconds=consumed_seconds)
+
+
     await repo.save(player)
     return result
-
 
 # ── Status embed builder ──────────────────────────────────────────────────────
 
@@ -437,123 +457,48 @@ class CultivateView(discord.ui.View):
             self.add_item(back)
 
     def _make_cb(self, axis: str):
-            async def _cb(interaction: discord.Interaction) -> None:
-                if interaction.user.id != self._discord_id:
-                    await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
-                    return
-                
-                await interaction.response.defer()
+        async def _cb(interaction: discord.Interaction) -> None:
+            if interaction.user.id != self._discord_id:
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
 
-                async with get_session() as session:
-                    repo = PlayerRepository(session)
-                    player = await repo.get_by_discord_id(interaction.user.id)
-                    if player is None:
-                        await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
-                        return
+            await interaction.response.defer()
 
-                    inventory_map: dict[str, int] = {}
-                    for inv_item in player.inventory:
-                        inventory_map[inv_item.item_key] = inventory_map.get(inv_item.item_key, 0) + inv_item.quantity
+            async with get_session() as session:
+                repo = PlayerRepository(session)
+                player = await repo.get_by_discord_id(interaction.user.id)
 
-                    char = _orm_to_model(player)
-                    
-                    ok, reason = can_breakthrough(char, axis, inventory=inventory_map)
-                    if not ok:
-                        await interaction.edit_original_response(
-                            embed=error_embed(reason),
-                            view=BreakthroughView(self._discord_id, self._readiness, back_fn=self._back_fn),
-                        )
-                        return
-
-                    from src.game.systems.tribulation import TribulationManager
-                    trib_manager = TribulationManager()
-                    
-                    if trib_manager.check_needs_tribulation(char, axis):
-                        equipped_skill_keys = [s.skill_key for s in player.skills if getattr(s, 'is_equipped', True)]
-                        
-                        gem_count = 0
-                        if player.active_formation and player.formations:
-                            for f in player.formations:
-                                if f.formation_key == player.active_formation:
-                                    gem_count = len(f.gem_slots)
-                                    break
-
-                        trib_result = trib_manager.run_tribulation(char, axis, equipped_skill_keys, gem_count)
-                        
-                        log_text = "\n".join(trib_result.log[-15:])
-                        
-                        if not trib_result.success:
-                            player.hp_current = 1
-                            if trib_result.cultivation_lost:
-                                current_lv = getattr(player, f"{axis}_level")
-                                setattr(player, f"{axis}_level", max(1, current_lv - 1))
-                                msg = "⚡ Thiên kiếp quá mạnh! Bạn bị đánh trọng thương và **rơi rụng tu vi**."
-                            else:
-                                msg = "⚡ Đột phá thất bại! Bạn bị thiên kiếp đánh trọng thương, cần thời gian phục hồi."
-                            
-                            await repo.save(player)
-                            fail_embed = error_embed(msg)
-                            fail_embed.add_field(name="📜 Nhật ký Độ Kiếp", value=f"```text\n{log_text}\n```")
-                            await interaction.edit_original_response(embed=fail_embed, view=None)
-                            return
-
-                        await interaction.followup.send(f"🎊 **{player.name}** đã xuất sắc vượt qua Thiên Kiếp, cảm ngộ thiên địa!")
-
-                    from src.db.repositories.inventory_repo import InventoryRepository
-                    inv_repo = InventoryRepository(session)
-                    
-                    old_realm_idx = _pre_breakthrough_realm(player, axis)
-                    reqs = get_breakthrough_requirements(axis, old_realm_idx)
-                    
-                    apply_breakthrough(char, axis, inventory=inventory_map)
-
-                    if reqs["item_key"] and reqs["quantity"]:
-                        await inv_repo.remove_item(player.id, reqs["item_key"], Grade.HOANG, reqs["quantity"])
-
-                    player.body_realm      = char.body_realm
-                    player.body_level      = char.body_level
-                    player.body_xp         = char.body_xp
-                    player.qi_realm        = char.qi_realm
-                    player.qi_level        = char.qi_level
-                    player.qi_xp           = char.qi_xp
-                    player.formation_realm = char.formation_realm
-                    player.formation_level = char.formation_level
-                    player.formation_xp    = char.formation_xp
-                    player.merit           = char.merit
-                    player.dao_ti_unlocked = char.dao_ti_unlocked
-
-                    from src.game.systems.cultivation import merge_bonuses, compute_formation_bonuses, compute_constitution_bonuses, compute_hp_max, compute_mp_max
-                    bonuses = merge_bonuses(
-                        compute_formation_bonuses(player.active_formation, gem_count),
-                        compute_constitution_bonuses(player.constitution_type),
-                    )
-                    player.hp_current = compute_hp_max(char, bonuses)
-                    player.mp_current = compute_mp_max(char, bonuses)
-
-                    await repo.save(player)
-
-                    new_readiness = {}
-                    for ax in ("body", "qi", "formation"):
-                        ready, _ = can_breakthrough(char, ax, inventory=inventory_map)
-                        new_readiness[ax] = ready
-
-                    new_realm_name = realm_label(
-                        QI_REALMS if axis == "qi" else BODY_REALMS if axis == "body" else FORMATION_REALMS,
-                        getattr(player, f"{axis}_realm"),
-                        getattr(player, f"{axis}_level")
-                    )
-                    
-                    embed = success_embed(f"Chúc mừng Đạo Hữu đã đột phá lên **{new_realm_name}**!")
-                    embed.title = "⚡ Đột Phá Thành Công"
-                    if player.dao_ti_unlocked and axis == "body":
-                        embed.add_field(name="🔓 Mở Khóa", value="**Đạo Thể** đã thức tỉnh!", inline=False)
-
+                if player is None:
                     await interaction.edit_original_response(
-                        embed=embed, 
-                        view=BreakthroughView(self._discord_id, new_readiness, back_fn=self._back_fn)
+                        embed=error_embed("Chưa có nhân vật."),
+                        view=None
                     )
+                    return
 
-            return _cb
+                char = _orm_to_model(player)
+
+                from src.game.systems.tribulation import TribulationManager
+                trib_manager = TribulationManager()
+
+                # ❗ CHẶN nếu cần độ kiếp
+                if trib_manager.check_needs_tribulation(char, axis):
+                    await interaction.edit_original_response(
+                        embed=error_embed(
+                            "⚡ Bạn đã đạt cực hạn cảnh giới!\n"
+                            "Hãy **đột phá (Thiên Kiếp)** để tiếp tục tu luyện."
+                        ),
+                        view=CultivateView(self._discord_id, axis, back_fn=self._back_fn)
+                    )
+                    return
+
+                result = await _apply_ticks_to_player(player, repo, axis)
+
+            embed = _cultivate_embed(axis, result)
+            new_view = CultivateView(self._discord_id, axis, back_fn=self._back_fn)
+
+            await interaction.edit_original_response(embed=embed, view=new_view)
+
+        return _cb
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self._discord_id:
@@ -666,9 +611,26 @@ class BreakthroughView(discord.ui.View):
                     player.formation_xp    = char.formation_xp
                     player.merit           = char.merit
                     player.dao_ti_unlocked = char.dao_ti_unlocked
+                    
+                    
+                    from src.game.constants.linh_can import compute_linh_can_bonuses
+                    from src.game.models.character import Character as CharModel
+                    char = _player_to_model(player)
+                    
+                    if player.active_formation and player.formations:
+                        for f in player.formations:
+                            if f.formation_key == player.active_formation:
+                                gem_count = len(f.gem_slots)
+                                break
 
-                    player.hp_current = compute_hp_max(char, {})
-                    player.mp_current = compute_mp_max(char, {})
+                    bonuses = merge_bonuses(
+                        compute_formation_bonuses(player.active_formation, gem_count),
+                        compute_constitution_bonuses(player.constitution_type),
+                        compute_linh_can_bonuses(char.linh_can),
+                    )
+                    
+                    player.hp_current = compute_hp_max(char, bonuses=bonuses)
+                    player.mp_current = compute_mp_max(char, bonuses=bonuses)
 
                     await repo.save(player)
 
@@ -676,6 +638,7 @@ class BreakthroughView(discord.ui.View):
                     for ax in ("body", "qi", "formation"):
                         ready, _ = can_breakthrough(char, ax, inventory=inventory_map)
                         new_readiness[ax] = ready
+
 
                     realm_name = realm_label(
                         QI_REALMS if axis == "qi" else BODY_REALMS if axis == "body" else FORMATION_REALMS,
@@ -687,9 +650,10 @@ class BreakthroughView(discord.ui.View):
                     if player.dao_ti_unlocked and axis == "body":
                         embed.add_field(name="✨ Thông báo", value="**Đạo Thể** của bạn đã thức tỉnh!")
 
+
                     await interaction.edit_original_response(
-                        embed=embed, 
-                        view=BreakthroughView(self._discord_id, new_readiness, back_fn=self._back_fn)
+                        embed=error_embed(reason),
+                        view=BreakthroughView(self._discord_id, new_readiness, back_fn=self._back_fn),
                     )
 
             return _cb
