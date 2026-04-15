@@ -1,0 +1,24 @@
+{
+  "LootZone_7": [
+    { "item_key": "MatKimDanNguyen",  "weight": 40, "qty_min": 1, "qty_max": 2 },
+    { "item_key": "MatNguyenAnhThach","weight": 35, "qty_min": 1, "qty_max": 2 },
+    { "item_key": "MatHoaThanDan",    "weight": 30, "qty_min": 1, "qty_max": 2 },
+    { "item_key": "MatPhaTuongKinh",  "weight": 15, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanHoiHPLarge",  "weight": 20, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanHoiMPLarge",  "weight": 18, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanBuffCrit",    "weight": 8,  "qty_min": 1, "qty_max": 1 },
+    { "item_key": "GemHoa_2",   "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem2" },
+    { "item_key": "GemMoc_2",   "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem2" },
+    { "item_key": "GemBang_2",  "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem2" },
+    { "item_key": "GemKim_2",   "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem2" },
+    { "item_key": "GemLoi_2",   "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem2" },
+    { "item_key": "GemPhong_2", "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem2" },
+    { "item_key": "GemThuy_2",  "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem2" },
+    { "item_key": "GemTo_2",    "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem2" },
+    { "item_key": "GemKim_3",   "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem3" },
+    { "item_key": "GemMoc_3",   "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem3" },
+    { "item_key": "GemThuy_3",  "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem3" },
+    { "item_key": "ChestHuyen", "weight": 8, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "ChestDia",   "weight": 2, "qty_min": 1, "qty_max": 1 }
+  ]
+}

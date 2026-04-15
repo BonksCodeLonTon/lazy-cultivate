@@ -1,0 +1,98 @@
+[
+  {
+    "key": "CommonHoaThu",
+    "vi": "Hỏa Thử Linh",
+    "en": "Fire Mouse Spirit",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "hoa",
+    "base_hp": 200,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyHoa_T1"]
+  },
+  {
+    "key": "CommonMocThao",
+    "vi": "Mộc Khẩu Linh Thảo",
+    "en": "Wood Mouth Spirit Grass",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "moc",
+    "base_hp": 180,
+    "base_spd": 8,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyMoc_T1"]
+  },
+  {
+    "key": "CommonBangTho",
+    "vi": "Băng Linh Thỏ",
+    "en": "Ice Spirit Rabbit",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "thuy",
+    "base_hp": 160,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyBang_T1"]
+  },
+  {
+    "key": "CommonToRua",
+    "vi": "Thổ Nham Rùa",
+    "en": "Earth Rock Turtle",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "tho",
+    "base_hp": 300,
+    "base_spd": 5,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyTho_T1"]
+  },
+  {
+    "key": "CommonKimBo",
+    "vi": "Kim Giáp Bọ",
+    "en": "Metal Armor Beetle",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "kim",
+    "base_hp": 220,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyKim_T1"]
+  },
+  {
+    "key": "CommonLoiTinh",
+    "vi": "Lôi Tước Linh Điểu",
+    "en": "Thunder Sparrow Spirit Bird",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "loi",
+    "base_hp": 190,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyLoi_T1"]
+  },
+  {
+    "key": "CommonPhongHo",
+    "vi": "Phong Linh Hồ",
+    "en": "Wind Spirit Fox",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "phong",
+    "base_hp": 170,
+    "base_spd": 14,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyPhong_T1"]
+  },
+  {
+    "key": "CommonThuyLinhCua",
+    "vi": "Thủy Linh Cua",
+    "en": "Water Spirit Crab",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "thuy",
+    "base_hp": 210,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyThuy_T1"]
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "LootBossHoaLinh": [
+    { "item_key": "MatHoaThanDan",    "weight": 80, "qty_min": 1, "qty_max": 2 },
+    { "item_key": "MatThaiDuongTinh", "weight": 50, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "GemHoa_3",    "weight": 40, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "ChestDia",    "weight": 50, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanHoiFull",  "weight": 60, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "ItemHonNguyen","weight": 8, "qty_min": 1, "qty_max": 1 }
+  ],
+
+  "LootBossLoiLong": [
+    { "item_key": "MatHuKhongTinh",   "weight": 80, "qty_min": 1, "qty_max": 2 },
+    { "item_key": "MatThaiDuongTinh", "weight": 40, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "GemLoi_3",    "weight": 40, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "ChestDia",    "weight": 50, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanHoiFull",  "weight": 60, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "ItemHonNguyen","weight": 8, "qty_min": 1, "qty_max": 1 }
+  ],
+
+  "LootBossBangHon": [
+    { "item_key": "MatHopDaoNgoc", "weight": 80, "qty_min": 1, "qty_max": 2 },
+    { "item_key": "MatThaiAmTinh", "weight": 40, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "GemBang_3",   "weight": 40, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "ChestDia",    "weight": 50, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanHoiFull",  "weight": 60, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "ItemHonNguyen","weight": 8, "qty_min": 1, "qty_max": 1 }
+  ],
+
+  "LootBossHonNguyen": [
+    { "item_key": "MatDaiThuaKinh",  "weight": 60, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "MatChanLinhNgoc", "weight": 20, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "ChestThien",     "weight": 50, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "ItemHonNguyen",  "weight": 80, "qty_min": 1, "qty_max": 3 },
+    { "item_key": "DanRegenAll",    "weight": 40, "qty_min": 1, "qty_max": 1 }
+  ]
+}

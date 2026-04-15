@@ -1,0 +1,22 @@
+{
+  "LootZone_9": [
+    { "item_key": "MatHuKhongTinh",   "weight": 40, "qty_min": 1, "qty_max": 2 },
+    { "item_key": "MatHopDaoNgoc",    "weight": 30, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "MatSieuPhamTinh",  "weight": 25, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "MatDaiThuaKinh",   "weight": 15, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "MatThaiDuongTinh", "weight": 10, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanHoiFull",     "weight": 20, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanRegenAll",    "weight": 8,  "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanBuffFDmg",    "weight": 10, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "GemKim_3",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone9_gem3" },
+    { "item_key": "GemMoc_3",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone9_gem3" },
+    { "item_key": "GemLoi_3",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone9_gem3" },
+    { "item_key": "GemHoa_3",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone9_gem3" },
+    { "item_key": "GemThuy_3",  "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone9_gem3" },
+    { "item_key": "GemPhong_3", "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone9_gem3" },
+    { "item_key": "GemBang_3",  "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone9_gem3" },
+    { "item_key": "GemTo_3",    "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone9_gem3" },
+    { "item_key": "ChestDia",   "weight": 15, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "ChestThien", "weight": 3,  "qty_min": 1, "qty_max": 1 }
+  ]
+}

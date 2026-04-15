@@ -1,4 +1,4 @@
-"""Economy system — shop inventory, purchases, and currency operations."""
+"""Economy system — shop inventory, purchases, chest opening, and currency operations."""
 from __future__ import annotations
 
 import random
@@ -9,6 +9,7 @@ from typing import Optional
 from src.data.registry import registry
 from src.game.constants.currencies import CURRENCY_CAP, CELESTIAL_DAO_COST
 from src.game.constants.grades import Grade
+from src.game.engine.drop import roll_drops
 
 
 # ── Fixed shop slots (Gian Cố Định — 13 items, never reset) ─────────────────
@@ -127,3 +128,43 @@ def purchase(
 
     setattr(player, slot.currency, currency_val - total)
     return PurchaseResult(ok=True, message="", item_key=slot.item_key, quantity=quantity)
+
+
+# ── Chest loot table mapping (item_key → loot table key) ─────────────────────
+_CHEST_LOOT_TABLE: dict[str, str] = {
+    "ChestHoang": "LootChestHoang",
+    "ChestHuyen": "LootChestHuyen",
+    "ChestDia":   "LootChestDia",
+    "ChestThien": "LootChestThien",
+}
+
+
+@dataclass
+class ChestOpenResult:
+    ok: bool
+    message: str
+    loot: list[dict]  # [{"item_key": str, "quantity": int}]
+
+
+def open_chest(chest_key: str, rng: random.Random | None = None) -> ChestOpenResult:
+    """Roll loot for a chest item.
+
+    Args:
+        chest_key:  Item key of the chest being opened (e.g. "ChestHoang").
+        rng:        Optional seeded RNG for deterministic results (tests).
+
+    Returns:
+        ChestOpenResult with ok=True and a non-empty loot list on success,
+        or ok=False with an error message if the chest key is unknown.
+    """
+    loot_table_key = _CHEST_LOOT_TABLE.get(chest_key)
+    if not loot_table_key:
+        return ChestOpenResult(ok=False, message=f"Không tìm thấy bảng loot cho {chest_key}.", loot=[])
+
+    drop_table = registry.get_loot_table(loot_table_key)
+    if not drop_table:
+        return ChestOpenResult(ok=False, message=f"Bảng loot {loot_table_key} trống.", loot=[])
+
+    rng = rng or random.Random()
+    loot = roll_drops(drop_table, rng).merge()
+    return ChestOpenResult(ok=True, message="", loot=loot)

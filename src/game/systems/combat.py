@@ -459,16 +459,23 @@ class CombatSession:
         enemy_data = registry.get_enemy(self.enemy.key)
         if not enemy_data:
             return []
-        drop_table = registry.get_loot_table(enemy_data.get("loot_table_key", ""))
+        # Use enemy-specific table if defined (special bosses), else fall back to zone table.
+        loot_key = enemy_data.get("loot_table_key") or f"LootZone_{enemy_data.get('realm_level', 1)}"
+        drop_table = registry.get_loot_table(loot_key)
         return roll_drops(drop_table, self.rng).merge()
 
     def _victory(self) -> CombatResult:
         loot = self._roll_loot()
         enemy_data = registry.get_enemy(self.enemy.key)
         rank = enemy_data.get("rank", "pho_thong") if enemy_data else "pho_thong"
-        merit_map = {"pho_thong": 3, "cuong_gia": 10, "dai_nang": 30, "chi_ton": 100}
+        merit_map = {
+            "pho_thong": 3, "tinh_anh": 7,
+            "cuong_gia": 10, "hung_manh": 20,
+            "dai_nang": 30, "than_thu": 50, "tien_thu": 75,
+            "chi_ton": 100,
+        }
         merit = merit_map.get(rank, 3)
-        karma = 1 if rank in ("dai_nang", "chi_ton") else 0
+        karma = 1 if rank in ("than_thu", "tien_thu", "dai_nang", "chi_ton") else 0
 
         loot_lines = [f"  🎁 {d['item_key']} × {d['quantity']}" for d in loot] or ["  (không có vật phẩm)"]
         self.log.append(f"\n🏆 **Chiến thắng!** Phần thưởng:\n" + "\n".join(loot_lines))

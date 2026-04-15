@@ -38,11 +38,11 @@ class GameRegistry:
     def load(self) -> None:
         self.items = self._load_items()
         self.skills = self._load_skills()
-        self.enemies = self._load_keyed("enemies.json")
+        self.enemies = self._load_enemy_dir()
         self.formations = self._load_keyed("formations.json")
         self.constitutions = self._load_keyed("constitutions.json")
         self.dungeons = self._load_keyed("dungeons.json")
-        self.loot_tables = self._load_dict("loot_tables.json")
+        self.loot_tables = self._load_loot_table_dir()
         self._loaded = True
 
     def _load_items(self) -> dict[str, dict]:
@@ -52,6 +52,23 @@ class GameRegistry:
     def _load_skills(self) -> dict[str, dict]:
         """Merge all per-type skill files from src/data/skills/ into one dict."""
         return self._merge_subdir("skills", self._SKILL_FILES)
+
+    def _load_enemy_dir(self) -> dict[str, dict]:
+        """Merge all JSON files from src/data/enemies/ into one dict, keyed by 'key'.
+
+        Files are loaded in sorted order (realm_01.json … realm_10.json) so that
+        adding a new realm file requires no registry changes — just drop the file in.
+        """
+        merged: dict[str, dict] = {}
+        base = DATA_DIR / "enemies"
+        if not base.exists():
+            log.error("GameRegistry: Missing enemies/ directory")
+            return {}
+        for path in sorted(base.glob("*.json")):
+            data = json.loads(path.read_text(encoding="utf-8"))
+            for entry in data:
+                merged[entry["key"]] = entry
+        return merged
 
     def _merge_subdir(self, subdir: str, filenames: tuple[str, ...]) -> dict[str, dict]:
         """Load and merge JSON arrays from a data subdirectory, keyed by 'key' field."""
@@ -72,12 +89,24 @@ class GameRegistry:
         data = json.loads(path.read_text(encoding="utf-8"))
         return {item["key"]: item for item in data}
 
-    def _load_dict(self, filename: str) -> dict:
-        """Load JSON trực tiếp thành dict (dành cho loot_tables)."""
-        path = DATA_DIR / filename
-        if not path.exists():
+    def _load_loot_table_dir(self) -> dict[str, list[dict]]:
+        """Merge all JSON files from src/data/loot_tables/ into one loot-table dict.
+
+        Each file is a JSON object mapping table_key → list of drop entries.
+        Files are loaded in sorted order so naming (zone_01, zone_03, …, bosses, chests)
+        determines precedence on key collision (last writer wins).
+        Drop a new .json file into the directory to add a custom farm zone — no registry
+        changes required.
+        """
+        merged: dict[str, list[dict]] = {}
+        base = DATA_DIR / "loot_tables"
+        if not base.exists():
+            log.error("GameRegistry: Missing loot_tables/ directory")
             return {}
-        return json.loads(path.read_text(encoding="utf-8"))
+        for path in sorted(base.glob("*.json")):
+            data = json.loads(path.read_text(encoding="utf-8"))
+            merged.update(data)
+        return merged
 
     # ── Getters ──────────────────────────────────────────────────────────────
 

@@ -1,0 +1,62 @@
+[
+  {
+    "key": "ThanHoaLong",
+    "vi": "Hỏa Thần Long",
+    "en": "Fire Divine Dragon",
+    "rank": "than_thu",
+    "realm_level": 8,
+    "element": "hoa",
+    "base_hp": 10000,
+    "base_spd": 14,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyHoa_T3", "EnemyLoi_T3"]
+  },
+  {
+    "key": "ThanBangCuoc",
+    "vi": "Băng Quang Cự Thú",
+    "en": "Ice Light Giant Beast",
+    "rank": "than_thu",
+    "realm_level": 8,
+    "element": "thuy",
+    "base_hp": 12000,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyBang_T3", "SkillDefThuy"]
+  },
+  {
+    "key": "ThanKimGiap",
+    "vi": "Kim Thổ Thần Khải",
+    "en": "Metal Earth Divine Armored",
+    "rank": "than_thu",
+    "realm_level": 8,
+    "element": "kim",
+    "base_hp": 15000,
+    "base_spd": 7,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyKim_T3", "SkillDefKim"]
+  },
+  {
+    "key": "ThanPhongUng",
+    "vi": "Phong Mộc Thần Ưng",
+    "en": "Wind Wood Divine Eagle",
+    "rank": "than_thu",
+    "realm_level": 8,
+    "element": "phong",
+    "base_hp": 8000,
+    "base_spd": 18,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyPhong_T3", "SkillSupPhong"]
+  },
+  {
+    "key": "trib_qi_4",
+    "vi": "Hóa Thần Thiên Kiếp",
+    "en": "Spirit Transformation Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 8,
+    "element": "loi",
+    "base_hp": 5000,
+    "base_spd": 18,
+    "hp_scale": 2.0,
+    "skill_keys": ["EnemyTribLoi_T3", "EnemyLoi_T3"]
+  }
+]

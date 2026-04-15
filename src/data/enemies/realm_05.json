@@ -1,0 +1,26 @@
+[
+  {
+    "key": "default_heavenly_trib",
+    "vi": "Thiên Kiếp (Vô Danh)",
+    "en": "Heavenly Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 5,
+    "element": "loi",
+    "base_hp": 500,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyTribLoi_T1", "EnemyTribLoi_T2"]
+  },
+  {
+    "key": "trib_qi_2",
+    "vi": "Kim Đan Thiên Kiếp",
+    "en": "Golden Core Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 5,
+    "element": "loi",
+    "base_hp": 2000,
+    "base_spd": 14,
+    "hp_scale": 1.8,
+    "skill_keys": ["EnemyTribLoi_T2", "EnemyTribLoi_T3"]
+  }
+]

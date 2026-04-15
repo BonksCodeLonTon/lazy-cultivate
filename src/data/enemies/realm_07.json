@@ -1,0 +1,74 @@
+[
+  {
+    "key": "EliteKimGiap",
+    "vi": "Kim Giáp Thiết Tượng",
+    "en": "Metal Armor Iron Elephant",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "kim",
+    "base_hp": 3000,
+    "base_spd": 8,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyKim_T3", "SkillDefKim"]
+  },
+  {
+    "key": "EliteMocLinh",
+    "vi": "Mộc Linh Thụ Tinh",
+    "en": "Wood Spirit Tree Essence",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "moc",
+    "base_hp": 2800,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyMoc_T3", "SkillDefMoc"]
+  },
+  {
+    "key": "EliteThuyGiao",
+    "vi": "Thủy Long Giao Long",
+    "en": "Water Dragon Flood Dragon",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "thuy",
+    "base_hp": 3200,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyThuy_T3", "SkillDefThuy"]
+  },
+  {
+    "key": "ElitePhongLinh",
+    "vi": "Phong Ảnh Linh Hồ",
+    "en": "Wind Shadow Spirit Fox",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "phong",
+    "base_hp": 2500,
+    "base_spd": 14,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyPhong_T3", "SkillSupPhong"]
+  },
+  {
+    "key": "EliteToNham",
+    "vi": "Thổ Nham Cự Linh",
+    "en": "Earth Rock Giant Spirit",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "tho",
+    "base_hp": 4000,
+    "base_spd": 6,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyTho_T3", "SkillDefTo"]
+  },
+  {
+    "key": "trib_qi_3",
+    "vi": "Nguyên Anh Thiên Kiếp",
+    "en": "Nascent Soul Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 7,
+    "element": "loi",
+    "base_hp": 1000,
+    "base_spd": 16,
+    "hp_scale": 2.0,
+    "skill_keys": ["EnemyTribLoi_T3"]
+  }
+]
