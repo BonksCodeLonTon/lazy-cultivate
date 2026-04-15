@@ -41,6 +41,8 @@ class EffectMeta:
     stat_bonus: dict[str, float] = field(default_factory=dict)
     # Periodic damage per turn as fraction of holder's hp_max (DoT effects)
     dot_pct: float = 0.0
+    # Element of the DoT damage — holder's resistance to this element reduces DoT damage
+    dot_element: str | None = None
     # Whether this CC effect causes the holder to skip their turn (deterministic)
     skips_turn: bool = False
     # Whether this effect prevents skill usage (silence / interrupt)
@@ -247,6 +249,7 @@ _DEBUFFS_CC: list[EffectMeta] = [
         kind=EffectKind.DEBUFF,
         description_vi="Lửa đốt cháy cơ thể, gây sát thương mỗi lượt.",
         dot_pct=0.04,
+        dot_element="hoa",
         emoji="🔥",
     ),
     EffectMeta(
@@ -262,6 +265,7 @@ _DEBUFFS_CC: list[EffectMeta] = [
         kind=EffectKind.DEBUFF,
         description_vi="Lửa đốt nội tạng, gây sát thương nặng mỗi lượt.",
         dot_pct=0.08,
+        dot_element="hoa",
         emoji="💥",
     ),
     EffectMeta(
@@ -270,6 +274,7 @@ _DEBUFFS_CC: list[EffectMeta] = [
         kind=EffectKind.DEBUFF,
         description_vi="Độc tố ăn mòn cơ thể, gây sát thương mỗi lượt.",
         dot_pct=0.04,
+        dot_element="moc",
         emoji="☠️",
     ),
     EffectMeta(
@@ -326,6 +331,7 @@ _DEBUFFS_CC: list[EffectMeta] = [
         kind=EffectKind.DEBUFF,
         description_vi="Máu chảy không ngừng, gây sát thương mỗi lượt.",
         dot_pct=0.033,
+        dot_element="kim",
         emoji="🩸",
     ),
     EffectMeta(
@@ -397,6 +403,7 @@ _DEBUFFS_CC: list[EffectMeta] = [
         kind=EffectKind.DEBUFF,
         description_vi="Bị sét đánh, chịu thêm sát thương sét mỗi lượt.",
         dot_pct=0.05,
+        dot_element="loi",
         emoji="⚡",
     ),
 ]
@@ -457,6 +464,8 @@ def get_periodic_damage(combatant: "Combatant") -> list[tuple[str, int]]:
 
     Damage is computed as dot_pct × hp_max, floored at 1.
     Poison is skipped if the combatant has poison_immunity.
+    If the DoT has a dot_element, the holder's resistance to that element reduces the damage
+    by the same flat amount used in the direct-damage pipeline.
     """
     results: list[tuple[str, int]] = []
     for effect_key in list(combatant.effects.keys()):
@@ -466,6 +475,10 @@ def get_periodic_damage(combatant: "Combatant") -> list[tuple[str, int]]:
         if effect_key == EffectKey.DEBUFF_DOC_TO and combatant.poison_immunity:
             continue
         dmg = max(1, int(combatant.hp_max * meta.dot_pct))
+        # Apply holder's elemental resistance to reduce DoT damage (same flat formula as direct hits)
+        if meta.dot_element:
+            res = combatant.resistances.get(meta.dot_element, 0)
+            dmg = max(1, dmg - res)
         results.append((effect_key, dmg))
     return results
 

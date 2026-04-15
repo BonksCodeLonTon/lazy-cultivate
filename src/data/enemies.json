@@ -4,11 +4,12 @@
     "vi": "Hỏa Linh Thần Thú",
     "en": "Fire Spirit Divine Beast",
     "rank": "chi_ton",
+    "realm_level": 10,
     "element": "hoa",
     "base_hp": 50000,
     "base_spd": 15,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkHoa3", "SkillAtkHoa2"],
+    "skill_keys": ["EnemyHoa_T4", "EnemyHoa_T3"],
     "loot_table_key": "LootBossHoaLinh"
   },
   {
@@ -16,11 +17,12 @@
     "vi": "Lôi Bá Thần Long",
     "en": "Thunder Lord Divine Dragon",
     "rank": "chi_ton",
+    "realm_level": 10,
     "element": "loi",
     "base_hp": 60000,
     "base_spd": 18,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkLoi3", "SkillAtkLoi2"],
+    "skill_keys": ["EnemyLoi_T4", "EnemyLoi_T3"],
     "loot_table_key": "LootBossLoiLong"
   },
   {
@@ -28,11 +30,12 @@
     "vi": "Băng Hồn Cổ Thần",
     "en": "Ice Soul Ancient God",
     "rank": "chi_ton",
+    "realm_level": 10,
     "element": "thuy",
     "base_hp": 55000,
     "base_spd": 16,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkBang3", "SkillAtkBang2"],
+    "skill_keys": ["EnemyBang_T4", "EnemyBang_T3"],
     "loot_table_key": "LootBossBangHon"
   },
   {
@@ -40,11 +43,12 @@
     "vi": "Hỗn Nguyên Ma Thần",
     "en": "Primordial Demon God",
     "rank": "chi_ton",
+    "realm_level": 10,
     "element": null,
     "base_hp": 80000,
     "base_spd": 20,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkHoa3", "SkillAtkLoi3", "SkillAtkBang3"],
+    "skill_keys": ["EnemyHoa_T4", "EnemyLoi_T4", "EnemyBang_T4"],
     "loot_table_key": "LootBossHonNguyen"
   },
   {
@@ -52,11 +56,12 @@
     "vi": "Kim Giáp Thiết Tượng",
     "en": "Metal Armor Iron Elephant",
     "rank": "dai_nang",
+    "realm_level": 7,
     "element": "kim",
     "base_hp": 3000,
     "base_spd": 8,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkKim2", "SkillDefKim"],
+    "skill_keys": ["EnemyKim_T3", "SkillDefKim"],
     "loot_table_key": "LootEliteKimGiap"
   },
   {
@@ -64,11 +69,12 @@
     "vi": "Mộc Linh Thụ Tinh",
     "en": "Wood Spirit Tree Essence",
     "rank": "dai_nang",
+    "realm_level": 7,
     "element": "moc",
     "base_hp": 2800,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkMoc2", "SkillDefMoc"],
+    "skill_keys": ["EnemyMoc_T3", "SkillDefMoc"],
     "loot_table_key": "LootEliteMocLinh"
   },
   {
@@ -76,11 +82,12 @@
     "vi": "Thủy Long Giao Long",
     "en": "Water Dragon Flood Dragon",
     "rank": "dai_nang",
+    "realm_level": 7,
     "element": "thuy",
     "base_hp": 3200,
     "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkThuy2", "SkillDefThuy"],
+    "skill_keys": ["EnemyThuy_T3", "SkillDefThuy"],
     "loot_table_key": "LootEliteThuyGiao"
   },
   {
@@ -88,11 +95,12 @@
     "vi": "Phong Ảnh Linh Hồ",
     "en": "Wind Shadow Spirit Fox",
     "rank": "dai_nang",
+    "realm_level": 7,
     "element": "phong",
     "base_hp": 2500,
     "base_spd": 14,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkPhong2", "SkillSupPhong"],
+    "skill_keys": ["EnemyPhong_T3", "SkillSupPhong"],
     "loot_table_key": "LootElitePhongLinh"
   },
   {
@@ -100,11 +108,12 @@
     "vi": "Thổ Nham Cự Linh",
     "en": "Earth Rock Giant Spirit",
     "rank": "dai_nang",
+    "realm_level": 7,
     "element": "tho",
     "base_hp": 4000,
     "base_spd": 6,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkTo2", "SkillDefTo"],
+    "skill_keys": ["EnemyTho_T3", "SkillDefTo"],
     "loot_table_key": "LootEliteToNham"
   },
   {
@@ -112,11 +121,12 @@
     "vi": "Hỏa Lôi Xà Tinh",
     "en": "Fire Thunder Serpent",
     "rank": "cuong_gia",
+    "realm_level": 4,
     "element": "hoa",
     "base_hp": 800,
     "base_spd": 11,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkHoa1", "SkillAtkLoi1"],
+    "skill_keys": ["EnemyHoa_T2", "EnemyLoi_T2"],
     "loot_table_key": "LootStrongHoaLoi"
   },
   {
@@ -124,11 +134,12 @@
     "vi": "Băng Phong Lang Tinh",
     "en": "Ice Wind Wolf",
     "rank": "cuong_gia",
+    "realm_level": 4,
     "element": "thuy",
     "base_hp": 700,
     "base_spd": 13,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkBang1", "SkillAtkPhong1"],
+    "skill_keys": ["EnemyBang_T2", "EnemyPhong_T2"],
     "loot_table_key": "LootStrongBangPhong"
   },
   {
@@ -136,11 +147,12 @@
     "vi": "Kim Mộc Linh Thú",
     "en": "Metal Wood Spirit Beast",
     "rank": "cuong_gia",
+    "realm_level": 4,
     "element": "kim",
     "base_hp": 900,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkKim1", "SkillAtkMoc1"],
+    "skill_keys": ["EnemyKim_T2", "EnemyMoc_T2"],
     "loot_table_key": "LootStrongKimMoc"
   },
   {
@@ -148,11 +160,12 @@
     "vi": "Thủy Hỏa Huyền Quy",
     "en": "Water Fire Mystic Tortoise",
     "rank": "cuong_gia",
+    "realm_level": 4,
     "element": "thuy",
     "base_hp": 1000,
     "base_spd": 7,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkThuy1", "SkillDefThuy"],
+    "skill_keys": ["EnemyThuy_T2", "SkillDefThuy"],
     "loot_table_key": "LootStrongThuyHoa"
   },
   {
@@ -160,11 +173,12 @@
     "vi": "Lôi Thổ Cự Thú",
     "en": "Thunder Earth Giant Beast",
     "rank": "cuong_gia",
+    "realm_level": 4,
     "element": "loi",
     "base_hp": 850,
     "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkLoi1", "SkillAtkTo1"],
+    "skill_keys": ["EnemyLoi_T2", "EnemyTho_T2"],
     "loot_table_key": "LootStrongLoiTo"
   },
   {
@@ -172,11 +186,12 @@
     "vi": "Phong Mộc Linh Điểu",
     "en": "Wind Wood Spirit Bird",
     "rank": "cuong_gia",
+    "realm_level": 4,
     "element": "phong",
     "base_hp": 650,
     "base_spd": 15,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkPhong1", "SkillAtkMoc1"],
+    "skill_keys": ["EnemyPhong_T2", "EnemyMoc_T2"],
     "loot_table_key": "LootStrongPhongMoc"
   },
   {
@@ -184,11 +199,12 @@
     "vi": "Hỏa Thử Linh",
     "en": "Fire Mouse Spirit",
     "rank": "pho_thong",
+    "realm_level": 1,
     "element": "hoa",
     "base_hp": 200,
     "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkHoa1"],
+    "skill_keys": ["EnemyHoa_T1"],
     "loot_table_key": "LootCommonHoaThu"
   },
   {
@@ -196,11 +212,12 @@
     "vi": "Mộc Khẩu Linh Thảo",
     "en": "Wood Mouth Spirit Grass",
     "rank": "pho_thong",
+    "realm_level": 1,
     "element": "moc",
     "base_hp": 180,
     "base_spd": 8,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkMoc1"],
+    "skill_keys": ["EnemyMoc_T1"],
     "loot_table_key": "LootCommonMocThao"
   },
   {
@@ -208,11 +225,12 @@
     "vi": "Băng Linh Thỏ",
     "en": "Ice Spirit Rabbit",
     "rank": "pho_thong",
+    "realm_level": 1,
     "element": "thuy",
     "base_hp": 160,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkBang1"],
+    "skill_keys": ["EnemyBang_T1"],
     "loot_table_key": "LootCommonBangTho"
   },
   {
@@ -220,11 +238,12 @@
     "vi": "Thổ Nham Rùa",
     "en": "Earth Rock Turtle",
     "rank": "pho_thong",
+    "realm_level": 1,
     "element": "tho",
     "base_hp": 300,
     "base_spd": 5,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkTo1"],
+    "skill_keys": ["EnemyTho_T1"],
     "loot_table_key": "LootCommonToRua"
   },
   {
@@ -232,11 +251,12 @@
     "vi": "Kim Giáp Bọ",
     "en": "Metal Armor Beetle",
     "rank": "pho_thong",
+    "realm_level": 1,
     "element": "kim",
     "base_hp": 220,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkKim1"],
+    "skill_keys": ["EnemyKim_T1"],
     "loot_table_key": "LootCommonKimBo"
   },
   {
@@ -244,11 +264,12 @@
     "vi": "Lôi Tước Linh Điểu",
     "en": "Thunder Sparrow Spirit Bird",
     "rank": "pho_thong",
+    "realm_level": 1,
     "element": "loi",
     "base_hp": 190,
     "base_spd": 11,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkLoi1"],
+    "skill_keys": ["EnemyLoi_T1"],
     "loot_table_key": "LootCommonLoiTinh"
   },
   {
@@ -256,11 +277,12 @@
     "vi": "Phong Linh Hồ",
     "en": "Wind Spirit Fox",
     "rank": "pho_thong",
+    "realm_level": 1,
     "element": "phong",
     "base_hp": 170,
     "base_spd": 14,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkPhong1"],
+    "skill_keys": ["EnemyPhong_T1"],
     "loot_table_key": "LootCommonPhongHo"
   },
   {
@@ -268,11 +290,12 @@
     "vi": "Thủy Linh Cua",
     "en": "Water Spirit Crab",
     "rank": "pho_thong",
+    "realm_level": 1,
     "element": "thuy",
     "base_hp": 210,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkThuy1"],
+    "skill_keys": ["EnemyThuy_T1"],
     "loot_table_key": "LootCommonThuyLinhCua"
   },
   {
@@ -280,43 +303,47 @@
     "vi": "Thiên Kiếp (Vô Danh)",
     "en": "Heavenly Tribulation",
     "rank": "thien_kiep",
+    "realm_level": 5,
     "element": "loi",
     "base_hp": 500,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkLoi1", "SkillAtkLoi2"]
+    "skill_keys": ["EnemyTribLoi_T1", "EnemyTribLoi_T2"]
   },
   {
     "key": "trib_qi_1",
     "vi": "Trúc Cơ Thiên Kiếp",
     "en": "Foundation Est. Tribulation",
     "rank": "thien_kiep",
+    "realm_level": 2,
     "element": "loi",
     "base_hp": 1000,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": ["SkillAtkLoi1", "SkillAtkLoi2"]
+    "skill_keys": ["EnemyTribLoi_T1", "EnemyTribLoi_T2"]
   },
   {
     "key": "trib_qi_2",
     "vi": "Kim Đan Thiên Kiếp",
     "en": "Golden Core Tribulation",
     "rank": "thien_kiep",
+    "realm_level": 5,
     "element": "loi",
     "base_hp": 2000,
     "base_spd": 14,
     "hp_scale": 1.8,
-    "skill_keys": ["SkillAtkLoi2", "SkillAtkLoi3"]
+    "skill_keys": ["EnemyTribLoi_T2", "EnemyTribLoi_T3"]
   },
   {
     "key": "trib_qi_3",
     "vi": "Nguyên Anh Thiên Kiếp",
     "en": "Nascent Soul Tribulation",
     "rank": "thien_kiep",
+    "realm_level": 7,
     "element": "loi",
     "base_hp": 1000,
     "base_spd": 16,
     "hp_scale": 2.0,
-    "skill_keys": ["SkillAtkLoi3"]
+    "skill_keys": ["EnemyTribLoi_T3"]
   }
 ]

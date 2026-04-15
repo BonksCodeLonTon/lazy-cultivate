@@ -33,7 +33,7 @@ class GameRegistry:
     # Danh mục file item nằm trong thư mục con src/data/items/
     _ITEM_FILES = ("chests", "elixirs", "gems", "materials", "scrolls", "specials")
     # Skill sub-files loaded from src/data/skills/
-    _SKILL_FILES = ("thien", "dia", "nhan", "tran_phap")
+    _SKILL_FILES = ("thien", "dia", "nhan", "tran_phap", "enemy")
 
     def load(self) -> None:
         self.items = self._load_items()
