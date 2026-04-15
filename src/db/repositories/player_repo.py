@@ -64,12 +64,25 @@ class PlayerRepository:
         await self._session.flush()
 
         # Set initial HP/MP from realm stats
-        from src.game.systems.cultivation import compute_hp_max, compute_mp_max
+        from src.game.systems.cultivation import compute_hp_max, compute_mp_max, compute_constitution_bonuses, compute_formation_bonuses, merge_bonuses
+        from src.game.constants.linh_can import compute_linh_can_bonuses
         from src.game.models.character import Character as CharModel
 
         char = _player_to_model(player)
-        player.hp_current = compute_hp_max(char)
-        player.mp_current = compute_mp_max(char)
+        
+        if player.active_formation and player.formations:
+            for f in player.formations:
+                if f.formation_key == player.active_formation:
+                    gem_count = len(f.gem_slots)
+                    break
+
+        bonuses = merge_bonuses(
+            compute_formation_bonuses(player.active_formation, gem_count),
+            compute_constitution_bonuses(player.constitution_type),
+            compute_linh_can_bonuses(char.linh_can),
+        )
+        player.hp_current = compute_hp_max(char, bonuses=bonuses)
+        player.mp_current = compute_mp_max(char, bonuses=bonuses)
 
         # Assign one starting skill that matches a random element from the player's Linh Căn
         from src.data.registry import registry as _registry

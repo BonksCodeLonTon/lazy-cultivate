@@ -9,7 +9,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from src.db.connection import get_session
-from src.db.repositories.player_repo import PlayerRepository
+from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.currencies import SECONDS_PER_TURN
 from src.game.constants.realms import BODY_REALMS, QI_REALMS, FORMATION_REALMS, realm_label
 from src.game.systems.cultivation import (
@@ -611,9 +611,26 @@ class BreakthroughView(discord.ui.View):
                     player.formation_xp    = char.formation_xp
                     player.merit           = char.merit
                     player.dao_ti_unlocked = char.dao_ti_unlocked
+                    
+                    
+                    from src.game.constants.linh_can import compute_linh_can_bonuses
+                    from src.game.models.character import Character as CharModel
+                    char = _player_to_model(player)
+                    
+                    if player.active_formation and player.formations:
+                        for f in player.formations:
+                            if f.formation_key == player.active_formation:
+                                gem_count = len(f.gem_slots)
+                                break
 
-                    player.hp_current = compute_hp_max(char, {})
-                    player.mp_current = compute_mp_max(char, {})
+                    bonuses = merge_bonuses(
+                        compute_formation_bonuses(player.active_formation, gem_count),
+                        compute_constitution_bonuses(player.constitution_type),
+                        compute_linh_can_bonuses(char.linh_can),
+                    )
+                    
+                    player.hp_current = compute_hp_max(char, bonuses=bonuses)
+                    player.mp_current = compute_mp_max(char, bonuses=bonuses)
 
                     await repo.save(player)
 
