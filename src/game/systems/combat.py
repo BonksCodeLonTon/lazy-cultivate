@@ -33,8 +33,12 @@ from src.game.engine.effects import (
     default_duration,
     get_combat_modifiers,
     get_periodic_damage,
+    try_linh_can_dodge,
+    try_linh_can_cleanse,
+    get_linh_can_pen_pct,
+    apply_linh_can_on_hit,
+    check_linh_can_shield,
 )
-from src.game.engine.linh_can_effects import am, hoa, kim, loi, phong, quang, tho, thuy
 from src.game.models.character import Character
 from src.game.systems.combatant import Combatant
 
@@ -77,92 +81,73 @@ class CombatSession:
     player_skill_keys: list[str]
     rng: random.Random = field(default_factory=random.Random)
     turn: int = 0
-    max_turns: int = 30
+    max_turns: int = 30  # full rounds (player + enemy each act once per round)
     log: list[str] = field(default_factory=list)
-
-    def _effective_spd(self, combatant: Combatant) -> int:
-        """Return effective speed after applying all active buff/debuff spd_pct modifiers."""
-        mods = get_combat_modifiers(combatant)
-        multiplier = 1.0 + mods.get("spd_pct", 0.0)
-        return max(1, int(combatant.spd * multiplier))
+    loot_qty_multiplier: float = 1.0  # >1.0 for elite/upgraded-rank encounters
 
     def step(self) -> tuple[list[str], Optional[CombatResult]]:
-        """Process one full game turn (both combatants act once).
+        """Process one full round: player acts → enemy acts → periodic effects.
 
         Returns (new_log_lines, result_if_over).
         result is None while the fight is still ongoing.
         """
         if self.turn >= self.max_turns:
-            r = CombatResult(
+            return ([], CombatResult(
                 reason=CombatEndReason.MAX_TURNS,
                 turns=self.turn, log=self.log, loot=[], merit_gained=0, karma_gained=0,
-            )
-            return ([], r)
+            ))
 
         start_idx = len(self.log)
         self.turn += 1
         self.log.append(f"\n**— Lượt {self.turn} —**")
 
-        if self._effective_spd(self.player) >= self._effective_spd(self.enemy):
-            self._take_turn(self.player, self.enemy)
-            if not self.enemy.is_alive():
-                r = self._victory()
-                return (self.log[start_idx:], r)
-            self._take_turn(self.enemy, self.player)
-            if not self.player.is_alive():
-                r = self._defeat()
-                return (self.log[start_idx:], r)
-        else:
-            self._take_turn(self.enemy, self.player)
-            if not self.player.is_alive():
-                r = self._defeat()
-                return (self.log[start_idx:], r)
-            self._take_turn(self.player, self.enemy)
-            if not self.enemy.is_alive():
-                r = self._victory()
-                return (self.log[start_idx:], r)
+        # Player acts
+        self._take_turn(self.player, self.enemy)
+        if not self.enemy.is_alive():
+            return (self.log[start_idx:], self._victory())
 
+        # Enemy acts
+        self._take_turn(self.enemy, self.player)
+        if not self.player.is_alive():
+            return (self.log[start_idx:], self._defeat())
+
+        # Cooldowns tick for both after the full round
         self.player.tick_cooldowns()
         self.enemy.tick_cooldowns()
+
+        # Periodic effects (DoTs, HP/MP regen, Linh Căn procs) once per round
         self._process_periodic(self.player)
         self._process_periodic(self.enemy)
-
         if not self.player.is_alive():
-            r = self._defeat()
-            return (self.log[start_idx:], r)
+            return (self.log[start_idx:], self._defeat())
         if not self.enemy.is_alive():
-            r = self._victory()
-            return (self.log[start_idx:], r)
+            return (self.log[start_idx:], self._victory())
 
         return (self.log[start_idx:], None)
 
     def run(self) -> CombatResult:
+        """Run all rounds to completion (used for AFK/tick systems)."""
         self.log.append(f"⚔️ **{self.player.name}** vs **{self.enemy.name}**")
 
         while self.turn < self.max_turns:
             self.turn += 1
             self.log.append(f"\n**— Lượt {self.turn} —**")
 
-            if self._effective_spd(self.player) >= self._effective_spd(self.enemy):
-                self._take_turn(self.player, self.enemy)
-                if not self.enemy.is_alive():
-                    return self._victory()
-                self._take_turn(self.enemy, self.player)
-                if not self.player.is_alive():
-                    return self._defeat()
-            else:
-                self._take_turn(self.enemy, self.player)
-                if not self.player.is_alive():
-                    return self._defeat()
-                self._take_turn(self.player, self.enemy)
-                if not self.enemy.is_alive():
-                    return self._victory()
+            # Player acts
+            self._take_turn(self.player, self.enemy)
+            if not self.enemy.is_alive():
+                return self._victory()
+
+            # Enemy acts
+            self._take_turn(self.enemy, self.player)
+            if not self.player.is_alive():
+                return self._defeat()
 
             self.player.tick_cooldowns()
             self.enemy.tick_cooldowns()
+
             self._process_periodic(self.player)
             self._process_periodic(self.enemy)
-
             if not self.player.is_alive():
                 return self._defeat()
             if not self.enemy.is_alive():
@@ -175,7 +160,7 @@ class CombatSession:
 
     def _take_turn(self, actor: Combatant, target: Combatant) -> None:
         # Pre-turn: Phong Linh Căn — target may fully dodge the incoming attack
-        if phong.try_dodge(target, self.rng, self.log):
+        if try_linh_can_dodge(target, self.rng, self.log):
             return
 
         # CC check — any skips_turn effect (stun/freeze/knockup) or probabilistic paralysis
@@ -196,7 +181,7 @@ class CombatSession:
             return
 
         # Pre-turn: Quang Linh Căn — actor may cleanse a debuff before acting
-        quang.try_cleanse(actor, self.rng, self.log)
+        try_linh_can_cleanse(actor, self.rng, self.log)
 
         skill_key = self._choose_skill(actor)
         if not skill_key:
@@ -223,9 +208,9 @@ class CombatSession:
 
         # Compute effective target stats (base + debuff/buff modifiers on target)
         target_mods = get_combat_modifiers(target)
-        res_all_mod = int(target_mods.get("res_all", 0))
+        res_all_mod = target_mods.get("res_all", 0.0)
         effective_target_res = {
-            elem: max(0, res + res_all_mod)
+            elem: max(0.0, min(0.75, res + res_all_mod))
             for elem, res in target.resistances.items()
         }
         # Target's effective damage reduction (buffs increase it, debuffs like DebuffPhaGiap reduce it)
@@ -262,7 +247,7 @@ class CombatSession:
                 resistances=effective_target_res,
             )
             # Pre-damage: Kim Linh Căn — may gain elemental penetration this hit
-            pen_pct = kim.get_pen_pct(actor, self.rng, self.log)
+            pen_pct = get_linh_can_pen_pct(actor, self.rng, self.log)
             result = calculate_damage(skill_obj, attack_stats, defense_stats, self.rng, pen_pct)
             dmg = result.final
             crit_tag = " 💥BẠO KÍCH!" if result.is_crit else ""
@@ -312,12 +297,8 @@ class CombatSession:
                     target.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
                     self.log.append(f"    🧊 Đông Băng kích hoạt!")
 
-                # On-hit: Linh Căn procs
-                if dmg > 0:
-                    hoa.on_hit(actor, target, dmg, self.rng, self.log)
-                    thuy.on_hit(actor, target, dmg, self.rng, self.log)
-                    loi.on_hit(actor, target, dmg, result.is_crit, self.rng, self.log)
-                    am.on_hit(actor, target, dmg, self.rng, self.log)
+                # On-hit: Linh Căn procs (consolidated in effects.py)
+                apply_linh_can_on_hit(actor, target, dmg, result.is_crit, self.rng, self.log)
 
             # Apply skill debuff/CC effects to target
             self._apply_skill_effects(skill_data, actor, target, hit=not result.is_evaded)
@@ -436,7 +417,7 @@ class CombatSession:
             self.log.append(f"  {emoji} **{combatant.name}** bị {name} -{dot_dmg} HP")
 
         # Periodic: Thổ Linh Căn — activate shield when HP is low
-        tho.check_shield(combatant, self.log)
+        check_linh_can_shield(combatant, self.log)
 
         # HP regen: base passive + buff contributions (BuffSinhCo, Mộc Hồi Xuân, etc.)
         if combatant.is_alive():
@@ -462,7 +443,13 @@ class CombatSession:
         # Use enemy-specific table if defined (special bosses), else fall back to zone table.
         loot_key = enemy_data.get("loot_table_key") or f"LootZone_{enemy_data.get('realm_level', 1)}"
         drop_table = registry.get_loot_table(loot_key)
-        return roll_drops(drop_table, self.rng).merge()
+        drops = roll_drops(drop_table, self.rng).merge()
+        if self.loot_qty_multiplier != 1.0:
+            drops = [
+                {"item_key": d["item_key"], "quantity": max(1, round(d["quantity"] * self.loot_qty_multiplier))}
+                for d in drops
+            ]
+        return drops
 
     def _victory(self) -> CombatResult:
         loot = self._roll_loot()
@@ -496,6 +483,7 @@ def build_player_combatant(
     char: Character,
     player_skill_keys: list[str],
     gem_count: int = 0,
+    equip_stats: dict | None = None,
 ) -> Combatant:
     """Build a Combatant from a Character dataclass, applying formation + constitution bonuses."""
     from src.game.systems.cultivation import (
@@ -528,8 +516,8 @@ def build_player_combatant(
     )
     realm_power_bonus = total_stages * REALM_POWER_BONUS_PER_STAGE
 
-    # Base resistances from character stats (9 elements — mirrors Linh Căn)
-    resistances: dict[str, int] = {
+    # Base resistances from character stats (9 elements — mirrors Linh Căn, 0.0–0.75 range)
+    resistances: dict[str, float] = {
         "kim":   char.stats.res_kim,
         "moc":   char.stats.res_moc,
         "thuy":  char.stats.res_thuy,
@@ -541,17 +529,17 @@ def build_player_combatant(
         "am":    char.stats.res_am,
     }
 
-    # Apply res_all (flat bonus to all elements)
-    res_all = bonuses.get("res_all", 0)
+    # Apply res_all (percentage bonus to all elements, capped at 0.75)
+    res_all = bonuses.get("res_all", 0.0)
     if res_all:
         for elem in resistances:
-            resistances[elem] += res_all
+            resistances[elem] = min(0.75, max(0.0, resistances[elem] + res_all))
 
-    # Apply res_element (formation's own element bonus)
+    # Apply res_element (formation's own element bonus, capped at 0.75)
     form_elem = form_bonuses.get("_formation_element")
-    res_elem = form_bonuses.get("res_element", 0)
+    res_elem = form_bonuses.get("res_element", 0.0)
     if form_elem and res_elem:
-        resistances[form_elem] = resistances.get(form_elem, 0) + res_elem
+        resistances[form_elem] = min(0.75, max(0.0, resistances.get(form_elem, 0.0) + res_elem))
 
     # Auto-inject formation skill if active and not already in skill list
     final_skill_keys = list(player_skill_keys)
@@ -598,6 +586,36 @@ def build_player_combatant(
     )
     combatant.hp = min(combatant.hp, hp_max)
     combatant.mp = min(combatant.mp, mp_max)
+
+    # Apply equipment stat bonuses on top of cultivation-derived stats.
+    # HP/MP bonuses are treated as always-full at combat start (added to both current and max).
+    if equip_stats:
+        combatant.atk          += int(equip_stats.get("atk", 0))
+        combatant.matk         += int(equip_stats.get("matk", 0))
+        combatant.def_stat     += int(equip_stats.get("def_stat", 0))
+        combatant.crit_rating  += int(equip_stats.get("crit_rating", 0))
+        combatant.crit_dmg_rating  += int(equip_stats.get("crit_dmg_rating", 0))
+        combatant.evasion_rating   += int(equip_stats.get("evasion_rating", 0))
+        combatant.crit_res_rating  += int(equip_stats.get("crit_res_rating", 0))
+        combatant.final_dmg_bonus  += equip_stats.get("final_dmg_bonus", 0.0)
+        combatant.final_dmg_reduce = min(
+            MAX_FINAL_DMG_REDUCE,
+            combatant.final_dmg_reduce + equip_stats.get("final_dmg_reduce", 0.0),
+        )
+        combatant.hp_regen_pct += equip_stats.get("hp_regen_pct", 0.0)
+
+        eq_hp = int(equip_stats.get("hp_max", 0))
+        eq_mp = int(equip_stats.get("mp_max", 0))
+        combatant.hp_max += eq_hp
+        combatant.mp_max += eq_mp
+        combatant.hp = min(combatant.hp + eq_hp, combatant.hp_max)
+        combatant.mp = min(combatant.mp + eq_mp, combatant.mp_max)
+
+        eq_res_all = equip_stats.get("res_all", 0.0)
+        if eq_res_all:
+            for elem in combatant.resistances:
+                combatant.resistances[elem] = min(0.75, combatant.resistances[elem] + eq_res_all)
+
     return combatant
 
 
@@ -629,10 +647,11 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
     def_stat     = int(enemy_data.get("base_def",     ENEMY_RANK_BASE_DEF.get(rank,     20)) * realm_scale * rl_mult)
     evasion_rating = int(enemy_data.get("base_evasion", ENEMY_RANK_BASE_EVASION.get(rank, 0)) * realm_scale * rl_mult)
 
-    res: dict[str, int] = {}
+    res: dict[str, float] = {}
     elem = enemy_data.get("element")
     if elem:
-        res[elem] = int(ENEMY_BASE_ELEM_RES * realm_scale)
+        # Scale with player realm, cap at 35% to keep combat fair
+        res[elem] = min(0.35, ENEMY_BASE_ELEM_RES * realm_scale)
 
     return Combatant(
         key=enemy_key,

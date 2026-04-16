@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "key": "uniq_dragon_blade",
+    "vi": "Long Thần Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "grade": 3,
+    "fixed_stats": {"atk": 45, "crit_rating": 85, "crit_dmg_rating": 65, "final_dmg_bonus": 0.08},
+    "description_vi": "Thanh kiếm rèn từ vảy rồng cổ đại, mang sức mạnh hủy diệt vô song."
+  },
+  {
+    "key": "uniq_spirit_shield",
+    "vi": "Linh Hộ Thuẫn",
+    "base": "base_shield",
+    "slot": "off_hand",
+    "grade": 3,
+    "fixed_stats": {"def_stat": 38, "hp_max": 220, "final_dmg_reduce": 0.08, "crit_res_rating": 80},
+    "description_vi": "Lá chắn được ban phúc bởi linh thú, tạo hào quang bất khả xâm phạm."
+  },
+  {
+    "key": "uniq_dao_robe",
+    "vi": "Đạo Tâm Bào",
+    "base": "base_robe",
+    "slot": "armor",
+    "grade": 3,
+    "fixed_stats": {"matk": 32, "mp_max": 190, "hp_regen_pct": 0.04, "res_all": 0.07},
+    "description_vi": "Bào phục dệt từ tơ linh, tăng cường pháp lực và bảo vệ đạo tâm trước tà khí."
+  },
+  {
+    "key": "uniq_heavenly_helm",
+    "vi": "Thiên Giáng Trụ",
+    "base": "base_helm",
+    "slot": "helmet",
+    "grade": 3,
+    "fixed_stats": {"def_stat": 28, "hp_max": 160, "crit_res_rating": 100, "res_all": 0.06},
+    "description_vi": "Chiếc mũ giáp từ thiên đình, tu sĩ toàn lực coi là báu vật vô giá."
+  },
+  {
+    "key": "uniq_thunder_gauntlet",
+    "vi": "Lôi Thần Thủ",
+    "base": "base_gauntlet",
+    "slot": "glove",
+    "grade": 3,
+    "fixed_stats": {"atk": 28, "matk": 18, "crit_rating": 75, "evasion_rating": 50},
+    "description_vi": "Găng tay chứa sức mạnh sấm sét, mỗi cú đấm như thiên lôi giáng xuống."
+  },
+  {
+    "key": "uniq_wind_sash",
+    "vi": "Phong Linh Đai",
+    "base": "base_wind_sash",
+    "slot": "belt",
+    "grade": 3,
+    "fixed_stats": {"evasion_rating": 130, "hp_max": 110, "hp_regen_pct": 0.03, "mp_max": 80},
+    "description_vi": "Dải đai chứa linh khí của gió, người đeo nhẹ nhàng như lá bay trong gió."
+  },
+  {
+    "key": "uniq_immortal_ring",
+    "vi": "Bất Diệt Nhẫn",
+    "base": "base_spirit_ring",
+    "slot": "ring",
+    "grade": 3,
+    "fixed_stats": {"hp_max": 190, "def_stat": 22, "final_dmg_reduce": 0.06, "crit_res_rating": 75},
+    "description_vi": "Chiếc nhẫn khắc từ đá thần, ban phước trường sinh bất lão cho người đeo."
+  },
+  {
+    "key": "uniq_chaos_pendant",
+    "vi": "Hỗn Nguyên Bội",
+    "base": "base_jade",
+    "slot": "amulet",
+    "grade": 4,
+    "fixed_stats": {"atk": 22, "matk": 22, "hp_max": 130, "mp_max": 110, "res_all": 0.08, "final_dmg_bonus": 0.06},
+    "description_vi": "Bội ngọc từ thời hỗn nguyên, chứa đựng năng lượng vũ trụ nguyên thủy."
+  }
+]

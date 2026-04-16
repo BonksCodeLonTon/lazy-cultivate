@@ -21,6 +21,9 @@ class GameRegistry:
         self.constitutions: dict[str, dict] = {}       # key → constitution data
         self.dungeons: dict[str, dict] = {}            # key → dungeon data
         self.loot_tables: dict[str, list[dict]] = {}   # key → list of drop entries
+        self.bases: dict[str, dict] = {}               # key → equipment base definition
+        self.affixes: dict[str, dict] = {}             # key → affix definition
+        self.uniques: dict[str, dict] = {}             # key → unique item definition
         self._loaded = False
 
     @classmethod
@@ -34,6 +37,8 @@ class GameRegistry:
     _ITEM_FILES = ("chests", "elixirs", "gems", "materials", "scrolls", "specials")
     # Skill sub-files loaded from src/data/skills/
     _SKILL_FILES = ("thien", "dia", "nhan", "tran_phap", "enemy")
+    # Equipment definition files in src/data/equipment/
+    _EQUIP_FILES = ("bases", "affixes", "uniques")
 
     def load(self) -> None:
         self.items = self._load_items()
@@ -43,11 +48,29 @@ class GameRegistry:
         self.constitutions = self._load_keyed("constitutions.json")
         self.dungeons = self._load_keyed("dungeons.json")
         self.loot_tables = self._load_loot_table_dir()
+        self.bases, self.affixes, self.uniques = self._load_equipment_defs()
         self._loaded = True
 
     def _load_items(self) -> dict[str, dict]:
         """Merge all per-type item files from src/data/items/ into one dict."""
         return self._merge_subdir("items", self._ITEM_FILES)
+
+    def _load_equipment_defs(self) -> tuple[dict, dict, dict]:
+        """Load bases, affixes, and uniques from src/data/equipment/."""
+        base_dir = DATA_DIR / "equipment"
+        if not base_dir.exists():
+            log.error("GameRegistry: Missing equipment/ directory")
+            return {}, {}, {}
+        bases: dict[str, dict] = {}
+        affixes: dict[str, dict] = {}
+        uniques: dict[str, dict] = {}
+        for entry in json.loads((base_dir / "bases.json").read_text(encoding="utf-8")):
+            bases[entry["key"]] = entry
+        for entry in json.loads((base_dir / "affixes.json").read_text(encoding="utf-8")):
+            affixes[entry["key"]] = entry
+        for entry in json.loads((base_dir / "uniques.json").read_text(encoding="utf-8")):
+            uniques[entry["key"]] = entry
+        return bases, affixes, uniques
 
     def _load_skills(self) -> dict[str, dict]:
         """Merge all per-type skill files from src/data/skills/ into one dict."""
@@ -138,6 +161,18 @@ class GameRegistry:
 
     def get_loot_table(self, key: str) -> list[dict]:
         return self.loot_tables.get(key, [])
+
+    def get_base(self, key: str) -> dict | None:
+        return self.bases.get(key)
+
+    def get_affix(self, key: str) -> dict | None:
+        return self.affixes.get(key)
+
+    def get_unique(self, key: str) -> dict | None:
+        return self.uniques.get(key)
+
+    def bases_for_slot(self, slot: str) -> list[dict]:
+        return [b for b in self.bases.values() if b["slot"] == slot]
 
     # ── Helpers cho Logic Game ────────────────────────────────────────────────
 

@@ -27,7 +27,7 @@ LINH_CAN_DATA: dict[str, dict] = {
     "thuy": {
         "vi": "Thủy",
         "emoji": "💧",
-        "description": "+5% giảm sát thương",
+        "description": "+5% giảm sát thương nhận vào",
         "passive_bonus": {"final_dmg_reduce": 0.05},
         "combat_effect": "ngung_dong",
         "proc_chance": 0.15,
@@ -45,7 +45,7 @@ LINH_CAN_DATA: dict[str, dict] = {
     "tho": {
         "vi": "Thổ",
         "emoji": "🪨",
-        "description": "+8% giảm sát thương",
+        "description": "+8% giảm sát thương nhận vào",
         "passive_bonus": {"final_dmg_reduce": 0.08},
         "combat_effect": "ho_the",
         "proc_chance": 1.0,

@@ -67,7 +67,7 @@ REALM_POWER_BONUS_PER_STAGE: float = 0.008  # +0.8 % per stage
 ENEMY_SCALE_MAX: int = 81               # denominator (max single-axis stages)
 ENEMY_HP_SCALE_FACTOR: float = 2.0      # at max realm: 3× base HP
 ENEMY_DMG_BONUS_SCALE: float = 1.5     # at max realm: +150 % damage
-ENEMY_BASE_ELEM_RES: int = 20           # elemental resistance for enemy's own element
+ENEMY_BASE_ELEM_RES: float = 0.10      # 10% elemental resistance for enemy's own element
 
 # Fallback base combat stats by rank — used when enemy JSON omits base_atk/matk/def/evasion.
 # These are BEFORE realm_scale is applied.

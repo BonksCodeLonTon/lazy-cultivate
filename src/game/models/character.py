@@ -28,16 +28,16 @@ class CharacterStats:
     true_dmg: int = 0
     reflect_dmg: float = 0.0
 
-    # Elemental resistances (flat reduction) — one per Element (9 total, mirrors Linh Căn)
-    res_kim: int = 0
-    res_moc: int = 0
-    res_thuy: int = 0
-    res_hoa: int = 0
-    res_tho: int = 0
-    res_loi: int = 0
-    res_phong: int = 0
-    res_quang: int = 0
-    res_am: int = 0
+    # Elemental resistances (percentage, 0.0–0.75) — one per Element (9 total, mirrors Linh Căn)
+    res_kim: float = 0.0
+    res_moc: float = 0.0
+    res_thuy: float = 0.0
+    res_hoa: float = 0.0
+    res_tho: float = 0.0
+    res_loi: float = 0.0
+    res_phong: float = 0.0
+    res_quang: float = 0.0
+    res_am: float = 0.0
 
     # Utility
     luck: int = 0

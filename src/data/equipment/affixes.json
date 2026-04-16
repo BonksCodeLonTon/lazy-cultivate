@@ -1,1 +1,228 @@
-[]
+[
+  {
+    "key": "pfx_atk",      "vi": "Uy Mãnh",    "type": "prefix", "stat": "atk",
+    "allowed_slots": ["weapon", "glove", "ring"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 6,    "max": 14},
+      {"tier": 2, "grade_req": 2, "min": 14,   "max": 24},
+      {"tier": 3, "grade_req": 3, "min": 24,   "max": 38}
+    ]
+  },
+  {
+    "key": "pfx_matk",     "vi": "Pháp Lực",   "type": "prefix", "stat": "matk",
+    "allowed_slots": ["weapon", "off_hand", "helmet", "ring"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 6,    "max": 14},
+      {"tier": 2, "grade_req": 2, "min": 14,   "max": 24},
+      {"tier": 3, "grade_req": 3, "min": 24,   "max": 38}
+    ]
+  },
+  {
+    "key": "pfx_crit_rate", "vi": "Bạo Liệt",  "type": "prefix", "stat": "crit_rating",
+    "allowed_slots": ["weapon", "glove", "ring"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 35,   "max": 60},
+      {"tier": 2, "grade_req": 2, "min": 60,   "max": 95},
+      {"tier": 3, "grade_req": 3, "min": 95,   "max": 145}
+    ]
+  },
+  {
+    "key": "pfx_crit_dmg",  "vi": "Hủy Diệt",  "type": "prefix", "stat": "crit_dmg_rating",
+    "allowed_slots": ["weapon", "ring"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 28,   "max": 50},
+      {"tier": 2, "grade_req": 2, "min": 50,   "max": 80},
+      {"tier": 3, "grade_req": 3, "min": 80,   "max": 120}
+    ]
+  },
+  {
+    "key": "pfx_evasion",   "vi": "Nhanh Nhẹn", "type": "prefix", "stat": "evasion_rating",
+    "allowed_slots": ["armor", "glove", "belt", "amulet"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 35,   "max": 60},
+      {"tier": 2, "grade_req": 2, "min": 60,   "max": 95},
+      {"tier": 3, "grade_req": 3, "min": 95,   "max": 145}
+    ]
+  },
+  {
+    "key": "pfx_final_dmg", "vi": "Siêu Việt",  "type": "prefix", "stat": "final_dmg_bonus",
+    "allowed_slots": ["weapon", "ring"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 0.03, "max": 0.05},
+      {"tier": 2, "grade_req": 2, "min": 0.05, "max": 0.08},
+      {"tier": 3, "grade_req": 3, "min": 0.08, "max": 0.12}
+    ]
+  },
+  {
+    "key": "pfx_def",       "vi": "Thủ Vệ",     "type": "prefix", "stat": "def_stat",
+    "allowed_slots": ["armor", "helmet", "glove", "off_hand", "belt"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 5,    "max": 12},
+      {"tier": 2, "grade_req": 2, "min": 12,   "max": 20},
+      {"tier": 3, "grade_req": 3, "min": 20,   "max": 30}
+    ]
+  },
+  {
+    "key": "pfx_hp",        "vi": "Cường Thể",  "type": "prefix", "stat": "hp_max",
+    "allowed_slots": ["armor", "helmet", "belt", "ring"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 70,   "max": 120},
+      {"tier": 2, "grade_req": 2, "min": 120,  "max": 190},
+      {"tier": 3, "grade_req": 3, "min": 190,  "max": 280}
+    ]
+  },
+  {
+    "key": "pfx_mp",        "vi": "Linh Lực",   "type": "prefix", "stat": "mp_max",
+    "allowed_slots": ["off_hand", "belt", "amulet"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 50,   "max": 80},
+      {"tier": 2, "grade_req": 2, "min": 80,   "max": 120},
+      {"tier": 3, "grade_req": 3, "min": 120,  "max": 170}
+    ]
+  },
+  {
+    "key": "pfx_dmg_reduce", "vi": "Thép Thân", "type": "prefix", "stat": "final_dmg_reduce",
+    "allowed_slots": ["armor", "off_hand", "helmet"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 0.02, "max": 0.04},
+      {"tier": 2, "grade_req": 2, "min": 0.04, "max": 0.07},
+      {"tier": 3, "grade_req": 3, "min": 0.07, "max": 0.10}
+    ]
+  },
+  {
+    "key": "pfx_regen",     "vi": "Hồi Xuân",   "type": "prefix", "stat": "hp_regen_pct",
+    "allowed_slots": ["armor", "belt", "amulet"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 0.01, "max": 0.02},
+      {"tier": 2, "grade_req": 2, "min": 0.02, "max": 0.03},
+      {"tier": 3, "grade_req": 3, "min": 0.03, "max": 0.05}
+    ]
+  },
+  {
+    "key": "pfx_res",       "vi": "Linh Kháng", "type": "prefix", "stat": "res_all",
+    "allowed_slots": ["helmet", "ring", "amulet"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 0.02, "max": 0.04},
+      {"tier": 2, "grade_req": 2, "min": 0.04, "max": 0.06},
+      {"tier": 3, "grade_req": 3, "min": 0.06, "max": 0.09}
+    ]
+  },
+  {
+    "key": "pfx_crit_res",  "vi": "Kiên Nghị",  "type": "prefix", "stat": "crit_res_rating",
+    "allowed_slots": ["helmet", "armor", "ring", "amulet"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 28,   "max": 55},
+      {"tier": 2, "grade_req": 2, "min": 55,   "max": 90},
+      {"tier": 3, "grade_req": 3, "min": 90,   "max": 135}
+    ]
+  },
+  {
+    "key": "pfx_str",       "vi": "Mãnh Lực",   "type": "prefix", "stat": "atk",
+    "allowed_slots": ["armor", "helmet", "belt", "amulet"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 4,    "max": 10},
+      {"tier": 2, "grade_req": 2, "min": 10,   "max": 18},
+      {"tier": 3, "grade_req": 3, "min": 18,   "max": 28}
+    ]
+  },
+
+  {
+    "key": "sfx_hp",        "vi": "của Trường Thọ",   "type": "suffix", "stat": "hp_max",
+    "allowed_slots": ["*"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 50,   "max": 90},
+      {"tier": 2, "grade_req": 2, "min": 90,   "max": 140},
+      {"tier": 3, "grade_req": 3, "min": 140,  "max": 210}
+    ]
+  },
+  {
+    "key": "sfx_mp",        "vi": "của Huyền Nguyên", "type": "suffix", "stat": "mp_max",
+    "allowed_slots": ["*"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 35,   "max": 65},
+      {"tier": 2, "grade_req": 2, "min": 65,   "max": 100},
+      {"tier": 3, "grade_req": 3, "min": 100,  "max": 150}
+    ]
+  },
+  {
+    "key": "sfx_atk",       "vi": "của Thống Lĩnh",   "type": "suffix", "stat": "atk",
+    "allowed_slots": ["*"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 4,    "max": 10},
+      {"tier": 2, "grade_req": 2, "min": 10,   "max": 18},
+      {"tier": 3, "grade_req": 3, "min": 18,   "max": 28}
+    ]
+  },
+  {
+    "key": "sfx_def",       "vi": "của Thiết Giáp",   "type": "suffix", "stat": "def_stat",
+    "allowed_slots": ["*"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 4,    "max": 8},
+      {"tier": 2, "grade_req": 2, "min": 8,    "max": 14},
+      {"tier": 3, "grade_req": 3, "min": 14,   "max": 22}
+    ]
+  },
+  {
+    "key": "sfx_matk",      "vi": "của Đạo Lực",      "type": "suffix", "stat": "matk",
+    "allowed_slots": ["*"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 4,    "max": 10},
+      {"tier": 2, "grade_req": 2, "min": 10,   "max": 18},
+      {"tier": 3, "grade_req": 3, "min": 18,   "max": 28}
+    ]
+  },
+  {
+    "key": "sfx_crit",      "vi": "của Huyết Tộc",    "type": "suffix", "stat": "crit_rating",
+    "allowed_slots": ["*"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 25,   "max": 45},
+      {"tier": 2, "grade_req": 2, "min": 45,   "max": 75},
+      {"tier": 3, "grade_req": 3, "min": 75,   "max": 110}
+    ]
+  },
+  {
+    "key": "sfx_crit_res",  "vi": "của Hàn Băng",     "type": "suffix", "stat": "crit_res_rating",
+    "allowed_slots": ["*"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 20,   "max": 40},
+      {"tier": 2, "grade_req": 2, "min": 40,   "max": 65},
+      {"tier": 3, "grade_req": 3, "min": 65,   "max": 100}
+    ]
+  },
+  {
+    "key": "sfx_regen",     "vi": "của Trường Xuân",  "type": "suffix", "stat": "hp_regen_pct",
+    "allowed_slots": ["amulet", "belt", "ring", "armor"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 0.01, "max": 0.015},
+      {"tier": 2, "grade_req": 2, "min": 0.015,"max": 0.025},
+      {"tier": 3, "grade_req": 3, "min": 0.025,"max": 0.04}
+    ]
+  },
+  {
+    "key": "sfx_res_all",   "vi": "của Ngũ Hành",     "type": "suffix", "stat": "res_all",
+    "allowed_slots": ["*"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 0.015,"max": 0.03},
+      {"tier": 2, "grade_req": 2, "min": 0.03, "max": 0.05},
+      {"tier": 3, "grade_req": 3, "min": 0.05, "max": 0.07}
+    ]
+  },
+  {
+    "key": "sfx_dmg_bonus", "vi": "của Sát Thần",     "type": "suffix", "stat": "final_dmg_bonus",
+    "allowed_slots": ["weapon", "ring", "amulet"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 0.02, "max": 0.04},
+      {"tier": 2, "grade_req": 2, "min": 0.04, "max": 0.06},
+      {"tier": 3, "grade_req": 3, "min": 0.06, "max": 0.09}
+    ]
+  },
+  {
+    "key": "sfx_evasion",   "vi": "của Phong Thần",   "type": "suffix", "stat": "evasion_rating",
+    "allowed_slots": ["*"],
+    "tiers": [
+      {"tier": 1, "grade_req": 1, "min": 25,   "max": 45},
+      {"tier": 2, "grade_req": 2, "min": 45,   "max": 70},
+      {"tier": 3, "grade_req": 3, "min": 70,   "max": 105}
+    ]
+  }
+]

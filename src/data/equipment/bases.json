@@ -1,1 +1,29 @@
-[]
+[
+  {"key": "base_sword",       "vi": "Trường Kiếm",   "slot": "weapon",   "tags": ["physical", "melee"],   "implicit_stats": {"atk": 18}},
+  {"key": "base_staff",       "vi": "Pháp Trượng",   "slot": "weapon",   "tags": ["magic", "staff"],      "implicit_stats": {"matk": 20}},
+  {"key": "base_spirit_sword","vi": "Linh Kiếm",     "slot": "weapon",   "tags": ["balanced", "melee"],   "implicit_stats": {"atk": 12, "matk": 8}},
+
+  {"key": "base_shield",      "vi": "Thiết Thuẫn",   "slot": "off_hand", "tags": ["tank", "shield"],      "implicit_stats": {"def_stat": 15, "hp_max": 100}},
+  {"key": "base_talisman",    "vi": "Phù Lục",       "slot": "off_hand", "tags": ["magic", "talisman"],   "implicit_stats": {"matk": 10, "mp_max": 60}},
+  {"key": "base_orb",         "vi": "Linh Cầu",      "slot": "off_hand", "tags": ["magic", "orb"],        "implicit_stats": {"matk": 12, "crit_rating": 30}},
+
+  {"key": "base_robe",        "vi": "Đạo Bào",       "slot": "armor",    "tags": ["magic", "light"],      "implicit_stats": {"mp_max": 120, "def_stat": 8}},
+  {"key": "base_plate",       "vi": "Trọng Giáp",    "slot": "armor",    "tags": ["tank", "heavy"],       "implicit_stats": {"def_stat": 22, "hp_max": 150}},
+  {"key": "base_leather_armor","vi": "Khinh Giáp",   "slot": "armor",    "tags": ["physical", "light"],   "implicit_stats": {"def_stat": 14, "evasion_rating": 45}},
+
+  {"key": "base_helm",        "vi": "Trụ Mũ",        "slot": "helmet",   "tags": ["tank"],                "implicit_stats": {"def_stat": 10, "hp_max": 80}},
+  {"key": "base_crown",       "vi": "Pháp Quan",     "slot": "helmet",   "tags": ["magic"],               "implicit_stats": {"matk": 8, "mp_max": 60}},
+
+  {"key": "base_gauntlet",    "vi": "Thiết Thủ",     "slot": "glove",    "tags": ["tank", "physical"],    "implicit_stats": {"atk": 10, "def_stat": 6}},
+  {"key": "base_arcane_glove","vi": "Pháp Thủ",      "slot": "glove",    "tags": ["magic"],               "implicit_stats": {"matk": 10, "crit_rating": 20}},
+
+  {"key": "base_belt",        "vi": "Linh Đai",      "slot": "belt",     "tags": ["balanced"],            "implicit_stats": {"hp_max": 100, "mp_max": 50}},
+  {"key": "base_wind_sash",   "vi": "Phong Đai",     "slot": "belt",     "tags": ["agile"],               "implicit_stats": {"evasion_rating": 55, "hp_max": 70}},
+
+  {"key": "base_power_ring",  "vi": "Lực Nhẫn",      "slot": "ring",     "tags": ["physical"],            "implicit_stats": {"atk": 8}},
+  {"key": "base_mage_ring",   "vi": "Pháp Nhẫn",     "slot": "ring",     "tags": ["magic"],               "implicit_stats": {"matk": 8}},
+  {"key": "base_spirit_ring", "vi": "Linh Nhẫn",     "slot": "ring",     "tags": ["balanced"],            "implicit_stats": {"hp_max": 60, "mp_max": 40}},
+
+  {"key": "base_pendant",     "vi": "Hộ Mệnh Bội",  "slot": "amulet",   "tags": ["defensive"],           "implicit_stats": {"hp_max": 80, "def_stat": 6}},
+  {"key": "base_jade",        "vi": "Linh Ngọc Bội", "slot": "amulet",   "tags": ["magic", "elemental"],  "implicit_stats": {"matk": 6, "res_all": 0.02}}
+]

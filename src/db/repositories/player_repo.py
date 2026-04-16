@@ -28,6 +28,7 @@ class PlayerRepository:
                 selectinload(Player.skills),
                 selectinload(Player.artifacts),
                 selectinload(Player.formations),
+                selectinload(Player.item_instances),
             )
         )
         return result.scalar_one_or_none()
@@ -42,6 +43,7 @@ class PlayerRepository:
                 selectinload(Player.skills),
                 selectinload(Player.artifacts),
                 selectinload(Player.formations),
+                selectinload(Player.item_instances),
             )
         )
         return result.scalar_one_or_none()

@@ -74,6 +74,9 @@ class Player(Base, TimestampMixin):
     market_listings: Mapped[list[MarketListing]] = relationship(
         "MarketListing", back_populates="seller", cascade="all, delete-orphan"
     )
+    item_instances: Mapped[list[ItemInstance]] = relationship(
+        "ItemInstance", back_populates="player", cascade="all, delete-orphan"
+    )
 
     def __repr__(self) -> str:
         return f"<Player id={self.id} discord_id={self.discord_id} name={self.name!r}>"
@@ -86,3 +89,4 @@ from src.db.models.skill import CharacterSkill  # noqa: E402
 from src.db.models.artifact import CharacterArtifact  # noqa: E402
 from src.db.models.formation import CharacterFormation  # noqa: E402
 from src.db.models.market import MarketListing  # noqa: E402
+from src.db.models.item_instance import ItemInstance  # noqa: E402

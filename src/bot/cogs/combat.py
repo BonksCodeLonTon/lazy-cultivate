@@ -15,6 +15,7 @@ from src.db.repositories.inventory_repo import InventoryRepository
 from src.game.constants.currencies import CURRENCY_CAP
 from src.game.constants.grades import Grade, GRADE_LABELS
 from src.game.constants.linh_can import compute_linh_can_bonuses
+from src.game.engine.equipment import compute_equipment_stats
 from src.game.models.character import Character as CharModel
 from src.game.systems.combat import (
     CombatSession, CombatEndReason,
@@ -30,9 +31,36 @@ log = logging.getLogger(__name__)
 
 RANK_EMOJIS = {
     "pho_thong": "🐾",
+    "tinh_anh":  "🌿",
     "cuong_gia": "⚔️",
+    "hung_manh": "🗡️",
     "dai_nang":  "🔥",
+    "than_thu":  "🌀",
+    "tien_thu":  "✨",
     "chi_ton":   "💀",
+}
+
+# Zone number each rank starts at (realm_total = (zone-1)*9 floor)
+_RANK_ZONE: dict[str, int] = {
+    "pho_thong": 1,
+    "tinh_anh":  3,
+    "cuong_gia": 4,
+    "hung_manh": 6,
+    "dai_nang":  7,
+    "than_thu":  8,
+    "tien_thu":  9,
+    "chi_ton":   10,
+}
+
+# Each rank's next-tier upgrade (for elite encounters)
+_RANK_NEXT: dict[str, str] = {
+    "pho_thong": "tinh_anh",
+    "tinh_anh":  "cuong_gia",
+    "cuong_gia": "hung_manh",
+    "hung_manh": "dai_nang",
+    "dai_nang":  "than_thu",
+    "than_thu":  "tien_thu",
+    "tien_thu":  "chi_ton",
 }
 
 _RANK_CONFIGS = [
@@ -53,6 +81,28 @@ def _pick_random_enemy(rank: str | None, rng: random.Random) -> str | None:
         chosen_rank = rng.choices(list(choices), weights=list(wts), k=1)[0]
         pool = registry.enemies_by_rank(chosen_rank)
     return rng.choice(pool)["key"] if pool else None
+
+
+def _realm_total(char: CharModel) -> int:
+    """Average cultivation level across all 3 paths (0–90 range)."""
+    return (
+        char.body_realm * 9 + char.body_level
+        + char.qi_realm * 9 + char.qi_level
+        + char.formation_realm * 9 + char.formation_level
+    ) // 3
+
+
+def _upgrade_chance(base_rank: str, char: CharModel) -> float:
+    """Return probability (0.0–0.30) of encountering a higher-rank elite enemy.
+
+    Scales linearly with how far the player has progressed within the rank's
+    zone: 0% at zone entry, 30% at zone mastery (level 9/9).
+    """
+    zone = _RANK_ZONE.get(base_rank, 1)
+    rt = _realm_total(char)
+    zone_floor = (zone - 1) * 9
+    level_in_zone = max(0, min(9, rt - zone_floor))
+    return level_in_zone / 9 * 0.30
 
 
 def _orm_to_charmodel(player) -> CharModel:
@@ -105,11 +155,15 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
             return
 
         char = _orm_to_charmodel(player)
+        gem_count = 0
         if player.active_formation and player.formations:
             for f in player.formations:
                 if f.formation_key == player.active_formation:
                     gem_count = len(f.gem_slots)
                     break
+
+        equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
+        equip_stats = compute_equipment_stats(equipped)
 
         bonuses = merge_bonuses(
             compute_formation_bonuses(char.active_formation, gem_count),
@@ -125,18 +179,28 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
         mp_current = min(player.mp_current if player.mp_current > 0 else mp_max_val, mp_max_val)
 
     rng = random.Random()
-    enemy_key = _pick_random_enemy(internal_rank, rng)
+
+    # ── Elite encounter roll ──────────────────────────────────────────────────
+    actual_rank = internal_rank
+    loot_multiplier = 1.0
+    is_elite = False
+    if internal_rank is not None and char is not None:
+        chance = _upgrade_chance(internal_rank, char)
+        if chance > 0 and rng.random() < chance:
+            next_rank = _RANK_NEXT.get(internal_rank)
+            if next_rank and registry.enemies_by_rank(next_rank):
+                actual_rank = next_rank
+                loot_multiplier = 1.5
+                is_elite = True
+
+    enemy_key = _pick_random_enemy(actual_rank, rng)
     if not enemy_key:
         await interaction.edit_original_response(embed=error_embed("Không tìm thấy quái vật."), view=None)
         return
 
-    realm_total = (
-        char.body_realm * 9 + char.body_level
-        + char.qi_realm * 9 + char.qi_level
-        + char.formation_realm * 9 + char.formation_level
-    ) // 3
+    realm_total = _realm_total(char)
 
-    player_c = build_player_combatant(char, skill_keys, gem_count=gem_count)
+    player_c = build_player_combatant(char, skill_keys, gem_count=gem_count, equip_stats=equip_stats)
     player_c.hp = hp_current
     player_c.mp = mp_current
 
@@ -149,10 +213,14 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
     enemy_name = enemy_data["vi"] if enemy_data else enemy_key
     enemy_rank = enemy_data.get("rank", "pho_thong") if enemy_data else "pho_thong"
     rank_emoji = RANK_EMOJIS.get(enemy_rank, "⚔️")
-    wave_label = f"{rank_emoji} {enemy_name}"
+    elite_marker = " ⚡**[TINH ANH]**" if is_elite else ""
+    wave_label = f"{rank_emoji} {enemy_name}{elite_marker}"
 
     # ── Real-time battle ──────────────────────────────────────────────────────
-    combat = CombatSession(player=player_c, enemy=enemy_c, player_skill_keys=skill_keys, rng=rng)
+    combat = CombatSession(
+        player=player_c, enemy=enemy_c, player_skill_keys=skill_keys,
+        rng=rng, loot_qty_multiplier=loot_multiplier,
+    )
 
     await interaction.edit_original_response(
         embed=battle_embed(
@@ -213,8 +281,9 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
             f"{(registry.get_item(d['item_key']) or {}).get('vi', d['item_key'])}×{d['quantity']}"
             for d in result.loot
         ) or "—"
+        elite_bonus = " ⚡ **+50% loot**" if is_elite else ""
         result_line = (
-            f"✅ Chiến thắng sau **{result.turns}** lượt\n"
+            f"✅ Chiến thắng sau **{result.turns}** lượt{elite_bonus}\n"
             f"✨ +{result.merit_gained:,} Công Đức | 🎁 {loot_str}"
         )
     elif result.reason == CombatEndReason.PLAYER_DEAD:
@@ -1042,7 +1111,7 @@ class CombatCog(commands.Cog, name="Combat"):
                 await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
             char = _orm_to_charmodel(player)
-        
+            gem_count = 0
             if player.active_formation and player.formations:
                 for f in player.formations:
                     if f.formation_key == player.active_formation:

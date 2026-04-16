@@ -15,6 +15,7 @@ _DEV_GUILD_ID: int | None = int(os.getenv("GUILD_ID", "0")) or None
 COGS = [
     "src.bot.cogs.cultivation",
     "src.bot.cogs.combat",
+    "src.bot.cogs.equipment",
     "src.bot.cogs.dungeon",
     "src.bot.cogs.inventory",
     "src.bot.cogs.shop",
