@@ -16,7 +16,8 @@ class GameRegistry:
     def __init__(self) -> None:
         self.items: dict[str, dict] = {}               # key → item data
         self.skills: dict[str, dict] = {}              # key → skill data
-        self.enemies: dict[str, dict] = {}             # key → enemy data
+        self.enemies: dict[str, dict] = {}             # key → enemy (farming) data
+        self.tribulations: dict[str, dict] = {}        # key → thien_kiep breakthrough data
         self.formations: dict[str, dict] = {}          # key → formation data
         self.constitutions: dict[str, dict] = {}       # key → constitution data
         self.dungeons: dict[str, dict] = {}            # key → dungeon data
@@ -45,6 +46,7 @@ class GameRegistry:
         self.items = self._load_items()
         self.skills = self._load_skills()
         self.enemies = self._load_enemy_dir()
+        self.tribulations = self._load_tribulation_dir()
         self.formations = self._load_keyed("formations.json")
         self.constitutions = self._load_keyed("constitutions.json")
         self.dungeons = self._load_keyed("dungeons.json")
@@ -88,6 +90,23 @@ class GameRegistry:
         base = DATA_DIR / "enemies"
         if not base.exists():
             log.error("GameRegistry: Missing enemies/ directory")
+            return {}
+        for path in sorted(base.glob("*.json")):
+            data = json.loads(path.read_text(encoding="utf-8"))
+            for entry in data:
+                merged[entry["key"]] = entry
+        return merged
+
+    def _load_tribulation_dir(self) -> dict[str, dict]:
+        """Load thien_kiep breakthrough enemies from src/data/tribulations/.
+
+        Keyed by 'key'. Drop a new trib_realm_XX.json to add a tribulation
+        without touching the registry.
+        """
+        merged: dict[str, dict] = {}
+        base = DATA_DIR / "tribulations"
+        if not base.exists():
+            log.warning("GameRegistry: Missing tribulations/ directory")
             return {}
         for path in sorted(base.glob("*.json")):
             data = json.loads(path.read_text(encoding="utf-8"))
@@ -151,15 +170,11 @@ class GameRegistry:
         return self.skills.get(key)
 
     def get_enemy(self, key: str) -> dict | None:
-        """
-        Lấy dữ liệu quái vật. 
-        Nếu không tìm thấy key Thiên Kiếp cụ thể, hệ thống sẽ trả về quái vật mặc định.
-        """
-        enemy = self.enemies.get(key)
-        if not enemy and key.startswith("trib_"):
-             # Fallback cho thiên kiếp nếu chưa định nghĩa từng cảnh giới
-            return self.enemies.get("default_heavenly_trib")
-        return enemy
+        return self.enemies.get(key)
+
+    def get_tribulation(self, key: str) -> dict | None:
+        """Lấy Thiên Kiếp theo key; fallback về default_heavenly_trib nếu chưa định nghĩa."""
+        return self.tribulations.get(key) or self.tribulations.get("default_heavenly_trib")
 
     def get_formation(self, key: str) -> dict | None:
         return self.formations.get(key)
@@ -196,7 +211,9 @@ class GameRegistry:
         return [i for i in self.items.values() if i.get("type") == item_type]
 
     def enemies_by_rank(self, rank: str) -> list[dict]:
-        """Lọc quái vật theo rank (pho_thong, tinh_anh, thien_kiep, ...)."""
+        """Lọc quái vật theo rank. thien_kiep trả về từ tribulations, các rank khác từ enemies."""
+        if rank == "thien_kiep":
+            return [t for t in self.tribulations.values() if t.get("rank") == rank]
         return [e for e in self.enemies.values() if e.get("rank") == rank]
 
 registry = GameRegistry.get()

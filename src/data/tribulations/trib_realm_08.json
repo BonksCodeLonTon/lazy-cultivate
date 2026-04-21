@@ -1,0 +1,14 @@
+[
+  {
+    "key": "trib_qi_4",
+    "vi": "Hóa Thần Thiên Kiếp",
+    "en": "Spirit Transformation Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 8,
+    "element": "loi",
+    "base_hp": 5000,
+    "base_spd": 18,
+    "hp_scale": 2.0,
+    "skill_keys": ["EnemyTribLoi_T3", "EnemyLoi_T3"]
+  }
+]
