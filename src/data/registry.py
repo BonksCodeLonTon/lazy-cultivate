@@ -24,6 +24,7 @@ class GameRegistry:
         self.bases: dict[str, dict] = {}               # key → equipment base definition
         self.affixes: dict[str, dict] = {}             # key → affix definition
         self.uniques: dict[str, dict] = {}             # key → unique item definition
+        self.forge_recipes: list[dict] = []            # grade-ordered forge recipe list
         self._loaded = False
 
     @classmethod
@@ -34,7 +35,7 @@ class GameRegistry:
         return cls._instance
 
     # Danh mục file item nằm trong thư mục con src/data/items/
-    _ITEM_FILES = ("chests", "elixirs", "gems", "materials", "scrolls", "specials")
+    _ITEM_FILES = ("chests", "elixirs", "gems", "materials", "scrolls", "specials", "forge_materials")
     # Skill sub-files loaded from src/data/skills/
     _SKILL_FILES = ("thien", "dia", "nhan", "tran_phap", "enemy")
     # Equipment definition files in src/data/equipment/
@@ -49,6 +50,7 @@ class GameRegistry:
         self.dungeons = self._load_keyed("dungeons.json")
         self.loot_tables = self._load_loot_table_dir()
         self.bases, self.affixes, self.uniques = self._load_equipment_defs()
+        self.forge_recipes = self._load_forge_recipes()
         self._loaded = True
 
     def _load_items(self) -> dict[str, dict]:
@@ -102,6 +104,15 @@ class GameRegistry:
             for entry in data:
                 merged[entry["key"]] = entry
         return merged
+
+    def _load_forge_recipes(self) -> list[dict]:
+        """Load grade-ordered forge recipes from src/data/equipment/forge_recipes.json."""
+        path = DATA_DIR / "equipment" / "forge_recipes.json"
+        if not path.exists():
+            log.error("GameRegistry: Missing forge_recipes.json")
+            return []
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return sorted(data, key=lambda r: r["grade"])
 
     def _load_keyed(self, filename: str) -> dict[str, dict]:
         """Load JSON dạng list và chuyển về dict với key là trường 'key'."""

@@ -265,12 +265,13 @@ class StatusView(discord.ui.View):
         self._discord_id = discord_id
 
         configs = [
-            ("🌀 Tu Luyện",      discord.ButtonStyle.secondary, self._cultivate_cb,      0),
-            ("⚡ Đột Phá",       discord.ButtonStyle.secondary, self._breakthrough_cb,   0),
-            ("🗺️ Bí Cảnh",       discord.ButtonStyle.secondary, self._dungeon_cb,        0),
-            ("🎯 Kỹ Năng",       discord.ButtonStyle.secondary, self._skills_cb,         1),
-            ("📚 Tàng Kinh Các", discord.ButtonStyle.secondary, self._tang_kinh_cac_cb,  1),
-            ("🎒 Túi Đồ",        discord.ButtonStyle.secondary, self._inventory_cb,      1),
+            ("🌀 Tu Luyện",           discord.ButtonStyle.secondary, self._cultivate_cb,      0),
+            ("⚡ Đột Phá",            discord.ButtonStyle.secondary, self._breakthrough_cb,   0),
+            ("🗺️ Bí Cảnh",            discord.ButtonStyle.secondary, self._dungeon_cb,        0),
+            ("🎯 Kỹ Năng",            discord.ButtonStyle.secondary, self._skills_cb,         1),
+            ("📚 Tàng Kinh Các",      discord.ButtonStyle.secondary, self._tang_kinh_cac_cb,  1),
+            ("🎒 Túi Đồ",             discord.ButtonStyle.secondary, self._inventory_cb,      1),
+            ("⚒️ Luyện Công Phường",  discord.ButtonStyle.secondary, self._forge_cb,          2),
         ]
         for label, style, cb, row in configs:
             btn = discord.ui.Button(label=label, style=style, row=row)
@@ -436,6 +437,17 @@ class StatusView(discord.ui.View):
             back_fn=_show_status,
             linh_can=linh_can,
         )
+        await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _forge_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        from src.bot.cogs.forge import ForgeHubView, _forge_hub_embed
+        embed = _forge_hub_embed()
+        view = ForgeHubView(self._discord_id, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
 
 
