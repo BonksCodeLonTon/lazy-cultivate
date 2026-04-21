@@ -263,7 +263,7 @@ class ForgeCog(commands.Cog):
             inv_repo = InventoryRepository(session)
             equip_repo = EquipmentRepository(session)
 
-            char = await player_repo.get_character(interaction.user.id)
+            char = await player_repo.get_by_discord_id(interaction.user.id)
             if not char:
                 await interaction.followup.send(
                     embed=error_embed("Bạn chưa đăng ký. Dùng `/start` để bắt đầu."),
@@ -272,7 +272,7 @@ class ForgeCog(commands.Cog):
                 return
 
             # Build a grade-keyed map of what forge materials the player has
-            all_items = await inv_repo.get_all(char.player_id)
+            all_items = await inv_repo.get_all(char.id)
             mats_in_bag: dict[str, int] = {
                 it.item_key: it.quantity
                 for it in all_items
@@ -296,7 +296,7 @@ class ForgeCog(commands.Cog):
                         continue
                     take = min(owned_qty, qty_needed)
                     removed = await inv_repo.remove_item(
-                        char.player_id, mat_key, Grade(mat_grade), take
+                        char.id, mat_key, Grade(mat_grade), take
                     )
                     if removed:
                         consumed.append((mat_key, take))
@@ -320,7 +320,7 @@ class ForgeCog(commands.Cog):
 
             # Persist updated Công Đức and new item
             await player_repo.save_character(char)
-            inst = await equip_repo.add_to_bag(char.player_id, result.item_data)
+            inst = await equip_repo.add_to_bag(char.id, result.item_data)
 
             quality = result.item_data["quality"]
             embed = discord.Embed(

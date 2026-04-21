@@ -333,8 +333,8 @@ class StatusView(discord.ui.View):
             return
         await interaction.response.defer()
 
-        from src.data.registry import registry as _registry
-        from src.db.repositories.inventory_repo import InventoryRepository
+        from src.bot.cogs.equipment import EquipBagView, _equip_bag_embed
+        from src.db.repositories.equipment_repo import EquipmentRepository
 
         async with get_session() as session:
             repo = PlayerRepository(session)
@@ -342,39 +342,12 @@ class StatusView(discord.ui.View):
             if player is None:
                 await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                 return
-            irepo = InventoryRepository(session)
-            items = await irepo.get_all(player.id)
+            erepo = EquipmentRepository(session)
+            bag_items = await erepo.get_bag(player.id)
 
-        _GRADE_EMOJI = {1: "🟡", 2: "🟣", 3: "🟢", 4: "🔴"}
-        _TYPE_EMOJI = {
-            "material": "🪨", "gem": "💠", "scroll": "📜",
-            "chest": "📦", "elixir": "⚗️", "special": "⭐", "artifact": "🗡️",
-        }
-
-        if not items:
-            embed = base_embed("🎒 Túi Đồ", "Túi đồ trống.", color=0x95A5A6)
-        else:
-            lines = []
-            for inv_item in sorted(items, key=lambda x: (x.grade, x.item_key)):
-                item_data = _registry.get_item(inv_item.item_key)
-                name = item_data["vi"] if item_data else inv_item.item_key
-                t_emoji = _TYPE_EMOJI.get(item_data.get("type", ""), "❓") if item_data else "❓"
-                g_emoji = _GRADE_EMOJI.get(inv_item.grade, "⚪")
-                lines.append(f"{t_emoji}{g_emoji} **{name}** × {inv_item.quantity}")
-            embed = base_embed("🎒 Túi Đồ", f"Tổng: **{len(items)}** loại vật phẩm", color=0x95A5A6)
-            embed.add_field(name="\u200b", value="\n".join(lines[:20]) or "—", inline=False)
-            if len(lines) > 20:
-                embed.set_footer(text=f"... và {len(lines) - 20} loại khác.")
-
-        back_view = discord.ui.View(timeout=120)
-        back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary)
-        async def _back_to_status(inter: discord.Interaction) -> None:
-            await inter.response.defer()
-            await _show_status(inter)
-        back_btn.callback = _back_to_status
-        back_view.add_item(back_btn)
-
-        await interaction.edit_original_response(embed=embed, view=back_view)
+        embed = _equip_bag_embed(player.name, bag_items)
+        view = EquipBagView(self._discord_id, player.name, bag_items, back_fn=_show_status)
+        await interaction.edit_original_response(embed=embed, view=view)
 
     async def _dungeon_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

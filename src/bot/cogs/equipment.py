@@ -1,8 +1,7 @@
-"""Equipment commands — forge, equip, unequip, view gear and bag."""
+"""Equipment commands — equip, unequip, view gear and bag."""
 from __future__ import annotations
 
 import logging
-import random
 
 import discord
 from discord import app_commands
@@ -13,9 +12,6 @@ from src.db.connection import get_session
 from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.player_repo import PlayerRepository
 from src.game.engine.equipment import SLOT_LABELS, SLOT_ORDER, compute_equipment_stats, format_computed_stats, format_stat
-from src.game.engine.item_generator import (
-    FORGE_COST, generate_item, generate_unique, grade_from_realm,
-)
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
@@ -86,13 +82,6 @@ def _bag_embed(player_name: str, items: list, slot_filter: str | None) -> discor
         )
     return embed
 
-
-def _realm_total_for_player(player) -> int:
-    return (
-        player.body_realm * 9 + player.body_level
-        + player.qi_realm * 9 + player.qi_level
-        + player.formation_realm * 9 + player.formation_level
-    ) // 3
 
 
 class EquipmentCog(commands.Cog):
@@ -194,56 +183,6 @@ class EquipmentCog(commands.Cog):
             embed=success_embed(f"↩️ Đã tháo **{name}** từ {slot_label} về túi đồ.")
         )
 
-    # ── /forge ────────────────────────────────────────────────────────────────
-
-    @app_commands.command(name="forge", description="Đúc trang bị ngẫu nhiên (tốn Công Đức)")
-    @app_commands.describe(slot="Vị trí trang bị muốn đúc")
-    @app_commands.choices(slot=_SLOT_CHOICES)
-    async def forge(self, interaction: discord.Interaction, slot: str) -> None:
-        await interaction.response.defer(ephemeral=True)
-        async with get_session() as session:
-            prepo = PlayerRepository(session)
-            player = await prepo.get_by_discord_id(interaction.user.id)
-            if player is None:
-                await interaction.followup.send(embed=error_embed("Chưa có nhân vật."))
-                return
-
-            realm_total = _realm_total_for_player(player)
-            grade = grade_from_realm(realm_total)
-            cost = FORGE_COST[grade]
-
-            if player.merit < cost:
-                await interaction.followup.send(
-                    embed=error_embed(f"Không đủ Công Đức. Cần **{cost:,}**, hiện có **{player.merit:,}**.")
-                )
-                return
-
-            bases = registry.bases_for_slot(slot)
-            if not bases:
-                await interaction.followup.send(embed=error_embed(f"Không có vật phẩm nào cho vị trí này."))
-                return
-
-            rng = random.Random()
-            base_key = rng.choice(bases)["key"]
-            # Grade determines affix count: g1→0-1 each, g2→1 each, g3→1+1
-            num_pfx = rng.randint(0, 1) if grade == 1 else 1
-            num_sfx = rng.randint(0, 1) if grade == 1 else 1
-            item_data = generate_item(base_key, grade, rng, num_prefixes=num_pfx, num_suffixes=num_sfx)
-
-            player.merit -= cost
-            await prepo.save(player)
-
-            erepo = EquipmentRepository(session)
-            inst = await erepo.add_to_bag(player.id, item_data)
-
-        stats_str = format_computed_stats(inst.computed_stats)
-        embed = success_embed(
-            f"⚒️ Đúc thành công **{inst.display_name}** [{_grade_label(grade)}]\n"
-            f"{stats_str}\n\n"
-            f"Đã trừ **{cost:,}** Công Đức. Dùng `/bag` để xem, `/equip {inst.id}` để trang bị."
-        )
-        await interaction.followup.send(embed=embed)
-
     # ── /item_info ────────────────────────────────────────────────────────────
 
     @app_commands.command(name="item_info", description="Xem chi tiết một vật phẩm theo ID")
@@ -319,6 +258,125 @@ class EquipmentCog(commands.Cog):
             await erepo.discard(player.id, instance_id)
 
         await interaction.followup.send(embed=success_embed(f"🗑️ Đã hủy **{name}**."))
+
+
+def _equip_bag_embed(player_name: str, bag_items: list, result_msg: str = "") -> discord.Embed:
+    """Embed showing equipment in bag, grouped by slot."""
+    embed = base_embed(f"🎒 Túi Trang Bị — {player_name}", color=0x4488FF)
+    if result_msg:
+        embed.description = result_msg
+
+    by_slot: dict[str, list] = {}
+    for inst in bag_items:
+        by_slot.setdefault(inst.slot or "unknown", []).append(inst)
+
+    if not by_slot:
+        embed.description = (embed.description or "") + "\n*Túi trang bị trống. Dùng `/forge craft` để rèn trang bị.*"
+        return embed
+
+    for slot in SLOT_ORDER:
+        insts = by_slot.get(slot, [])
+        if not insts:
+            continue
+        lines = []
+        for inst in insts:
+            stats_str = format_computed_stats(inst.computed_stats)
+            q_label = inst.quality.capitalize() if hasattr(inst, "quality") and inst.quality else ""
+            lines.append(f"`#{inst.id}` **{inst.display_name}**\n　{stats_str}")
+        embed.add_field(
+            name=SLOT_LABELS.get(slot, slot),
+            value="\n".join(lines)[:1020],
+            inline=False,
+        )
+    embed.set_footer(text="Chọn trang bị từ danh sách bên dưới để mang vào người.")
+    return embed
+
+
+def _make_equip_options(bag_items: list) -> list[discord.SelectOption]:
+    options = []
+    for inst in bag_items[:25]:
+        slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?")
+        stats = inst.computed_stats or {}
+        desc = " | ".join(
+            f"{STAT_LABELS.get(k, k)} {int(v)}" if v >= 1 else f"{STAT_LABELS.get(k, k)} {v:.3f}"
+            for k, v in list(stats.items())[:3]
+        ) or "—"
+        options.append(discord.SelectOption(
+            label=f"{slot_label} {inst.display_name}"[:100],
+            description=desc[:100],
+            value=str(inst.id),
+        ))
+    return options
+
+
+class EquipBagView(discord.ui.View):
+    """Shown from the status page — lists bag equipment and lets the player equip via dropdown."""
+
+    def __init__(self, discord_id: int, player_name: str, bag_items: list, back_fn, result_msg: str = "") -> None:
+        super().__init__(timeout=300)
+        self._discord_id = discord_id
+        self._player_name = player_name
+        self._back_fn = back_fn
+
+        options = _make_equip_options(bag_items)
+        if options:
+            sel = discord.ui.Select(
+                placeholder="Chọn trang bị để mang vào người...",
+                options=options,
+                min_values=1,
+                max_values=1,
+                row=0,
+            )
+            sel.callback = self._equip_cb
+            self.add_item(sel)
+
+        back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
+        back_btn.callback = self._back_cb
+        self.add_item(back_btn)
+
+    def _guard(self, interaction: discord.Interaction) -> bool:
+        return interaction.user.id == self._discord_id
+
+    async def _equip_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        instance_id = int(interaction.data["values"][0])
+
+        async with get_session() as session:
+            prepo = PlayerRepository(session)
+            player = await prepo.get_by_discord_id(interaction.user.id)
+            if not player:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+
+            erepo = EquipmentRepository(session)
+            try:
+                displaced = await erepo.equip(player.id, instance_id)
+            except ValueError as e:
+                await interaction.edit_original_response(embed=error_embed(str(e)))
+                return
+
+            inst = await erepo.get_instance(instance_id, player.id)
+            bag_items = await erepo.get_bag(player.id)
+
+        slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "")
+        result_msg = f"✅ Đã trang bị **{inst.display_name}** vào {slot_label}."
+        if displaced:
+            result_msg += f"\n↩️ **{displaced.display_name}** trả về túi đồ."
+
+        embed = _equip_bag_embed(self._player_name, bag_items, result_msg)
+        view = EquipBagView(self._discord_id, self._player_name, bag_items, self._back_fn)
+        await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await self._back_fn(interaction)
 
 
 async def setup(bot: commands.Bot) -> None:

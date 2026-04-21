@@ -147,56 +147,6 @@ class InventoryCog(commands.Cog, name="Inventory"):
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="equip", description="Trang bị Pháp Bảo vào slot")
-    @app_commands.describe(slot="Slot: sword / armor / artifact", item_key="Key Pháp Bảo")
-    async def equip(self, interaction: discord.Interaction, slot: str, item_key: str) -> None:
-        if slot not in ("sword", "armor", "artifact"):
-            await interaction.response.send_message(
-                embed=error_embed("Slot không hợp lệ. Chọn: sword / armor / artifact."), ephemeral=True
-            )
-            return
-
-        item_data = registry.get_item(item_key)
-        if not item_data or item_data.get("type") != "artifact":
-            await interaction.response.send_message(
-                embed=error_embed(f"`{item_key}` không phải Pháp Bảo."), ephemeral=True
-            )
-            return
-
-        async with get_session() as session:
-            prepo = PlayerRepository(session)
-            player = await prepo.get_by_discord_id(interaction.user.id)
-            if player is None:
-                await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
-                return
-
-            irepo = InventoryRepository(session)
-            grade = Grade(item_data.get("grade", 1))
-            if not await irepo.has_item(player.id, item_key, grade):
-                await interaction.response.send_message(
-                    embed=error_embed(f"Không có **{item_data['vi']}** trong túi đồ."), ephemeral=True
-                )
-                return
-
-            # Upsert artifact slot
-            from src.db.models.artifact import CharacterArtifact
-            from sqlalchemy import select
-            result = await session.execute(
-                select(CharacterArtifact).where(
-                    CharacterArtifact.player_id == player.id,
-                    CharacterArtifact.slot == slot,
-                )
-            )
-            artifact_row = result.scalar_one_or_none()
-            if artifact_row:
-                artifact_row.artifact_key = item_key
-            else:
-                new_art = CharacterArtifact(player_id=player.id, slot=slot, artifact_key=item_key)
-                session.add(new_art)
-
-        embed = success_embed(f"Đã trang bị **{item_data['vi']}** vào slot **{slot}**.")
-        await interaction.response.send_message(embed=embed, ephemeral=True)
-
     @app_commands.command(name="formation", description="Đổi trận pháp đang dùng")
     @app_commands.describe(formation_key="Key trận pháp (vd: NhatNguyenKim)")
     async def formation(self, interaction: discord.Interaction, formation_key: str) -> None:
