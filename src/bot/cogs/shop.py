@@ -117,9 +117,10 @@ class ShopItemSelect(discord.ui.Select):
 
 
 class ShopView(discord.ui.View):
-    def __init__(self, section: str, discord_id: int) -> None:
+    def __init__(self, section: str, discord_id: int, back_fn=None) -> None:
         super().__init__(timeout=120)
         self._discord_id = discord_id
+        self._back_fn = back_fn
 
         for tab_id, tab_label in [
             ("fixed",    "📚 Cố Định"),
@@ -133,6 +134,11 @@ class ShopView(discord.ui.View):
 
         self.add_item(ShopItemSelect(section, discord_id))
 
+        if back_fn:
+            back = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=2)
+            back.callback = self._back_cb
+            self.add_item(back)
+
     def _make_tab_cb(self, tab_id: str):
         async def _cb(interaction: discord.Interaction) -> None:
             if interaction.user.id != self._discord_id:
@@ -140,9 +146,16 @@ class ShopView(discord.ui.View):
                 return
             await interaction.response.edit_message(
                 embed=_shop_embed(tab_id),
-                view=ShopView(tab_id, self._discord_id),
+                view=ShopView(tab_id, self._discord_id, self._back_fn),
             )
         return _cb
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await self._back_fn(interaction)
 
 
 class ShopBuyView(discord.ui.View):
