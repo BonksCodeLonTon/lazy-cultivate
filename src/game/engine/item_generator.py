@@ -7,10 +7,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     pass
 
-# Percentage stats — stored as float 0.0-1.0, formatted as X%
-_PCT_STATS = frozenset({"final_dmg_bonus", "final_dmg_reduce", "hp_regen_pct", "res_all"})
-
-
 def _pick_affix_tier(affix: dict, grade: int) -> dict | None:
     """Return the best eligible tier for this grade, or None if none qualify."""
     eligible = [t for t in affix["tiers"] if t["grade_req"] <= grade]
@@ -141,11 +137,6 @@ def generate_unique(unique_key: str) -> dict:
         "display_name": uniq["vi"],
         "location": "bag",
     }
-
-
-# Cost (merit) to forge per grade
-FORGE_COST: dict[int, int] = {1: 500, 2: 2_000, 3: 8_000}
-
 
 def grade_from_realm(realm_total: int) -> int:
     """Determine item grade based on average cultivation level."""

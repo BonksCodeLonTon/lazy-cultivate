@@ -48,7 +48,7 @@ def _skill_grade(skill_data: dict) -> int:
 
 GRADE_EMOJI = {1: "🟡", 2: "🟣", 3: "🟢", 4: "🔴"}
 TYPE_EMOJI = {
-    "material": "🪨", "gem": "💠", "scroll": "📜",
+    "forge_material": "🔨", "material": "🪨", "gem": "💠", "scroll": "📜",
     "chest": "📦", "elixir": "⚗️", "special": "⭐", "artifact": "🗡️",
 }
 SLOT_VI: dict[str, str] = {
@@ -64,6 +64,7 @@ SLOT_VI: dict[str, str] = {
 QUALITY_LABEL: dict[int, str] = {1: "Hoàng", 2: "Huyền", 3: "Địa", 4: "Thiên"}
 
 _CATEGORIES: list[tuple[str, str, str]] = [
+    ("🔨", "forge_material",  "Nguyên Liệu Rèn"),
     ("🪨", "material",  "Nguyên Liệu"),
     ("💠", "gem",       "Ngọc"),
     ("📜", "scroll",    "Ngọc Giản"),

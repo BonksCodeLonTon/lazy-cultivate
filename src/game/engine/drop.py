@@ -31,7 +31,7 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass, field
 
-POOL_RANGE = 200.0
+POOL_RANGE = 100.0
 
 
 @dataclass
