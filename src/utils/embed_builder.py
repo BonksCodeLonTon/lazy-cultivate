@@ -106,6 +106,13 @@ def success_embed(message: str) -> discord.Embed:
 
 # ── Character status embed ────────────────────────────────────────────────────
 
+def _rating_to_pct(rating: int) -> float:
+    """Convert a combat rating to a percentage. Formula: rating / (rating + 1300)."""
+    if rating <= 0:
+        return 0.0
+    return rating / (rating + 1300)
+
+
 def character_embed(player_name: str, stats: dict, avatar_url: str | None = None) -> discord.Embed:
     """Clean character status embed.
 
@@ -119,6 +126,10 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         constitution (display name)
         active_formation (display name or None)
         gem_count (int)
+        # Combat stats (optional — omitted if all zero)
+        atk, matk, def_stat
+        crit_rating, crit_dmg_rating, evasion_rating, crit_res_rating
+        final_dmg_bonus (float, e.g. 0.15 = +15%)
     """
     from src.game.constants.currencies import TURNS_PER_CULT_LEVEL
 
@@ -150,6 +161,31 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         value=f"**{spd}**",
         inline=True,
     )
+
+    # ── Combat stats (shown when non-zero) ───────────────────────────────────
+    atk      = stats.get("atk", 0)
+    matk     = stats.get("matk", 0)
+    def_s    = stats.get("def_stat", 0)
+    crit_r   = stats.get("crit_rating", 0)
+    crit_d_r = stats.get("crit_dmg_rating", 0)
+    eva_r    = stats.get("evasion_rating", 0)
+    cres_r   = stats.get("crit_res_rating", 0)
+    fdmg     = stats.get("final_dmg_bonus", 0.0)
+
+    if atk or matk or def_s or crit_r or eva_r or fdmg:
+        crit_pct  = _rating_to_pct(crit_r)
+        cdmg_pct  = _rating_to_pct(crit_d_r)
+        eva_pct   = _rating_to_pct(eva_r)
+        cres_pct  = _rating_to_pct(cres_r)
+
+        combat_lines = [
+            f"⚔️ **{atk:,}** Công  |  🔮 **{matk:,}** Pháp Công  |  🛡️ **{def_s:,}** Phòng Thủ",
+            f"💥 Bạo Kích **{crit_pct:.1%}** (x{1.5 + cdmg_pct:.2f})  |  🌀 Né Tránh **{eva_pct:.1%}**  |  🛡️ Kháng Bạo **{cres_pct:.1%}**",
+        ]
+        if fdmg:
+            combat_lines.append(f"⚡ Tăng Sát Thương **+{fdmg * 100:.1f}%**")
+
+        embed.add_field(name="⚔️ Chiến Lực", value="\n".join(combat_lines), inline=False)
 
     # ── Cultivation (single block) ────────────────────────────────────────────
     active_axis = stats.get("active_axis", "qi")

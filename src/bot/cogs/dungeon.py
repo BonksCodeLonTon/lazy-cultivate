@@ -294,6 +294,10 @@ async def _execute_dungeon(
         skill_keys = [s.skill_key for s in player.skills] if player.skills else ["SkillAtkKim1"]
         player_name = player.name
 
+        from src.game.engine.equipment import compute_equipment_stats
+        equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
+        equip_stats = compute_equipment_stats(equipped)
+
     # Realm total for enemy scaling (computed from char to be always fresh)
     _realm_total = (
         char.body_realm * 9 + char.body_level
@@ -307,7 +311,7 @@ async def _execute_dungeon(
         await interaction.edit_original_response(embed=error_embed("Bí cảnh không tồn tại."), view=None)
         return
 
-    player_c = build_player_combatant(char, skill_keys, gem_count)
+    player_c = build_player_combatant(char, skill_keys, gem_count, equip_stats=equip_stats)
     enemy_keys: list[str] = dungeon.get("enemy_keys", [])
     total_waves = len(enemy_keys)
     boss_key = dungeon.get("boss_key")

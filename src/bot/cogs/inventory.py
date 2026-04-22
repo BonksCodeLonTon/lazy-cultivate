@@ -134,11 +134,20 @@ def _build_equip_embed(equip_bag: list) -> discord.Embed:
 
 
 class InventoryView(discord.ui.View):
-    def __init__(self, discord_id: int, inv_items: list, equip_bag: list, back_fn=None) -> None:
+    def __init__(
+        self,
+        discord_id: int,
+        inv_items: list,
+        equip_bag: list,
+        player_name: str = "",
+        back_fn=None,
+    ) -> None:
         super().__init__(timeout=180)
-        self._discord_id = discord_id
-        self._inv_items  = inv_items
-        self._equip_bag  = equip_bag
+        self._discord_id  = discord_id
+        self._inv_items   = inv_items
+        self._equip_bag   = equip_bag
+        self._player_name = player_name
+        self._back_fn     = back_fn
 
         for i, (emoji, cat, label) in enumerate(_CATEGORIES):
             btn = discord.ui.Button(
@@ -146,7 +155,7 @@ class InventoryView(discord.ui.View):
                 style=discord.ButtonStyle.secondary,
                 row=i // 4,
             )
-            btn.callback = self._make_cb(cat, label, emoji)
+            btn.callback = self._make_equipment_cb() if cat == "equipment" else self._make_cb(cat, label, emoji)
             self.add_item(btn)
 
         overview_btn = discord.ui.Button(label="📊 Tổng Quan", style=discord.ButtonStyle.primary, row=1)
@@ -155,7 +164,7 @@ class InventoryView(discord.ui.View):
 
         if back_fn is not None:
             back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=2)
-            back_btn.callback = self._make_back_cb(back_fn)
+            back_btn.callback = self._back_cb
             self.add_item(back_btn)
 
     def _make_cb(self, cat: str, label: str, emoji: str):
@@ -169,14 +178,46 @@ class InventoryView(discord.ui.View):
             )
         return _cb
 
-    def _make_back_cb(self, back_fn):
+    def _make_equipment_cb(self):
         async def _cb(interaction: discord.Interaction) -> None:
             if interaction.user.id != self._discord_id:
                 await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
                 return
             await interaction.response.defer()
-            await back_fn(interaction)
+
+            from src.bot.cogs.equipment import EquipBagView, _equip_bag_embed
+
+            # Reload fresh bag data so we always show current state
+            async with get_session() as session:
+                from src.db.repositories.player_repo import PlayerRepository as PR
+                player = await PR(session).get_by_discord_id(interaction.user.id)
+                equip_bag = await EquipmentRepository(session).get_bag(player.id)
+                player_name = player.name if player else self._player_name
+
+            async def back_to_inventory(inter: discord.Interaction) -> None:
+                async with get_session() as s:
+                    from src.db.repositories.player_repo import PlayerRepository as PR2
+                    p = await PR2(s).get_by_discord_id(inter.user.id)
+                    fresh_inv = await InventoryRepository(s).get_all(p.id)
+                    fresh_equip = await EquipmentRepository(s).get_bag(p.id)
+                embed = _build_hub_embed(fresh_inv, fresh_equip)
+                view = InventoryView(
+                    self._discord_id, fresh_inv, fresh_equip,
+                    p.name, back_fn=self._back_fn,
+                )
+                await inter.edit_original_response(embed=embed, view=view)
+
+            embed = _equip_bag_embed(player_name, equip_bag)
+            view = EquipBagView(self._discord_id, player_name, equip_bag, back_fn=back_to_inventory)
+            await interaction.edit_original_response(embed=embed, view=view)
         return _cb
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await self._back_fn(interaction)
 
     async def _overview_cb(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self._discord_id:
@@ -203,7 +244,7 @@ class InventoryCog(commands.Cog, name="Inventory"):
             inv_items  = await irepo.get_all(player.id)
             equip_bag  = await equip_repo.get_bag(player.id)
 
-        view  = InventoryView(interaction.user.id, inv_items, equip_bag)
+        view  = InventoryView(interaction.user.id, inv_items, equip_bag, player.name)
         embed = _build_hub_embed(inv_items, equip_bag)
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 

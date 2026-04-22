@@ -11,7 +11,7 @@ from src.data.registry import registry
 from src.db.connection import get_session
 from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.player_repo import PlayerRepository
-from src.game.engine.equipment import SLOT_LABELS, SLOT_ORDER, compute_equipment_stats, format_computed_stats, format_stat
+from src.game.engine.equipment import SLOT_LABELS, SLOT_ORDER, STAT_LABELS, compute_equipment_stats, format_computed_stats, format_stat
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
