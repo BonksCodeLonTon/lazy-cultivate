@@ -106,6 +106,34 @@ def success_embed(message: str) -> discord.Embed:
 
 # ── Character status embed ────────────────────────────────────────────────────
 
+from src.game.engine.rating import rating_to_pct as _engine_rating_to_pct
+from src.game.constants.balance import (
+    BASE_CRIT_CHANCE,
+    MAX_CRIT_CHANCE,
+    BASE_CRIT_DMG_MULT,
+    BASE_EVASION,
+)
+
+
+def _rating_to_pct(rating: int) -> float:
+    if rating <= 0:
+        return 0.0
+    return _engine_rating_to_pct(rating)
+
+
+def _display_crit_chance(crit_rating: int) -> float:
+    """Crit % as seen in combat (base + rating conversion, capped). No opponent resistance."""
+    return min(BASE_CRIT_CHANCE + _rating_to_pct(crit_rating), MAX_CRIT_CHANCE)
+
+
+def _display_crit_dmg_mult(crit_dmg_rating: int) -> float:
+    return BASE_CRIT_DMG_MULT + _rating_to_pct(crit_dmg_rating)
+
+
+def _display_evasion(evasion_rating: int) -> float:
+    return BASE_EVASION + _rating_to_pct(evasion_rating)
+
+
 def character_embed(player_name: str, stats: dict, avatar_url: str | None = None) -> discord.Embed:
     """Clean character status embed.
 
@@ -119,6 +147,13 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         constitution (display name)
         active_formation (display name or None)
         gem_count (int)
+        # Combat stats (optional — omitted if all zero)
+        atk, matk, def_stat
+        crit_rating, crit_dmg_rating, evasion_rating, crit_res_rating
+        final_dmg_bonus (float, e.g. 0.15 = +15%)
+        # Equipment (optional)
+        equipped_by_slot (dict[slot_key, display_name])
+        resistances (dict[element, float] — only non-zero entries)
     """
     from src.game.constants.currencies import TURNS_PER_CULT_LEVEL
 
@@ -150,6 +185,31 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         value=f"**{spd}**",
         inline=True,
     )
+
+    # ── Combat stats (shown when non-zero) ───────────────────────────────────
+    atk      = stats.get("atk", 0)
+    matk     = stats.get("matk", 0)
+    def_s    = stats.get("def_stat", 0)
+    crit_r   = stats.get("crit_rating", 0)
+    crit_d_r = stats.get("crit_dmg_rating", 0)
+    eva_r    = stats.get("evasion_rating", 0)
+    cres_r   = stats.get("crit_res_rating", 0)
+    fdmg     = stats.get("final_dmg_bonus", 0.0)
+
+    if atk or matk or def_s or crit_r or eva_r or fdmg:
+        crit_pct  = _display_crit_chance(crit_r)
+        cdmg_mult = _display_crit_dmg_mult(crit_d_r)
+        eva_pct   = _display_evasion(eva_r)
+        cres_pct  = _rating_to_pct(cres_r)
+
+        combat_lines = [
+            f"⚔️ **{atk:,}** Công  |  🔮 **{matk:,}** Pháp Công  |  🛡️ **{def_s:,}** Phòng Thủ",
+            f"💥 Bạo Kích **{crit_pct:.1%}** (x{cdmg_mult:.2f})  |  🌀 Né Tránh **{eva_pct:.1%}**  |  🛡️ Kháng Bạo **{cres_pct:.1%}**",
+        ]
+        if fdmg:
+            combat_lines.append(f"⚡ Tăng Sát Thương **+{fdmg * 100:.1f}%**")
+
+        embed.add_field(name="⚔️ Chiến Lực", value="\n".join(combat_lines), inline=False)
 
     # ── Cultivation (single block) ────────────────────────────────────────────
     active_axis = stats.get("active_axis", "qi")
@@ -207,6 +267,34 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         detail = f"🧬 **{constitution}**\n🔯 *(chưa kích hoạt trận pháp)*"
 
     embed.add_field(name="Thể Chất & Trận Pháp", value=detail, inline=False)
+
+    # ── Equipped gear ─────────────────────────────────────────────────────────
+    from src.game.engine.equipment import SLOT_LABELS, SLOT_ORDER
+    equipped_by_slot: dict[str, str] = stats.get("equipped_by_slot", {})
+    if equipped_by_slot:
+        lines = [
+            f"{SLOT_LABELS.get(slot, slot)}: **{equipped_by_slot[slot]}**"
+            for slot in SLOT_ORDER
+            if slot in equipped_by_slot
+        ]
+        embed.add_field(name="🗡️ Trang Bị", value="\n".join(lines), inline=False)
+
+    # ── Elemental resistances ─────────────────────────────────────────────────
+    _ELEM_EMOJI_MAP = {
+        "kim":   "⚙️", "moc":   "🌿", "thuy":  "💧", "hoa":   "🔥",
+        "tho":   "🪨", "loi":   "⚡", "phong": "🌬️", "am":    "🌑", "quang": "☀️",
+    }
+    _ELEM_VI = {
+        "kim":   "Kim", "moc":   "Mộc", "thuy":  "Thủy", "hoa":  "Hỏa",
+        "tho":   "Thổ", "loi":   "Lôi", "phong": "Phong", "am":  "Âm", "quang": "Quang",
+    }
+    resistances: dict[str, float] = stats.get("resistances", {})
+    if resistances:
+        res_parts = [
+            f"{_ELEM_EMOJI_MAP.get(elem, elem)} {_ELEM_VI.get(elem, elem)} **{val * 100:.1f}%**"
+            for elem, val in resistances.items()
+        ]
+        embed.add_field(name="🛡️ Kháng Nguyên Tố", value="  ".join(res_parts), inline=False)
 
     embed.set_footer(text=FOOTER_TEXT)
     return embed

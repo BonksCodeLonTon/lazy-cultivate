@@ -1,0 +1,14 @@
+[
+  {
+    "key": "trib_qi_3",
+    "vi": "Nguyên Anh Thiên Kiếp",
+    "en": "Nascent Soul Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 7,
+    "element": "loi",
+    "base_hp": 1000,
+    "base_spd": 16,
+    "hp_scale": 2.0,
+    "skill_keys": ["EnemyTribLoi_T3"]
+  }
+]

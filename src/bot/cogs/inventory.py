@@ -11,6 +11,7 @@ from sqlalchemy import select
 from src.data.registry import registry
 from src.db.connection import get_session
 from src.db.models.skill import CharacterSkill, MAX_SKILL_SLOTS
+from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository
 from src.db.repositories.formation_repo import FormationRepository
@@ -45,11 +46,34 @@ def _skill_grade(skill_data: dict) -> int:
         return 3
     return 4
 
-GRADE_EMOJI = {1: "🟡", 2: "🟣", 3: "🟢", 4: "🔴"}
+GRADE_EMOJI = {1: "⚪", 2: "🟢", 3: "🔵", 4: "🟡"}
+
 TYPE_EMOJI = {
-    "material": "🪨", "gem": "💠", "scroll": "📜",
+    "forge_material": "🔨", "material": "🪨", "gem": "💠", "scroll": "📜",
     "chest": "📦", "elixir": "⚗️", "special": "⭐", "artifact": "🗡️",
 }
+SLOT_VI: dict[str, str] = {
+    "weapon":   "Vũ Khí",
+    "off_hand": "Phụ Thủ",
+    "armor":    "Giáp",
+    "helmet":   "Mũ Giáp",
+    "glove":    "Găng Tay",
+    "belt":     "Đai Lưng",
+    "ring":     "Nhẫn",
+    "amulet":   "Bùa Hộ Mệnh",
+}
+QUALITY_LABEL: dict[int, str] = {1: "Hoàng", 2: "Huyền", 3: "Địa", 4: "Thiên"}
+
+_CATEGORIES: list[tuple[str, str, str]] = [
+    ("🔨", "forge_material",  "Nguyên Liệu Rèn"),
+    ("🪨", "material",  "Nguyên Liệu"),
+    ("💠", "gem",       "Ngọc"),
+    ("📜", "scroll",    "Ngọc Giản"),
+    ("⚗️", "elixir",   "Đan Dược"),
+    ("📦", "chest",     "Rương"),
+    ("⭐", "special",   "Đặc Biệt"),
+    ("🗡️", "equipment", "Trang Bị"),
+]
 
 
 def _item_display(item_key: str, grade: int, quantity: int) -> str:
@@ -60,48 +84,171 @@ def _item_display(item_key: str, grade: int, quantity: int) -> str:
     return f"{t_emoji}{g_emoji} **{name}** × {quantity}"
 
 
+def _build_hub_embed(inv_items: list, equip_bag: list) -> discord.Embed:
+    embed = base_embed("🎒 Túi Đồ", "Chọn danh mục để xem chi tiết.", color=0x95A5A6)
+    counts: dict[str, int] = {}
+    for it in inv_items:
+        item_data = registry.get_item(it.item_key)
+        cat = item_data.get("type", "?") if item_data else "?"
+        counts[cat] = counts.get(cat, 0) + 1
+    lines = []
+    for emoji, cat, label in _CATEGORIES:
+        if cat == "equipment":
+            lines.append(f"{emoji} **{label}**: {len(equip_bag)} món")
+        else:
+            lines.append(f"{emoji} **{label}**: {counts.get(cat, 0)} loại")
+    embed.add_field(name="Tổng quan", value="\n".join(lines), inline=False)
+    return embed
+
+
+def _build_category_embed(cat: str, label: str, emoji: str, inv_items: list, equip_bag: list) -> discord.Embed:
+    if cat == "equipment":
+        return _build_equip_embed(equip_bag)
+    filtered = [it for it in inv_items if (registry.get_item(it.item_key) or {}).get("type") == cat]
+    embed = discord.Embed(title=f"🎒 Túi Đồ — {emoji} {label}", color=0x95A5A6)
+    if not filtered:
+        embed.description = "Không có vật phẩm."
+        return embed
+    lines = [_item_display(it.item_key, it.grade, it.quantity)
+             for it in sorted(filtered, key=lambda x: (x.grade, x.item_key))]
+    embed.add_field(name=f"Tổng: {len(filtered)} loại", value="\n".join(lines[:20]) or "—", inline=False)
+    if len(lines) > 20:
+        embed.set_footer(text=f"... và {len(lines) - 20} loại khác")
+    return embed
+
+
+def _build_equip_embed(equip_bag: list) -> discord.Embed:
+    embed = discord.Embed(title="🎒 Túi Đồ — 🗡️ Trang Bị", color=0x95A5A6)
+    if not equip_bag:
+        embed.description = "Không có trang bị trong túi."
+        return embed
+    by_slot: dict[str, list] = {}
+    for inst in equip_bag:
+        by_slot.setdefault(inst.slot, []).append(inst)
+    for slot, insts in sorted(by_slot.items()):
+        lines = [
+            f"• [{QUALITY_LABEL.get(inst.grade, str(inst.grade))}] **{inst.display_name}** `ID:{inst.id}`"
+            for inst in insts[:10]
+        ]
+        embed.add_field(name=SLOT_VI.get(slot, slot), value="\n".join(lines), inline=True)
+    embed.set_footer(text=f"Tổng: {len(equip_bag)} trang bị trong túi")
+    return embed
+
+
+class InventoryView(discord.ui.View):
+    def __init__(
+        self,
+        discord_id: int,
+        inv_items: list,
+        equip_bag: list,
+        player_name: str = "",
+        back_fn=None,
+    ) -> None:
+        super().__init__(timeout=180)
+        self._discord_id  = discord_id
+        self._inv_items   = inv_items
+        self._equip_bag   = equip_bag
+        self._player_name = player_name
+        self._back_fn     = back_fn
+
+        for i, (emoji, cat, label) in enumerate(_CATEGORIES):
+            btn = discord.ui.Button(
+                label=f"{emoji} {label}",
+                style=discord.ButtonStyle.secondary,
+                row=i // 4,
+            )
+            btn.callback = self._make_equipment_cb() if cat == "equipment" else self._make_cb(cat, label, emoji)
+            self.add_item(btn)
+
+        overview_btn = discord.ui.Button(label="📊 Tổng Quan", style=discord.ButtonStyle.primary, row=1)
+        overview_btn.callback = self._overview_cb
+        self.add_item(overview_btn)
+
+        if back_fn is not None:
+            back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=2)
+            back_btn.callback = self._back_cb
+            self.add_item(back_btn)
+
+    def _make_cb(self, cat: str, label: str, emoji: str):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if interaction.user.id != self._discord_id:
+                await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
+                return
+            await interaction.response.defer()
+            await interaction.edit_original_response(
+                embed=_build_category_embed(cat, label, emoji, self._inv_items, self._equip_bag)
+            )
+        return _cb
+
+    def _make_equipment_cb(self):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if interaction.user.id != self._discord_id:
+                await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
+                return
+            await interaction.response.defer()
+
+            from src.bot.cogs.equipment import EquipBagView, _equip_bag_embed
+
+            # Reload fresh bag data so we always show current state
+            async with get_session() as session:
+                from src.db.repositories.player_repo import PlayerRepository as PR
+                player = await PR(session).get_by_discord_id(interaction.user.id)
+                equip_bag = await EquipmentRepository(session).get_bag(player.id)
+                player_name = player.name if player else self._player_name
+
+            async def back_to_inventory(inter: discord.Interaction) -> None:
+                async with get_session() as s:
+                    from src.db.repositories.player_repo import PlayerRepository as PR2
+                    p = await PR2(s).get_by_discord_id(inter.user.id)
+                    fresh_inv = await InventoryRepository(s).get_all(p.id)
+                    fresh_equip = await EquipmentRepository(s).get_bag(p.id)
+                embed = _build_hub_embed(fresh_inv, fresh_equip)
+                view = InventoryView(
+                    self._discord_id, fresh_inv, fresh_equip,
+                    p.name, back_fn=self._back_fn,
+                )
+                await inter.edit_original_response(embed=embed, view=view)
+
+            embed = _equip_bag_embed(player_name, equip_bag)
+            view = EquipBagView(self._discord_id, player_name, equip_bag, back_fn=back_to_inventory)
+            await interaction.edit_original_response(embed=embed, view=view)
+        return _cb
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await self._back_fn(interaction)
+
+    async def _overview_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await interaction.edit_original_response(embed=_build_hub_embed(self._inv_items, self._equip_bag))
+
+
 class InventoryCog(commands.Cog, name="Inventory"):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
     @app_commands.command(name="inventory", description="Xem túi đồ")
-    @app_commands.describe(filter_type="Lọc theo loại: material / gem / scroll / elixir / chest / special")
-    async def inventory(self, interaction: discord.Interaction, filter_type: str | None = None) -> None:
+    async def inventory(self, interaction: discord.Interaction) -> None:
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
             if player is None:
-                await interaction.response.send_message(
-                    embed=error_embed("Chưa có nhân vật."), ephemeral=True
-                )
+                await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
+            irepo      = InventoryRepository(session)
+            equip_repo = EquipmentRepository(session)
+            inv_items  = await irepo.get_all(player.id)
+            equip_bag  = await equip_repo.get_bag(player.id)
 
-            irepo = InventoryRepository(session)
-            items = await irepo.get_all(player.id)
-
-        if filter_type:
-            items = [i for i in items if (registry.get_item(i.item_key) or {}).get("type") == filter_type]
-
-        if not items:
-            desc = "Túi đồ trống." if not filter_type else f"Không có vật phẩm loại **{filter_type}**."
-            await interaction.response.send_message(
-                embed=base_embed("🎒 Túi Đồ", desc), ephemeral=True
-            )
-            return
-
-        # Group by type for display
-        lines: list[str] = []
-        for inv_item in sorted(items, key=lambda x: (x.grade, x.item_key)):
-            lines.append(_item_display(inv_item.item_key, inv_item.grade, inv_item.quantity))
-
-        # Paginate into embed fields (max 25 items per embed)
-        embed = base_embed("🎒 Túi Đồ", f"Tổng: **{len(items)}** loại vật phẩm", color=0x95A5A6)
-        chunk = lines[:20]
-        embed.add_field(name="\u200b", value="\n".join(chunk) or "—", inline=False)
-        if len(lines) > 20:
-            embed.set_footer(text=f"... và {len(lines) - 20} loại khác. Dùng /inventory <loại> để lọc.")
-
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        view  = InventoryView(interaction.user.id, inv_items, equip_bag, player.name)
+        embed = _build_hub_embed(inv_items, equip_bag)
+        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
     @app_commands.command(name="use", description="Sử dụng đan dược / vật phẩm")
     @app_commands.describe(item_key="Key của vật phẩm (vd: DanHoiHPSmall)", quantity="Số lượng dùng")
@@ -145,56 +292,6 @@ class InventoryCog(commands.Cog, name="Inventory"):
         embed = success_embed(
             f"Sử dụng **{item_data['vi']} × {quantity}**\n" + "\n".join(effects)
         )
-        await interaction.response.send_message(embed=embed, ephemeral=True)
-
-    @app_commands.command(name="equip", description="Trang bị Pháp Bảo vào slot")
-    @app_commands.describe(slot="Slot: sword / armor / artifact", item_key="Key Pháp Bảo")
-    async def equip(self, interaction: discord.Interaction, slot: str, item_key: str) -> None:
-        if slot not in ("sword", "armor", "artifact"):
-            await interaction.response.send_message(
-                embed=error_embed("Slot không hợp lệ. Chọn: sword / armor / artifact."), ephemeral=True
-            )
-            return
-
-        item_data = registry.get_item(item_key)
-        if not item_data or item_data.get("type") != "artifact":
-            await interaction.response.send_message(
-                embed=error_embed(f"`{item_key}` không phải Pháp Bảo."), ephemeral=True
-            )
-            return
-
-        async with get_session() as session:
-            prepo = PlayerRepository(session)
-            player = await prepo.get_by_discord_id(interaction.user.id)
-            if player is None:
-                await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
-                return
-
-            irepo = InventoryRepository(session)
-            grade = Grade(item_data.get("grade", 1))
-            if not await irepo.has_item(player.id, item_key, grade):
-                await interaction.response.send_message(
-                    embed=error_embed(f"Không có **{item_data['vi']}** trong túi đồ."), ephemeral=True
-                )
-                return
-
-            # Upsert artifact slot
-            from src.db.models.artifact import CharacterArtifact
-            from sqlalchemy import select
-            result = await session.execute(
-                select(CharacterArtifact).where(
-                    CharacterArtifact.player_id == player.id,
-                    CharacterArtifact.slot == slot,
-                )
-            )
-            artifact_row = result.scalar_one_or_none()
-            if artifact_row:
-                artifact_row.artifact_key = item_key
-            else:
-                new_art = CharacterArtifact(player_id=player.id, slot=slot, artifact_key=item_key)
-                session.add(new_art)
-
-        embed = success_embed(f"Đã trang bị **{item_data['vi']}** vào slot **{slot}**.")
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="formation", description="Đổi trận pháp đang dùng")

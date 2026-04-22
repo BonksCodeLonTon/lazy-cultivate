@@ -1,0 +1,602 @@
+[
+  {
+    "key": "KiemTamThach",
+    "vi": "Kiếm Tâm Thạch",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Kim",
+    "affix_bias": ["pfx_crit_rate", "pfx_crit_dmg", "pfx_atk"],
+    "effect": "Tăng mạnh độ sắc bén, cải thiện độ truyền dẫn linh khí và tăng tỷ lệ bạo kích khi luyện chế phi kiếm.",
+    "desc": "Một loại khoáng thạch ẩn chứa kiếm khí bẩm sinh, bề mặt có những vết nứt tự nhiên như vết kiếm chém. Thường chỉ tìm thấy ở những nơi các đại năng kiếm tu từng giao chiến."
+  },
+  {
+    "key": "HanThiet",
+    "vi": "Hàn Thiết",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Thủy",
+    "affix_bias": ["pfx_dmg_reduce", "sfx_crit_res", "pfx_def"],
+    "effect": "Tăng độ cứng cáp cho pháp bảo. Khi tấn công có tỷ lệ kèm theo hiệu ứng hàn khí, làm chậm tốc độ hoặc đóng băng đối thủ.",
+    "desc": "Khối quặng sắt lạnh lẽo được khai thác từ ngàn trượng dưới đáy hàn đàm. Người phàm chạm vào lập tức bị hơi lạnh thấu xương làm cho tê cóng."
+  },
+  {
+    "key": "HuyenThuyTinh",
+    "vi": "Huyền Thủy Tinh",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Thủy",
+    "affix_bias": ["pfx_dmg_reduce", "pfx_evasion", "sfx_crit_res"],
+    "effect": "Tăng cường tính uyển chuyển và linh hoạt cho pháp bảo. Cung cấp khả năng hấp thu sát thương và phản lại một phần lực tác động bằng bọt nước.",
+    "desc": "Khối tinh thể xanh biếc hình thành dưới đáy sâu của những linh hồ, chứa đựng Thủy linh khí thuần khiết. Tính chất nhu hòa nhưng ẩn chứa lực lượng cuồn cuộn như sóng ngầm."
+  },
+  {
+    "key": "CanKim",
+    "vi": "Càn Kim",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Kim",
+    "affix_bias": ["pfx_atk", "pfx_crit_rate", "pfx_final_dmg"],
+    "effect": "Tăng cường tính kiên cố, khả năng phá giáp và xuyên thủng pháp thuật phòng ngự.",
+    "desc": "Loại kim loại quý hiếm hấp thụ tinh hoa của nhật nguyệt mà thành, tản ra ánh sáng sắc bén chói mắt, là vật liệu thượng thừa để đúc tạo các pháp bảo mang tính sát phạt."
+  },
+  {
+    "key": "MocNguyenThiet",
+    "vi": "Mộc Nguyên Thiết",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Mộc",
+    "affix_bias": ["pfx_regen", "sfx_regen", "pfx_hp"],
+    "effect": "Giúp pháp bảo có khả năng tự động phục hồi độ bền theo thời gian. Nếu đúc thành mộc trượng hoặc áo giáp, có thể tăng tốc độ hồi phục sinh lực cho chủ nhân.",
+    "desc": "Quặng sắt kỳ lạ ngưng tụ trong lõi của những cây cổ thụ ngàn năm. Dù là kim loại nhưng lại tỏa ra sinh cơ dạt dào của thân mộc."
+  },
+  {
+    "key": "DiemThiet",
+    "vi": "Diễm Thiết",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Hỏa",
+    "affix_bias": ["pfx_final_dmg", "sfx_dmg_bonus", "pfx_matk"],
+    "effect": "Tích hợp hỏa độc vào vũ khí, tăng cường sát thương hỏa hệ và gây hiệu ứng thiêu đốt kéo dài lên mục tiêu.",
+    "desc": "Sinh ra từ sâu trong dung nham núi lửa, khối quặng này luôn tỏa ra nhiệt lượng hừng hực, cầm trên tay có cảm giác như đang nắm giữ một hòn than rực hồng."
+  },
+  {
+    "key": "ThoLinhThiet",
+    "vi": "Thổ Linh Thiết",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Thổ",
+    "affix_bias": ["pfx_hp", "pfx_def", "pfx_dmg_reduce"],
+    "effect": "Tăng mạnh lực phòng ngự vật lý, tạo ra từ trường trọng lực nhẹ để kháng lại các đòn đánh bay. Cực kỳ phù hợp để luyện chế thuẫn bài hoặc trọng giáp.",
+    "desc": "Khối linh thiết hấp thụ hậu thổ chi khí hàng trăm năm, trọng lượng nặng gấp mười lần sắt thép thông thường, mang lại cảm giác vững chãi tựa thái sơn."
+  },
+  {
+    "key": "LoiNgoc",
+    "vi": "Lôi Ngọc",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Lôi",
+    "affix_bias": ["pfx_crit_rate", "pfx_crit_dmg", "sfx_crit"],
+    "effect": "Tăng tốc độ xuất kích của pháp bảo. Các đòn tấn công có mang theo lôi điện, gây sát thương lan và có tỷ lệ gây tê liệt đối thủ.",
+    "desc": "Viên ngọc thạch trong suốt ngưng tụ từ những đỉnh núi quanh năm bị sét đánh. Bên trong lõi ngọc thỉnh thoảng lại có những tia lôi điện nhỏ bé xẹt qua."
+  },
+  {
+    "key": "KhinhPhongThiet",
+    "vi": "Khinh Phong Thiết",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Phong",
+    "affix_bias": ["pfx_evasion", "sfx_evasion", "pfx_final_dmg"],
+    "effect": "Giảm đáng kể trọng lượng của pháp bảo, tăng tốc độ phi hành và tốc độ xuất chiêu. Khi tấn công có thể tạo ra phong nhận phụ trợ.",
+    "desc": "Loại khoáng thiết xốp nhưng vô cùng dẻo dai, được đẽo gọt bởi cuồng phong ngàn năm tại các hẻm núi sâu. Cầm trên tay nhẹ tựa lông hồng."
+  },
+  {
+    "key": "UAnhSa",
+    "vi": "U Ảnh Sa",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Ám",
+    "affix_bias": ["pfx_evasion", "sfx_evasion", "pfx_crit_dmg"],
+    "effect": "Che giấu linh lực dao động của pháp bảo. Đòn đánh có kèm theo ám khí, ăn mòn linh lực và cản trở khả năng hồi phục của đối phương.",
+    "desc": "Những hạt cát đen kịt tỏa ra hắc khí nhàn nhạt, được thu thập từ những vực sâu không thấy ánh mặt trời. Mang trong mình sức mạnh cắn nuốt ánh sáng."
+  },
+  {
+    "key": "NhatDieuThach",
+    "vi": "Nhật Diệu Thạch",
+    "type": "forge_material",
+    "grade": 1,
+    "element": "Quang",
+    "affix_bias": ["pfx_res", "sfx_res_all", "pfx_matk"],
+    "effect": "Pháp bảo phát ra quang mang tịnh hóa, khắc chế mạnh mẽ ma tu và quỷ vật. Có tỷ lệ gây mù lòa tạm thời cho kẻ địch.",
+    "desc": "Khoáng thạch trong suốt ngưng tụ tinh hoa của ánh sáng mặt trời trên đỉnh cao nguyên. Khi truyền linh lực vào sẽ tỏa ra ánh sáng ấm áp, rực rỡ nhưng mang tính hủy diệt với tà ma."
+  },
+  {
+    "key": "HanTamThiet",
+    "vi": "Hàn Tâm Thiết",
+    "type": "forge_material",
+    "grade": 2,
+    "element": "Thủy",
+    "affix_bias": ["pfx_dmg_reduce", "sfx_crit_res", "pfx_def"],
+    "effect": "Tỏa ra cực hàn chi khí, có tỷ lệ cao đóng băng kinh mạch đối thủ và làm chậm tốc độ xuất chiêu của pháp bảo địch.",
+    "desc": "Loại thiết ngưng tụ vạn năm dưới đáy hải nhãn. Bề mặt nhẵn thính như gương và luôn bốc lên hàn khí lạnh lẽo có thể đóng băng cả linh hồn."
+  },
+  {
+    "key": "CanLinhKim",
+    "vi": "Càn Linh Kim",
+    "type": "forge_material",
+    "grade": 2,
+    "element": "Kim",
+    "affix_bias": ["pfx_atk", "pfx_crit_rate", "pfx_final_dmg"],
+    "effect": "Hấp thu linh khí thiên địa để tự cường hóa độ cứng, sở hữu khả năng phá thủng các loại linh năng hộ thuẫn cấp cao.",
+    "desc": "Phiên bản ngưng tụ tinh hoa cao cấp hơn của Càn Kim, chỉ sinh ra ở những mỏ quặng ngàn năm chưa từng bị khai thác. Ánh kim quang tỏa ra có thể làm mù mắt người phàm."
+  },
+  {
+    "key": "TinhVanThiet",
+    "vi": "Tinh Vẫn Thiết",
+    "type": "forge_material",
+    "grade": 2,
+    "element": "Thổ",
+    "affix_bias": ["pfx_hp", "pfx_def", "sfx_hp"],
+    "effect": "Chứa đựng trọng lực tinh tú, khiến đòn đánh mang theo sức nặng ngàn cân. Khi chạm đất có thể tạo ra chấn động gây choáng váng diện rộng.",
+    "desc": "Thiên thạch rơi từ cửu thiên vũ trụ xuống, ngưng tụ tinh hoa thổ hệ của vô số vì sao. Kích thước chỉ bằng nắm tay nhưng nặng tựa ngọn đồi."
+  },
+  {
+    "key": "SamLangDong",
+    "vi": "Sâm Lăng Đồng",
+    "type": "forge_material",
+    "grade": 2,
+    "element": "Mộc",
+    "affix_bias": ["pfx_regen", "sfx_regen", "pfx_hp"],
+    "effect": "Cường hóa sinh mệnh lực của pháp bảo, liên tục hút lấy sinh cơ của mộc tinh xung quanh để tự tu bổ hư hỏng và tạo ra mộc thích (gai nhọn) phản đòn.",
+    "desc": "Khối đồng xanh kỳ lạ mọc ra rễ như rễ cây, được rèn dũa trong bí cảnh rừng sâu ngàn năm. Nó mang theo sự sắc bén lạnh lẽo ẩn giấu trong lớp vỏ đầy sinh cơ."
+  },
+  {
+    "key": "NguyetLinhThiet",
+    "vi": "Nguyệt Linh Thiết",
+    "type": "forge_material",
+    "grade": 2,
+    "element": "Ám",
+    "affix_bias": ["pfx_evasion", "sfx_evasion", "sfx_crit_res"],
+    "effect": "Hấp thụ ánh sáng và che đậy sát khí, khiến đòn đánh trở nên vô thanh vô tức. Khắc chế mạnh mẽ các loại pháp thuật thần thức dò xét.",
+    "desc": "Khoáng thạch tắm mình dưới ánh trăng rằm hàng ngàn năm tại Cực Âm Địa. Nó tản ra vầng sáng âm u mờ ảo, giống như một mảnh trăng khuyết bị phong ấn."
+  },
+  {
+    "key": "XichDiemThiet",
+    "vi": "Xích Diễm Thiết",
+    "type": "forge_material",
+    "grade": 2,
+    "element": "Hỏa",
+    "affix_bias": ["pfx_final_dmg", "sfx_dmg_bonus", "pfx_matk"],
+    "effect": "Bộc phát viêm hỏa cuồng bạo có khả năng thiêu rụi cả linh lực của kẻ địch. Mỗi đòn đánh đều kèm theo hỏa độc thấu xương khó có thể dập tắt.",
+    "desc": "Thiết tinh được rèn luyện ngàn năm trong lõi nhiệt của tâm núi lửa. Nó không ngừng tỏa nhiệt lượng khủng khiếp, có thể nung chảy sắt thép thông thường chỉ trong nháy mắt."
+  },
+  {
+    "key": "DoanKiemThietTinh",
+    "vi": "Đoán Kiếm Thiết Tinh",
+    "type": "forge_material",
+    "grade": 2,
+    "element": "Kim",
+    "affix_bias": ["pfx_atk", "pfx_crit_dmg", "pfx_crit_rate"],
+    "effect": "Nguyên liệu chí bảo dành riêng cho kiếm tu. Tăng cực đại uy lực phi kiếm, giúp kiếm khí có thể xé rách lớp phòng ngự không gian ở mức độ nhẹ.",
+    "desc": "Phần tinh túy nhất chắt lọc từ hàng vạn cân quặng sắt tốt, trải qua vô số lần thiên búa vạn nện của các đại tông sư luyện khí mới miễn cưỡng hình thành."
+  },
+  {
+    "key": "KinhLoiThiet",
+    "vi": "Kinh Lôi Thiết",
+    "type": "forge_material",
+    "grade": 2,
+    "element": "Lôi",
+    "affix_bias": ["pfx_crit_dmg", "pfx_crit_rate", "sfx_crit"],
+    "effect": "Chứa đựng lôi uy cuồn cuộn, có tỷ lệ gây hiệu ứng 'Đoạn Mạch' (gián đoạn vận công linh lực) và phóng hồ quang điện giật nhiều mục tiêu cùng lúc.",
+    "desc": "Khối khoáng thạch nằm tại lôi kiếp đài, liên tục hấp thụ lôi kiếp từ các bậc đại năng độ kiếp mài giũa mà thành. Bên trong thỉnh thoảng vang lên tiếng sấm rền rĩ."
+  },
+  {
+    "key": "CuangPhongThiet",
+    "vi": "Cương Phong Thiết",
+    "type": "forge_material",
+    "grade": 2,
+    "element": "Phong",
+    "affix_bias": ["pfx_evasion", "pfx_final_dmg", "sfx_evasion"],
+    "effect": "Xé gió mà đi, tăng tốc độ bạo phát của pháp bảo lên cực hạn. Khi vung lên sẽ tạo ra những luồng cương phong sắc như dao bảo vệ quanh thân người dùng.",
+    "desc": "Thanh thiết được sinh ra trong mắt bão của những trận cuồng phong ngàn dặm. Trọng lượng gần như bằng không nhưng sở hữu độ bén có thể cắt đứt dòng chảy của thác nước."
+  },
+  {
+    "key": "HuyenQuangThiet",
+    "vi": "Huyễn Quang Thiết",
+    "type": "forge_material",
+    "grade": 2,
+    "element": "Quang",
+    "affix_bias": ["pfx_res", "pfx_mp", "sfx_res_all"],
+    "effect": "Tỏa ra thần quang rực rỡ khiến đối phương chói mắt mất phương hướng. Có sức mạnh tịnh hóa mạnh mẽ, xua tan nguyền rủa và sát khí quanh diện rộng.",
+    "desc": "Kết tinh từ luồng sáng đầu tiên của bình minh hội tụ trên Vạn Phật Đỉnh. Vật liệu này mang theo thánh uy lẫm liệt, tà ma ngoại đạo vừa nhìn thấy đã bị bỏng rát linh hồn."
+  },
+  {
+    "key": "BachNienDoanKiemThiet",
+    "vi": "Bách Niên Đoán Kiếm Thiết",
+    "type": "forge_material",
+    "grade": 3,
+    "element": "Kim",
+    "affix_bias": ["pfx_crit_rate", "pfx_atk", "pfx_final_dmg"],
+    "effect": "Chứa đựng sát khí của hàng vạn thanh kiếm, giúp pháp bảo có khả năng bỏ qua 30% pháp thuật phòng ngự. Tự động phóng ra các tia kiếm khí hộ thể.",
+    "desc": "Khoáng thạch ngâm trong Tẩy Kiếm Trì suốt một trăm năm, hấp thụ vô số kiếm ý của các bậc tiền bối. Bề mặt nhẵn bóng, chạm vào có cảm giác da thịt bị cắt xé."
+  },
+  {
+    "key": "NguyetSamThiet",
+    "vi": "Nguyệt Sâm Thiết",
+    "type": "forge_material",
+    "grade": 3,
+    "element": "Mộc",
+    "affix_bias": ["pfx_regen", "pfx_hp", "sfx_hp"],
+    "effect": "Liên tục hấp thu linh khí từ cỏ cây xung quanh để tạo thành một lớp mộc thuẫn (khiên gỗ) sinh học bảo vệ chủ nhân. Rất khó bị phá hủy hoàn toàn.",
+    "desc": "Loại thiết tinh dị biệt sinh trưởng như một loài cây trong những khu rừng nguyên sinh, chỉ hấp thu tinh hoa của ánh trăng rằm. Nó tỏa ra mùi hương thoang thoảng của thảo mộc."
+  },
+  {
+    "key": "BachNienHanThiet",
+    "vi": "Bách Niên Hàn Thiết",
+    "type": "forge_material",
+    "grade": 3,
+    "element": "Thủy",
+    "affix_bias": ["pfx_dmg_reduce", "sfx_crit_res", "pfx_def"],
+    "effect": "Ngưng kết hơi ẩm trong không khí thành hàn băng nhận (lưỡi băng). Bất kỳ kẻ nào thi triển công kích cận chiến lên chủ nhân đều bị hàn khí xâm nhập đan điền.",
+    "desc": "Cục sắt băng giá bị phong ấn dưới Tủy Băng uyên tròn một thế kỷ. Mang theo luồng hàn khí thấu xương có thể làm đóng băng ngay lập tức một con sông nhỏ."
+  },
+  {
+    "key": "BachNienDiemThiet",
+    "vi": "Bách Niên Diễm Thiết",
+    "type": "forge_material",
+    "grade": 3,
+    "element": "Hỏa",
+    "affix_bias": ["pfx_final_dmg", "pfx_crit_dmg", "sfx_dmg_bonus"],
+    "effect": "Sở hữu ngọn lửa không thể dập tắt bằng nước thông thường. Tăng bạo phát sát thương hỏa hệ và gây trạng thái thiêu đốt sâu vào linh hồn kẻ địch.",
+    "desc": "Trích xuất từ những quặng mỏ nằm sát lõi Địa Tâm. Nhiệt lượng tỏa ra khủng khiếp đến mức nếu tu sĩ Trúc Cơ không vận linh lực hộ thể, cầm vào sẽ cháy thành tro bụi."
+  },
+  {
+    "key": "BachNienKhonKim",
+    "vi": "Bách Niên Khôn Kim",
+    "type": "forge_material",
+    "grade": 3,
+    "element": "Thổ",
+    "affix_bias": ["pfx_dmg_reduce", "pfx_def", "sfx_def"],
+    "effect": "Đồng hóa với đại địa. Khi đứng trên mặt đất, vũ khí làm từ vật liệu này có thể truyền lực phản kích xuống đất, triệt tiêu gần như hoàn toàn sát thương vật lý nhận vào.",
+    "desc": "'Khôn' tức là Đất. Đây là linh kim thai nghén từ địa mạch hoàng thổ một trăm năm, ẩn chứa hơi thở cổ xưa, nặng nề và mang tính phòng ngự tuyệt đối."
+  },
+  {
+    "key": "PhuongMinhThiet",
+    "vi": "Phượng Minh Thiết",
+    "type": "forge_material",
+    "grade": 3,
+    "element": "Phong",
+    "affix_bias": ["pfx_evasion", "sfx_evasion", "pfx_final_dmg"],
+    "effect": "Tăng cực đại thân pháp. Khi vung vũ khí sẽ xé gió tạo ra tiếng phượng hoàng hót, gây huyễn thuật làm nhiễu loạn thần trí và thính giác của kẻ thù.",
+    "desc": "Khối linh thiết có những đường vân nhỏ đan xen như lông vũ. Chỉ cần một cơn gió nhẹ thổi qua cũng khiến nó rung lên những âm thanh trong trẻo, huyễn hoặc."
+  },
+  {
+    "key": "BachNienNguLinhThiet",
+    "vi": "Bách Niên Ngự Linh Thiết",
+    "type": "forge_material",
+    "grade": 3,
+    "element": "Quang",
+    "affix_bias": ["pfx_res", "pfx_matk", "sfx_res_all"],
+    "effect": "Có khả năng sinh ra tịnh quang linh thể hỗ trợ chiến đấu. Ánh sáng của nó sẽ đốt cháy chướng khí, độc tố và làm suy yếu sức mạnh của ma tu.",
+    "desc": "Vật liệu được tẩy trần bằng quang minh trận pháp trong suốt một thế kỷ. Lõi của nó lấp lánh thứ ánh sáng thuần khiết, mang lại cảm giác bình yên lạ thường."
+  },
+  {
+    "key": "BachNienLoiMinhThiet",
+    "vi": "Bách Niên Lôi Minh Thiết",
+    "type": "forge_material",
+    "grade": 3,
+    "element": "Lôi",
+    "affix_bias": ["pfx_crit_dmg", "pfx_crit_rate", "pfx_crit_res"],
+    "effect": "Tích tụ thiểm điện bách niên, tạo ra một lưới điện (lôi võng) trói chân, đánh ngắt việc vận công pháp thuật và làm tê liệt mọi kẻ thù trong phạm vi rộng.",
+    "desc": "Khoáng thạch sinh ra trên những ngọn núi đón lôi kiếp, ngậm lấy sấm sét một trăm năm không tan. Chớp giật liên tục kêu xèo xèo xung quanh khối quặng."
+  },
+  {
+    "key": "BachNienUAnhThiet",
+    "vi": "Bách Niên U Ảnh Thiết",
+    "type": "forge_material",
+    "grade": 3,
+    "element": "Ám",
+    "affix_bias": ["pfx_evasion", "pfx_crit_dmg", "sfx_evasion"],
+    "effect": "Cho phép vũ khí cắn nuốt ánh sáng xung quanh, giúp người sử dụng dễ dàng ẩn thân vào bóng tối. Tấn công có xác suất cao gây hoại tử vết thương của đối thủ.",
+    "desc": "Kết tinh từ bùn lầy tại Cửu U Minh Giới trải qua trăm năm cô đặc. Nó đen thẫm tựa như một lỗ đen thu nhỏ, nhìn lâu có cảm giác thần hồn bị hút vào."
+  },
+  {
+    "key": "ThienNienDoanKiemThiet",
+    "vi": "Thiên Niên Đoán Kiếm Thiết",
+    "type": "forge_material",
+    "grade": 4,
+    "element": "Kim",
+    "affix_bias": ["pfx_atk", "pfx_crit_dmg", "pfx_final_dmg"],
+    "effect": "Vạn kiếm quy tông. Sát thương kiếm khí được khuếch đại lên mức hủy diệt, chém đứt cả hư không và tàn phá mọi loại trận pháp phòng ngự đỉnh cấp.",
+    "desc": "Phôi kiếm thai nghén trong lò Bát Quái ngàn năm chưa từng dập lửa. Chỉ cần xuất thế là thiên địa biến sắc, vạn kiếm của tu sĩ xung quanh phải run rẩy thần phục."
+  },
+  {
+    "key": "CanhKim",
+    "vi": "Canh Kim",
+    "type": "forge_material",
+    "grade": 4,
+    "element": "Kim",
+    "affix_bias": ["pfx_crit_rate", "pfx_crit_dmg", "pfx_final_dmg"],
+    "effect": "Sở hữu cực hạn sắc bén và đặc tính 'Bất Diệt'. Bỏ qua hoàn toàn giáp trụ và kháng tính của đối thủ, chém sắt như chém bùn, trực tiếp tổn thương bản nguyên thần hồn.",
+    "desc": "Duệ kim chi khí thuần túy nhất trong thiên địa ngưng tụ mà thành, truyền thuyết kể rằng nó là móng vuốt của thần thú Bạch Hổ rơi xuống. Sắc bén đến mức chỉ nhìn vào liền thấy đau rát con ngươi."
+  },
+  {
+    "key": "NhaMocThiet",
+    "vi": "Nha Mộc Thiết",
+    "type": "forge_material",
+    "grade": 4,
+    "element": "Mộc",
+    "affix_bias": ["pfx_hp", "pfx_regen", "sfx_regen"],
+    "effect": "Hấp thu tinh huyết và linh lực đối thủ để cường hóa bản thân, đồng thời mang lại khả năng 'Cải tử hoàn sinh' (hồi phục nghịch thiên) cho chủ nhân. Phóng ra vạn ngàn mộc thứ mang kịch độc.",
+    "desc": "Một loại thiết mộc dị biệt mọc ra từ hài cốt của viễn cổ cự thú. Nó có hình dáng như những chiếc nanh sói bằng gỗ tẩm máu, tỏa ra sinh khí cuồn cuộn nhưng xen lẫn sát khí dữ dội."
+  },
+  {
+    "key": "ThienNienHanThiet",
+    "vi": "Thiên Niên Hàn Thiết",
+    "type": "forge_material",
+    "grade": 4,
+    "element": "Thủy",
+    "affix_bias": ["pfx_dmg_reduce", "sfx_crit_res", "pfx_def"],
+    "effect": "Hàn khí ngưng đọng không gian, đóng băng linh lực và đan điền của kẻ địch trong phạm vi rộng. Vũ khí vung ra có thể thay đổi thiên tượng, tạo thành bão tuyết.",
+    "desc": "Thiết tinh nằm phong ấn sâu vạn trượng dưới tầng đáy của Bắc Cực Băng Xuyên suốt một thiên niên kỷ. Khí lạnh nó tỏa ra đủ để biến một vùng núi non rộng lớn thành kỷ băng hà vĩnh cửu."
+  },
+  {
+    "key": "ThienNienDiemThiet",
+    "vi": "Thiên Niên Diễm Thiết",
+    "type": "forge_material",
+    "grade": 4,
+    "element": "Hỏa",
+    "affix_bias": ["pfx_final_dmg", "pfx_crit_dmg", "sfx_dmg_bonus"],
+    "effect": "Gọi ra 'Niết Bàn Chi Hỏa', thiêu rụi mọi pháp bảo cấp thấp hơn. Kẻ địch trúng đòn sẽ bị lửa độc đốt cháy tận sâu trong thức hải, nước thông thường tuyệt đối không thể dập tắt.",
+    "desc": "Hình thành ở nơi giao thoa giữa dung nham ngàn năm và thiên hỏa rớt xuống từ cửu thiên. Cầm trên tay giống như đang nắm giữ một mặt trời thu nhỏ, vạn vật đến gần đều hóa thành tro tàn."
+  },
+  {
+    "key": "ThienNienKhonKim",
+    "vi": "Thiên Niên Khôn Kim",
+    "type": "forge_material",
+    "grade": 4,
+    "element": "Thổ",
+    "affix_bias": ["pfx_hp", "pfx_dmg_reduce", "pfx_def"],
+    "effect": "Phòng ngự tuyệt đối. Hấp thu sinh khí từ lòng đất để duy trì vòng bảo hộ, tạo ra 'Tuyệt Đối Lĩnh Vực' với trọng lực gấp vạn lần, đè bẹp mọi kẻ thù bước vào.",
+    "desc": "Khối linh kim đúc kết từ tinh hoa địa mạch Cửu Châu ngàn năm. Trọng lượng kinh người, một mảnh nhỏ bằng móng tay cũng nặng bằng một quả núi nhỏ."
+  },
+  {
+    "key": "ThienNienPhongNhaiThiet",
+    "vi": "Thiên Niên Phong Nhai Thiết",
+    "type": "forge_material",
+    "grade": 4,
+    "element": "Phong",
+    "affix_bias": ["pfx_evasion", "sfx_evasion", "pfx_final_dmg"],
+    "effect": "Đạt tới cảnh giới 'Tốc độ ánh sáng'. Cho phép chủ nhân ngự khí thuấn di (dịch chuyển tức thời), mỗi đòn đánh vung ra đều tạo thành bão không gian xé nát vạn vật.",
+    "desc": "Mỏ quặng nằm lơ lửng ở Vô Quần Cương Phong Nhai suốt ngàn năm bị gió bão tàn phá. Hình thể gần như trong suốt, dung nhập hoàn toàn vào không khí, vô hình vô tướng."
+  },
+  {
+    "key": "ThienNienNguLinhThiet",
+    "vi": "Thiên Niên Ngự Linh Thiết",
+    "type": "forge_material",
+    "grade": 4,
+    "element": "Quang",
+    "affix_bias": ["pfx_res", "pfx_mp", "sfx_res_all"],
+    "effect": "Khắc tinh vĩnh cửu của tà tu và ma vật. Pháp bảo tự động giáng xuống 'Đại Tịnh Hóa Quang', giải trừ mọi cấm chế, nguyền rủa và áp chế thực lực của ác linh.",
+    "desc": "Hấp thụ nhật nguyệt tinh hoa và được các bậc đại năng chính đạo ngày đêm tụng niệm chú ngữ ngàn năm. Ánh sáng của nó dịu dàng nhưng tàng chứa uy áp thần thánh không thể xâm phạm."
+  },
+  {
+    "key": "ThienNienKiepLoiThiet",
+    "vi": "Thiên Niên Kiếp Lôi Thiết",
+    "type": "forge_material",
+    "grade": 4,
+    "element": "Lôi",
+    "affix_bias": ["pfx_crit_dmg", "pfx_crit_rate", "sfx_crit"],
+    "effect": "Mang theo thiên uy kiếp phạt. Mỗi đòn đánh có thể dẫn động Cửu Tiêu Thần Lôi giáng trần, đánh nát nhục thân và trực tiếp đánh tan Nguyên Thần của kẻ địch.",
+    "desc": "Mảnh quặng vỡ ra từ Lôi Trì trên Cửu Trùng Thiên, tắm mình trong thiên kiếp ngàn năm. Bên trong nó ẩn chứa sự phẫn nộ của Thiên Đạo, lôi quang chớp giật liên hồi."
+  },
+  {
+    "key": "ThienNienUTuyenThiet",
+    "vi": "Thiên Niên U Tuyền Thiết",
+    "type": "forge_material",
+    "grade": 4,
+    "element": "Ám",
+    "affix_bias": ["pfx_evasion", "pfx_crit_dmg", "sfx_evasion"],
+    "effect": "Thôn phệ linh khí, đồng hóa vạn vật vào hư vô. Tạo ra lĩnh vực 'Tuyệt Vọng', cắt đứt hoàn toàn sự liên kết giữa kẻ địch và linh khí của thiên địa.",
+    "desc": "Được vớt lên từ bùn nhão dưới đáy Hoàng Tuyền sâu thẳm, ngâm trong oán khí ngàn năm. Chỉ một luồng hắc khí rỉ ra cũng đủ làm sinh linh đồ thán, cỏ cây vạn dặm khô héo."
+  },
+  {
+    "key": "VanTaiDoanKiemThiet",
+    "vi": "Vạn Tải Đoán Kiếm Thiết",
+    "type": "forge_material",
+    "grade": 5,
+    "element": "Kim",
+    "affix_bias": ["pfx_atk", "pfx_crit_rate", "pfx_final_dmg"],
+    "effect": "Đã tự sinh ra 'Kiếm Linh'. Pháp bảo có thể tự động ngự địch, xuất ra vạn đạo kiếm quang trảm phá Hư Không, bỏ qua mọi khái niệm về phòng ngự vật lý.",
+    "desc": "Khoáng thạch trầm luân một vạn năm trong Táng Kiếm Trủng. Nó đã hấp thụ tàn hồn của vô số kiếm tu tuyệt đỉnh, phong mang nội liễm nhưng một khi xuất thế, vạn kiếm phải bái phục."
+  },
+  {
+    "key": "DuongKimThietTam",
+    "vi": "Dương Kim Thiết Tâm",
+    "type": "forge_material",
+    "grade": 5,
+    "element": "Kim",
+    "affix_bias": ["pfx_atk", "pfx_crit_dmg", "sfx_dmg_bonus"],
+    "effect": "Mang chí dương chí cương chi khí. Bất cứ tà ma ngoại đạo hay lực lượng hắc ám nào chạm vào đều bị đánh tan thành tro bụi. Mỗi đòn đánh mang theo uy áp của Thái Dương.",
+    "desc": "Lõi của một thiên thạch kim loại va chạm với mặt trời và rơi xuống nhân gian. Toàn thân nó tỏa ra ánh sáng rực rỡ và nóng bức, cứng rắn đến mức ngay cả Tiên Khí cũng khó lòng chém đứt."
+  },
+  {
+    "key": "PhongLinhNhuThiet",
+    "vi": "Phong Linh Nhu Thiết",
+    "type": "forge_material",
+    "grade": 5,
+    "element": "Mộc",
+    "affix_bias": ["pfx_hp", "sfx_hp", "pfx_regen"],
+    "effect": "Mềm mại như lụa nhưng không gì phá hủy được. Dùng để chế tạo nhuyễn kiếm hoặc thiên la địa võng, có khả năng khóa chặt nguyên thần và hút cạn sinh cơ của vạn vật trong nháy mắt.",
+    "desc": "Loại thiết tinh dung hợp cùng mộc tủy của Thần Thụ Huyết Phong (Cây phong đỏ) vạn năm. Nó co giãn như một sinh vật sống, tản ra huyết quang nhàn nhạt và sinh mệnh lực vô tận."
+  },
+  {
+    "key": "VanTaiHanThiet",
+    "vi": "Vạn Tải Hàn Thiết",
+    "type": "forge_material",
+    "grade": 5,
+    "element": "Thủy",
+    "affix_bias": ["pfx_dmg_reduce", "pfx_crit_res", "sfx_crit_res"],
+    "effect": "Tạo ra lĩnh vực 'Tuyệt Đối Linh Độ'. Đóng băng không chỉ thể xác, linh lực mà còn ngưng đọng cả thời gian xung quanh mục tiêu trong một khoảnh khắc.",
+    "desc": "Khối thiết tinh trong suốt như ngọc, được sinh ra tại cực điểm của Vũ Trụ Tinh Không, nơi ánh sáng không thể với tới. Cầm nó trên tay có thể cảm nhận được cái lạnh tĩnh lặng của sự chết chóc vĩnh hằng."
+  },
+  {
+    "key": "VanTaiDiemThiet",
+    "vi": "Vạn Tải Diễm Thiết",
+    "type": "forge_material",
+    "grade": 5,
+    "element": "Hỏa",
+    "affix_bias": ["pfx_final_dmg", "sfx_dmg_bonus", "pfx_crit_dmg"],
+    "effect": "Chứa đựng 'Phần Thiên Chân Viêm'. Ngọn lửa bùng phát có thể thiêu rụi cả quy luật không gian và pháp tắc, biến chiến trường vạn dặm thành hỏa ngục vô tận.",
+    "desc": "Mảnh vỡ còn sót lại sau khi một vị Cổ Thần hỏa hệ vẫn lạc, bị dung nham rèn giũa suốt một vạn năm. Chỉ một tia lửa nhỏ rơi ra cũng đủ để làm bốc hơi một đại dương."
+  },
+  {
+    "key": "VanTaiKhonKim",
+    "vi": "Vạn Tải Khôn Kim",
+    "type": "forge_material",
+    "grade": 5,
+    "element": "Thổ",
+    "affix_bias": ["pfx_hp", "pfx_def", "pfx_dmg_reduce"],
+    "effect": "Mang theo sức nặng của một vị diện. Pháp bảo nện xuống sẽ tạo ra vụ nổ trọng lực làm sụp đổ không gian, định trụ vạn vật, phòng ngự thì gần như bất tử bất diệt.",
+    "desc": "'Khôn' là Đại Địa. Quặng kim loại này chính là trái tim của một tinh cầu đã chết đi. Trọng lượng của nó vượt qua sự tưởng tượng của phàm nhân, đè sập mọi thứ dám nâng nó lên."
+  },
+  {
+    "key": "VanTaiTatPhongThiet",
+    "vi": "Vạn Tải Tật Phong Thiết",
+    "type": "forge_material",
+    "grade": 5,
+    "element": "Phong",
+    "affix_bias": ["pfx_evasion", "pfx_final_dmg", "sfx_evasion"],
+    "effect": "Biến thân thể và pháp bảo thành hư vô, di chuyển giữa các chiều không gian. Mỗi lần chém ra đều cuốn theo 'Phong Bạo Không Gian', nghiền nát mục tiêu thành các hạt bụi vô hình.",
+    "desc": "Vật chất tàn dư trôi dạt trong Cửu Hư Phong Bạo một vạn năm. Nó không có hình thể cố định, thoạt nhìn chỉ là một luồng gió xoáy chứa đầy những mảnh vụn sắc lẹm lấp lánh."
+  },
+  {
+    "key": "VanTaiNguLinhThiet",
+    "vi": "Vạn Tải Ngự Linh Thiết",
+    "type": "forge_material",
+    "grade": 5,
+    "element": "Quang",
+    "affix_bias": ["pfx_res", "pfx_mp", "pfx_matk"],
+    "effect": "Đại biểu cho 'Thiên Đạo Ánh Sáng'. Tự động siêu độ mọi tà vật, tịnh hóa tất cả các trạng thái tiêu cực. Linh quang chiếu rọi có thể cưỡng chế hồi phục toàn bộ linh lực cho đồng minh.",
+    "desc": "Một loại thánh thạch được kết tinh từ vô lượng công đức và ánh sáng khởi nguyên. Nó lơ lửng giữa không trung, mang lại sự bình yên tuyệt đối và khiến người ta sinh ra cảm giác muốn quỳ bái."
+  },
+  {
+    "key": "VanTaiLoiDinhThiet",
+    "vi": "Vạn Tải Lôi Đình Thiết",
+    "type": "forge_material",
+    "grade": 5,
+    "element": "Lôi",
+    "affix_bias": ["pfx_crit_dmg", "sfx_crit", "pfx_crit_rate"],
+    "effect": "Triệu hoán 'Hỗn Độn Thần Lôi'. Sát thương mang tính chất trừng phạt của Thiên Đạo, phán quyết sinh tử. Đối phương một khi bị khóa mục tiêu thì không thể né tránh, chỉ có thể ngạnh kháng.",
+    "desc": "Trích xuất từ tâm của Lôi Kiếp Nhãn, nơi Thiên Đạo giáng xuống hình phạt cho những kẻ nghịch thiên. Khối quặng này đen bóng, bề mặt chằng chịt những tia chớp màu tím đen hủy diệt."
+  },
+  {
+    "key": "VanTaiUAnhThiet",
+    "vi": "Vạn Tải U Ảnh Thiết",
+    "type": "forge_material",
+    "grade": 5,
+    "element": "Ám",
+    "affix_bias": ["pfx_evasion", "pfx_crit_dmg", "sfx_crit_res"],
+    "effect": "Hóa thân thành 'Đêm Tối Tối Thượng'. Tước đoạt ngũ quan (Thị giác, thính giác, khứu giác, xúc giác, vị giác) và phong ấn Thần Thức của mục tiêu. Nuốt chửng hoàn toàn sinh mệnh lực.",
+    "desc": "Kết tủa ngưng tụ từ ác niệm và hắc ám thuần túy nhất ở tận cùng Minh Giới qua vạn năm. Nó giống như một giọt chất lỏng tối đen không phản chiếu bất kỳ loại ánh sáng nào."
+  },
+  {
+    "key": "HuyenThienKiemPhoi",
+    "vi": "Huyền Thiên Kiếm Phôi",
+    "type": "forge_material",
+    "grade": 6,
+    "element": "Kim",
+    "affix_bias": ["pfx_crit_dmg", "pfx_atk", "pfx_final_dmg"],
+    "effect": "Phôi kiếm thai nghén Thiên Đạo. Một kiếm chém ra không chỉ xé rách không gian mà còn có thể trảm đứt 'Nhân Quả' và 'Mệnh Số' của đối thủ, khiến chúng vĩnh viễn không thể siêu sinh.",
+    "desc": "Thứ kim loại thần bí trôi nổi trong Hỗn Độn lúc khai thiên lập địa, tự thành hình dáng của một thanh đoản kiếm. Kẻ không đủ Tiên Duyên chạm vào lập tức bị kiếm khí phản phệ thành sương máu."
+  },
+  {
+    "key": "DaoQuangKimLyThiet",
+    "vi": "Dao Quang Kim Ly Thiết",
+    "type": "forge_material",
+    "grade": 6,
+    "element": "Kim",
+    "affix_bias": ["pfx_atk", "pfx_crit_rate", "sfx_atk"],
+    "effect": "Mang theo sắc bén của dải ngân hà. Đòn tấn công hóa thành hàng vạn tia tinh quang (ánh sao), xuyên thấu mọi loại Tiên Tôn Hộ Thể, không thể bị cản phá bằng vật chất.",
+    "desc": "Kết tinh từ sự sụp đổ của một vì sao Kim Diệu ở Thượng Giới, trong suốt như ngọc lưu ly nhưng lại phát ra kim quang chói lọi. Độ cứng vượt qua mọi định luật vật lý thông thường."
+  },
+  {
+    "key": "ThuyHongMocUanThiet",
+    "vi": "Thúy Hồng Mộc Uẩn Thiết",
+    "type": "forge_material",
+    "grade": 6,
+    "element": "Mộc",
+    "affix_bias": ["pfx_hp", "pfx_regen", "sfx_hp"],
+    "effect": "Chúa tể của sinh mệnh. Chỉ cần chủ nhân còn một giọt máu hay một tia thần hồn, pháp bảo sẽ cưỡng chế rút lấy sinh cơ của cả một tinh cầu để đắp nặn lại nhục thân (Huyết Nhục Trùng Sinh).",
+    "desc": "Khối thiết ngọc mang màu xanh ngọc bích, tỏa ra ánh sáng thất thải cầu vồng. Nó được ấp ủ trong rễ của Kiến Mộc Thần Thụ (Cây nối liền trời đất) từ thời Thái Cổ."
+  },
+  {
+    "key": "TienVanHanThietTinh",
+    "vi": "Tiên Vận Hàn Thiết Tinh",
+    "type": "forge_material",
+    "grade": 6,
+    "element": "Thủy",
+    "affix_bias": ["pfx_dmg_reduce", "sfx_crit_res", "pfx_crit_res"],
+    "effect": "Đại hàn vô biên. Triển khai 'Tiên Vực Băng Phong', đóng băng hoàn toàn dòng chảy của Không Gian và Thời Gian trong phạm vi vạn dặm. Kẻ địch biến thành tượng băng vĩnh cửu.",
+    "desc": "Phần tinh túy nhất của Vạn Tải Hàn Thiết, trải qua thiên kiếp tẩy lễ và nhiễm Tiên Khí mà lột xác. Hàn khí của nó dịu nhẹ, không bức người, nhưng lặng lẽ tước đoạt nhiệt lượng của cả một thế giới."
+  },
+  {
+    "key": "DiemLyDiemThiet",
+    "vi": "Diễm Ly Diễm Thiết",
+    "type": "forge_material",
+    "grade": 6,
+    "element": "Hỏa",
+    "affix_bias": ["pfx_final_dmg", "pfx_matk", "sfx_dmg_bonus"],
+    "effect": "Mang trong mình 'Cửu Thải Thần Viêm'. Ngọn lửa này đốt cháy cả hư vô, có thể luyện hóa Tiên Khí của địch nhân thành năng lượng cho bản thân, dập tắt mọi pháp thuật hệ Thủy cấp dưới.",
+    "desc": "Một loại linh thiết kỳ lạ bán trong suốt như pha lê, bên trong phong ấn ngọn lửa nguyên thủy của Chu Tước. Nóng đến mức tự vặn xoắn không gian xung quanh nó thành những hố đen siêu nhỏ."
+  },
+  {
+    "key": "HauThoKhonKim",
+    "vi": "Hậu Thổ Khôn Kim",
+    "type": "forge_material",
+    "grade": 6,
+    "element": "Thổ",
+    "affix_bias": ["pfx_hp", "pfx_dmg_reduce", "pfx_def"],
+    "effect": "Đại diện cho ý chí của Hậu Thổ (Đất mẹ). Pháp bảo sở hữu tính chất 'Bất Hủ' (Không thể bị phá hủy). Tạo ra từ trường có thể nghiền nát cả những vì sao đang rơi xuống.",
+    "desc": "Khối vàng sậm màu, mộc mạc không chút hào quang. Tương truyền đây là những mảnh vụn rơi ra từ Tức Nhưỡng (Đất tạo ra vạn vật) từ thưở Hồng Hoang. Cực kỳ nặng nề, dung chứa vạn vật."
+  },
+  {
+    "key": "TienVanCuongPhongThiet",
+    "vi": "Tiên Vận Cương Phong Thiết",
+    "type": "forge_material",
+    "grade": 6,
+    "element": "Phong",
+    "affix_bias": ["pfx_evasion", "pfx_final_dmg", "sfx_evasion"],
+    "effect": "Vượt ngoài quy luật Vận Tốc. Chủ nhân có thể hóa thân thành gió, miễn nhiễm mọi sát thương vật lý và ma pháp. Tạo ra những lưỡi đao Không Gian Vĩ Độ cắt đứt mọi liên kết linh hồn.",
+    "desc": "Sự cô đặc của Cửu Cửu Cương Phong trên đỉnh Tiên Giới. Nó trông giống như một đám sương mù luân chuyển liên tục, không ai có thể thực sự 'cầm' được nó ngoài những vị Phong Tôn thực thụ."
+  },
+  {
+    "key": "HuyenThienLinhThiet",
+    "vi": "Huyền Thiên Linh Thiết",
+    "type": "forge_material",
+    "grade": 6,
+    "element": "Quang",
+    "affix_bias": ["pfx_res", "pfx_mp", "pfx_matk"],
+    "effect": "Cội nguồn của Quang Minh. Khởi động 'Phán Quyết Huyền Thiên', thanh tẩy toàn bộ ác nghiệp, tà khí trong một tinh vực. Sức mạnh ánh sáng có thể cưỡng chế độ hóa ma tu thành người phàm.",
+    "desc": "Vật chất đầu tiên đón nhận tia sáng lúc vũ trụ sơ khai. Khối linh thiết này không có thực thể rõ ràng, lúc thì hóa thành ánh sáng chói lọi, lúc lại biến thành một khối ngọc trắng thuần khiết không tì vết."
+  },
+  {
+    "key": "HuyenThienLoiKiepThiet",
+    "vi": "Huyền Thiên Lôi Kiếp Thiết",
+    "type": "forge_material",
+    "grade": 6,
+    "element": "Lôi",
+    "affix_bias": ["pfx_crit_dmg", "pfx_crit_rate", "sfx_crit"],
+    "effect": "Nắm giữ 'Quyền Bính Thiên Phạt'. Cho phép người dùng trực tiếp thay trời hành đạo, gọi xuống Tử Tiêu Thần Lôi đánh tan tác mọi hệ thống phòng ngự, trực tiếp xóa sổ sự tồn tại của mục tiêu khỏi Thiên Đạo.",
+    "desc": "Vật liệu được sinh ra ngay tại tâm của Lôi Đài Thiên Phạt trên Thần Giới. Nó lưu giữ lại những tia chớp đại diện cho hình phạt khắc nghiệt nhất của ông trời đối với những kẻ nghịch thiên cải mệnh."
+  },
+  {
+    "key": "CuuUMinhVucThiet",
+    "vi": "Cửu U Minh Vực Thiết",
+    "type": "forge_material",
+    "grade": 6,
+    "element": "Ám",
+    "affix_bias": ["pfx_evasion", "pfx_crit_dmg", "sfx_crit_res"],
+    "effect": "Khai mở cửa vào Minh Vực. Pháp bảo mang theo đặc tính 'Thôn Phệ Tuyệt Đối', nuốt chửng linh khí, ánh sáng, tuổi thọ và cả ký ức của kẻ địch. Tạo ra một cái hố đen bất diệt trên chiến trường.",
+    "desc": "Trích xuất từ cội nguồn của bóng tối dưới đáy Cửu U Huyết Hải. Nó liên tục tỏa ra tử khí cuồn cuộn, chỉ cần nhìn bằng mắt thường cũng khiến tu sĩ cấp thấp đạo tâm sụp đổ, tẩu hỏa nhập ma."
+  }
+]

@@ -20,7 +20,7 @@ from src.game.constants.balance import (
     ENEMY_RANK_BASE_ATK, ENEMY_RANK_BASE_MATK, ENEMY_RANK_BASE_DEF, ENEMY_RANK_BASE_EVASION,
     ENEMY_SCALE_MAX, ENEMY_HP_SCALE_FACTOR, ENEMY_DMG_BONUS_SCALE, ENEMY_BASE_ELEM_RES,
     ENEMY_REALM_LEVEL_STAT_MULT,
-    REALM_POWER_BONUS_PER_STAGE, BASE_MP_REGEN_PCT, MAX_FINAL_DMG_REDUCE,
+    MAX_FINAL_DMG_REDUCE,
 )
 from src.game.constants.effects import EffectKey
 from src.game.engine.damage import calculate_damage, DamageResult, AttackStats, DefenseStats
@@ -485,61 +485,13 @@ def build_player_combatant(
     gem_count: int = 0,
     equip_stats: dict | None = None,
 ) -> Combatant:
-    """Build a Combatant from a Character dataclass, applying formation + constitution bonuses."""
-    from src.game.systems.cultivation import (
-        compute_hp_max, compute_mp_max,
-        compute_atk, compute_matk, compute_def_stat,
-        compute_formation_bonuses, compute_constitution_bonuses, merge_bonuses,
-    )
+    """Build a Combatant from a Character dataclass.
 
-    from src.game.constants.linh_can import compute_linh_can_bonuses
+    Delegates all stat math to compute_combat_stats — single source of truth.
+    """
+    from src.game.systems.character_stats import compute_combat_stats
 
-    form_bonuses = compute_formation_bonuses(char.active_formation, gem_count)
-    const_bonuses = compute_constitution_bonuses(char.constitution_type)
-    lc_bonuses = compute_linh_can_bonuses(char.linh_can)
-    # Mộc Linh Căn: Hồi Xuân 100% — always heal 4% HP per turn
-    if "moc" in char.linh_can:
-        lc_bonuses["hp_regen_pct"] = lc_bonuses.get("hp_regen_pct", 0.0) + 0.04
-    bonuses = merge_bonuses(form_bonuses, const_bonuses, lc_bonuses)
-
-    hp_max = compute_hp_max(char, bonuses)
-    mp_max = compute_mp_max(char, bonuses)
-    atk = compute_atk(char, bonuses)
-    matk = compute_matk(char, bonuses)
-    def_stat = compute_def_stat(char, bonuses)
-
-    # Realm power: +0.8% damage per total cultivation stage (max ~+194% at full 243 stages)
-    total_stages = (
-        char.body_realm * 9 + char.body_level
-        + char.qi_realm * 9 + char.qi_level
-        + char.formation_realm * 9 + char.formation_level
-    )
-    realm_power_bonus = total_stages * REALM_POWER_BONUS_PER_STAGE
-
-    # Base resistances from character stats (9 elements — mirrors Linh Căn, 0.0–0.75 range)
-    resistances: dict[str, float] = {
-        "kim":   char.stats.res_kim,
-        "moc":   char.stats.res_moc,
-        "thuy":  char.stats.res_thuy,
-        "hoa":   char.stats.res_hoa,
-        "tho":   char.stats.res_tho,
-        "loi":   char.stats.res_loi,
-        "phong": char.stats.res_phong,
-        "quang": char.stats.res_quang,
-        "am":    char.stats.res_am,
-    }
-
-    # Apply res_all (percentage bonus to all elements, capped at 0.75)
-    res_all = bonuses.get("res_all", 0.0)
-    if res_all:
-        for elem in resistances:
-            resistances[elem] = min(0.75, max(0.0, resistances[elem] + res_all))
-
-    # Apply res_element (formation's own element bonus, capped at 0.75)
-    form_elem = form_bonuses.get("_formation_element")
-    res_elem = form_bonuses.get("res_element", 0.0)
-    if form_elem and res_elem:
-        resistances[form_elem] = min(0.75, max(0.0, resistances.get(form_elem, 0.0) + res_elem))
+    cs = compute_combat_stats(char, gem_count=gem_count, equip_stats=equip_stats)
 
     # Auto-inject formation skill if active and not already in skill list
     final_skill_keys = list(player_skill_keys)
@@ -550,73 +502,41 @@ def build_player_combatant(
             if frm_skill and frm_skill not in final_skill_keys:
                 final_skill_keys.append(frm_skill)
 
-    spd_base = char.stats.spd + bonuses.get("spd_bonus", 0)
-    spd_final = round(spd_base * (1.0 + bonuses.get("spd_pct", 0.0)))
+    hp_current = min(char.hp_current, cs.hp_max) if char.hp_current > 0 else cs.hp_max
+    mp_current = min(char.mp_current, cs.mp_max) if char.mp_current > 0 else cs.mp_max
 
-    combatant = Combatant(
+    return Combatant(
         key="player",
         name=char.name,
-        hp=char.hp_current if char.hp_current > 0 else hp_max,
-        hp_max=hp_max,
-        mp=char.mp_current if char.mp_current > 0 else mp_max,
-        mp_max=mp_max,
-        spd=spd_final,
+        hp=hp_current,
+        hp_max=cs.hp_max,
+        mp=mp_current,
+        mp_max=cs.mp_max,
+        spd=cs.spd,
         element=None,
-        atk=atk,
-        matk=matk,
-        def_stat=def_stat,
-        crit_rating=char.stats.crit_rating + bonuses.get("crit_rating", 0),
-        crit_dmg_rating=char.stats.crit_dmg_rating + bonuses.get("crit_dmg_rating", 0),
-        evasion_rating=char.stats.evasion_rating + bonuses.get("evasion_rating", 0),
-        crit_res_rating=char.stats.crit_res_rating + bonuses.get("crit_res_rating", 0),
-        final_dmg_bonus=char.stats.final_dmg_bonus + bonuses.get("final_dmg_bonus", 0.0) + realm_power_bonus,
-        final_dmg_reduce=bonuses.get("final_dmg_reduce", 0.0),
-        hp_regen_pct=bonuses.get("hp_regen_pct", 0.0),
-        mp_regen_pct=BASE_MP_REGEN_PCT + bonuses.get("mp_regen_pct", 0.0),
-        heal_pct=bonuses.get("heal_pct", 0.0),
-        cooldown_reduce=char.stats.cooldown_reduce + bonuses.get("cooldown_reduce", 0.0),
-        burn_on_hit_pct=bonuses.get("burn_on_hit_pct", 0.0),
-        slow_on_hit_pct=bonuses.get("slow_on_hit_pct", 0.0),
-        paralysis_on_crit=bonuses.get("paralysis_on_crit", False),
-        freeze_on_skill=bonuses.get("freeze_on_skill", False),
-        poison_immunity=bonuses.get("poison_immunity", False),
-        resistances=resistances,
+        atk=cs.atk,
+        matk=cs.matk,
+        def_stat=cs.def_stat,
+        crit_rating=cs.crit_rating,
+        crit_dmg_rating=cs.crit_dmg_rating,
+        evasion_rating=cs.evasion_rating,
+        crit_res_rating=cs.crit_res_rating,
+        final_dmg_bonus=cs.final_dmg_bonus,
+        final_dmg_reduce=cs.final_dmg_reduce,
+        hp_regen_pct=cs.hp_regen_pct,
+        mp_regen_pct=cs.mp_regen_pct,
+        heal_pct=cs.heal_pct,
+        cooldown_reduce=cs.cooldown_reduce,
+        burn_on_hit_pct=cs.burn_on_hit_pct,
+        slow_on_hit_pct=cs.slow_on_hit_pct,
+        paralysis_on_crit=cs.paralysis_on_crit,
+        freeze_on_skill=cs.freeze_on_skill,
+        poison_immunity=cs.poison_immunity,
+        debuff_immune_pct=cs.debuff_immune_pct,
+        resistances=dict(cs.resistances),
         skill_keys=final_skill_keys,
         linh_can=list(char.linh_can),
     )
-    combatant.hp = min(combatant.hp, hp_max)
-    combatant.mp = min(combatant.mp, mp_max)
-
-    # Apply equipment stat bonuses on top of cultivation-derived stats.
-    # HP/MP bonuses are treated as always-full at combat start (added to both current and max).
-    if equip_stats:
-        combatant.atk          += int(equip_stats.get("atk", 0))
-        combatant.matk         += int(equip_stats.get("matk", 0))
-        combatant.def_stat     += int(equip_stats.get("def_stat", 0))
-        combatant.crit_rating  += int(equip_stats.get("crit_rating", 0))
-        combatant.crit_dmg_rating  += int(equip_stats.get("crit_dmg_rating", 0))
-        combatant.evasion_rating   += int(equip_stats.get("evasion_rating", 0))
-        combatant.crit_res_rating  += int(equip_stats.get("crit_res_rating", 0))
-        combatant.final_dmg_bonus  += equip_stats.get("final_dmg_bonus", 0.0)
-        combatant.final_dmg_reduce = min(
-            MAX_FINAL_DMG_REDUCE,
-            combatant.final_dmg_reduce + equip_stats.get("final_dmg_reduce", 0.0),
-        )
-        combatant.hp_regen_pct += equip_stats.get("hp_regen_pct", 0.0)
-
-        eq_hp = int(equip_stats.get("hp_max", 0))
-        eq_mp = int(equip_stats.get("mp_max", 0))
-        combatant.hp_max += eq_hp
-        combatant.mp_max += eq_mp
-        combatant.hp = min(combatant.hp + eq_hp, combatant.hp_max)
-        combatant.mp = min(combatant.mp + eq_mp, combatant.mp_max)
-
-        eq_res_all = equip_stats.get("res_all", 0.0)
-        if eq_res_all:
-            for elem in combatant.resistances:
-                combatant.resistances[elem] = min(0.75, combatant.resistances[elem] + eq_res_all)
-
-    return combatant
 
 
 def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant | None:

@@ -46,7 +46,7 @@ CELESTIAL_DAO_COST = 99_000    # Thiên Đạo Phù Nghịch (×2 merit 30 days)
 
 # P2P trade fee
 TRADE_FEE_RATE = 0.10
-MARKET_MAX_LISTINGS = 5
+MARKET_MAX_LISTINGS = 5   # Max active listings per player
 MARKET_LISTING_HOURS = 72
 
 SECONDS_PER_TURN = 60

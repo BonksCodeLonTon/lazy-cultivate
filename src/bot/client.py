@@ -14,12 +14,16 @@ _DEV_GUILD_ID: int | None = int(os.getenv("GUILD_ID", "0")) or None
 
 COGS = [
     "src.bot.cogs.cultivation",
+    "src.bot.cogs.status",
     "src.bot.cogs.combat",
+    "src.bot.cogs.skills",
     "src.bot.cogs.equipment",
     "src.bot.cogs.dungeon",
     "src.bot.cogs.inventory",
     "src.bot.cogs.shop",
     "src.bot.cogs.trade",
+    "src.bot.cogs.direct_trade",
+    "src.bot.cogs.forge",
     "src.bot.cogs.admin",
 ]
 

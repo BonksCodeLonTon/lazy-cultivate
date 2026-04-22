@@ -24,5 +24,5 @@ GRADE_CURRENCY: dict[Grade, str] = {
     Grade.HOANG: "merit",
     Grade.HUYEN: "merit",
     Grade.DIA: "merit",
-    Grade.THIEN: "primordial_stones",
+    Grade.THIEN: "merit",
 }

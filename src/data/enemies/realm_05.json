@@ -1,26 +1,86 @@
 [
   {
-    "key": "default_heavenly_trib",
-    "vi": "Thiên Kiếp (Vô Danh)",
-    "en": "Heavenly Tribulation",
-    "rank": "thien_kiep",
+    "key": "FierceHoaBao",
+    "vi": "Hỏa Bí Linh Báo",
+    "en": "Fierce Fire Spirit Leopard",
+    "rank": "hung_manh",
     "realm_level": 5,
-    "element": "loi",
-    "base_hp": 500,
+    "element": "hoa",
+    "base_hp": 1400,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyTribLoi_T1", "EnemyTribLoi_T2"]
+    "skill_keys": ["EnemyHoa_T2"]
   },
   {
-    "key": "trib_qi_2",
-    "vi": "Kim Đan Thiên Kiếp",
-    "en": "Golden Core Tribulation",
-    "rank": "thien_kiep",
+    "key": "FierceKimHac",
+    "vi": "Kim Lôi Hạc Tinh",
+    "en": "Fierce Metal Crane Spirit",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "kim",
+    "base_hp": 1500,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyKim_T2"]
+  },
+  {
+    "key": "FierceLoiMa",
+    "vi": "Lôi Ảnh Thần Mã",
+    "en": "Fierce Thunder Spirit Horse",
+    "rank": "hung_manh",
     "realm_level": 5,
     "element": "loi",
-    "base_hp": 2000,
+    "base_hp": 1200,
     "base_spd": 14,
-    "hp_scale": 1.8,
-    "skill_keys": ["EnemyTribLoi_T2", "EnemyTribLoi_T3"]
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyLoi_T2"]
+  },
+  {
+    "key": "FierceMocKy",
+    "vi": "Mộc Nguyên Linh Kỳ",
+    "en": "Fierce Wood Spirit Unicorn",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "moc",
+    "base_hp": 1350,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyMoc_T2"]
+  },
+  {
+    "key": "FierceBangGiao",
+    "vi": "Băng Hàn Giao Long",
+    "en": "Fierce Ice Flood Dragon",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "thuy",
+    "base_hp": 1600,
+    "base_spd": 8,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyBang_T2"]
+  },
+  {
+    "key": "FiercePhongYen",
+    "vi": "Phong Linh Đại Bằng",
+    "en": "Fierce Wind Spirit Roc",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "phong",
+    "base_hp": 1100,
+    "base_spd": 16,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyPhong_T2"]
+  },
+  {
+    "key": "FierceThoLinh",
+    "vi": "Thổ Linh Cự Thú",
+    "en": "Fierce Earth Spirit Giant",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "tho",
+    "base_hp": 1700,
+    "base_spd": 6,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyTho_T2"]
   }
 ]

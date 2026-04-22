@@ -16,24 +16,33 @@ class MarketListing(Base, TimestampMixin):
         Index("ix_market_grade", "grade"),
         Index("ix_market_item_key", "item_key"),
         Index("ix_market_expires_at", "expires_at"),
+        Index("ix_market_listing_type", "listing_type"),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     seller_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("players.id", ondelete="CASCADE"), nullable=False
     )
-    item_key: Mapped[str] = mapped_column(String(64), nullable=False)
 
-    # grade: 1=Hoàng, 2=Huyền, 3=Địa, 4=Thiên
+    # "inventory" or "equipment"
+    listing_type: Mapped[str] = mapped_column(String(16), nullable=False, default="inventory")
+
+    # For inventory listings: item key + grade + quantity
+    item_key: Mapped[str | None] = mapped_column(String(64), nullable=True)
     grade: Mapped[int] = mapped_column(SmallInteger, nullable=False)
-    quantity: Mapped[int] = mapped_column(Integer, nullable=False)
+    quantity: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
 
-    # Seller's asking price (in currency_type units)
+    # For equipment listings: FK to the ItemInstance (locked in "market" location)
+    instance_id: Mapped[int | None] = mapped_column(
+        Integer, ForeignKey("item_instances.id", ondelete="SET NULL"), nullable=True
+    )
+
+    # Seller's asking price (always in merit)
     price: Mapped[int] = mapped_column(Integer, nullable=False)
-    # Reference shop price used to compute 10% fee
+    # Reference shop price for fee computation
     shop_ref_price: Mapped[int] = mapped_column(Integer, nullable=False)
-    # "merit" | "primordial_stones"
-    currency_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    # Always "merit" now; kept for backward compat
+    currency_type: Mapped[str] = mapped_column(String(32), nullable=False, default="merit")
 
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
@@ -49,8 +58,8 @@ class MarketListing(Base, TimestampMixin):
 
     def __repr__(self) -> str:
         return (
-            f"<MarketListing id={self.id} seller={self.seller_id} "
-            f"{self.item_key}×{self.quantity} price={self.price} {self.currency_type}>"
+            f"<MarketListing id={self.id} type={self.listing_type} "
+            f"seller={self.seller_id} price={self.price}>"
         )
 
 

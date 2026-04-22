@@ -31,6 +31,8 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass, field
 
+POOL_RANGE = 100.0
+
 
 @dataclass
 class DropResult:
@@ -86,7 +88,7 @@ def roll_drops(
 
 def _effective_weight(entry: dict, luck_pct: float) -> float:
     scale = entry.get("luck_scale", 1.0)
-    return min(100.0, entry.get("weight", 10) * (1.0 + luck_pct * scale))
+    return min(POOL_RANGE, entry.get("weight", 10) * (1.0 + luck_pct * scale))
 
 
 def _pick_qty(entry: dict, rng: random.Random) -> int:
@@ -94,7 +96,7 @@ def _pick_qty(entry: dict, rng: random.Random) -> int:
 
 
 def _roll_independent(entry: dict, rng: random.Random, luck_pct: float, result: DropResult) -> None:
-    if rng.uniform(0, 100) < _effective_weight(entry, luck_pct):
+    if rng.uniform(0, POOL_RANGE) < _effective_weight(entry, luck_pct):
         result.items.append({"item_key": entry["item_key"], "quantity": _pick_qty(entry, rng)})
 
 
@@ -107,7 +109,7 @@ def _roll_pool(entries: list[dict], rng: random.Random, luck_pct: float, result:
     weighted = [(e, _effective_weight(e, luck_pct)) for e in entries]
     pool_chance = max(w for _, w in weighted)
 
-    if rng.uniform(0, 100) >= pool_chance:
+    if rng.uniform(0, POOL_RANGE) >= pool_chance:
         return
 
     total = sum(w for _, w in weighted)

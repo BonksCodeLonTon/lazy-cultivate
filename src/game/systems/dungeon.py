@@ -44,6 +44,7 @@ def run_dungeon(
     dungeon_key: str,
     skill_keys: list[str],
     gem_count: int = 0,
+    equip_stats: dict | None = None,
 ) -> DungeonResult:
     """Run all waves of a dungeon sequentially.
 
@@ -54,7 +55,7 @@ def run_dungeon(
     if not dungeon:
         return DungeonResult(success=False, waves_cleared=0, total_waves=0)
 
-    player_c = build_player_combatant(char, skill_keys, gem_count)
+    player_c = build_player_combatant(char, skill_keys, gem_count, equip_stats=equip_stats)
     player_realm_total = (
         char.body_realm * 9 + char.body_level
         + char.qi_realm * 9 + char.qi_level

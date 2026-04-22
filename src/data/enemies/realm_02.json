@@ -1,14 +1,98 @@
 [
   {
-    "key": "trib_qi_1",
-    "vi": "Trúc Cơ Thiên Kiếp",
-    "en": "Foundation Est. Tribulation",
-    "rank": "thien_kiep",
+    "key": "LinhHoaTuoc",
+    "vi": "Linh Hỏa Tước",
+    "en": "Spirit Fire Sparrow",
+    "rank": "pho_thong",
     "realm_level": 2,
-    "element": "loi",
-    "base_hp": 1000,
+    "element": "hoa",
+    "base_hp": 260,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyHoa_T1"]
+  },
+  {
+    "key": "LinhMocLang",
+    "vi": "Linh Mộc Lang",
+    "en": "Spirit Wood Wolf",
+    "rank": "pho_thong",
+    "realm_level": 2,
+    "element": "moc",
+    "base_hp": 240,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyTribLoi_T1", "EnemyTribLoi_T2"]
+    "skill_keys": ["EnemyMoc_T1"]
+  },
+  {
+    "key": "LinhBangTriet",
+    "vi": "Linh Băng Triết",
+    "en": "Spirit Ice Newt",
+    "rank": "pho_thong",
+    "realm_level": 2,
+    "element": "thuy",
+    "base_hp": 210,
+    "base_spd": 15,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyBang_T1"]
+  },
+  {
+    "key": "LinhThoNguu",
+    "vi": "Linh Thổ Ngưu",
+    "en": "Spirit Earth Ox",
+    "rank": "pho_thong",
+    "realm_level": 2,
+    "element": "tho",
+    "base_hp": 420,
+    "base_spd": 5,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyTho_T1"]
+  },
+  {
+    "key": "LinhKimSai",
+    "vi": "Linh Kim Sài",
+    "en": "Spirit Metal Jackal",
+    "rank": "pho_thong",
+    "realm_level": 2,
+    "element": "kim",
+    "base_hp": 300,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyKim_T1"]
+  },
+  {
+    "key": "LinhLoiQuy",
+    "vi": "Linh Lôi Quy",
+    "en": "Spirit Thunder Bat",
+    "rank": "pho_thong",
+    "realm_level": 2,
+    "element": "loi",
+    "base_hp": 270,
+    "base_spd": 14,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyLoi_T1"]
+  },
+  {
+    "key": "LinhPhongDieu",
+    "vi": "Linh Phong Điêu",
+    "en": "Spirit Wind Condor",
+    "rank": "pho_thong",
+    "realm_level": 2,
+    "element": "phong",
+    "base_hp": 230,
+    "base_spd": 17,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyPhong_T1"]
+  },
+  {
+    "key": "LinhThuyHaiMa",
+    "vi": "Linh Thủy Hải Mã",
+    "en": "Spirit Water Seahorse",
+    "rank": "pho_thong",
+    "realm_level": 2,
+    "element": "thuy",
+    "base_hp": 290,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "skill_keys": ["EnemyThuy_T1"]
   }
 ]

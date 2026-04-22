@@ -19,6 +19,25 @@
     { "item_key": "GemMoc_3",   "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem3" },
     { "item_key": "GemThuy_3",  "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_gem3" },
     { "item_key": "ChestHuyen", "weight": 8, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "ChestDia",   "weight": 2, "qty_min": 1, "qty_max": 1 }
+    { "item_key": "ChestDia",   "weight": 2, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "HanTamThiet",        "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat2" },
+    { "item_key": "CanLinhKim",         "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat2" },
+    { "item_key": "TinhVanThiet",       "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat2" },
+    { "item_key": "SamLangDong",        "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat2" },
+    { "item_key": "NguyetLinhThiet",    "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat2" },
+    { "item_key": "XichDiemThiet",      "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat2" },
+    { "item_key": "DoanKiemThietTinh",  "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat2" },
+    { "item_key": "KinhLoiThiet",       "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat2" },
+    { "item_key": "CuangPhongThiet",    "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat2" },
+    { "item_key": "HuyenQuangThiet",    "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat2" },
+    { "item_key": "BachNienDoanKiemThiet", "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat3" },
+    { "item_key": "NguyetSamThiet",        "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat3" },
+    { "item_key": "BachNienHanThiet",      "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat3" },
+    { "item_key": "BachNienDiemThiet",     "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat3" },
+    { "item_key": "BachNienKhonKim",       "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat3" },
+    { "item_key": "PhuongMinhThiet",       "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat3" },
+    { "item_key": "BachNienNguLinhThiet",  "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat3" },
+    { "item_key": "BachNienLoiMinhThiet",  "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat3" },
+    { "item_key": "BachNienUAnhThiet",     "weight": 3, "qty_min": 1, "qty_max": 1, "pool_id": "zone7_mat3" }
   ]
 }
