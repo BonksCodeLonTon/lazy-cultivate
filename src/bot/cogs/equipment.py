@@ -84,6 +84,55 @@ def _bag_embed(player_name: str, items: list, slot_filter: str | None) -> discor
 
 
 
+class GearView(discord.ui.View):
+    """Shows equipped gear with per-slot unequip buttons."""
+
+    def __init__(self, discord_id: int, player_name: str, equipped: list) -> None:
+        super().__init__(timeout=300)
+        self._discord_id = discord_id
+        self._player_name = player_name
+
+        by_slot = {i.slot: i for i in equipped}
+        row, col = 0, 0
+        for slot in SLOT_ORDER:
+            if slot not in by_slot:
+                continue
+            if col >= 5:
+                row += 1
+                col = 0
+            btn = discord.ui.Button(
+                label=f"↩️ {SLOT_LABELS[slot]}",
+                style=discord.ButtonStyle.secondary,
+                row=row,
+            )
+            btn.callback = self._make_cb(slot)
+            self.add_item(btn)
+            col += 1
+
+    def _make_cb(self, slot: str):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if interaction.user.id != self._discord_id:
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
+            await interaction.response.defer()
+            async with get_session() as session:
+                prepo = PlayerRepository(session)
+                player = await prepo.get_by_discord_id(interaction.user.id)
+                if not player:
+                    await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                    return
+                erepo = EquipmentRepository(session)
+                inst = await erepo.unequip(player.id, slot)
+                equipped = await erepo.get_equipped(player.id)
+
+            slot_label = SLOT_LABELS.get(slot, slot)
+            msg = f"↩️ Đã tháo **{inst.display_name}** từ {slot_label} về túi đồ." if inst else f"{slot_label} đang trống."
+            embed = _gear_embed(self._player_name, equipped)
+            embed.description = msg
+            await interaction.edit_original_response(embed=embed, view=GearView(self._discord_id, self._player_name, equipped))
+        return _cb
+
+
 class EquipmentCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
@@ -100,7 +149,9 @@ class EquipmentCog(commands.Cog):
                 await interaction.followup.send(embed=error_embed("Chưa có nhân vật."))
                 return
             equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
-        await interaction.followup.send(embed=_gear_embed(player.name, equipped))
+        embed = _gear_embed(player.name, equipped)
+        view = GearView(interaction.user.id, player.name, equipped) if equipped else None
+        await interaction.followup.send(embed=embed, view=view)
 
     # ── /bag ──────────────────────────────────────────────────────────────────
 

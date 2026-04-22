@@ -45,6 +45,7 @@ class MarketRepository:
         self,
         grade: Grade | None = None,
         item_key: str | None = None,
+        listing_type: str | None = None,
         limit: int = 20,
         offset: int = 0,
     ) -> list[MarketListing]:
@@ -54,9 +55,25 @@ class MarketRepository:
             stmt = stmt.where(MarketListing.grade == grade.value)
         if item_key is not None:
             stmt = stmt.where(MarketListing.item_key == item_key)
+        if listing_type is not None:
+            stmt = stmt.where(MarketListing.listing_type == listing_type)
         stmt = stmt.order_by(MarketListing.price.asc()).limit(limit).offset(offset)
         result = await self._session.execute(stmt)
         return list(result.scalars().all())
+
+    async def count_browse(
+        self,
+        grade: Grade | None = None,
+        listing_type: str | None = None,
+    ) -> int:
+        now = datetime.now(timezone.utc)
+        stmt = select(func.count(MarketListing.id)).where(MarketListing.expires_at > now)
+        if grade is not None:
+            stmt = stmt.where(MarketListing.grade == grade.value)
+        if listing_type is not None:
+            stmt = stmt.where(MarketListing.listing_type == listing_type)
+        result = await self._session.execute(stmt)
+        return result.scalar_one()
 
     async def create(self, listing: MarketListing) -> MarketListing:
         self._session.add(listing)
@@ -73,12 +90,22 @@ class MarketRepository:
         return True, ""
 
     async def purge_expired(self) -> int:
-        """Delete expired listings. Returns count removed."""
+        """Delete expired listings, returning equipment items to seller bags."""
+        from src.db.models.item_instance import ItemInstance
+        from sqlalchemy import update
+
         now = datetime.now(timezone.utc)
         result = await self._session.execute(
             select(MarketListing).where(MarketListing.expires_at <= now)
         )
         expired = result.scalars().all()
         for listing in expired:
+            if listing.listing_type == "equipment" and listing.instance_id:
+                # Return equipment to seller's bag
+                await self._session.execute(
+                    update(ItemInstance)
+                    .where(ItemInstance.id == listing.instance_id)
+                    .values(location="bag")
+                )
             await self._session.delete(listing)
         return len(expired)

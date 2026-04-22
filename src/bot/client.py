@@ -22,6 +22,7 @@ COGS = [
     "src.bot.cogs.inventory",
     "src.bot.cogs.shop",
     "src.bot.cogs.trade",
+    "src.bot.cogs.direct_trade",
     "src.bot.cogs.forge",
     "src.bot.cogs.admin",
 ]

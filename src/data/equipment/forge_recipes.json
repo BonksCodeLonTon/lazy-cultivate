@@ -4,7 +4,7 @@
     "min_qi_realm": 0,
     "cost_cong_duc": 500,
     "options": [
-      {"materials": [{"mat_grade": 1, "qty": 1}]}
+      {"materials": [{"mat_grade": 1, "qty": 5}]}
     ],
     "affix_pool": {"prefix": 1, "suffix": 0},
     "quality_chances": {"hoan": 0.75, "huyen": 0.20, "dia": 0.04, "thien": 0.01}
@@ -14,8 +14,8 @@
     "min_qi_realm": 1,
     "cost_cong_duc": 1500,
     "options": [
-      {"materials": [{"mat_grade": 1, "qty": 3}]},
-      {"materials": [{"mat_grade": 2, "qty": 1}]}
+      {"materials": [{"mat_grade": 1, "qty": 5}]},
+      {"materials": [{"mat_grade": 2, "qty": 2}]}
     ],
     "affix_pool": {"prefix": 1, "suffix": 1},
     "quality_chances": {"hoan": 0.65, "huyen": 0.25, "dia": 0.08, "thien": 0.02}
@@ -25,7 +25,7 @@
     "min_qi_realm": 2,
     "cost_cong_duc": 4000,
     "options": [
-      {"materials": [{"mat_grade": 2, "qty": 2}]}
+      {"materials": [{"mat_grade": 2, "qty": 10}]}
     ],
     "affix_pool": {"prefix": 1, "suffix": 1},
     "quality_chances": {"hoan": 0.55, "huyen": 0.30, "dia": 0.12, "thien": 0.03}
@@ -35,8 +35,8 @@
     "min_qi_realm": 3,
     "cost_cong_duc": 12000,
     "options": [
-      {"materials": [{"mat_grade": 2, "qty": 4}]},
-      {"materials": [{"mat_grade": 3, "qty": 1}]}
+      {"materials": [{"mat_grade": 2, "qty": 8}]},
+      {"materials": [{"mat_grade": 3, "qty": 2}]}
     ],
     "affix_pool": {"prefix": 2, "suffix": 1},
     "quality_chances": {"hoan": 0.45, "huyen": 0.35, "dia": 0.15, "thien": 0.05}
@@ -46,7 +46,7 @@
     "min_qi_realm": 4,
     "cost_cong_duc": 30000,
     "options": [
-      {"materials": [{"mat_grade": 3, "qty": 2}]}
+      {"materials": [{"mat_grade": 3, "qty": 10}]}
     ],
     "affix_pool": {"prefix": 2, "suffix": 1},
     "quality_chances": {"hoan": 0.35, "huyen": 0.38, "dia": 0.20, "thien": 0.07}
@@ -56,8 +56,8 @@
     "min_qi_realm": 5,
     "cost_cong_duc": 80000,
     "options": [
-      {"materials": [{"mat_grade": 3, "qty": 4}]},
-      {"materials": [{"mat_grade": 4, "qty": 1}]}
+      {"materials": [{"mat_grade": 3, "qty": 15}]},
+      {"materials": [{"mat_grade": 4, "qty": 5}]}
     ],
     "affix_pool": {"prefix": 2, "suffix": 2},
     "quality_chances": {"hoan": 0.25, "huyen": 0.40, "dia": 0.25, "thien": 0.10}
@@ -67,7 +67,7 @@
     "min_qi_realm": 6,
     "cost_cong_duc": 200000,
     "options": [
-      {"materials": [{"mat_grade": 4, "qty": 2}]}
+      {"materials": [{"mat_grade": 4, "qty": 15}]}
     ],
     "affix_pool": {"prefix": 2, "suffix": 2},
     "quality_chances": {"hoan": 0.15, "huyen": 0.38, "dia": 0.32, "thien": 0.15}
@@ -77,7 +77,7 @@
     "min_qi_realm": 7,
     "cost_cong_duc": 500000,
     "options": [
-      {"materials": [{"mat_grade": 5, "qty": 2}]}
+      {"materials": [{"mat_grade": 5, "qty": 20}]}
     ],
     "affix_pool": {"prefix": 2, "suffix": 2},
     "quality_chances": {"hoan": 0.08, "huyen": 0.32, "dia": 0.38, "thien": 0.22}
@@ -87,7 +87,7 @@
     "min_qi_realm": 8,
     "cost_cong_duc": 1500000,
     "options": [
-      {"materials": [{"mat_grade": 6, "qty": 2}]}
+      {"materials": [{"mat_grade": 6, "qty": 50}]}
     ],
     "affix_pool": {"prefix": 2, "suffix": 2},
     "quality_chances": {"hoan": 0.03, "huyen": 0.22, "dia": 0.40, "thien": 0.35}

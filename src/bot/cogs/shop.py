@@ -40,7 +40,7 @@ def _item_name(item_key: str) -> str:
 
 
 def _grade_emoji(grade: int) -> str:
-    return {1: "🟡", 2: "🟣", 3: "🟢", 4: "🔴"}.get(grade, "⚪")
+    return {1: "🟢", 2: "🟣", 3: "🟡", 4: "🔴"}.get(grade, "⚪")
 
 
 def _currency_emoji(currency: str) -> str:

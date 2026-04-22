@@ -22,6 +22,13 @@ class EquipmentRepository:
         )
         return result.scalar_one_or_none()
 
+    async def get_by_id(self, instance_id: int) -> ItemInstance | None:
+        """Fetch any ItemInstance by ID regardless of owner (for market operations)."""
+        result = await self._session.execute(
+            select(ItemInstance).where(ItemInstance.id == instance_id)
+        )
+        return result.scalar_one_or_none()
+
     async def get_bag(self, player_id: int) -> list[ItemInstance]:
         result = await self._session.execute(
             select(ItemInstance).where(

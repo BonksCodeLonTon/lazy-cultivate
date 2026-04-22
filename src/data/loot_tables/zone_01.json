@@ -1,10 +1,10 @@
 {
   "LootZone_1": [
-    { "item_key": "MatHuyetTinh",  "weight": 10, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MatBiPhach",    "weight": 10, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MatKhiTuDan",   "weight": 10, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiHPSmall", "weight": 40, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "DanHoiMPSmall", "weight": 40, "qty_min": 1, "qty_max": 3 },
+    { "item_key": "MatHuyetTinh",  "weight": 10, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "MatBiPhach",    "weight": 10, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "MatKhiTuDan",   "weight": 10, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanHoiHPSmall", "weight": 40, "qty_min": 1, "qty_max": 1 },
+    { "item_key": "DanHoiMPSmall", "weight": 40, "qty_min": 1, "qty_max": 1 },
     { "item_key": "GemHoa_1",   "weight": 6, "qty_min": 1, "qty_max": 1, "pool_id": "zone1_gem" },
     { "item_key": "GemMoc_1",   "weight": 6, "qty_min": 1, "qty_max": 1, "pool_id": "zone1_gem" },
     { "item_key": "GemBang_1",  "weight": 6, "qty_min": 1, "qty_max": 1, "pool_id": "zone1_gem" },
