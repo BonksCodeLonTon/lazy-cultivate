@@ -106,11 +106,32 @@ def success_embed(message: str) -> discord.Embed:
 
 # ── Character status embed ────────────────────────────────────────────────────
 
+from src.game.engine.rating import rating_to_pct as _engine_rating_to_pct
+from src.game.constants.balance import (
+    BASE_CRIT_CHANCE,
+    MAX_CRIT_CHANCE,
+    BASE_CRIT_DMG_MULT,
+    BASE_EVASION,
+)
+
+
 def _rating_to_pct(rating: int) -> float:
-    """Convert a combat rating to a percentage. Formula: rating / (rating + 1300)."""
     if rating <= 0:
         return 0.0
-    return rating / (rating + 1300)
+    return _engine_rating_to_pct(rating)
+
+
+def _display_crit_chance(crit_rating: int) -> float:
+    """Crit % as seen in combat (base + rating conversion, capped). No opponent resistance."""
+    return min(BASE_CRIT_CHANCE + _rating_to_pct(crit_rating), MAX_CRIT_CHANCE)
+
+
+def _display_crit_dmg_mult(crit_dmg_rating: int) -> float:
+    return BASE_CRIT_DMG_MULT + _rating_to_pct(crit_dmg_rating)
+
+
+def _display_evasion(evasion_rating: int) -> float:
+    return BASE_EVASION + _rating_to_pct(evasion_rating)
 
 
 def character_embed(player_name: str, stats: dict, avatar_url: str | None = None) -> discord.Embed:
@@ -176,14 +197,14 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
     fdmg     = stats.get("final_dmg_bonus", 0.0)
 
     if atk or matk or def_s or crit_r or eva_r or fdmg:
-        crit_pct  = _rating_to_pct(crit_r)
-        cdmg_pct  = _rating_to_pct(crit_d_r)
-        eva_pct   = _rating_to_pct(eva_r)
+        crit_pct  = _display_crit_chance(crit_r)
+        cdmg_mult = _display_crit_dmg_mult(crit_d_r)
+        eva_pct   = _display_evasion(eva_r)
         cres_pct  = _rating_to_pct(cres_r)
 
         combat_lines = [
             f"⚔️ **{atk:,}** Công  |  🔮 **{matk:,}** Pháp Công  |  🛡️ **{def_s:,}** Phòng Thủ",
-            f"💥 Bạo Kích **{crit_pct:.1%}** (x{1.5 + cdmg_pct:.2f})  |  🌀 Né Tránh **{eva_pct:.1%}**  |  🛡️ Kháng Bạo **{cres_pct:.1%}**",
+            f"💥 Bạo Kích **{crit_pct:.1%}** (x{cdmg_mult:.2f})  |  🌀 Né Tránh **{eva_pct:.1%}**  |  🛡️ Kháng Bạo **{cres_pct:.1%}**",
         ]
         if fdmg:
             combat_lines.append(f"⚡ Tăng Sát Thương **+{fdmg * 100:.1f}%**")

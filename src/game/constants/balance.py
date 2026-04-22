@@ -19,7 +19,7 @@ from __future__ import annotations
 
 # ── Rating system ─────────────────────────────────────────────────────────────
 # Formula: value = rating / (rating + RATING_K)
-RATING_K: int = 1300          # denominator constant — higher = softer scaling
+RATING_K: int = 3000          # denominator constant — higher = softer scaling
 
 BASE_CRIT_CHANCE: float = 0.05   # 5 % base crit before crit_rating
 MAX_CRIT_CHANCE: float = 0.75    # crit chance hard cap
