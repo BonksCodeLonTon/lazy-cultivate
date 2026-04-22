@@ -21,7 +21,10 @@ from src.game.systems.combat import (
     CombatEndReason, CombatSession,
     build_enemy_combatant, build_player_combatant,
 )
-from src.game.systems.dungeon import check_can_enter, DungeonResult
+from src.game.systems.dungeon import (
+    check_can_enter, DungeonResult,
+    _build_wave_list, _grade_progress, _roll_encounter_grade, _roll_boss_grade, _apply_encounter_grade,
+)
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
@@ -185,22 +188,15 @@ def _dungeon_detail_embed(
         reward_lines.append(f"💎 {stones:,} Hỗn Nguyên Thạch")
     embed.add_field(name="Phần Thưởng", value="\n".join(reward_lines), inline=True)
 
-    # Wave list — show scaled HP based on player realm
-    realm_scale = 1.0 + (player_realm_total / 81) * 2.0
-    enemy_keys: list[str] = d.get("enemy_keys", [])
-    boss_key = d.get("boss_key")
-    wave_lines = []
-    for i, ek in enumerate(enemy_keys):
-        ed = registry.get_enemy(ek)
-        if not ed:
-            continue
-        emoji = RANK_EMOJIS.get(ed.get("rank", "pho_thong"), "⚔️")
-        prefix = "👑 Boss" if ek == boss_key else f"Đợt {i + 1}"
-        scaled_hp = int(ed["base_hp"] * realm_scale * ed.get("hp_scale", 1.0))
-        wave_lines.append(f"{prefix} {emoji} **{ed['vi']}** (HP: {scaled_hp:,})")
+    # Pool preview
+    wave_count = d.get("wave_count", 3)
+    enemy_pool: list[str] = d.get("enemy_pool", [])
 
-    if wave_lines:
-        embed.add_field(name="📋 Các Đợt Chiến Đấu", value="\n".join(wave_lines), inline=False)
+    wave_lines = [
+        f"🎲 **{wave_count} đợt ngẫu nhiên** từ {len(enemy_pool)} kẻ địch",
+        f"👑 Đợt cuối luôn có cấp **Tinh Anh** trở lên",
+    ]
+    embed.add_field(name="📋 Thông Tin Bí Cảnh", value="\n".join(wave_lines), inline=False)
 
     return embed
 
@@ -311,10 +307,14 @@ async def _execute_dungeon(
         await interaction.edit_original_response(embed=error_embed("Bí cảnh không tồn tại."), view=None)
         return
 
+    import random as _random_mod
+    _rng = _random_mod.Random()
+
     player_c = build_player_combatant(char, skill_keys, gem_count, equip_stats=equip_stats)
-    enemy_keys: list[str] = dungeon.get("enemy_keys", [])
-    total_waves = len(enemy_keys)
-    boss_key = dungeon.get("boss_key")
+    req_realm = dungeon.get("required_qi_realm", 0)
+    grade_progress = _grade_progress(char.qi_realm, char.qi_level, req_realm)
+    wave_enemies: list[str] = _build_wave_list(dungeon, _rng)
+    total_waves = len(wave_enemies)
 
     all_loot: list[dict] = []
     all_logs: list[str] = []
@@ -326,7 +326,7 @@ async def _execute_dungeon(
 
     player_db_id: int = char.player_id
 
-    for wave_idx, enemy_key in enumerate(enemy_keys):
+    for wave_idx, enemy_key in enumerate(wave_enemies):
         # ── Inter-wave prepare phase (not before first wave) ──────────────────
         if wave_idx > 0:
             elixirs = await _load_elixirs(player_db_id)
@@ -346,12 +346,16 @@ async def _execute_dungeon(
             if prep_view.abandoned:
                 break
 
-        is_boss = enemy_key == boss_key
+        is_boss = (wave_idx == total_waves - 1)
+        grade = _roll_boss_grade(grade_progress, _rng) if is_boss else _roll_encounter_grade(grade_progress, _rng)
+        grade_badge = f" {grade['emoji']} **{grade['vi']}**" if grade["emoji"] else ""
+
         edata = registry.get_enemy(enemy_key)
-        wave_label = (
-            (f"👑 Boss: **{edata['vi']}**" if is_boss else f"Đợt {wave_idx + 1}: **{edata['vi']}**")
-            if edata else f"Đợt {wave_idx + 1}"
-        )
+        if is_boss:
+            wave_label = (f"👑 Boss: **{edata['vi']}**{grade_badge}" if edata else f"👑 Boss{grade_badge}")
+        else:
+            enemy_name = f"**{edata['vi']}**" if edata else enemy_key
+            wave_label = f"Đợt {wave_idx + 1}: {enemy_name}{grade_badge}"
 
         all_logs.append(f"\n{'═' * 20}")
         all_logs.append(f"⚔️ **{wave_label}**")
@@ -360,10 +364,13 @@ async def _execute_dungeon(
         if not enemy_c:
             continue
 
+        _apply_encounter_grade(enemy_c, grade, _rng)
+
         combat_session = CombatSession(
             player=player_c,
             enemy=enemy_c,
             player_skill_keys=skill_keys,
+            loot_qty_multiplier=grade["loot_mult"],
         )
 
         # Show wave start
@@ -388,7 +395,7 @@ async def _execute_dungeon(
             if result is not None:
                 wave_result = result
                 all_loot.extend(result.loot)
-                merit_total += result.merit_gained
+                merit_total += int(result.merit_gained * grade["merit_mult"])
                 break
 
             await interaction.edit_original_response(

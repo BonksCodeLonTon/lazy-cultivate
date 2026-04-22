@@ -96,3 +96,46 @@ ENEMY_REALM_LEVEL_STAT_MULT: dict[int, float] = {
 # ── Player defaults ───────────────────────────────────────────────────────────
 BASE_MP_REGEN_PCT: float = 0.01   # 1 % MP per turn baseline (before bonuses)
 MAX_FINAL_DMG_REDUCE: float = 0.75  # damage-reduction hard cap (buffs + debuffs)
+
+# ── Encounter grades (dungeon spawn-time rank) ────────────────────────────────
+# Randomly rolled per wave; separate from the enemy's base "rank" JSON field.
+# stat_mult:       multiplier on HP / ATK / MATK / DEF after player-realm scaling.
+# loot_mult:       passed to CombatSession.loot_qty_multiplier for this wave.
+# merit_mult:      multiplier applied to base merit earned from this wave.
+# w_min / w_max:   selection weights at player progress 0.0 and 1.0 in dungeon realm.
+# secondary_count: extra random stat boosts applied (from ENCOUNTER_GRADE_SECONDARY_STATS).
+# secondary_lo/hi: fractional bonus range for each secondary stat (e.g. 0.20 → +20%).
+ENCOUNTER_GRADES: list[dict] = [
+    {
+        "key": "binh_thuong", "vi": "Bình Thường", "emoji": "",
+        "w_min": 60, "w_max": 30,
+        "stat_mult": 1.00, "loot_mult": 1.0, "merit_mult": 1.0,
+        "secondary_count": 0, "secondary_lo": 0.0, "secondary_hi": 0.0,
+    },
+    {
+        "key": "di_thuong", "vi": "Dị Thường", "emoji": "⚡",
+        "w_min": 25, "w_max": 28,
+        "stat_mult": 1.30, "loot_mult": 1.3, "merit_mult": 1.5,
+        "secondary_count": 1, "secondary_lo": 0.10, "secondary_hi": 0.20,
+    },
+    {
+        "key": "tinh_anh", "vi": "Tinh Anh", "emoji": "🌟",
+        "w_min": 10, "w_max": 22,
+        "stat_mult": 1.75, "loot_mult": 1.8, "merit_mult": 2.5,
+        "secondary_count": 2, "secondary_lo": 0.15, "secondary_hi": 0.30,
+    },
+    {
+        "key": "vuong_gia", "vi": "Vương Giả", "emoji": "👑",
+        "w_min": 4, "w_max": 14,
+        "stat_mult": 2.50, "loot_mult": 2.5, "merit_mult": 4.0,
+        "secondary_count": 2, "secondary_lo": 0.20, "secondary_hi": 0.40,
+    },
+    {
+        "key": "truyen_thuyet", "vi": "Truyền Thuyết", "emoji": "🔱",
+        "w_min": 1, "w_max": 6,
+        "stat_mult": 3.50, "loot_mult": 4.0, "merit_mult": 8.0,
+        "secondary_count": 3, "secondary_lo": 0.30, "secondary_hi": 0.50,
+    },
+]
+# Stats eligible for secondary random buffs when encounter grade > binh_thuong.
+ENCOUNTER_GRADE_SECONDARY_STATS: list[str] = ["hp", "atk", "matk", "def_stat", "evasion_rating"]
