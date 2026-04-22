@@ -25,7 +25,7 @@
   },
   {
     "key": "CommonBangTho",
-    "vi": "Băng Linh Thỏ",
+    "vi": "Băng Linh Thố",
     "en": "Ice Spirit Rabbit",
     "rank": "pho_thong",
     "realm_level": 1,
@@ -37,7 +37,7 @@
   },
   {
     "key": "CommonToRua",
-    "vi": "Thổ Nham Rùa",
+    "vi": "Thổ Nham Quy",
     "en": "Earth Rock Turtle",
     "rank": "pho_thong",
     "realm_level": 1,
@@ -49,7 +49,7 @@
   },
   {
     "key": "CommonKimBo",
-    "vi": "Kim Giáp Bọ",
+    "vi": "Kim Giáp Trùng",
     "en": "Metal Armor Beetle",
     "rank": "pho_thong",
     "realm_level": 1,
@@ -85,7 +85,7 @@
   },
   {
     "key": "CommonThuyLinhCua",
-    "vi": "Thủy Linh Cua",
+    "vi": "Thủy Linh Cự Giải",
     "en": "Water Spirit Crab",
     "rank": "pho_thong",
     "realm_level": 1,

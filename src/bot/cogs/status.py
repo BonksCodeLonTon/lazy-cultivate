@@ -12,12 +12,12 @@ from src.db.repositories.player_repo import PlayerRepository
 from src.game.constants.realms import BODY_REALMS, QI_REALMS, FORMATION_REALMS, realm_label
 from src.game.systems.cultivation import (
     can_breakthrough,
-    compute_hp_max,
-    compute_mp_max,
     compute_formation_bonuses,
     compute_constitution_bonuses,
     merge_bonuses,
 )
+from src.game.systems.character_stats import compute_combat_stats
+from src.game.engine.equipment import compute_equipment_stats
 from src.utils.embed_builder import character_embed, error_embed
 from src.bot.cogs.cultivation import (
     _orm_to_model,
@@ -27,14 +27,13 @@ from src.bot.cogs.cultivation import (
     CultivateView,
     BreakthroughView,
 )
-from src.game.systems.cultivation import compute_atk, compute_matk, compute_def_stat
-from src.game.engine.equipment import compute_equipment_stats
 
 log = logging.getLogger(__name__)
 
 
 def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
-    from src.game.constants.linh_can import LINH_CAN_DATA, compute_linh_can_bonuses, parse_linh_can
+    from src.game.constants.linh_can import LINH_CAN_DATA, parse_linh_can
+
     char = _orm_to_model(player)
     gem_count = 0
     if player.active_formation and player.formations:
@@ -44,34 +43,28 @@ def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
                 break
 
     linh_can_list = parse_linh_can(player.linh_can or "")
-    lc_bonuses = compute_linh_can_bonuses(linh_can_list)
-    bonuses = merge_bonuses(
-        compute_formation_bonuses(player.active_formation, gem_count),
-        compute_constitution_bonuses(player.constitution_type),
-        lc_bonuses,
-    )
+
+    equipped_instances = [i for i in (player.item_instances or []) if i.location == "equipped"]
+    equip_stats = compute_equipment_stats(equipped_instances)
+
+    cs = compute_combat_stats(char, gem_count=gem_count, equip_stats=equip_stats)
 
     from src.data.registry import registry as gr
     const_data = gr.get_constitution(player.constitution_type)
     form_data  = gr.get_formation(player.active_formation) if player.active_formation else None
 
-    spd_base = 10 + bonuses.get("spd_bonus", 0)
-    spd_final = round(spd_base * (1.0 + bonuses.get("spd_pct", 0.0)))
-
-    # Equipment stats (item_instances is eagerly loaded by PlayerRepository)
-    equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
-    equip_stats = compute_equipment_stats(equipped)
-
-    base_atk  = compute_atk(char, bonuses)
-    base_matk = compute_matk(char, bonuses)
-    base_def  = compute_def_stat(char, bonuses)
+    # Equipped items: slot → display_name
+    equipped_by_slot: dict[str, str] = {
+        inst.slot: inst.display_name
+        for inst in equipped_instances
+    }
 
     stats = {
         "hp_current": player.hp_current,
-        "hp_max":     compute_hp_max(char, bonuses),
+        "hp_max":     cs.hp_max,
         "mp_current": player.mp_current,
-        "mp_max":     compute_mp_max(char, bonuses),
-        "spd":        spd_final,
+        "mp_max":     cs.mp_max,
+        "spd":        cs.spd,
         "body_realm":      player.body_realm,
         "body_level":      player.body_level,
         "body_xp":         player.body_xp,
@@ -91,16 +84,21 @@ def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
         "constitution":      const_data["vi"] if const_data else player.constitution_type,
         "active_formation":  form_data["vi"] if form_data else None,
         "gem_count":         gem_count,
-        # Combat stats
-        "atk":              base_atk  + int(equip_stats.get("atk", 0)),
-        "matk":             base_matk + int(equip_stats.get("matk", 0)),
-        "def_stat":         base_def  + int(equip_stats.get("def_stat", 0)),
-        "crit_rating":      char.stats.crit_rating     + bonuses.get("crit_rating", 0)     + int(equip_stats.get("crit_rating", 0)),
-        "crit_dmg_rating":  char.stats.crit_dmg_rating + bonuses.get("crit_dmg_rating", 0) + int(equip_stats.get("crit_dmg_rating", 0)),
-        "evasion_rating":   char.stats.evasion_rating  + bonuses.get("evasion_rating", 0)  + int(equip_stats.get("evasion_rating", 0)),
-        "crit_res_rating":  char.stats.crit_res_rating + bonuses.get("crit_res_rating", 0) + int(equip_stats.get("crit_res_rating", 0)),
-        "final_dmg_bonus":  char.stats.final_dmg_bonus + bonuses.get("final_dmg_bonus", 0.0) + equip_stats.get("final_dmg_bonus", 0.0),
+        # Combat stats (already merged with equipment)
+        "atk":             cs.atk,
+        "matk":            cs.matk,
+        "def_stat":        cs.def_stat,
+        "crit_rating":     cs.crit_rating,
+        "crit_dmg_rating": cs.crit_dmg_rating,
+        "evasion_rating":  cs.evasion_rating,
+        "crit_res_rating": cs.crit_res_rating,
+        "final_dmg_bonus": cs.final_dmg_bonus,
+        # Elemental resistances (only pass non-zero entries)
+        "resistances": {k: v for k, v in cs.resistances.items() if v > 0.0},
+        # Equipped gear by slot
+        "equipped_by_slot": equipped_by_slot,
     }
+
     embed = character_embed(player.name, stats, avatar_url=avatar_url)
 
     if linh_can_list:
@@ -257,7 +255,7 @@ class StatusView(discord.ui.View):
                 for s in sorted(player.skills or [], key=lambda x: x.slot_index)
             ]
 
-        from src.bot.cogs.combat import _build_skills_embed_view
+        from src.bot.cogs.skills import _build_skills_embed_view
         embed, view = _build_skills_embed_view(equipped, self._discord_id, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
 
@@ -276,7 +274,7 @@ class StatusView(discord.ui.View):
                 return
             linh_can = parse_linh_can(player.linh_can or "")
 
-        from src.bot.cogs.combat import _build_skilllist
+        from src.bot.cogs.skills import _build_skilllist
         embed, view = _build_skilllist(
             discord_id=self._discord_id,
             back_fn=_show_status,

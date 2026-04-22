@@ -16,6 +16,7 @@ COGS = [
     "src.bot.cogs.cultivation",
     "src.bot.cogs.status",
     "src.bot.cogs.combat",
+    "src.bot.cogs.skills",
     "src.bot.cogs.equipment",
     "src.bot.cogs.dungeon",
     "src.bot.cogs.inventory",

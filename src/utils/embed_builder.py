@@ -130,6 +130,9 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         atk, matk, def_stat
         crit_rating, crit_dmg_rating, evasion_rating, crit_res_rating
         final_dmg_bonus (float, e.g. 0.15 = +15%)
+        # Equipment (optional)
+        equipped_by_slot (dict[slot_key, display_name])
+        resistances (dict[element, float] — only non-zero entries)
     """
     from src.game.constants.currencies import TURNS_PER_CULT_LEVEL
 
@@ -243,6 +246,34 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         detail = f"🧬 **{constitution}**\n🔯 *(chưa kích hoạt trận pháp)*"
 
     embed.add_field(name="Thể Chất & Trận Pháp", value=detail, inline=False)
+
+    # ── Equipped gear ─────────────────────────────────────────────────────────
+    from src.game.engine.equipment import SLOT_LABELS, SLOT_ORDER
+    equipped_by_slot: dict[str, str] = stats.get("equipped_by_slot", {})
+    if equipped_by_slot:
+        lines = [
+            f"{SLOT_LABELS.get(slot, slot)}: **{equipped_by_slot[slot]}**"
+            for slot in SLOT_ORDER
+            if slot in equipped_by_slot
+        ]
+        embed.add_field(name="🗡️ Trang Bị", value="\n".join(lines), inline=False)
+
+    # ── Elemental resistances ─────────────────────────────────────────────────
+    _ELEM_EMOJI_MAP = {
+        "kim":   "⚙️", "moc":   "🌿", "thuy":  "💧", "hoa":   "🔥",
+        "tho":   "🪨", "loi":   "⚡", "phong": "🌬️", "am":    "🌑", "quang": "☀️",
+    }
+    _ELEM_VI = {
+        "kim":   "Kim", "moc":   "Mộc", "thuy":  "Thủy", "hoa":  "Hỏa",
+        "tho":   "Thổ", "loi":   "Lôi", "phong": "Phong", "am":  "Âm", "quang": "Quang",
+    }
+    resistances: dict[str, float] = stats.get("resistances", {})
+    if resistances:
+        res_parts = [
+            f"{_ELEM_EMOJI_MAP.get(elem, elem)} {_ELEM_VI.get(elem, elem)} **{val * 100:.1f}%**"
+            for elem, val in resistances.items()
+        ]
+        embed.add_field(name="🛡️ Kháng Nguyên Tố", value="  ".join(res_parts), inline=False)
 
     embed.set_footer(text=FOOTER_TEXT)
     return embed
