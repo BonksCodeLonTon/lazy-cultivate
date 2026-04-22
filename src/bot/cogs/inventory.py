@@ -46,7 +46,8 @@ def _skill_grade(skill_data: dict) -> int:
         return 3
     return 4
 
-GRADE_EMOJI = {1: "🟡", 2: "🟣", 3: "🟢", 4: "🔴"}
+GRADE_EMOJI = {1: "⚪", 2: "🟢", 3: "🔵", 4: "🟡"}
+
 TYPE_EMOJI = {
     "forge_material": "🔨", "material": "🪨", "gem": "💠", "scroll": "📜",
     "chest": "📦", "elixir": "⚗️", "special": "⭐", "artifact": "🗡️",
