@@ -10,12 +10,7 @@ from discord.ext import commands
 from src.db.connection import get_session
 from src.db.repositories.player_repo import PlayerRepository
 from src.game.constants.realms import BODY_REALMS, QI_REALMS, FORMATION_REALMS, realm_label
-from src.game.systems.cultivation import (
-    can_breakthrough,
-    compute_formation_bonuses,
-    compute_constitution_bonuses,
-    merge_bonuses,
-)
+from src.game.systems.cultivation import can_breakthrough
 from src.game.systems.character_stats import compute_combat_stats
 from src.game.engine.equipment import compute_equipment_stats
 from src.utils.embed_builder import character_embed, error_embed
