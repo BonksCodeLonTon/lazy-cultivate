@@ -79,7 +79,7 @@ def get_recipe(grade: int) -> dict | None:
 def get_material_grade(material_key: str) -> int | None:
     """Return the grade of a forge material, or None if not a forge material."""
     item = registry.get_item(material_key)
-    if item and item.get("type") == "forge_material":
+    if item and item.get("type") == "material":
         return int(item.get("grade", 0))
     return None
 
@@ -173,7 +173,7 @@ def _get_affix_bias(material_key: str | None) -> set[str]:
     if not material_key:
         return set()
     item = registry.get_item(material_key)
-    if item and item.get("type") == "forge_material":
+    if item and item.get("type") == "material":
         return set(item.get("affix_bias", []))
     return set()
 

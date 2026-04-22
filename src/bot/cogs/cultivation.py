@@ -333,8 +333,9 @@ class StatusView(discord.ui.View):
             return
         await interaction.response.defer()
 
-        from src.bot.cogs.equipment import EquipBagView, _equip_bag_embed
+        from src.bot.cogs.inventory import InventoryView, _build_hub_embed
         from src.db.repositories.equipment_repo import EquipmentRepository
+        from src.db.repositories.inventory_repo import InventoryRepository
 
         async with get_session() as session:
             repo = PlayerRepository(session)
@@ -342,11 +343,11 @@ class StatusView(discord.ui.View):
             if player is None:
                 await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                 return
-            erepo = EquipmentRepository(session)
-            bag_items = await erepo.get_bag(player.id)
+            inv_items = await InventoryRepository(session).get_all(player.id)
+            equip_bag = await EquipmentRepository(session).get_bag(player.id)
 
-        embed = _equip_bag_embed(player.name, bag_items)
-        view = EquipBagView(self._discord_id, player.name, bag_items, back_fn=_show_status)
+        embed = _build_hub_embed(inv_items, equip_bag)
+        view = InventoryView(self._discord_id, inv_items, equip_bag, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
 
     async def _dungeon_cb(self, interaction: discord.Interaction) -> None:
