@@ -19,7 +19,10 @@ STAT_LABELS: dict[str, str] = {
     "crit_res_rating": "Kháng Bạo",
     "final_dmg_bonus": "Tăng ST",
     "final_dmg_reduce":"Giảm ST",
-    "hp_regen_pct":    "Hồi HP",
+    "hp_regen_pct":    "Hồi HP %",
+    "hp_regen_flat":   "Hồi HP",
+    "mp_regen_pct":    "Hồi MP %",
+    "mp_regen_flat":   "Hồi MP",
     "res_all":         "Kháng TN",
 }
 
@@ -36,7 +39,11 @@ SLOT_LABELS: dict[str, str] = {
 
 SLOT_ORDER = ("weapon", "off_hand", "armor", "helmet", "glove", "belt", "ring", "amulet")
 
-_PCT_STATS = frozenset({"final_dmg_bonus", "final_dmg_reduce", "hp_regen_pct", "res_all"})
+_PCT_STATS = frozenset({
+    "final_dmg_bonus", "final_dmg_reduce",
+    "hp_regen_pct", "mp_regen_pct",
+    "res_all",
+})
 
 
 def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:

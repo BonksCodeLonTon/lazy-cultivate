@@ -467,20 +467,24 @@ class CombatSession:
         # Periodic: Thổ Linh Căn — activate shield when HP is low
         lc_effects.check_shield(combatant, self.log)
 
-        # HP regen: base passive + buff contributions (BuffSinhCo, Mộc Hồi Xuân, etc.)
+        # HP regen: pct (of hp_max) + flat, stacked.
         if combatant.is_alive():
             mods = get_combat_modifiers(combatant)
             effective_regen_pct = combatant.hp_regen_pct + mods.get("hp_regen_pct", 0.0)
-            if effective_regen_pct > 0:
-                regen = max(1, int(combatant.hp_max * effective_regen_pct))
-                combatant.hp = min(combatant.hp_max, combatant.hp + regen)
-                self.log.append(f"  💚 **{combatant.name}** hồi sinh lực +{regen} HP")
+            hp_pct_regen = int(combatant.hp_max * effective_regen_pct) if effective_regen_pct > 0 else 0
+            hp_total_regen = hp_pct_regen + max(0, combatant.hp_regen_flat)
+            if hp_total_regen > 0 and combatant.hp < combatant.hp_max:
+                hp_total_regen = max(1, hp_total_regen)
+                combatant.hp = min(combatant.hp_max, combatant.hp + hp_total_regen)
+                self.log.append(f"  💚 **{combatant.name}** hồi sinh lực +{hp_total_regen} HP")
 
-            # MP regen: base passive per turn
-            if combatant.mp_regen_pct > 0 and combatant.mp < combatant.mp_max:
-                mp_regen = max(1, int(combatant.mp_max * combatant.mp_regen_pct))
-                combatant.mp = min(combatant.mp_max, combatant.mp + mp_regen)
-                self.log.append(f"  💙 **{combatant.name}** hồi linh lực +{mp_regen} MP")
+            # MP regen: pct (of mp_max) + flat, stacked.
+            mp_pct_regen = int(combatant.mp_max * combatant.mp_regen_pct) if combatant.mp_regen_pct > 0 else 0
+            mp_total_regen = mp_pct_regen + max(0, combatant.mp_regen_flat)
+            if mp_total_regen > 0 and combatant.mp < combatant.mp_max:
+                mp_total_regen = max(1, mp_total_regen)
+                combatant.mp = min(combatant.mp_max, combatant.mp + mp_total_regen)
+                self.log.append(f"  💙 **{combatant.name}** hồi linh lực +{mp_total_regen} MP")
 
         combatant.tick_effects()
 
