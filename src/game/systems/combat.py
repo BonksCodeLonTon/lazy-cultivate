@@ -20,7 +20,7 @@ from src.game.constants.balance import (
     ENEMY_RANK_BASE_ATK, ENEMY_RANK_BASE_MATK, ENEMY_RANK_BASE_DEF, ENEMY_RANK_BASE_EVASION,
     ENEMY_SCALE_MAX, ENEMY_HP_SCALE_FACTOR, ENEMY_DMG_BONUS_SCALE, ENEMY_BASE_ELEM_RES,
     ENEMY_REALM_LEVEL_STAT_MULT,
-    MAX_FINAL_DMG_REDUCE,
+    MAX_FINAL_DMG_REDUCE, TRUE_DMG_PCT_CAP,
     SPD_EVASION_BASELINE, SPD_EVASION_PER_POINT, SPD_EVASION_CAP,
     SPD_EXTRA_TURN_SCALE, SPD_EXTRA_TURN_MAX_PCT,
 )
@@ -39,6 +39,39 @@ from src.game.engine.effects import (
 from src.game.engine import linh_can_effects as lc_effects
 from src.game.models.character import Character
 from src.game.systems.combatant import Combatant
+
+
+def _propagate_fire_build(actor: Combatant, target: Combatant) -> None:
+    """Copy the attacker's fire-DoT build flags onto the target.
+
+    Called whenever a burn stack lands so that DoT ticks on the target respect
+    the attacker's stack cap, per-stack damage, and DoT-crit enable flag.
+    Uses max-merge so the strongest flag in play wins — matters if a second
+    weaker attacker applies burn afterward.
+    """
+    if actor.burn_stack_cap > target.burn_stack_cap:
+        target.burn_stack_cap = actor.burn_stack_cap
+    if actor.burn_per_stack_pct > target.burn_per_stack_pct:
+        target.burn_per_stack_pct = actor.burn_per_stack_pct
+    if actor.dot_can_crit:
+        target.dot_can_crit = True
+
+
+def _propagate_bleed_build(actor: Combatant, target: Combatant) -> None:
+    """Copy the attacker's Kim-bleed build flags onto the target.
+
+    Same pattern as _propagate_fire_build: cap, per-stack damage, and the
+    heal-reduction multiplier carry over to the target so DoT ticks and
+    heal events honor the attacker's build.
+    """
+    if actor.bleed_stack_cap > target.bleed_stack_cap:
+        target.bleed_stack_cap = actor.bleed_stack_cap
+    if actor.bleed_per_stack_pct > target.bleed_per_stack_pct:
+        target.bleed_per_stack_pct = actor.bleed_per_stack_pct
+    if actor.bleed_heal_reduce > target.bleed_heal_reduce:
+        target.bleed_heal_reduce = actor.bleed_heal_reduce
+    if actor.dot_can_crit:
+        target.dot_can_crit = True
 
 
 def effective_spd(combatant: Combatant) -> int:
@@ -253,13 +286,35 @@ class CombatSession:
         actor_mods = get_combat_modifiers(actor)
         effective_final_dmg_bonus = actor.final_dmg_bonus + actor_mods.get("final_dmg_bonus", 0.0)
 
+        # Fire-build: extra final damage vs targets that currently have burn stacks
+        if target.burn_stacks > 0 and actor.bonus_dmg_vs_burn > 0:
+            effective_final_dmg_bonus += actor.bonus_dmg_vs_burn
+
+        # Kim-build: extra crit chance/damage ratings vs bleeding targets
+        effective_crit_rating = actor.crit_rating + int(actor_mods.get("crit_rating", 0))
+        effective_crit_dmg_rating = actor.crit_dmg_rating + int(actor_mods.get("crit_dmg_rating", 0))
+        if target.bleed_stacks > 0:
+            effective_crit_rating += actor.crit_rating_vs_bleed
+            effective_crit_dmg_rating += actor.crit_dmg_vs_bleed
+
         # Compute effective target stats (base + debuff/buff modifiers on target)
         target_mods = get_combat_modifiers(target)
         res_all_mod = target_mods.get("res_all", 0.0)
-        effective_target_res = {
-            elem: max(0.0, min(0.75, res + res_all_mod))
-            for elem, res in target.resistances.items()
-        }
+        # Per-element res modifiers (e.g. DebuffHoaXuyenThau reduces res_hoa only).
+        # Actor's element shreds apply flat to their element only.
+        effective_target_res: dict[str, float] = {}
+        for elem, res in target.resistances.items():
+            per_elem_mod = target_mods.get(f"res_{elem}", 0.0)
+            shred = 0.0
+            if elem == "hoa":
+                shred = actor.fire_res_shred
+            elif elem == "moc":
+                shred = actor.moc_res_shred
+            elif elem == "thuy":
+                shred = actor.thuy_res_shred
+            effective_target_res[elem] = max(
+                0.0, min(0.75, res + res_all_mod + per_elem_mod - shred)
+            )
         # Target's effective damage reduction (buffs increase it, debuffs like DebuffPhaGiap reduce it)
         effective_target_dr = min(
             MAX_FINAL_DMG_REDUCE,
@@ -282,8 +337,8 @@ class CombatSession:
                 dmg_scale=DmgScale.from_raw(skill_data.get("dmg_scale")),
             )
             attack_stats = AttackStats(
-                crit_rating=actor.crit_rating + int(actor_mods.get("crit_rating", 0)),
-                crit_dmg_rating=actor.crit_dmg_rating + int(actor_mods.get("crit_dmg_rating", 0)),
+                crit_rating=effective_crit_rating,
+                crit_dmg_rating=effective_crit_dmg_rating,
                 final_dmg_bonus=effective_final_dmg_bonus,
                 atk=actor.atk,
                 matk=actor.matk,
@@ -314,6 +369,39 @@ class CombatSession:
                 # Apply target's effective damage reduction (buffs + debuff penalties combined)
                 if effective_target_dr > 0:
                     dmg = int(dmg * (1.0 - effective_target_dr))
+
+                # Moc build: HP-scaling — adds flat bonus damage based on actor's hp_max.
+                # Bypasses DR (applied after) so HP tanks still get their power payoff.
+                hp_scale_bonus = int(actor.hp_max * actor.damage_bonus_from_hp_pct)
+                if hp_scale_bonus > 0:
+                    dmg += hp_scale_bonus
+
+                # Thủy build: MP-scaling — flat bonus damage from the mana pool.
+                mp_scale_bonus = int(actor.mp_max * actor.damage_bonus_from_mp_pct)
+                if mp_scale_bonus > 0:
+                    dmg += mp_scale_bonus
+
+                # Thổ build: shield-scaling — flat bonus damage from current shield.
+                # Encourages stacking shield instead of consuming it defensively.
+                if actor.shield > 0 and actor.damage_bonus_from_shield_pct > 0:
+                    shield_bonus = int(actor.shield * actor.damage_bonus_from_shield_pct)
+                    if shield_bonus > 0:
+                        dmg += shield_bonus
+
+                # Thủy build: mana-stack bonus — additive final_dmg_bonus per stack.
+                # Applied as a direct multiplier on dmg so late-stacks hit hardest.
+                if actor.mana_stacks > 0 and actor.mana_stack_dmg_bonus > 0:
+                    stack_mult = 1.0 + (actor.mana_stacks * actor.mana_stack_dmg_bonus)
+                    dmg = int(dmg * stack_mult)
+
+                # Moc build: consume queued heal→damage built up from prior heals
+                if actor.queued_heal_dmg > 0:
+                    dmg += actor.queued_heal_dmg
+                    self.log.append(
+                        f"    🌿 Dưỡng Sinh Hóa Sát — +{actor.queued_heal_dmg:,} ST từ máu hồi"
+                    )
+                    actor.queued_heal_dmg = 0
+
                 # Apply Thổ shield (absorbs before HP loss)
                 if target.shield > 0:
                     absorbed = min(target.shield, dmg)
@@ -334,15 +422,52 @@ class CombatSession:
                     f" | {target.name}: {target.hp:,}/{target.hp_max:,} HP"
                 )
 
+                # True damage — Kim playstyle. Percentage of target max HP that
+                # bypasses def, res, and damage-reduction. Combined skill pct
+                # (skill_data["true_dmg_pct"]) and passive pct (actor.true_dmg_pct),
+                # capped at TRUE_DMG_PCT_CAP per hit to prevent 1-shot abuse.
+                skill_true_pct = float(skill_data.get("true_dmg_pct", 0.0))
+                total_true_pct = min(
+                    TRUE_DMG_PCT_CAP, skill_true_pct + actor.true_dmg_pct,
+                )
+                if target.is_alive() and total_true_pct > 0:
+                    true_dmg = max(1, int(target.hp_max * total_true_pct))
+                    if result.is_crit:
+                        true_dmg = int(true_dmg * 1.5)
+                    target.hp = max(0, target.hp - true_dmg)
+                    self.log.append(
+                        f"    🗡️ **Chân Thương** xuyên mọi phòng ngự → -{true_dmg:,} HP"
+                        f" ({total_true_pct * 100:.1f}% máu)"
+                    )
+
                 # On-hit formation procs
                 if actor.burn_on_hit_pct > 0 and self.rng.random() < actor.burn_on_hit_pct:
                     dur = default_duration(EffectKey.DEBUFF_THIEU_DOT)
                     target.apply_effect(EffectKey.DEBUFF_THIEU_DOT, dur)
-                    self.log.append(f"    🔥 Thiêu Đốt kích hoạt!")
+                    _propagate_fire_build(actor, target)
+                    target.add_burn_stack(1)
+                    self.log.append(
+                        f"    🔥 Thiêu Đốt kích hoạt! [×{target.burn_stacks}/{target.burn_stack_cap}]"
+                    )
+                if actor.bleed_on_hit_pct > 0 and self.rng.random() < actor.bleed_on_hit_pct:
+                    dur = default_duration(EffectKey.DEBUFF_CHAY_MAU)
+                    target.apply_effect(EffectKey.DEBUFF_CHAY_MAU, dur)
+                    _propagate_bleed_build(actor, target)
+                    target.add_bleed_stack(1)
+                    self.log.append(
+                        f"    🩸 Chảy Máu kích hoạt! [×{target.bleed_stacks}/{target.bleed_stack_cap}]"
+                    )
                 if actor.slow_on_hit_pct > 0 and self.rng.random() < actor.slow_on_hit_pct:
                     dur = default_duration(EffectKey.DEBUFF_LAM_CHAM)
                     target.apply_effect(EffectKey.DEBUFF_LAM_CHAM, dur)
                     self.log.append(f"    🐢 Làm Chậm kích hoạt!")
+                # Thổ build: stun_on_hit — unconditional stun proc (ignores hard-CC immunity? No, respect it)
+                if actor.stun_on_hit_pct > 0 and self.rng.random() < actor.stun_on_hit_pct:
+                    if target.immune_hard_cc:
+                        self.log.append(f"    🛡️ **{target.name}** miễn dịch Choáng!")
+                    else:
+                        target.apply_effect(EffectKey.CC_STUN, default_duration(EffectKey.CC_STUN))
+                        self.log.append(f"    💫 Choáng kích hoạt!")
                 if result.is_crit and actor.paralysis_on_crit:
                     target.apply_effect(EffectKey.CC_STUN, default_duration(EffectKey.CC_STUN))
                     self.log.append(f"    ⚡ Tê Liệt khi Bạo Kích kích hoạt!")
@@ -350,6 +475,30 @@ class CombatSession:
                     dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
                     target.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
                     self.log.append(f"    🧊 Đông Băng kích hoạt!")
+
+                # Thủy build: MP leech + mana stack accumulation (per successful hit)
+                if actor.mp_leech_pct > 0:
+                    gain = max(1, int(dmg * actor.mp_leech_pct))
+                    room = max(0, actor.mp_max - actor.mp)
+                    applied = min(gain, room)
+                    if applied > 0:
+                        actor.mp += applied
+                        self.log.append(f"    💧 Hút Linh Khí → +{applied:,} MP")
+                if actor.mana_stack_per_attack > 0 and actor.mana_stack_cap > 0:
+                    before = actor.mana_stacks
+                    actor.add_mana_stack(actor.mana_stack_per_attack)
+                    if actor.mana_stacks > before:
+                        self.log.append(
+                            f"    💠 Linh Khí Tích Tụ [×{actor.mana_stacks}/{actor.mana_stack_cap}]"
+                        )
+
+                # Thủy build: reflect incoming damage back to the attacker
+                if target.reflect_pct > 0:
+                    self._apply_reflect(actor, target, dmg)
+                # Thổ build: thorn — raw physical reflection that cannot miss.
+                # Runs on EVERY hit the defender takes, independent of reflect_pct.
+                if target.thorn_pct > 0 and actor.is_alive():
+                    self._apply_thorn(actor, target, dmg)
 
                 # On-hit: Linh Căn procs (consolidated in effects.py)
                 lc_effects.on_hit(actor, target, dmg, result.is_crit, self.rng, self.log)
@@ -373,12 +522,17 @@ class CombatSession:
             meta = EFFECTS.get(effect_key)
 
             if effect_key == "HpRegen":
-                # Instant HP heal (10% of max)
+                # Instant HP heal (10% of max) — routed through _apply_heal so
+                # bleed reduction, clamp, and queued_heal_dmg all apply.
                 actor_mods = get_combat_modifiers(actor)
                 heal_mult = 1.0 + actor.heal_pct + actor_mods.get("hp_regen_pct", 0.0)
-                heal = max(1, int(actor.hp_max * 0.10 * heal_mult))
-                actor.hp = min(actor.hp_max, actor.hp + heal)
-                self.log.append(f"    ❤️ +{heal:,} HP")
+                requested = max(1, int(actor.hp_max * 0.10 * heal_mult))
+                if actor.bleed_stacks > 0 and actor.bleed_heal_reduce > 0:
+                    self.log.append(
+                        f"    🩸 *Chảy Máu giảm hiệu lực hồi máu {actor.bleed_heal_reduce * 100:.0f}%*"
+                    )
+                applied = self._apply_heal(actor, requested)
+                self.log.append(f"    ❤️ +{applied:,} HP")
 
             elif effect_key == "MpRegen":
                 # Instant MP restore (10% of max)
@@ -399,7 +553,7 @@ class CombatSession:
                 base_chance = effect_chances.get(effect_key, 1.0)
                 effective_chance = base_chance * (1.0 - target.debuff_immune_pct)
                 if effective_chance >= 1.0 or self.rng.random() < effective_chance:
-                    self._inflict_debuff(effect_key, meta, target)
+                    self._inflict_debuff(effect_key, meta, target, actor=actor)
 
     def _apply_skill_effects(
         self, skill_data: dict, actor: Combatant, target: Combatant, hit: bool
@@ -408,9 +562,29 @@ class CombatSession:
 
         For debuffs/CC: checks the skill's effect_chances dict (default 1.0) multiplied
         by (1 - target.debuff_immune_pct) to get the effective proc probability.
+
+        Special keywords handled in-line (not in the EFFECTS registry):
+          - ``ConsumeBurnBurst``: detonate all burn stacks on the target for
+            burst damage proportional to stack count.
         """
         effect_chances: dict[str, float] = skill_data.get("effect_chances", {})
         for effect_key in skill_data.get("effects", []):
+            # ── Special: burn burst ───────────────────────────────────────────
+            if effect_key == "ConsumeBurnBurst":
+                if hit and target.burn_stacks > 0:
+                    self._burst_burn(actor, target, skill_data)
+                continue
+            # ── Special: Thủy mana-stack burst ────────────────────────────────
+            if effect_key == "ConsumeManaBurst":
+                if hit and actor.mana_stacks > 0:
+                    self._burst_mana_stacks(actor, target, skill_data)
+                continue
+            # ── Special: Thổ shield burst ────────────────────────────────────
+            if effect_key == "ConsumeShieldBurst":
+                if hit and actor.shield > 0:
+                    self._burst_shield(actor, target, skill_data)
+                continue
+
             meta = EFFECTS.get(effect_key)
             if not meta:
                 continue
@@ -423,12 +597,175 @@ class CombatSession:
                 base_chance = effect_chances.get(effect_key, 1.0)
                 effective_chance = base_chance * (1.0 - target.debuff_immune_pct)
                 if effective_chance >= 1.0 or self.rng.random() < effective_chance:
-                    self._inflict_debuff(effect_key, meta, target)
+                    self._inflict_debuff(effect_key, meta, target, actor=actor)
+
+    def _apply_heal(self, combatant: Combatant, amount: int) -> int:
+        """Centralized heal: applies bleed heal-reduction, clamps to hp_max,
+        and accumulates ``queued_heal_dmg`` for Moc's heal→damage conversion.
+
+        Returns the actual HP restored (post-reduction, post-clamp).
+        """
+        if amount <= 0:
+            return 0
+        if combatant.bleed_stacks > 0 and combatant.bleed_heal_reduce > 0:
+            amount = max(1, int(amount * (1.0 - min(0.90, combatant.bleed_heal_reduce))))
+        room = max(0, combatant.hp_max - combatant.hp)
+        applied = min(amount, room)
+        combatant.hp += applied
+        # Queue heal→damage for Moc builds on the applied amount (not the
+        # requested amount — overheal is wasted)
+        if combatant.damage_from_heal_pct > 0 and applied > 0:
+            combatant.queued_heal_dmg += int(applied * combatant.damage_from_heal_pct)
+        return applied
+
+    def _apply_reflect(
+        self, attacker: Combatant, defender: Combatant, dmg: int
+    ) -> None:
+        """Reflect a portion of damage dealt to ``defender`` back at ``attacker``.
+
+        When ``defender.reflect_applies_effects`` is True, the defender's own
+        on-hit proc flags (freeze_on_skill, slow_on_hit_pct, burn_on_hit_pct,
+        bleed_on_hit_pct) also roll against the attacker — the mirror throws
+        the defender's build flavor back at them.
+        """
+        if not attacker.is_alive() or dmg <= 0:
+            return
+        reflected = max(1, int(dmg * defender.reflect_pct))
+        attacker.hp = max(0, attacker.hp - reflected)
+        self.log.append(
+            f"    🪞 **{defender.name}** phản đòn → **{attacker.name}** -{reflected:,} HP"
+        )
+        if not defender.reflect_applies_effects:
+            return
+
+        # Mirror the defender's on-hit effect flags back at the attacker.
+        if defender.freeze_on_skill and self.rng.random() < 0.25:
+            dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
+            attacker.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
+            self.log.append(f"    🧊 Mirror Đóng Băng — **{attacker.name}** bị đông cứng!")
+        if defender.slow_on_hit_pct > 0 and self.rng.random() < defender.slow_on_hit_pct:
+            dur = default_duration(EffectKey.DEBUFF_LAM_CHAM)
+            attacker.apply_effect(EffectKey.DEBUFF_LAM_CHAM, dur)
+            self.log.append(f"    🐢 Mirror Làm Chậm — **{attacker.name}**")
+        if defender.burn_on_hit_pct > 0 and self.rng.random() < defender.burn_on_hit_pct:
+            dur = default_duration(EffectKey.DEBUFF_THIEU_DOT)
+            attacker.apply_effect(EffectKey.DEBUFF_THIEU_DOT, dur)
+            _propagate_fire_build(defender, attacker)
+            attacker.add_burn_stack(1)
+            self.log.append(f"    🔥 Mirror Thiêu Đốt — **{attacker.name}**")
+        if defender.bleed_on_hit_pct > 0 and self.rng.random() < defender.bleed_on_hit_pct:
+            dur = default_duration(EffectKey.DEBUFF_CHAY_MAU)
+            attacker.apply_effect(EffectKey.DEBUFF_CHAY_MAU, dur)
+            _propagate_bleed_build(defender, attacker)
+            attacker.add_bleed_stack(1)
+            self.log.append(f"    🩸 Mirror Chảy Máu — **{attacker.name}**")
+
+    def _apply_thorn(
+        self, attacker: Combatant, defender: Combatant, dmg: int
+    ) -> None:
+        """Thorn reflects raw physical damage back; never misses.
+
+        When ``defender.thorn_from_shield`` is True, the reflected amount is
+        also paid out of the defender's shield pool first (using it as an
+        offense budget). Attackers cannot die from thorn (floor at 1 HP) so
+        they can still retaliate — the dedicated thorn build win condition is
+        damage-over-time accumulation, not one-shot kills.
+        """
+        if dmg <= 0 or not attacker.is_alive():
+            return
+        thorn = max(1, int(dmg * defender.thorn_pct))
+        # Optional: deduct thorn from shield as an offense cost
+        if defender.thorn_from_shield and defender.shield > 0:
+            spent = min(defender.shield, thorn // 2)
+            if spent > 0:
+                defender.shield -= spent
+        # Apply physical reduction from attacker def
+        from src.game.engine.damage.physical import apply_physical_defense
+        reduced = apply_physical_defense(thorn, "physical", attacker.def_stat)
+        final_dmg = max(1, reduced)
+        attacker.hp = max(1, attacker.hp - final_dmg)
+        self.log.append(
+            f"    🌵 Gai Phản Đòn → **{attacker.name}** -{final_dmg:,} HP"
+        )
+
+    def _burst_shield(
+        self, actor: Combatant, target: Combatant, skill_data: dict
+    ) -> None:
+        """Consume the entire shield pool for burst damage.
+
+        Damage = shield × ``burst_shield_mult`` (default 1.5) with target
+        thổ resistance applied. Clears shield afterwards.
+        """
+        shield_amt = actor.consume_shield()
+        if shield_amt <= 0:
+            return
+        mult = float(skill_data.get("burst_shield_mult", 1.5))
+        raw = max(1, int(shield_amt * mult))
+        tho_res = max(0.0, target.resistances.get("tho", 0.0))
+        final_dmg = max(1, int(raw * (1.0 - min(0.75, tho_res))))
+        target.hp = max(0, target.hp - final_dmg)
+        self.log.append(
+            f"    🪨💥 **Thổ Tường Bùng Nổ!** tiêu {shield_amt:,} khiên → "
+            f"-{final_dmg:,} HP ({target.hp:,}/{target.hp_max:,})"
+        )
+
+    def _burst_mana_stacks(
+        self, actor: Combatant, target: Combatant, skill_data: dict
+    ) -> None:
+        """Consume all mana stacks → deal thủy burst damage scaled by stacks × mp_max.
+
+        Damage per stack = ``burst_per_mana_stack_mult`` × mp_max. Honors
+        target thủy resistance (minus any res shred).
+        """
+        stacks = actor.consume_mana_stacks()
+        if stacks <= 0:
+            return
+        per_stack_mult = float(skill_data.get("burst_per_mana_stack_mult", 0.12))
+        raw = max(1, int(actor.mp_max * per_stack_mult * stacks))
+        thuy_res = max(0.0, target.resistances.get("thuy", 0.0))
+        dmg = max(1, int(raw * (1.0 - min(0.75, thuy_res))))
+        target.hp = max(0, target.hp - dmg)
+        self.log.append(
+            f"    💧💥 **Linh Khí Bùng Nổ!** nổ {stacks} tầng → "
+            f"-{dmg:,} HP ({target.hp:,}/{target.hp_max:,})"
+        )
+
+    def _burst_burn(
+        self, actor: Combatant, target: Combatant, skill_data: dict
+    ) -> None:
+        """Consume all burn stacks on target → deal burst hoa damage.
+
+        Damage per stack = ``burst_per_stack_mult`` × (skill.base_dmg + actor.matk × 0.5).
+        Reduced by target's (shredded) hoa resistance. Scales with stacks so a
+        10-stack build detonates for huge burst.
+        """
+        stacks = target.consume_burn_stacks()
+        if stacks <= 0:
+            return
+        per_stack_mult = float(skill_data.get("burst_per_stack_mult", 0.35))
+        base = skill_data.get("base_dmg", 0) + int(actor.matk * 0.5)
+        raw = max(1, int(base * per_stack_mult * stacks))
+        # Honor target hoa resistance (with shred from actor)
+        hoa_res = max(0.0, target.resistances.get("hoa", 0.0) - actor.fire_res_shred)
+        dmg = max(1, int(raw * (1.0 - min(0.75, hoa_res))))
+        target.hp = max(0, target.hp - dmg)
+        # Clear the burn debuff itself — stacks are gone, marker should go too
+        target.effects.pop(EffectKey.DEBUFF_THIEU_DOT, None)
+        self.log.append(
+            f"    🔥💥 **Hỏa Bùng Phát!** nổ {stacks} tầng Thiêu Đốt → "
+            f"-{dmg:,} HP ({target.hp:,}/{target.hp_max:,})"
+        )
 
     def _inflict_debuff(
-        self, effect_key: str, meta: "EffectMeta", target: Combatant
+        self, effect_key: str, meta: "EffectMeta", target: Combatant,
+        actor: Combatant | None = None,
     ) -> None:
-        """Apply a debuff or CC to target, respecting immunities."""
+        """Apply a debuff or CC to target, respecting immunities.
+
+        ``actor`` is optional; when provided, fire-build flags (dot_can_crit,
+        burn_per_stack_pct) are propagated to the target so DoT ticks honor
+        the attacker's build.
+        """
         if effect_key == EffectKey.DEBUFF_DOC_TO and target.poison_immunity:
             self.log.append(f"    💚 **{target.name}** miễn dịch Độc Tố!")
             return
@@ -441,6 +778,24 @@ class CombatSession:
             return
         dur = default_duration(effect_key)
         target.apply_effect(effect_key, dur)
+        # Burn stacks on every application — fire-build cornerstone
+        if effect_key == EffectKey.DEBUFF_THIEU_DOT:
+            if actor is not None:
+                _propagate_fire_build(actor, target)
+            target.add_burn_stack(1)
+            self.log.append(
+                f"    {meta.emoji} **{target.name}** bị **{meta.vi}** [×{target.burn_stacks}/{target.burn_stack_cap}] ({dur}t)"
+            )
+            return
+        # Bleed stacks — Kim playstyle mirror of burn
+        if effect_key == EffectKey.DEBUFF_CHAY_MAU:
+            if actor is not None:
+                _propagate_bleed_build(actor, target)
+            target.add_bleed_stack(1)
+            self.log.append(
+                f"    {meta.emoji} **{target.name}** bị **{meta.vi}** [×{target.bleed_stacks}/{target.bleed_stack_cap}] ({dur}t)"
+            )
+            return
         self.log.append(
             f"    {meta.emoji} **{target.name}** bị **{meta.vi}** ({dur}t)"
         )
@@ -469,16 +824,50 @@ class CombatSession:
 
     def _process_periodic(self, combatant: Combatant) -> None:
         """Process all periodic effects (DoTs, HP regen, Linh Căn procs) at end of turn."""
+        # The opposing combatant is treated as the DoT's applier — lets Moc
+        # builds leech HP/MP off the poison they inflicted.
+        opponent = self.enemy if combatant is self.player else self.player
+
         # DoT damage from all active debuffs (poison, burn, bleed, etc.)
-        for effect_key, dot_dmg in get_periodic_damage(combatant):
+        for effect_key, dot_dmg, is_crit in get_periodic_damage(combatant):
             combatant.hp = max(0, combatant.hp - dot_dmg)
+
+            # Moc build: leech a fraction of DoT damage as HP + MP to the applier
+            if opponent and opponent.dot_leech_pct > 0 and opponent.is_alive():
+                leech = max(1, int(dot_dmg * opponent.dot_leech_pct))
+                heal_amt = self._apply_heal(opponent, leech)
+                mp_gain = min(opponent.mp_max - opponent.mp, leech // 2)
+                if mp_gain > 0:
+                    opponent.mp += mp_gain
+                self.log.append(
+                    f"    🌿 **{opponent.name}** hút máu DoT → +{heal_amt:,} HP / +{mp_gain:,} MP"
+                )
+
             meta = EFFECTS.get(effect_key)
             emoji = meta.emoji if meta else "💢"
             name = meta.vi if meta else effect_key
-            self.log.append(f"  {emoji} **{combatant.name}** bị {name} -{dot_dmg} HP")
+            crit_tag = " 💥BẠO!" if is_crit else ""
+            stack_tag = (
+                f" [×{combatant.burn_stacks}]"
+                if effect_key == EffectKey.DEBUFF_THIEU_DOT and combatant.burn_stacks > 0
+                else ""
+            )
+            self.log.append(
+                f"  {emoji} **{combatant.name}** bị {name}{stack_tag} -{dot_dmg} HP{crit_tag}"
+            )
 
         # Periodic: Thổ Linh Căn — activate shield when HP is low
         lc_effects.check_shield(combatant, self.log)
+
+        # Thổ build: shield regen (pct of hp_max + flat), capped at shield_cap
+        if combatant.is_alive() and (combatant.shield_regen_pct > 0 or combatant.shield_regen_flat > 0):
+            regen = int(combatant.hp_max * combatant.shield_regen_pct) + combatant.shield_regen_flat
+            gained = combatant.add_shield(regen)
+            if gained > 0:
+                self.log.append(
+                    f"  🪨 **{combatant.name}** Thổ Tường hồi +{gained:,} khiên "
+                    f"({combatant.shield:,}/{combatant.shield_cap():,})"
+                )
 
         # HP regen: pct (of hp_max) + flat, stacked.
         if combatant.is_alive():
@@ -487,9 +876,9 @@ class CombatSession:
             hp_pct_regen = int(combatant.hp_max * effective_regen_pct) if effective_regen_pct > 0 else 0
             hp_total_regen = hp_pct_regen + max(0, combatant.hp_regen_flat)
             if hp_total_regen > 0 and combatant.hp < combatant.hp_max:
-                hp_total_regen = max(1, hp_total_regen)
-                combatant.hp = min(combatant.hp_max, combatant.hp + hp_total_regen)
-                self.log.append(f"  💚 **{combatant.name}** hồi sinh lực +{hp_total_regen} HP")
+                applied = self._apply_heal(combatant, hp_total_regen)
+                if applied > 0:
+                    self.log.append(f"  💚 **{combatant.name}** hồi sinh lực +{applied} HP")
 
             # MP regen: pct (of mp_max) + flat, stacked.
             mp_pct_regen = int(combatant.mp_max * combatant.mp_regen_pct) if combatant.mp_regen_pct > 0 else 0
@@ -604,6 +993,37 @@ def build_player_combatant(
         resistances=dict(cs.resistances),
         skill_keys=final_skill_keys,
         linh_can=list(char.linh_can),
+        burn_stack_cap=cs.burn_stack_cap,
+        burn_per_stack_pct=cs.burn_per_stack_pct,
+        bonus_dmg_vs_burn=cs.bonus_dmg_vs_burn,
+        fire_res_shred=cs.fire_res_shred,
+        dot_can_crit=cs.dot_can_crit,
+        bleed_stack_cap=cs.bleed_stack_cap,
+        bleed_per_stack_pct=cs.bleed_per_stack_pct,
+        bleed_on_hit_pct=cs.bleed_on_hit_pct,
+        bleed_heal_reduce=cs.bleed_heal_reduce,
+        crit_rating_vs_bleed=cs.crit_rating_vs_bleed,
+        crit_dmg_vs_bleed=cs.crit_dmg_vs_bleed,
+        true_dmg_pct=cs.true_dmg_pct,
+        dot_leech_pct=cs.dot_leech_pct,
+        moc_res_shred=cs.moc_res_shred,
+        damage_from_heal_pct=cs.damage_from_heal_pct,
+        damage_bonus_from_hp_pct=cs.damage_bonus_from_hp_pct,
+        reflect_pct=cs.reflect_pct,
+        reflect_applies_effects=cs.reflect_applies_effects,
+        damage_bonus_from_mp_pct=cs.damage_bonus_from_mp_pct,
+        mp_leech_pct=cs.mp_leech_pct,
+        mana_stack_cap=cs.mana_stack_cap,
+        mana_stack_per_attack=cs.mana_stack_per_attack,
+        mana_stack_dmg_bonus=cs.mana_stack_dmg_bonus,
+        thuy_res_shred=cs.thuy_res_shred,
+        shield_regen_pct=cs.shield_regen_pct,
+        shield_regen_flat=cs.shield_regen_flat,
+        shield_cap_pct=cs.shield_cap_pct,
+        damage_bonus_from_shield_pct=cs.damage_bonus_from_shield_pct,
+        thorn_pct=cs.thorn_pct,
+        thorn_from_shield=cs.thorn_from_shield,
+        stun_on_hit_pct=cs.stun_on_hit_pct,
     )
 
 

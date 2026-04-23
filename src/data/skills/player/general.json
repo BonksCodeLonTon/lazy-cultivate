@@ -1,0 +1,176 @@
+[
+  {
+    "key": "SkillSupMp",
+    "vi": "Nhân Linh Hồi Khí",
+    "en": "Human Spirit Qi Recovery",
+    "realm": 1,
+    "category": "defense",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 5,
+    "cooldown": 2,
+    "base_dmg": 0,
+    "effects": [
+      "MpRegen"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefChung",
+    "vi": "Địa Hộ Pháp Vô Ngại",
+    "en": "Earth Dharma Protection",
+    "realm": 3,
+    "category": "defense",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 30,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "BuffHoPhap"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillSupHeal1",
+    "vi": "Nhân Sinh Phục Hồi",
+    "en": "Human Life Recovery",
+    "realm": 3,
+    "category": "defense",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 20,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "HpRegen"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillSupAll",
+    "vi": "Nhân Vạn Tượng Hóa",
+    "en": "Human Ten-Thousand Form",
+    "realm": 5,
+    "category": "movement",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 35,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTangToc",
+      "BuffSinhCo"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefChung_R6",
+    "vi": "Chân Nguyên Hộ Thể",
+    "en": "True Origin Body Guard",
+    "realm": 6,
+    "category": "defense",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 60,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffHoPhap",
+      "BuffCanCo",
+      "HpRegen"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefChung_R8",
+    "vi": "Thánh Nguyên Vạn Kiếp Hộ",
+    "en": "Saint Origin Myriad-Tribulation Ward",
+    "realm": 8,
+    "category": "defense",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 105,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "effects": [
+      "BuffBatTu",
+      "BuffHoPhap",
+      "BuffHuKhong",
+      "HpRegen"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefDangTien_R9",
+    "vi": "Đăng Tiên Bất Diệt Thể",
+    "en": "Immortal Ascension Undying Body",
+    "realm": 9,
+    "category": "defense",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 140,
+    "cooldown": 9,
+    "base_dmg": 0,
+    "effects": [
+      "BuffBatTu",
+      "BuffHoPhap",
+      "BuffHuKhong",
+      "BuffCanCo",
+      "HpRegen",
+      "MpRegen"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillPasDangTien_R9",
+    "vi": "Đăng Tiên Hỗn Nguyên Đạo Ý",
+    "en": "Immortal Ascension Primordial Dao Intent",
+    "realm": 9,
+    "category": "passive",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 150,
+    "cooldown": 15,
+    "base_dmg": 0,
+    "effects": [
+      "BuffVoNgaKiemTam",
+      "BuffHoangKim",
+      "BuffDaiDia",
+      "BuffLietDiem"
+    ],
+    "formation_key": null
+  }
+]

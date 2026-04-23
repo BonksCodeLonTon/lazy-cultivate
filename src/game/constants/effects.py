@@ -38,6 +38,9 @@ class EffectKey(StrEnum):
     DEBUFF_THIEU_DOT = "DebuffThieuDot"   # burn (DoT)
     DEBUFF_TE_LIET   = "DebuffTeLiet"     # paralysis (50% skip chance)
     DEBUFF_DOT_CHAY  = "DebuffDotChay"    # blaze (DoT)
+    DEBUFF_HOA_XUYEN_THAU = "DebuffHoaXuyenThau"   # fire res shred
+    DEBUFF_MOC_XUYEN_THAU = "DebuffMocXuyenThau"   # wood res shred
+    DEBUFF_THUY_XUYEN_THAU = "DebuffThuyXuyenThau"  # water res shred
     DEBUFF_DOC_TO    = "DebuffDocTo"      # poison (DoT)
     DEBUFF_BAO_MON   = "DebuffBaoMon"     # armor shred
     DEBUFF_TRO_BUOC  = "DebuffTroBuoc"    # bind / root

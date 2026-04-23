@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.db.models.base import Base, TimestampMixin
 
-FORMATION_GEM_SLOTS = 81
+FORMATION_GEM_SLOTS = 10
 
 # Mastery levels
 MASTERY_LEVELS = ("chan_nhan", "chan_quan", "tien_ton", "dao_to")
@@ -48,13 +48,14 @@ class CharacterFormation(Base, TimestampMixin):
         return len(self.gem_slots)
 
     def mastery_bonus_active(self) -> bool:
-        """Đạo Tổ: treats all 81 slots as inlaid + passive ×1.5."""
+        """Đạo Tổ: treats all slots as inlaid + passive ×1.5."""
         return self.mastery == "dao_to"
 
     def __repr__(self) -> str:
         return (
             f"<CharacterFormation player={self.player_id} "
-            f"{self.formation_key} mastery={self.mastery} slots={self.filled_slots()}/81>"
+            f"{self.formation_key} mastery={self.mastery} "
+            f"slots={self.filled_slots()}/{FORMATION_GEM_SLOTS}>"
         )
 
 

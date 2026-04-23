@@ -69,6 +69,11 @@ def generate_item(
     slot = base["slot"]
     computed_stats: dict[str, float] = {}
 
+    # 2H weapons earn their slot lockout by rolling double affixes
+    if base.get("two_handed", False):
+        num_prefixes *= 2
+        num_suffixes *= 2
+
     # Start with implicit stats
     for stat, val in base.get("implicit_stats", {}).items():
         computed_stats[stat] = float(val)

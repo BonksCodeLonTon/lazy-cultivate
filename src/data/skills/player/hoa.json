@@ -1,0 +1,358 @@
+[
+  {
+    "key": "SkillAtkHoa1",
+    "vi": "Thiên Hỏa Liệt Phá",
+    "en": "Heaven Fire Blaze Break",
+    "realm": 1,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 35,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkHoa_R2",
+    "vi": "Hỏa Nguyên Diệm Cầu",
+    "en": "Fire Essence Flame Orb",
+    "realm": 2,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 65,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkHoa2",
+    "vi": "Thiên Hỏa Bùng Phát",
+    "en": "Heaven Fire Explosion",
+    "realm": 3,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 25,
+    "cooldown": 2,
+    "base_dmg": 100,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillCCHoa",
+    "vi": "Nhân Hỏa Thiêu Địch",
+    "en": "Human Fire Burn Foe",
+    "realm": 3,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 3,
+    "base_dmg": 30,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefHoa",
+    "vi": "Địa Hỏa Tự Thiêu",
+    "en": "Earth Fire Self-Burn",
+    "realm": 3,
+    "category": "defense",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 25,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "BuffHoaThan"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkHoa_R4",
+    "vi": "Huyền Hỏa Phần Thiên",
+    "en": "Mystery Fire Heaven Burn",
+    "realm": 4,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 42,
+    "cooldown": 3,
+    "base_dmg": 160,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillFireStackApply",
+    "vi": "Viêm Hoa Lan Tràn",
+    "en": "Flame Spread",
+    "realm": 4,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.2,
+      "matk": 1.0
+    },
+    "mp_cost": 35,
+    "cooldown": 2,
+    "base_dmg": 85,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 1.0
+    },
+    "formation_key": null,
+    "description_vi": "Mỗi lần thi triển chồng thêm 2 tầng Thiêu Đốt lên mục tiêu."
+  },
+  {
+    "key": "SkillDefHoa_R4",
+    "vi": "Huyền Hỏa Nhiệt Tình Chú",
+    "en": "Mystery Fire Zeal Charm",
+    "realm": 4,
+    "category": "defense",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 35,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "BuffNhietTinh",
+      "BuffSinhCo"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkHoa3",
+    "vi": "Thiên Hỏa Thiên Kiếp",
+    "en": "Heaven Fire Tribulation",
+    "realm": 5,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 60,
+    "cooldown": 5,
+    "base_dmg": 220,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillFireDetonate",
+    "vi": "Hỏa Bùng Phát",
+    "en": "Fire Detonation",
+    "realm": 5,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 1.0
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 120,
+    "effects": [
+      "DebuffHoaXuyenThau",
+      "ConsumeBurnBurst"
+    ],
+    "effect_chances": {
+      "DebuffHoaXuyenThau": 0.8
+    },
+    "burst_per_stack_mult": 0.4,
+    "formation_key": null,
+    "description_vi": "Kích hoạt toàn bộ tầng Thiêu Đốt, mỗi tầng bổ sung 40% sát thương ST cơ bản + pháp công."
+  },
+  {
+    "key": "SkillAtkHoa_R6",
+    "vi": "Chân Hỏa Thiêu Vũ",
+    "en": "True Fire Universe Burn",
+    "realm": 6,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 70,
+    "cooldown": 5,
+    "base_dmg": 280,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay",
+      "DebuffPhaGiap"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkHoa_R7",
+    "vi": "Thần Hỏa Diễm Đế",
+    "en": "Divine Fire Flame Emperor",
+    "realm": 7,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 1.0
+    },
+    "mp_cost": 90,
+    "cooldown": 5,
+    "base_dmg": 380,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay",
+      "DebuffPhaGiap"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillFireShred_R7",
+    "vi": "Hỏa Xuyên Vô Phương",
+    "en": "Fire Pierce All-Ways",
+    "realm": 7,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 1.1
+    },
+    "mp_cost": 85,
+    "cooldown": 3,
+    "base_dmg": 310,
+    "effects": [
+      "DebuffHoaXuyenThau",
+      "DebuffThieuDot",
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffHoaXuyenThau": 1.0,
+      "DebuffThieuDot": 1.0,
+      "DebuffPhaGiap": 0.5
+    },
+    "formation_key": null,
+    "description_vi": "Vừa chồng tầng Thiêu Đốt vừa xuyên thủng kháng hỏa, chuẩn bị cho đòn bùng phát."
+  },
+  {
+    "key": "SkillAtkHoa_R8",
+    "vi": "Thánh Hỏa Phần Thiên Kiếp",
+    "en": "Saint Fire Sky-Burning Tribulation",
+    "realm": 8,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 1.1
+    },
+    "mp_cost": 115,
+    "cooldown": 6,
+    "base_dmg": 510,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay",
+      "DebuffPhaGiap",
+      "DebuffBaoMon"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkHoa_R9",
+    "vi": "Tiên Hỏa Phần Thiên Diệt Địa",
+    "en": "Immortal Fire Burn-Sky Destroy-Earth",
+    "realm": 9,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.9,
+      "matk": 1.1
+    },
+    "mp_cost": 160,
+    "cooldown": 8,
+    "base_dmg": 720,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay",
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "CCStun"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillFireDetonate_R9",
+    "vi": "Hỏa Nộ Phần Thiên",
+    "en": "Fire Fury Sky-Burn",
+    "realm": 9,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 1.2
+    },
+    "mp_cost": 120,
+    "cooldown": 6,
+    "base_dmg": 520,
+    "effects": [
+      "DebuffHoaXuyenThau",
+      "DebuffPhaGiap",
+      "ConsumeBurnBurst"
+    ],
+    "effect_chances": {
+      "DebuffHoaXuyenThau": 1.0,
+      "DebuffPhaGiap": 0.8
+    },
+    "burst_per_stack_mult": 0.65,
+    "formation_key": null,
+    "description_vi": "Tiên cấp hỏa bùng phát — xuyên thủng kháng hỏa đối thủ, nổ tất cả tầng Thiêu Đốt với hệ số 65% mỗi tầng."
+  }
+]

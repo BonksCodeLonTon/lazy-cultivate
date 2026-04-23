@@ -80,12 +80,18 @@ class EquipmentRepository:
         await self._session.flush()
         return inst
 
-    async def equip(self, player_id: int, instance_id: int) -> ItemInstance | None:
+    async def equip(self, player_id: int, instance_id: int) -> list["ItemInstance"]:
         """Equip a bag item into its slot.
 
-        Returns the displaced ItemInstance (now in bag) if a swap occurred, else None.
+        Returns the list of ItemInstances that were displaced back to the bag
+        as a side-effect. Typically zero or one entry; for 2H weapons both a
+        previous weapon AND a previous off-hand can be displaced in one call,
+        and for an off-hand that replaces a 2H weapon both slots are freed too.
+
         Raises ValueError if instance not found or not in bag.
         """
+        from src.data.registry import registry
+
         inst = await self.get_instance(instance_id, player_id)
         if inst is None or inst.location != "bag":
             raise ValueError(
@@ -93,15 +99,34 @@ class EquipmentRepository:
             )
 
         target_slot = inst.slot  # always set on the instance
+        base_data = registry.get_base(inst.base_key) if inst.base_key else None
+        is_two_handed = bool(base_data and base_data.get("two_handed", False))
 
-        # Displace old occupant if any
+        displaced: list[ItemInstance] = []
+
+        # Displace current occupant of the target slot
         old = await self.get_slot(player_id, target_slot)
-        displaced: ItemInstance | None = None
         if old:
             old.location = "bag"
-            displaced = old
-            await self._session.flush()
+            displaced.append(old)
 
+        # Mutual exclusion: 2H weapon + off-hand cannot coexist
+        if target_slot == "weapon" and is_two_handed:
+            # Also free the off-hand slot
+            old_off = await self.get_slot(player_id, "off_hand")
+            if old_off:
+                old_off.location = "bag"
+                displaced.append(old_off)
+        elif target_slot == "off_hand":
+            # If a 2H weapon is equipped, must free it first
+            current_weapon = await self.get_slot(player_id, "weapon")
+            if current_weapon and current_weapon.base_key:
+                wbase = registry.get_base(current_weapon.base_key)
+                if wbase and wbase.get("two_handed", False):
+                    current_weapon.location = "bag"
+                    displaced.append(current_weapon)
+
+        await self._session.flush()
         inst.location = "equipped"
         await self._session.flush()
         return displaced

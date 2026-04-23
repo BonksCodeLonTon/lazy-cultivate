@@ -1,0 +1,247 @@
+[
+  {
+    "key": "uniq_kim_giap_khai",
+    "vi": "Kim Giáp Khải",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 2,
+    "grade": 2,
+    "fixed_stats": {
+      "def_stat": 35,
+      "hp_max": 260,
+      "crit_res_rating": 55
+    },
+    "passive_bonus": {
+      "debuff_immune_pct": 0.1,
+      "final_dmg_reduce": 0.05
+    },
+    "description_vi": "Giáp vàng danh tướng cổ đại, giảm debuff."
+  },
+  {
+    "key": "uniq_huyet_nhan_dao",
+    "vi": "Huyết Nhận Đoản Đao",
+    "base": "base_gauntlet",
+    "slot": "glove",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {
+      "atk": 35,
+      "crit_rating": 80,
+      "crit_dmg_rating": 70,
+      "final_dmg_bonus": 0.07
+    },
+    "passive_bonus": {
+      "crit_rating_vs_bleed": 150,
+      "bleed_on_hit_pct": 0.2
+    },
+    "description_vi": "Đoản đao đi kèm Huyết Nhận Kiếm — tăng bạo kích lên mục tiêu chảy máu."
+  },
+  {
+    "key": "uniq_huyet_nhan_kiem",
+    "vi": "Huyết Nhận Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {
+      "atk": 55,
+      "crit_rating": 130,
+      "crit_dmg_rating": 130
+    },
+    "passive_bonus": {
+      "bleed_on_hit_pct": 0.45,
+      "bleed_stack_cap_bonus": 2
+    },
+    "description_vi": "Kiếm chuyên cắt thịt — 45% Chảy Máu on-hit, +2 tầng tối đa."
+  },
+  {
+    "key": "uniq_huyet_y_bao",
+    "vi": "Huyết Ý Áo Bào",
+    "base": "base_leather_armor",
+    "slot": "armor",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {
+      "def_stat": 48,
+      "hp_max": 520,
+      "evasion_rating": 160
+    },
+    "passive_bonus": {
+      "bleed_on_hit_pct": 0.6,
+      "bleed_per_stack_pct_bonus": 0.006,
+      "bleed_heal_reduce": 0.3
+    },
+    "description_vi": "Áo bào dệt từ sợi máu — 60% Chảy Máu on-hit, mỗi tầng nặng hơn, 30% heal-reduce."
+  },
+  {
+    "key": "uniq_huyet_y_quan",
+    "vi": "Huyết Ý Tâm Quan",
+    "base": "base_helm",
+    "slot": "helmet",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 55,
+      "hp_max": 420,
+      "crit_rating": 150,
+      "crit_dmg_rating": 180
+    },
+    "passive_bonus": {
+      "dot_can_crit": true,
+      "crit_rating_vs_bleed": 120
+    },
+    "description_vi": "Mũ Huyết Ý — DoT bạo kích, tăng bạo kích vs chảy máu."
+  },
+  {
+    "key": "uniq_huyet_nguyet_bao",
+    "vi": "Huyết Nguyệt Chiến Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 620,
+      "atk": 55,
+      "final_dmg_bonus": 0.14
+    },
+    "passive_bonus": {
+      "crit_rating_vs_bleed": 280,
+      "crit_dmg_vs_bleed": 350,
+      "bleed_heal_reduce": 0.35
+    },
+    "description_vi": "Bội Huyết Nguyệt — bạo kích/sát thương bạo khổng lồ vs chảy máu, 35% heal-reduce."
+  },
+  {
+    "key": "uniq_huyet_tien_quiver",
+    "vi": "Huyết Tiên Ống Tên",
+    "base": "base_quiver",
+    "slot": "off_hand",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {
+      "crit_rating": 280,
+      "atk": 65,
+      "evasion_rating": 140
+    },
+    "passive_bonus": {
+      "crit_rating_vs_bleed": 350,
+      "crit_dmg_vs_bleed": 420,
+      "bleed_stack_cap_bonus": 2
+    },
+    "description_vi": "Ống tên Huyết Tiên — bạo kích cực cao vs chảy máu, +2 tầng."
+  },
+  {
+    "key": "uniq_than_cung_huyet",
+    "vi": "Huyết Ẩn Thần Cung",
+    "base": "base_bow_2h",
+    "slot": "weapon",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 155,
+      "crit_rating": 420,
+      "crit_dmg_rating": 460
+    },
+    "passive_bonus": {
+      "bleed_on_hit_pct": 0.8,
+      "true_dmg_pct": 0.05,
+      "bleed_per_stack_pct_bonus": 0.008
+    },
+    "description_vi": "Thần cung Huyết Ẩn — 80% Chảy Máu on-hit, 5% HP chân thương, mỗi tầng nặng hơn."
+  },
+  {
+    "key": "uniq_truong_thuong_huyet",
+    "vi": "Huyết Nguyệt Trường Thương",
+    "base": "base_spear_2h",
+    "slot": "weapon",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 175,
+      "crit_rating": 340,
+      "crit_dmg_rating": 260
+    },
+    "passive_bonus": {
+      "bleed_on_hit_pct": 0.8,
+      "bleed_stack_cap_bonus": 3,
+      "true_dmg_pct": 0.04
+    },
+    "description_vi": "Trường thương 2H — 80% Chảy Máu on-hit, +3 tầng, 4% HP chân thương."
+  },
+  {
+    "key": "uniq_kim_tu_bao",
+    "vi": "Kim Đạo Tổ Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 780,
+      "atk": 95,
+      "final_dmg_bonus": 0.2
+    },
+    "passive_bonus": {
+      "bleed_heal_reduce": 0.5,
+      "bleed_per_stack_pct_bonus": 0.012,
+      "dot_can_crit": true
+    },
+    "description_vi": "Bội Kim Tổ — 50% heal-reduce, +1.2% ST mỗi tầng, DoT bạo kích."
+  },
+  {
+    "key": "uniq_huyet_quan",
+    "vi": "Huyết Đạo Thiên Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 780,
+      "crit_rating": 300
+    },
+    "passive_bonus": {
+      "bleed_stack_cap_bonus": 5,
+      "bleed_per_stack_pct_bonus": 0.008,
+      "bleed_heal_reduce": 0.42,
+      "true_dmg_pct": 0.05
+    },
+    "description_vi": "Quan Huyết Đạo — +5 tầng, mỗi tầng +0.8% ST, 42% heal-reduce, 5% HP chân thương."
+  },
+  {
+    "key": "uniq_kim_tu_nhan",
+    "vi": "Kim Đạo Tổ Nhẫn",
+    "base": "base_power_ring",
+    "slot": "ring",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 120,
+      "crit_rating": 320,
+      "crit_dmg_rating": 380,
+      "res_all": 0.08
+    },
+    "passive_bonus": {
+      "crit_rating_vs_bleed": 450,
+      "crit_dmg_vs_bleed": 580
+    },
+    "description_vi": "Nhẫn Kim Tổ — bạo kích khổng lồ vs chảy máu. Bộ Kim Tổ 3 mảnh."
+  },
+  {
+    "key": "uniq_kim_tu_kiem",
+    "vi": "Kim Đạo Tổ Kiếm",
+    "base": "base_longsword_2h",
+    "slot": "weapon",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 200,
+      "crit_rating": 500,
+      "crit_dmg_rating": 520
+    },
+    "passive_bonus": {
+      "bleed_on_hit_pct": 1.0,
+      "bleed_stack_cap_bonus": 5,
+      "true_dmg_pct": 0.08
+    },
+    "description_vi": "Tổ kiếm Kim Đạo — mọi đòn gây Chảy Máu, +5 tầng (max 10), 8% HP chân thương."
+  }
+]

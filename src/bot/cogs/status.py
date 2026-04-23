@@ -131,6 +131,7 @@ class StatusView(discord.ui.View):
             ("⚡ Đột Phá",           discord.ButtonStyle.secondary, self._breakthrough_cb,  0),
             ("🗺️ Bí Cảnh",           discord.ButtonStyle.secondary, self._dungeon_cb,       0),
             ("🌌 Boss Thế Giới",     discord.ButtonStyle.secondary, self._world_boss_cb,    0),
+            ("🔯 Trận Pháp",         discord.ButtonStyle.secondary, self._formation_cb,     1),
             ("🎯 Kỹ Năng",           discord.ButtonStyle.secondary, self._skills_cb,        1),
             ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     1),
             ("📚 Tàng Kinh Các",     discord.ButtonStyle.secondary, self._tang_kinh_cac_cb, 1),
@@ -242,6 +243,15 @@ class StatusView(discord.ui.View):
 
         from src.bot.cogs.world_boss import _refresh_hub
         await _refresh_hub(interaction, self._discord_id, back_fn=_show_status)
+
+    async def _formation_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        from src.bot.cogs.formation import _render_hub as _render_formation_hub
+        await _render_formation_hub(interaction, self._discord_id, back_fn=_show_status)
 
     async def _skills_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

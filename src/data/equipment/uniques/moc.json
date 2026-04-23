@@ -1,0 +1,205 @@
+[
+  {
+    "key": "uniq_truc_co_bao",
+    "vi": "Trúc Cơ Bảo Y",
+    "base": "base_robe",
+    "slot": "armor",
+    "realm": 1,
+    "grade": 1,
+    "fixed_stats": {
+      "def_stat": 14,
+      "hp_max": 90,
+      "mp_max": 60,
+      "res_all": 0.03
+    },
+    "passive_bonus": {
+      "poison_immunity": true
+    },
+    "description_vi": "Áo choàng tu sĩ trúc cơ, miễn nhiễm độc tố."
+  },
+  {
+    "key": "uniq_moc_linh_truong",
+    "vi": "Mộc Linh Trượng",
+    "base": "base_staff",
+    "slot": "weapon",
+    "realm": 1,
+    "grade": 1,
+    "fixed_stats": {
+      "matk": 22,
+      "mp_max": 80,
+      "hp_regen_pct": 0.025
+    },
+    "passive_bonus": {
+      "heal_pct": 0.08
+    },
+    "description_vi": "Trượng gỗ cổ thụ ngàn năm, tăng khả năng hồi phục."
+  },
+  {
+    "key": "uniq_moc_sinh_dai",
+    "vi": "Mộc Sinh Đai",
+    "base": "base_belt",
+    "slot": "belt",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {
+      "hp_max": 280,
+      "mp_max": 140,
+      "hp_regen_pct": 0.04
+    },
+    "passive_bonus": {
+      "heal_pct": 0.18,
+      "hp_regen_flat": 45
+    },
+    "description_vi": "Đai sinh mộc — +18% hồi phục, thêm hồi HP mỗi lượt."
+  },
+  {
+    "key": "uniq_moc_linh_cay",
+    "vi": "Mộc Linh Cây Trượng",
+    "base": "base_staff",
+    "slot": "weapon",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {
+      "matk": 62,
+      "mp_max": 260,
+      "hp_regen_pct": 0.04
+    },
+    "passive_bonus": {
+      "dot_leech_pct": 0.25,
+      "moc_res_shred": 0.12
+    },
+    "description_vi": "Trượng khắc chữ Sinh — hút 25% DoT làm HP/MP, xuyên 12% Kháng Mộc."
+  },
+  {
+    "key": "uniq_thien_mau_boi",
+    "vi": "Thiên Mẫu Mộc Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 1000,
+      "matk": 60,
+      "mp_max": 240
+    },
+    "passive_bonus": {
+      "damage_from_heal_pct": 0.6,
+      "heal_pct": 0.3,
+      "dot_leech_pct": 0.15
+    },
+    "description_vi": "Bội Thiên Mẫu — 60% máu hồi thành ST, +30% hồi phục, hút 15% DoT."
+  },
+  {
+    "key": "uniq_cu_moc_than_giap",
+    "vi": "Cự Mộc Thần Giáp",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {
+      "def_stat": 90,
+      "hp_max": 1400,
+      "hp_regen_pct": 0.06
+    },
+    "passive_bonus": {
+      "damage_bonus_from_hp_pct": 0.012,
+      "heal_pct": 0.25
+    },
+    "description_vi": "Giáp cự mộc — 1.2% HP tối đa thành sát thương đòn tấn công."
+  },
+  {
+    "key": "uniq_moc_nguyen_nhan",
+    "vi": "Mộc Nguyên Sinh Nhẫn",
+    "base": "base_spirit_ring",
+    "slot": "ring",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 860,
+      "mp_max": 560,
+      "res_all": 0.08
+    },
+    "passive_bonus": {
+      "dot_leech_pct": 0.4,
+      "heal_pct": 0.3,
+      "damage_from_heal_pct": 0.45
+    },
+    "description_vi": "Nhẫn sinh nguyên — hút 40% DoT, 45% máu hồi thành ST, +30% hồi phục."
+  },
+  {
+    "key": "uniq_moc_tu_glove",
+    "vi": "Mộc Tổ Thần Thủ",
+    "base": "base_arcane_glove",
+    "slot": "glove",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "matk": 100,
+      "hp_max": 680,
+      "mp_max": 280,
+      "hp_regen_pct": 0.05
+    },
+    "passive_bonus": {
+      "dot_leech_pct": 0.35,
+      "moc_res_shred": 0.15
+    },
+    "description_vi": "Găng Mộc Tổ — hút 35% DoT, xuyên 15% Kháng Mộc. Bộ Mộc Tổ 3 mảnh."
+  },
+  {
+    "key": "uniq_moc_tu_crown",
+    "vi": "Mộc Tổ Thế Giới Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 1800,
+      "def_stat": 110,
+      "matk": 120
+    },
+    "passive_bonus": {
+      "damage_bonus_from_hp_pct": 0.016,
+      "damage_from_heal_pct": 0.55,
+      "heal_pct": 0.4
+    },
+    "description_vi": "Mão tiên Mộc Tổ — 1.6% HP max→ST, 55% máu hồi→ST, +40% hồi phục."
+  },
+  {
+    "key": "uniq_moc_than_vu",
+    "vi": "Mộc Thần Thế Thụ Giới Chỉ",
+    "base": "base_spirit_ring",
+    "slot": "ring",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 1200,
+      "matk": 110,
+      "mp_max": 400
+    },
+    "passive_bonus": {
+      "damage_bonus_from_hp_pct": 0.01,
+      "heal_pct": 0.45,
+      "true_dmg_pct": 0.04
+    },
+    "description_vi": "Nhẫn Thế Giới Chi Thụ — 1% HP max→ST, +45% hồi phục, 4% HP chân thương."
+  },
+  {
+    "key": "uniq_moc_than_truong",
+    "vi": "Mộc Thần Thế Thụ Trượng",
+    "base": "base_staff",
+    "slot": "weapon",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "matk": 180,
+      "mp_max": 720,
+      "hp_max": 1600
+    },
+    "passive_bonus": {
+      "dot_leech_pct": 0.55,
+      "moc_res_shred": 0.22,
+      "damage_from_heal_pct": 0.85
+    },
+    "description_vi": "Trượng Thế Giới Chi Thụ — hút 55% DoT, xuyên 22% Kháng Mộc, 85% máu hồi thành ST."
+  }
+]

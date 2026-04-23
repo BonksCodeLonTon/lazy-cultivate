@@ -115,21 +115,39 @@ SPD_EXTRA_TURN_MAX_PCT: float = 0.50    # hard cap so SPD never fully stunlocks
 FORMATION_BASE_RESERVE_PCT: float = 0.08   # 8 % just for activating
 FORMATION_GEM_RESERVE_PCT: float = 0.004   # +0.4 % per inlaid gem
 FORMATION_MAX_RESERVE_PCT: float = 0.50    # hard cap — never lock more than half
+# Trận Đạo cultivation path scales formation bonuses:
+#   multiplier = 1.0 + formation_stages * PER_STAGE   (stages = realm*9 + level)
+# At max 81 stages: 1.0 + 81 * 0.02 = 2.62×. Applied in compute_formation_bonuses.
+FORMATION_PATH_MULT_PER_STAGE: float = 0.02
+# Trận Đạo progression also reduces MP reservation cost:
+#   reduction_mult = max(FLOOR, 1.0 - stages * REDUCE_PER_STAGE)
+# 0.0085 per stage × 81 stages = 0.69 reduction → floor 0.30 kicks in around stage 83.
+# At 81 stages the multiplier is 0.3115 (floored to 0.30) — cost is 30% of baseline.
+FORMATION_RESERVE_REDUCE_PER_STAGE: float = 0.0085
+FORMATION_RESERVE_FLOOR_MULT: float = 0.30
+
+# ── True damage cap ───────────────────────────────────────────────────────────
+# Per-hit cap on the % true-damage mechanic used by the Kim playstyle. Combines
+# skill and passive contributions. 0.20 = max 20% of target hp_max per hit,
+# preventing 5-shot kills even when stacking multiple true-damage sources.
+TRUE_DMG_PCT_CAP: float = 0.20
 
 # ── Gem element → per-gem stat bonus ──────────────────────────────────────────
 # Each inlaid gem grants its base bonus multiplied by its grade (1–4).
-# Bonus is additive across all gems, so 81 grade-2 gems ≈ 162× base.
+# Bonus is additive across all gems, so 10 grade-2 gems ≈ 20× base.
 # Bonus is ON TOP of the formation's existing gem_threshold_bonuses.
+# NOTE: slot count was reduced from 81 → 10; per-gem values were scaled up ~8×
+# to preserve endgame balance (10 gems × 8 ≈ old 81 gems).
 GEM_ELEMENT_BASE_BONUS: dict[str, dict[str, float]] = {
-    "kim":   {"crit_rating":      1.0},
-    "moc":   {"hp_regen_pct":     0.0003},
-    "thuy":  {"mp_regen_pct":     0.0003},
-    "hoa":   {"final_dmg_bonus":  0.0008},
-    "tho":   {"def_bonus":        1.0},
-    "loi":   {"crit_dmg_rating":  1.5},
-    "phong": {"spd_bonus":        0.08},
-    "quang": {"heal_pct":         0.002},
-    "am":    {"debuff_immune_pct":0.002},
+    "kim":   {"crit_rating":      8.0},
+    "moc":   {"hp_regen_pct":     0.0024},
+    "thuy":  {"mp_regen_pct":     0.0024},
+    "hoa":   {"final_dmg_bonus":  0.0064},
+    "tho":   {"def_bonus":        8.0},
+    "loi":   {"crit_dmg_rating":  12.0},
+    "phong": {"spd_bonus":        0.64},
+    "quang": {"heal_pct":         0.016},
+    "am":    {"debuff_immune_pct":0.016},
 }
 
 # ── Encounter grades (dungeon spawn-time rank) ────────────────────────────────

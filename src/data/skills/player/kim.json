@@ -1,0 +1,406 @@
+[
+  {
+    "key": "SkillAtkKim1",
+    "vi": "Thiên Kim Kiếm Khí",
+    "en": "Heaven Metal Sword Qi",
+    "realm": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 8,
+    "cooldown": 1,
+    "base_dmg": 30,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefKim",
+    "vi": "Địa Hộ Thân Kim Cương",
+    "en": "Earth Metal Diamond Guard",
+    "realm": 1,
+    "category": "defense",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 15,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffKimCuong"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkKim_R2",
+    "vi": "Kim Nguyên Đoạn Kiếm",
+    "en": "Metal Essence Severing Blade",
+    "realm": 2,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 15,
+    "cooldown": 2,
+    "base_dmg": 55,
+    "effects": [
+      "DebuffCatDut"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkKim2",
+    "vi": "Thiên Kim Phá Vạn",
+    "en": "Heaven Metal Myriad Breaker",
+    "realm": 3,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 20,
+    "cooldown": 2,
+    "base_dmg": 80,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkKim_R4",
+    "vi": "Huyền Kim Vạn Kiếm",
+    "en": "Mystery Metal Myriad Swords",
+    "realm": 4,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.0
+    },
+    "mp_cost": 32,
+    "cooldown": 3,
+    "base_dmg": 135,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillKimSlice",
+    "vi": "Huyết Nhận",
+    "en": "Blood Blade",
+    "realm": 4,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.1
+    },
+    "mp_cost": 35,
+    "cooldown": 2,
+    "base_dmg": 95,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 1.0
+    },
+    "formation_key": null,
+    "description_vi": "Vết cắt nhanh như chớp — mỗi lần thi triển chồng 2 tầng Chảy Máu lên mục tiêu."
+  },
+  {
+    "key": "SkillDefKim_R4",
+    "vi": "Huyền Kim Hoàng Thân",
+    "en": "Mystery Gold Body",
+    "realm": 4,
+    "category": "defense",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 38,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "BuffHoangKim",
+      "BuffKimCuong"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkKim3",
+    "vi": "Thiên Kim Tuyệt Sát",
+    "en": "Heaven Metal Absolute Slay",
+    "realm": 5,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 45,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillKimPierce_R5",
+    "vi": "Vô Phòng Nhận",
+    "en": "Defenseless Edge",
+    "realm": 5,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "true_dmg_pct": 0.06,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 1.0,
+      "DebuffPhaGiap": 0.8
+    },
+    "formation_key": null,
+    "description_vi": "Kiếm khí xuyên mọi phòng ngự — gây thêm 6% HP tối đa mục tiêu làm chân thương."
+  },
+  {
+    "key": "SkillAtkKim_R6",
+    "vi": "Chân Kim Phá Hồn Kiếm",
+    "en": "True Metal Soul Cleave",
+    "realm": 6,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 58,
+    "cooldown": 4,
+    "base_dmg": 250,
+    "effects": [
+      "DebuffBaoMon",
+      "DebuffPhaGiap",
+      "DebuffCatDut"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillKimCritBuff",
+    "vi": "Kiếm Ý Tập Trung",
+    "en": "Sword Intent Focus",
+    "realm": 6,
+    "category": "defense",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 40,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffKiemKhi",
+      "BuffKiemY"
+    ],
+    "formation_key": null,
+    "description_vi": "Hội tụ kiếm ý, nhận buff Kiếm Khí + Kiếm Ý — tăng mạnh bạo kích và sát thương."
+  },
+  {
+    "key": "SkillPasKim_R6",
+    "vi": "Chân Kim Ý Cảnh",
+    "en": "True Metal Intent Realm",
+    "realm": 6,
+    "category": "passive",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 60,
+    "cooldown": 8,
+    "base_dmg": 0,
+    "effects": [
+      "BuffKiemKhi",
+      "BuffLietDiem"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkKim_R7",
+    "vi": "Thần Kim Tuyệt Đạo",
+    "en": "Divine Metal Absolute Dao",
+    "realm": 7,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.4
+    },
+    "mp_cost": 78,
+    "cooldown": 5,
+    "base_dmg": 350,
+    "effects": [
+      "DebuffBaoMon",
+      "DebuffPhaGiap",
+      "DebuffCatDut",
+      "DebuffChayMau"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillKimExecute_R7",
+    "vi": "Xuất Huyết Vô Ảnh",
+    "en": "Bloodless Execution",
+    "realm": 7,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.2
+    },
+    "mp_cost": 85,
+    "cooldown": 4,
+    "base_dmg": 340,
+    "true_dmg_pct": 0.1,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffChayMau",
+      "DebuffPhaGiap",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 1.0,
+      "DebuffPhaGiap": 0.8,
+      "DebuffBaoMon": 0.6
+    },
+    "formation_key": null,
+    "description_vi": "Đòn chém chuyên khóa mục tiêu chảy máu — chồng 2 tầng, gây 10% HP tối đa làm chân thương."
+  },
+  {
+    "key": "SkillDefKim_R7",
+    "vi": "Thần Kim Vô Ngã Kiếm Tâm",
+    "en": "Divine Metal Selfless Sword Heart",
+    "realm": 7,
+    "category": "defense",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 78,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffVoNgaKiemTam",
+      "BuffKiemY"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkKim_R8",
+    "vi": "Thánh Kim Vô Thượng Kiếm",
+    "en": "Saint Metal Supreme Sword",
+    "realm": 8,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.6
+    },
+    "mp_cost": 100,
+    "cooldown": 6,
+    "base_dmg": 460,
+    "effects": [
+      "DebuffBaoMon",
+      "DebuffPhaGiap",
+      "DebuffCatDut",
+      "DebuffChayMau"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkKim_R9",
+    "vi": "Tiên Kim Vô Cực Kiếm Đạo",
+    "en": "Immortal Metal Infinite Sword Dao",
+    "realm": 9,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.9
+    },
+    "mp_cost": 140,
+    "cooldown": 7,
+    "base_dmg": 650,
+    "effects": [
+      "DebuffBaoMon",
+      "DebuffPhaGiap",
+      "DebuffCatDut",
+      "DebuffChayMau",
+      "DebuffXeRach"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillKimBloodbath_R9",
+    "vi": "Huyết Đạo Vô Song",
+    "en": "Peerless Blood Dao",
+    "realm": 9,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.4,
+      "matk": 0.2
+    },
+    "mp_cost": 140,
+    "cooldown": 6,
+    "base_dmg": 700,
+    "true_dmg_pct": 0.18,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffChayMau",
+      "DebuffChayMau",
+      "DebuffPhaGiap",
+      "DebuffCatDut"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 1.0,
+      "DebuffPhaGiap": 1.0,
+      "DebuffCatDut": 0.8
+    },
+    "formation_key": null,
+    "description_vi": "Đỉnh cao Kim Đạo — chồng 3 tầng Chảy Máu và gây 18% HP tối đa làm chân thương, cắt đứt linh khí ngăn hồi phục."
+  }
+]

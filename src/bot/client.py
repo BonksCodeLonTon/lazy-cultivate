@@ -20,6 +20,7 @@ COGS = [
     "src.bot.cogs.equipment",
     "src.bot.cogs.dungeon",
     "src.bot.cogs.world_boss",
+    "src.bot.cogs.formation",
     "src.bot.cogs.inventory",
     "src.bot.cogs.shop",
     "src.bot.cogs.trade",

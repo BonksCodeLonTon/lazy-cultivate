@@ -183,12 +183,20 @@ def roll_affixes(
     grade: int,
     quality: str,
     material_key: str | None = None,
+    two_handed: bool = False,
 ) -> list[dict]:
     """Roll affixes, applying quality floor and guaranteed-max special effects.
 
     Biased affixes (from the consumed material) receive 3× selection weight.
+
+    When ``two_handed`` is True, both prefix and suffix counts are doubled —
+    this is how 2H weapons earn their slot lockout: twice the customizable
+    power compared to a 1H weapon of the same quality.
     """
     n_prefix, n_suffix = QUALITY_AFFIX_COUNT[quality]
+    if two_handed:
+        n_prefix *= 2
+        n_suffix *= 2
     spec = QUALITY_SPECIAL[quality]
     floor_frac: float = spec["affix_floor"]
     guaranteed_max: bool = spec["guaranteed_max"]
@@ -312,7 +320,11 @@ def forge_equipment(
     quality = _roll_quality(recipe, char.stats.comprehension)
     spec = QUALITY_SPECIAL[quality]
     implicit = roll_implicit_stats(base, grade, quality)
-    affixes = roll_affixes(base["slot"], grade, quality, material_key=primary_material)
+    affixes = roll_affixes(
+        base["slot"], grade, quality,
+        material_key=primary_material,
+        two_handed=bool(base.get("two_handed", False)),
+    )
     computed = compute_stats(implicit, affixes)
     name = _build_display_name(base, quality, affixes)
 

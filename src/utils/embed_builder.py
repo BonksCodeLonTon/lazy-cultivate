@@ -265,9 +265,10 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
 
     if active_form:
         reserve_tag = f" · 🔒 Trấn: **{reserve_pct * 100:.1f}%** MP" if reserve_pct > 0 else ""
+        from src.db.models.formation import FORMATION_GEM_SLOTS as _MAX_SLOTS
         detail = (
             f"🧬 **{constitution}**\n"
-            f"🔯 **{active_form}**  `{progress_bar(gem_count, 81, 8)}` {gem_count}/81 ngọc"
+            f"🔯 **{active_form}**  `{progress_bar(gem_count, _MAX_SLOTS, 8)}` {gem_count}/{_MAX_SLOTS} ngọc"
             f"{reserve_tag}"
         )
     else:

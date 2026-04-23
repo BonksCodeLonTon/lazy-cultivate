@@ -1,0 +1,275 @@
+[
+  {
+    "key": "SkillAtkLoi1",
+    "vi": "Thiên Lôi Điện Kích",
+    "en": "Heaven Thunder Electric Strike",
+    "realm": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 12,
+    "cooldown": 1,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffTeLiet"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoi_R2",
+    "vi": "Lôi Nguyên Chấn Linh",
+    "en": "Thunder Essence Spirit Shock",
+    "realm": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 20,
+    "cooldown": 2,
+    "base_dmg": 70,
+    "effects": [
+      "DebuffTeLiet"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoi2",
+    "vi": "Thiên Lôi Xuyên Vân",
+    "en": "Heaven Thunder Cloud Pierce",
+    "realm": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 95,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillCCLoi",
+    "vi": "Nhân Lôi Câm Địch",
+    "en": "Human Thunder Silence",
+    "realm": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 25,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "CCMuted"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefLoi",
+    "vi": "Địa Lôi Điện Giáp",
+    "en": "Earth Thunder Electric Armor",
+    "realm": 3,
+    "category": "defense",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 22,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffLoiThan"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoi_R4",
+    "vi": "Huyền Lôi Bát Cực",
+    "en": "Mystery Thunder Eight Poles",
+    "realm": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 45,
+    "cooldown": 4,
+    "base_dmg": 170,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovLoi_R4",
+    "vi": "Lôi Tốc Thiểm Ảnh",
+    "en": "Thunder Flash Step",
+    "realm": 4,
+    "category": "movement",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 30,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTocLoi",
+      "BuffTangToc"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoi3",
+    "vi": "Thiên Lôi Cửu Thiên",
+    "en": "Heaven Thunder Nine Skies",
+    "realm": 5,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 65,
+    "cooldown": 5,
+    "base_dmg": 230,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoi_R6",
+    "vi": "Chân Lôi Cửu Tiêu",
+    "en": "True Thunder Nine Heavens",
+    "realm": 6,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 72,
+    "cooldown": 5,
+    "base_dmg": 300,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh",
+      "CCStun"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoi_R7",
+    "vi": "Thần Lôi Thiên Phán",
+    "en": "Divine Thunder Heaven Judgment",
+    "realm": 7,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 1.0
+    },
+    "mp_cost": 95,
+    "cooldown": 6,
+    "base_dmg": 420,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh",
+      "CCStun",
+      "CCInterrupt"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoi_R8",
+    "vi": "Thánh Lôi Thiên Đạo Kiếp",
+    "en": "Saint Thunder Heaven-Dao Tribulation",
+    "realm": 8,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 1.1
+    },
+    "mp_cost": 125,
+    "cooldown": 7,
+    "base_dmg": 560,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh",
+      "CCStun",
+      "CCInterrupt",
+      "DebuffPhaGiap"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovLoi_R8",
+    "vi": "Thánh Lôi Thiểm Hiện",
+    "en": "Saint Thunder Flash-Manifest",
+    "realm": 8,
+    "category": "movement",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTocLoi",
+      "BuffTangToc",
+      "BuffHuKhong"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoi_R9",
+    "vi": "Tiên Lôi Cửu Thiên Thập Địa",
+    "en": "Immortal Thunder Nine Skies Ten Earths",
+    "realm": 9,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.9,
+      "matk": 1.1
+    },
+    "mp_cost": 175,
+    "cooldown": 8,
+    "base_dmg": 800,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh",
+      "CCStun",
+      "CCInterrupt",
+      "DebuffPhaGiap"
+    ],
+    "formation_key": null
+  }
+]

@@ -1,0 +1,318 @@
+[
+  {
+    "key": "uniq_hoa_linh_kiem",
+    "vi": "Hỏa Linh Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "realm": 1,
+    "grade": 1,
+    "fixed_stats": {
+      "atk": 18,
+      "crit_rating": 30,
+      "final_dmg_bonus": 0.04
+    },
+    "passive_bonus": {
+      "burn_on_hit_pct": 0.12
+    },
+    "description_vi": "Thanh kiếm rèn từ lõi núi lửa, đòn đánh có xác suất thiêu đốt kẻ địch."
+  },
+  {
+    "key": "uniq_hoa_than_boi",
+    "vi": "Hóa Thần Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 4,
+    "grade": 3,
+    "fixed_stats": {
+      "hp_max": 280,
+      "def_stat": 22,
+      "mp_max": 150,
+      "res_all": 0.05
+    },
+    "passive_bonus": {
+      "heal_pct": 0.14,
+      "hp_regen_pct": 0.025
+    },
+    "description_vi": "Bội Hóa Thần, tăng hồi phục."
+  },
+  {
+    "key": "uniq_hoa_bao_tam",
+    "vi": "Hỏa Bảo Tâm",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {
+      "hp_max": 260,
+      "matk": 45
+    },
+    "passive_bonus": {
+      "burn_on_hit_pct": 0.35,
+      "burn_stack_cap_bonus": 2,
+      "bonus_dmg_vs_burn": 0.2
+    },
+    "description_vi": "Bội ngọc tâm lửa — 35% Thiêu Đốt on-hit, +2 tầng, +20% ST lên mục tiêu cháy."
+  },
+  {
+    "key": "uniq_hoa_than_giap",
+    "vi": "Hóa Thần Trọng Giáp",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {
+      "def_stat": 75,
+      "hp_max": 500,
+      "crit_res_rating": 160,
+      "res_all": 0.05
+    },
+    "passive_bonus": {
+      "poison_immunity": true,
+      "debuff_immune_pct": 0.12
+    },
+    "description_vi": "Trọng giáp Hóa Thần, miễn độc, kháng debuff."
+  },
+  {
+    "key": "uniq_hoa_linh_dai",
+    "vi": "Hỏa Linh Đai",
+    "base": "base_belt",
+    "slot": "belt",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {
+      "hp_max": 220,
+      "matk": 25,
+      "res_all": 0.05,
+      "final_dmg_bonus": 0.06
+    },
+    "passive_bonus": {
+      "bonus_dmg_vs_burn": 0.1
+    },
+    "description_vi": "Dải đai dệt từ lông phượng — bù đắp sức mạnh cho lối chơi Hỏa Đạo."
+  },
+  {
+    "key": "uniq_kim_long_than",
+    "vi": "Kim Long Thần Thủ",
+    "base": "base_gauntlet",
+    "slot": "glove",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {
+      "atk": 45,
+      "crit_rating": 120,
+      "evasion_rating": 80
+    },
+    "passive_bonus": {
+      "burn_on_hit_pct": 0.15,
+      "paralysis_on_crit": true,
+      "final_dmg_bonus": 0.08
+    },
+    "description_vi": "Găng kim long — thiêu đốt on-hit, tê liệt khi bạo kích."
+  },
+  {
+    "key": "uniq_hoa_long_giap",
+    "vi": "Hỏa Long Bảo Giáp",
+    "base": "base_robe",
+    "slot": "armor",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {
+      "def_stat": 65,
+      "hp_max": 540
+    },
+    "passive_bonus": {
+      "burn_on_hit_pct": 0.5,
+      "burn_per_stack_pct_bonus": 0.005,
+      "dot_can_crit": true
+    },
+    "description_vi": "Giáp dệt vảy hỏa long — 50% Thiêu Đốt on-hit, mỗi tầng +0.5% ST, DoT bạo kích."
+  },
+  {
+    "key": "uniq_phong_hoang_quan",
+    "vi": "Phượng Hoàng Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {
+      "matk": 62,
+      "mp_max": 400,
+      "crit_rating": 160,
+      "res_all": 0.08
+    },
+    "passive_bonus": {
+      "burn_on_hit_pct": 0.22
+    },
+    "description_vi": "Mão Phượng Hoàng, thiêu đốt on-hit."
+  },
+  {
+    "key": "uniq_hoa_long_chau",
+    "vi": "Hỏa Long Châu",
+    "base": "base_orb",
+    "slot": "off_hand",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {
+      "matk": 65,
+      "mp_max": 200,
+      "crit_rating": 110,
+      "final_dmg_bonus": 0.1
+    },
+    "passive_bonus": {
+      "burn_per_stack_pct_bonus": 0.008,
+      "dot_can_crit": true
+    },
+    "description_vi": "Châu rồng lửa — +0.8% ST mỗi tầng, DoT bạo kích."
+  },
+  {
+    "key": "uniq_phan_thien_hoa_long",
+    "vi": "Phần Thiên Hỏa Long Trượng",
+    "base": "base_staff",
+    "slot": "weapon",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {
+      "matk": 100,
+      "mp_max": 260,
+      "crit_rating": 150
+    },
+    "passive_bonus": {
+      "fire_res_shred": 0.15,
+      "burn_stack_cap_bonus": 3,
+      "bonus_dmg_vs_burn": 0.25
+    },
+    "description_vi": "Trượng rồng lửa — xuyên 15% kháng hỏa, +3 tầng, +25% ST vs cháy."
+  },
+  {
+    "key": "uniq_hoa_nguyen_pendant",
+    "vi": "Hỏa Nguyên Bội",
+    "base": "base_jade",
+    "slot": "amulet",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {
+      "matk": 70,
+      "hp_max": 360,
+      "mp_max": 240,
+      "final_dmg_bonus": 0.12
+    },
+    "passive_bonus": {
+      "dot_can_crit": true,
+      "bonus_dmg_vs_burn": 0.15
+    },
+    "description_vi": "Bội hỏa nguyên — DoT bạo kích, +15% ST vs cháy."
+  },
+  {
+    "key": "uniq_hoa_nguyen_nhan",
+    "vi": "Hỏa Nguyên Đại Nhẫn",
+    "base": "base_mage_ring",
+    "slot": "ring",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {
+      "matk": 85,
+      "mp_max": 360,
+      "crit_rating": 220
+    },
+    "passive_bonus": {
+      "fire_res_shred": 0.12,
+      "bonus_dmg_vs_burn": 0.3,
+      "cooldown_reduce": 0.1
+    },
+    "description_vi": "Nhẫn hỏa nguyên — xuyên 12% kháng hỏa, +30% vs cháy, giảm CD."
+  },
+  {
+    "key": "uniq_dang_tien_kiem",
+    "vi": "Đăng Tiên Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 130,
+      "crit_rating": 240,
+      "crit_dmg_rating": 300
+    },
+    "passive_bonus": {
+      "paralysis_on_crit": true,
+      "burn_on_hit_pct": 0.22
+    },
+    "description_vi": "Kiếm Đăng Tiên — thiêu đốt on-hit, tê liệt khi bạo kích."
+  },
+  {
+    "key": "uniq_hoa_tu_bao",
+    "vi": "Hỏa Tổ Thần Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 540,
+      "matk": 85,
+      "mp_max": 280,
+      "crit_dmg_rating": 280
+    },
+    "passive_bonus": {
+      "burn_per_stack_pct_bonus": 0.012,
+      "bonus_dmg_vs_burn": 0.45
+    },
+    "description_vi": "Bội Hỏa Tổ — +1.2% ST mỗi tầng, +45% vs cháy"
+  },
+  {
+    "key": "uniq_hoa_tu_glove",
+    "vi": "Hỏa Tổ Thần Thủ",
+    "base": "base_gauntlet",
+    "slot": "glove",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 60,
+      "matk": 90,
+      "crit_rating": 180,
+      "res_all": 0.1
+    },
+    "passive_bonus": {
+      "burn_on_hit_pct": 0.55,
+      "fire_res_shred": 0.1
+    },
+    "description_vi": "Găng Hỏa Tổ — 55% Thiêu Đốt on-hit, xuyên thêm 10% kháng hỏa"
+  },
+  {
+    "key": "uniq_hoa_tu_crown",
+    "vi": "Hỏa Tổ Thiên Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "matk": 150,
+      "mp_max": 620,
+      "crit_rating": 260
+    },
+    "passive_bonus": {
+      "fire_res_shred": 0.25,
+      "burn_stack_cap_bonus": 5,
+      "dot_can_crit": true
+    },
+    "description_vi": "Mão Hỏa Tổ — xuyên 25% kháng hỏa, +5 tầng (max 10), DoT bạo kích."
+  },
+  {
+    "key": "uniq_thai_thuong_kiem",
+    "vi": "Thái Thượng Tiên Kiếm",
+    "base": "base_spirit_sword",
+    "slot": "weapon",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 155,
+      "matk": 130,
+      "crit_rating": 310
+    },
+    "passive_bonus": {
+      "paralysis_on_crit": true,
+      "freeze_on_skill": true,
+      "burn_on_hit_pct": 0.25
+    },
+    "description_vi": "Kiếm Thái Thượng, kích hoạt mọi proc."
+  }
+]

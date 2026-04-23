@@ -199,9 +199,10 @@ class EquipmentCog(commands.Cog):
 
         slot_label = SLOT_LABELS.get(inst.slot, inst.slot) if inst else ""
         if displaced:
+            returned_names = ", ".join(d.display_name for d in displaced)
             msg = (
                 f"✅ Đã trang bị **{inst.display_name}** vào {slot_label}.\n"
-                f"↩️ **{displaced.display_name}** trả về túi đồ."
+                f"↩️ {returned_names} trả về túi đồ."
             )
         else:
             msg = f"✅ Đã trang bị **{inst.display_name}** vào {slot_label}."
@@ -416,7 +417,8 @@ class EquipBagView(discord.ui.View):
         slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "")
         result_msg = f"✅ Đã trang bị **{inst.display_name}** vào {slot_label}."
         if displaced:
-            result_msg += f"\n↩️ **{displaced.display_name}** trả về túi đồ."
+            returned = ", ".join(d.display_name for d in displaced)
+            result_msg += f"\n↩️ {returned} trả về túi đồ."
 
         embed = _equip_bag_embed(self._player_name, bag_items, result_msg)
         view = EquipBagView(self._discord_id, self._player_name, bag_items, self._back_fn)

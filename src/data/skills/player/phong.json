@@ -1,0 +1,298 @@
+[
+  {
+    "key": "SkillAtkPhong1",
+    "vi": "Thiên Phong Liệt Kiếm",
+    "en": "Heaven Wind Fierce Sword",
+    "realm": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 8,
+    "cooldown": 1,
+    "base_dmg": 28,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhong_R2",
+    "vi": "Phong Nguyên Tức Kiếm",
+    "en": "Wind Essence Swift Blade",
+    "realm": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 15,
+    "cooldown": 2,
+    "base_dmg": 50,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefPhong_R2",
+    "vi": "Phong Nguyên Ngự Khí",
+    "en": "Wind Essence Guard",
+    "realm": 2,
+    "category": "defense",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 20,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffNguPhong"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovPhong_R2",
+    "vi": "Phong Nguyên Tốc Bộ",
+    "en": "Wind Essence Swift Step",
+    "realm": 2,
+    "category": "movement",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 16,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTangToc"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhong2",
+    "vi": "Thiên Phong Cắt Mạch",
+    "en": "Heaven Wind Vein Cut",
+    "realm": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 20,
+    "cooldown": 2,
+    "base_dmg": 75,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillSupPhong",
+    "vi": "Nhân Phong Tăng Tốc",
+    "en": "Human Wind Haste",
+    "realm": 3,
+    "category": "movement",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 18,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTangToc"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhong_R4",
+    "vi": "Huyền Phong Thiên Vũ",
+    "en": "Mystery Wind Heaven Dance",
+    "realm": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.0
+    },
+    "mp_cost": 32,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhong3",
+    "vi": "Thiên Phong Hư Không",
+    "en": "Heaven Wind Void",
+    "realm": 5,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 45,
+    "cooldown": 3,
+    "base_dmg": 160,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhong_R6",
+    "vi": "Chân Phong Phá Lãng",
+    "en": "True Wind Wave Breaker",
+    "realm": 6,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 58,
+    "cooldown": 4,
+    "base_dmg": 255,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay",
+      "DebuffLamCham"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhong_R7",
+    "vi": "Thần Phong Vạn Liệt",
+    "en": "Divine Wind Myriad Rends",
+    "realm": 7,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.4
+    },
+    "mp_cost": 78,
+    "cooldown": 5,
+    "base_dmg": 355,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay",
+      "DebuffLamCham",
+      "DebuffCatDut"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovPhong_R7",
+    "vi": "Thần Phong Phong Vũ Bộ",
+    "en": "Divine Wind Storm Step",
+    "realm": 7,
+    "category": "movement",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 75,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "BuffPhongVu",
+      "BuffTangToc",
+      "BuffHuKhong"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhong_R8",
+    "vi": "Thánh Phong Hư Không Trảm",
+    "en": "Saint Wind Void Slash",
+    "realm": 8,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.6
+    },
+    "mp_cost": 100,
+    "cooldown": 6,
+    "base_dmg": 465,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay",
+      "DebuffLamCham",
+      "DebuffCatDut",
+      "DebuffXeRach"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhong_R9",
+    "vi": "Tiên Phong Hỗn Độn Đoạn Hư",
+    "en": "Immortal Wind Chaos Void-Sever",
+    "realm": 9,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.9
+    },
+    "mp_cost": 140,
+    "cooldown": 7,
+    "base_dmg": 660,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay",
+      "DebuffLamCham",
+      "DebuffCatDut",
+      "DebuffXeRach",
+      "CCInterrupt"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovDangTien_R9",
+    "vi": "Đăng Tiên Súc Địa Thành Thốn",
+    "en": "Immortal Ascension Shrink-Earth",
+    "realm": 9,
+    "category": "movement",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 130,
+    "cooldown": 8,
+    "base_dmg": 0,
+    "effects": [
+      "BuffPhongVu",
+      "BuffTocLoi",
+      "BuffTangToc",
+      "BuffHuKhong"
+    ],
+    "formation_key": null
+  }
+]

@@ -1,0 +1,282 @@
+[
+  {
+    "key": "SkillAtkQuang1",
+    "vi": "Quang Minh Phán Quyết",
+    "en": "Radiant Judgment",
+    "realm": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 30,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkQuang_R2",
+    "vi": "Quang Nguyên Thần Trảm",
+    "en": "Light Essence Divine Slash",
+    "realm": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 60,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkQuang2",
+    "vi": "Thánh Quang Xung Kích",
+    "en": "Holy Light Surge",
+    "realm": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 2,
+    "base_dmg": 75,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefQuang",
+    "vi": "Thánh Quang Bất Diệt",
+    "en": "Holy Light Immortality",
+    "realm": 3,
+    "category": "defense",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 25,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffBatTu"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillSupQuang",
+    "vi": "Quang Huy Trị Liệu",
+    "en": "Radiant Healing",
+    "realm": 3,
+    "category": "defense",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 20,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "HpRegen",
+      "BuffSinhCo"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkQuang_R4",
+    "vi": "Huyền Quang Phán Thế",
+    "en": "Mystery Light World Judgment",
+    "realm": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 40,
+    "cooldown": 3,
+    "base_dmg": 150,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffSetDanh"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkQuang3",
+    "vi": "Vạn Đạo Thần Quang",
+    "en": "Ten Thousand Divine Rays",
+    "realm": 5,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 190,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkQuang_R6",
+    "vi": "Chân Quang Thần Phán",
+    "en": "True Light Divine Judgment",
+    "realm": 6,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 65,
+    "cooldown": 4,
+    "base_dmg": 270,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "DebuffSetDanh"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkQuang_R7",
+    "vi": "Thần Quang Tịnh Thế",
+    "en": "Divine Light World Purge",
+    "realm": 7,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 1.0
+    },
+    "mp_cost": 85,
+    "cooldown": 5,
+    "base_dmg": 370,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "DebuffSetDanh",
+      "DebuffXeRach"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefQuang_R7",
+    "vi": "Thần Quang Bất Hoại Thân",
+    "en": "Divine Light Indestructible Body",
+    "realm": 7,
+    "category": "defense",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 80,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "BuffBatTu",
+      "BuffHoPhap",
+      "BuffSinhCo"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkQuang_R8",
+    "vi": "Thánh Quang Vạn Đạo Giáng Lâm",
+    "en": "Saint Light Myriad Dao Descent",
+    "realm": 8,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 1.1
+    },
+    "mp_cost": 110,
+    "cooldown": 6,
+    "base_dmg": 485,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "DebuffSetDanh",
+      "DebuffXeRach",
+      "CCMuted"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillPasQuang_R8",
+    "vi": "Thánh Quang Thiên Nhãn",
+    "en": "Saint Light Celestial Eye",
+    "realm": 8,
+    "category": "passive",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 100,
+    "cooldown": 12,
+    "base_dmg": 0,
+    "effects": [
+      "BuffLietDiem",
+      "BuffHoangKim"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkQuang_R9",
+    "vi": "Tiên Quang Đại Đạo Chân Lý",
+    "en": "Immortal Light Great-Dao Truth",
+    "realm": 9,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.9,
+      "matk": 1.1
+    },
+    "mp_cost": 155,
+    "cooldown": 7,
+    "base_dmg": 700,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "DebuffSetDanh",
+      "DebuffXeRach",
+      "CCMuted",
+      "DebuffCatDut"
+    ],
+    "formation_key": null
+  }
+]

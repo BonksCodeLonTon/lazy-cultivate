@@ -5,6 +5,7 @@ from src.game.constants.balance import (
     AXIS_ATK_WEIGHT, AXIS_DEF_WEIGHT, AXIS_HP_WEIGHT, AXIS_MATK_WEIGHT, AXIS_MP_WEIGHT,
     BASE_ATK_PER_LEVEL, BASE_DEF_PER_LEVEL, BASE_HP_PER_LEVEL,
     BASE_MATK_PER_LEVEL, BASE_MP_PER_LEVEL,
+    FORMATION_PATH_MULT_PER_STAGE,
 )
 from src.game.constants.currencies import (
     FORMATION_MERIT_COST_BASE,
@@ -184,10 +185,33 @@ def compute_gem_bonuses(gem_keys: list[str]) -> dict:
     return merged
 
 
-def compute_formation_reserve_pct(formation_key: str | None, gem_count: int) -> float:
+def formation_reserve_reduction(formation_stages: int) -> float:
+    """Return the MULTIPLIER applied to MP reservation cost based on Trận Đạo progression.
+
+    1.0 = full cost; lower values = less MP locked. Trận Đạo cultivators
+    learn to fold the formation into less of their qi reserve over time.
+    At 1 stage  → ~0.99 (almost full cost);
+    at 81 stages → floored at FORMATION_RESERVE_FLOOR_MULT (default 0.30).
+    """
+    from src.game.constants.balance import (
+        FORMATION_RESERVE_REDUCE_PER_STAGE,
+        FORMATION_RESERVE_FLOOR_MULT,
+    )
+    raw = 1.0 - max(0, formation_stages) * FORMATION_RESERVE_REDUCE_PER_STAGE
+    return max(FORMATION_RESERVE_FLOOR_MULT, raw)
+
+
+def compute_formation_reserve_pct(
+    formation_key: str | None,
+    gem_count: int,
+    formation_stages: int = 0,
+) -> float:
     """How much of max MP the active formation locks.
 
-    0 if no formation active; else BASE + PER_GEM × gem_count, capped at MAX.
+    0 if no formation active; else (BASE + PER_GEM × gem_count) × reduction_mult,
+    capped at MAX. Trận Đạo cultivation (``formation_stages``) reduces the cost
+    down to a floor — late-game formation cultivators pay far less MP to sustain
+    the same formation.
     """
     if not formation_key:
         return 0.0
@@ -197,16 +221,32 @@ def compute_formation_reserve_pct(formation_key: str | None, gem_count: int) -> 
         FORMATION_MAX_RESERVE_PCT,
     )
     raw = FORMATION_BASE_RESERVE_PCT + max(0, gem_count) * FORMATION_GEM_RESERVE_PCT
-    return min(FORMATION_MAX_RESERVE_PCT, raw)
+    reduced = raw * formation_reserve_reduction(formation_stages)
+    return min(FORMATION_MAX_RESERVE_PCT, reduced)
+
+
+def formation_path_multiplier(formation_stages: int) -> float:
+    """Return the multiplier applied to formation bonuses based on Trận Đạo progression.
+
+    formation_stages = formation_realm * 9 + formation_level  (range 1..81).
+    At 1 stage  → 1.02 (2% boost); at 81 stages → 2.62 (+162% boost).
+    Designed so a late-game Trận Đạo cultivator's formations feel meaningfully
+    stronger than a beginner's.
+    """
+    return 1.0 + max(0, formation_stages) * FORMATION_PATH_MULT_PER_STAGE
 
 
 def compute_formation_bonuses(
     formation_key: str | None,
     gem_count: int = 0,
     gem_keys: list[str] | None = None,
+    formation_stages: int = 0,
 ) -> dict:
     """Returns merged bonuses from a formation's base stats + reached gem thresholds
     + per-gem elemental bonuses (when ``gem_keys`` is provided).
+
+    All numeric bonuses are scaled by ``formation_path_multiplier(formation_stages)``
+    so progressing Trận Đạo makes the active formation genuinely stronger.
 
     Also populates:
       ``_formation_element``  — for res_element routing
@@ -234,11 +274,24 @@ def compute_formation_bonuses(
     if gem_keys:
         _merge_bonus_dict(merged, compute_gem_bonuses(gem_keys))
 
+    # Scale all numeric bonuses by formation-path multiplier. Bool flags
+    # (poison_immunity, freeze_on_skill, etc.) and meta fields stay untouched.
+    mult = formation_path_multiplier(formation_stages)
+    if mult != 1.0:
+        for k, v in list(merged.items()):
+            if isinstance(v, bool) or k.startswith("_") or k == "note":
+                continue
+            if isinstance(v, (int, float)):
+                merged[k] = type(v)(v * mult) if isinstance(v, int) else v * mult
+
     # Store the formation element so callers can apply res_element to the right slot
     if "element" in form_data and form_data["element"]:
         merged["_formation_element"] = form_data["element"]
 
-    merged["_mp_reserve_pct"] = compute_formation_reserve_pct(formation_key, effective_count)
+    merged["_mp_reserve_pct"] = compute_formation_reserve_pct(
+        formation_key, effective_count, formation_stages=formation_stages,
+    )
+    merged["_formation_path_mult"] = mult
     return merged
 
 

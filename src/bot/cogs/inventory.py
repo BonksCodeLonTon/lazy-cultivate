@@ -325,11 +325,12 @@ class InventoryCog(commands.Cog, name="Inventory"):
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="inlay", description="Khảm ngọc vào trận pháp")
-    @app_commands.describe(slot_index="Vị trí slot (0-80)", gem_key="Key ngọc (vd: GemKim_1)")
+    @app_commands.describe(slot_index="Vị trí slot (0-9)", gem_key="Key ngọc (vd: GemKim_1)")
     async def inlay(self, interaction: discord.Interaction, slot_index: int, gem_key: str) -> None:
-        if not 0 <= slot_index <= 80:
+        from src.db.models.formation import FORMATION_GEM_SLOTS
+        if not 0 <= slot_index < FORMATION_GEM_SLOTS:
             await interaction.response.send_message(
-                embed=error_embed("Slot phải từ 0–80."), ephemeral=True
+                embed=error_embed(f"Slot phải từ 0–{FORMATION_GEM_SLOTS - 1}."), ephemeral=True
             )
             return
 
@@ -366,13 +367,13 @@ class InventoryCog(commands.Cog, name="Inventory"):
             await irepo.remove_item(player.id, gem_key, grade, 1)
 
         filled = len(formation.gem_slots)
-        thresholds = [9, 27, 36, 49, 81]
+        thresholds = [1, 3, 5, 7, 10]
         next_threshold = next((t for t in thresholds if t > filled), None)
 
         embed = success_embed(
             f"Khảm **{gem_data['vi']}** vào slot **{slot_index}** của trận pháp!\n"
-            f"Tổng ngọc đã khảm: **{filled}/81**\n"
-            + (f"Ngưỡng tiếp theo: **{next_threshold}** ngọc" if next_threshold else "✨ Đã đạt **81/81** — tối đa!")
+            f"Tổng ngọc đã khảm: **{filled}/{FORMATION_GEM_SLOTS}**\n"
+            + (f"Ngưỡng tiếp theo: **{next_threshold}** ngọc" if next_threshold else f"✨ Đã đạt **{FORMATION_GEM_SLOTS}/{FORMATION_GEM_SLOTS}** — tối đa!")
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 

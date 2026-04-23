@@ -1,0 +1,419 @@
+[
+  {
+    "key": "SkillAtkTo1",
+    "vi": "Thiên Thổ Địa Chấn",
+    "en": "Heaven Earth Quake",
+    "realm": 1,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 15,
+    "cooldown": 2,
+    "base_dmg": 50,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefTo",
+    "vi": "Địa Thổ Trọng Hộ",
+    "en": "Earth Heavy Guard",
+    "realm": 1,
+    "category": "defense",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 15,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTrongTo"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkTho_R2",
+    "vi": "Thổ Nguyên Bạo Thạch",
+    "en": "Earth Essence Burst Stone",
+    "realm": 2,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 22,
+    "cooldown": 3,
+    "base_dmg": 75,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkTo2",
+    "vi": "Thiên Thổ Nham Thạch",
+    "en": "Heaven Earth Magma",
+    "realm": 3,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 35,
+    "cooldown": 3,
+    "base_dmg": 120,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillCCTho",
+    "vi": "Nhân Thổ Trói Địch",
+    "en": "Human Earth Bind",
+    "realm": 3,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 20,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkTho_R4",
+    "vi": "Huyền Thổ Tụng Sơn",
+    "en": "Mystery Earth Mountain Chant",
+    "realm": 4,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.0
+    },
+    "mp_cost": 45,
+    "cooldown": 4,
+    "base_dmg": 170,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillThoShieldBuild",
+    "vi": "Thổ Tường Kiên Cố",
+    "en": "Earth Wall Fortify",
+    "realm": 4,
+    "category": "defense",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 30,
+    "cooldown": 2,
+    "base_dmg": 0,
+    "effects": [
+      "BuffHoPhap"
+    ],
+    "formation_key": null,
+    "description_vi": "Triệu Hồi Thổ Tường — +15% hp_max thành khiên ngay lập tức, nhận Hộ Pháp (tăng phòng thủ)."
+  },
+  {
+    "key": "SkillAtkTo3",
+    "vi": "Địa Long Giáng Thế",
+    "en": "Earth Dragon Descent",
+    "realm": 5,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 60,
+    "cooldown": 5,
+    "base_dmg": 230,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillThoStun_R5",
+    "vi": "Địa Chấn Choáng",
+    "en": "Earthquake Stun",
+    "realm": 5,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.1
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 200,
+    "effects": [
+      "CCStun",
+      "DebuffLunDat",
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "CCStun": 0.7,
+      "DebuffLunDat": 0.6,
+      "DebuffPhaGiap": 0.5
+    },
+    "formation_key": null,
+    "description_vi": "Đập mạnh xuống đất — 70% choáng, 60% quật ngã, 50% phá giáp."
+  },
+  {
+    "key": "SkillAtkTho_R6",
+    "vi": "Chân Thổ Bát Hoang Chấn",
+    "en": "True Earth Eight Wastes Quake",
+    "realm": 6,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 75,
+    "cooldown": 5,
+    "base_dmg": 310,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat",
+      "CCStun"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefTho_R6",
+    "vi": "Chân Thổ Đại Địa Thuẫn",
+    "en": "True Earth Great Land Shield",
+    "realm": 6,
+    "category": "defense",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "BuffDaiDia",
+      "BuffTrongTo"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillThoThornAura_R6",
+    "vi": "Thổ Gai Hộ Thể",
+    "en": "Earth Thorn Body Guard",
+    "realm": 6,
+    "category": "defense",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 70,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTrongTo",
+      "BuffHoPhap"
+    ],
+    "formation_key": null,
+    "description_vi": "Bao bọc thân bằng gai thổ — Trọng Tố + Hộ Pháp, tăng mạnh phản đòn (gai) trong 4 lượt."
+  },
+  {
+    "key": "SkillAtkTho_R7",
+    "vi": "Thần Thổ Vạn Sơn Áp Đỉnh",
+    "en": "Divine Earth Myriad Peaks Press",
+    "realm": 7,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.4
+    },
+    "mp_cost": 98,
+    "cooldown": 6,
+    "base_dmg": 420,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat",
+      "CCStun",
+      "DebuffPhaGiap"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillThoShieldBurst_R7",
+    "vi": "Thổ Tường Bùng Nổ",
+    "en": "Earth Wall Eruption",
+    "realm": 7,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.8,
+      "matk": 0.1
+    },
+    "mp_cost": 85,
+    "cooldown": 4,
+    "base_dmg": 280,
+    "effects": [
+      "CCStun",
+      "DebuffPhaGiap",
+      "ConsumeShieldBurst"
+    ],
+    "effect_chances": {
+      "CCStun": 0.5,
+      "DebuffPhaGiap": 0.8
+    },
+    "burst_shield_mult": 1.8,
+    "formation_key": null,
+    "description_vi": "Nổ Thổ Tường — phá khiên để gây sát thương bằng 180% lượng khiên tiêu hao, có xác suất choáng và phá giáp."
+  },
+  {
+    "key": "SkillAtkTho_R8",
+    "vi": "Thánh Thổ Càn Khôn Đoạn",
+    "en": "Saint Earth Universe Sever",
+    "realm": 8,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.6
+    },
+    "mp_cost": 130,
+    "cooldown": 7,
+    "base_dmg": 580,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat",
+      "CCStun",
+      "DebuffPhaGiap",
+      "DebuffBaoMon"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillThoTitan_R8",
+    "vi": "Thổ Thần Đại Chấn",
+    "en": "Earth God Great Quake",
+    "realm": 8,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.4,
+      "matk": 0.2
+    },
+    "mp_cost": 120,
+    "cooldown": 6,
+    "base_dmg": 520,
+    "effects": [
+      "CCStun",
+      "DebuffLunDat",
+      "DebuffPhaGiap",
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "CCStun": 0.8,
+      "DebuffLunDat": 0.7,
+      "DebuffPhaGiap": 1.0,
+      "DebuffCuonBay": 0.4
+    },
+    "formation_key": null,
+    "description_vi": "Cú giậm của Thổ Thần — 80% choáng, 70% quật ngã, chắc phá giáp, 40% cuốn bay."
+  },
+  {
+    "key": "SkillAtkTho_R9",
+    "vi": "Tiên Thổ Vĩnh Hằng Thiên Sơn",
+    "en": "Immortal Earth Eternal Heaven-Mountain",
+    "realm": 9,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.9
+    },
+    "mp_cost": 180,
+    "cooldown": 8,
+    "base_dmg": 820,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat",
+      "CCStun",
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "CCInterrupt"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillThoEarthTower_R9",
+    "vi": "Thổ Đạo Vĩnh Hằng Thiên Sơn",
+    "en": "Earth Dao Eternal Heaven Mountain",
+    "realm": 9,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.5,
+      "matk": 0.2
+    },
+    "mp_cost": 160,
+    "cooldown": 7,
+    "base_dmg": 720,
+    "true_dmg_pct": 0.08,
+    "effects": [
+      "CCStun",
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "DebuffLunDat",
+      "ConsumeShieldBurst"
+    ],
+    "effect_chances": {
+      "CCStun": 1.0,
+      "DebuffPhaGiap": 1.0,
+      "DebuffBaoMon": 0.8,
+      "DebuffLunDat": 0.7
+    },
+    "burst_shield_mult": 2.5,
+    "formation_key": null,
+    "description_vi": "Đỉnh cao Thổ Đạo — triệu hồi núi thiêng đè đối thủ, 8% HP chân thương, chắc choáng + phá giáp, nổ toàn bộ Thổ Tường với hệ số 250%."
+  }
+]

@@ -11,25 +11,25 @@
     },
     "formation_skill_key": "SkillFrmKim",
     "gem_threshold_bonuses": {
-      "9": {
+      "1": {
         "hp_pct": 0.03,
         "note": "Sơ Khai Kim Trận"
       },
-      "27": {
+      "3": {
         "hp_pct": 0.08,
         "note": "Kiên Cố Kim Trận"
       },
-      "36": {
+      "5": {
         "hp_pct": 0.15,
         "res_element": 20,
         "note": "Thịnh Vượng Kim Trận"
       },
-      "49": {
+      "7": {
         "hp_pct": 0.25,
         "crit_res_rating": 50,
         "note": "Vô Song Kim Trận"
       },
-      "81": {
+      "10": {
         "hp_pct": 0.5,
         "crit_res_rating": 150,
         "final_dmg_reduce": 0.1,
@@ -49,25 +49,25 @@
     },
     "formation_skill_key": "SkillFrmMoc",
     "gem_threshold_bonuses": {
-      "9": {
+      "1": {
         "hp_pct": 0.03,
         "note": "Sơ Khai Mộc Trận"
       },
-      "27": {
+      "3": {
         "hp_pct": 0.08,
         "note": "Kiên Cố Mộc Trận"
       },
-      "36": {
+      "5": {
         "hp_pct": 0.15,
         "hp_regen_pct": 0.005,
         "note": "Thịnh Vượng Mộc Trận"
       },
-      "49": {
+      "7": {
         "hp_pct": 0.25,
         "hp_regen_pct": 0.01,
         "note": "Vô Song Mộc Trận"
       },
-      "81": {
+      "10": {
         "hp_pct": 0.5,
         "hp_regen_pct": 0.02,
         "poison_immunity": true,
@@ -87,25 +87,25 @@
     },
     "formation_skill_key": "SkillFrmThuy",
     "gem_threshold_bonuses": {
-      "9": {
+      "1": {
         "mp_pct": 0.03,
         "note": "Sơ Khai Thủy Trận"
       },
-      "27": {
+      "3": {
         "mp_pct": 0.08,
         "note": "Kiên Cố Thủy Trận"
       },
-      "36": {
+      "5": {
         "mp_pct": 0.15,
         "cooldown_reduce": 0.05,
         "note": "Thịnh Vượng Thủy Trận"
       },
-      "49": {
+      "7": {
         "mp_pct": 0.25,
         "cooldown_reduce": 0.1,
         "note": "Vô Song Thủy Trận"
       },
-      "81": {
+      "10": {
         "mp_pct": 0.5,
         "cooldown_reduce": 0.2,
         "reflect_pct": 0.1,
@@ -125,25 +125,25 @@
     },
     "formation_skill_key": "SkillFrmHoa",
     "gem_threshold_bonuses": {
-      "9": {
+      "1": {
         "mp_pct": 0.03,
         "note": "Sơ Khai Hỏa Trận"
       },
-      "27": {
+      "3": {
         "mp_pct": 0.08,
         "note": "Kiên Cố Hỏa Trận"
       },
-      "36": {
+      "5": {
         "mp_pct": 0.15,
         "final_dmg_bonus": 0.05,
         "note": "Thịnh Vượng Hỏa Trận"
       },
-      "49": {
+      "7": {
         "mp_pct": 0.25,
         "final_dmg_bonus": 0.1,
         "note": "Vô Song Hỏa Trận"
       },
-      "81": {
+      "10": {
         "mp_pct": 0.5,
         "final_dmg_bonus": 0.2,
         "burn_on_hit_pct": 0.15,
@@ -163,25 +163,25 @@
     },
     "formation_skill_key": "SkillFrmTo",
     "gem_threshold_bonuses": {
-      "9": {
+      "1": {
         "hp_pct": 0.03,
         "note": "Sơ Khai Thổ Trận"
       },
-      "27": {
+      "3": {
         "hp_pct": 0.08,
         "note": "Kiên Cố Thổ Trận"
       },
-      "36": {
+      "5": {
         "hp_pct": 0.15,
         "res_all": 10,
         "note": "Thịnh Vượng Thổ Trận"
       },
-      "49": {
+      "7": {
         "hp_pct": 0.25,
         "res_all": 25,
         "note": "Vô Song Thổ Trận"
       },
-      "81": {
+      "10": {
         "hp_pct": 0.5,
         "res_all": 50,
         "dmg_reduce_flat": 50,
@@ -201,25 +201,25 @@
     },
     "formation_skill_key": "SkillFrmLoi",
     "gem_threshold_bonuses": {
-      "9": {
+      "1": {
         "mp_pct": 0.03,
         "note": "Sơ Khai Lôi Trận"
       },
-      "27": {
+      "3": {
         "mp_pct": 0.08,
         "note": "Kiên Cố Lôi Trận"
       },
-      "36": {
+      "5": {
         "mp_pct": 0.15,
         "crit_rating": 50,
         "note": "Thịnh Vượng Lôi Trận"
       },
-      "49": {
+      "7": {
         "mp_pct": 0.25,
         "crit_rating": 100,
         "note": "Vô Song Lôi Trận"
       },
-      "81": {
+      "10": {
         "mp_pct": 0.5,
         "crit_rating": 200,
         "paralysis_on_crit": true,
@@ -239,25 +239,25 @@
     },
     "formation_skill_key": "SkillFrmBang",
     "gem_threshold_bonuses": {
-      "9": {
+      "1": {
         "hp_pct": 0.03,
         "note": "Sơ Khai Băng Trận"
       },
-      "27": {
+      "3": {
         "hp_pct": 0.08,
         "note": "Kiên Cố Băng Trận"
       },
-      "36": {
+      "5": {
         "hp_pct": 0.15,
         "slow_on_hit_pct": 0.1,
         "note": "Thịnh Vượng Băng Trận"
       },
-      "49": {
+      "7": {
         "hp_pct": 0.25,
         "slow_on_hit_pct": 0.2,
         "note": "Vô Song Băng Trận"
       },
-      "81": {
+      "10": {
         "hp_pct": 0.5,
         "slow_on_hit_pct": 0.3,
         "freeze_on_skill": true,
@@ -277,26 +277,26 @@
     },
     "formation_skill_key": "SkillFrmPhong",
     "gem_threshold_bonuses": {
-      "9": {
+      "1": {
         "mp_pct": 0.03,
         "note": "Sơ Khai Phong Trận"
       },
-      "27": {
+      "3": {
         "mp_pct": 0.08,
         "note": "Kiên Cố Phong Trận"
       },
-      "36": {
+      "5": {
         "mp_pct": 0.15,
         "spd_bonus": 2,
         "note": "Thịnh Vượng Phong Trận"
       },
-      "49": {
+      "7": {
         "mp_pct": 0.25,
         "spd_bonus": 4,
         "evasion_rating": 50,
         "note": "Vô Song Phong Trận"
       },
-      "81": {
+      "10": {
         "mp_pct": 0.5,
         "spd_bonus": 8,
         "evasion_rating": 150,
@@ -316,25 +316,25 @@
     },
     "formation_skill_key": "SkillFrmKiem",
     "gem_threshold_bonuses": {
-      "9": {
+      "1": {
         "crit_dmg_rating": 30,
         "note": "Sơ Khai Kiếm Trận"
       },
-      "27": {
+      "3": {
         "crit_dmg_rating": 80,
         "note": "Kiên Cố Kiếm Trận"
       },
-      "36": {
+      "5": {
         "crit_dmg_rating": 150,
         "crit_rating": 50,
         "note": "Thịnh Vượng Kiếm Trận"
       },
-      "49": {
+      "7": {
         "crit_dmg_rating": 250,
         "crit_rating": 100,
         "note": "Vô Song Kiếm Trận"
       },
-      "81": {
+      "10": {
         "crit_dmg_rating": 500,
         "crit_rating": 200,
         "sword_aura": true,
@@ -354,26 +354,26 @@
     },
     "formation_skill_key": "SkillFrmCuuCung",
     "gem_threshold_bonuses": {
-      "9": {
+      "1": {
         "res_all": 10,
         "note": "Sơ Khai Bát Quái Trận"
       },
-      "27": {
+      "3": {
         "res_all": 25,
         "note": "Kiên Cố Bát Quái Trận"
       },
-      "36": {
+      "5": {
         "res_all": 40,
         "cooldown_reduce": 0.05,
         "note": "Thịnh Vượng Bát Quái Trận"
       },
-      "49": {
+      "7": {
         "res_all": 60,
         "cooldown_reduce": 0.1,
         "final_dmg_bonus": 0.05,
         "note": "Vô Song Bát Quái Trận"
       },
-      "81": {
+      "10": {
         "res_all": 100,
         "cooldown_reduce": 0.2,
         "final_dmg_bonus": 0.15,

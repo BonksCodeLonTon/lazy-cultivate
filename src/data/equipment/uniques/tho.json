@@ -1,0 +1,206 @@
+[
+  {
+    "key": "uniq_tho_linh_hoa",
+    "vi": "Thổ Linh Hoa Nhẫn",
+    "base": "base_spirit_ring",
+    "slot": "ring",
+    "realm": 2,
+    "grade": 2,
+    "fixed_stats": {
+      "hp_max": 140,
+      "def_stat": 14,
+      "hp_regen_pct": 0.02
+    },
+    "passive_bonus": {
+      "hp_regen_flat": 30
+    },
+    "description_vi": "Nhẫn khắc hoa thổ linh, tăng hồi HP mỗi lượt."
+  },
+  {
+    "key": "uniq_tho_linh_giap",
+    "vi": "Thổ Linh Khải Giáp",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {
+      "def_stat": 85,
+      "hp_max": 580,
+      "crit_res_rating": 140
+    },
+    "passive_bonus": {
+      "shield_regen_pct": 0.03,
+      "shield_regen_flat": 30,
+      "shield_cap_pct_bonus": 0.1
+    },
+    "description_vi": "Giáp khắc phù thổ linh — hồi 3% HP max thành khiên + 30 flat mỗi lượt, trần khiên +10% HP max."
+  },
+  {
+    "key": "uniq_thach_gai_thuan",
+    "vi": "Thạch Gai Thuẫn",
+    "base": "base_shield",
+    "slot": "off_hand",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {
+      "def_stat": 55,
+      "hp_max": 420,
+      "crit_res_rating": 120
+    },
+    "passive_bonus": {
+      "thorn_pct": 0.2,
+      "final_dmg_reduce": 0.06
+    },
+    "description_vi": "Thuẫn gai đá — phản 20% ST nhận được thành sát thương vật lý, giảm 6% ST nhận được."
+  },
+  {
+    "key": "uniq_tho_linh_chuy",
+    "vi": "Thổ Linh Trọng Chùy",
+    "base": "base_gauntlet",
+    "slot": "glove",
+    "realm": 6,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 70,
+      "def_stat": 45,
+      "hp_max": 380
+    },
+    "passive_bonus": {
+      "damage_bonus_from_shield_pct": 0.35,
+      "stun_on_hit_pct": 0.15,
+      "final_dmg_bonus": 0.1
+    },
+    "description_vi": "Chùy thổ linh — mỗi đòn cộng 35% khiên hiện tại làm ST, 15% choáng on-hit."
+  },
+  {
+    "key": "uniq_van_son_giap",
+    "vi": "Vạn Sơn Trọng Giáp",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {
+      "def_stat": 140,
+      "hp_max": 1100,
+      "crit_res_rating": 220
+    },
+    "passive_bonus": {
+      "shield_regen_pct": 0.05,
+      "thorn_pct": 0.25,
+      "stun_on_hit_pct": 0.2
+    },
+    "description_vi": "Trọng giáp vạn sơn — hồi 5% khiên/lượt, phản 25% ST thành gai, 20% choáng on-hit."
+  },
+  {
+    "key": "uniq_dia_huyet_dai",
+    "vi": "Địa Huyệt Đai",
+    "base": "base_belt",
+    "slot": "belt",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 680,
+      "def_stat": 55,
+      "res_all": 0.08
+    },
+    "passive_bonus": {
+      "shield_regen_flat": 80,
+      "shield_cap_pct_bonus": 0.15
+    },
+    "description_vi": "Đai địa huyệt — +80 khiên/lượt, trần khiên +15% HP max."
+  },
+  {
+    "key": "uniq_son_hai_boi",
+    "vi": "Sơn Hải Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 820,
+      "def_stat": 70,
+      "final_dmg_bonus": 0.12
+    },
+    "passive_bonus": {
+      "damage_bonus_from_shield_pct": 0.45,
+      "shield_cap_pct_bonus": 0.2,
+      "thorn_from_shield": true
+    },
+    "description_vi": "Bội Sơn Hải — mỗi đòn +45% khiên làm ST, trần khiên +20% HP max, gai trừ trước từ khiên."
+  },
+  {
+    "key": "uniq_thach_vuong_nhan",
+    "vi": "Thạch Vương Nhẫn",
+    "base": "base_power_ring",
+    "slot": "ring",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 100,
+      "def_stat": 50,
+      "hp_max": 520
+    },
+    "passive_bonus": {
+      "stun_on_hit_pct": 0.3,
+      "thorn_pct": 0.2
+    },
+    "description_vi": "Nhẫn thạch vương — 30% choáng on-hit, phản 20% ST thành gai."
+  },
+  {
+    "key": "uniq_tho_tu_bao",
+    "vi": "Thổ Tổ Trấn Thế Bội",
+    "base": "base_jade",
+    "slot": "amulet",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 1200,
+      "def_stat": 100,
+      "matk": 60
+    },
+    "passive_bonus": {
+      "shield_regen_flat": 200,
+      "shield_cap_pct_bonus": 0.25,
+      "damage_bonus_from_shield_pct": 0.5
+    },
+    "description_vi": "Bội Thổ Tổ — +200 khiên/lượt, trần khiên +25% HP max, +50% khiên làm ST. Bộ Thổ Tổ 3 mảnh hoàn chỉnh."
+  },
+  {
+    "key": "uniq_tho_tu_giap",
+    "vi": "Thổ Tổ Bất Hoại Giáp",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "def_stat": 220,
+      "hp_max": 1800,
+      "crit_res_rating": 380
+    },
+    "passive_bonus": {
+      "thorn_pct": 0.45,
+      "thorn_from_shield": true,
+      "stun_on_hit_pct": 0.35
+    },
+    "description_vi": "Giáp Thổ Tổ — phản 45% ST thành gai (trừ trước từ khiên), 35% choáng on-hit. Bộ Thổ Tổ đỉnh cao."
+  },
+  {
+    "key": "uniq_tho_tu_quan",
+    "vi": "Thổ Tổ Thiên Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "hp_max": 1600,
+      "def_stat": 140,
+      "res_all": 0.12
+    },
+    "passive_bonus": {
+      "shield_regen_pct": 0.08,
+      "shield_cap_pct_bonus": 0.3,
+      "damage_bonus_from_shield_pct": 0.6
+    },
+    "description_vi": "Mão tiên Thổ Tổ — hồi 8% khiên/lượt, trần khiên +30% HP max (tối đa 60%), đòn +60% khiên làm ST."
+  }
+]

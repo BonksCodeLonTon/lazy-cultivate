@@ -269,6 +269,30 @@ _DEBUFFS_CC: list[EffectMeta] = [
         emoji="💥",
     ),
     EffectMeta(
+        key="DebuffHoaXuyenThau",
+        vi="Hỏa Xuyên Thấu", en="Fire Penetration",
+        kind=EffectKind.DEBUFF,
+        description_vi="Lá chắn hỏa khí bị xuyên thủng, giảm mạnh kháng Hỏa.",
+        stat_bonus={"res_hoa": -0.15},
+        emoji="🔻",
+    ),
+    EffectMeta(
+        key="DebuffMocXuyenThau",
+        vi="Mộc Xuyên Thấu", en="Wood Penetration",
+        kind=EffectKind.DEBUFF,
+        description_vi="Rễ độc xâm nhập cơ thể, giảm mạnh kháng Mộc.",
+        stat_bonus={"res_moc": -0.15},
+        emoji="🌱",
+    ),
+    EffectMeta(
+        key="DebuffThuyXuyenThau",
+        vi="Thủy Xuyên Thấu", en="Water Penetration",
+        kind=EffectKind.DEBUFF,
+        description_vi="Khiên thủy khí bị xuyên thủng, giảm mạnh kháng Thủy.",
+        stat_bonus={"res_thuy": -0.15},
+        emoji="💧",
+    ),
+    EffectMeta(
         key="DebuffDocTo",
         vi="Độc Tố", en="Poison",
         kind=EffectKind.DEBUFF,
@@ -426,6 +450,9 @@ _DEFAULT_DURATIONS: dict[str, int] = {
     EffectKey.BUFF_HO_PHAP: 4, EffectKey.BUFF_HU_KHONG: 2,
     # Debuffs — typically 2–3 turns
     EffectKey.DEBUFF_THIEU_DOT: 3, EffectKey.DEBUFF_TE_LIET: 2, EffectKey.DEBUFF_DOT_CHAY: 3,
+    EffectKey.DEBUFF_HOA_XUYEN_THAU: 3,
+    EffectKey.DEBUFF_MOC_XUYEN_THAU: 3,
+    EffectKey.DEBUFF_THUY_XUYEN_THAU: 3,
     EffectKey.DEBUFF_DOC_TO: 3, EffectKey.DEBUFF_BAO_MON: 3, EffectKey.DEBUFF_TRO_BUOC: 2,
     EffectKey.DEBUFF_LUN_DAT: 2, EffectKey.EFFECT_NGUNG_DONG: 2, EffectKey.DEBUFF_LAM_CHAM: 2,
     EffectKey.DEBUFF_DONG_BANG: 2, EffectKey.DEBUFF_CHAY_MAU: 3, EffectKey.DEBUFF_PHA_GIAP: 3,
@@ -459,27 +486,55 @@ def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
     return result
 
 
-def get_periodic_damage(combatant: "Combatant") -> list[tuple[str, int]]:
-    """Return list of (effect_key, damage) for all active DoT effects.
+def get_periodic_damage(combatant: "Combatant") -> list[tuple[str, int, bool]]:
+    """Return list of (effect_key, damage, is_crit) for all active DoT effects.
 
     Damage is computed as dot_pct × hp_max, floored at 1.
     Poison is skipped if the combatant has poison_immunity.
     If the DoT has a dot_element, the holder's resistance to that element reduces the damage
     by the same flat amount used in the direct-damage pipeline.
+
+    Burn (``DebuffThieuDot``) multiplies by ``combatant.burn_stacks`` — each
+    stack contributes ``burn_per_stack_pct`` of hp_max to the tick.
+
+    ``is_crit`` is True for DoTs that rolled a crit (×1.5 damage). Controlled by
+    the ``dot_can_crit`` passive on the HOLDER (baked in when the DoT applier
+    hit them), rolling a 25% crit chance.
     """
-    results: list[tuple[str, int]] = []
+    import random as _random
+    _rng = _random.Random()
+    results: list[tuple[str, int, bool]] = []
     for effect_key in list(combatant.effects.keys()):
         meta = EFFECTS.get(effect_key)
         if not meta or meta.dot_pct <= 0:
             continue
         if effect_key == EffectKey.DEBUFF_DOC_TO and combatant.poison_immunity:
             continue
-        dmg = max(1, int(combatant.hp_max * meta.dot_pct))
-        # Apply holder's elemental resistance to reduce DoT damage (same flat formula as direct hits)
+
+        # Burn: scale with stacks × per-stack percentage. Falls back to meta.dot_pct
+        # when there are no recorded stacks (first-tick case) so legacy tests still work.
+        if effect_key == EffectKey.DEBUFF_THIEU_DOT:
+            stacks = max(1, combatant.burn_stacks)
+            base_pct = combatant.burn_per_stack_pct * stacks
+        elif effect_key == EffectKey.DEBUFF_CHAY_MAU:
+            stacks = max(1, combatant.bleed_stacks)
+            base_pct = combatant.bleed_per_stack_pct * stacks
+        else:
+            base_pct = meta.dot_pct
+
+        dmg = max(1, int(combatant.hp_max * base_pct))
+        # Apply holder's elemental resistance to reduce DoT damage
         if meta.dot_element:
             res_pct = max(0.0, min(0.75, combatant.resistances.get(meta.dot_element, 0.0)))
             dmg = max(1, int(dmg * (1.0 - res_pct)))
-        results.append((effect_key, dmg))
+
+        # DoT crit — 25% chance when enabled, +50% damage
+        is_crit = False
+        if combatant.dot_can_crit and _rng.random() < 0.25:
+            dmg = int(dmg * 1.5)
+            is_crit = True
+
+        results.append((effect_key, dmg, is_crit))
     return results
 
 

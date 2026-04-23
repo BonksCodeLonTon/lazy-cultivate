@@ -60,7 +60,14 @@ class GameRegistry:
         return self._merge_subdir("items", self._ITEM_FILES)
 
     def _load_equipment_defs(self) -> tuple[dict, dict, dict]:
-        """Load bases, affixes, and uniques from src/data/equipment/."""
+        """Load bases, affixes, and uniques from src/data/equipment/.
+
+        Uniques are split by build element under ``equipment/uniques/`` —
+        ``kim.json``, ``moc.json``, ``thuy.json``, ``hoa.json``, ``tho.json``,
+        ``general.json`` — and all merged into a single dict keyed by ``key``.
+        The legacy flat ``equipment/uniques.json`` is still picked up if
+        present so callers can fall back to a single-file layout.
+        """
         base_dir = DATA_DIR / "equipment"
         if not base_dir.exists():
             log.error("GameRegistry: Missing equipment/ directory")
@@ -72,17 +79,30 @@ class GameRegistry:
             bases[entry["key"]] = entry
         for entry in json.loads((base_dir / "affixes.json").read_text(encoding="utf-8")):
             affixes[entry["key"]] = entry
-        for entry in json.loads((base_dir / "uniques.json").read_text(encoding="utf-8")):
-            uniques[entry["key"]] = entry
+
+        # Prefer directory layout (equipment/uniques/*.json); fall back to flat file.
+        uniques_dir = base_dir / "uniques"
+        if uniques_dir.is_dir():
+            for path in sorted(uniques_dir.glob("*.json")):
+                for entry in json.loads(path.read_text(encoding="utf-8")):
+                    uniques[entry["key"]] = entry
+        legacy = base_dir / "uniques.json"
+        if legacy.exists():
+            for entry in json.loads(legacy.read_text(encoding="utf-8")):
+                uniques[entry["key"]] = entry
+
         return bases, affixes, uniques
 
     def _load_skills(self) -> dict[str, dict]:
         """Merge all JSON files under src/data/skills/** into one dict, keyed by 'key'.
 
-        The directory is split into subfolders (``player/``, ``enemy/``) so player
-        and enemy skills can evolve independently. Files load in sorted path order
-        (e.g. ``enemy/realm_01.json`` → ``player/realm_09.json``), and drop-in
-        subfolders require no registry changes.
+        The directory is split into subfolders (``player/``, ``enemy/``). Player
+        skills are grouped by element (``player/kim.json``, ``player/moc.json``,
+        …), with ``player/general.json`` for non-elemental attacks/defenses and
+        ``player/formation.json`` for every formation skill across elements.
+        Enemy skills are grouped by realm tier (``enemy/realm_01.json`` …
+        ``enemy/realm_09.json``). Files load in sorted path order, and drop-in
+        files require no registry changes.
         """
         merged: dict[str, dict] = {}
         base = DATA_DIR / "skills"

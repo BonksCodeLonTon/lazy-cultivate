@@ -1,0 +1,280 @@
+[
+  {
+    "key": "SkillAtkAm1",
+    "vi": "Ám Sát Chiêu",
+    "en": "Shadow Assassination",
+    "realm": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 35,
+    "effects": [
+      "DebuffXeRach"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkAm_R2",
+    "vi": "Ám Nguyên Phá Ảnh",
+    "en": "Dark Essence Shadow Break",
+    "realm": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 60,
+    "effects": [
+      "DebuffXeRach"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefAm_R2",
+    "vi": "Ám Nguyên Hàn Khí Thuẫn",
+    "en": "Dark Essence Cold Shield",
+    "realm": 2,
+    "category": "defense",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 20,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffHanKhi"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkAm2",
+    "vi": "Hắc Quang Xuyên Tâm",
+    "en": "Dark Ray Heart Pierce",
+    "realm": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 25,
+    "cooldown": 2,
+    "base_dmg": 85,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillSupAm",
+    "vi": "Ám Độc Phong Ấn",
+    "en": "Dark Poison Seal",
+    "realm": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 3,
+    "base_dmg": 15,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffCatDut"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefAm",
+    "vi": "Ám Ảnh Hư Không",
+    "en": "Shadow Void Cloak",
+    "realm": 3,
+    "category": "defense",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 20,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffHuKhong"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkAm_R4",
+    "vi": "Huyền Ám Tàn Sát",
+    "en": "Mystery Shadow Massacre",
+    "realm": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 40,
+    "cooldown": 3,
+    "base_dmg": 150,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffCatDut"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkAm3",
+    "vi": "Hủ Diệt Linh Hồn",
+    "en": "Soul Corruption Blast",
+    "realm": 5,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 195,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkAm_R6",
+    "vi": "Chân Ám Nuốt Linh",
+    "en": "True Shadow Soul Devour",
+    "realm": 6,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 65,
+    "cooldown": 4,
+    "base_dmg": 260,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon",
+      "CCMuted"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovAm_R6",
+    "vi": "Ám Ảnh Thoán Vị",
+    "en": "Shadow Phase Shift",
+    "realm": 6,
+    "category": "movement",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 55,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffHuKhong",
+      "BuffTangToc"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkAm_R7",
+    "vi": "Thần Ám Tử Thủ",
+    "en": "Divine Shadow Death Hand",
+    "realm": 7,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 1.0
+    },
+    "mp_cost": 85,
+    "cooldown": 5,
+    "base_dmg": 360,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffCatDut",
+      "DebuffBaoMon",
+      "CCMuted"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkAm_R8",
+    "vi": "Thánh Ám Diệt Thế",
+    "en": "Saint Shadow World Destruction",
+    "realm": 8,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 1.1
+    },
+    "mp_cost": 110,
+    "cooldown": 6,
+    "base_dmg": 480,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffCatDut",
+      "DebuffBaoMon",
+      "CCMuted",
+      "DebuffXeRach"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkAm_R9",
+    "vi": "Tiên Ám Quy Hư Diệt Đạo",
+    "en": "Immortal Shadow Return-Void Dao-Kill",
+    "realm": 9,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.9,
+      "matk": 1.1
+    },
+    "mp_cost": 150,
+    "cooldown": 7,
+    "base_dmg": 680,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffCatDut",
+      "DebuffBaoMon",
+      "CCMuted",
+      "DebuffXeRach",
+      "CCInterrupt"
+    ],
+    "formation_key": null
+  }
+]
