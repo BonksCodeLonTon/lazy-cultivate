@@ -1,0 +1,50 @@
+[
+  {
+    "key": "EnemyHoa_T4",
+    "vi": "Thần Thú Thiên Hỏa Kiếp",
+    "en": "Divine Beast Heaven Fire Tribulation",
+    "realm": 7,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 1.2},
+    "mp_cost": 65,
+    "cooldown": 5,
+    "base_dmg": 250,
+    "effects": ["DebuffThieuDot", "DebuffDotChay"],
+    "effect_chances": {"DebuffThieuDot": 0.75, "DebuffDotChay": 0.50},
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLoi_T4",
+    "vi": "Thần Long Thiên Lôi Bá",
+    "en": "Divine Dragon Heaven Thunder Dominion",
+    "realm": 7,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 1.2},
+    "mp_cost": 70,
+    "cooldown": 5,
+    "base_dmg": 280,
+    "effects": ["DebuffTeLiet", "DebuffSetDanh", "CCStun"],
+    "effect_chances": {"DebuffTeLiet": 0.65, "DebuffSetDanh": 0.55, "CCStun": 0.35},
+    "formation_key": null
+  },
+  {
+    "key": "EnemyBang_T4",
+    "vi": "Cổ Thần Vĩnh Hằng Băng",
+    "en": "Ancient God Eternal Ice",
+    "realm": 7,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 1.2},
+    "mp_cost": 68,
+    "cooldown": 5,
+    "base_dmg": 260,
+    "effects": ["DebuffDongBang", "DebuffLamCham"],
+    "effect_chances": {"DebuffDongBang": 0.60, "DebuffLamCham": 0.80},
+    "formation_key": null
+  }
+]

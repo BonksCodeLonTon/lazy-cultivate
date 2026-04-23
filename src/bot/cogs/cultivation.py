@@ -38,42 +38,6 @@ _AXIS_CONFIGS = [
 ]
 
 
-# ── Model helpers ─────────────────────────────────────────────────────────────
-
-def _orm_to_model(player):
-    from src.game.models.character import Character as CharModel
-    from src.game.constants.linh_can import parse_linh_can
-    tracker = player.turn_tracker
-    return CharModel(
-        player_id=player.id,
-        discord_id=player.discord_id,
-        name=player.name,
-        body_realm=player.body_realm,
-        body_level=player.body_level,
-        qi_realm=player.qi_realm,
-        qi_level=player.qi_level,
-        formation_realm=player.formation_realm,
-        formation_level=player.formation_level,
-        constitution_type=player.constitution_type,
-        dao_ti_unlocked=player.dao_ti_unlocked,
-        merit=player.merit,
-        karma_accum=player.karma_accum,
-        karma_usable=player.karma_usable,
-        primordial_stones=player.primordial_stones,
-        hp_current=player.hp_current,
-        mp_current=player.mp_current,
-        active_formation=player.active_formation,
-        main_title=player.main_title,
-        sub_title=player.sub_title,
-        evil_title=player.evil_title,
-        active_axis=player.active_axis,
-        body_xp=player.body_xp,
-        qi_xp=player.qi_xp,
-        formation_xp=player.formation_xp,
-        turns_today=tracker.turns_today if tracker else 0,
-        bonus_turns_remaining=tracker.bonus_turns_remaining if tracker else 440,
-        linh_can=parse_linh_can(player.linh_can or ""),
-    )
 
 
 def _pre_breakthrough_realm(player, axis: str) -> int:
@@ -100,7 +64,7 @@ async def _apply_ticks_to_player(player, repo, axis: str) -> dict:
         await repo.save(player)
         return result
 
-    char = _orm_to_model(player)
+    char = _player_to_model(player)
 
     result = compute_offline_ticks(char, tracker.last_tick_at)
 
@@ -208,7 +172,7 @@ class CultivateView(discord.ui.View):
                     await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                     return
 
-                char = _orm_to_model(player)
+                char = _player_to_model(player)
 
                 from src.game.systems.tribulation import TribulationManager
                 trib_manager = TribulationManager()
@@ -287,7 +251,7 @@ class BreakthroughView(discord.ui.View):
                 for inv_item in player.inventory:
                     inventory_map[inv_item.item_key] = inventory_map.get(inv_item.item_key, 0) + inv_item.quantity
 
-                char = _orm_to_model(player)
+                char = _player_to_model(player)
 
                 ok, reason = can_breakthrough(char, axis, inventory=inventory_map)
                 if not ok:
@@ -303,12 +267,9 @@ class BreakthroughView(discord.ui.View):
                 if trib_manager.check_needs_tribulation(char, axis):
                     equipped_skill_keys = [s.skill_key for s in player.skills]
 
-                    gem_count = 0
-                    if player.active_formation and player.formations:
-                        for f in player.formations:
-                            if f.formation_key == player.active_formation:
-                                gem_count = len(f.gem_slots)
-                                break
+                    from src.game.systems.character_stats import active_formation_gem_keys
+                    trib_gem_keys = active_formation_gem_keys(player)
+                    gem_count = len(trib_gem_keys)
 
                     from src.game.engine.equipment import compute_equipment_stats
                     equipped_items = [i for i in (player.item_instances or []) if i.location == "equipped"]
@@ -321,6 +282,7 @@ class BreakthroughView(discord.ui.View):
                         equipped_skill_keys,
                         gem_count,
                         equip_stats=equip_stats,
+                        gem_keys=trib_gem_keys,
                     )
 
                     if not trib_result.success:
@@ -363,24 +325,14 @@ class BreakthroughView(discord.ui.View):
                 player.merit           = char.merit
                 player.dao_ti_unlocked = char.dao_ti_unlocked
 
-                from src.game.constants.linh_can import compute_linh_can_bonuses
                 char = _player_to_model(player)
 
-                gem_count = 0
-                if player.active_formation and player.formations:
-                    for f in player.formations:
-                        if f.formation_key == player.active_formation:
-                            gem_count = len(f.gem_slots)
-                            break
+                from src.game.systems.character_stats import active_formation_gem_keys, compute_combat_stats
+                post_gem_keys = active_formation_gem_keys(player)
+                post_cs = compute_combat_stats(char, gem_count=len(post_gem_keys), gem_keys=post_gem_keys)
 
-                bonuses = merge_bonuses(
-                    compute_formation_bonuses(player.active_formation, gem_count),
-                    compute_constitution_bonuses(player.constitution_type),
-                    compute_linh_can_bonuses(char.linh_can),
-                )
-
-                player.hp_current = compute_hp_max(char, bonuses=bonuses)
-                player.mp_current = compute_mp_max(char, bonuses=bonuses)
+                player.hp_current = post_cs.hp_max
+                player.mp_current = post_cs.mp_max
 
                 await repo.save(player)
 
@@ -492,8 +444,11 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             
             inventory_map = {inv.item_key: inv.quantity for inv in player_orm.inventory}
 
-            ok, msg = can_breakthrough(char, axis, inventory=inventory_map)
-            if not ok: return await interaction.followup.send(embed=error_embed(msg))
+            char = _player_to_model(player)
+            readiness: dict[str, bool] = {}
+            for ax in ("body", "qi", "formation"):
+                ok, _ = can_breakthrough(char, ax, inventory=inventory_map)
+                readiness[ax] = ok
 
             from src.game.systems.tribulation import TribulationManager
             manager = TribulationManager()

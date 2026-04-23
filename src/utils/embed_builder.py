@@ -81,8 +81,8 @@ def battle_embed(
         "─" * 24,
         f"👹 `{e_hp_bar}` {enemy_hp:,}/{enemy_hp_max:,}  **{enemy_name}**",
     ]
-    if turn:
-        lines.append(f"\n*Lượt {turn}*")
+    # if turn:
+    #     lines.append(f"\n*Lượt {turn}*")
 
     log_section = "\n".join(turn_log[-10:]) if turn_log else ""
     description = "\n".join(lines) + ("\n\n" + log_section if log_section else "")
@@ -168,6 +168,7 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
     hp_max = stats.get("hp_max", 1)
     mp_cur = stats.get("mp_current", 0)
     mp_max = stats.get("mp_max", 1)
+    mp_reserved = stats.get("mp_reserved", 0)
     spd    = stats.get("spd", 0)
 
     embed.add_field(
@@ -175,9 +176,12 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         value=f"`{progress_bar(hp_cur, hp_max, 8)}`\n{hp_cur:,} / {hp_max:,}",
         inline=True,
     )
+    mp_value = f"`{progress_bar(mp_cur, mp_max, 8)}`\n{mp_cur:,} / {mp_max:,}"
+    if mp_reserved > 0:
+        mp_value += f"\n🔒 Trấn Trận: −{mp_reserved:,}"
     embed.add_field(
         name=f"{STAT_ICONS['mp']} Linh Lực",
-        value=f"`{progress_bar(mp_cur, mp_max, 8)}`\n{mp_cur:,} / {mp_max:,}",
+        value=mp_value,
         inline=True,
     )
     embed.add_field(
@@ -257,11 +261,14 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
     constitution = stats.get("constitution") or "Vạn Tượng"
     active_form  = stats.get("active_formation")
     gem_count    = stats.get("gem_count", 0)
+    reserve_pct  = stats.get("mp_reserve_pct", 0.0)
 
     if active_form:
+        reserve_tag = f" · 🔒 Trấn: **{reserve_pct * 100:.1f}%** MP" if reserve_pct > 0 else ""
         detail = (
             f"🧬 **{constitution}**\n"
             f"🔯 **{active_form}**  `{progress_bar(gem_count, 81, 8)}` {gem_count}/81 ngọc"
+            f"{reserve_tag}"
         )
     else:
         detail = f"🧬 **{constitution}**\n🔯 *(chưa kích hoạt trận pháp)*"

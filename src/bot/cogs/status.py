@@ -8,14 +8,13 @@ from discord import app_commands
 from discord.ext import commands
 
 from src.db.connection import get_session
-from src.db.repositories.player_repo import PlayerRepository
+from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.realms import BODY_REALMS, QI_REALMS, FORMATION_REALMS, realm_label
 from src.game.systems.cultivation import can_breakthrough
 from src.game.systems.character_stats import compute_combat_stats
 from src.game.engine.equipment import compute_equipment_stats
 from src.utils.embed_builder import character_embed, error_embed
 from src.bot.cogs.cultivation import (
-    _orm_to_model,
     _apply_ticks_to_player,
     _cultivate_embed,
     _breakthrough_overview_embed,
@@ -29,20 +28,17 @@ log = logging.getLogger(__name__)
 def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
     from src.game.constants.linh_can import LINH_CAN_DATA, parse_linh_can
 
-    char = _orm_to_model(player)
-    gem_count = 0
-    if player.active_formation and player.formations:
-        for f in player.formations:
-            if f.formation_key == player.active_formation:
-                gem_count = len(f.gem_slots)
-                break
+    char = _player_to_model(player)
+    from src.game.systems.character_stats import active_formation_gem_keys
+    gem_keys = active_formation_gem_keys(player)
+    gem_count = len(gem_keys)
 
     linh_can_list = parse_linh_can(player.linh_can or "")
 
     equipped_instances = [i for i in (player.item_instances or []) if i.location == "equipped"]
     equip_stats = compute_equipment_stats(equipped_instances)
 
-    cs = compute_combat_stats(char, gem_count=gem_count, equip_stats=equip_stats)
+    cs = compute_combat_stats(char, gem_count=gem_count, equip_stats=equip_stats, gem_keys=gem_keys)
 
     from src.data.registry import registry as gr
     const_data = gr.get_constitution(player.constitution_type)
@@ -79,6 +75,8 @@ def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
         "constitution":      const_data["vi"] if const_data else player.constitution_type,
         "active_formation":  form_data["vi"] if form_data else None,
         "gem_count":         gem_count,
+        "mp_reserved":       cs.mp_reserved,
+        "mp_reserve_pct":    cs.mp_reserve_pct,
         # Combat stats (already merged with equipment)
         "atk":             cs.atk,
         "matk":            cs.matk,
@@ -132,12 +130,13 @@ class StatusView(discord.ui.View):
             ("🌀 Tu Luyện",          discord.ButtonStyle.secondary, self._cultivate_cb,     0),
             ("⚡ Đột Phá",           discord.ButtonStyle.secondary, self._breakthrough_cb,  0),
             ("🗺️ Bí Cảnh",           discord.ButtonStyle.secondary, self._dungeon_cb,       0),
-            ("🎯 Kỹ Năng",           discord.ButtonStyle.secondary, self._skills_cb,        0),
-            ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     0),
+            ("🌌 Boss Thế Giới",     discord.ButtonStyle.secondary, self._world_boss_cb,    0),
+            ("🎯 Kỹ Năng",           discord.ButtonStyle.secondary, self._skills_cb,        1),
+            ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     1),
             ("📚 Tàng Kinh Các",     discord.ButtonStyle.secondary, self._tang_kinh_cac_cb, 1),
-            ("⚒️ Thiên Công Phường", discord.ButtonStyle.secondary, self._forge_cb,         1),
-            ("🏪 Phường Thị",        discord.ButtonStyle.secondary, self._shop_cb,          1),
-            ("🏮 Đấu Thương Các",    discord.ButtonStyle.secondary, self._market_cb,        1),
+            ("⚒️ Thiên Công Phường", discord.ButtonStyle.secondary, self._forge_cb,         2),
+            ("🏪 Phường Thị",        discord.ButtonStyle.secondary, self._shop_cb,          2),
+            ("🏮 Đấu Thương Các",    discord.ButtonStyle.secondary, self._market_cb,        2),
         ]
         for label, style, cb, row in configs:
             btn = discord.ui.Button(label=label, style=style, row=row)
@@ -183,7 +182,7 @@ class StatusView(discord.ui.View):
                 inventory_map[inv_item.item_key] = (
                     inventory_map.get(inv_item.item_key, 0) + inv_item.quantity
                 )
-            char = _orm_to_model(player)
+            char = _player_to_model(player)
             readiness: dict[str, bool] = {}
             for ax in ("body", "qi", "formation"):
                 ok, _ = can_breakthrough(char, ax, inventory=inventory_map)
@@ -234,6 +233,15 @@ class StatusView(discord.ui.View):
         embed = _dungeon_list_embed(qi_realm)
         view = DungeonListView(self._discord_id, qi_realm, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _world_boss_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        from src.bot.cogs.world_boss import _refresh_hub
+        await _refresh_hub(interaction, self._discord_id, back_fn=_show_status)
 
     async def _skills_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

@@ -30,8 +30,12 @@ class Combatant:
     final_dmg_reduce: float = 0.0
     # Per-turn HP regen as fraction of hp_max (e.g. 0.02 = 2%/turn)
     hp_regen_pct: float = 0.0
+    # Per-turn flat HP regen, stacks with hp_regen_pct
+    hp_regen_flat: int = 0
     # Per-turn MP regen as fraction of mp_max (e.g. 0.03 = 3%/turn)
     mp_regen_pct: float = 0.0
+    # Per-turn flat MP regen, stacks with mp_regen_pct
+    mp_regen_flat: int = 0
     # Healing effectiveness multiplier (from Quang Linh Căn passive)
     heal_pct: float = 0.0
     # Cooldown reduction multiplier (e.g. 0.15 → CD * 0.85)
@@ -46,6 +50,9 @@ class Combatant:
     # e.g. 0.20 → 20% of debuffs that would land are blocked.
     # Stacks additively from formation, constitution, and linh_can bonuses.
     debuff_immune_pct: float = 0.0
+    # Total immunity to hard CC (stun/freeze/silence/interrupt/knock-up).
+    # Used by world bosses — soft debuffs (slow, DoT, armor break) still apply.
+    immune_hard_cc: bool = False
     # Immunity / special flags
     active_flags: dict[str, bool] = field(default_factory=dict)
     # Active effects: effect_key → turns_remaining

@@ -19,7 +19,10 @@ STAT_LABELS: dict[str, str] = {
     "crit_res_rating": "Kháng Bạo",
     "final_dmg_bonus": "Tăng ST",
     "final_dmg_reduce":"Giảm ST",
-    "hp_regen_pct":    "Hồi HP",
+    "hp_regen_pct":    "Hồi HP %",
+    "hp_regen_flat":   "Hồi HP",
+    "mp_regen_pct":    "Hồi MP %",
+    "mp_regen_flat":   "Hồi MP",
     "res_all":         "Kháng TN",
 }
 
@@ -36,7 +39,11 @@ SLOT_LABELS: dict[str, str] = {
 
 SLOT_ORDER = ("weapon", "off_hand", "armor", "helmet", "glove", "belt", "ring", "amulet")
 
-_PCT_STATS = frozenset({"final_dmg_bonus", "final_dmg_reduce", "hp_regen_pct", "res_all"})
+_PCT_STATS = frozenset({
+    "final_dmg_bonus", "final_dmg_reduce",
+    "hp_regen_pct", "mp_regen_pct",
+    "res_all",
+})
 
 
 def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
@@ -44,13 +51,31 @@ def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
 
     Each ItemInstance has a pre-computed `computed_stats` dict that already
     includes both implicit base stats and rolled affix values.
+
+    Unique items may also declare a ``passive_bonus`` dict in their JSON
+    definition — this is layered on top of the summed numeric stats so unique
+    gear can grant on-hit/on-crit procs and immunity flags that go beyond
+    simple stat sheets.
     """
+    from src.data.registry import registry
+
     totals: dict[str, float] = {}
     for inst in equipped:
         if inst.location != "equipped":
             continue
         for stat, val in (inst.computed_stats or {}).items():
             totals[stat] = totals.get(stat, 0.0) + float(val)
+
+        # Merge unique passive bonuses if the item is a unique with passives
+        uniq_key = getattr(inst, "unique_key", None)
+        if not uniq_key:
+            continue
+        uniq_def = registry.get_unique(uniq_key) or {}
+        for stat, val in (uniq_def.get("passive_bonus") or {}).items():
+            if isinstance(val, bool):
+                totals[stat] = bool(totals.get(stat)) or val
+            else:
+                totals[stat] = totals.get(stat, 0.0) + float(val)
     return totals
 
 

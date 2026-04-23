@@ -96,3 +96,81 @@ ENEMY_REALM_LEVEL_STAT_MULT: dict[int, float] = {
 # ── Player defaults ───────────────────────────────────────────────────────────
 BASE_MP_REGEN_PCT: float = 0.01   # 1 % MP per turn baseline (before bonuses)
 MAX_FINAL_DMG_REDUCE: float = 0.75  # damage-reduction hard cap (buffs + debuffs)
+
+# ── SPD → combat impact ───────────────────────────────────────────────────────
+# Every SPD point above baseline adds evasion rating (always-on defensive edge).
+SPD_EVASION_BASELINE: int = 10          # SPD at/below this grants no evasion bonus
+SPD_EVASION_PER_POINT: int = 8          # evasion rating per SPD above baseline
+SPD_EVASION_CAP: int = 150              # max evasion rating contributed by SPD
+
+# Action economy: the faster combatant rolls for an extra action each round.
+# chance = min(MAX_PCT, (actor_spd - target_spd) / max(1, target_spd) * SCALE)
+SPD_EXTRA_TURN_SCALE: float = 0.5       # slope of gap% → extra-turn chance
+SPD_EXTRA_TURN_MAX_PCT: float = 0.50    # hard cap so SPD never fully stunlocks
+
+# ── Formation mana reservation ────────────────────────────────────────────────
+# Activating a formation reserves a portion of max MP; each socketed gem adds
+# more reserve (and additional elemental effect). Formula:
+#   reserve_pct = min(MAX, BASE + gems * PER_GEM)
+FORMATION_BASE_RESERVE_PCT: float = 0.08   # 8 % just for activating
+FORMATION_GEM_RESERVE_PCT: float = 0.004   # +0.4 % per inlaid gem
+FORMATION_MAX_RESERVE_PCT: float = 0.50    # hard cap — never lock more than half
+
+# ── Gem element → per-gem stat bonus ──────────────────────────────────────────
+# Each inlaid gem grants its base bonus multiplied by its grade (1–4).
+# Bonus is additive across all gems, so 81 grade-2 gems ≈ 162× base.
+# Bonus is ON TOP of the formation's existing gem_threshold_bonuses.
+GEM_ELEMENT_BASE_BONUS: dict[str, dict[str, float]] = {
+    "kim":   {"crit_rating":      1.0},
+    "moc":   {"hp_regen_pct":     0.0003},
+    "thuy":  {"mp_regen_pct":     0.0003},
+    "hoa":   {"final_dmg_bonus":  0.0008},
+    "tho":   {"def_bonus":        1.0},
+    "loi":   {"crit_dmg_rating":  1.5},
+    "phong": {"spd_bonus":        0.08},
+    "quang": {"heal_pct":         0.002},
+    "am":    {"debuff_immune_pct":0.002},
+}
+
+# ── Encounter grades (dungeon spawn-time rank) ────────────────────────────────
+# Randomly rolled per wave; separate from the enemy's base "rank" JSON field.
+# stat_mult:       multiplier on HP / ATK / MATK / DEF after player-realm scaling.
+# loot_mult:       passed to CombatSession.loot_qty_multiplier for this wave.
+# merit_mult:      multiplier applied to base merit earned from this wave.
+# w_min / w_max:   selection weights at player progress 0.0 and 1.0 in dungeon realm.
+# secondary_count: extra random stat boosts applied (from ENCOUNTER_GRADE_SECONDARY_STATS).
+# secondary_lo/hi: fractional bonus range for each secondary stat (e.g. 0.20 → +20%).
+ENCOUNTER_GRADES: list[dict] = [
+    {
+        "key": "binh_thuong", "vi": "Bình Thường", "emoji": "",
+        "w_min": 60, "w_max": 30,
+        "stat_mult": 1.00, "loot_mult": 1.0, "merit_mult": 1.0,
+        "secondary_count": 0, "secondary_lo": 0.0, "secondary_hi": 0.0,
+    },
+    {
+        "key": "di_thuong", "vi": "Dị Thường", "emoji": "⚡",
+        "w_min": 25, "w_max": 28,
+        "stat_mult": 1.30, "loot_mult": 1.3, "merit_mult": 1.5,
+        "secondary_count": 1, "secondary_lo": 0.10, "secondary_hi": 0.20,
+    },
+    {
+        "key": "tinh_anh", "vi": "Tinh Anh", "emoji": "🌟",
+        "w_min": 10, "w_max": 22,
+        "stat_mult": 1.75, "loot_mult": 1.8, "merit_mult": 2.5,
+        "secondary_count": 2, "secondary_lo": 0.15, "secondary_hi": 0.30,
+    },
+    {
+        "key": "vuong_gia", "vi": "Vương Giả", "emoji": "👑",
+        "w_min": 4, "w_max": 14,
+        "stat_mult": 2.50, "loot_mult": 2.5, "merit_mult": 4.0,
+        "secondary_count": 2, "secondary_lo": 0.20, "secondary_hi": 0.40,
+    },
+    {
+        "key": "truyen_thuyet", "vi": "Truyền Thuyết", "emoji": "🔱",
+        "w_min": 1, "w_max": 6,
+        "stat_mult": 3.50, "loot_mult": 4.0, "merit_mult": 8.0,
+        "secondary_count": 3, "secondary_lo": 0.30, "secondary_hi": 0.50,
+    },
+]
+# Stats eligible for secondary random buffs when encounter grade > binh_thuong.
+ENCOUNTER_GRADE_SECONDARY_STATS: list[str] = ["hp", "atk", "matk", "def_stat", "evasion_rating"]

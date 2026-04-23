@@ -9,7 +9,10 @@
     "base_hp": 50000,
     "base_spd": 15,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyHoa_T4", "EnemyHoa_T3"],
+    "skill_keys": [
+      "EnemyHoa_R9",
+      "EnemyHoa_R9"
+    ],
     "loot_table_key": "LootBossHoaLinh"
   },
   {
@@ -22,7 +25,10 @@
     "base_hp": 60000,
     "base_spd": 18,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyLoi_T4", "EnemyLoi_T3"],
+    "skill_keys": [
+      "EnemyLoi_R9",
+      "EnemyLoi_R9"
+    ],
     "loot_table_key": "LootBossLoiLong"
   },
   {
@@ -35,7 +41,10 @@
     "base_hp": 55000,
     "base_spd": 16,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyBang_T4", "EnemyBang_T3"],
+    "skill_keys": [
+      "EnemyBang_R9",
+      "EnemyBang_R9"
+    ],
     "loot_table_key": "LootBossBangHon"
   },
   {
@@ -48,7 +57,11 @@
     "base_hp": 80000,
     "base_spd": 20,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyHoa_T4", "EnemyLoi_T4", "EnemyBang_T4"],
+    "skill_keys": [
+      "EnemyHoa_R9",
+      "EnemyLoi_R9",
+      "EnemyBang_R9"
+    ],
     "loot_table_key": "LootBossHonNguyen"
   }
 ]

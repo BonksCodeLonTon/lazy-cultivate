@@ -506,7 +506,7 @@
     "key": "pfx_regen",
     "vi": "Hồi Xuân",
     "type": "prefix",
-    "stat": "hp_regen",
+    "stat": "hp_regen_pct",
     "is_pct": true,
     "slots": [
       "armor",
@@ -1044,7 +1044,7 @@
     "key": "sfx_regen",
     "vi": "của Trường Xuân",
     "type": "suffix",
-    "stat": "hp_regen",
+    "stat": "hp_regen_pct",
     "is_pct": true,
     "slots": [
       "amulet",
@@ -1235,6 +1235,147 @@
         871.0,
         1330.0
       ]
+    ]
+  },
+  {
+    "key": "pfx_regen_flat",
+    "vi": "Kiên Phục",
+    "type": "prefix",
+    "stat": "hp_regen_flat",
+    "is_pct": false,
+    "slots": [
+      "armor",
+      "belt",
+      "amulet"
+    ],
+    "by_grade": [
+      [3.0, 6.0],
+      [6.0, 12.0],
+      [12.0, 22.0],
+      [22.0, 40.0],
+      [40.0, 72.0],
+      [72.0, 130.0],
+      [130.0, 234.0],
+      [234.0, 421.0],
+      [421.0, 758.0]
+    ]
+  },
+  {
+    "key": "sfx_regen_flat",
+    "vi": "của Cố Bản",
+    "type": "suffix",
+    "stat": "hp_regen_flat",
+    "is_pct": false,
+    "slots": [
+      "armor",
+      "belt",
+      "ring",
+      "amulet"
+    ],
+    "by_grade": [
+      [2.0, 5.0],
+      [5.0, 10.0],
+      [10.0, 18.0],
+      [18.0, 33.0],
+      [33.0, 60.0],
+      [60.0, 108.0],
+      [108.0, 194.0],
+      [194.0, 350.0],
+      [350.0, 630.0]
+    ]
+  },
+  {
+    "key": "pfx_mp_regen",
+    "vi": "Thông Linh",
+    "type": "prefix",
+    "stat": "mp_regen_pct",
+    "is_pct": true,
+    "slots": [
+      "off_hand",
+      "belt",
+      "amulet"
+    ],
+    "by_grade": [
+      [0.008, 0.015],
+      [0.015, 0.025],
+      [0.025, 0.04],
+      [0.04, 0.063],
+      [0.063, 0.1],
+      [0.1, 0.158],
+      [0.158, 0.25],
+      [0.25, 0.396],
+      [0.396, 0.625]
+    ]
+  },
+  {
+    "key": "sfx_mp_regen",
+    "vi": "của Hồi Nguyên",
+    "type": "suffix",
+    "stat": "mp_regen_pct",
+    "is_pct": true,
+    "slots": [
+      "amulet",
+      "belt",
+      "ring",
+      "off_hand"
+    ],
+    "by_grade": [
+      [0.006, 0.012],
+      [0.012, 0.02],
+      [0.02, 0.032],
+      [0.032, 0.05],
+      [0.05, 0.08],
+      [0.08, 0.126],
+      [0.126, 0.2],
+      [0.2, 0.316],
+      [0.316, 0.5]
+    ]
+  },
+  {
+    "key": "pfx_mp_regen_flat",
+    "vi": "Ngưng Khí",
+    "type": "prefix",
+    "stat": "mp_regen_flat",
+    "is_pct": false,
+    "slots": [
+      "off_hand",
+      "belt",
+      "amulet"
+    ],
+    "by_grade": [
+      [2.0, 4.0],
+      [4.0, 8.0],
+      [8.0, 14.0],
+      [14.0, 24.0],
+      [24.0, 42.0],
+      [42.0, 74.0],
+      [74.0, 128.0],
+      [128.0, 223.0],
+      [223.0, 386.0]
+    ]
+  },
+  {
+    "key": "sfx_mp_regen_flat",
+    "vi": "của Tích Khí",
+    "type": "suffix",
+    "stat": "mp_regen_flat",
+    "is_pct": false,
+    "slots": [
+      "amulet",
+      "belt",
+      "ring",
+      "off_hand"
+    ],
+    "by_grade": [
+      [1.0, 3.0],
+      [3.0, 6.0],
+      [6.0, 11.0],
+      [11.0, 19.0],
+      [19.0, 33.0],
+      [33.0, 58.0],
+      [58.0, 101.0],
+      [101.0, 175.0],
+      [175.0, 305.0]
     ]
   }
 ]

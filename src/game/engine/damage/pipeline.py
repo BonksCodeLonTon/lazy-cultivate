@@ -17,7 +17,7 @@ from __future__ import annotations
 import random
 
 from src.game.engine.stats import AttackStats, DefenseStats
-from src.game.models.skill import AttackType, Skill
+from src.game.models.skill import Skill
 
 from .base import roll_base
 from .critical import apply_critical
@@ -45,10 +45,10 @@ def calculate_damage(
     if check_evasion(defender.evasion_rating, rng):
         return DamageResult(raw=0, final=0, is_crit=False, is_evaded=True, element=skill.element)
 
-    # Select attack power by skill type
-    attack_power = attacker.atk if skill.attack_type == AttackType.PHYSICAL else attacker.matk
-
-    raw = roll_base(skill.base_dmg, skill.mp_cost, rng, attack_power, skill.atk_scale)
+    raw = roll_base(
+        skill.base_dmg, skill.mp_cost, rng,
+        atk=attacker.atk, matk=attacker.matk, dmg_scale=skill.dmg_scale,
+    )
     dmg, is_crit = apply_critical(
         raw, attacker.crit_rating, defender.crit_res_rating, attacker.crit_dmg_rating, rng
     )

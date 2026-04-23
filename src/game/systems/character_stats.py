@@ -16,11 +16,31 @@ from src.game.constants.balance import (
 )
 
 
+def active_formation_gem_keys(player) -> list[str]:
+    """Extract the gem_keys list of the player's active formation.
+
+    Accepts any object exposing ``active_formation`` and an iterable ``formations``
+    whose items have ``formation_key`` + ``gem_slots``. Returns an empty list when
+    no formation is active or no gems are inlaid.
+    """
+    active = getattr(player, "active_formation", None)
+    if not active:
+        return []
+    for f in getattr(player, "formations", None) or []:
+        if getattr(f, "formation_key", None) == active:
+            return list((f.gem_slots or {}).values())
+    return []
+
+
 @dataclass
 class CombatStats:
-    """All derived stats for one character — cultivation + formation + constitution + linh_can + equipment."""
+    """All derived stats for one character — cultivation + formation + constitution + linh_can + equipment.
+
+    ``mp_max`` is the *effective* cap after formation reservation; ``mp_reserved``
+    exposes how much was locked so UIs can show both numbers.
+    """
     hp_max: int
-    mp_max: int
+    mp_max: int          # usable MP pool (total - reserved)
     atk: int
     matk: int
     def_stat: int
@@ -32,7 +52,9 @@ class CombatStats:
     final_dmg_bonus: float      # includes realm_power_bonus
     final_dmg_reduce: float
     hp_regen_pct: float
+    hp_regen_flat: int         # flat HP per turn (stacks with pct regen)
     mp_regen_pct: float
+    mp_regen_flat: int         # flat MP per turn (stacks with pct regen)
     heal_pct: float
     cooldown_reduce: float
     burn_on_hit_pct: float
@@ -41,6 +63,8 @@ class CombatStats:
     freeze_on_skill: bool
     poison_immunity: bool
     debuff_immune_pct: float
+    mp_reserved: int = 0          # MP locked by active formation
+    mp_reserve_pct: float = 0.0   # fraction of raw mp_max that's reserved
     resistances: dict[str, float] = field(default_factory=dict)
 
 
@@ -48,22 +72,29 @@ def compute_combat_stats(
     char: Character,
     gem_count: int = 0,
     equip_stats: dict | None = None,
+    gem_keys: list[str] | None = None,
 ) -> CombatStats:
     """Compute all derived combat stats for a player character.
 
     Applies (in order): formation bonuses → constitution bonuses →
-    linh_can bonuses → realm_power_bonus → equipment bonuses.
+    linh_can bonuses → realm_power_bonus → equipment bonuses →
+    formation MP reservation (locks part of mp_max).
 
     Args:
         char:        Character dataclass (from DB or model layer).
-        gem_count:   Number of gems inlaid in the active formation.
+        gem_count:   Number of gems inlaid in the active formation (used if
+                     ``gem_keys`` is not supplied).
         equip_stats: Pre-computed equipment stat totals from
                      ``compute_equipment_stats(equipped_instances)``.
                      Pass None (or {}) when equipment should be ignored.
+        gem_keys:    Explicit list of gem item_keys (e.g. ``["GemKim_2", ...]``).
+                     When provided, per-gem elemental bonuses are added on top
+                     of the formation's threshold bonuses.
 
     Returns:
         CombatStats with every field ready for use in Combatant construction
-        or status-embed display.
+        or status-embed display. ``mp_max`` is already reduced by reservation;
+        ``mp_reserved`` carries the locked amount for UI.
     """
     from src.game.systems.cultivation import (
         compute_hp_max, compute_mp_max,
@@ -73,7 +104,9 @@ def compute_combat_stats(
     from src.game.constants.linh_can import compute_linh_can_bonuses
 
     # ── Bonus merge ──────────────────────────────────────────────────────────
-    form_bonuses  = compute_formation_bonuses(char.active_formation, gem_count)
+    form_bonuses  = compute_formation_bonuses(
+        char.active_formation, gem_count=gem_count, gem_keys=gem_keys,
+    )
     const_bonuses = compute_constitution_bonuses(char.constitution_type)
     lc_bonuses    = compute_linh_can_bonuses(char.linh_can)
 
@@ -110,7 +143,9 @@ def compute_combat_stats(
     final_dmg_bonus  = char.stats.final_dmg_bonus + bonuses.get("final_dmg_bonus", 0.0) + realm_power_bonus
     final_dmg_reduce = bonuses.get("final_dmg_reduce", 0.0)
     hp_regen_pct     = bonuses.get("hp_regen_pct", 0.0)
+    hp_regen_flat    = int(bonuses.get("hp_regen_flat", 0))
     mp_regen_pct     = BASE_MP_REGEN_PCT + bonuses.get("mp_regen_pct", 0.0)
+    mp_regen_flat    = int(bonuses.get("mp_regen_flat", 0))
     heal_pct         = bonuses.get("heal_pct", 0.0)
     cooldown_reduce  = char.stats.cooldown_reduce + bonuses.get("cooldown_reduce", 0.0)
 
@@ -159,7 +194,10 @@ def compute_combat_stats(
             MAX_FINAL_DMG_REDUCE,
             final_dmg_reduce + equip_stats.get("final_dmg_reduce", 0.0),
         )
-        hp_regen_pct += equip_stats.get("hp_regen_pct", 0.0)
+        hp_regen_pct  += equip_stats.get("hp_regen_pct", 0.0)
+        hp_regen_flat += int(equip_stats.get("hp_regen_flat", 0))
+        mp_regen_pct  += equip_stats.get("mp_regen_pct", 0.0)
+        mp_regen_flat += int(equip_stats.get("mp_regen_flat", 0))
         hp_max += int(equip_stats.get("hp_max", 0))
         mp_max += int(equip_stats.get("mp_max", 0))
 
@@ -167,6 +205,21 @@ def compute_combat_stats(
         if eq_res_all:
             for elem in resistances:
                 resistances[elem] = min(0.75, resistances[elem] + eq_res_all)
+
+        # Passive bonuses from unique items (on-hit procs, immunities, etc.)
+        burn_on_hit_pct   += equip_stats.get("burn_on_hit_pct", 0.0)
+        slow_on_hit_pct   += equip_stats.get("slow_on_hit_pct", 0.0)
+        paralysis_on_crit  = paralysis_on_crit or bool(equip_stats.get("paralysis_on_crit", False))
+        freeze_on_skill    = freeze_on_skill   or bool(equip_stats.get("freeze_on_skill", False))
+        poison_immunity    = poison_immunity   or bool(equip_stats.get("poison_immunity", False))
+        debuff_immune_pct += equip_stats.get("debuff_immune_pct", 0.0)
+        heal_pct          += equip_stats.get("heal_pct", 0.0)
+        cooldown_reduce   += equip_stats.get("cooldown_reduce", 0.0)
+
+    # ── Formation MP reservation (applied last, after all bonuses) ────────────
+    reserve_pct = max(0.0, float(form_bonuses.get("_mp_reserve_pct", 0.0)))
+    mp_reserved = int(mp_max * reserve_pct)
+    mp_max = max(0, mp_max - mp_reserved)
 
     return CombatStats(
         hp_max=hp_max,
@@ -182,7 +235,9 @@ def compute_combat_stats(
         final_dmg_bonus=final_dmg_bonus,
         final_dmg_reduce=final_dmg_reduce,
         hp_regen_pct=hp_regen_pct,
+        hp_regen_flat=hp_regen_flat,
         mp_regen_pct=mp_regen_pct,
+        mp_regen_flat=mp_regen_flat,
         heal_pct=heal_pct,
         cooldown_reduce=cooldown_reduce,
         burn_on_hit_pct=burn_on_hit_pct,
@@ -191,5 +246,7 @@ def compute_combat_stats(
         freeze_on_skill=freeze_on_skill,
         poison_immunity=poison_immunity,
         debuff_immune_pct=debuff_immune_pct,
+        mp_reserved=mp_reserved,
+        mp_reserve_pct=reserve_pct,
         resistances=resistances,
     )

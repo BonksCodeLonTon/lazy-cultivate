@@ -148,8 +148,73 @@ def compute_def_stat(character: Character, bonuses: dict | None = None) -> int:
     return max(0, result)
 
 
-def compute_formation_bonuses(formation_key: str | None, gem_count: int) -> dict:
-    """Returns merged bonuses from a formation's base stats + all reached gem thresholds."""
+def compute_gem_bonuses(gem_keys: list[str]) -> dict:
+    """Merge per-gem elemental bonuses from a list of inlaid gem keys.
+
+    Each gem key format: ``Gem<Element>_<grade>`` (e.g. ``GemKim_2``, ``GemHoa_4``).
+    Bonus = GEM_ELEMENT_BASE_BONUS[element] × grade, summed across all gems.
+    """
+    from src.game.constants.balance import GEM_ELEMENT_BASE_BONUS
+    merged: dict = {}
+    if not gem_keys:
+        return merged
+
+    # Element aliases: gem key uses capitalised segment that must map to element key
+    elem_map = {
+        "Kim": "kim", "Moc": "moc", "Thuy": "thuy", "Hoa": "hoa",
+        "Tho": "tho", "Loi": "loi", "Phong": "phong", "Quang": "quang", "Am": "am",
+    }
+
+    for key in gem_keys:
+        if not key or not key.startswith("Gem"):
+            continue
+        body = key[3:]  # strip "Gem" prefix
+        # Split element vs grade: "Kim_2" → ("Kim", "2")
+        if "_" in body:
+            elem_part, grade_part = body.split("_", 1)
+            try:
+                grade = int(grade_part)
+            except ValueError:
+                grade = 1
+        else:
+            elem_part, grade = body, 1
+        elem = elem_map.get(elem_part)
+        if not elem:
+            continue
+        base = GEM_ELEMENT_BASE_BONUS.get(elem, {})
+        for stat, value in base.items():
+            merged[stat] = merged.get(stat, 0) + value * grade
+    return merged
+
+
+def compute_formation_reserve_pct(formation_key: str | None, gem_count: int) -> float:
+    """How much of max MP the active formation locks.
+
+    0 if no formation active; else BASE + PER_GEM × gem_count, capped at MAX.
+    """
+    if not formation_key:
+        return 0.0
+    from src.game.constants.balance import (
+        FORMATION_BASE_RESERVE_PCT,
+        FORMATION_GEM_RESERVE_PCT,
+        FORMATION_MAX_RESERVE_PCT,
+    )
+    raw = FORMATION_BASE_RESERVE_PCT + max(0, gem_count) * FORMATION_GEM_RESERVE_PCT
+    return min(FORMATION_MAX_RESERVE_PCT, raw)
+
+
+def compute_formation_bonuses(
+    formation_key: str | None,
+    gem_count: int = 0,
+    gem_keys: list[str] | None = None,
+) -> dict:
+    """Returns merged bonuses from a formation's base stats + reached gem thresholds
+    + per-gem elemental bonuses (when ``gem_keys`` is provided).
+
+    Also populates:
+      ``_formation_element``  — for res_element routing
+      ``_mp_reserve_pct``     — fraction of max MP the formation reserves
+    """
     if not formation_key:
         return {}
     from src.data.registry import registry
@@ -157,18 +222,26 @@ def compute_formation_bonuses(formation_key: str | None, gem_count: int) -> dict
     if not form_data:
         return {}
 
+    # Use explicit gem_keys when provided; otherwise rely on gem_count only
+    effective_count = len(gem_keys) if gem_keys is not None else gem_count
+
     merged: dict = {}
     _merge_bonus_dict(merged, form_data.get("base_stat_bonus", {}))
 
     thresholds = form_data.get("gem_threshold_bonuses", {})
     for threshold_str, bonus in sorted(thresholds.items(), key=lambda x: int(x[0])):
-        if gem_count >= int(threshold_str):
+        if effective_count >= int(threshold_str):
             _merge_bonus_dict(merged, bonus)
+
+    # Per-gem elemental bonuses (only when gem list is known)
+    if gem_keys:
+        _merge_bonus_dict(merged, compute_gem_bonuses(gem_keys))
 
     # Store the formation element so callers can apply res_element to the right slot
     if "element" in form_data and form_data["element"]:
         merged["_formation_element"] = form_data["element"]
 
+    merged["_mp_reserve_pct"] = compute_formation_reserve_pct(formation_key, effective_count)
     return merged
 
 
