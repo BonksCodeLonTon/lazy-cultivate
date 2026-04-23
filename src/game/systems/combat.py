@@ -294,10 +294,17 @@ class CombatSession:
         # Pre-turn: Quang Linh Căn — actor may cleanse a debuff before acting
         lc_effects.try_cleanse(actor, self.rng, self.log)
 
-        skill_key = self._choose_skill(actor)
+        skill_key, reason = self._choose_skill(actor)
         if not skill_key:
-            # No skill available (out of mana or all on cooldown) → fall back to auto-attack
-            self.log.append(f"  💤 **{actor.name}** không đủ linh lực — tấn công cơ bản.")
+            # Report the ACTUAL cause (cooldown vs mana vs no-skills-known) so
+            # the player isn't misled into thinking they lack MP when they're
+            # really just waiting on cooldowns.
+            if reason == "cooldown":
+                self.log.append(f"  ⏳ **{actor.name}** mọi kỹ năng đang hồi — tấn công cơ bản.")
+            elif reason == "mana":
+                self.log.append(f"  💤 **{actor.name}** không đủ linh lực — tấn công cơ bản.")
+            else:
+                self.log.append(f"  💢 **{actor.name}** không có kỹ năng khả dụng — tấn công cơ bản.")
             self._auto_attack(actor, target)
             return
 
@@ -305,8 +312,14 @@ class CombatSession:
         if not skill_data:
             return
 
-        mp_cost = skill_data.get("mp_cost", 5)
+        # Default aligned with _choose_skill (999) so a skill with a missing
+        # mp_cost field is treated identically in both paths.
+        mp_cost = skill_data.get("mp_cost", 999)
         if actor.mp < mp_cost:
+            self.log.append(
+                f"  💤 **{actor.name}** không đủ MP cho *{skill_data.get('vi', skill_key)}* "
+                f"({actor.mp}/{mp_cost}) — tấn công cơ bản."
+            )
             self._auto_attack(actor, target)
             return
 
@@ -845,16 +858,37 @@ class CombatSession:
         target.hp = max(0, target.hp - dmg)
         self.log.append(f"  👊 **{actor.name}** tấn công cơ bản → -{dmg} HP")
 
-    def _choose_skill(self, actor: Combatant) -> Optional[str]:
-        available = [
-            sk for sk in actor.skill_keys
-            if not actor.skill_on_cooldown(sk)
-            and registry.get_skill(sk) is not None
-            and actor.mp >= (registry.get_skill(sk) or {}).get("mp_cost", 999)
+    def _choose_skill(self, actor: Combatant) -> tuple[Optional[str], str]:
+        """Pick the highest-damage skill the actor can cast this turn.
+
+        Returns a (skill_key, reason) tuple. When no skill is available,
+        ``skill_key`` is None and ``reason`` is one of:
+            "cooldown"  — at least one known skill exists but all are cooling
+            "mana"      — at least one skill is off cooldown but too expensive
+            "none"      — actor has no usable skill keys registered at all
+
+        This granularity lets the caller log an accurate message instead of
+        blaming mana for every fallback to basic attack.
+        """
+        known = [sk for sk in actor.skill_keys if registry.get_skill(sk) is not None]
+        if not known:
+            return None, "none"
+
+        off_cooldown = [sk for sk in known if not actor.skill_on_cooldown(sk)]
+        if not off_cooldown:
+            return None, "cooldown"
+
+        affordable = [
+            sk for sk in off_cooldown
+            if actor.mp >= (registry.get_skill(sk) or {}).get("mp_cost", 999)
         ]
-        if not available:
-            return None
-        return max(available, key=lambda sk: (registry.get_skill(sk) or {}).get("base_dmg", 0))
+        if not affordable:
+            return None, "mana"
+
+        return (
+            max(affordable, key=lambda sk: (registry.get_skill(sk) or {}).get("base_dmg", 0)),
+            "ok",
+        )
 
     def _process_periodic(self, combatant: Combatant) -> None:
         """Process all periodic effects (DoTs, HP regen, Linh Căn procs) at end of turn."""
