@@ -445,7 +445,6 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             
             inventory_map = {inv.item_key: inv.quantity for inv in player_orm.inventory}
 
-            char = _player_to_model(player)
             readiness: dict[str, bool] = {}
             for ax in ("body", "qi", "formation"):
                 ok, _ = can_breakthrough(char, ax, inventory=inventory_map)
