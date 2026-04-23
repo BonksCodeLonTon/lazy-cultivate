@@ -9,7 +9,10 @@
     "base_hp": 30000,
     "base_spd": 16,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyHoa_T4", "EnemyLoi_T3"]
+    "skill_keys": [
+      "EnemyHoa_T4",
+      "EnemyLoi_R8"
+    ]
   },
   {
     "key": "TienBangCo",
@@ -21,7 +24,10 @@
     "base_hp": 35000,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyBang_T4", "EnemyBang_T3"]
+    "skill_keys": [
+      "EnemyBang_T4",
+      "EnemyBang_R8"
+    ]
   },
   {
     "key": "TienLoiHoang",
@@ -33,7 +39,10 @@
     "base_hp": 25000,
     "base_spd": 20,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyLoi_T4", "EnemyLoi_T3"]
+    "skill_keys": [
+      "EnemyLoi_T4",
+      "EnemyLoi_R8"
+    ]
   },
   {
     "key": "TienThoLinh",
@@ -45,6 +54,9 @@
     "base_hp": 40000,
     "base_spd": 8,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyTho_T3", "SkillDefTo"]
+    "skill_keys": [
+      "EnemyTho_R8",
+      "SkillDefTo"
+    ]
   }
 ]

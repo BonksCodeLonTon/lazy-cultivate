@@ -9,7 +9,9 @@
     "base_hp": 260,
     "base_spd": 13,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyHoa_T1"]
+    "skill_keys": [
+      "EnemyHoa_R2"
+    ]
   },
   {
     "key": "LinhMocLang",
@@ -21,7 +23,9 @@
     "base_hp": 240,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyMoc_T1"]
+    "skill_keys": [
+      "EnemyMoc_R2"
+    ]
   },
   {
     "key": "LinhBangTriet",
@@ -33,7 +37,9 @@
     "base_hp": 210,
     "base_spd": 15,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyBang_T1"]
+    "skill_keys": [
+      "EnemyBang_R2"
+    ]
   },
   {
     "key": "LinhThoNguu",
@@ -45,7 +51,9 @@
     "base_hp": 420,
     "base_spd": 5,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyTho_T1"]
+    "skill_keys": [
+      "EnemyTho_R2"
+    ]
   },
   {
     "key": "LinhKimSai",
@@ -57,7 +65,9 @@
     "base_hp": 300,
     "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyKim_T1"]
+    "skill_keys": [
+      "EnemyKim_R2"
+    ]
   },
   {
     "key": "LinhLoiQuy",
@@ -69,7 +79,9 @@
     "base_hp": 270,
     "base_spd": 14,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyLoi_T1"]
+    "skill_keys": [
+      "EnemyLoi_R2"
+    ]
   },
   {
     "key": "LinhPhongDieu",
@@ -81,7 +93,9 @@
     "base_hp": 230,
     "base_spd": 17,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyPhong_T1"]
+    "skill_keys": [
+      "EnemyPhong_R2"
+    ]
   },
   {
     "key": "LinhThuyHaiMa",
@@ -93,6 +107,8 @@
     "base_hp": 290,
     "base_spd": 11,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyThuy_T1"]
+    "skill_keys": [
+      "EnemyThuy_R2"
+    ]
   }
 ]

@@ -12,32 +12,40 @@ from src.db.repositories.player_repo import PlayerRepository
 from src.game.constants.grades import Grade, GRADE_LABELS
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
-_TYPE_EMOJI = {"thien": "⚔️", "dia": "🛡️", "nhan": "💚", "tran_phap": "🌀"}
+_TYPE_EMOJI = {
+    "attack":    "⚔️",
+    "defense":   "🛡️",
+    "movement":  "🏃",
+    "passive":   "✨",
+    "formation": "🌀",
+}
 _ELEM_EMOJI = {
     "kim": "🪙", "moc": "🌿", "thuy": "💧", "hoa": "🔥",
     "tho": "🪨", "loi": "⚡", "phong": "🌬️", "am": "🌑", "quang": "☀️",
 }
 _TYPE_LABEL = {
-    "thien":     "Thiên — Công Kích",
-    "dia":       "Địa — Phòng Thủ",
-    "nhan":      "Nhân — Hỗ Trợ/Khống Chế",
-    "tran_phap": "Trận Pháp",
+    "attack":    "Công Kích",
+    "defense":   "Phòng Thủ",
+    "movement":  "Thân Pháp",
+    "passive":   "Bị Động",
+    "formation": "Trận Pháp",
 }
 _SKILL_LIST_PAGE_SIZE = 6
 
 _SKILL_TYPE_BUTTONS = [
-    (None,        "🌐 Tất Cả",  discord.ButtonStyle.secondary),
-    ("thien",     "⚔️ Thiên",   discord.ButtonStyle.danger),
-    ("dia",       "🛡️ Địa",     discord.ButtonStyle.primary),
-    ("nhan",      "💚 Nhân",    discord.ButtonStyle.success),
-    ("tran_phap", "🌀 Trận",    discord.ButtonStyle.secondary),
+    (None,        "🌐 Tất Cả",   discord.ButtonStyle.secondary),
+    ("attack",    "⚔️ Công",     discord.ButtonStyle.danger),
+    ("defense",   "🛡️ Thủ",      discord.ButtonStyle.primary),
+    ("movement",  "🏃 Thân",     discord.ButtonStyle.success),
+    ("formation", "🌀 Trận",     discord.ButtonStyle.secondary),
 ]
 
 _SKILL_TYPE_TO_SCROLL_PREFIX: dict[str, str] = {
-    "thien":     "ScrollAtk",
-    "dia":       "ScrollDef",
-    "nhan":      "ScrollSup",
-    "tran_phap": "ScrollFrm",
+    "attack":    "ScrollAtk",
+    "defense":   "ScrollDef",
+    "movement":  "ScrollSup",
+    "passive":   "ScrollSup",
+    "formation": "ScrollFrm",
 }
 
 _NUMBER_EMOJI = ["①", "②", "③", "④", "⑤", "⑥"]
@@ -55,7 +63,7 @@ def _skill_grade_value(skill_data: dict) -> int:
 
 
 def _find_usable_scroll(inv_items: list, skill_data: dict) -> tuple[str, int] | None:
-    prefix = _SKILL_TYPE_TO_SCROLL_PREFIX.get(skill_data.get("type", ""))
+    prefix = _SKILL_TYPE_TO_SCROLL_PREFIX.get(skill_data.get("category", ""))
     if not prefix:
         return None
     min_grade = _skill_grade_value(skill_data)
@@ -66,18 +74,19 @@ def _find_usable_scroll(inv_items: list, skill_data: dict) -> tuple[str, int] | 
 
 
 def _filtered_skills(
-    skill_type: str | None,
+    category: str | None,
     element: str | None,
     linh_can: list[str] | None = None,
 ) -> list[dict]:
-    skills = list(registry.skills.values())
-    if skill_type:
-        skills = [s for s in skills if s.get("type") == skill_type]
+    # Hide enemy skills from player-facing browser
+    skills = [s for s in registry.skills.values() if not s.get("key", "").startswith("Enemy")]
+    if category:
+        skills = [s for s in skills if s.get("category") == category]
     if element:
         skills = [s for s in skills if s.get("element") == element]
     if linh_can is not None:
         skills = [s for s in skills if s.get("element") is None or s.get("element") in linh_can]
-    return sorted(skills, key=lambda s: (s.get("type", ""), s.get("mp_cost", 0)))
+    return sorted(skills, key=lambda s: (s.get("realm", 1), s.get("category", ""), s.get("mp_cost", 0)))
 
 
 def _build_skilllist(
@@ -107,14 +116,15 @@ def _build_skilllist(
         lines: list[str] = []
         for i, s in enumerate(page_skills):
             num = _NUMBER_EMOJI[i]
-            t_e = _TYPE_EMOJI.get(s.get("type", ""), "❓")
+            t_e = _TYPE_EMOJI.get(s.get("category", ""), "❓")
             el = s.get("element")
             el_tag = f" {_ELEM_EMOJI.get(el, '?')}" if el else ""
             cd = s.get("cooldown", 1)
             effects = ", ".join(s.get("effects", [])) or "—"
+            realm = s.get("realm", 1)
             lines.append(
                 f"{num} {t_e}{el_tag} **{s['vi']}** `{s['key']}`\n"
-                f"  MP: **{s.get('mp_cost', 0)}** | DMG: **{s.get('base_dmg', 0)}** | "
+                f"  Cảnh Giới: **{realm}** | MP: **{s.get('mp_cost', 0)}** | DMG: **{s.get('base_dmg', 0)}** | "
                 f"CD: **{cd}t** | {effects}"
             )
         embed = base_embed(title, "\n\n".join(lines), color=0x9B59B6)
@@ -250,7 +260,7 @@ class SkillListView(discord.ui.View):
                 scroll_info = _find_usable_scroll(all_inv, skill_data)
 
                 if not scroll_info:
-                    prefix = _SKILL_TYPE_TO_SCROLL_PREFIX.get(skill_data.get("type", ""), "Ngọc Giản")
+                    prefix = _SKILL_TYPE_TO_SCROLL_PREFIX.get(skill_data.get("category", ""), "Ngọc Giản")
                     min_grade = _skill_grade_value(skill_data)
                     grade_name = GRADE_LABELS.get(Grade(min_grade), (str(min_grade),))[0]
                     await interaction.response.send_message(
@@ -300,7 +310,7 @@ class SkillListView(discord.ui.View):
                 )
                 await ia.edit_original_response(embed=emb, view=v)
 
-            t_e = _TYPE_EMOJI.get(skill_data.get("type", ""), "❓")
+            t_e = _TYPE_EMOJI.get(skill_data.get("category", ""), "❓")
             el = skill_data.get("element")
             el_tag = f" {_ELEM_EMOJI.get(el, '')}" if el else ""
             effects = ", ".join(skill_data.get("effects", [])) or "—"
@@ -530,7 +540,7 @@ def _build_skills_embed_view(
         for s in equipped:
             skill_data = registry.get_skill(s.skill_key)
             if skill_data:
-                t_emoji = _TYPE_EMOJI.get(skill_data.get("type", ""), "❓")
+                t_emoji = _TYPE_EMOJI.get(skill_data.get("category", ""), "❓")
                 eff_str = ", ".join(skill_data.get("effects", [])) or "—"
                 embed.add_field(
                     name=f"[Slot {s.slot_index}] {t_emoji} {skill_data['vi']}",

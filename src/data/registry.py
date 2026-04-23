@@ -37,8 +37,6 @@ class GameRegistry:
 
     # Danh mục file item nằm trong thư mục con src/data/items/
     _ITEM_FILES = ("chests", "elixirs", "gems", "materials", "scrolls", "specials", "forge_materials")
-    # Skill sub-files loaded from src/data/skills/
-    _SKILL_FILES = ("thien", "dia", "nhan", "tran_phap", "enemy")
     # Equipment definition files in src/data/equipment/
     _EQUIP_FILES = ("bases", "affixes", "uniques")
 
@@ -77,8 +75,23 @@ class GameRegistry:
         return bases, affixes, uniques
 
     def _load_skills(self) -> dict[str, dict]:
-        """Merge all per-type skill files from src/data/skills/ into one dict."""
-        return self._merge_subdir("skills", self._SKILL_FILES)
+        """Merge all JSON files under src/data/skills/** into one dict, keyed by 'key'.
+
+        The directory is split into subfolders (``player/``, ``enemy/``) so player
+        and enemy skills can evolve independently. Files load in sorted path order
+        (e.g. ``enemy/realm_01.json`` → ``player/realm_09.json``), and drop-in
+        subfolders require no registry changes.
+        """
+        merged: dict[str, dict] = {}
+        base = DATA_DIR / "skills"
+        if not base.exists():
+            log.error("GameRegistry: Missing skills/ directory")
+            return {}
+        for path in sorted(base.rglob("*.json")):
+            data = json.loads(path.read_text(encoding="utf-8"))
+            for entry in data:
+                merged[entry["key"]] = entry
+        return merged
 
     def _load_enemy_dir(self) -> dict[str, dict]:
         """Merge all JSON files from src/data/enemies/ into one dict, keyed by 'key'.

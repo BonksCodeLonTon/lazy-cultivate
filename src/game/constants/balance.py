@@ -97,6 +97,41 @@ ENEMY_REALM_LEVEL_STAT_MULT: dict[int, float] = {
 BASE_MP_REGEN_PCT: float = 0.01   # 1 % MP per turn baseline (before bonuses)
 MAX_FINAL_DMG_REDUCE: float = 0.75  # damage-reduction hard cap (buffs + debuffs)
 
+# ── SPD → combat impact ───────────────────────────────────────────────────────
+# Every SPD point above baseline adds evasion rating (always-on defensive edge).
+SPD_EVASION_BASELINE: int = 10          # SPD at/below this grants no evasion bonus
+SPD_EVASION_PER_POINT: int = 8          # evasion rating per SPD above baseline
+SPD_EVASION_CAP: int = 150              # max evasion rating contributed by SPD
+
+# Action economy: the faster combatant rolls for an extra action each round.
+# chance = min(MAX_PCT, (actor_spd - target_spd) / max(1, target_spd) * SCALE)
+SPD_EXTRA_TURN_SCALE: float = 0.5       # slope of gap% → extra-turn chance
+SPD_EXTRA_TURN_MAX_PCT: float = 0.50    # hard cap so SPD never fully stunlocks
+
+# ── Formation mana reservation ────────────────────────────────────────────────
+# Activating a formation reserves a portion of max MP; each socketed gem adds
+# more reserve (and additional elemental effect). Formula:
+#   reserve_pct = min(MAX, BASE + gems * PER_GEM)
+FORMATION_BASE_RESERVE_PCT: float = 0.08   # 8 % just for activating
+FORMATION_GEM_RESERVE_PCT: float = 0.004   # +0.4 % per inlaid gem
+FORMATION_MAX_RESERVE_PCT: float = 0.50    # hard cap — never lock more than half
+
+# ── Gem element → per-gem stat bonus ──────────────────────────────────────────
+# Each inlaid gem grants its base bonus multiplied by its grade (1–4).
+# Bonus is additive across all gems, so 81 grade-2 gems ≈ 162× base.
+# Bonus is ON TOP of the formation's existing gem_threshold_bonuses.
+GEM_ELEMENT_BASE_BONUS: dict[str, dict[str, float]] = {
+    "kim":   {"crit_rating":      1.0},
+    "moc":   {"hp_regen_pct":     0.0003},
+    "thuy":  {"mp_regen_pct":     0.0003},
+    "hoa":   {"final_dmg_bonus":  0.0008},
+    "tho":   {"def_bonus":        1.0},
+    "loi":   {"crit_dmg_rating":  1.5},
+    "phong": {"spd_bonus":        0.08},
+    "quang": {"heal_pct":         0.002},
+    "am":    {"debuff_immune_pct":0.002},
+}
+
 # ── Encounter grades (dungeon spawn-time rank) ────────────────────────────────
 # Randomly rolled per wave; separate from the enemy's base "rank" JSON field.
 # stat_mult:       multiplier on HP / ATK / MATK / DEF after player-realm scaling.

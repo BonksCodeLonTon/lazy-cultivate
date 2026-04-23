@@ -9,7 +9,10 @@
     "base_hp": 1800,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyHoa_T2", "EnemyKim_T2"]
+    "skill_keys": [
+      "EnemyHoa_R4",
+      "EnemyKim_R4"
+    ]
   },
   {
     "key": "HungThuyLoi",
@@ -21,7 +24,10 @@
     "base_hp": 2200,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyThuy_T2", "EnemyLoi_T2"]
+    "skill_keys": [
+      "EnemyThuy_R4",
+      "EnemyLoi_R4"
+    ]
   },
   {
     "key": "HungPhongMoc",
@@ -33,7 +39,10 @@
     "base_hp": 1600,
     "base_spd": 16,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyPhong_T2", "EnemyMoc_T2"]
+    "skill_keys": [
+      "EnemyPhong_R4",
+      "EnemyMoc_R4"
+    ]
   },
   {
     "key": "HungToHoa",
@@ -45,7 +54,10 @@
     "base_hp": 2500,
     "base_spd": 8,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyTho_T2", "EnemyHoa_T2"]
+    "skill_keys": [
+      "EnemyTho_R4",
+      "EnemyHoa_R4"
+    ]
   },
   {
     "key": "HungBangKim",
@@ -57,6 +69,9 @@
     "base_hp": 2000,
     "base_spd": 11,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyBang_T2", "EnemyKim_T2"]
+    "skill_keys": [
+      "EnemyBang_R4",
+      "EnemyKim_R4"
+    ]
   }
 ]

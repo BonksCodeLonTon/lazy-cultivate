@@ -12,7 +12,7 @@ from discord.ext import commands
 from src.data.registry import registry
 from src.db.connection import get_session
 from src.db.repositories.inventory_repo import InventoryRepository
-from src.db.repositories.player_repo import PlayerRepository
+from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.currencies import CURRENCY_CAP
 from src.game.constants.grades import Grade
 from src.game.constants.linh_can import compute_linh_can_bonuses
@@ -107,10 +107,6 @@ def _upgrade_chance(base_rank: str, char) -> float:
     return level_in_zone / 9 * 0.30
 
 
-def _orm_to_charmodel(player):
-    from src.db.repositories.player_repo import _player_to_model
-    return _player_to_model(player)
-
 
 def _split_log_embeds(session_log: list[str], result_line: str, color: int) -> list[discord.Embed]:
     """Split combat log into ≤3800-char chunks (Discord 4096 char limit)."""
@@ -140,6 +136,7 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
     char = None
     skill_keys: list[str] = []
     gem_count = 0
+    gem_keys: list[str] = []
     hp_max_val = 0
     mp_max_val = 0
 
@@ -150,22 +147,18 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
             await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
             return
 
-        char = _orm_to_charmodel(player)
-        if player.active_formation and player.formations:
-            for f in player.formations:
-                if f.formation_key == player.active_formation:
-                    gem_count = len(f.gem_slots)
-                    break
+        char = _player_to_model(player)
+        from src.game.systems.character_stats import active_formation_gem_keys
+        gem_keys = active_formation_gem_keys(player)
+        gem_count = len(gem_keys)
 
         equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
         equip_stats = compute_equipment_stats(equipped)
 
-        bonuses = merge_bonuses(
-            compute_formation_bonuses(char.active_formation, gem_count),
-            compute_constitution_bonuses(char.constitution_type),
-        )
-        hp_max_val = compute_hp_max(char, bonuses)
-        mp_max_val = compute_mp_max(char, bonuses)
+        from src.game.systems.character_stats import compute_combat_stats
+        cs_preview = compute_combat_stats(char, gem_count=gem_count, equip_stats=equip_stats, gem_keys=gem_keys)
+        hp_max_val = cs_preview.hp_max
+        mp_max_val = cs_preview.mp_max
         if player.hp_current <= 0:
             player.hp_current = hp_max_val
 
@@ -194,7 +187,7 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
 
     realm_total = _realm_total(char)
 
-    player_c = build_player_combatant(char, skill_keys, gem_count=gem_count, equip_stats=equip_stats)
+    player_c = build_player_combatant(char, skill_keys, gem_count=gem_count, equip_stats=equip_stats, gem_keys=gem_keys)
     player_c.hp = hp_current
     player_c.mp = mp_current
 
@@ -394,21 +387,13 @@ class CombatCog(commands.Cog, name="Combat"):
             if player is None:
                 await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
-            char = _orm_to_charmodel(player)
-            gem_count = 0
-            if player.active_formation and player.formations:
-                for f in player.formations:
-                    if f.formation_key == player.active_formation:
-                        gem_count = len(f.gem_slots)
-                        break
+            char = _player_to_model(player)
+            from src.game.systems.character_stats import active_formation_gem_keys, compute_combat_stats
+            gem_keys = active_formation_gem_keys(player)
 
-            bonuses = merge_bonuses(
-                compute_formation_bonuses(player.active_formation, gem_count),
-                compute_constitution_bonuses(player.constitution_type),
-                compute_linh_can_bonuses(char.linh_can),
-            )
-            player.hp_current = compute_hp_max(char, bonuses=bonuses)
-            player.mp_current = compute_mp_max(char, bonuses=bonuses)
+            cs = compute_combat_stats(char, gem_count=len(gem_keys), gem_keys=gem_keys)
+            player.hp_current = cs.hp_max
+            player.mp_current = cs.mp_max
             await prepo.save(player)
 
         await interaction.response.send_message(

@@ -66,25 +66,13 @@ class PlayerRepository:
         await self._session.flush()
 
         # Set initial HP/MP from realm stats
-        from src.game.systems.cultivation import compute_hp_max, compute_mp_max, compute_constitution_bonuses, compute_formation_bonuses, merge_bonuses
-        from src.game.constants.linh_can import compute_linh_can_bonuses
-        from src.game.models.character import Character as CharModel
+        from src.game.systems.character_stats import active_formation_gem_keys, compute_combat_stats
 
         char = _player_to_model(player)
-        
-        if player.active_formation and player.formations:
-            for f in player.formations:
-                if f.formation_key == player.active_formation:
-                    gem_count = len(f.gem_slots)
-                    break
-
-        bonuses = merge_bonuses(
-            compute_formation_bonuses(player.active_formation, gem_count),
-            compute_constitution_bonuses(player.constitution_type),
-            compute_linh_can_bonuses(char.linh_can),
-        )
-        player.hp_current = compute_hp_max(char, bonuses=bonuses)
-        player.mp_current = compute_mp_max(char, bonuses=bonuses)
+        init_gem_keys = active_formation_gem_keys(player)
+        init_cs = compute_combat_stats(char, gem_count=len(init_gem_keys), gem_keys=init_gem_keys)
+        player.hp_current = init_cs.hp_max
+        player.mp_current = init_cs.mp_max
 
         # Assign one starting skill that matches a random element from the player's Linh Căn
         from src.data.registry import registry as _registry
@@ -98,7 +86,8 @@ class PlayerRepository:
             candidates = [
                 s["key"] for s in _registry.skills.values()
                 if s.get("element") == elem
-                and s.get("type") == "thien"
+                and s.get("category") == "attack"
+                and s.get("realm", 99) == 1
                 and s.get("mp_cost", 999) <= 15
             ]
             if candidates:
@@ -129,6 +118,7 @@ class PlayerRepository:
 def _player_to_model(player: Player):
     """Convert ORM Player to game Character dataclass for stat computation."""
     from src.game.models.character import Character as CharModel
+    tracker = player.turn_tracker
     return CharModel(
         player_id=player.id,
         discord_id=player.discord_id,
@@ -151,5 +141,11 @@ def _player_to_model(player: Player):
         main_title=player.main_title,
         sub_title=player.sub_title,
         evil_title=player.evil_title,
+        active_axis=player.active_axis,
+        body_xp=player.body_xp,
+        qi_xp=player.qi_xp,
+        formation_xp=player.formation_xp,
+        turns_today=tracker.turns_today if tracker else 0,
+        bonus_turns_remaining=tracker.bonus_turns_remaining if tracker else 440,
         linh_can=parse_linh_can(player.linh_can or ""),
     )

@@ -21,18 +21,18 @@ from src.utils.embed_builder import base_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
 
-# Scroll key prefix → allowed skill types
+# Scroll key prefix → allowed skill categories
 _SCROLL_TYPE_MAP: dict[str, list[str]] = {
-    "ScrollAtk": ["thien"],
-    "ScrollDef": ["dia"],
-    "ScrollSup": ["nhan"],
-    "ScrollFrm": ["tran_phap"],
+    "ScrollAtk": ["attack"],
+    "ScrollDef": ["defense"],
+    "ScrollSup": ["movement", "passive"],
+    "ScrollFrm": ["formation"],
 }
 
 def _scroll_skill_type(scroll_key: str) -> list[str]:
-    for prefix, types in _SCROLL_TYPE_MAP.items():
+    for prefix, categories in _SCROLL_TYPE_MAP.items():
         if scroll_key.startswith(prefix):
-            return types
+            return categories
     return []
 
 def _skill_grade(skill_data: dict) -> int:
@@ -405,9 +405,9 @@ class InventoryCog(commands.Cog, name="Inventory"):
             )
             return
 
-        # Validate scroll type vs skill type
+        # Validate scroll type vs skill category
         allowed_types = _scroll_skill_type(scroll_key)
-        if skill_data.get("type") not in allowed_types:
+        if skill_data.get("category") not in allowed_types:
             await interaction.response.send_message(
                 embed=error_embed(
                     f"Ngọc Giản **{scroll_data['vi']}** không phù hợp với kỹ năng **{skill_data['vi']}**.\n"
@@ -518,8 +518,14 @@ class InventoryCog(commands.Cog, name="Inventory"):
             session.add(new_skill)
             await irepo.remove_item(player.id, scroll_key, scroll_grade_enum, 1)
 
-        type_labels = {"thien": "Thiên Công", "dia": "Địa Công Phòng", "nhan": "Nhân Hệ", "tran_phap": "Trận Pháp"}
-        type_label = type_labels.get(skill_data.get("type", ""), skill_data.get("type", ""))
+        type_labels = {
+            "attack":    "Công Kích",
+            "defense":   "Phòng Thủ",
+            "movement":  "Thân Pháp",
+            "passive":   "Bị Động",
+            "formation": "Trận Pháp",
+        }
+        type_label = type_labels.get(skill_data.get("category", ""), skill_data.get("category", ""))
         embed = success_embed(
             f"Học **{skill_data['vi']}** thành công!\n"
             f"Loại: **{type_label}** | Slot: **{target_slot}**\n"

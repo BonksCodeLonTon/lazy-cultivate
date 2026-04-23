@@ -9,7 +9,9 @@
     "base_hp": 1400,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyHoa_T2"]
+    "skill_keys": [
+      "EnemyHoa_R4"
+    ]
   },
   {
     "key": "FierceKimHac",
@@ -21,7 +23,9 @@
     "base_hp": 1500,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyKim_T2"]
+    "skill_keys": [
+      "EnemyKim_R4"
+    ]
   },
   {
     "key": "FierceLoiMa",
@@ -33,7 +37,9 @@
     "base_hp": 1200,
     "base_spd": 14,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyLoi_T2"]
+    "skill_keys": [
+      "EnemyLoi_R4"
+    ]
   },
   {
     "key": "FierceMocKy",
@@ -45,7 +51,9 @@
     "base_hp": 1350,
     "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyMoc_T2"]
+    "skill_keys": [
+      "EnemyMoc_R4"
+    ]
   },
   {
     "key": "FierceBangGiao",
@@ -57,7 +65,9 @@
     "base_hp": 1600,
     "base_spd": 8,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyBang_T2"]
+    "skill_keys": [
+      "EnemyBang_R4"
+    ]
   },
   {
     "key": "FiercePhongYen",
@@ -69,7 +79,9 @@
     "base_hp": 1100,
     "base_spd": 16,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyPhong_T2"]
+    "skill_keys": [
+      "EnemyPhong_R4"
+    ]
   },
   {
     "key": "FierceThoLinh",
@@ -81,6 +93,8 @@
     "base_hp": 1700,
     "base_spd": 6,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyTho_T2"]
+    "skill_keys": [
+      "EnemyTho_R4"
+    ]
   }
 ]

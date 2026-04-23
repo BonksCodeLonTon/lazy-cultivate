@@ -12,11 +12,10 @@ from discord.ext import commands
 from src.data.registry import registry
 from src.db.connection import get_session
 from src.db.repositories.inventory_repo import InventoryRepository
-from src.db.repositories.player_repo import PlayerRepository
+from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.currencies import CURRENCY_CAP
 from src.game.constants.grades import Grade
 from src.game.constants.realms import QI_REALMS
-from src.game.models.character import Character as CharModel
 from src.game.systems.combat import (
     CombatEndReason, CombatSession,
     build_enemy_combatant, build_player_combatant,
@@ -33,41 +32,6 @@ RANK_EMOJIS = {"pho_thong": "🐾", "cuong_gia": "⚔️", "dai_nang": "🔥", "
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
-
-def _orm_to_model(player) -> CharModel:
-    from src.game.constants.linh_can import parse_linh_can
-    tracker = player.turn_tracker
-    return CharModel(
-        player_id=player.id,
-        discord_id=player.discord_id,
-        name=player.name,
-        body_realm=player.body_realm,
-        body_level=player.body_level,
-        qi_realm=player.qi_realm,
-        qi_level=player.qi_level,
-        formation_realm=player.formation_realm,
-        formation_level=player.formation_level,
-        constitution_type=player.constitution_type,
-        dao_ti_unlocked=player.dao_ti_unlocked,
-        merit=player.merit,
-        karma_accum=player.karma_accum,
-        karma_usable=player.karma_usable,
-        primordial_stones=player.primordial_stones,
-        hp_current=player.hp_current,
-        mp_current=player.mp_current,
-        active_formation=player.active_formation,
-        main_title=player.main_title,
-        sub_title=player.sub_title,
-        evil_title=player.evil_title,
-        active_axis=player.active_axis,
-        body_xp=player.body_xp,
-        qi_xp=player.qi_xp,
-        formation_xp=player.formation_xp,
-        turns_today=tracker.turns_today if tracker else 0,
-        bonus_turns_remaining=tracker.bonus_turns_remaining if tracker else 440,
-        linh_can=parse_linh_can(player.linh_can or ""),
-    )
-
 
 
 def _format_loot(loot: list[dict]) -> str:
@@ -252,6 +216,7 @@ async def _execute_dungeon(
     skill_keys: list[str] = []
     player_name = ""
     gem_count = 0
+    gem_keys: list[str] = []
 
     async with get_session() as session:
         repo = PlayerRepository(session)
@@ -261,38 +226,27 @@ async def _execute_dungeon(
             await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
             return
 
-        char = _orm_to_model(player)
+        char = _player_to_model(player)
         ok, reason = check_can_enter(char, dungeon_key)
         if not ok:
             await interaction.edit_original_response(embed=error_embed(reason), view=None)
             return
 
-        from src.game.systems.cultivation import (
-            compute_hp_max, compute_mp_max,
-            compute_formation_bonuses, compute_constitution_bonuses, merge_bonuses,
-        )
-        if player.active_formation and player.formations:
-            for f in player.formations:
-                if f.formation_key == player.active_formation:
-                    gem_count = len(f.gem_slots)
-                    break
-
-        from src.game.constants.linh_can import compute_linh_can_bonuses
-        bonuses = merge_bonuses(
-            compute_formation_bonuses(player.active_formation, gem_count),
-            compute_constitution_bonuses(player.constitution_type),
-            compute_linh_can_bonuses(char.linh_can),
-        )
-        if player.hp_current <= 0:
-            player.hp_current = compute_hp_max(char, bonuses)
-            char.hp_current = player.hp_current
-
-        skill_keys = [s.skill_key for s in player.skills] if player.skills else ["SkillAtkKim1"]
-        player_name = player.name
+        from src.game.systems.character_stats import active_formation_gem_keys, compute_combat_stats
+        gem_keys = active_formation_gem_keys(player)
+        gem_count = len(gem_keys)
 
         from src.game.engine.equipment import compute_equipment_stats
         equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
         equip_stats = compute_equipment_stats(equipped)
+
+        cs_preview = compute_combat_stats(char, gem_count=gem_count, equip_stats=equip_stats, gem_keys=gem_keys)
+        if player.hp_current <= 0:
+            player.hp_current = cs_preview.hp_max
+            char.hp_current = player.hp_current
+
+        skill_keys = [s.skill_key for s in player.skills] if player.skills else ["SkillAtkKim1"]
+        player_name = player.name
 
     # Realm total for enemy scaling (computed from char to be always fresh)
     _realm_total = (
@@ -310,7 +264,7 @@ async def _execute_dungeon(
     import random as _random_mod
     _rng = _random_mod.Random()
 
-    player_c = build_player_combatant(char, skill_keys, gem_count, equip_stats=equip_stats)
+    player_c = build_player_combatant(char, skill_keys, gem_count, equip_stats=equip_stats, gem_keys=gem_keys)
     req_realm = dungeon.get("required_qi_realm", 0)
     grade_progress = _grade_progress(char.qi_realm, char.qi_level, req_realm)
     wave_enemies: list[str] = _build_wave_list(dungeon, _rng)

@@ -9,7 +9,10 @@
     "base_hp": 10000,
     "base_spd": 14,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyHoa_T3", "EnemyLoi_T3"]
+    "skill_keys": [
+      "EnemyHoa_R6",
+      "EnemyLoi_R6"
+    ]
   },
   {
     "key": "ThanBangCuoc",
@@ -21,7 +24,10 @@
     "base_hp": 12000,
     "base_spd": 11,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyBang_T3", "SkillDefThuy"]
+    "skill_keys": [
+      "EnemyBang_R6",
+      "SkillDefThuy"
+    ]
   },
   {
     "key": "ThanKimGiap",
@@ -33,7 +39,10 @@
     "base_hp": 15000,
     "base_spd": 7,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyKim_T3", "SkillDefKim"]
+    "skill_keys": [
+      "EnemyKim_R6",
+      "SkillDefKim"
+    ]
   },
   {
     "key": "ThanPhongUng",
@@ -45,6 +54,9 @@
     "base_hp": 8000,
     "base_spd": 18,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyPhong_T3", "SkillSupPhong"]
+    "skill_keys": [
+      "EnemyPhong_R6",
+      "SkillSupPhong"
+    ]
   }
 ]
