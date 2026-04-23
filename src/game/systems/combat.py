@@ -107,6 +107,12 @@ class CombatSession:
     max_turns: int = 30  # full rounds (player + enemy each act once per round)
     log: list[str] = field(default_factory=list)
     loot_qty_multiplier: float = 1.0  # >1.0 for elite/upgraded-rank encounters
+    # Scales drop-roll weights in the drop engine. Independent of quantity:
+    #   luck_pct  = 1.0 → each drop entry's effective weight is ×2
+    # Caller passes the grade's luck_pct (0.0 / 0.20 / 0.50 / 1.0 / 2.0) so rare
+    # entries (low-weight, low-activation pools) become meaningfully more likely
+    # at higher grades instead of only multiplying the amount when they land.
+    loot_luck_pct: float = 0.0
 
     def _actor_phase(
         self, actor: Combatant, target: Combatant, actor_is_player: bool
@@ -502,7 +508,7 @@ class CombatSession:
         # Use enemy-specific table if defined (special bosses), else fall back to zone table.
         loot_key = enemy_data.get("loot_table_key") or f"LootZone_{enemy_data.get('realm_level', 1)}"
         drop_table = registry.get_loot_table(loot_key)
-        drops = roll_drops(drop_table, self.rng).merge()
+        drops = roll_drops(drop_table, self.rng, luck_pct=self.loot_luck_pct).merge()
         if self.loot_qty_multiplier != 1.0:
             drops = [
                 {"item_key": d["item_key"], "quantity": max(1, round(d["quantity"] * self.loot_qty_multiplier))}

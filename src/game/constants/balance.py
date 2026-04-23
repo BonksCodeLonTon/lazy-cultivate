@@ -135,7 +135,10 @@ GEM_ELEMENT_BASE_BONUS: dict[str, dict[str, float]] = {
 # ── Encounter grades (dungeon spawn-time rank) ────────────────────────────────
 # Randomly rolled per wave; separate from the enemy's base "rank" JSON field.
 # stat_mult:       multiplier on HP / ATK / MATK / DEF after player-realm scaling.
-# loot_mult:       passed to CombatSession.loot_qty_multiplier for this wave.
+# loot_mult:       scales drop QUANTITY (passed to CombatSession.loot_qty_multiplier).
+# luck_pct:        scales drop CHANCE/weight (passed to CombatSession.loot_luck_pct → roll_drops).
+#                  Independent knob: higher grades make rare entries more likely to fire,
+#                  while loot_mult determines how many units drop when they do.
 # merit_mult:      multiplier applied to base merit earned from this wave.
 # w_min / w_max:   selection weights at player progress 0.0 and 1.0 in dungeon realm.
 # secondary_count: extra random stat boosts applied (from ENCOUNTER_GRADE_SECONDARY_STATS).
@@ -144,31 +147,31 @@ ENCOUNTER_GRADES: list[dict] = [
     {
         "key": "binh_thuong", "vi": "Bình Thường", "emoji": "",
         "w_min": 60, "w_max": 30,
-        "stat_mult": 1.00, "loot_mult": 1.0, "merit_mult": 1.0,
+        "stat_mult": 1.00, "loot_mult": 1.0, "luck_pct": 0.0, "merit_mult": 1.0,
         "secondary_count": 0, "secondary_lo": 0.0, "secondary_hi": 0.0,
     },
     {
         "key": "di_thuong", "vi": "Dị Thường", "emoji": "⚡",
         "w_min": 25, "w_max": 28,
-        "stat_mult": 1.30, "loot_mult": 1.3, "merit_mult": 1.5,
+        "stat_mult": 1.30, "loot_mult": 1.3, "luck_pct": 0.20, "merit_mult": 1.5,
         "secondary_count": 1, "secondary_lo": 0.10, "secondary_hi": 0.20,
     },
     {
         "key": "tinh_anh", "vi": "Tinh Anh", "emoji": "🌟",
         "w_min": 10, "w_max": 22,
-        "stat_mult": 1.75, "loot_mult": 1.8, "merit_mult": 2.5,
+        "stat_mult": 1.75, "loot_mult": 1.8, "luck_pct": 0.50, "merit_mult": 2.5,
         "secondary_count": 2, "secondary_lo": 0.15, "secondary_hi": 0.30,
     },
     {
         "key": "vuong_gia", "vi": "Vương Giả", "emoji": "👑",
         "w_min": 4, "w_max": 14,
-        "stat_mult": 2.50, "loot_mult": 2.5, "merit_mult": 4.0,
+        "stat_mult": 2.50, "loot_mult": 2.5, "luck_pct": 1.00, "merit_mult": 4.0,
         "secondary_count": 2, "secondary_lo": 0.20, "secondary_hi": 0.40,
     },
     {
         "key": "truyen_thuyet", "vi": "Truyền Thuyết", "emoji": "🔱",
         "w_min": 1, "w_max": 6,
-        "stat_mult": 3.50, "loot_mult": 4.0, "merit_mult": 8.0,
+        "stat_mult": 3.50, "loot_mult": 4.0, "luck_pct": 2.00, "merit_mult": 8.0,
         "secondary_count": 3, "secondary_lo": 0.30, "secondary_hi": 0.50,
     },
 ]

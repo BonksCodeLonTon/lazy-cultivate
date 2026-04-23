@@ -325,6 +325,7 @@ async def _execute_dungeon(
             enemy=enemy_c,
             player_skill_keys=skill_keys,
             loot_qty_multiplier=grade["loot_mult"],
+            loot_luck_pct=grade.get("luck_pct", 0.0),
         )
 
         # Show wave start
