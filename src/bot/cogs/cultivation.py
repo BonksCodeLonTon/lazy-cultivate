@@ -191,7 +191,7 @@ class CultivateView(discord.ui.View):
                 
                 await session.commit()
 
-            char = _orm_to_model(player)
+            char = _player_to_model(player)
             from src.game.systems.tribulation import TribulationManager
             if TribulationManager().check_needs_tribulation(char, axis):
                 await interaction.edit_original_response(
@@ -420,7 +420,7 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             player_orm = await repo.get_by_discord_id(interaction.user.id)
             if not player_orm: return await interaction.followup.send(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
             
-            char = _orm_to_model(player_orm)
+            char = _player_to_model(player_orm)
             res = study_formation_with_merit(char, merits)
             if not res["success"]: return await interaction.followup.send(embed=error_embed(res["error"]), ephemeral=True)
             
@@ -438,8 +438,9 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             repo = PlayerRepository(session)
             player_orm = await repo.get_by_discord_id(interaction.user.id)
             if not player_orm: return
+        
             
-            char = _orm_to_model(player_orm)
+            char = _player_to_model(player_orm)
             axis = char.active_axis
             
             inventory_map = {inv.item_key: inv.quantity for inv in player_orm.inventory}
