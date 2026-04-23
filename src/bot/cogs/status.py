@@ -130,12 +130,13 @@ class StatusView(discord.ui.View):
             ("🌀 Tu Luyện",          discord.ButtonStyle.secondary, self._cultivate_cb,     0),
             ("⚡ Đột Phá",           discord.ButtonStyle.secondary, self._breakthrough_cb,  0),
             ("🗺️ Bí Cảnh",           discord.ButtonStyle.secondary, self._dungeon_cb,       0),
-            ("🎯 Kỹ Năng",           discord.ButtonStyle.secondary, self._skills_cb,        0),
-            ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     0),
+            ("🌌 Boss Thế Giới",     discord.ButtonStyle.secondary, self._world_boss_cb,    0),
+            ("🎯 Kỹ Năng",           discord.ButtonStyle.secondary, self._skills_cb,        1),
+            ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     1),
             ("📚 Tàng Kinh Các",     discord.ButtonStyle.secondary, self._tang_kinh_cac_cb, 1),
-            ("⚒️ Thiên Công Phường", discord.ButtonStyle.secondary, self._forge_cb,         1),
-            ("🏪 Phường Thị",        discord.ButtonStyle.secondary, self._shop_cb,          1),
-            ("🏮 Đấu Thương Các",    discord.ButtonStyle.secondary, self._market_cb,        1),
+            ("⚒️ Thiên Công Phường", discord.ButtonStyle.secondary, self._forge_cb,         2),
+            ("🏪 Phường Thị",        discord.ButtonStyle.secondary, self._shop_cb,          2),
+            ("🏮 Đấu Thương Các",    discord.ButtonStyle.secondary, self._market_cb,        2),
         ]
         for label, style, cb, row in configs:
             btn = discord.ui.Button(label=label, style=style, row=row)
@@ -232,6 +233,15 @@ class StatusView(discord.ui.View):
         embed = _dungeon_list_embed(qi_realm)
         view = DungeonListView(self._discord_id, qi_realm, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _world_boss_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        from src.bot.cogs.world_boss import _refresh_hub
+        await _refresh_hub(interaction, self._discord_id, back_fn=_show_status)
 
     async def _skills_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

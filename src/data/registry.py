@@ -26,6 +26,7 @@ class GameRegistry:
         self.affixes: dict[str, dict] = {}             # key → affix definition
         self.uniques: dict[str, dict] = {}             # key → unique item definition
         self.forge_recipes: list[dict] = []            # grade-ordered forge recipe list
+        self.world_bosses: dict[str, dict] = {}        # key → world boss definition
         self._loaded = False
 
     @classmethod
@@ -51,6 +52,7 @@ class GameRegistry:
         self.loot_tables = self._load_loot_table_dir()
         self.bases, self.affixes, self.uniques = self._load_equipment_defs()
         self.forge_recipes = self._load_forge_recipes()
+        self.world_bosses = self._load_keyed("world_bosses.json")
         self._loaded = True
 
     def _load_items(self) -> dict[str, dict]:
@@ -209,6 +211,13 @@ class GameRegistry:
 
     def get_unique(self, key: str) -> dict | None:
         return self.uniques.get(key)
+
+    def get_world_boss(self, key: str) -> dict | None:
+        return self.world_bosses.get(key)
+
+    def world_bosses_for_realm(self, realm_level: int) -> list[dict]:
+        """Return all world bosses whose ``realm`` (1-9) matches the requested realm."""
+        return [b for b in self.world_bosses.values() if b.get("realm") == realm_level]
 
     def bases_for_slot(self, slot: str) -> list[dict]:
         return [b for b in self.bases.values() if b["slot"] == slot]

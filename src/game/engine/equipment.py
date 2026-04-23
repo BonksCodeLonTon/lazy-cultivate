@@ -51,13 +51,31 @@ def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
 
     Each ItemInstance has a pre-computed `computed_stats` dict that already
     includes both implicit base stats and rolled affix values.
+
+    Unique items may also declare a ``passive_bonus`` dict in their JSON
+    definition — this is layered on top of the summed numeric stats so unique
+    gear can grant on-hit/on-crit procs and immunity flags that go beyond
+    simple stat sheets.
     """
+    from src.data.registry import registry
+
     totals: dict[str, float] = {}
     for inst in equipped:
         if inst.location != "equipped":
             continue
         for stat, val in (inst.computed_stats or {}).items():
             totals[stat] = totals.get(stat, 0.0) + float(val)
+
+        # Merge unique passive bonuses if the item is a unique with passives
+        uniq_key = getattr(inst, "unique_key", None)
+        if not uniq_key:
+            continue
+        uniq_def = registry.get_unique(uniq_key) or {}
+        for stat, val in (uniq_def.get("passive_bonus") or {}).items():
+            if isinstance(val, bool):
+                totals[stat] = bool(totals.get(stat)) or val
+            else:
+                totals[stat] = totals.get(stat, 0.0) + float(val)
     return totals
 
 

@@ -426,6 +426,13 @@ class CombatSession:
         if effect_key == EffectKey.DEBUFF_DOC_TO and target.poison_immunity:
             self.log.append(f"    💚 **{target.name}** miễn dịch Độc Tố!")
             return
+        # World bosses / immune_hard_cc combatants shrug off hard CC (stun,
+        # freeze, silence, interrupt, knock-up). Soft debuffs still apply.
+        if target.immune_hard_cc and (meta.skips_turn or meta.prevents_skills):
+            self.log.append(
+                f"    🛡️ **{target.name}** miễn dịch khống chế — **{meta.vi}** vô hiệu!"
+            )
+            return
         dur = default_duration(effect_key)
         target.apply_effect(effect_key, dur)
         self.log.append(
@@ -651,4 +658,63 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
         skill_keys=enemy_data.get("skill_keys", []),
         final_dmg_bonus=enemy_dmg_bonus,
         mp_regen_pct=enemy_mp_regen_pct,
+        immune_hard_cc=bool(enemy_data.get("immune_hard_cc", False)),
+    )
+
+
+def build_world_boss_combatant(
+    boss_data: dict, current_hp: int, player_realm_total: int
+) -> Combatant:
+    """Build a persistent world-boss Combatant from a world_bosses.json entry.
+
+    Unlike regular enemies, world bosses:
+    - Persist HP across player attacks (passed in via ``current_hp``)
+    - Always set ``immune_hard_cc=True`` so hard CC never lands
+    - Use a fixed, pre-defined ``skill_pool`` instead of realm-scaled enemy skills
+    - Scale their raw stats with the attacking player's realm so every fight stays challenging
+    """
+    from src.game.constants.balance import (
+        ENEMY_RANK_BASE_ATK, ENEMY_RANK_BASE_MATK, ENEMY_RANK_BASE_DEF,
+        ENEMY_RANK_BASE_EVASION, ENEMY_SCALE_MAX, ENEMY_DMG_BONUS_SCALE,
+        ENEMY_BASE_ELEM_RES,
+    )
+
+    rank = "chi_ton"   # World bosses are always supreme-rank for stat lookups
+    realm_scale = 1.0 + (player_realm_total / ENEMY_SCALE_MAX) * 0.5
+
+    hp_max = int(boss_data["base_hp"] * boss_data.get("hp_scale", 1.0))
+    hp = max(0, min(current_hp, hp_max)) if current_hp else hp_max
+
+    atk = int(ENEMY_RANK_BASE_ATK.get(rank, 100) * realm_scale * 1.5)
+    matk = int(ENEMY_RANK_BASE_MATK.get(rank, 100) * realm_scale * 1.5)
+    def_stat = int(ENEMY_RANK_BASE_DEF.get(rank, 60) * realm_scale * 1.5)
+    evasion_rating = int(ENEMY_RANK_BASE_EVASION.get(rank, 0) * realm_scale)
+    enemy_dmg_bonus = (player_realm_total / ENEMY_SCALE_MAX) * ENEMY_DMG_BONUS_SCALE
+
+    elem = boss_data.get("element")
+    res: dict[str, float] = {}
+    if elem:
+        res[elem] = min(0.40, ENEMY_BASE_ELEM_RES * realm_scale * 1.2)
+
+    mp_max = max(800, hp_max // 4)
+
+    return Combatant(
+        key=boss_data["key"],
+        name=boss_data["vi"],
+        hp=hp,
+        hp_max=hp_max,
+        mp=mp_max,
+        mp_max=mp_max,
+        spd=boss_data.get("base_spd", 15),
+        element=elem,
+        atk=atk,
+        matk=matk,
+        def_stat=def_stat,
+        evasion_rating=evasion_rating,
+        resistances=res,
+        skill_keys=list(boss_data.get("skill_pool", [])),
+        final_dmg_bonus=enemy_dmg_bonus,
+        mp_regen_pct=0.08,
+        immune_hard_cc=True,
+        final_dmg_reduce=0.15,   # World bosses shrug off 15% of damage by default
     )

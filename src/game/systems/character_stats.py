@@ -206,6 +206,16 @@ def compute_combat_stats(
             for elem in resistances:
                 resistances[elem] = min(0.75, resistances[elem] + eq_res_all)
 
+        # Passive bonuses from unique items (on-hit procs, immunities, etc.)
+        burn_on_hit_pct   += equip_stats.get("burn_on_hit_pct", 0.0)
+        slow_on_hit_pct   += equip_stats.get("slow_on_hit_pct", 0.0)
+        paralysis_on_crit  = paralysis_on_crit or bool(equip_stats.get("paralysis_on_crit", False))
+        freeze_on_skill    = freeze_on_skill   or bool(equip_stats.get("freeze_on_skill", False))
+        poison_immunity    = poison_immunity   or bool(equip_stats.get("poison_immunity", False))
+        debuff_immune_pct += equip_stats.get("debuff_immune_pct", 0.0)
+        heal_pct          += equip_stats.get("heal_pct", 0.0)
+        cooldown_reduce   += equip_stats.get("cooldown_reduce", 0.0)
+
     # ── Formation MP reservation (applied last, after all bonuses) ────────────
     reserve_pct = max(0.0, float(form_bonuses.get("_mp_reserve_pct", 0.0)))
     mp_reserved = int(mp_max * reserve_pct)

@@ -69,6 +69,324 @@
     "slot": "amulet",
     "grade": 4,
     "fixed_stats": {"atk": 22, "matk": 22, "hp_max": 130, "mp_max": 110, "res_all": 0.08, "final_dmg_bonus": 0.06},
-    "description_vi": "Bội ngọc từ thời hỗn nguyên, chứa đựng năng lượng vũ trụ nguyên thủy."
+    "passive_bonus": {"debuff_immune_pct": 0.15, "cooldown_reduce": 0.08},
+    "description_vi": "Bội ngọc từ thời hỗn nguyên, chứa đựng năng lượng vũ trụ nguyên thủy. Trấn áp mọi tà khí và rút ngắn thời gian hồi chiêu."
+  },
+
+  {
+    "key": "uniq_hoa_linh_kiem",
+    "vi": "Hỏa Linh Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "realm": 1,
+    "grade": 1,
+    "fixed_stats": {"atk": 18, "crit_rating": 30, "final_dmg_bonus": 0.04},
+    "passive_bonus": {"burn_on_hit_pct": 0.12},
+    "description_vi": "Thanh kiếm rèn từ lõi núi lửa, đòn đánh có xác suất thiêu đốt kẻ địch."
+  },
+  {
+    "key": "uniq_moc_linh_truong",
+    "vi": "Mộc Linh Trượng",
+    "base": "base_staff",
+    "slot": "weapon",
+    "realm": 1,
+    "grade": 1,
+    "fixed_stats": {"matk": 22, "mp_max": 80, "hp_regen_pct": 0.025},
+    "passive_bonus": {"heal_pct": 0.08},
+    "description_vi": "Trượng gỗ cổ thụ ngàn năm, tăng khả năng hồi phục và chữa lành mỗi khi thi triển."
+  },
+  {
+    "key": "uniq_truc_co_bao",
+    "vi": "Trúc Cơ Bảo Y",
+    "base": "base_robe",
+    "slot": "armor",
+    "realm": 1,
+    "grade": 1,
+    "fixed_stats": {"def_stat": 14, "hp_max": 90, "mp_max": 60, "res_all": 0.03},
+    "passive_bonus": {"poison_immunity": true},
+    "description_vi": "Áo choàng của tu sĩ trúc cơ, miễn nhiễm độc tố và bảo vệ khí huyết."
+  },
+
+  {
+    "key": "uniq_kim_giap_khai",
+    "vi": "Kim Giáp Khải",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 2,
+    "grade": 2,
+    "fixed_stats": {"def_stat": 32, "hp_max": 230, "crit_res_rating": 50, "final_dmg_reduce": 0.04},
+    "passive_bonus": {"debuff_immune_pct": 0.10},
+    "description_vi": "Giáp vàng của danh tướng cổ đại, giảm xác suất trúng debuff lên bản thân."
+  },
+  {
+    "key": "uniq_loi_dien_phu",
+    "vi": "Lôi Điện Phù",
+    "base": "base_talisman",
+    "slot": "off_hand",
+    "realm": 2,
+    "grade": 2,
+    "fixed_stats": {"matk": 26, "mp_max": 140, "crit_rating": 45},
+    "passive_bonus": {"paralysis_on_crit": true},
+    "description_vi": "Bùa sét chân nhân khắc họa, mỗi bạo kích có xác suất tê liệt đối thủ."
+  },
+  {
+    "key": "uniq_tho_linh_hoa",
+    "vi": "Thổ Linh Hoa Nhẫn",
+    "base": "base_spirit_ring",
+    "slot": "ring",
+    "realm": 2,
+    "grade": 2,
+    "fixed_stats": {"hp_max": 140, "def_stat": 14, "hp_regen_pct": 0.02},
+    "passive_bonus": {"hp_regen_flat": 30},
+    "description_vi": "Nhẫn khắc hoa thổ linh, tăng hồi phục sinh lực mỗi lượt."
+  },
+
+  {
+    "key": "uniq_nguyen_anh_chau",
+    "vi": "Nguyên Anh Châu",
+    "base": "base_orb",
+    "slot": "off_hand",
+    "realm": 3,
+    "grade": 3,
+    "fixed_stats": {"matk": 34, "mp_max": 180, "crit_rating": 60, "crit_dmg_rating": 55},
+    "passive_bonus": {"cooldown_reduce": 0.10},
+    "description_vi": "Châu Nguyên Anh tu sĩ ngàn năm ngưng tụ, giảm thời gian hồi chiêu mọi kỹ năng."
+  },
+  {
+    "key": "uniq_bang_tam_kiem",
+    "vi": "Băng Tâm Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "realm": 3,
+    "grade": 3,
+    "fixed_stats": {"atk": 42, "crit_rating": 75, "final_dmg_bonus": 0.08},
+    "passive_bonus": {"slow_on_hit_pct": 0.15, "freeze_on_skill": true},
+    "description_vi": "Kiếm lạnh như băng, mỗi kỹ năng có xác suất đóng băng, mỗi đòn đánh có thể làm chậm đối thủ."
+  },
+  {
+    "key": "uniq_huyen_anh_phong",
+    "vi": "Huyền Ảnh Phong Đai",
+    "base": "base_wind_sash",
+    "slot": "belt",
+    "realm": 3,
+    "grade": 3,
+    "fixed_stats": {"evasion_rating": 120, "hp_max": 140, "mp_max": 90},
+    "passive_bonus": {"debuff_immune_pct": 0.12},
+    "description_vi": "Đai gió ảo ảnh, kháng debuff và tăng né tránh một cách đáng kể."
+  },
+
+  {
+    "key": "uniq_hoa_than_boi",
+    "vi": "Hóa Thần Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 4,
+    "grade": 3,
+    "fixed_stats": {"hp_max": 260, "def_stat": 22, "mp_max": 140, "res_all": 0.05},
+    "passive_bonus": {"heal_pct": 0.12, "hp_regen_pct": 0.02},
+    "description_vi": "Bội Hóa Thần chứa tinh hoa thiên địa, tăng hồi phục và hiệu quả trị liệu."
+  },
+  {
+    "key": "uniq_thien_kiem_ngoan",
+    "vi": "Thiên Kiếm Ngoạn",
+    "base": "base_spirit_sword",
+    "slot": "weapon",
+    "realm": 4,
+    "grade": 3,
+    "fixed_stats": {"atk": 38, "matk": 28, "crit_rating": 90, "crit_dmg_rating": 100},
+    "passive_bonus": {"paralysis_on_crit": true, "cooldown_reduce": 0.08},
+    "description_vi": "Kiếm của tiên nhân, mỗi bạo kích gây tê liệt, và rút ngắn hồi chiêu các kỹ năng."
+  },
+  {
+    "key": "uniq_phong_than_giap",
+    "vi": "Phong Thần Giáp",
+    "base": "base_leather_armor",
+    "slot": "armor",
+    "realm": 4,
+    "grade": 3,
+    "fixed_stats": {"def_stat": 28, "hp_max": 180, "evasion_rating": 140},
+    "passive_bonus": {"slow_on_hit_pct": 0.18},
+    "description_vi": "Giáp phong thần, mỗi đòn tấn công có thể làm chậm kẻ địch đáng kể."
+  },
+
+  {
+    "key": "uniq_luyen_hu_kinh",
+    "vi": "Luyện Hư Ấn",
+    "base": "base_orb",
+    "slot": "off_hand",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {"matk": 48, "mp_max": 260, "crit_rating": 90, "final_dmg_bonus": 0.08},
+    "passive_bonus": {"cooldown_reduce": 0.12, "freeze_on_skill": true},
+    "description_vi": "Ấn của Luyện Hư chân nhân, rút ngắn hồi chiêu và kỹ năng có xác suất đóng băng."
+  },
+  {
+    "key": "uniq_kim_long_than",
+    "vi": "Kim Long Thần Thủ",
+    "base": "base_gauntlet",
+    "slot": "glove",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {"atk": 40, "matk": 28, "crit_rating": 110, "evasion_rating": 70, "final_dmg_bonus": 0.06},
+    "passive_bonus": {"burn_on_hit_pct": 0.15, "paralysis_on_crit": true},
+    "description_vi": "Găng tay khắc hình kim long, mỗi đòn đánh thiêu đốt, mỗi bạo kích tê liệt đối thủ."
+  },
+  {
+    "key": "uniq_hoa_than_giap",
+    "vi": "Hóa Thần Trọng Giáp",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 5,
+    "grade": 3,
+    "fixed_stats": {"def_stat": 68, "hp_max": 450, "crit_res_rating": 150, "final_dmg_reduce": 0.06, "res_all": 0.04},
+    "passive_bonus": {"poison_immunity": true, "debuff_immune_pct": 0.12},
+    "description_vi": "Trọng giáp Hóa Thần, miễn nhiễm độc tố và tăng mạnh kháng debuff."
+  },
+
+  {
+    "key": "uniq_hop_dao_phu",
+    "vi": "Hợp Đạo Phù",
+    "base": "base_talisman",
+    "slot": "off_hand",
+    "realm": 6,
+    "grade": 4,
+    "fixed_stats": {"matk": 55, "mp_max": 320, "crit_rating": 95, "res_all": 0.08},
+    "passive_bonus": {"cooldown_reduce": 0.15, "debuff_immune_pct": 0.15},
+    "description_vi": "Phù Hợp Đạo chứa đựng chân ý thiên địa, tăng mạnh kháng debuff và giảm hồi chiêu."
+  },
+  {
+    "key": "uniq_thanh_long_kiem",
+    "vi": "Thanh Long Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "realm": 6,
+    "grade": 4,
+    "fixed_stats": {"atk": 75, "crit_rating": 150, "crit_dmg_rating": 180, "final_dmg_bonus": 0.15},
+    "passive_bonus": {"paralysis_on_crit": true, "freeze_on_skill": true, "cooldown_reduce": 0.08},
+    "description_vi": "Thanh long kiếm của thượng cổ, mỗi bạo kích tê liệt, mỗi kỹ năng đóng băng."
+  },
+  {
+    "key": "uniq_huyen_vu_boi",
+    "vi": "Huyền Vũ Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 6,
+    "grade": 4,
+    "fixed_stats": {"hp_max": 560, "def_stat": 50, "crit_res_rating": 180, "final_dmg_reduce": 0.08, "res_all": 0.07},
+    "passive_bonus": {"poison_immunity": true, "debuff_immune_pct": 0.18, "hp_regen_pct": 0.03},
+    "description_vi": "Bội Huyền Vũ hộ thể, miễn nhiễm độc tố, kháng debuff mạnh và tự hồi HP liên tục."
+  },
+
+  {
+    "key": "uniq_dai_thua_nhan",
+    "vi": "Đại Thừa Pháp Nhẫn",
+    "base": "base_mage_ring",
+    "slot": "ring",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {"matk": 65, "mp_max": 280, "crit_rating": 140, "final_dmg_bonus": 0.12},
+    "passive_bonus": {"cooldown_reduce": 0.18, "freeze_on_skill": true},
+    "description_vi": "Nhẫn Đại Thừa chứa chân lý đạo, rút ngắn mạnh hồi chiêu và kỹ năng có xác suất đóng băng."
+  },
+  {
+    "key": "uniq_phong_hoang_quan",
+    "vi": "Phượng Hoàng Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {"matk": 58, "mp_max": 380, "crit_rating": 150, "res_all": 0.08},
+    "passive_bonus": {"burn_on_hit_pct": 0.20, "heal_pct": 0.10},
+    "description_vi": "Mão Phượng Hoàng rực cháy, đòn tấn công thiêu đốt và tăng hiệu quả hồi phục."
+  },
+  {
+    "key": "uniq_linh_xa_dai",
+    "vi": "Linh Xà Đai",
+    "base": "base_belt",
+    "slot": "belt",
+    "realm": 7,
+    "grade": 4,
+    "fixed_stats": {"hp_max": 480, "mp_max": 260, "hp_regen_pct": 0.04, "mp_regen_pct": 0.04},
+    "passive_bonus": {"poison_immunity": true, "hp_regen_flat": 80, "debuff_immune_pct": 0.10},
+    "description_vi": "Đai linh xà, miễn dịch độc, hồi HP/MP mạnh và tăng kháng debuff."
+  },
+
+  {
+    "key": "uniq_dang_tien_kiem",
+    "vi": "Đăng Tiên Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {"atk": 120, "crit_rating": 220, "crit_dmg_rating": 280, "final_dmg_bonus": 0.22},
+    "passive_bonus": {"paralysis_on_crit": true, "burn_on_hit_pct": 0.22, "cooldown_reduce": 0.12},
+    "description_vi": "Kiếm Đăng Tiên chân nhân, mỗi đòn đánh thiêu đốt, mỗi bạo kích tê liệt, hồi chiêu siêu nhanh."
+  },
+  {
+    "key": "uniq_cuu_thien_giap",
+    "vi": "Cửu Thiên Trọng Giáp",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {"def_stat": 130, "hp_max": 850, "crit_res_rating": 280, "final_dmg_reduce": 0.12, "res_all": 0.09},
+    "passive_bonus": {"poison_immunity": true, "debuff_immune_pct": 0.22, "hp_regen_pct": 0.04},
+    "description_vi": "Trọng giáp cửu thiên, miễn nhiễm độc, kháng debuff cực cao và hồi HP liên tục."
+  },
+  {
+    "key": "uniq_van_kiep_boi",
+    "vi": "Vạn Kiếp Bội",
+    "base": "base_jade",
+    "slot": "amulet",
+    "realm": 8,
+    "grade": 4,
+    "fixed_stats": {"atk": 40, "matk": 40, "hp_max": 420, "mp_max": 380, "res_all": 0.10, "final_dmg_bonus": 0.10},
+    "passive_bonus": {"cooldown_reduce": 0.15, "heal_pct": 0.15, "debuff_immune_pct": 0.15},
+    "description_vi": "Bội ngọc từ vạn kiếp, tăng mọi thuộc tính và bảo hộ người đeo."
+  },
+
+  {
+    "key": "uniq_thai_thuong_kiem",
+    "vi": "Thái Thượng Tiên Kiếm",
+    "base": "base_spirit_sword",
+    "slot": "weapon",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {"atk": 140, "matk": 120, "crit_rating": 280, "crit_dmg_rating": 340, "final_dmg_bonus": 0.30, "res_all": 0.06},
+    "passive_bonus": {"paralysis_on_crit": true, "freeze_on_skill": true, "burn_on_hit_pct": 0.25, "cooldown_reduce": 0.20},
+    "description_vi": "Kiếm Thái Thượng chân nhân ngự đạo, kích hoạt mọi proc, đạo pháp vô song."
+  },
+  {
+    "key": "uniq_hon_nguyen_quan",
+    "vi": "Hỗn Nguyên Pháp Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {"matk": 110, "mp_max": 720, "crit_rating": 250, "res_all": 0.12},
+    "passive_bonus": {"cooldown_reduce": 0.22, "freeze_on_skill": true, "heal_pct": 0.18},
+    "description_vi": "Pháp quan hỗn nguyên thiên đế, giảm mạnh hồi chiêu và tăng hiệu quả mọi kỹ năng."
+  },
+  {
+    "key": "uniq_tien_dao_giap",
+    "vi": "Tiên Đạo Bảo Giáp",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {"def_stat": 180, "hp_max": 1200, "crit_res_rating": 380, "final_dmg_reduce": 0.16, "res_all": 0.12},
+    "passive_bonus": {"poison_immunity": true, "debuff_immune_pct": 0.28, "hp_regen_pct": 0.06, "hp_regen_flat": 200},
+    "description_vi": "Giáp tiên đạo chân nhân, miễn dịch tuyệt đối và hồi phục sinh lực vô biên."
+  },
+  {
+    "key": "uniq_truong_sinh_nhan",
+    "vi": "Trường Sinh Nhẫn",
+    "base": "base_spirit_ring",
+    "slot": "ring",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {"hp_max": 680, "mp_max": 540, "hp_regen_pct": 0.05, "mp_regen_pct": 0.05, "res_all": 0.08},
+    "passive_bonus": {"heal_pct": 0.25, "poison_immunity": true, "debuff_immune_pct": 0.18},
+    "description_vi": "Nhẫn trường sinh bất lão, tăng mạnh hồi phục và kháng mọi tà khí."
   }
 ]

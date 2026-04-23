@@ -50,6 +50,9 @@ class Combatant:
     # e.g. 0.20 → 20% of debuffs that would land are blocked.
     # Stacks additively from formation, constitution, and linh_can bonuses.
     debuff_immune_pct: float = 0.0
+    # Total immunity to hard CC (stun/freeze/silence/interrupt/knock-up).
+    # Used by world bosses — soft debuffs (slow, DoT, armor break) still apply.
+    immune_hard_cc: bool = False
     # Immunity / special flags
     active_flags: dict[str, bool] = field(default_factory=dict)
     # Active effects: effect_key → turns_remaining
