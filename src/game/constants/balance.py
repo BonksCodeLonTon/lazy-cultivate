@@ -126,6 +126,15 @@ FORMATION_PATH_MULT_PER_STAGE: float = 0.02
 FORMATION_RESERVE_REDUCE_PER_STAGE: float = 0.0085
 FORMATION_RESERVE_FLOOR_MULT: float = 0.30
 
+# ── DoT scaling (default: attacker-stat based) ────────────────────────────────
+# Tick damage in the default model = max_source_power × meta.dot_pct × COEF.
+# ``max_source_power`` = max(atk, matk) at DoT-apply time.
+# Higher COEF makes DoTs hit harder per power unit. Tune upward if DoT builds
+# feel too weak compared to direct damage, downward if too strong.
+# The legacy %HP-max model still exists but is gated behind the rare
+# ``dot_scales_hp_pct`` flag (granted only by R9 late-game uniques).
+DOT_POWER_COEF: float = 4.0
+
 # ── True damage cap ───────────────────────────────────────────────────────────
 # Per-hit cap on the % true-damage mechanic used by the Kim playstyle. Combines
 # skill and passive contributions. 0.20 = max 20% of target hp_max per hit,

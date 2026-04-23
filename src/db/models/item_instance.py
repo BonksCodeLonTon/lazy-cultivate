@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.db.models.base import Base, TimestampMixin
 
-EQUIPMENT_SLOTS = ("weapon", "off_hand", "armor", "helmet", "glove", "belt", "ring", "amulet")
+EQUIPMENT_SLOTS = ("weapon", "off_hand", "armor", "helmet", "glove", "belt", "boot", "ring", "amulet")
 
 
 class ItemInstance(Base, TimestampMixin):

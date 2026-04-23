@@ -83,14 +83,14 @@ class Combatant:
     # Set on the attacker; combat engine reads the attacker's flag each tick.
     dot_can_crit: bool = False
     # Per-stack burn damage fraction of hp_max (applied by get_periodic_damage).
-    burn_per_stack_pct: float = 0.012
+    burn_per_stack_pct: float = 0.005
 
     # ── Kim (Bleed) build support ─────────────────────────────────────────────
     # Bleed stacks: like burn, but physical (kim element) and slows healing.
     bleed_stacks: int = 0
     bleed_stack_cap: int = 5
     # Per-stack bleed damage fraction of hp_max.
-    bleed_per_stack_pct: float = 0.010
+    bleed_per_stack_pct: float = 0.005
     # When holder has bleed stacks, incoming heals are multiplied by (1 - bleed_heal_reduce).
     # e.g. 0.40 means heals on a bleeding target are reduced by 40%.
     bleed_heal_reduce: float = 0.0
@@ -155,6 +155,27 @@ class Combatant:
     thorn_from_shield: bool = False
     # On-hit: chance to stun the target (any hit, not just bạo kích).
     stun_on_hit_pct: float = 0.0
+
+    # ── DoT damage amplifiers (any build can stack these) ──────────────────
+    # Additive multiplier on ALL DoT ticks this combatant's own DoTs cause.
+    # e.g. 0.25 → DoTs tick 25% harder.
+    dot_dmg_bonus: float = 0.0
+    # Per-type multipliers stacked on top of dot_dmg_bonus.
+    burn_dmg_bonus: float = 0.0
+    bleed_dmg_bonus: float = 0.0
+    poison_dmg_bonus: float = 0.0
+    # Per-attacker DoT-bonus contributions received while holding DoTs.
+    # Keyed by attacker.key; values are dicts with {dot_dmg_bonus, burn, bleed,
+    # poison, power, scales_hp_pct}. The live target.dot_*_bonus fields are the
+    # SUM of all source entries — so multiple attackers' bonuses add together
+    # instead of max-merging. ``power`` = max(actor.atk, actor.matk) at apply
+    # time; ``scales_hp_pct`` = actor's dot_scales_hp_pct flag.
+    dot_bonus_sources: dict = field(default_factory=dict)
+    # When True, DoTs ticking on this combatant scale with the target's hp_max
+    # (the legacy model). When False (default), DoTs scale with the APPLIER's
+    # atk/matk power — the regular-play model. The flag propagates from the
+    # attacker at DoT-apply time; rare late-game uniques set it True.
+    dot_scales_hp_pct: bool = False
 
     def is_alive(self) -> bool:
         return self.hp > 0

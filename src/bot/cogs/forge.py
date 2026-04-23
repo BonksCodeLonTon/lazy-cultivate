@@ -32,6 +32,7 @@ SLOT_VI: dict[str, str] = {
     "helmet":   "Mũ Giáp",
     "glove":    "Găng Tay",
     "belt":     "Đai Lưng",
+    "boot":     "Giày",
     "ring":     "Nhẫn",
     "amulet":   "Bùa Hộ Mệnh",
 }

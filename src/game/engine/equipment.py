@@ -33,11 +33,12 @@ SLOT_LABELS: dict[str, str] = {
     "helmet":   "🪖 Mũ",
     "glove":    "🧤 Găng",
     "belt":     "👑 Đai",
+    "boot":     "👢 Giày",
     "ring":     "💍 Nhẫn",
     "amulet":   "📿 Bội",
 }
 
-SLOT_ORDER = ("weapon", "off_hand", "armor", "helmet", "glove", "belt", "ring", "amulet")
+SLOT_ORDER = ("weapon", "off_hand", "armor", "helmet", "glove", "belt", "boot", "ring", "amulet")
 
 _PCT_STATS = frozenset({
     "final_dmg_bonus", "final_dmg_reduce",

@@ -371,6 +371,25 @@
     "description_vi": "Trọng giáp cửu thiên — miễn độc, kháng debuff, giảm 12% ST."
   },
   {
+    "key": "uniq_thien_co_dot_pendant",
+    "vi": "Thiên Cổ Thần Bội",
+    "base": "base_jade",
+    "slot": "amulet",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 80,
+      "matk": 80,
+      "hp_max": 620
+    },
+    "passive_bonus": {
+      "dot_scales_hp_pct": true,
+      "dot_dmg_bonus": 0.3,
+      "dot_can_crit": true
+    },
+    "description_vi": "Bội Thiên Cổ Thần — linh khí hóa thiên kiếp ban cho người đeo sức mạnh cổ xưa: tất cả DoT ngươi gây ra tính theo **% HP tối đa** của mục tiêu, tăng 30% ST DoT, DoT có thể bạo kích."
+  },
+  {
     "key": "uniq_tien_dao_giap",
     "vi": "Tiên Đạo Bảo Giáp",
     "base": "base_plate",

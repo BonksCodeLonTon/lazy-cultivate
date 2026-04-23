@@ -41,6 +41,35 @@ from src.game.models.character import Character
 from src.game.systems.combatant import Combatant
 
 
+def _propagate_dot_bonuses(actor: Combatant, target: Combatant) -> None:
+    """Record the attacker's DoT-amplification stats + scaling context in the
+    target's per-source map, then recompute the live aggregate fields.
+
+    Stored per source:
+      dot / burn / bleed / poison — additive DoT damage bonuses (summed across sources)
+      power                        — max(actor.atk, actor.matk), used by the default
+                                     attacker-scaled DoT formula (max across sources)
+      scales_hp_pct                — actor's dot_scales_hp_pct flag; target gets the
+                                     flag on if ANY source has it (rare late-game)
+
+    Multiple attackers' amplifiers add together; re-applications from the same
+    attacker do NOT compound (source map is keyed by ``actor.key``).
+    """
+    target.dot_bonus_sources[actor.key] = {
+        "dot":            actor.dot_dmg_bonus,
+        "burn":           actor.burn_dmg_bonus,
+        "bleed":          actor.bleed_dmg_bonus,
+        "poison":         actor.poison_dmg_bonus,
+        "power":          max(actor.atk, actor.matk),
+        "scales_hp_pct":  actor.dot_scales_hp_pct,
+    }
+    target.dot_dmg_bonus    = sum(s["dot"]    for s in target.dot_bonus_sources.values())
+    target.burn_dmg_bonus   = sum(s["burn"]   for s in target.dot_bonus_sources.values())
+    target.bleed_dmg_bonus  = sum(s["bleed"]  for s in target.dot_bonus_sources.values())
+    target.poison_dmg_bonus = sum(s["poison"] for s in target.dot_bonus_sources.values())
+    target.dot_scales_hp_pct = any(s["scales_hp_pct"] for s in target.dot_bonus_sources.values())
+
+
 def _propagate_fire_build(actor: Combatant, target: Combatant) -> None:
     """Copy the attacker's fire-DoT build flags onto the target.
 
@@ -55,6 +84,7 @@ def _propagate_fire_build(actor: Combatant, target: Combatant) -> None:
         target.burn_per_stack_pct = actor.burn_per_stack_pct
     if actor.dot_can_crit:
         target.dot_can_crit = True
+    _propagate_dot_bonuses(actor, target)
 
 
 def _propagate_bleed_build(actor: Combatant, target: Combatant) -> None:
@@ -72,6 +102,7 @@ def _propagate_bleed_build(actor: Combatant, target: Combatant) -> None:
         target.bleed_heal_reduce = actor.bleed_heal_reduce
     if actor.dot_can_crit:
         target.dot_can_crit = True
+    _propagate_dot_bonuses(actor, target)
 
 
 def effective_spd(combatant: Combatant) -> int:
@@ -796,6 +827,9 @@ class CombatSession:
                 f"    {meta.emoji} **{target.name}** bị **{meta.vi}** [×{target.bleed_stacks}/{target.bleed_stack_cap}] ({dur}t)"
             )
             return
+        # Generic DoT: propagate attacker's DoT damage boosters (poison, bleed-mk2, etc.)
+        if meta.dot_pct > 0 and actor is not None:
+            _propagate_dot_bonuses(actor, target)
         self.log.append(
             f"    {meta.emoji} **{target.name}** bị **{meta.vi}** ({dur}t)"
         )
@@ -1024,6 +1058,11 @@ def build_player_combatant(
         thorn_pct=cs.thorn_pct,
         thorn_from_shield=cs.thorn_from_shield,
         stun_on_hit_pct=cs.stun_on_hit_pct,
+        dot_dmg_bonus=cs.dot_dmg_bonus,
+        burn_dmg_bonus=cs.burn_dmg_bonus,
+        bleed_dmg_bonus=cs.bleed_dmg_bonus,
+        poison_dmg_bonus=cs.poison_dmg_bonus,
+        dot_scales_hp_pct=cs.dot_scales_hp_pct,
     )
 
 

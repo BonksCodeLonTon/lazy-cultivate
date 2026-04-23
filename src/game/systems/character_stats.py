@@ -99,6 +99,13 @@ class CombatStats:
     thorn_pct: float = 0.0
     thorn_from_shield: bool = False
     stun_on_hit_pct: float = 0.0
+    # ── DoT damage amplifiers (cross-build) ───────────────────────────────
+    dot_dmg_bonus: float = 0.0
+    burn_dmg_bonus: float = 0.0
+    bleed_dmg_bonus: float = 0.0
+    poison_dmg_bonus: float = 0.0
+    # Rare late-game flag: reverts DoTs to the legacy %HP model.
+    dot_scales_hp_pct: bool = False
     mp_reserved: int = 0          # MP locked by active formation
     mp_reserve_pct: float = 0.0   # fraction of raw mp_max that's reserved
     resistances: dict[str, float] = field(default_factory=dict)
@@ -173,7 +180,9 @@ def compute_combat_stats(
     )
     realm_power_bonus = total_stages * REALM_POWER_BONUS_PER_STAGE
 
-    spd_base  = char.stats.spd + bonuses.get("spd_bonus", 0)
+    # Equipment can contribute flat spd_bonus too (e.g. boot affixes).
+    _equip_spd_bonus = int((equip_stats or {}).get("spd_bonus", 0))
+    spd_base  = char.stats.spd + bonuses.get("spd_bonus", 0) + _equip_spd_bonus
     spd_final = round(spd_base * (1.0 + bonuses.get("spd_pct", 0.0)))
 
     # ── Combat ratings ────────────────────────────────────────────────────────
@@ -228,6 +237,12 @@ def compute_combat_stats(
     thorn_pct                    = float(bonuses.get("thorn_pct", 0.0))
     thorn_from_shield            = bool(bonuses.get("thorn_from_shield", False))
     stun_on_hit_pct              = float(bonuses.get("stun_on_hit_pct", 0.0))
+    # DoT-amplifier fields (cross-build)
+    dot_dmg_bonus                = float(bonuses.get("dot_dmg_bonus", 0.0))
+    burn_dmg_bonus               = float(bonuses.get("burn_dmg_bonus", 0.0))
+    bleed_dmg_bonus              = float(bonuses.get("bleed_dmg_bonus", 0.0))
+    poison_dmg_bonus             = float(bonuses.get("poison_dmg_bonus", 0.0))
+    dot_scales_hp_pct            = bool(bonuses.get("dot_scales_hp_pct", False))
     slow_on_hit_pct   = bonuses.get("slow_on_hit_pct", 0.0)
     paralysis_on_crit = bonuses.get("paralysis_on_crit", False)
     freeze_on_skill   = bonuses.get("freeze_on_skill", False)
@@ -320,6 +335,12 @@ def compute_combat_stats(
         thorn_pct                    += float(equip_stats.get("thorn_pct", 0.0))
         thorn_from_shield             = thorn_from_shield or bool(equip_stats.get("thorn_from_shield", False))
         stun_on_hit_pct              += float(equip_stats.get("stun_on_hit_pct", 0.0))
+        # DoT-amplifier fields
+        dot_dmg_bonus                += float(equip_stats.get("dot_dmg_bonus", 0.0))
+        burn_dmg_bonus               += float(equip_stats.get("burn_dmg_bonus", 0.0))
+        bleed_dmg_bonus              += float(equip_stats.get("bleed_dmg_bonus", 0.0))
+        poison_dmg_bonus             += float(equip_stats.get("poison_dmg_bonus", 0.0))
+        dot_scales_hp_pct             = dot_scales_hp_pct or bool(equip_stats.get("dot_scales_hp_pct", False))
         slow_on_hit_pct   += equip_stats.get("slow_on_hit_pct", 0.0)
         paralysis_on_crit  = paralysis_on_crit or bool(equip_stats.get("paralysis_on_crit", False))
         freeze_on_skill    = freeze_on_skill   or bool(equip_stats.get("freeze_on_skill", False))
@@ -389,6 +410,11 @@ def compute_combat_stats(
         thorn_pct=thorn_pct,
         thorn_from_shield=thorn_from_shield,
         stun_on_hit_pct=stun_on_hit_pct,
+        dot_dmg_bonus=dot_dmg_bonus,
+        burn_dmg_bonus=burn_dmg_bonus,
+        bleed_dmg_bonus=bleed_dmg_bonus,
+        poison_dmg_bonus=poison_dmg_bonus,
+        dot_scales_hp_pct=dot_scales_hp_pct,
         mp_reserved=mp_reserved,
         mp_reserve_pct=reserve_pct,
         resistances=resistances,

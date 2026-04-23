@@ -522,11 +522,38 @@ def get_periodic_damage(combatant: "Combatant") -> list[tuple[str, int, bool]]:
         else:
             base_pct = meta.dot_pct
 
-        dmg = max(1, int(combatant.hp_max * base_pct))
+        if combatant.dot_scales_hp_pct:
+            # Legacy / late-game model: damage as % of holder's hp_max.
+            dmg = max(1, int(combatant.hp_max * base_pct))
+        else:
+            # Default: scale with applier's atk/matk power (stored at DoT apply time).
+            from src.game.constants.balance import DOT_POWER_COEF
+            max_power = max(
+                (s.get("power", 0) for s in combatant.dot_bonus_sources.values()),
+                default=0,
+            )
+            if max_power <= 0:
+                # No source stored (e.g. enemy-applied DoT with no power captured);
+                # fall back to a modest %hp tick so the effect still deals damage.
+                dmg = max(1, int(combatant.hp_max * base_pct * 0.5))
+            else:
+                dmg = max(1, int(max_power * base_pct * DOT_POWER_COEF))
         # Apply holder's elemental resistance to reduce DoT damage
         if meta.dot_element:
             res_pct = max(0.0, min(0.75, combatant.resistances.get(meta.dot_element, 0.0)))
             dmg = max(1, int(dmg * (1.0 - res_pct)))
+
+        # Apply amplifiers inherited from the attacker (propagated on DoT apply).
+        # Global dot_dmg_bonus stacks with per-type bonuses.
+        amp = combatant.dot_dmg_bonus
+        if effect_key == EffectKey.DEBUFF_THIEU_DOT:
+            amp += combatant.burn_dmg_bonus
+        elif effect_key == EffectKey.DEBUFF_CHAY_MAU:
+            amp += combatant.bleed_dmg_bonus
+        elif effect_key == EffectKey.DEBUFF_DOC_TO:
+            amp += combatant.poison_dmg_bonus
+        if amp > 0:
+            dmg = max(1, int(dmg * (1.0 + amp)))
 
         # DoT crit — 25% chance when enabled, +50% damage
         is_crit = False

@@ -226,6 +226,25 @@
     "description_vi": "Nhẫn Kim Tổ — bạo kích khổng lồ vs chảy máu. Bộ Kim Tổ 3 mảnh."
   },
   {
+    "key": "uniq_huyet_co_kiem",
+    "vi": "Huyết Cổ Tổ Kiếm",
+    "base": "base_longsword_2h",
+    "slot": "weapon",
+    "realm": 9,
+    "grade": 4,
+    "fixed_stats": {
+      "atk": 210,
+      "crit_rating": 480,
+      "crit_dmg_rating": 560
+    },
+    "passive_bonus": {
+      "dot_scales_hp_pct": true,
+      "bleed_on_hit_pct": 1.0,
+      "true_dmg_pct": 0.06
+    },
+    "description_vi": "Tổ kiếm Huyết Cổ — báu vật thượng cổ, khiến Chảy Máu ngươi gây ra đánh theo **% HP tối đa** mục tiêu (cơ chế cổ rất hiếm). Mọi đòn đánh đều Chảy Máu, 6% HP chân thương."
+  },
+  {
     "key": "uniq_kim_tu_kiem",
     "vi": "Kim Đạo Tổ Kiếm",
     "base": "base_longsword_2h",
