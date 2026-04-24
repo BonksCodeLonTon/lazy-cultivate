@@ -155,9 +155,7 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         equipped_by_slot (dict[slot_key, display_name])
         resistances (dict[element, float] — only non-zero entries)
     """
-    from src.game.constants.currencies import TURNS_PER_CULT_LEVEL
-
-    LEVELS_PER_REALM = 9
+    from src.game.constants.realms import get_realm, LEVELS_PER_REALM
     embed = discord.Embed(title=f"⚔️  {player_name}", color=0x5865F2)
     thumb = avatar_url or THUMBNAIL_URL
     if thumb:
@@ -231,15 +229,21 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         xp        = stats.get(xp_k, 0)
         label     = stats.get(label_k, "Chưa Tu Luyện")
         tier_icon = REALM_TIER_ICONS[min(realm_idx, len(REALM_TIER_ICONS) - 1)]
-        xp_max    = TURNS_PER_CULT_LEVEL[axis_key]
+        realm     = get_realm(axis_key, realm_idx)
         at_max    = level >= LEVELS_PER_REALM
         marker    = " **◀**" if axis_key == active_axis else ""
 
         header = f"{icon} {tier_icon} **{label}** · Cấp {level}/{LEVELS_PER_REALM}{marker}"
-        if at_max:
+        if at_max or realm is None:
             body = "  ⚡ *Sẵn sàng đột phá!*"
         else:
-            body = f"  `{progress_bar(xp, xp_max, 12)}` {xp:,}/{xp_max:,}"
+            # Progress within the current bậc (level → level+1)
+            table          = realm.level_exp_table
+            next_threshold = table[level]              # xp to reach level+1
+            prev_threshold = table[level - 1] if level >= 2 else 0
+            xp_in_level    = max(0, xp - prev_threshold)
+            span           = max(1, next_threshold - prev_threshold)
+            body = f"  `{progress_bar(xp_in_level, span, 12)}` {xp_in_level:,}/{span:,}"
         cult_lines.append(f"{header}\n{body}")
 
     embed.add_field(

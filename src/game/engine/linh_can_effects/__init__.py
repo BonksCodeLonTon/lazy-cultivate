@@ -5,11 +5,12 @@ exposes orchestration helpers used by the combat engine so callers don't have
 to juggle nine imports.
 
 Phase conventions:
-  pre_turn (on target)  → try_dodge    — Phong
-  pre_turn (on actor)   → try_cleanse  — Quang
-  pre_damage (on actor) → get_pen_pct  — Kim
-  on_hit (on actor)     → on_hit       — Hoả / Thuỷ / Lôi / Âm
-  periodic (on self)    → check_shield — Thổ
+  pre_turn (on target)  → try_dodge       — Phong
+  pre_turn (on actor)   → try_cleanse     — Quang
+  pre_damage (on actor) → get_pen_pct     — Kim
+  on_hit (on actor)     → on_hit          — Hoả / Thuỷ / Lôi / Âm
+  periodic (on self)    → check_shield    — Thổ
+  stat-bonus (passive)  → get_regen_bonus — Mộc
 
 Drop a new module here and wire it through the appropriate orchestrator
 function to add a new Linh Căn effect — no call-site changes elsewhere.
@@ -17,16 +18,18 @@ function to add a new Linh Căn effect — no call-site changes elsewhere.
 from __future__ import annotations
 
 import random
+from collections.abc import Iterable
 from typing import TYPE_CHECKING
 
-from . import am, hoa, kim, loi, phong, quang, tho, thuy
+from . import am, hoa, kim, loi, moc, phong, quang, tho, thuy
 
 if TYPE_CHECKING:
     from src.game.systems.combatant import Combatant
 
 __all__ = [
-    "am", "hoa", "kim", "loi", "phong", "quang", "tho", "thuy",
+    "am", "hoa", "kim", "loi", "moc", "phong", "quang", "tho", "thuy",
     "try_dodge", "try_cleanse", "get_pen_pct", "on_hit", "check_shield",
+    "get_regen_bonus",
 ]
 
 
@@ -65,3 +68,8 @@ def on_hit(
 def check_shield(combatant: "Combatant", log: list[str]) -> None:
     """Periodic: Thổ may activate a one-time HP shield when low."""
     tho.check_shield(combatant, log)
+
+
+def get_regen_bonus(linh_can: Iterable[str]) -> float:
+    """Stat-bonus: Mộc grants a flat max-HP regen fraction when present."""
+    return moc.get_regen_bonus(linh_can)

@@ -14,6 +14,7 @@ from src.game.constants.balance import (
     BASE_MP_REGEN_PCT,
     MAX_FINAL_DMG_REDUCE,
 )
+from src.game.engine import linh_can_effects as lc_effects
 
 
 def active_formation_gem_keys(player) -> list[str]:
@@ -159,9 +160,10 @@ def compute_combat_stats(
     const_bonuses = compute_constitution_bonuses(char.constitution_type)
     lc_bonuses    = compute_linh_can_bonuses(char.linh_can)
 
-    # Mộc Linh Căn passive: Hồi Xuân — always heals 4% HP per turn in combat
-    if "moc" in char.linh_can:
-        lc_bonuses["hp_regen_pct"] = lc_bonuses.get("hp_regen_pct", 0.0) + 0.04
+    # Mộc Linh Căn passive: Hồi Xuân — always heals a flat % HP per turn in combat
+    moc_regen = lc_effects.get_regen_bonus(char.linh_can)
+    if moc_regen:
+        lc_bonuses["hp_regen_pct"] = lc_bonuses.get("hp_regen_pct", 0.0) + moc_regen
 
     bonuses = merge_bonuses(form_bonuses, const_bonuses, lc_bonuses)
 

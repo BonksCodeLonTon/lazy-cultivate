@@ -21,19 +21,28 @@ from src.game.systems.cultivation import advance_cultivation_xp
 def compute_offline_ticks(character: Character, last_tick_at: datetime) -> dict:
     now = datetime.now(timezone.utc)
 
+    # Daily reset. Two triggers:
+    #   1. ``last_tick_at`` is on a previous UTC day (normal rollover).
+    #   2. ``turns_today`` is at/over the cap (recovers players whose counter
+    #      got stuck before the reset existed — otherwise the min() below
+    #      floors every tick to 0 permanently).
+    day_rolled = last_tick_at.astimezone(timezone.utc).date() != now.date()
+    over_cap   = character.turns_today >= TURNS_PER_DAY
+    if day_rolled or over_cap:
+        character.turns_today = 0
+
     elapsed_seconds = (now - last_tick_at).total_seconds()
-
     turns = int(elapsed_seconds // SECONDS_PER_TURN)
-
     turns = min(turns, TURNS_PER_DAY - character.turns_today)
-    
 
     if turns <= 0:
         return {
-            "turns": 0,
+            "turns":        0,
             "merit_gained": 0,
             "karma_gained": 0,
-            "cult_result": {}
+            "cult_result":  {},
+            "turns_today":  character.turns_today,
+            "cap_reached":  character.turns_today >= TURNS_PER_DAY,
         }
 
     bonus_turns_used = min(turns, character.bonus_turns_remaining)
@@ -70,6 +79,8 @@ def compute_offline_ticks(character: Character, last_tick_at: datetime) -> dict:
         "karma_gained": karma_gained,
         "evil_title":   evil_title,
         "cult_result":  cult_result,
+        "turns_today":  character.turns_today,
+        "cap_reached":  character.turns_today >= TURNS_PER_DAY,
     }
 
 

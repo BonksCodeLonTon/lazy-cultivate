@@ -11,7 +11,7 @@ from discord.ext import commands
 from src.db.connection import get_session
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.currencies import SECONDS_PER_TURN
-from src.game.constants.realms import BODY_REALMS, QI_REALMS, FORMATION_REALMS, realm_label, TRIBULATION_EXP_COST
+from src.game.constants.realms import BODY_REALMS, QI_REALMS, FORMATION_REALMS, realm_label
 from src.game.systems.cultivation import (
     can_breakthrough,
     apply_breakthrough,
@@ -97,13 +97,16 @@ async def _apply_ticks_to_player(player, repo, axis: str) -> dict:
 # ── Embed builders ────────────────────────────────────────────────────────────
 
 def _cultivate_embed(axis: str, result: dict) -> discord.Embed:
-    axis_label = AXIS_LABELS.get(axis, axis)
-    axis_icon  = AXIS_ICONS.get(axis, "🌀")
-    turns      = result.get("turns", 0)
-    merit      = result.get("merit_gained", 0)
-    karma      = result.get("karma_gained", 0)
-    cult       = result.get("cult_result", {})
-    levels_up  = cult.get("levels_gained", 0)
+    axis_label  = AXIS_LABELS.get(axis, axis)
+    axis_icon   = AXIS_ICONS.get(axis, "🌀")
+    turns       = result.get("turns", 0)
+    merit       = result.get("merit_gained", 0)
+    karma       = result.get("karma_gained", 0)
+    cult        = result.get("cult_result", {})
+    exp_gained  = cult.get("exp_gained", 0)
+    levels_up   = cult.get("levels_gained", 0)
+    ready_trib  = cult.get("is_ready_for_tribulation", False)
+    cap_reached = result.get("cap_reached", False)
 
     lines = [
         f"Trục: {axis_icon} **{axis_label}**",
@@ -111,14 +114,19 @@ def _cultivate_embed(axis: str, result: dict) -> discord.Embed:
         f"Công Đức nhận: **+{merit:,}**",
         f"Nghiệp Lực tích lũy: **+{karma:,}**",
     ]
+    if exp_gained:
+        lines.append(f"📘 EXP tu luyện: **+{exp_gained:,}**")
     if levels_up:
         lines.append(f"✨ Cảnh giới tiến: **+{levels_up} cấp**")
-    if cult.get("merit_spent"):
-        lines.append(f"  *(Tiêu tốn {cult['merit_spent']:,} Công Đức để luyện Trận Đạo)*")
-    if cult.get("blocked_by_merit"):
-        lines.append("⚠️ Thiếu Công Đức — Trận Đạo dừng tiến cấp.")
-    # if cult.get("blocked_at_9") and not levels_up:
-    #     lines.append("📌 Đã đạt Cấp 9 — nhấn ⚡ Đột Phá để đột phá.")
+    if axis == "formation" and turns > 0 and exp_gained == 0:
+        lines.append("ℹ️ *Trận Đạo chỉ tiến bằng Công Đức — dùng `/study_formation`.*")
+    if turns == 0:
+        if cap_reached:
+            lines.append("⏳ *Đã đạt giới hạn **1440 lượt/ngày** — quay lại ngày mai.*")
+        else:
+            lines.append("⏳ *Chưa đủ thời gian tích lũy — chờ ít nhất 1 phút giữa các lần.*")
+    if ready_trib:
+        lines.append("⚡ Linh khí đã đủ — có thể **Độ Kiếp**!")
 
     return base_embed("🌀 Tu Luyện", "\n".join(lines), color=0x8B5CF6)
 
@@ -127,9 +135,9 @@ def _breakthrough_overview_embed(player, readiness: dict[str, bool]) -> discord.
     embed = base_embed("⚡ Đột Phá Cảnh Giới", color=0xF1C40F)
     for axis, (_, label) in zip(("body", "qi", "formation"), _AXIS_CONFIGS):
         rl = {
-            "body":      realm_label(BODY_REALMS,      player.body_realm,      player.body_level),
-            "qi":        realm_label(QI_REALMS,         player.qi_realm,        player.qi_level),
-            "formation": realm_label(FORMATION_REALMS,  player.formation_realm, player.formation_level),
+            "body":      realm_label("body",      player.body_realm,      player.body_xp),
+            "qi":        realm_label("qi",        player.qi_realm,        player.qi_xp),
+            "formation": realm_label("formation", player.formation_realm, player.formation_xp),
         }[axis]
         status = "✅ Sẵn sàng đột phá" if readiness[axis] else "🔒 Chưa đủ điều kiện"
         embed.add_field(name=label, value=f"{rl}\n{status}", inline=True)
@@ -296,9 +304,9 @@ class BreakthroughView(discord.ui.View):
                         return
 
                     realm_name = realm_label(
-                        QI_REALMS if axis == "qi" else BODY_REALMS if axis == "body" else FORMATION_REALMS,
+                        axis,
                         getattr(player, f"{axis}_realm"),
-                        getattr(player, f"{axis}_level")
+                        getattr(player, f"{axis}_xp"),
                     )
                     await interaction.followup.send(f"**{player.name}** đã vượt qua Thiên Kiếp của cảnh giới **{realm_name}**!")
 
@@ -342,9 +350,9 @@ class BreakthroughView(discord.ui.View):
                     new_readiness[ax] = ready
 
                 realm_name = realm_label(
-                    QI_REALMS if axis == "qi" else BODY_REALMS if axis == "body" else FORMATION_REALMS,
+                    axis,
                     getattr(player, f"{axis}_realm"),
-                    getattr(player, f"{axis}_level")
+                    getattr(player, f"{axis}_xp"),
                 )
 
                 embed = success_embed(f"Chúc mừng bạn đã đột phá lên **{realm_name}**!")

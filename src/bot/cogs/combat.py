@@ -391,7 +391,17 @@ class CombatCog(commands.Cog, name="Combat"):
             from src.game.systems.character_stats import active_formation_gem_keys, compute_combat_stats
             gem_keys = active_formation_gem_keys(player)
 
-            cs = compute_combat_stats(char, gem_count=len(gem_keys), gem_keys=gem_keys)
+            # Fold in equipment bonuses so hp_max/mp_max reflect the real
+            # effective caps (equipment often contributes flat hp_max).
+            equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
+            equip_stats = compute_equipment_stats(equipped)
+
+            cs = compute_combat_stats(
+                char,
+                gem_count=len(gem_keys),
+                equip_stats=equip_stats,
+                gem_keys=gem_keys,
+            )
             player.hp_current = cs.hp_max
             player.mp_current = cs.mp_max
             await prepo.save(player)

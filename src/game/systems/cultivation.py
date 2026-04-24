@@ -7,18 +7,14 @@ from src.game.constants.balance import (
     BASE_MATK_PER_LEVEL, BASE_MP_PER_LEVEL,
     FORMATION_PATH_MULT_PER_STAGE,
 )
-from src.game.constants.currencies import (
-    FORMATION_MERIT_COST_BASE,
-    TURNS_PER_CULT_LEVEL,
-)
 from src.game.constants.realms import (
     BODY_REALMS,
     QI_REALMS,
     FORMATION_REALMS,
     LEVELS_PER_REALM,
     MERIT_TO_FORMATION_EXP_RATIO,
-    TRIBULATION_EXP_COST,
-    get_level_from_exp
+    get_level_from_exp,
+    get_realm,
 )
 from src.game.models.character import Character
 
@@ -360,14 +356,28 @@ def get_breakthrough_requirements(axis: str, realm: int) -> dict:
     return {"item_key": None, "quantity": 0, "merit_cost": 0}
 
 
-def can_breakthrough(character: Character, axis: str) -> tuple[bool, str]:
-    xp_attr = f"{axis}_xp"
-    current_xp = getattr(character, xp_attr)
-    
-    if current_xp < TRIBULATION_EXP_COST:
-        needed = TRIBULATION_EXP_COST - current_xp
+def can_breakthrough(
+    character: Character,
+    axis: str,
+    inventory: dict[str, int] | None = None,
+) -> tuple[bool, str]:
+    """Ready to break through once xp ≥ the current realm's bậc-9 threshold.
+
+    ``inventory`` is accepted for call-site compatibility; material checks
+    happen in ``apply_breakthrough``.
+    """
+    del inventory
+    realm_idx = getattr(character, f"{axis}_realm")
+    realm = get_realm(axis, realm_idx)
+    if realm is None:
+        return False, "Cảnh giới không hợp lệ."
+
+    current_xp = getattr(character, f"{axis}_xp")
+    max_xp = realm.level_exp_table[-1]
+    if current_xp < max_xp:
+        needed = max_xp - current_xp
         return False, f"Linh khí chưa đủ tụ (Thiếu {needed:,} EXP để Độ Kiếp)."
-    
+
     return True, "Cảm nhận thiên địa dị động, Thiên Kiếp chuẩn bị giáng xuống!"
 
 
@@ -430,116 +440,69 @@ def apply_breakthrough(
 
 
 def advance_cultivation_xp(character: Character, turns: int) -> dict:
-    """Apply *turns* of cultivation XP to *character.active_axis*.
+    """Apply ``turns`` of cultivation to ``character.active_axis``.
 
-    Levels up automatically when XP threshold is reached, stopping at
-    level 9 (manual breakthrough required to advance realm).
+    EXP earned = ``turns × realm.base_exp_rate`` on the current realm's table.
+    Level (bậc 1..9) is derived from xp via the realm's level table.
 
-    For Trận Đạo: deducts Công Đức per level; stops leveling if merit runs out.
-
-    Returns a summary dict:
-      levels_gained, merit_spent, blocked_by_merit (bool), blocked_at_level_9 (bool)
+    Formation has ``base_exp_rate == 0`` by design — Trận Đạo only advances
+    through ``study_formation_with_merit`` (Công Đức → formation EXP).
     """
     axis = character.active_axis
-    turns_per_level = TURNS_PER_CULT_LEVEL[axis]
-
-    xp_attr    = f"{axis}_xp"
-    level_attr = f"{axis}_level" if axis != "formation" else "formation_level"
-    realm_attr = f"{axis}_realm" if axis != "formation" else "formation_realm"
-
-    xp    = getattr(character, xp_attr)
-    level = getattr(character, level_attr)
-    realm = getattr(character, realm_attr)
-
-    xp += turns
-    levels_gained    = 0
-    merit_spent      = 0
-    blocked_by_merit = False
-
-    while xp >= turns_per_level and level < LEVELS_PER_REALM:
-        # Formation costs Công Đức per level
-        if axis == "formation":
-            cost = FORMATION_MERIT_COST_BASE * (realm + 1)
-            if character.merit < cost:
-                blocked_by_merit = True
-                break
-            character.merit -= cost
-            merit_spent += cost
-
-        xp    -= turns_per_level
-        level += 1
-        levels_gained += 1
-
-    # Cap XP at threshold when stuck at level 9 (avoid infinite accumulation)
-    if level >= LEVELS_PER_REALM:
-        xp = min(xp, turns_per_level - 1)
-
-    setattr(character, xp_attr,    xp)
-    setattr(character, level_attr, level)
-
-    return {
-        "levels_gained":    levels_gained,
-        "merit_spent":      merit_spent,
-        "blocked_by_merit": blocked_by_merit,
-        "blocked_at_9":     level >= LEVELS_PER_REALM,
-    }
-
-
-def advance_cultivation_xp(character: Character, turns: int) -> dict:
-    axis = character.active_axis
-    
-    realms_map = {
-        "qi": QI_REALMS,
-        "body": BODY_REALMS,
-        "formation": FORMATION_REALMS
-    }
-    r_list = realms_map.get(axis, QI_REALMS)
     realm_idx = getattr(character, f"{axis}_realm")
-    realm = r_list[realm_idx]
-    
+    realm = get_realm(axis, realm_idx)
+
+    if realm is None:
+        return {
+            "axis":                     axis,
+            "exp_gained":               0,
+            "current_total_xp":         getattr(character, f"{axis}_xp"),
+            "levels_gained":            0,
+            "is_ready_for_tribulation": False,
+        }
+
     exp_gained = turns * realm.base_exp_rate
-    
+
     xp_attr = f"{axis}_xp"
     current_xp = getattr(character, xp_attr)
     new_total_xp = current_xp + exp_gained
     setattr(character, xp_attr, new_total_xp)
-    
-    level_attr = f"{axis}_level" if axis != "formation" else "formation_level"
+
+    level_attr = f"{axis}_level"
     old_level = getattr(character, level_attr)
-    new_level = get_level_from_exp(new_total_xp)
+    new_level = get_level_from_exp(new_total_xp, realm)
     setattr(character, level_attr, new_level)
-    
+
     return {
-        "axis": axis,
-        "exp_gained": exp_gained,
-        "current_total_xp": new_total_xp,
-        "levels_gained": max(0, new_level - old_level),
-        "is_ready_for_tribulation": new_total_xp >= TRIBULATION_EXP_COST
+        "axis":                     axis,
+        "exp_gained":               exp_gained,
+        "current_total_xp":         new_total_xp,
+        "levels_gained":            max(0, new_level - old_level),
+        "is_ready_for_tribulation": new_total_xp >= realm.level_exp_table[-1],
     }
 
 def study_formation_with_merit(character: Character, merits: int) -> dict:
-    """
-    Hàm mới: Tu luyện Trận Đạo bằng cách tiêu tốn Công Đức.
-    Dùng cho yêu cầu: 'Trận pháp nâng cấp bằng công đức'.
-    """
+    """Convert Công Đức into Trận Đạo EXP and re-derive bậc on the current
+    formation realm's level table."""
     if merits <= 0:
         return {"success": False, "error": "Số lượng Công Đức không hợp lệ."}
-        
+
     if character.merit < merits:
         return {"success": False, "error": f"Không đủ Công Đức (Cần {merits}, hiện có {character.merit})"}
-    
+
     exp_gained = merits * MERIT_TO_FORMATION_EXP_RATIO
-    
     character.merit -= merits
     character.formation_xp += exp_gained
-    
-    new_level = get_level_from_exp(character.formation_xp)
-    character.formation_level = new_level
+
+    realm = get_realm("formation", character.formation_realm)
+    character.formation_level = (
+        get_level_from_exp(character.formation_xp, realm) if realm else 1
+    )
     
     return {
-        "success": True,
-        "merit_spent": merits,
-        "exp_gained": exp_gained,
+        "success":          True,
+        "merit_spent":      merits,
+        "exp_gained":       exp_gained,
         "current_total_xp": character.formation_xp,
-        "current_level": new_level
+        "current_level":    character.formation_level,
     }

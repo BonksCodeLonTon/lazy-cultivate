@@ -61,7 +61,7 @@ def _formation_hub_embed(player, form_bonuses: dict) -> discord.Embed:
     form_data = registry.get_formation(active_key) if active_key else None
     stages = player.formation_realm * 9 + player.formation_level
     path_mult = formation_path_multiplier(stages)
-    path_label = realm_label(FORMATION_REALMS, player.formation_realm, player.formation_level)
+    path_label = realm_label("formation", player.formation_realm, player.formation_xp)
 
     if form_data is None:
         desc = (
@@ -86,7 +86,7 @@ def _formation_detail_embed(player, form_data: dict, form_bonuses: dict) -> disc
     from src.db.models.formation import FORMATION_GEM_SLOTS as MAX
     stages = player.formation_realm * 9 + player.formation_level
     path_mult = formation_path_multiplier(stages)
-    path_label = realm_label(FORMATION_REALMS, player.formation_realm, player.formation_level)
+    path_label = realm_label("formation", player.formation_realm, player.formation_xp)
 
     elem = form_data.get("element") or "—"
     elem_vi = _GEM_ELEMENT_VI.get(elem, elem.title())
