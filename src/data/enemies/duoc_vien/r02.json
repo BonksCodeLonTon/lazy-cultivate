@@ -1,0 +1,65 @@
+[
+  {
+    "key": "DuocVienR2_01",
+    "vi": "Linh Mộc Thủ Vệ",
+    "en": "Spirit Wood Guardian",
+    "rank": "pho_thong",
+    "realm_level": 2,
+    "element": "moc",
+    "base_hp": 467,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R2",
+      "EnemyPhong_R2"
+    ],
+    "loot_table_key": "DuocVienLoot_2",
+    "base_atk": 12,
+    "base_matk": 17,
+    "base_def": 12,
+    "mp_regen_pct": 0.04
+  },
+  {
+    "key": "DuocVienR2_02",
+    "vi": "Bích Lam Hoa Yêu",
+    "en": "Azure Blue Flower Yao",
+    "rank": "pho_thong",
+    "realm_level": 2,
+    "element": "moc",
+    "base_hp": 467,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R2",
+      "EnemyPhong_R2"
+    ],
+    "loot_table_key": "DuocVienLoot_2",
+    "base_atk": 12,
+    "base_matk": 17,
+    "base_def": 12,
+    "mp_regen_pct": 0.04
+  },
+  {
+    "key": "DuocVienR2_03",
+    "vi": "Cổ Đằng Triền Ma",
+    "en": "Ancient Vine Binding Demon",
+    "rank": "cuong_gia",
+    "realm_level": 2,
+    "element": "moc",
+    "base_hp": 577,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R2",
+      "EnemyPhong_R2"
+    ],
+    "loot_table_key": "DuocVienLoot_2",
+    "base_atk": 15,
+    "base_matk": 21,
+    "base_def": 15,
+    "mp_regen_pct": 0.04
+  }
+]

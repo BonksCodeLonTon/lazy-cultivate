@@ -6,10 +6,17 @@
     "rank": "cuong_gia",
     "realm_level": 4,
     "element": "hoa",
-    "base_hp": 800,
+    "base_hp": 1360,
     "base_spd": 11,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyHoa_T2", "EnemyLoi_T2"]
+    "skill_keys": [
+      "EnemyHoa_T2",
+      "EnemyLoi_T2"
+    ],
+    "base_atk": 45,
+    "base_matk": 90,
+    "base_def": 40,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "StrongBangPhong",
@@ -18,10 +25,17 @@
     "rank": "cuong_gia",
     "realm_level": 4,
     "element": "thuy",
-    "base_hp": 700,
+    "base_hp": 1190,
     "base_spd": 13,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyBang_T2", "EnemyPhong_T2"]
+    "skill_keys": [
+      "EnemyBang_T2",
+      "EnemyPhong_T2"
+    ],
+    "base_atk": 45,
+    "base_matk": 90,
+    "base_def": 40,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "StrongKimMoc",
@@ -30,10 +44,17 @@
     "rank": "cuong_gia",
     "realm_level": 4,
     "element": "kim",
-    "base_hp": 900,
-    "base_spd": 9,
+    "base_hp": 1530,
+    "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyKim_T2", "EnemyMoc_T2"]
+    "skill_keys": [
+      "EnemyKim_T2",
+      "EnemyMoc_T2"
+    ],
+    "base_atk": 90,
+    "base_matk": 45,
+    "base_def": 50,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "StrongThuyHoa",
@@ -42,10 +63,17 @@
     "rank": "cuong_gia",
     "realm_level": 4,
     "element": "thuy",
-    "base_hp": 1000,
-    "base_spd": 7,
+    "base_hp": 2000,
+    "base_spd": 11,
+    "base_atk": 130,
+    "base_matk": 150,
+    "base_def": 70,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyThuy_T2", "SkillDefThuy"]
+    "mp_regen_pct": 0.06,
+    "skill_keys": [
+      "EnemyThuy_T3",
+      "EnemyHoa_T3"
+    ]
   },
   {
     "key": "StrongLoiTo",
@@ -54,10 +82,17 @@
     "rank": "cuong_gia",
     "realm_level": 4,
     "element": "loi",
-    "base_hp": 850,
+    "base_hp": 1445,
     "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyLoi_T2", "EnemyTho_T2"]
+    "skill_keys": [
+      "EnemyLoi_T2",
+      "EnemyTho_T2"
+    ],
+    "base_atk": 45,
+    "base_matk": 90,
+    "base_def": 40,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "StrongPhongMoc",
@@ -66,9 +101,16 @@
     "rank": "cuong_gia",
     "realm_level": 4,
     "element": "phong",
-    "base_hp": 650,
+    "base_hp": 1105,
     "base_spd": 15,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyPhong_T2", "EnemyMoc_T2"]
+    "skill_keys": [
+      "EnemyPhong_T2",
+      "EnemyMoc_T2"
+    ],
+    "base_atk": 90,
+    "base_matk": 45,
+    "base_def": 50,
+    "mp_regen_pct": 0.06
   }
 ]

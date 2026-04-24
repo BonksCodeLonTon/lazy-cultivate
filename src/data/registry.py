@@ -27,6 +27,7 @@ class GameRegistry:
         self.uniques: dict[str, dict] = {}             # key → unique item definition
         self.forge_recipes: list[dict] = []            # grade-ordered forge recipe list
         self.world_bosses: dict[str, dict] = {}        # key → world boss definition
+        self.pill_recipes: dict[str, dict] = {}        # key → Luyện Đan recipe
         self._loaded = False
 
     @classmethod
@@ -37,7 +38,11 @@ class GameRegistry:
         return cls._instance
 
     # Danh mục file item nằm trong thư mục con src/data/items/
-    _ITEM_FILES = ("chests", "elixirs", "gems", "materials", "scrolls", "specials", "forge_materials")
+    _ITEM_FILES = (
+        "chests", "elixirs", "gems", "materials", "scrolls", "specials",
+        "forge_materials", "super_materials",
+        "herbs", "yeu_thu", "pills", "furnaces",
+    )
     # Equipment definition files in src/data/equipment/
     _EQUIP_FILES = ("bases", "affixes", "uniques")
 
@@ -53,7 +58,17 @@ class GameRegistry:
         self.bases, self.affixes, self.uniques = self._load_equipment_defs()
         self.forge_recipes = self._load_forge_recipes()
         self.world_bosses = self._load_keyed("world_bosses.json")
+        self.pill_recipes = self._load_pill_recipes()
         self._loaded = True
+
+    def _load_pill_recipes(self) -> dict[str, dict]:
+        """Load Luyện Đan recipes from src/data/recipes/pill_recipes.json."""
+        path = DATA_DIR / "recipes" / "pill_recipes.json"
+        if not path.exists():
+            log.warning("GameRegistry: Missing recipes/pill_recipes.json")
+            return {}
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return {entry["key"]: entry for entry in data}
 
     def _load_items(self) -> dict[str, dict]:
         """Merge all per-type item files from src/data/items/ into one dict."""
@@ -116,17 +131,19 @@ class GameRegistry:
         return merged
 
     def _load_enemy_dir(self) -> dict[str, dict]:
-        """Merge all JSON files from src/data/enemies/ into one dict, keyed by 'key'.
+        """Merge all JSON files under src/data/enemies/** into one dict, keyed by 'key'.
 
-        Files are loaded in sorted order (realm_01.json … realm_10.json) so that
-        adding a new realm file requires no registry changes — just drop the file in.
+        Subdirectories are supported so that enemy packages can be split by
+        dungeon type (``normal/realm_01.json``, ``duoc_vien/r01.json``, …).
+        Files are loaded in sorted path order; drop-in a new file or a new
+        subfolder to add a realm without touching the registry.
         """
         merged: dict[str, dict] = {}
         base = DATA_DIR / "enemies"
         if not base.exists():
             log.error("GameRegistry: Missing enemies/ directory")
             return {}
-        for path in sorted(base.glob("*.json")):
+        for path in sorted(base.rglob("*.json")):
             data = json.loads(path.read_text(encoding="utf-8"))
             for entry in data:
                 merged[entry["key"]] = entry
@@ -217,6 +234,18 @@ class GameRegistry:
     def get_constitution(self, key: str) -> dict | None:
         return self.constitutions.get(key)
 
+    def rollable_constitutions(self) -> list[dict]:
+        """Return constitutions eligible for the /register random roll.
+
+        A constitution is rollable iff its ``roll_weight`` is > 0 AND it has
+        no ``special_requirements`` (late-game thần thể cannot appear here).
+        """
+        return [
+            c for c in self.constitutions.values()
+            if int(c.get("roll_weight", 0)) > 0
+            and not c.get("special_requirements")
+        ]
+
     def get_dungeon(self, key: str) -> dict | None:
         return self.dungeons.get(key)
 
@@ -232,8 +261,45 @@ class GameRegistry:
     def get_unique(self, key: str) -> dict | None:
         return self.uniques.get(key)
 
+    def get_super_material(self, key: str) -> dict | None:
+        """Return a super-rare forge material definition, or None if not one.
+
+        Super materials carry a ``granted_passive`` dict that is grafted onto
+        the forged item at craft time. A forge operation may consume at most
+        one — the forge entry point enforces this via a singular argument.
+        """
+        item = self.items.get(key)
+        if item and item.get("type") == "super_material":
+            return item
+        return None
+
     def get_world_boss(self, key: str) -> dict | None:
         return self.world_bosses.get(key)
+
+    def get_pill_recipe(self, key: str) -> dict | None:
+        return self.pill_recipes.get(key)
+
+    def get_herb(self, key: str) -> dict | None:
+        """Return an herb/yeu_thu ingredient by key (any alchemy ingredient type)."""
+        item = self.items.get(key)
+        if item and item.get("type") in ("herb", "yeu_thu"):
+            return item
+        return None
+
+    def get_pill(self, key: str) -> dict | None:
+        item = self.items.get(key)
+        if item and item.get("type") == "pill":
+            return item
+        return None
+
+    def get_furnace(self, key: str) -> dict | None:
+        item = self.items.get(key)
+        if item and item.get("type") == "furnace":
+            return item
+        return None
+
+    def all_furnaces(self) -> list[dict]:
+        return [i for i in self.items.values() if i.get("type") == "furnace"]
 
     def world_bosses_for_realm(self, realm_level: int) -> list[dict]:
         """Return all world bosses whose ``realm`` (1-9) matches the requested realm."""
@@ -247,6 +313,20 @@ class GameRegistry:
     def dungeons_for_realm(self, qi_realm: int) -> list[dict]:
         """Trả về danh sách bí cảnh mà người chơi có thể vào."""
         return [d for d in self.dungeons.values() if d.get("required_qi_realm", 0) <= qi_realm]
+
+    def dungeons_of_type(self, dungeon_type: str) -> list[dict]:
+        """Return all dungeons matching a dungeon_type (``normal`` or ``duoc_vien``).
+
+        Entries without an explicit ``dungeon_type`` field are treated as
+        ``normal`` for backward compatibility with legacy dungeon JSON.
+        """
+        return [d for d in self.dungeons.values()
+                if d.get("dungeon_type", "normal") == dungeon_type]
+
+    def pill_recipes_for_realm(self, qi_realm: int) -> list[dict]:
+        """Return Luyện Đan recipes whose min_qi_realm is unlocked."""
+        return [r for r in self.pill_recipes.values()
+                if r.get("min_qi_realm", 0) <= qi_realm]
 
     def items_by_type(self, item_type: str) -> list[dict]:
         """Lọc vật phẩm theo loại (material, elixir, gem, ...)."""

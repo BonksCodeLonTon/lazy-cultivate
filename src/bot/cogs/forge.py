@@ -20,6 +20,7 @@ from src.game.systems.forge import (
     forge_equipment,
     get_material_grade,
     get_recipe,
+    max_affix_total,
 )
 from src.utils.embed_builder import base_embed, error_embed
 
@@ -117,24 +118,19 @@ async def _nav_grade(
     await interaction.edit_original_response(embed=embed, view=_GradeView(discord_id, slot, base_key, hub_back_fn))
 
 
-async def _nav_confirm(
-    interaction: discord.Interaction,
-    discord_id: int,
-    slot: str,
-    base_key: str,
-    grade: int,
-    hub_back_fn,
-) -> None:
+async def _load_forge_bag(discord_id: int):
+    """Fetch character + inventory slices needed for the forge flow.
+
+    Returns (char, all_items, mats_in_bag, super_mats_in_bag) or None when
+    the player record is missing.
+    """
     async with get_session() as session:
         player_repo = PlayerRepository(session)
         inv_repo    = InventoryRepository(session)
 
         player = await player_repo.get_by_discord_id(discord_id)
         if not player:
-            await interaction.edit_original_response(
-                embed=error_embed("Không tìm thấy nhân vật."), view=None
-            )
-            return
+            return None
         char = _player_to_model(player)
 
         all_items   = await inv_repo.get_all(player.id)
@@ -143,15 +139,159 @@ async def _nav_confirm(
             for it in all_items
             if get_material_grade(it.item_key) is not None
         }
+        super_mats_in_bag = {
+            it.item_key: it.quantity
+            for it in all_items
+            if (registry.get_item(it.item_key) or {}).get("type") == "super_material"
+        }
+    return char, mats_in_bag, super_mats_in_bag
 
-    view  = _ConfirmView(discord_id, slot, base_key, grade, hub_back_fn, char=char, mats_in_bag=mats_in_bag)
-    embed = _build_confirm_embed(base_key, grade, char, mats_in_bag)
+
+async def _nav_material(
+    interaction: discord.Interaction,
+    discord_id: int,
+    slot: str,
+    base_key: str,
+    grade: int,
+    hub_back_fn,
+) -> None:
+    loaded = await _load_forge_bag(discord_id)
+    if loaded is None:
+        await interaction.edit_original_response(
+            embed=error_embed("Không tìm thấy nhân vật."), view=None
+        )
+        return
+    char, mats_in_bag, _ = loaded
+
+    recipe = get_recipe(grade)
+    required_qty = max_affix_total(grade)
+    required_grades = sorted({r["mat_grade"] for opt in (recipe or {}).get("options", []) for r in opt["materials"]})
+
+    # Materials in bag with qty >= required_qty, whose grade is one of the
+    # recipe's accepted grades. Each entry is a valid forge pick.
+    eligible: list[tuple[str, int]] = [
+        (key, qty) for key, qty in mats_in_bag.items()
+        if qty >= required_qty and get_material_grade(key) in required_grades
+    ]
+
+    embed = discord.Embed(
+        title=f"⚒️ Chọn Nguyên Liệu Rèn — Cấp {grade}",
+        description=(
+            f"Cần **{required_qty}x** nguyên liệu cùng loại "
+            f"(phẩm {', '.join(str(g) for g in required_grades)}).\n"
+            "Chọn đúng loại nguyên liệu bạn muốn dùng."
+        ),
+        color=0xB8860B,
+    )
+    if not eligible:
+        embed.add_field(
+            name="⚠️ Thiếu Nguyên Liệu",
+            value="Không có loại nguyên liệu nào đạt yêu cầu. Hãy tích trữ thêm.",
+            inline=False,
+        )
+
+    view = _MaterialView(discord_id, slot, base_key, grade, hub_back_fn,
+                         eligible=eligible, required_qty=required_qty)
+    await interaction.edit_original_response(embed=embed, view=view)
+
+
+async def _nav_super(
+    interaction: discord.Interaction,
+    discord_id: int,
+    slot: str,
+    base_key: str,
+    grade: int,
+    selected_mat_key: str,
+    hub_back_fn,
+) -> None:
+    loaded = await _load_forge_bag(discord_id)
+    if loaded is None:
+        await interaction.edit_original_response(
+            embed=error_embed("Không tìm thấy nhân vật."), view=None
+        )
+        return
+    _, _, super_mats_in_bag = loaded
+
+    # Super materials with min_item_grade ≤ forge grade and at least 1 owned
+    eligible: list[tuple[str, dict]] = []
+    for key, qty in super_mats_in_bag.items():
+        if qty <= 0:
+            continue
+        spec = registry.get_super_material(key)
+        if not spec:
+            continue
+        min_grade = int(spec.get("min_item_grade", spec.get("grade", 1)))
+        if min_grade <= grade:
+            eligible.append((key, spec))
+
+    mat_name = (registry.get_item(selected_mat_key) or {}).get("vi", selected_mat_key)
+    embed = discord.Embed(
+        title="✨ Chọn Vật Liệu Siêu Hiếm (Tùy Chọn)",
+        description=(
+            f"Nguyên liệu chính: **{mat_name}**.\n"
+            "Có thể đính kèm **1** vật liệu siêu hiếm để ban hiệu ứng đặc biệt, "
+            "hoặc bỏ qua để rèn thường."
+        ),
+        color=0xB8860B,
+    )
+    if not eligible:
+        embed.add_field(
+            name="Không Có Lựa Chọn",
+            value="Bạn chưa sở hữu vật liệu siêu hiếm phù hợp với cấp này.",
+            inline=False,
+        )
+
+    view = _SuperMaterialView(
+        discord_id, slot, base_key, grade, hub_back_fn,
+        selected_mat_key=selected_mat_key,
+        eligible=eligible,
+    )
+    await interaction.edit_original_response(embed=embed, view=view)
+
+
+async def _nav_confirm(
+    interaction: discord.Interaction,
+    discord_id: int,
+    slot: str,
+    base_key: str,
+    grade: int,
+    selected_mat_key: str,
+    selected_super_key: str | None,
+    hub_back_fn,
+) -> None:
+    loaded = await _load_forge_bag(discord_id)
+    if loaded is None:
+        await interaction.edit_original_response(
+            embed=error_embed("Không tìm thấy nhân vật."), view=None
+        )
+        return
+    char, mats_in_bag, _ = loaded
+
+    view = _ConfirmView(
+        discord_id, slot, base_key, grade, hub_back_fn,
+        char=char,
+        mats_in_bag=mats_in_bag,
+        selected_mat_key=selected_mat_key,
+        selected_super_key=selected_super_key,
+    )
+    embed = _build_confirm_embed(
+        base_key, grade, char, mats_in_bag,
+        selected_mat_key=selected_mat_key,
+        selected_super_key=selected_super_key,
+    )
     await interaction.edit_original_response(embed=embed, view=view)
 
 
 # ── Confirm embed builder ─────────────────────────────────────────────────────
 
-def _build_confirm_embed(base_key: str, grade: int, char, mats_in_bag: dict[str, int]) -> discord.Embed:
+def _build_confirm_embed(
+    base_key: str,
+    grade: int,
+    char,
+    mats_in_bag: dict[str, int],
+    selected_mat_key: str | None = None,
+    selected_super_key: str | None = None,
+) -> discord.Embed:
     base_data = registry.get_base(base_key)
     recipe    = get_recipe(grade)
     slot_vi   = SLOT_VI.get(base_data["slot"], base_data["slot"]) if base_data else "?"
@@ -176,14 +316,33 @@ def _build_confirm_embed(base_key: str, grade: int, char, mats_in_bag: dict[str,
             inline=False,
         )
 
-        mat_lines: list[str] = []
-        for i, opt in enumerate(recipe["options"], 1):
-            opt_label = f"[PA {i}] " if len(recipe["options"]) > 1 else ""
-            for req in opt["materials"]:
-                owned = sum(qty for k, qty in mats_in_bag.items() if get_material_grade(k) == req["mat_grade"])
-                icon  = "✅" if owned >= req["qty"] else "❌"
-                mat_lines.append(f"{icon} {opt_label}{req['qty']}x Linh Thiết Phẩm {req['mat_grade']} (có: {owned})")
-        embed.add_field(name="Nguyên Liệu", value="\n".join(mat_lines) or "—", inline=False)
+        required_qty = max_affix_total(grade)
+        if selected_mat_key:
+            mat_item = registry.get_item(selected_mat_key) or {}
+            owned = mats_in_bag.get(selected_mat_key, 0)
+            icon  = "✅" if owned >= required_qty else "❌"
+            embed.add_field(
+                name="Nguyên Liệu Đã Chọn",
+                value=f"{icon} {required_qty}x **{mat_item.get('vi', selected_mat_key)}** (có: {owned})",
+                inline=False,
+            )
+        else:
+            mat_lines: list[str] = []
+            for i, opt in enumerate(recipe["options"], 1):
+                opt_label = f"[PA {i}] " if len(recipe["options"]) > 1 else ""
+                for req in opt["materials"]:
+                    owned = sum(qty for k, qty in mats_in_bag.items() if get_material_grade(k) == req["mat_grade"])
+                    icon  = "✅" if owned >= required_qty else "❌"
+                    mat_lines.append(f"{icon} {opt_label}{required_qty}x Linh Thiết Phẩm {req['mat_grade']} (có: {owned})")
+            embed.add_field(name="Nguyên Liệu", value="\n".join(mat_lines) or "—", inline=False)
+
+        if selected_super_key:
+            super_spec = registry.get_super_material(selected_super_key) or {}
+            embed.add_field(
+                name="Vật Liệu Siêu Hiếm",
+                value=f"✨ **{super_spec.get('vi', selected_super_key)}** — ban hiệu ứng đặc biệt",
+                inline=False,
+            )
 
         c = recipe["quality_chances"]
         embed.add_field(
@@ -387,7 +546,7 @@ class _GradeView(discord.ui.View):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
             await interaction.response.defer()
-            await _nav_confirm(interaction, self._discord_id, self._slot, self._base_key, grade, self._hub_back_fn)
+            await _nav_material(interaction, self._discord_id, self._slot, self._base_key, grade, self._hub_back_fn)
         return _cb
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
@@ -398,8 +557,164 @@ class _GradeView(discord.ui.View):
         await _nav_base(interaction, self._discord_id, self._slot, self._hub_back_fn)
 
 
+class _MaterialView(discord.ui.View):
+    """Step 4 — pick a specific normal material from the bag.
+
+    The select menu lists every inventory material whose grade matches one of
+    the recipe's accepted grades AND has enough copies for the required qty.
+    """
+
+    def __init__(
+        self,
+        discord_id: int,
+        slot: str,
+        base_key: str,
+        grade: int,
+        hub_back_fn,
+        *,
+        eligible: list[tuple[str, int]],
+        required_qty: int,
+    ) -> None:
+        super().__init__(timeout=180)
+        self._discord_id  = discord_id
+        self._slot        = slot
+        self._base_key    = base_key
+        self._grade       = grade
+        self._hub_back_fn = hub_back_fn
+
+        if eligible:
+            options: list[discord.SelectOption] = []
+            for key, qty in eligible[:25]:  # Discord's hard cap
+                item = registry.get_item(key) or {}
+                label = item.get("vi", key)
+                mat_g = get_material_grade(key)
+                options.append(discord.SelectOption(
+                    label=label[:100],
+                    value=key,
+                    description=f"Phẩm {mat_g} · có {qty} · cần {required_qty}"[:100],
+                ))
+            select = discord.ui.Select(
+                placeholder="🔨 Chọn nguyên liệu…",
+                options=options,
+                row=0,
+            )
+            select.callback = self._make_pick_cb(select)
+            self.add_item(select)
+
+        back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
+        back_btn.callback = self._back_cb
+        self.add_item(back_btn)
+
+    def _make_pick_cb(self, select: discord.ui.Select):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if not _guard(interaction, self._discord_id):
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
+            await interaction.response.defer()
+            picked = select.values[0]
+            await _nav_super(
+                interaction, self._discord_id, self._slot, self._base_key, self._grade,
+                selected_mat_key=picked, hub_back_fn=self._hub_back_fn,
+            )
+        return _cb
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await _nav_grade(interaction, self._discord_id, self._slot, self._base_key, self._hub_back_fn)
+
+
+class _SuperMaterialView(discord.ui.View):
+    """Step 5 — pick an optional super-rare material or skip.
+
+    Only one super material can be attached per forge — enforced by the
+    singular select + a skip button that forwards no key.
+    """
+
+    def __init__(
+        self,
+        discord_id: int,
+        slot: str,
+        base_key: str,
+        grade: int,
+        hub_back_fn,
+        *,
+        selected_mat_key: str,
+        eligible: list[tuple[str, dict]],
+    ) -> None:
+        super().__init__(timeout=180)
+        self._discord_id      = discord_id
+        self._slot            = slot
+        self._base_key        = base_key
+        self._grade           = grade
+        self._hub_back_fn     = hub_back_fn
+        self._selected_mat_key = selected_mat_key
+
+        if eligible:
+            options: list[discord.SelectOption] = []
+            for key, spec in eligible[:25]:
+                label = spec.get("vi", key)
+                min_g = spec.get("min_item_grade", spec.get("grade", 1))
+                options.append(discord.SelectOption(
+                    label=label[:100],
+                    value=key,
+                    description=f"Tối thiểu cấp {min_g}"[:100],
+                ))
+            select = discord.ui.Select(
+                placeholder="✨ Chọn vật liệu siêu hiếm…",
+                options=options,
+                row=0,
+            )
+            select.callback = self._make_pick_cb(select)
+            self.add_item(select)
+
+        skip_btn = discord.ui.Button(label="⏭️ Bỏ Qua", style=discord.ButtonStyle.primary, row=1)
+        skip_btn.callback = self._skip_cb
+        self.add_item(skip_btn)
+
+        back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
+        back_btn.callback = self._back_cb
+        self.add_item(back_btn)
+
+    def _make_pick_cb(self, select: discord.ui.Select):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if not _guard(interaction, self._discord_id):
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
+            await interaction.response.defer()
+            picked = select.values[0]
+            await _nav_confirm(
+                interaction, self._discord_id, self._slot, self._base_key, self._grade,
+                selected_mat_key=self._selected_mat_key,
+                selected_super_key=picked,
+                hub_back_fn=self._hub_back_fn,
+            )
+        return _cb
+
+    async def _skip_cb(self, interaction: discord.Interaction) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await _nav_confirm(
+            interaction, self._discord_id, self._slot, self._base_key, self._grade,
+            selected_mat_key=self._selected_mat_key,
+            selected_super_key=None,
+            hub_back_fn=self._hub_back_fn,
+        )
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await _nav_material(interaction, self._discord_id, self._slot, self._base_key, self._grade, self._hub_back_fn)
+
+
 class _ConfirmView(discord.ui.View):
-    """Step 4 — confirm requirements, then execute forge."""
+    """Step 6 — confirm requirements, then execute forge."""
 
     def __init__(
         self,
@@ -411,15 +726,23 @@ class _ConfirmView(discord.ui.View):
         *,
         char,
         mats_in_bag: dict[str, int],
+        selected_mat_key: str,
+        selected_super_key: str | None,
     ) -> None:
         super().__init__(timeout=120)
-        self._discord_id  = discord_id
-        self._slot        = slot
-        self._base_key    = base_key
-        self._grade       = grade
-        self._hub_back_fn = hub_back_fn
+        self._discord_id        = discord_id
+        self._slot              = slot
+        self._base_key          = base_key
+        self._grade             = grade
+        self._hub_back_fn       = hub_back_fn
+        self._selected_mat_key  = selected_mat_key
+        self._selected_super_key = selected_super_key
 
-        ok, _, _ = check_forge_requirements(char, grade, mats_in_bag)
+        required_qty = max_affix_total(grade)
+        mat_ok = mats_in_bag.get(selected_mat_key, 0) >= required_qty
+        recipe = get_recipe(grade)
+        merit_ok = bool(recipe) and char.merit >= recipe["cost_cong_duc"]
+        ok = mat_ok and merit_ok
 
         confirm_btn = discord.ui.Button(
             label="✅ Xác Nhận Rèn",
@@ -440,6 +763,8 @@ class _ConfirmView(discord.ui.View):
             return
         await interaction.response.defer()
 
+        required_qty = max_affix_total(self._grade)
+
         async with get_session() as session:
             player_repo = PlayerRepository(session)
             inv_repo    = InventoryRepository(session)
@@ -451,40 +776,74 @@ class _ConfirmView(discord.ui.View):
                 return
 
             char = _player_to_model(player)
-            all_items   = await inv_repo.get_all(player.id)
-            mats_in_bag = {
-                it.item_key: it.quantity
-                for it in all_items
-                if get_material_grade(it.item_key) is not None
-            }
 
-            ok, msg, option = check_forge_requirements(char, self._grade, mats_in_bag)
-            if not ok:
-                await interaction.edit_original_response(embed=error_embed(msg), view=None)
+            # Re-verify the user still has the selected material at required qty
+            all_items = await inv_repo.get_all(player.id)
+            owned_mat = next(
+                (it for it in all_items if it.item_key == self._selected_mat_key),
+                None,
+            )
+            if not owned_mat or owned_mat.quantity < required_qty:
+                await interaction.edit_original_response(
+                    embed=error_embed("Không đủ nguyên liệu đã chọn — kho đã thay đổi."), view=None
+                )
                 return
 
-            # Consume materials
-            consumed: list[tuple[str, int]] = []
-            for req in option["materials"]:
-                mat_grade  = req["mat_grade"]
-                qty_needed = req["qty"]
-                for mat_key, owned_qty in sorted(mats_in_bag.items()):
-                    if get_material_grade(mat_key) != mat_grade or qty_needed <= 0:
-                        continue
-                    take    = min(owned_qty, qty_needed)
-                    removed = await inv_repo.remove_item(player.id, mat_key, Grade(mat_grade), take)
-                    if removed:
-                        consumed.append((mat_key, take))
-                        qty_needed -= take
-                    if qty_needed <= 0:
-                        break
-                if qty_needed > 0:
+            mat_grade = get_material_grade(self._selected_mat_key)
+            recipe = get_recipe(self._grade)
+            if not recipe or mat_grade is None:
+                await interaction.edit_original_response(embed=error_embed("Không tìm thấy công thức rèn."), view=None)
+                return
+            # Require the recipe to have an option whose mat_grade matches the pick
+            if not any(
+                any(req["mat_grade"] == mat_grade for req in opt["materials"])
+                for opt in recipe["options"]
+            ):
+                await interaction.edit_original_response(
+                    embed=error_embed("Nguyên liệu đã chọn không khớp công thức."), view=None
+                )
+                return
+            if char.merit < recipe["cost_cong_duc"]:
+                await interaction.edit_original_response(
+                    embed=error_embed("Không đủ Công Đức."), view=None
+                )
+                return
+
+            # Verify super material is still owned (if chosen)
+            if self._selected_super_key:
+                owned_super = next(
+                    (it for it in all_items if it.item_key == self._selected_super_key),
+                    None,
+                )
+                if not owned_super or owned_super.quantity < 1:
                     await interaction.edit_original_response(
-                        embed=error_embed("Lỗi nội bộ: thiếu nguyên liệu sau kiểm tra."), view=None
+                        embed=error_embed("Không còn vật liệu siêu hiếm đã chọn."), view=None
                     )
                     return
 
-            result = forge_equipment(char, self._base_key, self._grade, consumed)
+            # Consume the chosen normal material
+            removed = await inv_repo.remove_item(
+                player.id, self._selected_mat_key, Grade(mat_grade), required_qty,
+            )
+            if not removed:
+                await interaction.edit_original_response(
+                    embed=error_embed("Không thể tiêu hao nguyên liệu."), view=None
+                )
+                return
+            consumed = [(self._selected_mat_key, required_qty)]
+
+            # Consume the super material (at most one, singular arg)
+            if self._selected_super_key:
+                super_spec = registry.get_super_material(self._selected_super_key) or {}
+                super_grade = int(super_spec.get("grade", 1))
+                await inv_repo.remove_item(
+                    player.id, self._selected_super_key, Grade(super_grade), 1,
+                )
+
+            result = forge_equipment(
+                char, self._base_key, self._grade, consumed,
+                super_material_key=self._selected_super_key,
+            )
             if not result.success:
                 await interaction.edit_original_response(embed=error_embed(result.message), view=None)
                 return
@@ -538,7 +897,11 @@ class _ConfirmView(discord.ui.View):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
         await interaction.response.defer()
-        await _nav_grade(interaction, self._discord_id, self._slot, self._base_key, self._hub_back_fn)
+        await _nav_super(
+            interaction, self._discord_id, self._slot, self._base_key, self._grade,
+            selected_mat_key=self._selected_mat_key,
+            hub_back_fn=self._hub_back_fn,
+        )
 
 
 class _RecipeSelectView(discord.ui.View):

@@ -1,0 +1,248 @@
+[
+  {
+    "key": "uniq_quang_than_thu",
+    "vi": "Quang Minh Thần Thư",
+    "base": "base_talisman",
+    "slot": "off_hand",
+    "realm": 2,
+    "grade": 2,
+    "rolled_stats": {
+      "matk": [17, 23],
+      "mp_max": [102, 138],
+      "heal_pct": [0.04, 0.06]
+    },
+    "passive_bonus": {
+      "cleanse_on_turn_pct": 0.1,
+      "heal_pct": 0.05
+    },
+    "description_vi": "Thần thư ghi chép Quang Đạo — tăng 10% khả năng Thanh Tẩy mỗi lượt, hồi phục mạnh mẽ hơn."
+  },
+  {
+    "key": "uniq_quang_tinh_truong",
+    "vi": "Quang Tinh Pháp Trượng",
+    "base": "base_staff",
+    "slot": "weapon",
+    "realm": 3,
+    "grade": 3,
+    "rolled_stats": {
+      "matk": [40, 54],
+      "crit_rating": [76, 103],
+      "mp_max": [153, 207]
+    },
+    "passive_bonus": {
+      "silence_on_crit_pct": 0.15,
+      "quang_res_shred": 0.08
+    },
+    "description_vi": "Trượng khắc Quang Tinh — bạo kích có 15% khả năng câm lặng, xuyên 8% kháng Quang."
+  },
+  {
+    "key": "uniq_quang_thanh_bao",
+    "vi": "Thánh Quang Bảo Y",
+    "base": "base_robe",
+    "slot": "armor",
+    "realm": 4,
+    "grade": 4,
+    "rolled_stats": {
+      "def_stat": [36, 48],
+      "hp_max": [357, 483],
+      "matk": [25, 34]
+    },
+    "passive_bonus": {
+      "heal_reduce_on_hit_pct": 0.18,
+      "heal_pct": 0.08
+    },
+    "description_vi": "Bảo y Thánh Quang — 18% Cắt Đứt on-hit, bản thân hồi phục cũng mạnh hơn."
+  },
+  {
+    "key": "uniq_quang_thanh_nhan",
+    "vi": "Thánh Nhẫn Quang Minh",
+    "base": "base_mage_ring",
+    "slot": "ring",
+    "realm": 5,
+    "grade": 5,
+    "rolled_stats": {
+      "matk": [41, 55],
+      "mp_max": [187, 253],
+      "crit_rating": [85, 115]
+    },
+    "passive_bonus": {
+      "silence_on_crit_pct": 0.2,
+      "cooldown_reduce": 0.06
+    },
+    "description_vi": "Nhẫn Quang Minh — bạo kích 20% câm lặng, giảm thời gian hồi chiêu 6%."
+  },
+  {
+    "key": "uniq_quang_thien_nhan_quan",
+    "vi": "Thiên Nhãn Quan Miện",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 5,
+    "grade": 5,
+    "rolled_stats": {
+      "matk": [47, 63],
+      "crit_rating": [136, 184],
+      "mp_max": [255, 345]
+    },
+    "passive_bonus": {
+      "silence_on_crit_pct": 0.22,
+      "heal_reduce_on_hit_pct": 0.15
+    },
+    "description_vi": "Quan miện Thiên Nhãn — 22% câm lặng khi bạo, 15% Cắt Đứt on-hit."
+  },
+  {
+    "key": "uniq_quang_tinh_bao",
+    "vi": "Quang Tinh Ngọc Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 6,
+    "grade": 6,
+    "rolled_stats": {
+      "matk": [55, 75],
+      "hp_max": [442, 598],
+      "heal_pct": [0.08, 0.12]
+    },
+    "passive_bonus": {
+      "cleanse_on_turn_pct": 0.15,
+      "heal_pct": 0.1,
+      "barrier_on_cleanse": true
+    },
+    "description_vi": "Ngọc bội Quang Tinh — +15% Thanh Tẩy mỗi lượt, mỗi lần giải hiệu ứng đều tạo khiên Thánh Quang."
+  },
+  {
+    "key": "uniq_quang_minh_nhan",
+    "vi": "Quang Minh Pháp Nhẫn",
+    "base": "base_mage_ring",
+    "slot": "ring",
+    "realm": 7,
+    "grade": 7,
+    "rolled_stats": {
+      "matk": [68, 92],
+      "mp_max": [272, 368],
+      "crit_rating": [153, 207]
+    },
+    "passive_bonus": {
+      "cooldown_reduce": 0.1,
+      "barrier_on_cleanse": true,
+      "heal_pct": 0.12
+    },
+    "description_vi": "Pháp nhẫn Quang Minh — Thanh Tẩy tạo khiên, giảm hồi chiêu 10%, hồi phục mạnh hơn."
+  },
+  {
+    "key": "uniq_thanh_quang_giap",
+    "vi": "Thánh Quang Bất Hoại Giáp",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 7,
+    "grade": 7,
+    "rolled_stats": {
+      "def_stat": [47, 63],
+      "hp_max": [527, 713],
+      "matk": [42, 57]
+    },
+    "passive_bonus": {
+      "silence_on_crit_pct": 0.25,
+      "heal_reduce_on_hit_pct": 0.22,
+      "final_dmg_reduce": 0.06
+    },
+    "description_vi": "Giáp Thánh Quang Bất Hoại — 25% câm lặng khi bạo, 22% Cắt Đứt on-hit, 6% giảm sát thương cuối."
+  },
+  {
+    "key": "uniq_than_quang_truong",
+    "vi": "Thần Quang Tịnh Thế Trượng",
+    "base": "base_staff_2h",
+    "slot": "weapon",
+    "realm": 8,
+    "grade": 8,
+    "rolled_stats": {
+      "matk": [132, 178],
+      "crit_rating": [255, 345],
+      "mp_max": [425, 575]
+    },
+    "passive_bonus": {
+      "silence_on_crit_pct": 0.35,
+      "quang_res_shred": 0.15,
+      "final_dmg_bonus": 0.08
+    },
+    "description_vi": "Tịnh Thế Pháp Trượng — 35% câm lặng khi bạo, xuyên 15% kháng Quang, +8% sát thương cuối."
+  },
+  {
+    "key": "uniq_quang_minh_thien_quan",
+    "vi": "Quang Minh Thiên Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 8,
+    "grade": 8,
+    "rolled_stats": {
+      "matk": [55, 75],
+      "crit_rating": [238, 322],
+      "heal_pct": [0.1, 0.14]
+    },
+    "passive_bonus": {
+      "heal_pct": 0.15,
+      "barrier_on_cleanse": true,
+      "cleanse_on_turn_pct": 0.15
+    },
+    "description_vi": "Thiên Quan Quang Minh — hồi phục +15%, +15% Thanh Tẩy, Thanh Tẩy tạo khiên Thánh Quang."
+  },
+  {
+    "key": "uniq_quang_to_truong",
+    "vi": "Tiên Quang Đại Đạo Trượng",
+    "base": "base_staff_2h",
+    "slot": "weapon",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [170, 230],
+      "crit_rating": [357, 483],
+      "crit_dmg_rating": [425, 575]
+    },
+    "passive_bonus": {
+      "silence_on_crit_pct": 0.45,
+      "quang_res_shred": 0.22,
+      "heal_reduce_on_hit_pct": 0.25,
+      "final_dmg_bonus": 0.12
+    },
+    "description_vi": "Trượng Tiên Quang Đại Đạo — 45% câm lặng khi bạo, xuyên 22% kháng Quang, 25% Cắt Đứt, +12% sát thương cuối. Bộ Tiên Quang Tổ 3 mảnh."
+  },
+  {
+    "key": "uniq_quang_to_bao",
+    "vi": "Tiên Quang Đại Đạo Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [81, 109],
+      "hp_max": [663, 897],
+      "heal_pct": [0.14, 0.18]
+    },
+    "passive_bonus": {
+      "heal_pct": 0.2,
+      "heal_reduce_on_hit_pct": 0.3,
+      "quang_res_shred": 0.15,
+      "barrier_on_cleanse": true,
+      "heal_can_crit": true
+    },
+    "description_vi": "Bội Tiên Quang — +20% hồi phục, 30% Cắt Đứt on-hit, xuyên 15% kháng Quang, Thanh Tẩy tạo khiên, hồi phục có thể bạo kích."
+  },
+  {
+    "key": "uniq_quang_to_nhan",
+    "vi": "Tiên Quang Đại Đạo Nhẫn",
+    "base": "base_mage_ring",
+    "slot": "ring",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [102, 138],
+      "crit_rating": [272, 368],
+      "crit_dmg_rating": [323, 437],
+      "res_all": [0.068, 0.092]
+    },
+    "passive_bonus": {
+      "silence_on_crit_pct": 0.35,
+      "cleanse_on_turn_pct": 0.2,
+      "cooldown_reduce": 0.12
+    },
+    "description_vi": "Nhẫn Tiên Quang — 35% câm lặng khi bạo, +20% Thanh Tẩy mỗi lượt, giảm hồi chiêu 12%. Bộ Tiên Quang Tổ 3 mảnh."
+  }
+]

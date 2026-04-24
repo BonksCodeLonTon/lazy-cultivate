@@ -1,0 +1,318 @@
+[
+  {
+    "key": "uniq_loi_tinh_phu",
+    "vi": "Lôi Tinh Phù Lục",
+    "base": "base_talisman",
+    "slot": "off_hand",
+    "realm": 2,
+    "grade": 2,
+    "rolled_stats": {
+      "matk": [19, 25],
+      "mp_max": [102, 138],
+      "crit_rating": [34, 46]
+    },
+    "passive_bonus": {
+      "shock_on_hit_pct": 0.15,
+      "spd_bonus": 1
+    },
+    "description_vi": "Phù lục ẩn chứa tinh hoa Lôi Tinh — Mỗi lần công kích có 15% xác suất giáng xuống Lôi Đình, thân pháp nhẹ nhàng hơn."
+  },
+  {
+    "key": "uniq_loi_dien_kiem",
+    "vi": "Tử Điện Thanh Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "realm": 3,
+    "grade": 3,
+    "rolled_stats": {
+      "atk": [32, 44],
+      "matk": [19, 25],
+      "crit_rating": [76, 103],
+      "final_dmg_bonus": [0.0425, 0.0575]
+    },
+    "passive_bonus": {
+      "shock_on_hit_pct": 0.3,
+      "loi_res_shred": 0.08
+    },
+    "description_vi": "Thanh kiếm quấn quanh tử điện — 30% khả năng kích phát Lôi Đình khi trúng địch, xuyên phá 8% kháng Lôi của đối thủ."
+  },
+  {
+    "key": "uniq_phi_loi_boots",
+    "vi": "Phi Lôi Túc Chiến Hài",
+    "base": "base_leather_boot",
+    "slot": "boot",
+    "realm": 4,
+    "grade": 4,
+    "rolled_stats": {
+      "evasion_rating": [102, 138],
+      "hp_max": [170, 230],
+      "mp_max": [76, 103],
+      "spd_bonus": [2, 2]
+    },
+    "passive_bonus": {
+      "turn_steal_pct": 0.08,
+      "spd_bonus": 3
+    },
+    "description_vi": "Đôi hài di chuyển nhanh như chớp giật — Có 8% cơ hội đoạt luân (cướp lượt) của địch, tổng cộng tăng 5 điểm tốc độ."
+  },
+  {
+    "key": "uniq_loi_than_quan",
+    "vi": "Lôi Thần Quan Miện",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 5,
+    "grade": 5,
+    "rolled_stats": {
+      "matk": [47, 63],
+      "mp_max": [255, 345],
+      "crit_rating": [136, 184]
+    },
+    "passive_bonus": {
+      "shock_on_hit_pct": 0.4,
+      "shock_stack_cap_bonus": 2,
+      "loi_res_shred": 0.1
+    },
+    "description_vi": "Quan miện uy nghiêm của Lôi Thần — 40% tỷ lệ giáng Lôi Đình, gia tăng 2 tầng lôi tích, xuyên phá 10% kháng Lôi."
+  },
+  {
+    "key": "uniq_loi_dien_nhan",
+    "vi": "Tử Điện Linh Nhẫn",
+    "base": "base_mage_ring",
+    "slot": "ring",
+    "realm": 5,
+    "grade": 5,
+    "rolled_stats": {
+      "matk": [41, 55],
+      "mp_max": [187, 253],
+      "crit_rating": [94, 127]
+    },
+    "passive_bonus": {
+      "shock_per_stack_pct_bonus": 0.015,
+      "cooldown_reduce": 0.08
+    },
+    "description_vi": "Chiếc nhẫn khắc ấn tử điện — Mỗi tầng Lôi Đình chồng lên sẽ tăng thêm 1.5% sát thương, đồng thời rút ngắn thời gian hồi chiêu."
+  },
+  {
+    "key": "uniq_loi_dao",
+    "vi": "Lôi Đạo Pháp Trượng",
+    "base": "base_staff",
+    "slot": "weapon",
+    "realm": 7,
+    "grade": 7,
+    "rolled_stats": {
+      "matk": [94, 127],
+      "mp_max": [238, 322],
+      "crit_rating": [136, 184]
+    },
+    "passive_bonus": {
+      "shock_on_hit_pct": 0.55,
+      "loi_res_shred": 0.18,
+      "shock_stack_cap_bonus": 2
+    },
+    "description_vi": "Pháp trượng của bậc thầy Lôi Đạo — 55% xác suất bùng nổ Lôi Đình, xuyên phá 18% kháng Lôi, gia tăng giới hạn 2 tầng lôi tích."
+  },
+  {
+    "key": "uniq_loi_dao_nhan",
+    "vi": "Lôi Đạo Chiến Nhẫn",
+    "base": "base_mage_ring",
+    "slot": "ring",
+    "realm": 7,
+    "grade": 7,
+    "rolled_stats": {
+      "matk": [55, 75],
+      "mp_max": [153, 207],
+      "crit_rating": [102, 138]
+    },
+    "passive_bonus": {
+      "final_dmg_bonus": 0.08,
+      "cooldown_reduce": 0.08
+    },
+    "description_vi": "Chiến nhẫn phụ trợ cho tu sĩ Lôi Đạo — Tăng cường sát thương chung và giảm thời gian hồi phục kỹ năng."
+  },
+  {
+    "key": "uniq_loi_anh_giap",
+    "vi": "Lôi Ảnh Huyền Giáp",
+    "base": "base_leather_armor",
+    "slot": "armor",
+    "realm": 7,
+    "grade": 7,
+    "rolled_stats": {
+      "def_stat": [43, 58],
+      "hp_max": [408, 552],
+      "evasion_rating": [153, 207],
+      "mp_max": [187, 253]
+    },
+    "passive_bonus": {
+      "turn_steal_pct": 0.12,
+      "spd_bonus": 5
+    },
+    "description_vi": "Bộ giáp ẩn hiện trong bóng lôi — 12% cơ hội đoạt luân tiên cơ, tăng 5 điểm tốc độ di chuyển."
+  },
+  {
+    "key": "uniq_loi_anh_quan",
+    "vi": "Lôi Ảnh Quỷ Quan",
+    "base": "base_helm",
+    "slot": "helmet",
+    "realm": 7,
+    "grade": 7,
+    "rolled_stats": {
+      "matk": [47, 63],
+      "mp_max": [204, 276],
+      "evasion_rating": [111, 150]
+    },
+    "passive_bonus": {
+      "shock_on_hit_pct": 0.25,
+      "debuff_immune_pct": 0.1
+    },
+    "description_vi": "Mũ quan che khuất trong ảnh lôi — 25% kích phát Lôi Đình, miễn dịch 10% các hiệu ứng bất lợi (debuff)."
+  },
+  {
+    "key": "uniq_loi_nguyen_bao",
+    "vi": "Lôi Nguyên Thiên Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 8,
+    "grade": 8,
+    "rolled_stats": {
+      "matk": [77, 104],
+      "mp_max": [306, 414],
+      "crit_rating": [187, 253],
+      "final_dmg_bonus": [0.102, 0.138]
+    },
+    "passive_bonus": {
+      "shock_per_stack_pct_bonus": 0.025,
+      "loi_res_shred": 0.15
+    },
+    "description_vi": "Thiên bội ngưng tụ Lôi Nguyên — Mỗi tầng Lôi Đình tăng 2.5% sát thương, xuyên phá 15% kháng Lôi của mục tiêu."
+  },
+  {
+    "key": "uniq_loi_nguyen_dai",
+    "vi": "Lôi Nguyên Phong Đai",
+    "base": "base_wind_sash",
+    "slot": "belt",
+    "realm": 8,
+    "grade": 8,
+    "rolled_stats": {
+      "matk": [43, 58],
+      "hp_max": [238, 322],
+      "evasion_rating": [128, 173]
+    },
+    "passive_bonus": {
+      "turn_steal_pct": 0.08,
+      "spd_bonus": 3
+    },
+    "description_vi": "Phong đai thắt lưng Lôi Nguyên — 8% tỷ lệ đoạt luân, tăng 3 điểm tốc độ."
+  },
+  {
+    "key": "uniq_loi_tu_kiem",
+    "vi": "Lôi Tổ Tiên Kiếm",
+    "base": "base_spirit_sword",
+    "slot": "weapon",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "atk": [123, 167],
+      "matk": [119, 161],
+      "crit_rating": [323, 437],
+      "crit_dmg_rating": [255, 345]
+    },
+    "passive_bonus": {
+      "shock_on_hit_pct": 0.85,
+      "loi_res_shred": 0.2
+    },
+    "description_vi": "Bảo kiếm truyền thừa từ Lôi Tổ — 85% xác suất giáng sấm sét kinh thiên, xuyên phá 20% kháng Lôi."
+  },
+  {
+    "key": "uniq_loi_tu_boi",
+    "vi": "Lôi Tổ Thiên Mệnh Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [94, 127],
+      "hp_max": [408, 552],
+      "crit_rating": [170, 230]
+    },
+    "passive_bonus": {
+      "shock_stack_cap_bonus": 5,
+      "shock_per_stack_pct_bonus": 0.02,
+      "paralysis_on_crit": true
+    },
+    "description_vi": "Thiên bội của Lôi Tổ — Gia tăng 5 tầng giới hạn (tối đa 10 tầng), mỗi tầng Lôi Đình tăng 2% sát thương, gây tê liệt khi bạo kích."
+  },
+  {
+    "key": "uniq_loi_tu_quan",
+    "vi": "Lôi Tổ Đế Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [136, 184],
+      "mp_max": [510, 690],
+      "crit_rating": [238, 322]
+    },
+    "passive_bonus": {
+      "shock_per_stack_pct_bonus": 0.04,
+      "loi_res_shred": 0.3,
+      "turn_steal_pct": 0.15
+    },
+    "description_vi": "Đế quan uy chấn Lôi Giới — Mỗi tầng Lôi Đình tăng 4% sát thương, xuyên phá 30% kháng Lôi, 15% cơ hội đoạt luân."
+  },
+  {
+    "key": "uniq_loi_tu_dai",
+    "vi": "Lôi Tổ Trấn Phong Đai",
+    "base": "base_wind_sash",
+    "slot": "belt",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "hp_max": [306, 414],
+      "mp_max": [272, 368],
+      "evasion_rating": [153, 207]
+    },
+    "passive_bonus": {
+      "spd_bonus": 6,
+      "turn_steal_pct": 0.1
+    },
+    "description_vi": "Bảo đai trấn áp phong lôi của Lôi Tổ — Tăng 6 điểm tốc độ, 10% xác suất đoạt luân."
+  },
+  {
+    "key": "uniq_loi_tu_boots",
+    "vi": "Lôi Tổ Tốc Hành Hài",
+    "base": "base_guardian_boot",
+    "slot": "boot",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "evasion_rating": [221, 299],
+      "hp_max": [374, 506],
+      "spd_bonus": [5, 7]
+    },
+    "passive_bonus": {
+      "turn_steal_pct": 0.22,
+      "spd_bonus": 6,
+      "shock_on_hit_pct": 0.35
+    },
+    "description_vi": "Thần hài của Lôi Tổ — 22% cơ hội đoạt luân, tổng cộng tăng 12 điểm tốc độ, 35% kích phát Lôi Đình khi công kích."
+  },
+  {
+    "key": "uniq_loi_tu_nhan",
+    "vi": "Lôi Tổ Chiến Nhẫn",
+    "base": "base_mage_ring",
+    "slot": "ring",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [85, 115],
+      "mp_max": [289, 391],
+      "crit_rating": [221, 299]
+    },
+    "passive_bonus": {
+      "final_dmg_bonus": 0.1,
+      "shock_per_stack_pct_bonus": 0.02
+    },
+    "description_vi": "Chiến nhẫn tối thượng của Lôi Tổ — Tăng cường sát thương cuối, mỗi tầng Lôi Đình cộng thêm 2% sát thương."
+  }
+]

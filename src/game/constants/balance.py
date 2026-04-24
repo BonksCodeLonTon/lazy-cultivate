@@ -94,19 +94,26 @@ ENEMY_REALM_LEVEL_STAT_MULT: dict[int, float] = {
 }
 
 # ── Player defaults ───────────────────────────────────────────────────────────
-BASE_MP_REGEN_PCT: float = 0.01   # 1 % MP per turn baseline (before bonuses)
+BASE_MP_REGEN_PCT: float = 0.03   # 1 % MP per turn baseline (before bonuses)
 MAX_FINAL_DMG_REDUCE: float = 0.75  # damage-reduction hard cap (buffs + debuffs)
 
 # ── SPD → combat impact ───────────────────────────────────────────────────────
 # Every SPD point above baseline adds evasion rating (always-on defensive edge).
 SPD_EVASION_BASELINE: int = 10          # SPD at/below this grants no evasion bonus
 SPD_EVASION_PER_POINT: int = 8          # evasion rating per SPD above baseline
-SPD_EVASION_CAP: int = 150              # max evasion rating contributed by SPD
+SPD_EVASION_CAP: int = 1500              # max evasion rating contributed by SPD
 
 # Action economy: the faster combatant rolls for an extra action each round.
 # chance = min(MAX_PCT, (actor_spd - target_spd) / max(1, target_spd) * SCALE)
 SPD_EXTRA_TURN_SCALE: float = 0.5       # slope of gap% → extra-turn chance
 SPD_EXTRA_TURN_MAX_PCT: float = 0.50    # hard cap so SPD never fully stunlocks
+
+# ── Heal crit (Mộc + Quang build) ─────────────────────────────────────────────
+# Symmetric with DOT_CRIT_CHANCE / DOT_CRIT_MULT in engine/damage/dot.py.
+# Applies when the healed combatant has ``heal_can_crit`` set (via formation
+# gem threshold or late-realm unique equipment passive_bonus).
+HEAL_CRIT_CHANCE: float = 0.25          # 25% flat chance per heal pulse
+HEAL_CRIT_MULT:   float = 1.5           # multiplier on the pre-reduction amount
 
 # ── Formation mana reservation ────────────────────────────────────────────────
 # Activating a formation reserves a portion of max MP; each socketed gem adds
@@ -126,6 +133,18 @@ FORMATION_PATH_MULT_PER_STAGE: float = 0.02
 FORMATION_RESERVE_REDUCE_PER_STAGE: float = 0.0085
 FORMATION_RESERVE_FLOOR_MULT: float = 0.30
 
+# ── Build-system defaults (base values before bonuses) ───────────────────────
+# Baseline stack caps and per-stack damage fractions for each build's DoT
+# mechanic. compute_combat_stats adds the item/formation bonus on top of these.
+DEFAULT_BURN_STACK_CAP: int = 5
+DEFAULT_BURN_PER_STACK_PCT: float = 0.008
+DEFAULT_BLEED_STACK_CAP: int = 5
+DEFAULT_BLEED_PER_STACK_PCT: float = 0.008
+DEFAULT_SHOCK_STACK_CAP: int = 5
+DEFAULT_SHOCK_PER_STACK_PCT: float = 0.04
+DEFAULT_MANA_STACK_CAP: int = 10
+DEFAULT_SHIELD_CAP_PCT: float = 0.70
+
 # ── DoT scaling (default: attacker-stat based) ────────────────────────────────
 # Tick damage in the default model = max_source_power × meta.dot_pct × COEF.
 # ``max_source_power`` = max(atk, matk) at DoT-apply time.
@@ -140,6 +159,28 @@ DOT_POWER_COEF: float = 4.0
 # skill and passive contributions. 0.20 = max 20% of target hp_max per hit,
 # preventing 5-shot kills even when stacking multiple true-damage sources.
 TRUE_DMG_PCT_CAP: float = 0.20
+
+# ── Âm (Shadow) soul-drain / stat-steal caps ─────────────────────────────────
+# Soul Drain (Hồn Phệ): each successful on-hit proc permanently removes
+# SOUL_DRAIN_PER_PROC_PCT of the target's *original* hp_max. The total drained
+# this fight is capped at SOUL_DRAIN_CAP_PCT so the mechanic can't trivialize
+# bosses. A fraction (SOUL_DRAIN_SELF_GAIN_PCT) of each drained HP is grafted
+# onto the actor's hp_max — they don't just destroy the enemy, they eat them.
+SOUL_DRAIN_PER_PROC_PCT: float = 0.015     # 1.5 % of original hp_max per proc
+SOUL_DRAIN_CAP_PCT: float = 0.40           # 40 % lifetime drain ceiling
+SOUL_DRAIN_SELF_GAIN_PCT: float = 0.50     # half the drain becomes actor hp_max
+# Stat Steal (Đạo Pháp Thôn Phệ): mirror of soul-drain but on atk/matk/def.
+# Each proc subtracts STAT_STEAL_PER_PROC_PCT of the target's *original* stat
+# from the target and adds the same amount to the actor. Stolen totals are
+# capped at STAT_STEAL_CAP_PCT per source stat.
+STAT_STEAL_PER_PROC_PCT: float = 0.04      # 4 % per proc
+STAT_STEAL_CAP_PCT: float = 0.30           # 30 % lifetime cap per stat
+# Quang's Thanh Tẩy can partially undo Âm mutations — per successful cleanse it
+# reclaims a slice of drained hp_max and stolen atk/matk/def. Stolen stats
+# return to the target only (the attacker keeps what they took so the tug-of-
+# war remains meaningful — the cleanser doesn't magically weaken the attacker).
+QUANG_CLEANSE_AM_HP_RESTORE_PCT: float = 0.05    # 5 % of original hp_max
+QUANG_CLEANSE_AM_STAT_RESTORE_PCT: float = 0.05  # 5 % of original stat
 
 # ── Gem element → per-gem stat bonus ──────────────────────────────────────────
 # Each inlaid gem grants its base bonus multiplied by its grade (1–4).
@@ -156,7 +197,7 @@ GEM_ELEMENT_BASE_BONUS: dict[str, dict[str, float]] = {
     "loi":   {"crit_dmg_rating":  12.0},
     "phong": {"spd_bonus":        0.64},
     "quang": {"heal_pct":         0.016},
-    "am":    {"debuff_immune_pct":0.016},
+    "am":    {"debuff_immune_pct":0.012, "poison_dmg_bonus": 0.016},
 }
 
 # ── Encounter grades (dungeon spawn-time rank) ────────────────────────────────

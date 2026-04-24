@@ -6,11 +6,23 @@
     "slot": "armor",
     "realm": 1,
     "grade": 1,
-    "fixed_stats": {
-      "def_stat": 14,
-      "hp_max": 90,
-      "mp_max": 60,
-      "res_all": 0.03
+    "rolled_stats": {
+      "def_stat": [
+        12,
+        16
+      ],
+      "hp_max": [
+        76,
+        103
+      ],
+      "mp_max": [
+        51,
+        69
+      ],
+      "res_all": [
+        0.0255,
+        0.0345
+      ]
     },
     "passive_bonus": {
       "poison_immunity": true
@@ -24,10 +36,19 @@
     "slot": "weapon",
     "realm": 1,
     "grade": 1,
-    "fixed_stats": {
-      "matk": 22,
-      "mp_max": 80,
-      "hp_regen_pct": 0.025
+    "rolled_stats": {
+      "matk": [
+        19,
+        25
+      ],
+      "mp_max": [
+        68,
+        92
+      ],
+      "hp_regen_pct": [
+        0.0213,
+        0.0287
+      ]
     },
     "passive_bonus": {
       "heal_pct": 0.08
@@ -40,11 +61,20 @@
     "base": "base_belt",
     "slot": "belt",
     "realm": 5,
-    "grade": 3,
-    "fixed_stats": {
-      "hp_max": 280,
-      "mp_max": 140,
-      "hp_regen_pct": 0.04
+    "grade": 5,
+    "rolled_stats": {
+      "hp_max": [
+        238,
+        322
+      ],
+      "mp_max": [
+        119,
+        161
+      ],
+      "hp_regen_pct": [
+        0.034,
+        0.046
+      ]
     },
     "passive_bonus": {
       "heal_pct": 0.18,
@@ -58,11 +88,20 @@
     "base": "base_staff",
     "slot": "weapon",
     "realm": 5,
-    "grade": 3,
-    "fixed_stats": {
-      "matk": 62,
-      "mp_max": 260,
-      "hp_regen_pct": 0.04
+    "grade": 5,
+    "rolled_stats": {
+      "matk": [
+        53,
+        71
+      ],
+      "mp_max": [
+        221,
+        299
+      ],
+      "hp_regen_pct": [
+        0.034,
+        0.046
+      ]
     },
     "passive_bonus": {
       "dot_leech_pct": 0.25,
@@ -76,11 +115,20 @@
     "base": "base_pendant",
     "slot": "amulet",
     "realm": 7,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 1000,
-      "matk": 60,
-      "mp_max": 240
+    "grade": 7,
+    "rolled_stats": {
+      "hp_max": [
+        850,
+        1150
+      ],
+      "matk": [
+        51,
+        69
+      ],
+      "mp_max": [
+        204,
+        276
+      ]
     },
     "passive_bonus": {
       "damage_from_heal_pct": 0.6,
@@ -95,11 +143,20 @@
     "base": "base_plate",
     "slot": "armor",
     "realm": 7,
-    "grade": 4,
-    "fixed_stats": {
-      "def_stat": 90,
-      "hp_max": 1400,
-      "hp_regen_pct": 0.06
+    "grade": 7,
+    "rolled_stats": {
+      "def_stat": [
+        76,
+        103
+      ],
+      "hp_max": [
+        1190,
+        1610
+      ],
+      "hp_regen_pct": [
+        0.051,
+        0.069
+      ]
     },
     "passive_bonus": {
       "damage_bonus_from_hp_pct": 0.012,
@@ -113,11 +170,20 @@
     "base": "base_spirit_ring",
     "slot": "ring",
     "realm": 8,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 860,
-      "mp_max": 560,
-      "res_all": 0.08
+    "grade": 8,
+    "rolled_stats": {
+      "hp_max": [
+        731,
+        989
+      ],
+      "mp_max": [
+        476,
+        644
+      ],
+      "res_all": [
+        0.068,
+        0.092
+      ]
     },
     "passive_bonus": {
       "dot_leech_pct": 0.4,
@@ -132,12 +198,24 @@
     "base": "base_arcane_glove",
     "slot": "glove",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "matk": 100,
-      "hp_max": 680,
-      "mp_max": 280,
-      "hp_regen_pct": 0.05
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [
+        85,
+        115
+      ],
+      "hp_max": [
+        578,
+        782
+      ],
+      "mp_max": [
+        238,
+        322
+      ],
+      "hp_regen_pct": [
+        0.0425,
+        0.0575
+      ]
     },
     "passive_bonus": {
       "dot_leech_pct": 0.35,
@@ -151,11 +229,20 @@
     "base": "base_crown",
     "slot": "helmet",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 1800,
-      "def_stat": 110,
-      "matk": 120
+    "grade": 9,
+    "rolled_stats": {
+      "hp_max": [
+        1530,
+        2070
+      ],
+      "def_stat": [
+        94,
+        126
+      ],
+      "matk": [
+        102,
+        138
+      ]
     },
     "passive_bonus": {
       "damage_bonus_from_hp_pct": 0.016,
@@ -170,18 +257,27 @@
     "base": "base_spirit_ring",
     "slot": "ring",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 1200,
-      "matk": 110,
-      "mp_max": 400
+    "grade": 9,
+    "rolled_stats": {
+      "hp_max": [
+        1020,
+        1380
+      ],
+      "matk": [
+        94,
+        126
+      ],
+      "mp_max": [
+        340,
+        460
+      ]
     },
     "passive_bonus": {
       "damage_bonus_from_hp_pct": 0.01,
       "heal_pct": 0.45,
-      "true_dmg_pct": 0.04
+      "heal_can_crit": true
     },
-    "description_vi": "Nhẫn Thế Giới Chi Thụ — 1% HP max→ST, +45% hồi phục, 4% HP chân thương."
+    "description_vi": "Nhẫn Thế Giới Chi Thụ — 1% HP max→ST, +45% hồi phục, hồi phục có thể bạo kích."
   },
   {
     "key": "uniq_moc_than_truong",
@@ -189,11 +285,20 @@
     "base": "base_staff",
     "slot": "weapon",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "matk": 180,
-      "mp_max": 720,
-      "hp_max": 1600
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [
+        153,
+        207
+      ],
+      "mp_max": [
+        612,
+        828
+      ],
+      "hp_max": [
+        1360,
+        1840
+      ]
     },
     "passive_bonus": {
       "dot_leech_pct": 0.55,

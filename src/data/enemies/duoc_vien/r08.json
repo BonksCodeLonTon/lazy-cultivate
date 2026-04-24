@@ -1,0 +1,65 @@
+[
+  {
+    "key": "DuocVienR8_01",
+    "vi": "Thái Cổ Mộc Thần",
+    "en": "Primordial Wood God",
+    "rank": "chi_ton",
+    "realm_level": 8,
+    "element": "moc",
+    "base_hp": 6750,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R8",
+      "EnemyMoc_R6"
+    ],
+    "loot_table_key": "DuocVienLoot_8",
+    "base_atk": 64,
+    "base_matk": 78,
+    "base_def": 62,
+    "mp_regen_pct": 0.07
+  },
+  {
+    "key": "DuocVienR8_02",
+    "vi": "Thiên Căn Linh Tổ",
+    "en": "Heaven Root Spirit Ancestor",
+    "rank": "chi_ton",
+    "realm_level": 8,
+    "element": "moc",
+    "base_hp": 6750,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R8",
+      "EnemyMoc_R6"
+    ],
+    "loot_table_key": "DuocVienLoot_8",
+    "base_atk": 64,
+    "base_matk": 78,
+    "base_def": 62,
+    "mp_regen_pct": 0.07
+  },
+  {
+    "key": "DuocVienR8_03",
+    "vi": "Vạn Dược Chi Vương",
+    "en": "King of Ten Thousand Herbs",
+    "rank": "chi_ton",
+    "realm_level": 8,
+    "element": "moc",
+    "base_hp": 6750,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R8",
+      "EnemyMoc_R6"
+    ],
+    "loot_table_key": "DuocVienLoot_8",
+    "base_atk": 64,
+    "base_matk": 78,
+    "base_def": 62,
+    "mp_regen_pct": 0.07
+  }
+]

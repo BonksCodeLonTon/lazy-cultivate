@@ -1,32 +1,33 @@
-"""Economy system — shop inventory, purchases, chest opening, and currency operations."""
+"""Economy system — shop inventory, purchases, and currency operations.
+
+Chest-opening lives in ``chest.py`` — chests are sold here but consumed there.
+"""
 from __future__ import annotations
 
 import random
 from dataclasses import dataclass
-from datetime import datetime, timezone
-from typing import Optional
 
-from src.data.registry import registry
-from src.game.constants.currencies import CURRENCY_CAP, CELESTIAL_DAO_COST
-from src.game.constants.grades import Grade
-from src.game.engine.drop import roll_drops
+from src.game.constants.currencies import CELESTIAL_DAO_COST
 
 
-# ── Fixed shop slots (Gian Cố Định — 13 items, never reset) ─────────────────
+# ── Fixed shop slots (Gian Cố Định — never reset) ───────────────────────────
 FIXED_SHOP_ITEMS: list[dict] = [
-    {"item_key": "DanHoiHPSmall",  "grade": 1, "price": 300,   "currency": "merit", "stock": -1},
-    {"item_key": "DanHoiMPSmall",  "grade": 1, "price": 300,   "currency": "merit", "stock": -1},
-    {"item_key": "DanHoiHPMid",    "grade": 2, "price": 800,   "currency": "merit", "stock": -1},
-    {"item_key": "DanHoiMPMid",    "grade": 2, "price": 800,   "currency": "merit", "stock": -1},
-    {"item_key": "DanCurePoison",  "grade": 1, "price": 500,   "currency": "merit", "stock": -1},
-    {"item_key": "DanCureCC",      "grade": 1, "price": 500,   "currency": "merit", "stock": -1},
-    {"item_key": "DanCureBleeds",  "grade": 1, "price": 400,   "currency": "merit", "stock": -1},
-    {"item_key": "ChestHoang",     "grade": 1, "price": 2000,  "currency": "merit", "stock": -1},
-    {"item_key": "ChestHuyen",     "grade": 2, "price": 8000,  "currency": "merit", "stock": -1},
-    {"item_key": "ScrollAtkHoang", "grade": 1, "price": 1000,  "currency": "merit", "stock": -1},
-    {"item_key": "ScrollDefHoang", "grade": 1, "price": 1000,  "currency": "merit", "stock": -1},
-    {"item_key": "ScrollSupHoang", "grade": 1, "price": 1000,  "currency": "merit", "stock": -1},
-    {"item_key": "ItemTayNghiep",  "grade": 3, "price": 80000, "currency": "merit", "stock": -1},
+    {"item_key": "DanHoiHPSmall",   "grade": 1, "price": 300,    "currency": "merit", "stock": -1},
+    {"item_key": "DanHoiMPSmall",   "grade": 1, "price": 300,    "currency": "merit", "stock": -1},
+    {"item_key": "DanHoiHPMid",     "grade": 2, "price": 800,    "currency": "merit", "stock": -1},
+    {"item_key": "DanHoiMPMid",     "grade": 2, "price": 800,    "currency": "merit", "stock": -1},
+    {"item_key": "DanCurePoison",   "grade": 1, "price": 500,    "currency": "merit", "stock": -1},
+    {"item_key": "DanCureCC",       "grade": 1, "price": 500,    "currency": "merit", "stock": -1},
+    {"item_key": "DanCureBleeds",   "grade": 1, "price": 400,    "currency": "merit", "stock": -1},
+    {"item_key": "ChestHoang",      "grade": 1, "price": 2000,   "currency": "merit", "stock": -1},
+    {"item_key": "ChestHuyen",      "grade": 2, "price": 8000,   "currency": "merit", "stock": -1},
+    {"item_key": "ScrollAtkHoang",  "grade": 1, "price": 1000,   "currency": "merit", "stock": -1},
+    {"item_key": "ScrollDefHoang",  "grade": 1, "price": 1000,   "currency": "merit", "stock": -1},
+    {"item_key": "ScrollSupHoang",  "grade": 1, "price": 1000,   "currency": "merit", "stock": -1},
+    {"item_key": "ItemTayNghiep",   "grade": 3, "price": 80000,  "currency": "merit", "stock": -1},
+    # Normal Đan Lô — gateway tool for Luyện Đan. Bought once per grade.
+    {"item_key": "DanLoThuong_G1",  "grade": 1, "price": 3000,   "currency": "merit", "stock": -1},
+    {"item_key": "DanLoThuong_G2",  "grade": 2, "price": 18000,  "currency": "merit", "stock": -1},
 ]
 
 # ── Dark market fixed slot ────────────────────────────────────────────────────
@@ -55,6 +56,14 @@ ROTATING_POOL: list[dict] = [
     {"item_key": "ScrollDefHuyen", "grade": 2, "price": 3000,  "currency": "merit"},
     {"item_key": "ScrollSupHuyen", "grade": 2, "price": 3000,  "currency": "merit"},
     {"item_key": "ItemPhaCanh",    "grade": 3, "price": 50000, "currency": "merit"},
+    # Higher-tier Đan Lô — rotate in the shop; rarer sightings.
+    {"item_key": "DanLoThuong_G3", "grade": 3, "price": 120000, "currency": "merit"},
+    {"item_key": "DanLoThuong_G4", "grade": 4, "price": 800000, "currency": "merit"},
+    # Đan Lô chests — low-rotation so the unique furnaces remain a find.
+    {"item_key": "ChestDanLoG1",   "grade": 1, "price": 25000,  "currency": "merit"},
+    {"item_key": "ChestDanLoG2",   "grade": 2, "price": 120000, "currency": "merit"},
+    {"item_key": "ChestDuocVien",  "grade": 2, "price": 40000,  "currency": "merit"},
+    {"item_key": "ChestLuyenDan",  "grade": 3, "price": 180000, "currency": "merit"},
 ]
 
 # ── Dark market rotating pool (karma items) ──────────────────────────────────
@@ -128,43 +137,3 @@ def purchase(
 
     setattr(player, slot.currency, currency_val - total)
     return PurchaseResult(ok=True, message="", item_key=slot.item_key, quantity=quantity)
-
-
-# ── Chest loot table mapping (item_key → loot table key) ─────────────────────
-_CHEST_LOOT_TABLE: dict[str, str] = {
-    "ChestHoang": "LootChestHoang",
-    "ChestHuyen": "LootChestHuyen",
-    "ChestDia":   "LootChestDia",
-    "ChestThien": "LootChestThien",
-}
-
-
-@dataclass
-class ChestOpenResult:
-    ok: bool
-    message: str
-    loot: list[dict]  # [{"item_key": str, "quantity": int}]
-
-
-def open_chest(chest_key: str, rng: random.Random | None = None) -> ChestOpenResult:
-    """Roll loot for a chest item.
-
-    Args:
-        chest_key:  Item key of the chest being opened (e.g. "ChestHoang").
-        rng:        Optional seeded RNG for deterministic results (tests).
-
-    Returns:
-        ChestOpenResult with ok=True and a non-empty loot list on success,
-        or ok=False with an error message if the chest key is unknown.
-    """
-    loot_table_key = _CHEST_LOOT_TABLE.get(chest_key)
-    if not loot_table_key:
-        return ChestOpenResult(ok=False, message=f"Không tìm thấy bảng loot cho {chest_key}.", loot=[])
-
-    drop_table = registry.get_loot_table(loot_table_key)
-    if not drop_table:
-        return ChestOpenResult(ok=False, message=f"Bảng loot {loot_table_key} trống.", loot=[])
-
-    rng = rng or random.Random()
-    loot = roll_drops(drop_table, rng).merge()
-    return ChestOpenResult(ok=True, message="", loot=loot)

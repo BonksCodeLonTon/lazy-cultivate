@@ -1,0 +1,225 @@
+[
+  {
+    "key": "uniq_am_linh_phu",
+    "vi": "Ám Linh Tàn Phù",
+    "base": "base_talisman",
+    "slot": "off_hand",
+    "realm": 2,
+    "grade": 2,
+    "rolled_stats": {
+      "matk": [17, 23],
+      "mp_max": [85, 115],
+      "crit_rating": [60, 81]
+    },
+    "passive_bonus": {
+      "soul_drain_on_hit_pct": 0.15,
+      "am_res_shred": 0.05
+    },
+    "description_vi": "Phù chú khởi nguồn Hồn Phệ — 15% hút Sinh Mệnh Tối Đa khi đánh trúng, xuyên 5% kháng Ám."
+  },
+  {
+    "key": "uniq_am_tam_kiem",
+    "vi": "Hắc Ám Tâm Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "realm": 3,
+    "grade": 3,
+    "rolled_stats": {
+      "atk": [30, 40],
+      "matk": [30, 40],
+      "crit_rating": [68, 92]
+    },
+    "passive_bonus": {
+      "stat_steal_on_hit_pct": 0.12,
+      "am_res_shred": 0.06
+    },
+    "description_vi": "Tâm kiếm nuốt linh hồn — 12% cướp chỉ số kẻ địch khi đánh trúng, xuyên 6% kháng Ám."
+  },
+  {
+    "key": "uniq_am_hac_bao",
+    "vi": "Hắc Ám Ma Bào",
+    "base": "base_robe",
+    "slot": "armor",
+    "realm": 4,
+    "grade": 4,
+    "rolled_stats": {
+      "def_stat": [32, 43],
+      "hp_max": [357, 483],
+      "matk": [25, 34]
+    },
+    "passive_bonus": {
+      "soul_drain_on_hit_pct": 0.22,
+      "poison_dmg_bonus": 0.15
+    },
+    "description_vi": "Ma bào dệt từ bóng tối — 22% hút Sinh Mệnh Tối Đa, +15% sát thương Độc Tố."
+  },
+  {
+    "key": "uniq_am_huyen_boi",
+    "vi": "Huyền Ám Tâm Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 5,
+    "grade": 5,
+    "rolled_stats": {
+      "matk": [47, 63],
+      "hp_max": [306, 414],
+      "crit_rating": [119, 161]
+    },
+    "passive_bonus": {
+      "stat_steal_on_hit_pct": 0.2,
+      "crit_rating_vs_drained": 90
+    },
+    "description_vi": "Bội Huyền Ám — 20% cướp chỉ số on-hit, bạo kích vượt trội với kẻ đã bị Hồn Phệ."
+  },
+  {
+    "key": "uniq_am_ma_nhan",
+    "vi": "Ám Ma Linh Nhẫn",
+    "base": "base_mage_ring",
+    "slot": "ring",
+    "realm": 5,
+    "grade": 5,
+    "rolled_stats": {
+      "matk": [41, 55],
+      "mp_max": [221, 299],
+      "crit_dmg_rating": [102, 138]
+    },
+    "passive_bonus": {
+      "soul_drain_on_hit_pct": 0.28,
+      "cooldown_reduce": 0.06
+    },
+    "description_vi": "Nhẫn Ám Ma — 28% hút Sinh Mệnh Tối Đa, giảm thời gian hồi chiêu 6%."
+  },
+  {
+    "key": "uniq_am_hu_the_giap",
+    "vi": "Hủ Thể Minh Giáp",
+    "base": "base_leather_armor",
+    "slot": "armor",
+    "realm": 6,
+    "grade": 6,
+    "rolled_stats": {
+      "def_stat": [40, 54],
+      "hp_max": [442, 598],
+      "matk": [47, 63]
+    },
+    "passive_bonus": {
+      "stat_steal_on_hit_pct": 0.25,
+      "debuff_immune_pct": 0.1,
+      "heal_pct": 0.05
+    },
+    "description_vi": "Giáp Hủ Thể — 25% cướp chỉ số on-hit, miễn 10% debuff, lifesteal hồi tốt hơn 5%."
+  },
+  {
+    "key": "uniq_am_hac_quan",
+    "vi": "Hắc Dạ U Minh Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 7,
+    "grade": 7,
+    "rolled_stats": {
+      "matk": [68, 92],
+      "crit_rating": [170, 230],
+      "mp_max": [272, 368]
+    },
+    "passive_bonus": {
+      "soul_drain_on_hit_pct": 0.4,
+      "am_res_shred": 0.12,
+      "crit_rating_vs_drained": 150
+    },
+    "description_vi": "U Minh Quan — 40% Hồn Phệ on-hit, xuyên 12% kháng Ám, bạo kích vs kẻ bị rút hồn."
+  },
+  {
+    "key": "uniq_am_huyet_hai_giap",
+    "vi": "Huyết Hải Hắc Ma Giáp",
+    "base": "base_plate",
+    "slot": "armor",
+    "realm": 7,
+    "grade": 7,
+    "rolled_stats": {
+      "def_stat": [47, 63],
+      "hp_max": [527, 713],
+      "atk": [42, 57]
+    },
+    "passive_bonus": {
+      "stat_steal_on_hit_pct": 0.35,
+      "bleed_on_hit_pct": 0.2,
+      "final_dmg_reduce": 0.06
+    },
+    "description_vi": "Giáp Huyết Hải — 35% cướp chỉ số, 20% Chảy Máu on-hit, giảm 6% sát thương cuối."
+  },
+  {
+    "key": "uniq_am_tu_than_truong",
+    "vi": "Tử Thần U Minh Trượng",
+    "base": "base_staff",
+    "slot": "weapon",
+    "realm": 8,
+    "grade": 8,
+    "rolled_stats": {
+      "matk": [132, 178],
+      "crit_rating": [221, 299],
+      "mp_max": [425, 575]
+    },
+    "passive_bonus": {
+      "soul_drain_on_hit_pct": 0.5,
+      "stat_steal_on_hit_pct": 0.35,
+      "am_res_shred": 0.15
+    },
+    "description_vi": "Trượng Tử Thần U Minh — 50% Hồn Phệ, 35% cướp chỉ số, xuyên 15% kháng Ám."
+  },
+  {
+    "key": "uniq_am_minh_nhan",
+    "vi": "Minh Vương Tàn Nhẫn",
+    "base": "base_power_ring",
+    "slot": "ring",
+    "realm": 8,
+    "grade": 8,
+    "rolled_stats": {
+      "atk": [68, 92],
+      "matk": [68, 92],
+      "crit_dmg_rating": [221, 299],
+      "final_dmg_bonus": [0.068, 0.092]
+    },
+    "passive_bonus": {
+      "crit_rating_vs_drained": 220,
+      "stat_steal_on_hit_pct": 0.28
+    },
+    "description_vi": "Nhẫn Minh Vương — bạo kích cực mạnh vs kẻ bị Hồn Phệ, 28% cướp chỉ số."
+  },
+  {
+    "key": "uniq_am_to_truong",
+    "vi": "Ám Tổ Huyền U Trượng",
+    "base": "base_staff",
+    "slot": "weapon",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [170, 230],
+      "crit_rating": [306, 414],
+      "crit_dmg_rating": [357, 483]
+    },
+    "passive_bonus": {
+      "soul_drain_on_hit_pct": 0.75,
+      "am_res_shred": 0.25,
+      "crit_rating_vs_drained": 320
+    },
+    "description_vi": "Trượng Ám Tổ — 75% Hồn Phệ on-hit, xuyên 25% kháng Ám, bạo kích hủy diệt vs linh hồn đã rút."
+  },
+  {
+    "key": "uniq_am_to_bao",
+    "vi": "Ám Tổ Thôn Linh Bội",
+    "base": "base_jade",
+    "slot": "amulet",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [102, 138],
+      "hp_max": [663, 897],
+      "crit_rating": [255, 345],
+      "mp_max": [425, 575]
+    },
+    "passive_bonus": {
+      "stat_steal_on_hit_pct": 0.55,
+      "soul_drain_on_hit_pct": 0.4
+    },
+    "description_vi": "Bội Ám Tổ — 55% cướp chỉ số, 40% Hồn Phệ on-hit. Bộ Ám Tổ 3 mảnh."
+  }
+]

@@ -109,12 +109,26 @@ def _upgrade_chance(base_rank: str, char) -> float:
 
 
 def _split_log_embeds(session_log: list[str], result_line: str, color: int) -> list[discord.Embed]:
-    """Split combat log into ≤3800-char chunks (Discord 4096 char limit)."""
+    """Split combat log into chunks and render with ANSI element colors.
+
+    Combat lines embed ANSI escape sequences (element-tagged damage). Discord
+    only interprets ANSI inside fenced ``ansi`` code blocks, so each chunk is
+    wrapped with ``to_ansi_block``. That converter also re-encodes the
+    markdown bold/italic the engine writes (``**name**``/``*skill*``) as ANSI
+    bold/underline, since code blocks otherwise print asterisks literally.
+
+    The 3800-char budget per chunk is preserved before wrapping; the ANSI
+    wrapping adds ~20 bytes of fence/newlines but stays well under Discord's
+    4096-char description cap.
+    """
+    from src.game.engine.damage import to_ansi_block
+
     full_log = "\n".join(session_log)
     embeds: list[discord.Embed] = []
     chunks = [full_log[i:i + 3800] for i in range(0, max(len(full_log), 1), 3800)]
     for i, chunk in enumerate(chunks):
-        embed = base_embed("⚔️ Nhật Ký Chiến Đấu" if i == 0 else "​", chunk, color=color)
+        body = to_ansi_block(chunk) if chunk.strip() else chunk
+        embed = base_embed("⚔️ Nhật Ký Chiến Đấu" if i == 0 else "​", body, color=color)
         if i == len(chunks) - 1:
             embed.add_field(name="Kết Quả", value=result_line, inline=False)
         embeds.append(embed)
@@ -381,12 +395,20 @@ class CombatCog(commands.Cog, name="Combat"):
 
     @app_commands.command(name="healup", description="Hồi phục HP/MP về tối đa (nghỉ ngơi)")
     async def healup(self, interaction: discord.Interaction) -> None:
+        from src.bot.cogs.cultivation import _apply_ticks_to_player
+
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
             if player is None:
                 await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
+
+            # Materialize pending offline XP first — otherwise hp_max below is
+            # computed from stale levels and a later /cultivate tick can bump
+            # levels past it, leaving hp_current < hp_max.
+            await _apply_ticks_to_player(player, prepo, player.active_axis or "qi")
+
             char = _player_to_model(player)
             from src.game.systems.character_stats import active_formation_gem_keys, compute_combat_stats
             gem_keys = active_formation_gem_keys(player)

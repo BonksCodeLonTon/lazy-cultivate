@@ -6,12 +6,17 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "hoa",
-    "base_hp": 1400,
+    "base_hp": 2380,
     "base_spd": 12,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyHoa_R4"
-    ]
+      "EnemyHoa_R4",
+      "EnemyLoi_R4"
+    ],
+    "base_atk": 65,
+    "base_matk": 130,
+    "base_def": 55,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "FierceKimHac",
@@ -20,12 +25,17 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "kim",
-    "base_hp": 1500,
-    "base_spd": 9,
+    "base_hp": 2550,
+    "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyKim_R4"
-    ]
+      "EnemyKim_R4",
+      "EnemyPhong_R4"
+    ],
+    "base_atk": 130,
+    "base_matk": 65,
+    "base_def": 70,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "FierceLoiMa",
@@ -34,12 +44,17 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "loi",
-    "base_hp": 1200,
+    "base_hp": 2040,
     "base_spd": 14,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyLoi_R4"
-    ]
+      "EnemyLoi_R4",
+      "EnemyHoa_R4"
+    ],
+    "base_atk": 65,
+    "base_matk": 130,
+    "base_def": 55,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "FierceMocKy",
@@ -48,12 +63,17 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "moc",
-    "base_hp": 1350,
-    "base_spd": 10,
+    "base_hp": 2295,
+    "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyMoc_R4"
-    ]
+      "EnemyMoc_R4",
+      "EnemyThuy_R4"
+    ],
+    "base_atk": 65,
+    "base_matk": 130,
+    "base_def": 55,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "FierceBangGiao",
@@ -62,12 +82,17 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "thuy",
-    "base_hp": 1600,
-    "base_spd": 8,
+    "base_hp": 2720,
+    "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyBang_R4"
-    ]
+      "EnemyBang_R4",
+      "EnemyMoc_R4"
+    ],
+    "base_atk": 65,
+    "base_matk": 130,
+    "base_def": 55,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "FiercePhongYen",
@@ -76,12 +101,17 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "phong",
-    "base_hp": 1100,
+    "base_hp": 1870,
     "base_spd": 16,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyPhong_R4"
-    ]
+      "EnemyPhong_R4",
+      "EnemyMoc_R4"
+    ],
+    "base_atk": 130,
+    "base_matk": 65,
+    "base_def": 70,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "FierceThoLinh",
@@ -90,11 +120,17 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "tho",
-    "base_hp": 1700,
-    "base_spd": 6,
+    "base_hp": 3000,
+    "base_spd": 11,
+    "base_atk": 180,
+    "base_matk": 140,
+    "base_def": 90,
     "hp_scale": 1.5,
+    "mp_regen_pct": 0.07,
     "skill_keys": [
-      "EnemyTho_R4"
+      "EnemyTho_R4",
+      "EnemyHoa_R4",
+      "EnemyKim_T3"
     ]
   }
 ]

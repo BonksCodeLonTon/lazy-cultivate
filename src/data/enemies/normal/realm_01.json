@@ -6,10 +6,17 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "hoa",
-    "base_hp": 200,
+    "base_hp": 320,
     "base_spd": 10,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyHoa_T1"]
+    "skill_keys": [
+      "EnemyHoa_T1",
+      "EnemyLoi_T1"
+    ],
+    "base_atk": 15,
+    "base_matk": 30,
+    "base_def": 15,
+    "mp_regen_pct": 0.04
   },
   {
     "key": "CommonMocThao",
@@ -18,10 +25,17 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "moc",
-    "base_hp": 180,
+    "base_hp": 288,
     "base_spd": 8,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyMoc_T1"]
+    "skill_keys": [
+      "EnemyMoc_T1",
+      "EnemyThuy_T1"
+    ],
+    "base_atk": 15,
+    "base_matk": 30,
+    "base_def": 15,
+    "mp_regen_pct": 0.04
   },
   {
     "key": "CommonBangTho",
@@ -30,10 +44,17 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "thuy",
-    "base_hp": 160,
+    "base_hp": 256,
     "base_spd": 12,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyBang_T1"]
+    "skill_keys": [
+      "EnemyBang_T1",
+      "EnemyMoc_T1"
+    ],
+    "base_atk": 15,
+    "base_matk": 30,
+    "base_def": 15,
+    "mp_regen_pct": 0.04
   },
   {
     "key": "CommonToRua",
@@ -42,10 +63,17 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "tho",
-    "base_hp": 300,
-    "base_spd": 5,
+    "base_hp": 500,
+    "base_spd": 8,
+    "base_atk": 40,
+    "base_matk": 20,
+    "base_def": 30,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyTho_T1"]
+    "mp_regen_pct": 0.05,
+    "skill_keys": [
+      "EnemyTho_T1",
+      "EnemyKim_T1"
+    ]
   },
   {
     "key": "CommonKimBo",
@@ -54,10 +82,17 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "kim",
-    "base_hp": 220,
+    "base_hp": 352,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyKim_T1"]
+    "skill_keys": [
+      "EnemyKim_T1",
+      "EnemyPhong_T1"
+    ],
+    "base_atk": 30,
+    "base_matk": 15,
+    "base_def": 18,
+    "mp_regen_pct": 0.04
   },
   {
     "key": "CommonLoiTinh",
@@ -66,10 +101,17 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "loi",
-    "base_hp": 190,
+    "base_hp": 304,
     "base_spd": 11,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyLoi_T1"]
+    "skill_keys": [
+      "EnemyLoi_T1",
+      "EnemyHoa_T1"
+    ],
+    "base_atk": 15,
+    "base_matk": 30,
+    "base_def": 15,
+    "mp_regen_pct": 0.04
   },
   {
     "key": "CommonPhongHo",
@@ -78,10 +120,17 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "phong",
-    "base_hp": 170,
+    "base_hp": 272,
     "base_spd": 14,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyPhong_T1"]
+    "skill_keys": [
+      "EnemyPhong_T1",
+      "EnemyMoc_T1"
+    ],
+    "base_atk": 30,
+    "base_matk": 15,
+    "base_def": 18,
+    "mp_regen_pct": 0.04
   },
   {
     "key": "CommonThuyLinhCua",
@@ -90,9 +139,16 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "thuy",
-    "base_hp": 210,
+    "base_hp": 336,
     "base_spd": 9,
     "hp_scale": 1.5,
-    "skill_keys": ["EnemyThuy_T1"]
+    "skill_keys": [
+      "EnemyThuy_T1",
+      "EnemyBang_T1"
+    ],
+    "base_atk": 15,
+    "base_matk": 30,
+    "base_def": 15,
+    "mp_regen_pct": 0.04
   }
 ]

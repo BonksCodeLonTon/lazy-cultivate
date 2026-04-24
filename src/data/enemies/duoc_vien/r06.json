@@ -1,0 +1,65 @@
+[
+  {
+    "key": "DuocVienR6_01",
+    "vi": "Thiên Mộc Đại Yêu",
+    "en": "Heaven Wood Great Demon",
+    "rank": "dai_nang",
+    "realm_level": 6,
+    "element": "moc",
+    "base_hp": 2880,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R6",
+      "EnemyThuy_R4"
+    ],
+    "loot_table_key": "DuocVienLoot_6",
+    "base_atk": 40,
+    "base_matk": 50,
+    "base_def": 38,
+    "mp_regen_pct": 0.06
+  },
+  {
+    "key": "DuocVienR6_02",
+    "vi": "Nguyên Linh Dược Thần",
+    "en": "Primal Spirit Herb God",
+    "rank": "chi_ton",
+    "realm_level": 6,
+    "element": "moc",
+    "base_hp": 3240,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R6",
+      "EnemyThuy_R4"
+    ],
+    "loot_table_key": "DuocVienLoot_6",
+    "base_atk": 45,
+    "base_matk": 56,
+    "base_def": 43,
+    "mp_regen_pct": 0.06
+  },
+  {
+    "key": "DuocVienR6_03",
+    "vi": "Thánh Thảo Cổ Thần",
+    "en": "Saint Herb Ancient God",
+    "rank": "chi_ton",
+    "realm_level": 6,
+    "element": "moc",
+    "base_hp": 3240,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R6",
+      "EnemyThuy_R4"
+    ],
+    "loot_table_key": "DuocVienLoot_6",
+    "base_atk": 45,
+    "base_matk": 56,
+    "base_def": 43,
+    "mp_regen_pct": 0.06
+  }
+]

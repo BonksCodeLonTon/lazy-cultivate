@@ -1,0 +1,103 @@
+[
+  {
+    "key": "DanLoThuong_G1",
+    "vi": "Đan Lô Sơ Giai",
+    "en": "Novice Pill Furnace",
+    "type": "furnace",
+    "grade": 1,
+    "is_unique": false,
+    "furnace_tier": 1,
+    "stack_max": 1,
+    "shop_price_merit": 3000,
+    "description_vi": "Đan lô sơ giai đúc từ đồng linh sắt. Hỗ trợ luyện chế đan dược cấp 1-2."
+  },
+  {
+    "key": "DanLoThuong_G2",
+    "vi": "Đan Lô Trung Giai",
+    "en": "Intermediate Pill Furnace",
+    "type": "furnace",
+    "grade": 2,
+    "is_unique": false,
+    "furnace_tier": 2,
+    "stack_max": 1,
+    "shop_price_merit": 18000,
+    "description_vi": "Đan lô trung giai rèn bằng linh kim. Hỗ trợ luyện chế đan dược cấp 3-4."
+  },
+  {
+    "key": "DanLoThuong_G3",
+    "vi": "Đan Lô Cao Giai",
+    "en": "Advanced Pill Furnace",
+    "type": "furnace",
+    "grade": 3,
+    "is_unique": false,
+    "furnace_tier": 3,
+    "stack_max": 1,
+    "shop_price_merit": 120000,
+    "description_vi": "Đan lô cao giai khắc nhập trận pháp tụ hỏa. Hỗ trợ luyện chế đan dược cấp 5-6."
+  },
+  {
+    "key": "DanLoThuong_G4",
+    "vi": "Đan Lô Thượng Giai",
+    "en": "Grandmaster Pill Furnace",
+    "type": "furnace",
+    "grade": 4,
+    "is_unique": false,
+    "furnace_tier": 4,
+    "stack_max": 1,
+    "shop_price_merit": 800000,
+    "description_vi": "Đan lô thượng giai đúc từ Thái Ất tinh thiết. Hỗ trợ luyện chế đan dược cấp 7-9."
+  },
+
+  {
+    "key": "DanLoBachLuyen_G1",
+    "vi": "Bách Luyện Đan Lô",
+    "en": "Hundred Tempering Furnace",
+    "type": "furnace",
+    "grade": 1,
+    "is_unique": true,
+    "furnace_tier": 1,
+    "stack_max": 1,
+    "shop_price_merit": 0,
+    "quality_bonus": { "huyen": 0.06, "dia": 0.03, "thien": 0.01 },
+    "description_vi": "Đan lô độc bản được bách gia luyện khí sư cổ rèn. Khi luyện đan cấp 1-2, cơ hội ra đan Huyền/Địa/Thiên tăng nhẹ."
+  },
+  {
+    "key": "DanLoTuLinh_G2",
+    "vi": "Tứ Linh Đan Lô",
+    "en": "Four Spirits Furnace",
+    "type": "furnace",
+    "grade": 2,
+    "is_unique": true,
+    "furnace_tier": 2,
+    "stack_max": 1,
+    "shop_price_merit": 0,
+    "quality_bonus": { "huyen": 0.08, "dia": 0.05, "thien": 0.02 },
+    "description_vi": "Đan lô khắc nhập tứ linh (Kim Mộc Thủy Hỏa). Khi luyện đan cấp 3-4, cơ hội ra đan cao phẩm tăng đáng kể."
+  },
+  {
+    "key": "DanLoHuyenHoang_G3",
+    "vi": "Huyền Hoàng Đan Lô",
+    "en": "Primordial Yin-Yang Furnace",
+    "type": "furnace",
+    "grade": 3,
+    "is_unique": true,
+    "furnace_tier": 3,
+    "stack_max": 1,
+    "shop_price_merit": 0,
+    "quality_bonus": { "huyen": 0.10, "dia": 0.08, "thien": 0.04 },
+    "description_vi": "Đan lô dung hợp huyền hoàng nhị khí. Khi luyện đan cấp 5-6, đại tăng cơ hội ra Địa/Thiên phẩm."
+  },
+  {
+    "key": "DanLoThienMenh_G4",
+    "vi": "Thiên Mệnh Đan Lô",
+    "en": "Mandate of Heaven Furnace",
+    "type": "furnace",
+    "grade": 4,
+    "is_unique": true,
+    "furnace_tier": 4,
+    "stack_max": 1,
+    "shop_price_merit": 0,
+    "quality_bonus": { "huyen": 0.12, "dia": 0.10, "thien": 0.08 },
+    "description_vi": "Đan lô sinh cùng Thiên Đạo, chứa một tia mệnh hỏa. Khi luyện đan cấp 7-9, cơ hội ra Thiên Phẩm tăng vọt."
+  }
+]

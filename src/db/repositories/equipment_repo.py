@@ -71,6 +71,7 @@ class EquipmentRepository:
             slot=item_data["slot"],           # always stored; never None
             base_key=item_data.get("base_key"),
             unique_key=item_data.get("unique_key"),
+            super_material_key=item_data.get("super_material_key"),
             affixes=item_data.get("affixes", []),
             computed_stats=item_data.get("computed_stats", {}),
             grade=item_data.get("grade", 1),

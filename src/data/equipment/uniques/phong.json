@@ -1,0 +1,225 @@
+[
+  {
+    "key": "uniq_phong_linh_phu",
+    "vi": "Phong Linh Phù",
+    "base": "base_talisman",
+    "slot": "off_hand",
+    "realm": 2,
+    "grade": 2,
+    "rolled_stats": {
+      "evasion_rating": [51, 69],
+      "mp_max": [85, 115],
+      "matk": [17, 23]
+    },
+    "passive_bonus": {
+      "mark_on_hit_pct": 0.15,
+      "spd_bonus": 1
+    },
+    "description_vi": "Phù linh hóa thân làm gió — 15% Phong Ấn on-hit, nhanh nhẹn hơn."
+  },
+  {
+    "key": "uniq_phong_tuyet_kiem",
+    "vi": "Phong Tuyết Kiếm",
+    "base": "base_sword",
+    "slot": "weapon",
+    "realm": 3,
+    "grade": 3,
+    "rolled_stats": {
+      "atk": [36, 48],
+      "evasion_rating": [68, 92],
+      "crit_rating": [60, 81]
+    },
+    "passive_bonus": {
+      "mark_on_hit_pct": 0.25,
+      "phong_res_shred": 0.08
+    },
+    "description_vi": "Kiếm tuyết phong — 25% Phong Ấn on-hit, xuyên 8% kháng Phong."
+  },
+  {
+    "key": "uniq_tieu_dao_boots",
+    "vi": "Tiêu Dao Hài",
+    "base": "base_leather_boot",
+    "slot": "boot",
+    "realm": 4,
+    "grade": 4,
+    "rolled_stats": {
+      "evasion_rating": [128, 173],
+      "hp_max": [153, 207],
+      "spd_bonus": [3, 3]
+    },
+    "passive_bonus": {
+      "damage_bonus_from_evasion_pct": 0.06,
+      "spd_bonus": 2
+    },
+    "description_vi": "Hài bước mây — né tránh sinh sát thương (+6% eva), +5 tốc độ tổng cộng."
+  },
+  {
+    "key": "uniq_phong_vu_bao",
+    "vi": "Phong Vũ Tâm Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 5,
+    "grade": 5,
+    "rolled_stats": {
+      "evasion_rating": [119, 161],
+      "mp_max": [221, 299],
+      "crit_rating": [102, 138]
+    },
+    "passive_bonus": {
+      "crit_rating_vs_marked": 80,
+      "crit_dmg_vs_marked": 100
+    },
+    "description_vi": "Bội tâm của gió mưa — bạo kích vượt trội với mục tiêu bị Phong Ấn."
+  },
+  {
+    "key": "uniq_phong_than_nhan",
+    "vi": "Phong Thần Linh Nhẫn",
+    "base": "base_mage_ring",
+    "slot": "ring",
+    "realm": 5,
+    "grade": 5,
+    "rolled_stats": {
+      "matk": [41, 55],
+      "evasion_rating": [94, 127],
+      "crit_rating": [85, 115]
+    },
+    "passive_bonus": {
+      "mark_on_hit_pct": 0.3,
+      "cooldown_reduce": 0.08
+    },
+    "description_vi": "Nhẫn Phong Thần — 30% Phong Ấn on-hit, giảm CD."
+  },
+  {
+    "key": "uniq_phong_long_giap",
+    "vi": "Phong Long Bảo Giáp",
+    "base": "base_leather_armor",
+    "slot": "armor",
+    "realm": 7,
+    "grade": 7,
+    "rolled_stats": {
+      "def_stat": [38, 52],
+      "hp_max": [391, 529],
+      "evasion_rating": [204, 276],
+      "mp_max": [170, 230]
+    },
+    "passive_bonus": {
+      "damage_bonus_from_evasion_pct": 0.12,
+      "slow_on_hit_pct": 0.15
+    },
+    "description_vi": "Giáp Phong Long — né tránh tạo sát thương cực lớn, 15% Làm Chậm on-hit."
+  },
+  {
+    "key": "uniq_phong_long_quan",
+    "vi": "Phong Long Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 7,
+    "grade": 7,
+    "rolled_stats": {
+      "matk": [51, 69],
+      "evasion_rating": [170, 230],
+      "crit_rating": [119, 161]
+    },
+    "passive_bonus": {
+      "mark_on_hit_pct": 0.4,
+      "phong_res_shred": 0.15,
+      "crit_rating_vs_marked": 120
+    },
+    "description_vi": "Mão Phong Long — 40% Phong Ấn on-hit, xuyên 15% kháng Phong, bạo kích vs Phong Ấn."
+  },
+  {
+    "key": "uniq_phong_van_dai",
+    "vi": "Phong Vân Phong Đai",
+    "base": "base_wind_sash",
+    "slot": "belt",
+    "realm": 8,
+    "grade": 8,
+    "rolled_stats": {
+      "evasion_rating": [187, 253],
+      "hp_max": [289, 391],
+      "mp_max": [170, 230]
+    },
+    "passive_bonus": {
+      "spd_bonus": 6,
+      "damage_bonus_from_evasion_pct": 0.08,
+      "debuff_immune_pct": 0.12
+    },
+    "description_vi": "Đai Phong Vân — +6 tốc độ, né tránh hóa sát thương, kháng debuff 12%."
+  },
+  {
+    "key": "uniq_phong_nguyen_bao",
+    "vi": "Phong Nguyên Thiên Bội",
+    "base": "base_pendant",
+    "slot": "amulet",
+    "realm": 8,
+    "grade": 8,
+    "rolled_stats": {
+      "matk": [68, 92],
+      "evasion_rating": [221, 299],
+      "crit_rating": [170, 230],
+      "final_dmg_bonus": [0.085, 0.115]
+    },
+    "passive_bonus": {
+      "crit_rating_vs_marked": 180,
+      "crit_dmg_vs_marked": 220
+    },
+    "description_vi": "Bội Phong Nguyên — bạo kích và sát thương bạo kinh hồn với mục tiêu bị đánh dấu."
+  },
+  {
+    "key": "uniq_phong_tu_kiem",
+    "vi": "Phong Tổ Tiên Kiếm",
+    "base": "base_spirit_sword",
+    "slot": "weapon",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "atk": [136, 184],
+      "evasion_rating": [306, 414],
+      "crit_rating": [306, 414],
+      "crit_dmg_rating": [255, 345]
+    },
+    "passive_bonus": {
+      "mark_on_hit_pct": 0.9,
+      "damage_bonus_from_evasion_pct": 0.15
+    },
+    "description_vi": "Tổ kiếm Phong Đạo — 90% Phong Ấn on-hit, né tránh hóa thần công."
+  },
+  {
+    "key": "uniq_phong_tu_quan",
+    "vi": "Phong Tổ Thiên Quan",
+    "base": "base_crown",
+    "slot": "helmet",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [102, 138],
+      "evasion_rating": [272, 368],
+      "crit_rating": [238, 322]
+    },
+    "passive_bonus": {
+      "crit_rating_vs_marked": 300,
+      "crit_dmg_vs_marked": 360,
+      "phong_res_shred": 0.3
+    },
+    "description_vi": "Mão Phong Tổ — bạo kích khổng lồ vs mục tiêu đánh dấu, xuyên 30% kháng Phong."
+  },
+  {
+    "key": "uniq_phong_tu_boots",
+    "vi": "Phong Tổ Tiêu Dao Hài",
+    "base": "base_guardian_boot",
+    "slot": "boot",
+    "realm": 9,
+    "grade": 9,
+    "rolled_stats": {
+      "evasion_rating": [340, 460],
+      "hp_max": [357, 483],
+      "spd_bonus": [7, 9]
+    },
+    "passive_bonus": {
+      "damage_bonus_from_evasion_pct": 0.2,
+      "slow_on_hit_pct": 0.25,
+      "spd_bonus": 6
+    },
+    "description_vi": "Hài Phong Tổ — +14 tốc độ, né tránh hóa sát thương, 25% Làm Chậm on-hit."
+  }
+]

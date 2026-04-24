@@ -52,7 +52,17 @@ class PlayerRepository:
         # Randomly assign 1–3 Linh Căn at registration
         count = random.randint(1, 3)
         linh_can_list = random.sample(ALL_LINH_CAN, count)
-        player = Player(discord_id=discord_id, name=name, linh_can=format_linh_can(linh_can_list))
+
+        # Randomly roll a constitution from the rollable pool (top-tier
+        # thần thể are excluded via roll_weight=0).
+        constitution_key = _roll_starter_constitution(linh_can_list)
+
+        player = Player(
+            discord_id=discord_id,
+            name=name,
+            linh_can=format_linh_can(linh_can_list),
+            constitution_type=constitution_key,
+        )
         self._session.add(player)
         await self._session.flush()  # get player.id
 
@@ -115,6 +125,32 @@ class PlayerRepository:
     async def save(self, player: Player) -> None:
         self._session.add(player)
         await self._session.flush()
+
+
+def _roll_starter_constitution(linh_can_list: list[str]) -> str:
+    """Weighted random roll among constitutions with ``roll_weight`` > 0.
+
+    Constitutions whose ``element`` matches one of the player's Linh Căn
+    get a 2× weight multiplier, so newcomers lean toward a constitution
+    that synergises with their rolled elements. Falls back to the default
+    Vạn Tượng body if the rollable pool is ever empty.
+    """
+    from src.data.registry import registry
+
+    pool = registry.rollable_constitutions()
+    if not pool:
+        return "ConstitutionVanTuong"
+
+    player_elems = set(linh_can_list)
+    weights: list[float] = []
+    for const in pool:
+        w = float(const.get("roll_weight", 0))
+        if const.get("element") and const["element"] in player_elems:
+            w *= 2.0
+        weights.append(w)
+
+    chosen = random.choices(pool, weights=weights, k=1)[0]
+    return chosen["key"]
 
 
 def _player_to_model(player: Player):

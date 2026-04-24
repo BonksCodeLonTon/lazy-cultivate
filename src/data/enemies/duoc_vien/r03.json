@@ -1,0 +1,65 @@
+[
+  {
+    "key": "DuocVienR3_01",
+    "vi": "Mộc Linh Tuần Canh",
+    "en": "Wood Spirit Patroller",
+    "rank": "cuong_gia",
+    "realm_level": 3,
+    "element": "moc",
+    "base_hp": 861,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T2",
+      "EnemyPhong_T2"
+    ],
+    "loot_table_key": "DuocVienLoot_3",
+    "base_atk": 21,
+    "base_matk": 29,
+    "base_def": 21,
+    "mp_regen_pct": 0.05
+  },
+  {
+    "key": "DuocVienR3_02",
+    "vi": "Hương Dược Yêu Cơ",
+    "en": "Fragrant Herb Enchantress",
+    "rank": "cuong_gia",
+    "realm_level": 3,
+    "element": "moc",
+    "base_hp": 861,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T2",
+      "EnemyPhong_T2"
+    ],
+    "loot_table_key": "DuocVienLoot_3",
+    "base_atk": 21,
+    "base_matk": 29,
+    "base_def": 21,
+    "mp_regen_pct": 0.05
+  },
+  {
+    "key": "DuocVienR3_03",
+    "vi": "Thiết Diệp Ma Căn",
+    "en": "Iron Leaf Demon Root",
+    "rank": "dai_nang",
+    "realm_level": 3,
+    "element": "moc",
+    "base_hp": 984,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T2",
+      "EnemyPhong_T2"
+    ],
+    "loot_table_key": "DuocVienLoot_3",
+    "base_atk": 24,
+    "base_matk": 33,
+    "base_def": 24,
+    "mp_regen_pct": 0.05
+  }
+]

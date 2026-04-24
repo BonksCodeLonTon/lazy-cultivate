@@ -10,6 +10,7 @@ from src.db.connection import get_session
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository
 from src.game.constants.grades import Grade, GRADE_LABELS
+from src.game.engine.effects import EFFECTS
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
 _TYPE_EMOJI = {
@@ -49,6 +50,126 @@ _SKILL_TYPE_TO_SCROLL_PREFIX: dict[str, str] = {
 }
 
 _NUMBER_EMOJI = ["①", "②", "③", "④", "⑤", "⑥"]
+
+
+# ── Human labels for the stat_bonus fields used by EffectMeta ────────────────
+# Percent-style stats (signed %) vs. flat-rating stats (signed integer).
+_PCT_STATS: frozenset[str] = frozenset({
+    "final_dmg_bonus", "final_dmg_reduce", "spd_pct", "hp_regen_pct",
+    "mp_regen_pct", "res_all",
+    "res_kim", "res_moc", "res_thuy", "res_hoa", "res_tho",
+    "res_loi", "res_phong", "res_quang", "res_am",
+    "dmg_bonus_kim", "dmg_bonus_moc", "dmg_bonus_thuy", "dmg_bonus_hoa",
+    "dmg_bonus_tho", "dmg_bonus_loi", "dmg_bonus_phong",
+    "dmg_bonus_quang", "dmg_bonus_am",
+})
+_STAT_LABEL: dict[str, str] = {
+    "final_dmg_bonus":  "ST",
+    "final_dmg_reduce": "ST nhận",
+    "crit_rating":      "bạo",
+    "crit_dmg_rating":  "ST bạo",
+    "evasion_rating":   "né",
+    "crit_res_rating":  "kháng bạo",
+    "spd_pct":          "tốc",
+    "hp_regen_pct":     "hồi HP",
+    "mp_regen_pct":     "hồi MP",
+    "res_all":          "kháng",
+    "res_kim":   "kháng Kim",   "res_moc":   "kháng Mộc",
+    "res_thuy":  "kháng Thủy",  "res_hoa":   "kháng Hỏa",
+    "res_tho":   "kháng Thổ",   "res_loi":   "kháng Lôi",
+    "res_phong": "kháng Phong", "res_quang": "kháng Quang",
+    "res_am":    "kháng Âm",
+    "dmg_bonus_kim":   "ST Kim",   "dmg_bonus_moc":   "ST Mộc",
+    "dmg_bonus_thuy":  "ST Thủy",  "dmg_bonus_hoa":   "ST Hỏa",
+    "dmg_bonus_tho":   "ST Thổ",   "dmg_bonus_loi":   "ST Lôi",
+    "dmg_bonus_phong": "ST Phong", "dmg_bonus_quang": "ST Quang",
+    "dmg_bonus_am":    "ST Âm",
+}
+# Non-EFFECTS skill keywords handled in combat.py — describe them here so the
+# browser explains what each keyword will do when the skill fires.
+_SPECIAL_EFFECT_LABELS: dict[str, str] = {
+    "HpRegen":           "❤️ Hồi 10% HP",
+    "MpRegen":           "💙 Hồi 10% MP",
+    "ConsumeBurnBurst":  "🔥💥 Nổ stack Thiêu Đốt",
+    "ConsumeManaBurst":  "💠💥 Nổ Linh Khí tích tụ",
+    "ConsumeShieldBurst":"🪨💥 Nổ khiên Thổ",
+    "ApplySoulDrain":    "🌑 Hồn Phệ (giảm HP max địch)",
+    "ApplyStatSteal":    "🩶 Đạo Pháp (cướp chỉ số)",
+}
+
+
+# final_dmg_reduce is a "reduce"-semantic stat: a positive stat_bonus value
+# means the holder takes LESS damage. Showing it raw as "+10% ST nhận" reads
+# backwards to a player ("+10% damage taken?"). Flip the display sign for
+# these inverted-semantic stats so buffs show as "-10% ST nhận".
+_INVERTED_PCT_STATS: frozenset[str] = frozenset({"final_dmg_reduce"})
+
+
+def _format_stat_bonus(stat: str, val: float) -> str:
+    """Render one stat_bonus entry as a signed, unit-aware snippet."""
+    label = _STAT_LABEL.get(stat, stat)
+    display_val = -val if stat in _INVERTED_PCT_STATS else val
+    if stat in _PCT_STATS:
+        return f"{display_val * 100:+.0f}% {label}"
+    return f"{display_val:+.0f} {label}"
+
+
+def _describe_effect(key: str) -> str:
+    """Short human description of a single skill effect key.
+
+    Returns a compact ``emoji name(detail)`` tag — e.g. ``🔥Thiêu Đốt(4%HP/t)``
+    or ``🛡️Hàn Khí(+10% ST nhận)`` — so the skill browser shows what each
+    debuff/buff will actually do instead of raw registry keys.
+    """
+    # Special combat-keyword effects (not in EFFECTS registry)
+    special = _SPECIAL_EFFECT_LABELS.get(key)
+    if special:
+        return special
+
+    meta = EFFECTS.get(key)
+    if meta is None:
+        return key  # unknown — fall back to the raw key
+
+    details: list[str] = []
+    # DoT tick as %HP/turn
+    if meta.dot_pct > 0:
+        details.append(f"{meta.dot_pct * 100:.1f}% HP/t")
+    # Stat mods — signed, shortened
+    for stat, val in meta.stat_bonus.items():
+        details.append(_format_stat_bonus(stat, val))
+    # Aura-on-hit: describe the chance-gated effect that's spread to enemies
+    # the holder strikes (e.g. BuffHanKhi → Làm Chậm on every hit).
+    if meta.aura_on_hit is not None:
+        aura_key, chance = meta.aura_on_hit
+        aura_meta = EFFECTS.get(aura_key)
+        aura_label = aura_meta.vi if aura_meta else aura_key
+        pct = int(round(chance * 100))
+        pct_prefix = "" if pct == 100 else f"{pct}% "
+        details.append(f"{pct_prefix}{aura_label} on-hit")
+    # CC flags without explicit stat mods
+    if meta.skips_turn and not details:
+        details.append("mất lượt")
+    if meta.prevents_skills and "mất lượt" not in details:
+        details.append("câm kỹ năng")
+
+    tag = f"{meta.emoji}{meta.vi}"
+    return f"{tag}({', '.join(details)})" if details else tag
+
+
+def _format_skill_effects(effect_keys: list[str]) -> str:
+    """Join a skill's effect list into a readable summary.
+
+    Deduplicates stacking repeats (e.g. ``ApplyStatSteal`` listed twice on the
+    same skill) since the cosmetic description is identical either way.
+    """
+    seen: set[str] = set()
+    parts: list[str] = []
+    for k in effect_keys or []:
+        if k in seen:
+            continue
+        seen.add(k)
+        parts.append(_describe_effect(k))
+    return " • ".join(parts) if parts else "—"
 
 
 def _skill_grade_value(skill_data: dict) -> int:
@@ -120,12 +241,13 @@ def _build_skilllist(
             el = s.get("element")
             el_tag = f" {_ELEM_EMOJI.get(el, '?')}" if el else ""
             cd = s.get("cooldown", 1)
-            effects = ", ".join(s.get("effects", [])) or "—"
+            effects = _format_skill_effects(s.get("effects", []))
             realm = s.get("realm", 1)
             lines.append(
                 f"{num} {t_e}{el_tag} **{s['vi']}** `{s['key']}`\n"
                 f"  Cảnh Giới: **{realm}** | MP: **{s.get('mp_cost', 0)}** | DMG: **{s.get('base_dmg', 0)}** | "
-                f"CD: **{cd}t** | {effects}"
+                f"CD: **{cd}t**\n"
+                f"  {effects}"
             )
         embed = base_embed(title, "\n\n".join(lines), color=0x9B59B6)
 
@@ -313,7 +435,7 @@ class SkillListView(discord.ui.View):
             t_e = _TYPE_EMOJI.get(skill_data.get("category", ""), "❓")
             el = skill_data.get("element")
             el_tag = f" {_ELEM_EMOJI.get(el, '')}" if el else ""
-            effects = ", ".join(skill_data.get("effects", [])) or "—"
+            effects = _format_skill_effects(skill_data.get("effects", []))
 
             embed = base_embed(f"📖 Học: {skill_data['vi']}", color=0x9B59B6)
             embed.add_field(

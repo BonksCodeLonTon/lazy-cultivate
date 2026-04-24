@@ -111,16 +111,45 @@ def _heal_combatant(player_c, item_key: str) -> str:
     return "✨ Hiệu ứng đã áp dụng."
 
 
-def _dungeon_list_embed(player_qi_realm: int) -> discord.Embed:
-    all_dungeons = sorted(registry.dungeons.values(), key=lambda d: d.get("required_qi_realm", 0))
-    unlocked = sum(1 for d in all_dungeons if d.get("required_qi_realm", 0) <= player_qi_realm)
+_DUNGEON_TYPE_META: dict[str, dict[str, Any]] = {
+    "normal": {
+        "title": "⚔️ Bí Cảnh Thường",
+        "intro": "Chọn bí cảnh từ menu bên dưới để xem chi tiết và tham chiến.",
+        "color": 0x7B2D8B,
+    },
+    "duoc_vien": {
+        "title": "🌿 Dược Viên",
+        "intro": (
+            "Vườn dược linh rộng lớn. Linh thú hệ **Mộc** tại đây hấp thụ dược "
+            "khí nên hồi phục huyết mạch rất nhanh — cần sát thương liên tục. "
+            "Phần thưởng chủ yếu là **thảo dược** và **nguyên liệu luyện đan**."
+        ),
+        "color": 0x2E7D32,
+    },
+}
+
+
+def _dungeon_list_embed(player_qi_realm: int, dungeon_type: str = "normal") -> discord.Embed:
+    meta = _DUNGEON_TYPE_META.get(dungeon_type, _DUNGEON_TYPE_META["normal"])
+    pool = registry.dungeons_of_type(dungeon_type)
+    pool = sorted(pool, key=lambda d: d.get("required_qi_realm", 0))
+    unlocked = sum(1 for d in pool if d.get("required_qi_realm", 0) <= player_qi_realm)
     embed = base_embed(
-        "🗺️ Bí Cảnh",
-        f"Đã mở khóa **{unlocked}/{len(all_dungeons)}** bí cảnh.\n"
-        f"Chọn bí cảnh từ menu bên dưới để xem chi tiết và tham chiến.",
-        color=0x7B2D8B,
+        meta["title"],
+        f"Đã mở khóa **{unlocked}/{len(pool)}** khu vực.\n{meta['intro']}",
+        color=meta["color"],
     )
     return embed
+
+
+def _dungeon_type_embed() -> discord.Embed:
+    return base_embed(
+        "🗺️ Bí Cảnh",
+        "Chọn loại bí cảnh để bắt đầu:\n\n"
+        "⚔️ **Bí Cảnh Thường** — Yêu thú đa hệ, rớt trang bị & nguyên liệu luyện khí.\n"
+        "🌿 **Dược Viên** — Yêu thú hệ Mộc với khả năng hồi máu, rớt thảo dược luyện đan.",
+        color=0x7B2D8B,
+    )
 
 
 def _dungeon_detail_embed(
@@ -172,12 +201,15 @@ def _build_result_embeds(
     d = registry.get_dungeon(dungeon_key)
     dungeon_name = d["vi"] if d else dungeon_key
 
+    from src.game.engine.damage import to_ansi_block
+
     log_text = "\n".join(result.log)
     log_embeds: list[discord.Embed] = []
     color = 0x00C851 if result.success else 0xFF4444
     for i, chunk in enumerate([log_text[j:j + 3800] for j in range(0, max(len(log_text), 1), 3800)]):
         title = f"📜 Nhật Ký — {dungeon_name}" if i == 0 else "\u200b"
-        log_embeds.append(base_embed(title, chunk, color=color))
+        body = to_ansi_block(chunk) if chunk.strip() else chunk
+        log_embeds.append(base_embed(title, body, color=color))
 
     if result.success:
         loot_str = _format_loot(result.loot)
@@ -208,6 +240,7 @@ async def _execute_dungeon(
     player_qi_realm: int,
     player_realm_total: int = 0,
     back_fn=None,
+    dungeon_type: str = "normal",
 ) -> None:
     """Run dungeon with real-time turn-by-turn battle display."""
 
@@ -396,9 +429,29 @@ async def _execute_dungeon(
             if stone_gained:
                 player.primordial_stones = min(player.primordial_stones + stone_gained, CURRENCY_CAP)
             if dungeon_success:
-                # Restore to full HP/MP using the combatant's actual max (includes all bonuses)
-                player.hp_current = player_c.hp_max
-                player.mp_current = player_c.mp_max
+                # Apply offline ticks accumulated during the battle so any
+                # pending level-up materializes before we re-cap HP/MP;
+                # otherwise player_c.hp_max (built at dungeon entry from
+                # stale levels) can undershoot the true max.
+                from src.bot.cogs.cultivation import _apply_ticks_to_player
+                from src.game.systems.character_stats import (
+                    active_formation_gem_keys, compute_combat_stats,
+                )
+                from src.game.engine.equipment import compute_equipment_stats
+
+                await _apply_ticks_to_player(player, repo, player.active_axis or "qi")
+
+                fresh_char = _player_to_model(player)
+                fresh_gem_keys = active_formation_gem_keys(player)
+                fresh_equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
+                fresh_cs = compute_combat_stats(
+                    fresh_char,
+                    gem_count=len(fresh_gem_keys),
+                    equip_stats=compute_equipment_stats(fresh_equipped),
+                    gem_keys=fresh_gem_keys,
+                )
+                player.hp_current = fresh_cs.hp_max
+                player.mp_current = fresh_cs.mp_max
             else:
                 # Preserve the HP/MP the player had (minimum 1 HP to avoid dead state)
                 player.hp_current = max(1, player_c.hp)
@@ -416,7 +469,7 @@ async def _execute_dungeon(
     summary_embed, log_embeds = _build_result_embeds(dungeon_key, result_obj, player_name)
     view = DungeonResultView(
         dungeon_key, interaction.user.id, player_qi_realm, player_realm_total,
-        log_embeds, back_fn=back_fn,
+        log_embeds, back_fn=back_fn, dungeon_type=dungeon_type,
     )
     await interaction.edit_original_response(embed=summary_embed, view=view)
 
@@ -550,15 +603,24 @@ class DungeonPrepView(discord.ui.View):
 class DungeonSelect(discord.ui.Select):
     """Dropdown listing all dungeons; selecting one transitions to the detail view."""
 
-    def __init__(self, discord_id: int, player_qi_realm: int, player_realm_total: int, back_fn=None) -> None:
+    def __init__(
+        self,
+        discord_id: int,
+        player_qi_realm: int,
+        player_realm_total: int,
+        back_fn=None,
+        dungeon_type: str = "normal",
+    ) -> None:
         self.discord_id = discord_id
         self.player_qi_realm = player_qi_realm
         self.player_realm_total = player_realm_total
         self._back_fn = back_fn
+        self._dungeon_type = dungeon_type
 
-        all_dungeons = sorted(registry.dungeons.values(), key=lambda d: d.get("required_qi_realm", 0))
+        pool = registry.dungeons_of_type(dungeon_type)
+        pool = sorted(pool, key=lambda d: d.get("required_qi_realm", 0))
         options: list[discord.SelectOption] = []
-        for d in all_dungeons[:25]:
+        for d in pool[:25]:
             req = d.get("required_qi_realm", 0)
             req_label = QI_REALMS[req].vi if req < len(QI_REALMS) else f"Realm {req}"
             can_enter = req <= player_qi_realm
@@ -570,16 +632,23 @@ class DungeonSelect(discord.ui.Select):
                 emoji="✅" if can_enter else "🔒",
             ))
 
-        super().__init__(placeholder="⚔️ Chọn Bí Cảnh...", options=options, row=0)
+        placeholder = "🌿 Chọn Dược Viên..." if dungeon_type == "duoc_vien" else "⚔️ Chọn Bí Cảnh..."
+        if not options:
+            options = [discord.SelectOption(label="(Không có)", value="__none__")]
+        super().__init__(placeholder=placeholder, options=options, row=0)
 
     async def callback(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
         dungeon_key = self.values[0]
+        if dungeon_key == "__none__":
+            await interaction.response.defer()
+            return
         embed = _dungeon_detail_embed(dungeon_key, interaction.user.id, self.player_qi_realm, self.player_realm_total)
         view = DungeonDetailView(
-            dungeon_key, interaction.user.id, self.player_qi_realm, self.player_realm_total, back_fn=self._back_fn
+            dungeon_key, interaction.user.id, self.player_qi_realm, self.player_realm_total,
+            back_fn=self._back_fn, dungeon_type=self._dungeon_type,
         )
         await interaction.response.edit_message(embed=embed, view=view)
 
@@ -587,13 +656,24 @@ class DungeonSelect(discord.ui.Select):
 class DungeonListView(discord.ui.View):
     """View shown on the main /dungeon command — select dropdown + optional back button."""
 
-    def __init__(self, discord_id: int, player_qi_realm: int, player_realm_total: int = 0, back_fn=None) -> None:
+    def __init__(
+        self,
+        discord_id: int,
+        player_qi_realm: int,
+        player_realm_total: int = 0,
+        back_fn=None,
+        dungeon_type: str = "normal",
+    ) -> None:
         super().__init__(timeout=120)
         self._discord_id = discord_id
         self._back_fn = back_fn
         self._player_qi_realm = player_qi_realm
         self._player_realm_total = player_realm_total
-        self.add_item(DungeonSelect(discord_id, player_qi_realm, player_realm_total, back_fn=back_fn))
+        self._dungeon_type = dungeon_type
+        self.add_item(DungeonSelect(
+            discord_id, player_qi_realm, player_realm_total,
+            back_fn=back_fn, dungeon_type=dungeon_type,
+        ))
         if back_fn:
             btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
             btn.callback = self._back_cb
@@ -601,6 +681,72 @@ class DungeonListView(discord.ui.View):
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await self._back_fn(interaction)
+
+    async def on_timeout(self) -> None:
+        pass
+
+
+class DungeonTypeSelectView(discord.ui.View):
+    """Two-button picker: ⚔️ Bí Cảnh Thường vs 🌿 Dược Viên."""
+
+    def __init__(
+        self,
+        discord_id: int,
+        player_qi_realm: int,
+        player_realm_total: int = 0,
+        back_fn=None,
+    ) -> None:
+        super().__init__(timeout=120)
+        self._discord_id = discord_id
+        self._player_qi_realm = player_qi_realm
+        self._player_realm_total = player_realm_total
+        self._back_fn = back_fn
+
+        normal_btn = discord.ui.Button(
+            label="⚔️ Bí Cảnh Thường", style=discord.ButtonStyle.primary, row=0,
+        )
+        normal_btn.callback = self._pick_normal
+        self.add_item(normal_btn)
+
+        duoc_btn = discord.ui.Button(
+            label="🌿 Dược Viên", style=discord.ButtonStyle.success, row=0,
+        )
+        duoc_btn.callback = self._pick_duoc_vien
+        self.add_item(duoc_btn)
+
+        if back_fn:
+            back_btn = discord.ui.Button(
+                label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1,
+            )
+            back_btn.callback = self._back_cb
+            self.add_item(back_btn)
+
+    def _guard(self, interaction: discord.Interaction) -> bool:
+        return interaction.user.id == self._discord_id
+
+    async def _open_list(self, interaction: discord.Interaction, dungeon_type: str) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
+            return
+        embed = _dungeon_list_embed(self._player_qi_realm, dungeon_type=dungeon_type)
+        view = DungeonListView(
+            self._discord_id, self._player_qi_realm, self._player_realm_total,
+            back_fn=self._back_fn, dungeon_type=dungeon_type,
+        )
+        await interaction.response.edit_message(embed=embed, view=view)
+
+    async def _pick_normal(self, interaction: discord.Interaction) -> None:
+        await self._open_list(interaction, "normal")
+
+    async def _pick_duoc_vien(self, interaction: discord.Interaction) -> None:
+        await self._open_list(interaction, "duoc_vien")
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
         await interaction.response.defer()
@@ -620,6 +766,7 @@ class DungeonDetailView(discord.ui.View):
         player_qi_realm: int,
         player_realm_total: int = 0,
         back_fn=None,
+        dungeon_type: str = "normal",
     ) -> None:
         super().__init__(timeout=120)
         self.dungeon_key = dungeon_key
@@ -627,6 +774,7 @@ class DungeonDetailView(discord.ui.View):
         self.player_qi_realm = player_qi_realm
         self.player_realm_total = player_realm_total
         self._back_fn = back_fn
+        self._dungeon_type = dungeon_type
 
     @discord.ui.button(label="⚔️ Vào Bí Cảnh", style=discord.ButtonStyle.green, row=1)
     async def enter_btn(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
@@ -636,7 +784,7 @@ class DungeonDetailView(discord.ui.View):
         await interaction.response.defer()
         await _execute_dungeon(
             interaction, self.dungeon_key, self.player_qi_realm, self.player_realm_total,
-            back_fn=self._back_fn,
+            back_fn=self._back_fn, dungeon_type=self._dungeon_type,
         )
 
     @discord.ui.button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=1)
@@ -644,8 +792,11 @@ class DungeonDetailView(discord.ui.View):
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
-        embed = _dungeon_list_embed(self.player_qi_realm)
-        view = DungeonListView(self.discord_id, self.player_qi_realm, self.player_realm_total, back_fn=self._back_fn)
+        embed = _dungeon_list_embed(self.player_qi_realm, dungeon_type=self._dungeon_type)
+        view = DungeonListView(
+            self.discord_id, self.player_qi_realm, self.player_realm_total,
+            back_fn=self._back_fn, dungeon_type=self._dungeon_type,
+        )
         await interaction.response.edit_message(embed=embed, view=view)
 
     async def on_timeout(self) -> None:
@@ -663,6 +814,7 @@ class DungeonResultView(discord.ui.View):
         player_realm_total: int,
         log_embeds: list[discord.Embed],
         back_fn=None,
+        dungeon_type: str = "normal",
     ) -> None:
         super().__init__(timeout=120)
         self.dungeon_key = dungeon_key
@@ -671,6 +823,7 @@ class DungeonResultView(discord.ui.View):
         self.player_realm_total = player_realm_total
         self.log_embeds = log_embeds
         self._back_fn = back_fn
+        self._dungeon_type = dungeon_type
         if back_fn:
             btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
             btn.callback = self._back_cb
@@ -691,8 +844,11 @@ class DungeonResultView(discord.ui.View):
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
-        embed = _dungeon_list_embed(self.player_qi_realm)
-        view = DungeonListView(self.discord_id, self.player_qi_realm, self.player_realm_total, back_fn=self._back_fn)
+        embed = _dungeon_list_embed(self.player_qi_realm, dungeon_type=self._dungeon_type)
+        view = DungeonListView(
+            self.discord_id, self.player_qi_realm, self.player_realm_total,
+            back_fn=self._back_fn, dungeon_type=self._dungeon_type,
+        )
         await interaction.response.edit_message(embed=embed, view=view)
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
@@ -731,8 +887,8 @@ class DungeonCog(commands.Cog, name="Dungeon"):
             + player.formation_realm * 9 + player.formation_level
         ) // 3
 
-        embed = _dungeon_list_embed(player.qi_realm)
-        view = DungeonListView(interaction.user.id, player.qi_realm, player_realm_total)
+        embed = _dungeon_type_embed()
+        view = DungeonTypeSelectView(interaction.user.id, player.qi_realm, player_realm_total)
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
 

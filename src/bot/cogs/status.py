@@ -136,6 +136,7 @@ class StatusView(discord.ui.View):
             ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     1),
             ("📚 Tàng Kinh Các",     discord.ButtonStyle.secondary, self._tang_kinh_cac_cb, 1),
             ("⚒️ Thiên Công Phường", discord.ButtonStyle.secondary, self._forge_cb,         2),
+            ("⚗️ Luyện Đan",         discord.ButtonStyle.secondary, self._alchemy_cb,       2),
             ("🏪 Phường Thị",        discord.ButtonStyle.secondary, self._shop_cb,          2),
             ("🏮 Đấu Thương Các",    discord.ButtonStyle.secondary, self._market_cb,        2),
         ]
@@ -229,10 +230,35 @@ class StatusView(discord.ui.View):
                 await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                 return
             qi_realm = player.qi_realm
+            player_realm_total = (
+                player.body_realm * 9 + player.body_level
+                + player.qi_realm * 9 + player.qi_level
+                + player.formation_realm * 9 + player.formation_level
+            ) // 3
 
-        from src.bot.cogs.dungeon import DungeonListView, _dungeon_list_embed
-        embed = _dungeon_list_embed(qi_realm)
-        view = DungeonListView(self._discord_id, qi_realm, back_fn=_show_status)
+        from src.bot.cogs.dungeon import DungeonTypeSelectView, _dungeon_type_embed
+        embed = _dungeon_type_embed()
+        view = DungeonTypeSelectView(
+            self._discord_id, qi_realm, player_realm_total, back_fn=_show_status,
+        )
+        await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _alchemy_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        from src.bot.cogs.alchemy import AlchemyHubView, _alchemy_hub_embed
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            embed = await _alchemy_hub_embed(player)
+
+        view = AlchemyHubView(self._discord_id, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
 
     async def _world_boss_cb(self, interaction: discord.Interaction) -> None:

@@ -1,0 +1,65 @@
+[
+  {
+    "key": "DuocVienR9_01",
+    "vi": "Vô Thượng Mộc Thần",
+    "en": "Supreme Wood God",
+    "rank": "chi_ton",
+    "realm_level": 9,
+    "element": "moc",
+    "base_hp": 10125,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R9",
+      "EnemyMoc_R8"
+    ],
+    "loot_table_key": "DuocVienLoot_9",
+    "base_atk": 78,
+    "base_matk": 97,
+    "base_def": 74,
+    "mp_regen_pct": 0.08
+  },
+  {
+    "key": "DuocVienR9_02",
+    "vi": "Hỗn Nguyên Dược Tôn",
+    "en": "Chaos Primal Herb Lord",
+    "rank": "chi_ton",
+    "realm_level": 9,
+    "element": "moc",
+    "base_hp": 10125,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R9",
+      "EnemyMoc_R8"
+    ],
+    "loot_table_key": "DuocVienLoot_9",
+    "base_atk": 78,
+    "base_matk": 97,
+    "base_def": 74,
+    "mp_regen_pct": 0.08
+  },
+  {
+    "key": "DuocVienR9_03",
+    "vi": "Thiên Đạo Mộc Đế",
+    "en": "Heavenly Dao Wood Emperor",
+    "rank": "chi_ton",
+    "realm_level": 9,
+    "element": "moc",
+    "base_hp": 10125,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R9",
+      "EnemyMoc_R8"
+    ],
+    "loot_table_key": "DuocVienLoot_9",
+    "base_atk": 78,
+    "base_matk": 97,
+    "base_def": 74,
+    "mp_regen_pct": 0.08
+  }
+]

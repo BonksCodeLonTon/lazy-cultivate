@@ -71,6 +71,7 @@
         "hp_pct": 0.5,
         "hp_regen_pct": 0.02,
         "poison_immunity": true,
+        "heal_can_crit": true,
         "note": "Tuyệt Đỉnh Mộc Trận"
       }
     }
@@ -197,32 +198,52 @@
     "base_stat_bonus": {
       "hp_pct": 0.03,
       "mp_pct": 0.08,
-      "res_element": 50
+      "res_element": 50,
+      "spd_bonus": 2
     },
     "formation_skill_key": "SkillFrmLoi",
     "gem_threshold_bonuses": {
       "1": {
         "mp_pct": 0.03,
+        "shock_on_hit_pct": 0.08,
         "note": "Sơ Khai Lôi Trận"
       },
       "3": {
         "mp_pct": 0.08,
+        "shock_on_hit_pct": 0.18,
+        "loi_res_shred": 0.05,
         "note": "Kiên Cố Lôi Trận"
       },
       "5": {
         "mp_pct": 0.15,
         "crit_rating": 50,
+        "shock_on_hit_pct": 0.3,
+        "loi_res_shred": 0.1,
+        "spd_bonus": 3,
+        "turn_steal_pct": 0.05,
         "note": "Thịnh Vượng Lôi Trận"
       },
       "7": {
         "mp_pct": 0.25,
         "crit_rating": 100,
+        "shock_on_hit_pct": 0.45,
+        "shock_stack_cap_bonus": 2,
+        "shock_per_stack_pct_bonus": 0.015,
+        "loi_res_shred": 0.15,
+        "spd_bonus": 5,
+        "turn_steal_pct": 0.1,
         "note": "Vô Song Lôi Trận"
       },
       "10": {
         "mp_pct": 0.5,
         "crit_rating": 200,
         "paralysis_on_crit": true,
+        "shock_on_hit_pct": 0.7,
+        "shock_stack_cap_bonus": 5,
+        "shock_per_stack_pct_bonus": 0.03,
+        "loi_res_shred": 0.25,
+        "spd_bonus": 8,
+        "turn_steal_pct": 0.2,
         "note": "Tuyệt Đỉnh Lôi Trận"
       }
     }
@@ -273,34 +294,153 @@
     "base_stat_bonus": {
       "hp_pct": 0.02,
       "mp_pct": 0.04,
-      "res_element": 50
+      "res_element": 50,
+      "evasion_rating": 40
     },
     "formation_skill_key": "SkillFrmPhong",
     "gem_threshold_bonuses": {
       "1": {
         "mp_pct": 0.03,
+        "mark_on_hit_pct": 0.08,
         "note": "Sơ Khai Phong Trận"
       },
       "3": {
         "mp_pct": 0.08,
+        "mark_on_hit_pct": 0.18,
+        "slow_on_hit_pct": 0.08,
         "note": "Kiên Cố Phong Trận"
       },
       "5": {
         "mp_pct": 0.15,
         "spd_bonus": 2,
+        "evasion_rating": 80,
+        "mark_on_hit_pct": 0.3,
+        "damage_bonus_from_evasion_pct": 0.05,
+        "phong_res_shred": 0.08,
         "note": "Thịnh Vượng Phong Trận"
       },
       "7": {
         "mp_pct": 0.25,
         "spd_bonus": 4,
-        "evasion_rating": 50,
+        "evasion_rating": 150,
+        "mark_on_hit_pct": 0.45,
+        "damage_bonus_from_evasion_pct": 0.1,
+        "crit_rating_vs_marked": 120,
+        "crit_dmg_vs_marked": 150,
+        "phong_res_shred": 0.15,
         "note": "Vô Song Phong Trận"
       },
       "10": {
         "mp_pct": 0.5,
         "spd_bonus": 8,
-        "evasion_rating": 150,
+        "evasion_rating": 300,
+        "mark_on_hit_pct": 0.7,
+        "damage_bonus_from_evasion_pct": 0.18,
+        "crit_rating_vs_marked": 280,
+        "crit_dmg_vs_marked": 350,
+        "phong_res_shred": 0.25,
+        "slow_on_hit_pct": 0.2,
         "note": "Tuyệt Đỉnh Phong Trận"
+      }
+    }
+  },
+  {
+    "key": "NhatNguyenQuang",
+    "vi": "Nhất Nguyên Quang Trận",
+    "en": "One Origin Light Formation",
+    "element": "quang",
+    "base_stat_bonus": {
+      "hp_pct": 0.03,
+      "mp_pct": 0.05,
+      "res_element": 50
+    },
+    "formation_skill_key": "SkillFrmQuang",
+    "gem_threshold_bonuses": {
+      "1": {
+        "heal_pct": 0.05,
+        "note": "Sơ Khai Quang Trận"
+      },
+      "3": {
+        "heal_pct": 0.12,
+        "cleanse_on_turn_pct": 0.1,
+        "note": "Kiên Cố Quang Trận"
+      },
+      "5": {
+        "heal_pct": 0.2,
+        "silence_on_crit_pct": 0.1,
+        "quang_res_shred": 0.05,
+        "note": "Thịnh Vượng Quang Trận"
+      },
+      "7": {
+        "heal_pct": 0.3,
+        "silence_on_crit_pct": 0.2,
+        "quang_res_shred": 0.1,
+        "heal_reduce_on_hit_pct": 0.15,
+        "final_dmg_bonus": 0.05,
+        "heal_can_crit": true,
+        "note": "Vô Song Quang Trận"
+      },
+      "10": {
+        "heal_pct": 0.5,
+        "silence_on_crit_pct": 0.3,
+        "quang_res_shred": 0.2,
+        "heal_reduce_on_hit_pct": 0.3,
+        "barrier_on_cleanse": true,
+        "heal_can_crit": true,
+        "final_dmg_bonus": 0.15,
+        "note": "Tuyệt Đỉnh Quang Trận"
+      }
+    }
+  },
+  {
+    "key": "NhatNguyenAm",
+    "vi": "Nhất Nguyên Ám Trận",
+    "en": "One Origin Shadow Formation",
+    "element": "am",
+    "base_stat_bonus": {
+      "hp_pct": 0.04,
+      "mp_pct": 0.06,
+      "res_element": 50
+    },
+    "formation_skill_key": "SkillFrmAm",
+    "gem_threshold_bonuses": {
+      "1": {
+        "mp_pct": 0.03,
+        "soul_drain_on_hit_pct": 0.05,
+        "note": "Sơ Khai Ám Trận"
+      },
+      "3": {
+        "mp_pct": 0.08,
+        "soul_drain_on_hit_pct": 0.12,
+        "stat_steal_on_hit_pct": 0.05,
+        "note": "Kiên Cố Ám Trận"
+      },
+      "5": {
+        "mp_pct": 0.15,
+        "soul_drain_on_hit_pct": 0.22,
+        "stat_steal_on_hit_pct": 0.12,
+        "am_res_shred": 0.05,
+        "poison_dmg_bonus": 0.1,
+        "note": "Thịnh Vượng Ám Trận"
+      },
+      "7": {
+        "mp_pct": 0.25,
+        "soul_drain_on_hit_pct": 0.35,
+        "stat_steal_on_hit_pct": 0.22,
+        "am_res_shred": 0.1,
+        "crit_rating_vs_drained": 120,
+        "poison_dmg_bonus": 0.2,
+        "note": "Vô Song Ám Trận"
+      },
+      "10": {
+        "mp_pct": 0.5,
+        "soul_drain_on_hit_pct": 0.55,
+        "stat_steal_on_hit_pct": 0.4,
+        "am_res_shred": 0.2,
+        "crit_rating_vs_drained": 280,
+        "poison_dmg_bonus": 0.35,
+        "final_dmg_bonus": 0.12,
+        "note": "Tuyệt Đỉnh Ám Trận"
       }
     }
   },

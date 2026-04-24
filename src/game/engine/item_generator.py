@@ -122,15 +122,52 @@ def generate_item(
     }
 
 
-def generate_unique(unique_key: str) -> dict:
-    """Generate a dict for a unique item instance."""
+_INT_STATS = frozenset({
+    "atk", "matk", "def_stat", "hp_max", "mp_max",
+    "crit_rating", "crit_dmg_rating", "evasion_rating", "crit_res_rating",
+    "hp_regen_flat", "mp_regen_flat", "shield_regen_flat",
+    "spd_bonus", "crit_rating_vs_bleed", "crit_dmg_vs_bleed",
+    "crit_rating_vs_marked", "crit_dmg_vs_marked",
+})
+
+
+def _roll_unique_stat(stat: str, spec, rng: random.Random) -> float | int | bool:
+    """Roll a single unique stat.
+
+    ``spec`` may be a [lo, hi] range (rolled_stats) or a scalar (fixed_stats)
+    for backward compatibility. Booleans pass through unchanged.
+    """
+    if isinstance(spec, bool):
+        return spec
+    if isinstance(spec, (list, tuple)) and len(spec) == 2:
+        lo, hi = spec
+        if lo == hi:
+            val = lo
+        elif isinstance(lo, float) or isinstance(hi, float) or stat not in _INT_STATS:
+            val = rng.uniform(float(lo), float(hi))
+        else:
+            val = rng.randint(int(lo), int(hi))
+    else:
+        val = spec
+    if isinstance(val, float):
+        return round(val, 4)
+    return val
+
+
+def generate_unique(unique_key: str, rng: random.Random | None = None) -> dict:
+    """Generate a dict for a unique item instance with stats rolled in range."""
     from src.data.registry import registry
 
     uniq = registry.get_unique(unique_key)
     if not uniq:
         raise ValueError(f"Unknown unique key: {unique_key!r}")
 
-    computed_stats = {k: float(v) for k, v in uniq["fixed_stats"].items()}
+    rng = rng or random.Random()
+    stat_spec = uniq.get("rolled_stats") or uniq.get("fixed_stats") or {}
+    computed_stats: dict[str, float] = {
+        stat: float(_roll_unique_stat(stat, spec, rng))
+        for stat, spec in stat_spec.items()
+    }
 
     return {
         "base_key": uniq.get("base"),

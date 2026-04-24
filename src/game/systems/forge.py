@@ -6,57 +6,61 @@ from dataclasses import dataclass
 from typing import Optional
 
 from src.data.registry import registry
+from src.game.engine.quality import (
+    QUALITY_LABELS,
+    QUALITY_SPECIAL,
+    roll_quality as _roll_quality_shared,
+)
 from src.game.models.character import Character
 
 
-# ── Quality tiers (equipment rarities) ──────────────────────────────────────
+# Quality tiers are defined in src/game/engine/quality.py and re-exported
+# here for backward compatibility with callers that import them from forge.
+__all__ = [
+    "QUALITY_LABELS",
+    "QUALITY_SPECIAL",
+    "QUALITY_AFFIX_COUNT",
+    "get_affix_count",
+    "max_affix_total",
+    "ForgeResult",
+    "forge_equipment",
+]
 
-QUALITY_LABELS: dict[str, str] = {
-    "hoan": "Hoàng Phẩm",
-    "huyen": "Huyền Phẩm",
-    "dia": "Địa Phẩm",
-    "thien": "Thiên Phẩm",
-}
-
-# How many (prefix, suffix) affixes each quality can roll
+# Equipment-specific: how many (prefix, suffix) affixes each quality rolls.
+# This is a forge concern and does not belong in the shared quality module.
+#
+# Thiên gets a universal +1 prefix slot over Địa at every grade. Grade 9
+# pushes it a step further with an extra suffix on top.
 QUALITY_AFFIX_COUNT: dict[str, tuple[int, int]] = {
-    "hoan": (1, 0),
-    "huyen": (1, 1),
-    "dia": (2, 1),
-    "thien": (2, 2),
+    "hoan":  (1, 1),
+    "huyen": (2, 1),
+    "dia":   (2, 2),
+    "thien": (3, 2),   # 5 total affixes at Thiên — applies to ALL grades
 }
 
-# Special effects applied on top of normal rolling
-# implicit_mult  — multiplies all rolled implicit stat values
-# affix_floor    — fraction of range used as new minimum (0.0 = normal, 0.5 = top-half rolls)
-# guaranteed_max — one affix rolls at exactly its grade max
-# special_label  — display label shown on the item
-QUALITY_SPECIAL: dict[str, dict] = {
-    "hoan":  {
-        "implicit_mult": 1.0,
-        "affix_floor": 0.0,
-        "guaranteed_max": False,
-        "special_label": None,
-    },
-    "huyen": {
-        "implicit_mult": 1.15,
-        "affix_floor": 0.0,
-        "guaranteed_max": False,
-        "special_label": "✦ Linh Khí Tăng Cường",        # +15% implicit stats
-    },
-    "dia":   {
-        "implicit_mult": 1.30,
-        "affix_floor": 0.5,                               # affixes roll in top 50% of range
-        "guaranteed_max": False,
-        "special_label": "✦✦ Thiên Địa Tinh Hoa",        # +30% implicit + elevated affixes
-    },
-    "thien": {
-        "implicit_mult": 1.50,
-        "affix_floor": 0.75,                              # affixes roll in top 25% of range
-        "guaranteed_max": True,                           # one affix always at max value
-        "special_label": "✦✦✦ Vô Thượng Thần Vật",      # +50% implicit + near-max affixes
-    },
+# Per-grade overrides keyed by (grade, quality). Only entries that differ
+# from QUALITY_AFFIX_COUNT need to be listed; fall back to the base table.
+_GRADE_AFFIX_OVERRIDES: dict[tuple[int, str], tuple[int, int]] = {
+    (9, "thien"): (3, 3),   # 6 total affixes — G9 keeps its extra suffix
 }
+
+
+def get_affix_count(grade: int, quality: str) -> tuple[int, int]:
+    """Return (n_prefix, n_suffix) for a given grade+quality combination.
+
+    Thiên rolls 5 affixes (3p,2s) at every grade; Grade 9 Thiên bumps to
+    6 (3p,3s). All other combinations use the base ``QUALITY_AFFIX_COUNT``.
+    """
+    return _GRADE_AFFIX_OVERRIDES.get((grade, quality), QUALITY_AFFIX_COUNT[quality])
+
+
+def max_affix_total(grade: int) -> int:
+    """Max total affixes achievable at this forge grade (Thiên quality).
+
+    Used to derive material qty so cost scales with customization ceiling.
+    """
+    n_prefix, n_suffix = get_affix_count(grade, "thien")
+    return n_prefix + n_suffix
 
 
 @dataclass
@@ -115,32 +119,48 @@ def check_forge_requirements(
             None,
         )
 
+    # Required material qty is derived from the max affix total at this grade —
+    # so a G9 forge (max 6 affixes) needs 6 materials, while G1-G7 need 4.
+    # The JSON recipe's qty field is treated as a display hint but always
+    # overridden here to keep code as the single source of truth.
+    required_qty = max_affix_total(grade)
+
     # Check each option — use first satisfiable one
     for option in recipe["options"]:
         mats_needed = option["materials"]
-        # Player must provide at least one material that satisfies the grade requirement
-        # We validate by looking at what's in their bag matching the grade
         ok = all(
             sum(
                 qty
                 for key, qty in materials_in_bag.items()
                 if get_material_grade(key) == req["mat_grade"]
-            ) >= req["qty"]
+            ) >= required_qty
             for req in mats_needed
         )
         if ok:
-            return True, "", option
+            # Normalize the returned option so downstream consumption uses the
+            # computed qty rather than the stale JSON value.
+            return True, "", _normalize_option(option, required_qty)
 
-    # Build a helpful error showing the cheapest option
     cheapest = recipe["options"][0]
-    lines = []
-    for req in cheapest["materials"]:
-        lines.append(f"• {req['qty']}x Vật liệu luyện khí phẩm {req['mat_grade']}")
+    lines = [
+        f"• {required_qty}x Vật liệu luyện khí phẩm {req['mat_grade']}"
+        for req in cheapest["materials"]
+    ]
     return (
         False,
         "Thiếu nguyên liệu. Cần:\n" + "\n".join(lines),
         None,
     )
+
+
+def _normalize_option(option: dict, required_qty: int) -> dict:
+    """Return a copy of ``option`` with every material qty set to ``required_qty``."""
+    return {
+        **option,
+        "materials": [
+            {**req, "qty": required_qty} for req in option["materials"]
+        ],
+    }
 
 
 def roll_implicit_stats(base: dict, grade: int, quality: str = "hoan") -> dict[str, float]:
@@ -193,7 +213,7 @@ def roll_affixes(
     this is how 2H weapons earn their slot lockout: twice the customizable
     power compared to a 1H weapon of the same quality.
     """
-    n_prefix, n_suffix = QUALITY_AFFIX_COUNT[quality]
+    n_prefix, n_suffix = get_affix_count(grade, quality)
     if two_handed:
         n_prefix *= 2
         n_suffix *= 2
@@ -254,20 +274,8 @@ def compute_stats(implicit: dict[str, float], affixes: list[dict]) -> dict[str, 
 
 
 def _roll_quality(recipe: dict, comprehension: int = 0) -> str:
-    """Roll item quality, with a small bonus from comprehension stat."""
-    bonus = min(comprehension * 0.0005, 0.1)  # max +10% thien chance
-    chances = dict(recipe["quality_chances"])
-    chances["thien"] = min(chances["thien"] + bonus, 1.0)
-
-    # Re-normalise (keep relative proportions for non-thien tiers)
-    total = sum(chances.values())
-    roll = random.random() * total
-    cumulative = 0.0
-    for quality, weight in chances.items():
-        cumulative += weight
-        if roll <= cumulative:
-            return quality
-    return "hoan"
+    """Roll item quality from a forge recipe (thin wrapper over the shared roll)."""
+    return _roll_quality_shared(recipe["quality_chances"], comprehension)
 
 
 def _build_display_name(base: dict, quality: str, affixes: list[dict]) -> str:
@@ -294,10 +302,18 @@ def forge_equipment(
     base_key: str,
     grade: int,
     consumed_materials: list[tuple[str, int]],  # [(material_key, qty)]
+    super_material_key: str | None = None,
 ) -> ForgeResult:
     """
     Core forge logic. Assumes requirements have already been validated and
     materials have been deducted from inventory. Deducts Công Đức in-place.
+
+    ``super_material_key`` is an optional reference to a single super-rare
+    forge material (``type == 'super_material'``). The material's
+    ``granted_passive`` dict is grafted onto the forged item and merged into
+    the wearer's stat totals at equip time (see ``equipment.py``). Only one
+    super material can be consumed per forge operation — this is enforced by
+    the singular argument type.
 
     Returns ForgeResult with `item_data` ready for EquipmentRepository.add_to_bag().
     """
@@ -310,6 +326,22 @@ def forge_equipment(
     recipe = get_recipe(grade)
     if not recipe:
         return ForgeResult(False, f"Không tìm thấy công thức rèn cấp {grade}.")
+
+    # Validate super material if provided. Rejects unknown keys and enforces
+    # the per-material minimum item grade (e.g. R7 super materials refuse to
+    # be used in a R5 forge).
+    super_mat: dict | None = None
+    if super_material_key:
+        super_mat = registry.get_super_material(super_material_key)
+        if not super_mat:
+            return ForgeResult(False, f"Vật liệu siêu hiếm '{super_material_key}' không tồn tại.")
+        min_item_grade = int(super_mat.get("min_item_grade", super_mat.get("grade", 1)))
+        if grade < min_item_grade:
+            return ForgeResult(
+                False,
+                f"Vật liệu **{super_mat['vi']}** chỉ dùng được khi rèn trang bị "
+                f"từ cấp {min_item_grade} trở lên.",
+            )
 
     # Deduct Công Đức
     char.merit -= recipe["cost_cong_duc"]
@@ -338,9 +370,12 @@ def forge_equipment(
         "affixes": affixes,
         "computed_stats": computed,
         "display_name": name,
+        "super_material_key": super_material_key,
     }
 
     suffix = f"\n{spec['special_label']}" if spec["special_label"] else ""
+    if super_mat:
+        suffix += f"\n✨ Dung hợp **{super_mat['vi']}** — nhận thêm hiệu ứng đặc biệt."
     return ForgeResult(
         success=True,
         message=(
@@ -365,8 +400,12 @@ def describe_recipe(grade: int) -> str:
         "",
         "**Nguyên liệu (chọn 1 trong các tùy chọn):**",
     ]
+    required_qty = max_affix_total(grade)
     for i, opt in enumerate(recipe["options"], 1):
-        mat_parts = [f"{r['qty']}x Vật liệu luyện khí phẩm {r['mat_grade']}" for r in opt["materials"]]
+        mat_parts = [
+            f"{required_qty}x Vật liệu luyện khí phẩm {r['mat_grade']}"
+            for r in opt["materials"]
+        ]
         lines.append(f"  Phương án {i}: " + ", ".join(mat_parts))
 
     c = recipe["quality_chances"]

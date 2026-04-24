@@ -1,0 +1,95 @@
+[
+  {
+    "key": "TienHoaMaVuong",
+    "vi": "Hỏa Ma Vương",
+    "en": "Fire Demon King",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "hoa",
+    "base_hp": 20000,
+    "base_spd": 18,
+    "base_atk": 130,
+    "base_matk": 120,
+    "base_def": 168,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "skill_keys": [
+      "EnemyHoa_R9",
+      "EnemyApex_R9_Magical"
+    ],
+    "base_crit_rating": 20,
+    "base_crit_dmg_rating": 30,
+    "final_dmg_bonus": 0.0,
+    "immune_hard_cc": true
+  },
+  {
+    "key": "TienBangCo",
+    "vi": "Băng Cổ Thần",
+    "en": "Ancient Ice God",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "thuy",
+    "base_hp": 22000,
+    "base_spd": 14,
+    "base_atk": 130,
+    "base_matk": 130,
+    "base_def": 192,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "skill_keys": [
+      "EnemyBang_R9",
+      "EnemyApex_R9_Magical"
+    ],
+    "base_crit_rating": 20,
+    "base_crit_dmg_rating": 30,
+    "final_dmg_bonus": 0.0,
+    "immune_hard_cc": true
+  },
+  {
+    "key": "TienLoiHoang",
+    "vi": "Lôi Hoàng Thần",
+    "en": "Thunder Emperor Spirit",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "loi",
+    "base_hp": 20000,
+    "base_spd": 24,
+    "base_atk": 150,
+    "base_matk": 110,
+    "base_def": 156,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "skill_keys": [
+      "EnemyLoi_R9",
+      "EnemyApex_R9_Magical"
+    ],
+    "base_crit_rating": 20,
+    "base_crit_dmg_rating": 35,
+    "final_dmg_bonus": 0.02,
+    "immune_hard_cc": true
+  },
+  {
+    "key": "TienThoLinh",
+    "vi": "Thổ Linh Cổ Thần",
+    "en": "Earth Spirit Ancient God",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "tho",
+    "base_hp": 28000,
+    "base_spd": 17,
+    "base_atk": 140,
+    "base_matk": 110,
+    "base_def": 280,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.12,
+    "skill_keys": [
+      "EnemyTho_R9",
+      "EnemyApex_R9_Physical",
+      "EnemyApex_R9_Magical"
+    ],
+    "base_crit_rating": 20,
+    "base_crit_dmg_rating": 30,
+    "final_dmg_bonus": 0.0,
+    "immune_hard_cc": true
+  }
+]

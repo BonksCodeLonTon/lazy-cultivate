@@ -1,0 +1,86 @@
+[
+  {
+    "key": "DuocVienR1_01",
+    "vi": "Lục Diệp Linh Thảo",
+    "en": "Green Leaf Spirit Herb",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "moc",
+    "base_hp": 297,
+    "base_spd": 8,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T1",
+      "EnemyPhong_T1"
+    ],
+    "loot_table_key": "DuocVienLoot_1",
+    "base_atk": 10,
+    "base_matk": 11,
+    "base_def": 10,
+    "mp_regen_pct": 0.04
+  },
+  {
+    "key": "DuocVienR1_02",
+    "vi": "Dược Viên Đằng Xà",
+    "en": "Herbal Garden Vine Snake",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "moc",
+    "base_hp": 297,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T1",
+      "EnemyPhong_T1"
+    ],
+    "loot_table_key": "DuocVienLoot_1",
+    "base_atk": 10,
+    "base_matk": 11,
+    "base_def": 10,
+    "mp_regen_pct": 0.04
+  },
+  {
+    "key": "DuocVienR1_03",
+    "vi": "Tinh Căn Tiểu Yêu",
+    "en": "Spirit Root Imp",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "moc",
+    "base_hp": 297,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T1",
+      "EnemyPhong_T1"
+    ],
+    "loot_table_key": "DuocVienLoot_1",
+    "base_atk": 10,
+    "base_matk": 11,
+    "base_def": 10,
+    "mp_regen_pct": 0.04
+  },
+  {
+    "key": "DuocVienR1_04",
+    "vi": "Dược Lão Linh Thú",
+    "en": "Elder Herb Beast",
+    "rank": "cuong_gia",
+    "realm_level": 1,
+    "element": "moc",
+    "base_hp": 367,
+    "base_spd": 8,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T1",
+      "EnemyPhong_T1"
+    ],
+    "loot_table_key": "DuocVienLoot_1",
+    "base_atk": 12,
+    "base_matk": 14,
+    "base_def": 12,
+    "mp_regen_pct": 0.04
+  }
+]

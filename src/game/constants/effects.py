@@ -53,6 +53,8 @@ class EffectKey(StrEnum):
     DEBUFF_CUON_BAY  = "DebuffCuonBay"    # knockup
     DEBUFF_CAT_DUT   = "DebuffCatDut"     # sever
     DEBUFF_SET_DANH  = "DebuffSetDanh"    # mark
+    DEBUFF_SOC_DIEN  = "DebuffSocDien"    # shock (Loi build) — stacks, takes extra loi damage
+    DEBUFF_PHONG_AN  = "DebuffPhongAn"    # wind mark (Phong build) — evasion debuff + crit vulnerable
     EFFECT_NGUNG_DONG = "EffectNgungDong"  # stagnation (spd debuff)
 
     # ── Crowd control ────────────────────────────────────────────────────────

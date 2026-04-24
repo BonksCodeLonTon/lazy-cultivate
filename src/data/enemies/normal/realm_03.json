@@ -6,13 +6,17 @@
     "rank": "tinh_anh",
     "realm_level": 3,
     "element": "hoa",
-    "base_hp": 480,
+    "base_hp": 816,
     "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyHoa_T2",
       "EnemyLoi_T2"
-    ]
+    ],
+    "base_atk": 30,
+    "base_matk": 60,
+    "base_def": 28,
+    "mp_regen_pct": 0.05
   },
   {
     "key": "TinhBangMoc",
@@ -21,13 +25,17 @@
     "rank": "tinh_anh",
     "realm_level": 3,
     "element": "thuy",
-    "base_hp": 520,
+    "base_hp": 884,
     "base_spd": 10,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyBang_T2",
       "EnemyMoc_T2"
-    ]
+    ],
+    "base_atk": 30,
+    "base_matk": 60,
+    "base_def": 28,
+    "mp_regen_pct": 0.05
   },
   {
     "key": "TinhKimTho",
@@ -36,9 +44,13 @@
     "rank": "tinh_anh",
     "realm_level": 3,
     "element": "kim",
-    "base_hp": 580,
-    "base_spd": 9,
+    "base_hp": 950,
+    "base_spd": 12,
+    "base_atk": 80,
+    "base_matk": 55,
+    "base_def": 55,
     "hp_scale": 1.5,
+    "mp_regen_pct": 0.06,
     "skill_keys": [
       "EnemyKim_T2",
       "EnemyTho_T2"
@@ -51,13 +63,17 @@
     "rank": "tinh_anh",
     "realm_level": 3,
     "element": "thuy",
-    "base_hp": 500,
+    "base_hp": 850,
     "base_spd": 13,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyThuy_T2",
       "EnemyPhong_T2"
-    ]
+    ],
+    "base_atk": 30,
+    "base_matk": 60,
+    "base_def": 28,
+    "mp_regen_pct": 0.05
   },
   {
     "key": "TinhLoiMoc",
@@ -66,12 +82,16 @@
     "rank": "tinh_anh",
     "realm_level": 3,
     "element": "loi",
-    "base_hp": 460,
+    "base_hp": 782,
     "base_spd": 14,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyLoi_T2",
       "EnemyMoc_T2"
-    ]
+    ],
+    "base_atk": 30,
+    "base_matk": 60,
+    "base_def": 28,
+    "mp_regen_pct": 0.05
   }
 ]

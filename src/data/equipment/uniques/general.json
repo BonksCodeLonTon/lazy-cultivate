@@ -4,12 +4,25 @@
     "vi": "Hỗn Nguyên Bội",
     "base": "base_jade",
     "slot": "amulet",
+    "realm": 4,
     "grade": 4,
-    "fixed_stats": {
-      "atk": 30,
-      "matk": 30,
-      "hp_max": 180,
-      "final_dmg_bonus": 0.08
+    "rolled_stats": {
+      "atk": [
+        26,
+        34
+      ],
+      "matk": [
+        26,
+        34
+      ],
+      "hp_max": [
+        153,
+        207
+      ],
+      "final_dmg_bonus": [
+        0.068,
+        0.092
+      ]
     },
     "passive_bonus": {
       "debuff_immune_pct": 0.15,
@@ -22,12 +35,25 @@
     "vi": "Đạo Tâm Bào",
     "base": "base_robe",
     "slot": "armor",
+    "realm": 3,
     "grade": 3,
-    "fixed_stats": {
-      "matk": 32,
-      "mp_max": 190,
-      "hp_regen_pct": 0.04,
-      "res_all": 0.07
+    "rolled_stats": {
+      "matk": [
+        27,
+        37
+      ],
+      "mp_max": [
+        162,
+        218
+      ],
+      "hp_regen_pct": [
+        0.034,
+        0.046
+      ],
+      "res_all": [
+        0.0595,
+        0.0805
+      ]
     },
     "description_vi": "Bào phục dệt từ tơ linh, tăng cường pháp lực và bảo vệ đạo tâm trước tà khí."
   },
@@ -36,12 +62,25 @@
     "vi": "Phong Linh Đai",
     "base": "base_wind_sash",
     "slot": "belt",
+    "realm": 3,
     "grade": 3,
-    "fixed_stats": {
-      "evasion_rating": 130,
-      "hp_max": 110,
-      "hp_regen_pct": 0.03,
-      "mp_max": 80
+    "rolled_stats": {
+      "evasion_rating": [
+        110,
+        150
+      ],
+      "hp_max": [
+        94,
+        126
+      ],
+      "hp_regen_pct": [
+        0.0255,
+        0.0345
+      ],
+      "mp_max": [
+        68,
+        92
+      ]
     },
     "description_vi": "Dải đai chứa linh khí của gió, người đeo nhẹ nhàng như lá bay trong gió."
   },
@@ -50,12 +89,25 @@
     "vi": "Lôi Thần Thủ",
     "base": "base_gauntlet",
     "slot": "glove",
+    "realm": 3,
     "grade": 3,
-    "fixed_stats": {
-      "atk": 28,
-      "matk": 18,
-      "crit_rating": 75,
-      "evasion_rating": 50
+    "rolled_stats": {
+      "atk": [
+        24,
+        32
+      ],
+      "matk": [
+        15,
+        21
+      ],
+      "crit_rating": [
+        64,
+        86
+      ],
+      "evasion_rating": [
+        42,
+        57
+      ]
     },
     "description_vi": "Găng tay chứa sức mạnh sấm sét, mỗi cú đấm như thiên lôi giáng xuống."
   },
@@ -64,12 +116,25 @@
     "vi": "Thiên Giáng Trụ",
     "base": "base_helm",
     "slot": "helmet",
+    "realm": 3,
     "grade": 3,
-    "fixed_stats": {
-      "def_stat": 28,
-      "hp_max": 160,
-      "crit_res_rating": 100,
-      "res_all": 0.06
+    "rolled_stats": {
+      "def_stat": [
+        24,
+        32
+      ],
+      "hp_max": [
+        136,
+        184
+      ],
+      "crit_res_rating": [
+        85,
+        115
+      ],
+      "res_all": [
+        0.051,
+        0.069
+      ]
     },
     "description_vi": "Chiếc mũ giáp từ thiên đình, tu sĩ toàn lực coi là báu vật vô giá."
   },
@@ -78,12 +143,25 @@
     "vi": "Linh Hộ Thuẫn",
     "base": "base_shield",
     "slot": "off_hand",
+    "realm": 3,
     "grade": 3,
-    "fixed_stats": {
-      "def_stat": 38,
-      "hp_max": 220,
-      "final_dmg_reduce": 0.08,
-      "crit_res_rating": 80
+    "rolled_stats": {
+      "def_stat": [
+        32,
+        44
+      ],
+      "hp_max": [
+        187,
+        253
+      ],
+      "final_dmg_reduce": [
+        0.068,
+        0.092
+      ],
+      "crit_res_rating": [
+        68,
+        92
+      ]
     },
     "description_vi": "Lá chắn được ban phúc bởi linh thú, tạo hào quang bất khả xâm phạm."
   },
@@ -92,12 +170,25 @@
     "vi": "Bất Diệt Nhẫn",
     "base": "base_spirit_ring",
     "slot": "ring",
+    "realm": 3,
     "grade": 3,
-    "fixed_stats": {
-      "hp_max": 190,
-      "def_stat": 22,
-      "final_dmg_reduce": 0.06,
-      "crit_res_rating": 75
+    "rolled_stats": {
+      "hp_max": [
+        162,
+        218
+      ],
+      "def_stat": [
+        19,
+        25
+      ],
+      "final_dmg_reduce": [
+        0.051,
+        0.069
+      ],
+      "crit_res_rating": [
+        64,
+        86
+      ]
     },
     "description_vi": "Chiếc nhẫn khắc từ đá thần, ban phước trường sinh bất lão cho người đeo."
   },
@@ -106,12 +197,25 @@
     "vi": "Long Thần Kiếm",
     "base": "base_sword",
     "slot": "weapon",
+    "realm": 3,
     "grade": 3,
-    "fixed_stats": {
-      "atk": 45,
-      "crit_rating": 85,
-      "crit_dmg_rating": 65,
-      "final_dmg_bonus": 0.08
+    "rolled_stats": {
+      "atk": [
+        38,
+        52
+      ],
+      "crit_rating": [
+        72,
+        98
+      ],
+      "crit_dmg_rating": [
+        55,
+        75
+      ],
+      "final_dmg_bonus": [
+        0.068,
+        0.092
+      ]
     },
     "description_vi": "Thanh kiếm rèn từ vảy rồng cổ đại, mang sức mạnh hủy diệt vô song."
   },
@@ -122,10 +226,19 @@
     "slot": "off_hand",
     "realm": 2,
     "grade": 2,
-    "fixed_stats": {
-      "matk": 26,
-      "mp_max": 140,
-      "crit_rating": 45
+    "rolled_stats": {
+      "matk": [
+        22,
+        30
+      ],
+      "mp_max": [
+        119,
+        161
+      ],
+      "crit_rating": [
+        38,
+        52
+      ]
     },
     "passive_bonus": {
       "paralysis_on_crit": true
@@ -139,10 +252,19 @@
     "slot": "belt",
     "realm": 3,
     "grade": 3,
-    "fixed_stats": {
-      "evasion_rating": 120,
-      "hp_max": 140,
-      "mp_max": 90
+    "rolled_stats": {
+      "evasion_rating": [
+        102,
+        138
+      ],
+      "hp_max": [
+        119,
+        161
+      ],
+      "mp_max": [
+        76,
+        103
+      ]
     },
     "passive_bonus": {
       "debuff_immune_pct": 0.12
@@ -156,11 +278,23 @@
     "slot": "off_hand",
     "realm": 3,
     "grade": 3,
-    "fixed_stats": {
-      "matk": 34,
-      "mp_max": 180,
-      "crit_rating": 60,
-      "crit_dmg_rating": 55
+    "rolled_stats": {
+      "matk": [
+        29,
+        39
+      ],
+      "mp_max": [
+        153,
+        207
+      ],
+      "crit_rating": [
+        51,
+        69
+      ],
+      "crit_dmg_rating": [
+        47,
+        63
+      ]
     },
     "passive_bonus": {
       "cooldown_reduce": 0.1
@@ -173,11 +307,20 @@
     "base": "base_leather_armor",
     "slot": "armor",
     "realm": 4,
-    "grade": 3,
-    "fixed_stats": {
-      "def_stat": 30,
-      "hp_max": 200,
-      "evasion_rating": 150
+    "grade": 4,
+    "rolled_stats": {
+      "def_stat": [
+        26,
+        34
+      ],
+      "hp_max": [
+        170,
+        230
+      ],
+      "evasion_rating": [
+        128,
+        172
+      ]
     },
     "passive_bonus": {
       "slow_on_hit_pct": 0.2
@@ -190,12 +333,24 @@
     "base": "base_spirit_sword",
     "slot": "weapon",
     "realm": 4,
-    "grade": 3,
-    "fixed_stats": {
-      "atk": 42,
-      "matk": 32,
-      "crit_rating": 100,
-      "crit_dmg_rating": 115
+    "grade": 4,
+    "rolled_stats": {
+      "atk": [
+        36,
+        48
+      ],
+      "matk": [
+        27,
+        37
+      ],
+      "crit_rating": [
+        85,
+        115
+      ],
+      "crit_dmg_rating": [
+        98,
+        132
+      ]
     },
     "passive_bonus": {
       "paralysis_on_crit": true,
@@ -209,12 +364,24 @@
     "base": "base_orb",
     "slot": "off_hand",
     "realm": 5,
-    "grade": 3,
-    "fixed_stats": {
-      "matk": 50,
-      "mp_max": 280,
-      "crit_rating": 95,
-      "final_dmg_bonus": 0.1
+    "grade": 5,
+    "rolled_stats": {
+      "matk": [
+        42,
+        57
+      ],
+      "mp_max": [
+        238,
+        322
+      ],
+      "crit_rating": [
+        81,
+        109
+      ],
+      "final_dmg_bonus": [
+        0.085,
+        0.115
+      ]
     },
     "passive_bonus": {
       "cooldown_reduce": 0.12,
@@ -228,11 +395,20 @@
     "base": "base_pendant",
     "slot": "amulet",
     "realm": 6,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 620,
-      "def_stat": 55,
-      "crit_res_rating": 190
+    "grade": 6,
+    "rolled_stats": {
+      "hp_max": [
+        527,
+        713
+      ],
+      "def_stat": [
+        47,
+        63
+      ],
+      "crit_res_rating": [
+        162,
+        218
+      ]
     },
     "passive_bonus": {
       "poison_immunity": true,
@@ -246,11 +422,20 @@
     "base": "base_talisman",
     "slot": "off_hand",
     "realm": 6,
-    "grade": 4,
-    "fixed_stats": {
-      "matk": 60,
-      "mp_max": 340,
-      "crit_rating": 100
+    "grade": 6,
+    "rolled_stats": {
+      "matk": [
+        51,
+        69
+      ],
+      "mp_max": [
+        289,
+        391
+      ],
+      "crit_rating": [
+        85,
+        115
+      ]
     },
     "passive_bonus": {
       "cooldown_reduce": 0.15,
@@ -264,11 +449,20 @@
     "base": "base_spirit_ring",
     "slot": "ring",
     "realm": 6,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 220,
-      "mp_max": 200,
-      "res_all": 0.1
+    "grade": 6,
+    "rolled_stats": {
+      "hp_max": [
+        187,
+        253
+      ],
+      "mp_max": [
+        170,
+        230
+      ],
+      "res_all": [
+        0.085,
+        0.115
+      ]
     },
     "passive_bonus": {
       "cooldown_reduce": 0.1,
@@ -283,11 +477,20 @@
     "base": "base_sword",
     "slot": "weapon",
     "realm": 6,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 80,
-      "crit_rating": 160,
-      "crit_dmg_rating": 200
+    "grade": 6,
+    "rolled_stats": {
+      "atk": [
+        68,
+        92
+      ],
+      "crit_rating": [
+        136,
+        184
+      ],
+      "crit_dmg_rating": [
+        170,
+        230
+      ]
     },
     "passive_bonus": {
       "paralysis_on_crit": true,
@@ -301,12 +504,24 @@
     "base": "base_belt",
     "slot": "belt",
     "realm": 7,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 520,
-      "mp_max": 280,
-      "hp_regen_pct": 0.04,
-      "mp_regen_pct": 0.04
+    "grade": 7,
+    "rolled_stats": {
+      "hp_max": [
+        442,
+        598
+      ],
+      "mp_max": [
+        238,
+        322
+      ],
+      "hp_regen_pct": [
+        0.034,
+        0.046
+      ],
+      "mp_regen_pct": [
+        0.034,
+        0.046
+      ]
     },
     "passive_bonus": {
       "poison_immunity": true,
@@ -320,12 +535,24 @@
     "base": "base_mage_ring",
     "slot": "ring",
     "realm": 7,
-    "grade": 4,
-    "fixed_stats": {
-      "matk": 70,
-      "mp_max": 300,
-      "crit_rating": 150,
-      "final_dmg_bonus": 0.14
+    "grade": 7,
+    "rolled_stats": {
+      "matk": [
+        60,
+        80
+      ],
+      "mp_max": [
+        255,
+        345
+      ],
+      "crit_rating": [
+        128,
+        172
+      ],
+      "final_dmg_bonus": [
+        0.119,
+        0.161
+      ]
     },
     "passive_bonus": {
       "cooldown_reduce": 0.18
@@ -338,12 +565,24 @@
     "base": "base_jade",
     "slot": "amulet",
     "realm": 8,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 45,
-      "matk": 45,
-      "hp_max": 460,
-      "mp_max": 420
+    "grade": 8,
+    "rolled_stats": {
+      "atk": [
+        38,
+        52
+      ],
+      "matk": [
+        38,
+        52
+      ],
+      "hp_max": [
+        391,
+        529
+      ],
+      "mp_max": [
+        357,
+        483
+      ]
     },
     "passive_bonus": {
       "cooldown_reduce": 0.15,
@@ -357,11 +596,20 @@
     "base": "base_plate",
     "slot": "armor",
     "realm": 8,
-    "grade": 4,
-    "fixed_stats": {
-      "def_stat": 140,
-      "hp_max": 920,
-      "crit_res_rating": 300
+    "grade": 8,
+    "rolled_stats": {
+      "def_stat": [
+        119,
+        161
+      ],
+      "hp_max": [
+        782,
+        1058
+      ],
+      "crit_res_rating": [
+        255,
+        345
+      ]
     },
     "passive_bonus": {
       "poison_immunity": true,
@@ -376,11 +624,20 @@
     "base": "base_jade",
     "slot": "amulet",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 80,
-      "matk": 80,
-      "hp_max": 620
+    "grade": 9,
+    "rolled_stats": {
+      "atk": [
+        68,
+        92
+      ],
+      "matk": [
+        68,
+        92
+      ],
+      "hp_max": [
+        527,
+        713
+      ]
     },
     "passive_bonus": {
       "dot_scales_hp_pct": true,
@@ -395,11 +652,20 @@
     "base": "base_plate",
     "slot": "armor",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "def_stat": 200,
-      "hp_max": 1300,
-      "crit_res_rating": 400
+    "grade": 9,
+    "rolled_stats": {
+      "def_stat": [
+        170,
+        230
+      ],
+      "hp_max": [
+        1105,
+        1495
+      ],
+      "crit_res_rating": [
+        340,
+        460
+      ]
     },
     "passive_bonus": {
       "poison_immunity": true,
@@ -414,11 +680,20 @@
     "base": "base_crown",
     "slot": "helmet",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "matk": 125,
-      "mp_max": 780,
-      "crit_rating": 280
+    "grade": 9,
+    "rolled_stats": {
+      "matk": [
+        106,
+        144
+      ],
+      "mp_max": [
+        663,
+        897
+      ],
+      "crit_rating": [
+        238,
+        322
+      ]
     },
     "passive_bonus": {
       "cooldown_reduce": 0.25,
@@ -432,12 +707,24 @@
     "base": "base_spirit_ring",
     "slot": "ring",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 740,
-      "mp_max": 580,
-      "hp_regen_pct": 0.06,
-      "mp_regen_pct": 0.06
+    "grade": 9,
+    "rolled_stats": {
+      "hp_max": [
+        629,
+        851
+      ],
+      "mp_max": [
+        493,
+        667
+      ],
+      "hp_regen_pct": [
+        0.051,
+        0.069
+      ],
+      "mp_regen_pct": [
+        0.051,
+        0.069
+      ]
     },
     "passive_bonus": {
       "heal_pct": 0.3,

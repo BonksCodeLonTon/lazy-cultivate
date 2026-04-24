@@ -40,6 +40,10 @@ class ItemInstance(Base, TimestampMixin):
 
     base_key: Mapped[str | None] = mapped_column(String(64), nullable=True)
     unique_key: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    # When set, references a super-rare forge material whose ``granted_passive``
+    # is layered on top of this item's stats at equip time. At most one per item
+    # (enforced at forge entry — the column is singular, not a list).
+    super_material_key: Mapped[str | None] = mapped_column(String(64), nullable=True)
 
     # [{key, stat, value, type}]
     affixes: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)

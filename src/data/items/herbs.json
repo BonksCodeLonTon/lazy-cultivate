@@ -1,0 +1,1102 @@
+[
+  {
+    "key": "DaGiaoDang",
+    "vi": "Dạ Giao Đằng",
+    "en": "Nightfall Vine",
+    "type": "herb",
+    "grade": 1,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Luyện chế đan dược mang lại hiệu quả ngưng thần thủ phách, tăng cường thần thức."
+  },
+  {
+    "key": "HangTamThao",
+    "vi": "Hằng Tâm Thảo",
+    "en": "Persistent Heart Grass",
+    "type": "herb",
+    "grade": 1,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Vị đắng chát, ăn vào có thể dưỡng khí, giúp tăng cường tu vi của người tu đạo."
+  },
+  {
+    "key": "NganNguyetHoa",
+    "vi": "Ngân Nguyệt Hoa",
+    "en": "Silver Moon Flower",
+    "type": "herb",
+    "grade": 1,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh thảo phổ biến trong giới tu chân, vào lúc trăng tròn sẽ hiện ra màu trắng bạc khắp núi đồi. Những cây lâu năm mới có thể dùng để luyện đan."
+  },
+  {
+    "key": "LuuOanhThao",
+    "vi": "Lưu Oánh Thảo",
+    "en": "Firefly Grass",
+    "type": "herb",
+    "grade": 1,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh thảo phổ biến trong giới tu chân, sương đọng trên hoa không tan, phát ra ánh sáng rực rỡ như đom đóm vào buổi tối."
+  },
+  {
+    "key": "NinhTamThao",
+    "vi": "Ninh Tâm Thảo",
+    "en": "Tranquil Heart Grass",
+    "type": "herb",
+    "grade": 1,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Loại tiên thảo phổ biến dùng luyện đan thanh tâm tĩnh khí. Dùng quá liều có thể gây đờ đẫn, phản ứng chậm, tu vi đình trệ ngắn hạn."
+  },
+  {
+    "key": "ThienThanhHoa",
+    "vi": "Thiên Thanh Hoa",
+    "en": "Azure Flower",
+    "type": "herb",
+    "grade": 1,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thảo dược chỉ có trên những đỉnh núi cao chạm tầng mây, nổi tiếng nhờ màu sắc xanh lam rực rỡ của nó."
+  },
+  {
+    "key": "NgungHuyetThao",
+    "vi": "Ngưng Huyết Thảo",
+    "en": "Blood Congealing Grass",
+    "type": "herb",
+    "grade": 1,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Sinh trưởng ở đầm lầy hoặc nơi ẩm ướt, có công hiệu cố bản sinh tức, thường được dùng để luyện chế đan dược nhằm đề chấn linh khí."
+  },
+  {
+    "key": "HongLangThao",
+    "vi": "Hồng Lăng Thảo",
+    "en": "Red Silk Grass",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thân cây đỏ rực, chất liệu dẻo dai, ăn vào có độc nhẹ, dùng để luyện đan có công hiệu bình tâm tĩnh khí."
+  },
+  {
+    "key": "HaThuO",
+    "vi": "Hà Thủ Ô",
+    "en": "Multiflorum Knotweed",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Mỗi năm sinh trưởng một lần, lấy rễ củ làm thuốc, giúp hoạt huyết khỏe người, kiêm công hiệu cố bản bồi nguyên."
+  },
+  {
+    "key": "ThatTinhThao",
+    "vi": "Thất Tinh Thảo",
+    "en": "Seven Star Grass",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Loại tiên thảo màu xanh biếc phân bố ở vùng núi Tây Nam, tuổi thọ trên trăm năm có thể thanh tâm tĩnh khí, loại thông thường được dân địa phương dùng giải nhiệt, trị phù nề."
+  },
+  {
+    "key": "DaGiaoDang_2",
+    "vi": "Dạ Giao Đằng",
+    "en": "Nightfall Vine",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Luyện chế đan dược mang lại hiệu quả ngưng thần thủ phách, tăng cường thần thức."
+  },
+  {
+    "key": "KhinhLinhThao",
+    "vi": "Khinh Linh Thảo",
+    "en": "Light Spirit Grass",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Lá nhỏ rậm rạp như lông vũ, nhẹ như không, có thể bị gió thổi bay, cũng có thể kích phát tiềm năng của người dùng."
+  },
+  {
+    "key": "HaKhoThao",
+    "vi": "Hạ Khô Thảo",
+    "en": "Prunella",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Mỗi khi đến mùa hè cành lá sẽ héo tàn, mùa đông mới sinh trưởng nên rất khó tìm, dùng rễ làm thuốc để nâng cao linh khí."
+  },
+  {
+    "key": "XaDienQua",
+    "vi": "Xà Diên Quả",
+    "en": "Snake Saliva Fruit",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Quả cực độc có màu sắc rực rỡ, tương truyền do nước dãi của Phi Xà cổ đại rơi xuống đất mà thành, dùng luyện dược có thể tạm thời tăng cường cảm tri linh khí."
+  },
+  {
+    "key": "DiaHoangSam",
+    "vi": "Địa Hoàng Sâm",
+    "en": "Rehmannia Ginseng",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi có thổ linh khí dồi dào, thường được dùng để luyện đan nhằm nâng cao khả năng cảm nhận và vận dụng linh khí hệ Thổ."
+  },
+  {
+    "key": "PhongLinhHoa",
+    "vi": "Phong Linh Hoa",
+    "en": "Wind Spirit Flower",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Hoa nở hai lần mỗi năm, thời gian hoa nở cực dài, có sức sống mãnh liệt, thường mọc ở những nơi mộc linh khí dồi dào."
+  },
+  {
+    "key": "LaTeThao",
+    "vi": "La Tê Thảo",
+    "en": "Rhino Grass",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi kim linh khí đầy đủ, thường được dùng để luyện đan nhằm nâng cao cảm nhận và vận dụng linh khí hệ Kim."
+  },
+  {
+    "key": "HoaTinhTao",
+    "vi": "Hỏa Tinh Táo",
+    "en": "Fire Essence Jujube",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Bề mặt có các đường vân chảy như ngọn lửa, hạt táo là hỏa tinh chứa hỏa linh lực tinh thuần, thường mọc ở những nơi hỏa linh khí dồi dào."
+  },
+  {
+    "key": "LongKhue",
+    "vi": "Long Khuê",
+    "en": "Black Nightshade",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi thủy linh khí đầy đủ, vị đắng chát, bản thể không độc, thường dùng để luyện chế đan dược giải đan độc."
+  },
+  {
+    "key": "HuyenSam",
+    "vi": "Huyền Sâm",
+    "en": "Black Ginseng",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi kim linh khí đầy đủ, vị đắng chát, dược tính ôn hòa, thường dùng để luyện chế đan dược giải đan độc."
+  },
+  {
+    "key": "PhatLanThao",
+    "vi": "Phất Lan Thảo",
+    "en": "Phlan Grass",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi thủy linh khí đầy đủ, thường dùng để luyện đan nhằm nâng cao cảm nhận và vận dụng linh khí hệ Thủy."
+  },
+  {
+    "key": "BachThaoLo",
+    "vi": "Bách Thảo Lộ",
+    "en": "Hundred Herb Dew",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Sương sớm thu thập từ những nơi linh khí nồng đậm. Sau khi tinh luyện dùng để trung hòa dược tính, là nguyên liệu luyện đan tuyệt hảo và phổ biến."
+  },
+  {
+    "key": "KiemLo",
+    "vi": "Kiếm Lô",
+    "en": "Sword Aloe",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Ban đầu được Ngự Kiếm Môn dùng lô hội làm nguyên liệu bồi dưỡng, là linh tài có ích lớn cho kiếm tu."
+  },
+  {
+    "key": "NinhThanHoa",
+    "vi": "Ninh Thần Hoa",
+    "en": "Spirit-Calming Flower",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Hoa nhỏ màu tím nhạt mọc ở vùng linh khí ôn hòa, hương thơm dịu dàng có tác dụng an thần định khí. Thường dùng kết hợp với dược liệu Hỏa tính để cân bằng dược lực, giúp linh khí lưu chuyển thông suốt hơn."
+  },
+  {
+    "key": "ThienNguyenQua",
+    "vi": "Thiên Nguyên Quả",
+    "en": "Heavenly Origin Fruit",
+    "type": "herb",
+    "grade": 2,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Quả nhỏ tròn màu xanh vàng, vị chua ngọt, mọc ở vùng ngũ hành linh khí cân bằng. Có công hiệu thanh lý huyết mạch và cố kết nguyên khí, là vị dẫn dược lý tưởng trong các đan phương liên quan đến huyết dịch."
+  },
+  {
+    "key": "BoThienChi",
+    "vi": "Bổ Thiên Chi",
+    "en": "Sky-Mending Mushroom",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Trân phẩm trong các loại thuốc, tuy có thể trồng được nhưng sản lượng vẫn cực kỳ ít, có tác dụng nâng cao tu vi."
+  },
+  {
+    "key": "OTruMoc",
+    "vi": "Ô Trù Mộc",
+    "en": "Dark Dense Wood",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi âm khí tràn ngập, là linh tài không thể thiếu trong các loại đan dược hỗ trợ kết đan."
+  },
+  {
+    "key": "NgocLongSam",
+    "vi": "Ngọc Long Sâm",
+    "en": "Jade Dragon Ginseng",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Có hiệu quả kéo dài tuổi thọ, hình dáng bên ngoài giống như rồng đang bơi nên có tên gọi này."
+  },
+  {
+    "key": "NguLieuCan",
+    "vi": "Ngũ Liễu Căn",
+    "en": "Five Willow Root",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Được đặt tên theo hình dáng giống như khúc gỗ khô có nhiều rễ, chất liệu cực kỳ cứng cáp, phải qua xử lý phức tạp mới có thể sử dụng."
+  },
+  {
+    "key": "BoDeHoa",
+    "vi": "Bồ Đề Hoa",
+    "en": "Bodhi Flower",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Loài hoa được tôn sùng bởi cựu Phạn Giáo, là linh thảo thượng phẩm. Dùng để luyện dược có thể tinh luyện linh khí bên trong cơ thể."
+  },
+  {
+    "key": "PhucLongSam",
+    "vi": "Phục Long Sâm",
+    "en": "Hidden Dragon Ginseng",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở nơi có kim linh khí dồi dào, dùng luyện đan nâng cao cảm nhận hệ Kim, có thể nâng cao tư chất, là dược liệu kết đan luôn cung không đủ cầu."
+  },
+  {
+    "key": "TuHauHoa",
+    "vi": "Tử Hầu Hoa",
+    "en": "Purple Monkey Flower",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Đặc sản vùng Ngân Sơn, hình dáng hoa giống như mặt khỉ, có đặc tính di chuyển theo hướng của các sự vật đang hoạt động."
+  },
+  {
+    "key": "TuyetNgungHoa",
+    "vi": "Tuyết Ngưng Hoa",
+    "en": "Snow Condensate Flower",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở nơi có thủy linh khí dồi dào, dùng luyện đan nâng cao cảm nhận hệ Thủy, có thể nâng cao tư chất, là dược liệu kết đan luôn cung không đủ cầu."
+  },
+  {
+    "key": "HuyenBangHoa",
+    "vi": "Huyền Băng Hoa",
+    "en": "Mystic Ice Flower",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Dược liệu sản sinh từ nơi cực hàn, lá như pha lê xanh băng, tinh thể xung quanh là linh khí thiên địa ngưng kết, hương hoa lan tỏa có thể khiến người thanh tâm tĩnh khí."
+  },
+  {
+    "key": "ThienLinhQua",
+    "vi": "Thiên Linh Quả",
+    "en": "Heavenly Spirit Fruit",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Đặc sản vùng Hòa Sơn, quả nhỏ màu xanh tím, từng có tên gọi là Tất Già Lăng."
+  },
+  {
+    "key": "AoTamThao",
+    "vi": "Ảo Tâm Thảo",
+    "en": "Illusion Heart Grass",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Loại thực vật nguy hiểm, hương thơm có thể gây ảo giác. Nếu xử lý bằng thủ pháp đặc thù thì có thể dùng luyện đan, thường bị bàng môn tả đạo dùng cho các nghi thức bí ẩn."
+  },
+  {
+    "key": "LongLanQua",
+    "vi": "Long Lân Quả",
+    "en": "Dragon Scale Fruit",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Không phải cứng như vảy rồng, mà là độ bóng trên bề mặt lấp lánh rực rỡ giống như lân giáp của chân long."
+  },
+  {
+    "key": "QuyCuuThao",
+    "vi": "Quỷ Cữu Thảo",
+    "en": "Ghost Mortar Grass",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở nơi âm khí tràn ngập, thậm chí nơi ma khí bốn phía cũng có thể sinh trưởng mạnh mẽ."
+  },
+  {
+    "key": "BangLinhQua",
+    "vi": "Băng Linh Quả",
+    "en": "Ice Spirit Fruit",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Sản sinh từ nơi cực hàn, hình dáng rất bình thường, vị chua chát, dùng luyện dược có thể giúp tỉnh não khai khiếu."
+  },
+  {
+    "key": "CuuDiepChi",
+    "vi": "Cửu Diệp Chi",
+    "en": "Nine-Leaf Mushroom",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Loại cỏ thuốc có lá vô cùng quý hiếm, là giống cây có thể bồi dưỡng cực kỳ khó đắc."
+  },
+  {
+    "key": "LangPhongHoa",
+    "vi": "Lăng Phong Hoa",
+    "en": "Wind-Rider Flower",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Sinh ra ở nơi cuồng phong, dùng luyện đan giúp thân thể có thanh phong bao quanh, có thể nâng cao tốc độ độn thuật."
+  },
+  {
+    "key": "CamDiaLa",
+    "vi": "Cẩm Địa La",
+    "en": "Sundew",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Một loại thực vật ăn thịt, dùng lá biến dị mang chất dính để bẫy con mồi, năm tháng đủ lâu thậm chí có thể ăn thịt yêu thú."
+  },
+  {
+    "key": "BanYeuThao",
+    "vi": "Bạn Yêu Thảo",
+    "en": "Monster-Companion Grass",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Đầu lá sắc bén, quấn quanh thân chính khó hái, trên thân thường có đốm tím, đốm càng to càng là thượng phẩm. Thường mọc ở nơi có yêu thú xuất hiện."
+  },
+  {
+    "key": "PhongHuongChi",
+    "vi": "Phong Hương Chỉ",
+    "en": "Maple Resin",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi mộc linh khí dồi dào, dùng để luyện đan nâng cao cảm nhận và vận dụng linh khí hệ Mộc, có thể nâng cao tư chất, là dược liệu kết đan luôn cung không đủ cầu."
+  },
+  {
+    "key": "DangTamThao",
+    "vi": "Đăng Tâm Thảo",
+    "en": "Rush Grass",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi hỏa linh khí dồi dào, dùng để luyện đan nâng cao cảm nhận và vận dụng linh khí hệ Hỏa, có thể nâng cao tư chất, là dược liệu kết đan luôn cung không đủ cầu."
+  },
+  {
+    "key": "KiemTamTruc",
+    "vi": "Kiếm Tâm Trúc",
+    "en": "Sword-Heart Bamboo",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh trúc cải tiến do nhà họ Nghê ở thành Vũ Lăng bồi dưỡng sau khi có được phương pháp trồng Kiếm Lô của Ngự Kiếm Môn, rất được các kiếm tu Ninh Châu ưa chuộng."
+  },
+  {
+    "key": "LongVanThao",
+    "vi": "Long Văn Thảo",
+    "en": "Dragon-Pattern Grass",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Loại cỏ thuốc vô cùng hiếm gặp, nổi tiếng nhờ những hoa văn trên lá, thường có yêu thú canh giữ bên cạnh."
+  },
+  {
+    "key": "ThachLongNhue",
+    "vi": "Thạch Long Nhuế",
+    "en": "Buttercup",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi thổ linh khí dồi dào, dùng để luyện đan nâng cao cảm nhận và vận dụng linh khí hệ Thổ, có thể nâng cao tư chất, là dược liệu kết đan luôn cung không đủ cầu."
+  },
+  {
+    "key": "VongUuHoa",
+    "vi": "Vong Ưu Hoa",
+    "en": "Forget-Sorrow Flower",
+    "type": "herb",
+    "grade": 3,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở nơi từng xảy ra bi kịch lớn, hương hoa nhẹ nhàng nhưng thấm sâu. Dùng luyện đan có tác dụng hóa giải tâm ma — những chấp niệm, ám ảnh hoặc tổn thương tâm lý khiến tu vi đình trệ. Khác hoàn toàn với các thảo dược thanh tâm tĩnh khí thông thường."
+  },
+  {
+    "key": "KeQuanThao",
+    "vi": "Kê Quan Thảo",
+    "en": "Cockscomb Grass",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Tuy có tên là Kê Quan Thảo nhưng thực chất là một loài thực vật thủy sinh, chỉ sinh trưởng ở vùng thềm lục địa dưới đáy biển."
+  },
+  {
+    "key": "HuyetLienTinh",
+    "vi": "Huyết Liên Tinh",
+    "en": "Blood Lotus Essence",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh dược gần như chỉ có trong truyền thuyết, vào nước là lá, ra nước thành tinh thể. Luyện chế có tác dụng cố bản bồi nguyên cực mạnh."
+  },
+  {
+    "key": "NganTinhChi",
+    "vi": "Ngân Tinh Chi",
+    "en": "Silver Essence Mushroom",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh dược cộng sinh với thần sa. Sau khi bỏ lớp màng bề mặt sẽ lộ ra bản thể như thủy ngân, cực độc, dùng luyện dược để rèn luyện linh khí trong cơ thể."
+  },
+  {
+    "key": "BachTramChi",
+    "vi": "Bạch Trầm Chỉ",
+    "en": "White Wood Resin",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Sản vật ngưng kết từ tinh hoa linh mộc trăm năm, trong suốt và trơn nhẵn."
+  },
+  {
+    "key": "QuyDienHoa",
+    "vi": "Quỷ Diện Hoa",
+    "en": "Ghost Face Flower",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Hoa đóa giống như mặt người, hương hoa khiến người ta rơi vào ảo cảnh, tâm cảnh không tốt dễ sa đà không thể dứt ra."
+  },
+  {
+    "key": "LangDao",
+    "vi": "Lang Đào",
+    "en": "Wolf Peach",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Quả chín đỏ như máu, hình dáng như tiên đào, có ích lớn cho việc kết đan."
+  },
+  {
+    "key": "TuyetHonThao",
+    "vi": "Tuyệt Hồn Thảo",
+    "en": "Soul-Severing Grass",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Trông giống như cỏ dại bình thường, chỉ mọc ở những vùng đất đại hung, người đến gần thường thấy ảo giác quỷ khóc thần gào, dùng luyện dược có hiệu quả rèn luyện tâm cảnh cực tốt."
+  },
+  {
+    "key": "HunNguyenQua",
+    "vi": "Hỗn Nguyên Quả",
+    "en": "Primordial Fruit",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi ngũ hành linh khí cân bằng, nhập dược dùng để bổ sung và đề chấn linh khí."
+  },
+  {
+    "key": "BangTinhChi",
+    "vi": "Băng Tinh Chi",
+    "en": "Ice Essence Mushroom",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Dòng thủy linh khí ôn nhuận lưu chuyển bên trong. Cùng loại bào tử nhưng sinh trưởng ở môi trường khác nhau sẽ cho ra diện mạo và dược tính khác biệt."
+  },
+  {
+    "key": "HuyetBoDe",
+    "vi": "Huyết Bồ Đề",
+    "en": "Blood Bodhi",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Truyền thuyết là loại quả kỳ lạ sinh ra từ máu Hỏa Kỳ Lân, mọc ở nơi cực nóng. Luyện đan có công hiệu lớn, nhưng ăn trực tiếp hiệu quả còn tốt hơn."
+  },
+  {
+    "key": "DuYeuThao",
+    "vi": "Dụ Yêu Thảo",
+    "en": "Monster-Luring Grass",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Tiên thảo thần kỳ, tỏa hương thu hút yêu thú khi chín. Dùng linh khí hoặc bí pháp kích phát sẽ tăng hiệu quả, thường dùng để săn yêu thú ở Vô Tận Hải."
+  },
+  {
+    "key": "BaVuongHoa",
+    "vi": "Bá Vương Hoa",
+    "en": "Overlord Flower",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Loài hoa khổng lồ tỏa mùi hôi thối xua đuổi yêu thú. Kích phát bằng linh khí hoặc bí pháp sẽ tăng hiệu quả, thường dùng để xua đuổi yêu thú ở Vô Tận Hải."
+  },
+  {
+    "key": "HoaLinhChi",
+    "vi": "Hỏa Linh Chi",
+    "en": "Fire Essence Mushroom",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Dòng hỏa linh khí nồng đậm lưu chuyển bên trong. Cùng loại bào tử nhưng sinh trưởng ở môi trường khác nhau sẽ cho ra diện mạo và dược tính khác biệt."
+  },
+  {
+    "key": "AmNgungThao",
+    "vi": "Âm Ngưng Thảo",
+    "en": "Yin Condensate Grass",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thảo dược sinh trưởng ở nơi cực âm, có công hiệu giống như quán đỉnh giúp tăng cường ngộ tính."
+  },
+  {
+    "key": "TrangThucThao",
+    "vi": "Tràng Thực Thảo",
+    "en": "Gut-Eroding Grass",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Tuy có cái tên đáng sợ nhưng lại có công hiệu kỳ diệu trong việc đề chấn thần hồn."
+  },
+  {
+    "key": "KhoManDang",
+    "vi": "Khổ Mạn Đằng",
+    "en": "Bitter Vine",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thường mọc ở những nơi mộc linh khí dồi dào, thường được dùng để luyện đan nhằm nâng cao cảm nhận và vận dụng linh khí hệ Mộc."
+  },
+  {
+    "key": "NguyetLinhHoa",
+    "vi": "Nguyệt Linh Hoa",
+    "en": "Moon Spirit Flower",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Hấp thụ tinh hoa của mặt trăng mà trưởng thành, là dược liệu phụ không thể thiếu cho đan dược kết đan."
+  },
+  {
+    "key": "HuyetNgocTruc",
+    "vi": "Huyết Ngọc Trúc",
+    "en": "Blood Jade Bamboo",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Bản thể trong suốt hiện rõ vân máu, dùng luyện đan có thể nâng cao tốc độ tập trung linh khí."
+  },
+  {
+    "key": "HacThienMa",
+    "vi": "Hắc Thiên Ma",
+    "en": "Black Gastrodia",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thân rễ dạng củ hình elip gần như quả tạ, chất thịt, thân mọc thẳng. Ăn vào có thanh phong vây quanh thân thể — dược tính Phong rõ ràng, thường được dùng trong đan dược liên quan đến phong linh khí và tốc độ."
+  },
+  {
+    "key": "NgocTuyChi",
+    "vi": "Ngọc Tủy Chi",
+    "en": "Jade Marrow Mushroom",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Thành tài thời gian cực dài, mặt cắt trơn nhẵn như ngọc, bên trong như có các lớp mã não. Thường dùng luyện chế đan dược tăng tỷ lệ kết đan thành công."
+  },
+  {
+    "key": "PhuongHuyetQua",
+    "vi": "Phượng Huyết Quả",
+    "en": "Phoenix Blood Fruit",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Mang ý nghĩa phượng hoàng niết bàn, bề mặt đỏ thẫm như huyết. Có hiệu quả tịnh huyết thanh lý đan độc, thường dùng làm dẫn dược trong các đan phương liên quan đến huyết mạch và cốt tủy."
+  },
+  {
+    "key": "HuMinhMongLan",
+    "vi": "Hư Minh Mộng Lan",
+    "en": "Void Bright Dream Orchid",
+    "type": "herb",
+    "grade": 4,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Chỉ nở trong ba canh giờ từ nửa đêm đến lúc hừng đông, tàn lụi trước khi mặt trời mọc. Hương hoa dẫn người tu vào trạng thái mộng định — khác với nhập định thông thường, người dùng vẫn ở trong giấc ngủ nhưng thần hồn vận chuyển linh khí. Ba ngày công phu có thể cô đọng trong một đêm."
+  },
+  {
+    "key": "TamDiepThanhChi",
+    "vi": "Tam Diệp Thanh Chi",
+    "en": "Three-Leaf Green Mushroom",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Loại linh thảo có độ nhận diện cực cao, màu xanh, do có ba cánh nên có tên gọi này."
+  },
+  {
+    "key": "DiaTamHoaChi",
+    "vi": "Địa Tâm Hỏa Chi",
+    "en": "Earth Core Fire Mushroom",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Khách quen của các buổi đấu giá Thiên Cơ Các khắp nơi, thường xuyên được đấu giá với mức giá trên trời."
+  },
+  {
+    "key": "TuyetNgocCotSam",
+    "vi": "Tuyết Ngọc Cốt Sâm",
+    "en": "Snow Jade Bone Ginseng",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Sinh trưởng ở nơi âm lạnh, màu sắc trắng muốt như ngọc, hình dáng như xương người, cực kỳ hiếm gặp."
+  },
+  {
+    "key": "HuCotLinhHoa",
+    "vi": "Hủ Cốt Linh Hoa",
+    "en": "Bone-Corroding Spirit Flower",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Sinh trưởng ở nơi âm lạnh, mọc thành từng cụm, nhưng chỉ có hoa mẹ mới có dược hiệu thần kỳ."
+  },
+  {
+    "key": "LuuKimLinhHoa",
+    "vi": "Lưu Kim Linh Hoa",
+    "en": "Gilded Spirit Flower",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh hoa ẩn chứa đạo vận của hành Kim, cực kỳ hiếm có."
+  },
+  {
+    "key": "DaoUanHoa",
+    "vi": "Đạo Uẩn Hoa",
+    "en": "Dao Rhyme Flower",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Ngàn năm mới nở hoa một lần, có thể an phủ tâm thần, khiến người ta rơi vào trạng thái đốn ngộ."
+  },
+  {
+    "key": "ThatThaiNguyetLan",
+    "vi": "Thất Thái Nguyệt Lan",
+    "en": "Seven-Colored Moon Orchid",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh hoa chỉ nở vào lúc trăng tròn."
+  },
+  {
+    "key": "SamDanMoc",
+    "vi": "Sâm Đàn Mộc",
+    "en": "Forest Sandalwood",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Gỗ đàn hương ẩn chứa đạo vận của hệ Mộc, cực kỳ hiếm có."
+  },
+  {
+    "key": "BangLinhDiemThao",
+    "vi": "Băng Linh Diễm Thảo",
+    "en": "Ice Spirit Flame Grass",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh khí Băng và Hỏa tồn tại mâu thuẫn trên cùng một cây cỏ, dường như có thể từ đó tham ngộ ra diệu pháp hoàn toàn mới."
+  },
+  {
+    "key": "HaoDieuThuyDang",
+    "vi": "Hạo Diểu Thủy Đằng",
+    "en": "Boundless Water Vine",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Dây leo ẩn chứa đạo vận của hệ Thủy, cực kỳ hiếm có."
+  },
+  {
+    "key": "MangDiemQua",
+    "vi": "Mang Diễm Quả",
+    "en": "Blazing Flame Fruit",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Loại quả ẩn chứa đạo vận của hệ Hỏa, cực kỳ hiếm có."
+  },
+  {
+    "key": "VoNganLinhSam",
+    "vi": "Vô Ngân Linh Sâm",
+    "en": "Boundless Spirit Ginseng",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh sâm ẩn chứa đạo vận của hệ Thổ, cực kỳ hiếm có."
+  },
+  {
+    "key": "KiemPhachLinhDiep",
+    "vi": "Kiếm Phách Linh Diệp",
+    "en": "Sword Soul Spirit Leaf",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh diệp rụng xuống khi Kiếm Phách Trúc thành thục, là lá cây ẩn chứa kiếm chi đạo vận, cực kỳ hiếm có."
+  },
+  {
+    "key": "LuyenTamChi",
+    "vi": "Luyện Tâm Chi",
+    "en": "Heart-Refining Mushroom",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Một loại linh chi tỏa ra hương thơm kỳ quái, khiến người đến gần nảy sinh ảo giác, có ích lớn cho thần hồn."
+  },
+  {
+    "key": "VanDaoHoa",
+    "vi": "Vấn Đạo Hoa",
+    "en": "Querying Dao Flower",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Vạn năm mới nở hoa một lần, ẩn chứa một tia chân ý của Đạo."
+  },
+  {
+    "key": "ThaiHuyenVanTamQua",
+    "vi": "Thái Huyền Vấn Tâm Quả",
+    "en": "Great Profound Heart-Querying Fruit",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh dược hiếm có tác dụng khai ngộ, thường dùng luyện chế đan dược nâng cao ngộ tính."
+  },
+  {
+    "key": "ThaiToThanhLinhChi",
+    "vi": "Thái Tố Thanh Linh Chi",
+    "en": "Primordial Pure Spirit Mushroom",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh dược hiếm thường dùng luyện đan dược giảm bớt đan độc, cũng có hiệu quả điều hòa dược tính."
+  },
+  {
+    "key": "ThaiAtBichOanhHoa",
+    "vi": "Thái Ất Bích Oánh Hoa",
+    "en": "Taiyi Jade Flower",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh dược hiếm thường dùng luyện chế đan dược nâng cao tốc độ độn thuật."
+  },
+  {
+    "key": "AmDuongHoangTuyenHoa",
+    "vi": "Âm Dương Hoàng Tuyền Hoa",
+    "en": "Yin-Yang Underworld Flower",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh dược hiếm có hiệu quả diên niên ích thọ, thường dùng luyện chế đan dược nâng cao thọ nguyên."
+  },
+  {
+    "key": "ThienVanHoa",
+    "vi": "Thiên Vấn Hoa",
+    "en": "Heavenly Query Flower",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh dược hiếm khi đến gần có thể minh tâm tĩnh khí, thường dùng luyện chế đan dược nâng cao tâm cảnh."
+  },
+  {
+    "key": "LuyenTuyDang",
+    "vi": "Luyện Tủy Đằng",
+    "en": "Marrow-Refining Vine",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh dược hiếm có hiệu quả dịch kinh tẩy tủy, thường dùng luyện chế đan dược nâng cao tư chất."
+  },
+  {
+    "key": "TrongNguyenHoanHuyetThao",
+    "vi": "Trọng Nguyên Hoán Huyết Thảo",
+    "en": "Heavy Origin Blood-Changing Grass",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh dược hiếm có tác dụng hoán huyết kiện thể, thường dùng luyện chế đan dược rèn luyện thân thể."
+  },
+  {
+    "key": "TamViPhongDiep",
+    "vi": "Tam Vĩ Phong Diệp",
+    "en": "Three-Tailed Wind Leaf",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh dược dường như có sinh mạng, ngày ẩn đêm hiện, ba rễ cây chính là công cụ để nó tự di chuyển."
+  },
+  {
+    "key": "ThienLoiNganCan",
+    "vi": "Thiên Lôi Ngân Căn",
+    "en": "Heaven Thunder Silver Root",
+    "type": "herb",
+    "grade": 5,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Sinh trưởng ở những nơi bị sét đánh liên tục qua nhiều trăm năm, rễ cây ngưng tụ lôi tinh khí thành màu bạc trắng, chạm vào có cảm giác tê rần. Là thảo dược duy nhất được biết đến có thể bồi dưỡng cảm tri và vận dụng linh khí hệ Lôi, luôn cung không đủ cầu trong giới tu chân."
+  },
+  {
+    "key": "DaoUanQua",
+    "vi": "Đạo Uẩn Quả",
+    "en": "Dao Rhyme Fruit",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Nở chín lần hoa mới có thể kết quả, có thể an phủ tâm thần, khiến người ta rơi vào trạng thái đốn ngộ."
+  },
+  {
+    "key": "LuuHamThienTinhThao",
+    "vi": "Lưu Hâm Thiên Tinh Thảo",
+    "en": "Gilded Celestial Crystal Grass",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh thảo ẩn chứa đạo vận của hành Kim, cực kỳ hiếm có."
+  },
+  {
+    "key": "BatGiacHuyenBangThao",
+    "vi": "Bát Giác Huyền Băng Thảo",
+    "en": "Octagonal Mystic Ice Grass",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Được đặt tên theo 8 góc nhọn của nó, mỗi góc nhọn đều không giống nhau."
+  },
+  {
+    "key": "KyNhungThongThienCuc",
+    "vi": "Kỳ Nhung Thông Thiên Cúc",
+    "en": "Strange Velvet Sky-Piercing Chrysanthemum",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Cánh hoa cực kỳ nhiều, phân bố như ẩn chứa thiên địa đại đạo, có kỳ hiệu ôn dưỡng thần hồn."
+  },
+  {
+    "key": "DiaTamToiLinhNhu",
+    "vi": "Địa Tâm Tôi Linh Nhũ",
+    "en": "Earth Core Spirit-Refining Milk",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Chỉ có thể tiếp xúc thông qua ngọc khí, nếu không linh khí sẽ tiêu tán cực nhanh. Có thể dùng để tẩy tủy."
+  },
+  {
+    "key": "DanMangCuuDiepHoa",
+    "vi": "Đàn Mang Cửu Diệp Hoa",
+    "en": "Dan Mang Nine-Leaf Flower",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Đóa hoa ẩn chứa đạo vận của hệ Mộc, cực kỳ hiếm có."
+  },
+  {
+    "key": "KhamThuyHuyenBangQua",
+    "vi": "Khảm Thủy Huyền Băng Quả",
+    "en": "Kan Water Mystic Ice Fruit",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Quả thực ẩn chứa đạo vận của hệ Thủy, cực kỳ hiếm có."
+  },
+  {
+    "key": "LyHoaNgoDongChi",
+    "vi": "Ly Hỏa Ngô Đồng Chi",
+    "en": "Li Fire Phoenix-Tree Mushroom",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh chi ẩn chứa đạo vận của hệ Hỏa, cực kỳ hiếm có."
+  },
+  {
+    "key": "TranLoiNhamLanQua",
+    "vi": "Trần Lỗi Nham Lân Quả",
+    "en": "Dusty Rock Scale Fruit",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Quả thực ẩn chứa đạo vận của hệ Thổ, cực kỳ hiếm có."
+  },
+  {
+    "key": "KiemPhachTrucThuan",
+    "vi": "Kiếm Phách Trúc Thuận",
+    "en": "Sword Soul Bamboo Shoot",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Măng trúc lúc còn non của Kiếm Phách Trúc, ẩn chứa kiếm chi đạo vận, có thể dùng để luyện đan."
+  },
+  {
+    "key": "MinhTamVanDaoQua",
+    "vi": "Minh Tâm Vấn Đạo Quả",
+    "en": "Clear-Heart Dao-Querying Fruit",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Vạn năm mới kết quả một lần, dùng để luyện đan cũng có thể cường kiện thần hồn."
+  },
+  {
+    "key": "ThienDaoQua",
+    "vi": "Thiên Đạo Quả",
+    "en": "Heavenly Dao Fruit",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Nở chín lần hoa mới có thể kết quả, ẩn chứa lượng lớn đạo chi chân ý, chỉ có dùng luyện đan mới có thể phát huy hiệu quả."
+  },
+  {
+    "key": "DanLinhQua",
+    "vi": "Đan Linh Quả",
+    "en": "Spirit Pill Fruit",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Truyền thuyết phục dụng có thể ngắn ngủi thoát ly phàm nhân chi thể, là nguyên liệu quan trọng luyện chế đan dược hỗ trợ hóa thần."
+  },
+  {
+    "key": "MocLinhTamChamHoa",
+    "vi": "Mộc Linh Tam Châm Hoa",
+    "en": "Wood Spirit Three-Needle Flower",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Linh thảo chí trân trong thiên hạ, nghe nói bị nó đâm phải có thể cảm nhận được ngũ vị nhân sinh."
+  },
+  {
+    "key": "HuKhongLinhCan",
+    "vi": "Hư Không Linh Căn",
+    "en": "Void Space Spirit Root",
+    "type": "herb",
+    "grade": 6,
+    "stack_max": 999,
+    "shop_price_merit": 0,
+    "description_vi": "Chỉ sinh trưởng ở những nơi không gian bị xé rách hoặc không ổn định, rễ cây một nửa tồn tại trong thực giới, một nửa chìm vào hư không. Dùng luyện đan có thể mở rộng cảm tri không gian của tu sĩ, hỗ trợ các pháp môn độn không, chuyển di và không gian trữ vật. Cực hiếm, mỗi lần thu hoạch phải liều mạng."
+  }
+]

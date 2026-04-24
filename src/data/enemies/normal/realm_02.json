@@ -6,12 +6,17 @@
     "rank": "pho_thong",
     "realm_level": 2,
     "element": "hoa",
-    "base_hp": 260,
+    "base_hp": 442,
     "base_spd": 13,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyHoa_R2"
-    ]
+      "EnemyHoa_R2",
+      "EnemyLoi_R2"
+    ],
+    "base_atk": 20,
+    "base_matk": 42,
+    "base_def": 20,
+    "mp_regen_pct": 0.05
   },
   {
     "key": "LinhMocLang",
@@ -20,12 +25,17 @@
     "rank": "pho_thong",
     "realm_level": 2,
     "element": "moc",
-    "base_hp": 240,
+    "base_hp": 408,
     "base_spd": 12,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyMoc_R2"
-    ]
+      "EnemyMoc_R2",
+      "EnemyThuy_R2"
+    ],
+    "base_atk": 20,
+    "base_matk": 42,
+    "base_def": 20,
+    "mp_regen_pct": 0.05
   },
   {
     "key": "LinhBangTriet",
@@ -34,12 +44,17 @@
     "rank": "pho_thong",
     "realm_level": 2,
     "element": "thuy",
-    "base_hp": 210,
+    "base_hp": 357,
     "base_spd": 15,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyBang_R2"
-    ]
+      "EnemyBang_R2",
+      "EnemyMoc_R2"
+    ],
+    "base_atk": 20,
+    "base_matk": 42,
+    "base_def": 20,
+    "mp_regen_pct": 0.05
   },
   {
     "key": "LinhThoNguu",
@@ -48,11 +63,16 @@
     "rank": "pho_thong",
     "realm_level": 2,
     "element": "tho",
-    "base_hp": 420,
-    "base_spd": 5,
+    "base_hp": 700,
+    "base_spd": 9,
+    "base_atk": 55,
+    "base_matk": 30,
+    "base_def": 40,
     "hp_scale": 1.5,
+    "mp_regen_pct": 0.05,
     "skill_keys": [
-      "EnemyTho_R2"
+      "EnemyTho_R2",
+      "EnemyKim_R2"
     ]
   },
   {
@@ -62,12 +82,17 @@
     "rank": "pho_thong",
     "realm_level": 2,
     "element": "kim",
-    "base_hp": 300,
+    "base_hp": 510,
     "base_spd": 10,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyKim_R2"
-    ]
+      "EnemyKim_R2",
+      "EnemyPhong_R2"
+    ],
+    "base_atk": 42,
+    "base_matk": 20,
+    "base_def": 24,
+    "mp_regen_pct": 0.05
   },
   {
     "key": "LinhLoiQuy",
@@ -76,12 +101,17 @@
     "rank": "pho_thong",
     "realm_level": 2,
     "element": "loi",
-    "base_hp": 270,
+    "base_hp": 459,
     "base_spd": 14,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyLoi_R2"
-    ]
+      "EnemyLoi_R2",
+      "EnemyHoa_R2"
+    ],
+    "base_atk": 20,
+    "base_matk": 42,
+    "base_def": 20,
+    "mp_regen_pct": 0.05
   },
   {
     "key": "LinhPhongDieu",
@@ -90,12 +120,17 @@
     "rank": "pho_thong",
     "realm_level": 2,
     "element": "phong",
-    "base_hp": 230,
+    "base_hp": 391,
     "base_spd": 17,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyPhong_R2"
-    ]
+      "EnemyPhong_R2",
+      "EnemyMoc_R2"
+    ],
+    "base_atk": 42,
+    "base_matk": 20,
+    "base_def": 24,
+    "mp_regen_pct": 0.05
   },
   {
     "key": "LinhThuyHaiMa",
@@ -104,11 +139,16 @@
     "rank": "pho_thong",
     "realm_level": 2,
     "element": "thuy",
-    "base_hp": 290,
+    "base_hp": 493,
     "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
-      "EnemyThuy_R2"
-    ]
+      "EnemyThuy_R2",
+      "EnemyBang_R2"
+    ],
+    "base_atk": 20,
+    "base_matk": 42,
+    "base_def": 20,
+    "mp_regen_pct": 0.05
   }
 ]

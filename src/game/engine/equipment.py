@@ -57,8 +57,19 @@ def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
     definition — this is layered on top of the summed numeric stats so unique
     gear can grant on-hit/on-crit procs and immunity flags that go beyond
     simple stat sheets.
+
+    Forged items may additionally carry a ``super_material_key`` referencing
+    a super-rare forge material whose ``granted_passive`` dict is merged on
+    top using the same bool-safe rules.
     """
     from src.data.registry import registry
+
+    def _merge_passive(container: dict[str, float], passive: dict) -> None:
+        for stat, val in passive.items():
+            if isinstance(val, bool):
+                container[stat] = bool(container.get(stat)) or val
+            else:
+                container[stat] = container.get(stat, 0.0) + float(val)
 
     totals: dict[str, float] = {}
     for inst in equipped:
@@ -69,14 +80,15 @@ def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
 
         # Merge unique passive bonuses if the item is a unique with passives
         uniq_key = getattr(inst, "unique_key", None)
-        if not uniq_key:
-            continue
-        uniq_def = registry.get_unique(uniq_key) or {}
-        for stat, val in (uniq_def.get("passive_bonus") or {}).items():
-            if isinstance(val, bool):
-                totals[stat] = bool(totals.get(stat)) or val
-            else:
-                totals[stat] = totals.get(stat, 0.0) + float(val)
+        if uniq_key:
+            uniq_def = registry.get_unique(uniq_key) or {}
+            _merge_passive(totals, uniq_def.get("passive_bonus") or {})
+
+        # Merge super-rare forge material granted_passive (forged items)
+        super_key = getattr(inst, "super_material_key", None)
+        if super_key:
+            super_def = registry.get_super_material(super_key) or {}
+            _merge_passive(totals, super_def.get("granted_passive") or {})
     return totals
 
 

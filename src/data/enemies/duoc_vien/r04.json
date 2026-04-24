@@ -1,0 +1,65 @@
+[
+  {
+    "key": "DuocVienR4_01",
+    "vi": "Hắc Linh Mộc Yêu",
+    "en": "Black Spirit Wood Yao",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "moc",
+    "base_hp": 1260,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R4",
+      "EnemyThuy_T2"
+    ],
+    "loot_table_key": "DuocVienLoot_4",
+    "base_atk": 27,
+    "base_matk": 35,
+    "base_def": 25,
+    "mp_regen_pct": 0.05
+  },
+  {
+    "key": "DuocVienR4_02",
+    "vi": "Lục Ảnh Dược Tinh",
+    "en": "Green Shadow Pill Spirit",
+    "rank": "dai_nang",
+    "realm_level": 4,
+    "element": "moc",
+    "base_hp": 1440,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R4",
+      "EnemyThuy_T2"
+    ],
+    "loot_table_key": "DuocVienLoot_4",
+    "base_atk": 31,
+    "base_matk": 40,
+    "base_def": 28,
+    "mp_regen_pct": 0.05
+  },
+  {
+    "key": "DuocVienR4_03",
+    "vi": "Cự Mộc Ma Tướng",
+    "en": "Giant Wood Demon General",
+    "rank": "dai_nang",
+    "realm_level": 4,
+    "element": "moc",
+    "base_hp": 1440,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_R4",
+      "EnemyThuy_T2"
+    ],
+    "loot_table_key": "DuocVienLoot_4",
+    "base_atk": 31,
+    "base_matk": 40,
+    "base_def": 28,
+    "mp_regen_pct": 0.05
+  }
+]

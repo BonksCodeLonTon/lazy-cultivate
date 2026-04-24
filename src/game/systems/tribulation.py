@@ -125,6 +125,8 @@ class TribulationManager:
         damage_taken = player_c.hp_max - player_c.hp
 
         # ── Build log embeds (giống dungeon) ─────────
+        from src.game.engine.damage import to_ansi_block
+
         log_text = "\n".join(all_logs)
         log_embeds = []
 
@@ -132,10 +134,11 @@ class TribulationManager:
 
         log_embeds = []
         for i, chunk in enumerate(chunks):
+            body = to_ansi_block(chunk) if chunk.strip() else chunk
             log_embeds.append(
                 discord.Embed(
                     title="📜 Nhật Ký Thiên Kiếp" if i == 0 else "\u200b",
-                    description=chunk,
+                    description=body,
                     color=0x00C851 if result.reason == CombatEndReason.PLAYER_WIN else 0xFF4444
                 )
             )

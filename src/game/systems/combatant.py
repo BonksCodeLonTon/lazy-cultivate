@@ -156,6 +156,90 @@ class Combatant:
     # On-hit: chance to stun the target (any hit, not just bạo kích).
     stun_on_hit_pct: float = 0.0
 
+    # ── Phong (Wind / Evasion / Mark) build ──────────────────────────────────
+    # On-hit: chance actor applies Phong Ấn on the target. Once marked the
+    # target loses evasion (via the debuff's stat_bonus) and the attacker gains
+    # crit + crit-dmg advantage vs them until the mark drops off.
+    mark_on_hit_pct: float = 0.0
+    # Flat damage bonus = evasion_rating × this fraction (mirror of
+    # damage_bonus_from_hp_pct / damage_bonus_from_mp_pct). Converts a
+    # defensive stat into offensive power — core Phong playstyle.
+    damage_bonus_from_evasion_pct: float = 0.0
+    # Bonus crit rating and crit-dmg rating vs targets carrying Phong Ấn.
+    crit_rating_vs_marked: int = 0
+    crit_dmg_vs_marked: int = 0
+    # Flat shred on target's phong resistance (mirror of fire_res_shred).
+    phong_res_shred: float = 0.0
+
+    # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
+    # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
+    # on crit so it rewards the crit-heavy setup Quang uniques push toward.
+    silence_on_crit_pct: float = 0.0
+    # On-hit: chance the actor applies DebuffCatDut (anti-heal / hp_regen shred)
+    # to the target. Integrates into the generic on-hit proc table.
+    heal_reduce_on_hit_pct: float = 0.0
+    # Pre-turn: extra cleanse roll added on top of the base 15% Quang Linh Căn
+    # chance. Sourced from formation gem thresholds and unique equipment.
+    cleanse_on_turn_pct: float = 0.0
+    # Flat shred on target's quang resistance (mirror of fire_res_shred).
+    quang_res_shred: float = 0.0
+    # When True, a successful cleanse grants a small MATK-scaled barrier
+    # (delta from Thổ Hộ Thể, which is one-shot at low HP — this repeats).
+    barrier_on_cleanse: bool = False
+    # When True, heals may crit (25% chance × 1.5 mult — mirrors dot_can_crit).
+    # Shared by Mộc and Quang builds; granted via formation + late-realm uniques.
+    heal_can_crit: bool = False
+
+    # ── Âm (Shadow / Soul-Devour) build ──────────────────────────────────────
+    # On-hit: chance the actor drains a slice of target's hp_max for the rest
+    # of the fight. Drain permanently shrinks ``target.hp_max`` (and target.hp
+    # at the same time if overflow). A fraction of each drain is transferred
+    # to the actor as hp_max growth, making the Âm build snowball vs long
+    # fights. Per-proc and total-drain caps are enforced in balance.py.
+    soul_drain_on_hit_pct: float = 0.0
+    # Tracker: cumulative hp_max drained from this combatant this fight.
+    # Read only by the engine to clamp further drains at the cap.
+    hp_max_drained: int = 0
+    # Initial hp_max snapshot — captured on first drain so cap math always
+    # references the pre-drain value rather than chasing a shrinking pool.
+    hp_max_original: int = 0
+    # On-hit: chance actor steals a flat slice of target's atk/matk/def
+    # (subtracts from target, adds to actor) for the rest of the fight. Total
+    # stolen amount tracked below and capped at STAT_STEAL_CAP_PCT of each
+    # source stat's snapshot.
+    stat_steal_on_hit_pct: float = 0.0
+    stolen_atk: int = 0
+    stolen_matk: int = 0
+    stolen_def: int = 0
+    # Starting-stat snapshots so the cap math references pre-theft values.
+    atk_original: int = 0
+    matk_original: int = 0
+    def_stat_original: int = 0
+    # Flat shred on target's am resistance (mirror of fire_res_shred).
+    am_res_shred: float = 0.0
+    # Bonus crit rating vs targets already marked for soul-drain (i.e.
+    # hp_max_drained > 0). Rewards stacking drains before the finisher.
+    crit_rating_vs_drained: int = 0
+
+    # ── Lôi (Lightning / Shock) build ────────────────────────────────────────
+    # Shock stacks — applied by on-hit procs or loi skills. Each stack makes
+    # the holder take an additional ``shock_per_stack_pct`` of any incoming
+    # Lôi-element hit as flat final-damage amplification, up to
+    # ``shock_stack_cap`` (the lightning payload resonates with the shock;
+    # non-Lôi skills do not trigger the bonus).
+    shock_stacks: int = 0
+    shock_stack_cap: int = 5
+    # Per-stack final-damage multiplier the attacker adds when a Lôi-element
+    # hit lands on a shocked target. e.g. 0.03 → +3% final damage per stack.
+    shock_per_stack_pct: float = 0.03
+    # On-hit: chance the actor lands a Sốc Điện stack on the target.
+    shock_on_hit_pct: float = 0.0
+    # Flat shred on target's loi resistance (mirror of fire_res_shred).
+    loi_res_shred: float = 0.0
+    # After a normal turn, flat chance to immediately steal an extra turn
+    # (independent of the SPD-based extra-turn roll — stacks additively).
+    turn_steal_pct: float = 0.0
+
     # ── DoT damage amplifiers (any build can stack these) ──────────────────
     # Additive multiplier on ALL DoT ticks this combatant's own DoTs cause.
     # e.g. 0.25 → DoTs tick 25% harder.
@@ -190,6 +274,18 @@ class Combatant:
         """Remove all burn stacks and return how many were consumed."""
         stacks = self.burn_stacks
         self.burn_stacks = 0
+        return stacks
+
+    def add_shock_stack(self, count: int = 1) -> int:
+        """Add shock stacks, clamped by ``shock_stack_cap``. Returns stacks gained."""
+        before = self.shock_stacks
+        self.shock_stacks = min(self.shock_stack_cap, self.shock_stacks + count)
+        return self.shock_stacks - before
+
+    def consume_shock_stacks(self) -> int:
+        """Remove all shock stacks and return how many were consumed."""
+        stacks = self.shock_stacks
+        self.shock_stacks = 0
         return stacks
 
     def add_bleed_stack(self, count: int = 1) -> int:
@@ -247,6 +343,8 @@ class Combatant:
             self.burn_stacks = 0
         if "DebuffChayMau" in expired:
             self.bleed_stacks = 0
+        if "DebuffSocDien" in expired:
+            self.shock_stacks = 0
         return expired
 
     def tick_cooldowns(self) -> None:

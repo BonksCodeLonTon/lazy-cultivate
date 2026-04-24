@@ -34,5 +34,61 @@
     "grade": 4,
     "shop_price_merit": 0,
     "description_vi": "Rương vật phẩm thiên phẩm, chứa đựng vật phẩm cực phẩm."
+  },
+
+  {
+    "key": "ChestDanLoG1",
+    "vi": "Rương Đan Lô Sơ Giai",
+    "en": "Novice Furnace Chest",
+    "type": "chest",
+    "grade": 1,
+    "shop_price_merit": 0,
+    "description_vi": "Rương đan lô sơ giai. Mở ra để nhận Đan Lô độc bản cấp 1 hoặc thảo dược quý."
+  },
+  {
+    "key": "ChestDanLoG2",
+    "vi": "Rương Đan Lô Trung Giai",
+    "en": "Intermediate Furnace Chest",
+    "type": "chest",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Rương đan lô trung giai. Mở ra để nhận Đan Lô độc bản cấp 2 hoặc thảo dược cao phẩm."
+  },
+  {
+    "key": "ChestDanLoG3",
+    "vi": "Rương Đan Lô Cao Giai",
+    "en": "Advanced Furnace Chest",
+    "type": "chest",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Rương đan lô cao giai. Mở ra để nhận Đan Lô độc bản cấp 3 — cơ hội ra Địa Phẩm khi luyện đan tăng đáng kể."
+  },
+  {
+    "key": "ChestDanLoG4",
+    "vi": "Rương Đan Lô Thượng Giai",
+    "en": "Grandmaster Furnace Chest",
+    "type": "chest",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Rương đan lô thượng giai. Mở ra để nhận Thiên Mệnh Đan Lô — kiệt tác luyện đan với cơ hội Thiên Phẩm cực cao."
+  },
+
+  {
+    "key": "ChestDuocVien",
+    "vi": "Rương Dược Viên",
+    "en": "Medicine Garden Chest",
+    "type": "chest",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Rương rớt từ Dược Viên sâu. Chứa thảo dược hiếm và có cơ hội nhỏ ra Đan Lô độc bản."
+  },
+  {
+    "key": "ChestLuyenDan",
+    "vi": "Rương Luyện Đan",
+    "en": "Alchemy Master Chest",
+    "type": "chest",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Rương thưởng của các Đan Sư cổ đại. Hỗn hợp thảo dược cao phẩm, nguyên liệu yêu thú và cơ hội Đan Lô độc bản."
   }
 ]

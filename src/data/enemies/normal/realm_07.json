@@ -1,0 +1,112 @@
+[
+  {
+    "key": "EliteKimGiap",
+    "vi": "Kim Giáp Thiết Tượng",
+    "en": "Metal Armor Iron Elephant",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "kim",
+    "base_hp": 7000,
+    "base_spd": 12,
+    "base_atk": 220,
+    "base_matk": 160,
+    "base_def": 120,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.07,
+    "skill_keys": [
+      "EnemyKim_T3",
+      "EnemyApex_R7_Physical"
+    ],
+    "base_crit_rating": 15,
+    "base_crit_dmg_rating": 25,
+    "final_dmg_bonus": 0.0
+  },
+  {
+    "key": "EliteMocLinh",
+    "vi": "Mộc Linh Thụ Tinh",
+    "en": "Wood Spirit Tree Essence",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "moc",
+    "base_hp": 6200,
+    "base_spd": 13,
+    "base_atk": 130,
+    "base_matk": 220,
+    "base_def": 108,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.07,
+    "skill_keys": [
+      "EnemyMoc_T3",
+      "EnemyApex_R7_Magical"
+    ],
+    "base_crit_rating": 15,
+    "base_crit_dmg_rating": 25,
+    "final_dmg_bonus": 0.0
+  },
+  {
+    "key": "EliteThuyGiao",
+    "vi": "Thủy Long Giao Long",
+    "en": "Water Dragon Flood Dragon",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "thuy",
+    "base_hp": 7000,
+    "base_spd": 14,
+    "base_atk": 140,
+    "base_matk": 210,
+    "base_def": 108,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.07,
+    "skill_keys": [
+      "EnemyThuy_T3",
+      "EnemyApex_R7_Magical"
+    ],
+    "base_crit_rating": 12,
+    "base_crit_dmg_rating": 25,
+    "final_dmg_bonus": 0.0
+  },
+  {
+    "key": "ElitePhongLinh",
+    "vi": "Phong Ảnh Linh Hồ",
+    "en": "Wind Shadow Spirit Fox",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "phong",
+    "base_hp": 5400,
+    "base_spd": 18,
+    "base_atk": 240,
+    "base_matk": 180,
+    "base_def": 96,
+    "hp_scale": 1.4,
+    "mp_regen_pct": 0.07,
+    "skill_keys": [
+      "EnemyPhong_T3",
+      "EnemyApex_R7_Physical"
+    ],
+    "base_crit_rating": 20,
+    "base_crit_dmg_rating": 30,
+    "final_dmg_bonus": 0.02
+  },
+  {
+    "key": "EliteToNham",
+    "vi": "Thổ Nham Cự Linh",
+    "en": "Earth Rock Giant Spirit",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "tho",
+    "base_hp": 8200,
+    "base_spd": 12,
+    "base_atk": 270,
+    "base_matk": 190,
+    "base_def": 170,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.07,
+    "skill_keys": [
+      "EnemyTho_T3",
+      "EnemyApex_R7_Physical"
+    ],
+    "base_crit_rating": 15,
+    "base_crit_dmg_rating": 25,
+    "final_dmg_bonus": 0.0
+  }
+]

@@ -271,5 +271,182 @@
       "DebuffPhaGiap"
     ],
     "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoiSocR2",
+    "vi": "Lôi Giáng Sốc Điện",
+    "en": "Thunder Shock Strike",
+    "realm": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 22,
+    "cooldown": 2,
+    "base_dmg": 60,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoiSocR4",
+    "vi": "Lôi Hải Chấn Điện",
+    "en": "Thunder Sea Shock",
+    "realm": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.05
+    },
+    "mp_cost": 48,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffSocDien",
+      "DebuffSocDien",
+      "DebuffTeLiet"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoiBurstR5",
+    "vi": "Bát Cực Sốc Nổ",
+    "en": "Eight-Poles Shock Burst",
+    "realm": 5,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.25
+    },
+    "mp_cost": 78,
+    "cooldown": 5,
+    "base_dmg": 260,
+    "effects": [
+      "DebuffSocDien",
+      "DebuffSocDien",
+      "DebuffSocDien",
+      "CCStun"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkLoiShockBurstR7",
+    "vi": "Lôi Chú Bùng Nổ",
+    "en": "Thunder Curse Detonation",
+    "realm": 7,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 1.3
+    },
+    "mp_cost": 110,
+    "cooldown": 6,
+    "base_dmg": 480,
+    "effects": [
+      "DebuffSocDien",
+      "DebuffSocDien",
+      "DebuffSetDanh",
+      "DebuffPhaGiap"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefLoiPassive",
+    "vi": "Lôi Ảnh Thân",
+    "en": "Thunder Shadow Form",
+    "realm": 3,
+    "category": "defense",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 28,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTocLoi",
+      "BuffLoiThan"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovLoiSteal",
+    "vi": "Lôi Thiểm Cướp Lượt",
+    "en": "Thunder Flash Turn-Steal",
+    "realm": 5,
+    "category": "movement",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 45,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTocLoi",
+      "BuffTangToc",
+      "BuffHuKhong"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovLoiFinal",
+    "vi": "Thiên Thiểm Lôi Tốc",
+    "en": "Heaven Flash Thunder Speed",
+    "realm": 8,
+    "category": "movement",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 110,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTocLoi",
+      "BuffTangToc",
+      "BuffHuKhong",
+      "BuffPhongVu"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillPassiveLoiShock",
+    "vi": "Lôi Nguyên Thể",
+    "en": "Thunder Origin Body",
+    "realm": 6,
+    "category": "passive",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "effects": [],
+    "passive_bonus": {
+      "shock_on_hit_pct": 0.2,
+      "loi_res_shred": 0.1,
+      "spd_bonus": 4
+    },
+    "formation_key": null
   }
 ]

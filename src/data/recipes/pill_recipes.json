@@ -1,0 +1,6628 @@
+[
+  {
+    "key": "DanPhuongKimLuyenHuyetDan",
+    "vi": "Đan Phương - Kim Luyện Huyết Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "KimLuyenHuyetDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "KimHuyetTinh",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgungHuyetThao",
+            "qty": 2
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongMocLuyenHuyetDan",
+    "vi": "Đan Phương - Mộc Luyện Huyết Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "MocLuyenHuyetDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "MocHuyetTinh",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgungHuyetThao",
+            "qty": 2
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongThuyLuyenHuyetDan",
+    "vi": "Đan Phương - Thủy Luyện Huyết Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "ThuyLuyenHuyetDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThuyHuyetTinh",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgungHuyetThao",
+            "qty": 2
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongHoaLuyenHuyetDan",
+    "vi": "Đan Phương - Hỏa Luyện Huyết Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "HoaLuyenHuyetDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HoaHuyetTinh",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgungHuyetThao",
+            "qty": 2
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongThoLuyenHuyetDan",
+    "vi": "Đan Phương - Thổ Luyện Huyết Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "ThoLuyenHuyetDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThoHuyetTinh",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgungHuyetThao",
+            "qty": 2
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongPhongLuyenHuyetDan",
+    "vi": "Đan Phương - Phong Luyện Huyết Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "PhongLuyenHuyetDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhongHuyetTinh",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgungHuyetThao",
+            "qty": 2
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongLoiLuyenHuyetDan",
+    "vi": "Đan Phương - Lôi Luyện Huyết Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "LoiLuyenHuyetDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "LoiHuyetTinh",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgungHuyetThao",
+            "qty": 2
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongDuongLuyenHuyetDan",
+    "vi": "Đan Phương - Quang Luyện Huyết Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "DuongLuyenHuyetDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DuongHuyetTinh",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgungHuyetThao",
+            "qty": 2
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongAmLuyenHuyetDan",
+    "vi": "Đan Phương - Âm Luyện Huyết Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "AmLuyenHuyetDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "AmHuyetTinh",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgungHuyetThao",
+            "qty": 2
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongHoaUDan",
+    "vi": "Đan Phương - Hóa Ứ Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "HoaUDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "NganNguyetHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HangTamThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LuuOanhThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongTayTuyDan",
+    "vi": "Đan Phương - Tẩy Tủy Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "TayTuyDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HongLangThao",
+            "qty": 5
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HangTamThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongTuKhiDan",
+    "vi": "Đan Phương - Tụ Khí Đan",
+    "grade": 1,
+    "min_qi_realm": 0,
+    "output_pill": "TuKhiDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HangTamThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "NgungHuyetThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NinhTamThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.78,
+      "huyen": 0.18,
+      "dia": 0.03,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongKimBiCao",
+    "vi": "Đan Phương - Kim Bì Cao",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "KimBiCao",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "KimHuyetTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LaTeThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongMocBiCao",
+    "vi": "Đan Phương - Mộc Bì Cao",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "MocBiCao",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "MocHuyetTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "PhongLinhHoa",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongThuyBiCao",
+    "vi": "Đan Phương - Thủy Bì Cao",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "ThuyBiCao",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThuyHuyetTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "PhatLanThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongHoaBiCao",
+    "vi": "Đan Phương - Hỏa Bì Cao",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "HoaBiCao",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HoaHuyetTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HoaTinhTao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongThoBiCao",
+    "vi": "Đan Phương - Thổ Bì Cao",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "ThoBiCao",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThoHuyetTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DiaHoangSam",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongLoiBiCao",
+    "vi": "Đan Phương - Lôi Bì Cao",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "LoiBiCao",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "LoiHuyetTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "ThatTinhThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongPhongBiCao",
+    "vi": "Đan Phương - Phong Bì Cao",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "PhongBiCao",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhongHuyetTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KhinhLinhThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongAmBiCao",
+    "vi": "Đan Phương - Âm Bì Cao",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "AmBiCao",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "AmHuyetTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DaGiaoDang_2",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongDuongBiCao",
+    "vi": "Đan Phương - Quang Bì Cao",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "DuongBiCao",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DuongHuyetTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaKhoThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongBoiNguyenDan",
+    "vi": "Đan Phương - Bồi Nguyên Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "BoiNguyenDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "KhinhLinhThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhongLinhHoa",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongTatHanhDan",
+    "vi": "Đan Phương - Tật Hành Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "TatHanhDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HoaTinhTao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaKhoThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NinhThanHoa",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongTinhHuyetDan",
+    "vi": "Đan Phương - Tịnh Huyết Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "TinhHuyetDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HuyenSam",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LongKhue",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "ThienNguyenQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongNguKiemDan",
+    "vi": "Đan Phương - Ngự Kiếm Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "NguKiemDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HaKhoThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KiemLo",
+            "qty": 4
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhatLanThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongChanKimDan",
+    "vi": "Đan Phương - Chân Kim Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "ChanKimDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HaKhoThao",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LaTeThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "KhinhLinhThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongSamMocDan",
+    "vi": "Đan Phương - Sâm Mộc Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "SamMocDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HaKhoThao",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "PhongLinhHoa",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "KhinhLinhThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongSinhThuyDan",
+    "vi": "Đan Phương - Sinh Thủy Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "SinhThuyDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HaKhoThao",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "PhatLanThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HongLangThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongTuHoaDan",
+    "vi": "Đan Phương - Tụ Hỏa Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "TuHoaDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HaKhoThao",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HoaTinhTao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "KhinhLinhThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongHuyenThoDan",
+    "vi": "Đan Phương - Huyền Thổ Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "HuyenThoDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HaKhoThao",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DiaHoangSam",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LongKhue",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongLuyenGiapDan",
+    "vi": "Đan Phương - Luyện Giáp Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "LuyenGiapDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DiaHoangSam",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LongKhue",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongTanGiaiDan",
+    "vi": "Đan Phương - Tấn Giai Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "TanGiaiDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DiaHoangSam",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongKimLuyenCanDich",
+    "vi": "Đan Phương - Kim Luyện Cân Dịch",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "KimLuyenCanDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "KimLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LaTeThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongMocLuyenCanDich",
+    "vi": "Đan Phương - Mộc Luyện Cân Dịch",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "MocLuyenCanDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "MocLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "PhongLinhHoa",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongThuyLuyenCanDich",
+    "vi": "Đan Phương - Thủy Luyện Cân Dịch",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "ThuyLuyenCanDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThuyLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "PhatLanThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongHoaLuyenCanDich",
+    "vi": "Đan Phương - Hỏa Luyện Cân Dịch",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "HoaLuyenCanDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HoaLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HoaTinhTao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongThoLuyenCanDich",
+    "vi": "Đan Phương - Thổ Luyện Cân Dịch",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "ThoLuyenCanDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThoLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DiaHoangSam",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongLoiLuyenCanDich",
+    "vi": "Đan Phương - Lôi Luyện Cân Dịch",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "LoiLuyenCanDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "LoiLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "ThatTinhThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongPhongLuyenCanDich",
+    "vi": "Đan Phương - Phong Luyện Cân Dịch",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "PhongLuyenCanDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhongLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KhinhLinhThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongAmLuyenCanDich",
+    "vi": "Đan Phương - Âm Luyện Cân Dịch",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "AmLuyenCanDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "AmLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DaGiaoDang_2",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongDuongLuyenCanDich",
+    "vi": "Đan Phương - Quang Luyện Cân Dịch",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "DuongLuyenCanDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DuongLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaKhoThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongChanLoiDan",
+    "vi": "Đan Phương - Chấn Lôi Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "ChanLoiDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThatTinhThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongCuongPhongDan",
+    "vi": "Đan Phương - Cuồng Phong Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "CuongPhongDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "KhinhLinhThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongUMinhDan",
+    "vi": "Đan Phương - U Minh Đan",
+    "grade": 2,
+    "min_qi_realm": 1,
+    "output_pill": "UMinhDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DaGiaoDang_2",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HuyenSam",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LongKhue",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.72,
+      "huyen": 0.22,
+      "dia": 0.05,
+      "thien": 0.01
+    }
+  },
+  {
+    "key": "DanPhuongCuongKimDan",
+    "vi": "Đan Phương - Cương Kim Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "CuongKimDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhucLongSam",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LaTeThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongThuongMocDan",
+    "vi": "Đan Phương - Thương Mộc Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "ThuongMocDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhongHuongChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "PhongLinhHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongHanThuyDan",
+    "vi": "Đan Phương - Hàn Thủy Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "HanThuyDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "TuyetNgungHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "PhatLanThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongLietHoaDan",
+    "vi": "Đan Phương - Liệt Hỏa Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "LietHoaDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DangTamThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HoaTinhTao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongHauThoDan",
+    "vi": "Đan Phương - Hậu Thổ Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "HauThoDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThachLongNhue",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DiaHoangSam",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongLangPhongDan",
+    "vi": "Đan Phương - Lăng Phong Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "LangPhongDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "LangPhongHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KhinhLinhThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongHuyenMinhDan",
+    "vi": "Đan Phương - Huyền Minh Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "HuyenMinhDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "QuyCuuThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DaGiaoDang_2",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LongKhue",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongKiemHonDan",
+    "vi": "Đan Phương - Kiếm Hồn Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "KiemHonDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "KiemTamTruc",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KiemLo",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongPhaCanhDan",
+    "vi": "Đan Phương - Phá Cảnh Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "PhaCanhDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "BoThienChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongHoiSinhDan",
+    "vi": "Đan Phương - Hồi Sinh Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "HoiSinhDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HaThuO",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LongKhue",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongThanhLinhDan",
+    "vi": "Đan Phương - Thanh Linh Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "ThanhLinhDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "BoDeHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KhinhLinhThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongTrucCoDan",
+    "vi": "Đan Phương - Trúc Cơ Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "TrucCoDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HuyenBangHoa",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "ThienLinhQua",
+            "qty": 1
+          },
+          {
+            "key": "AoTamThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "TuHauHoa",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongKimLuyenCotDich",
+    "vi": "Đan Phương - Kim Luyện Cốt Dịch",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "KimLuyenCotDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "KimLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "PhucLongSam",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongMocLuyenCotDich",
+    "vi": "Đan Phương - Mộc Luyện Cốt Dịch",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "MocLuyenCotDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "MocLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "PhongHuongChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongThuyLuyenCotDich",
+    "vi": "Đan Phương - Thủy Luyện Cốt Dịch",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "ThuyLuyenCotDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThuyLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "TuyetNgungHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongHoaLuyenCotDich",
+    "vi": "Đan Phương - Hỏa Luyện Cốt Dịch",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "HoaLuyenCotDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HoaLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DangTamThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongThoLuyenCotDich",
+    "vi": "Đan Phương - Thổ Luyện Cốt Dịch",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "ThoLuyenCotDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThoLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "ThachLongNhue",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongLoiLuyenCotDich",
+    "vi": "Đan Phương - Lôi Luyện Cốt Dịch",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "LoiLuyenCotDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "LoiLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "NguLieuCan",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongPhongLuyenCotDich",
+    "vi": "Đan Phương - Phong Luyện Cốt Dịch",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "PhongLuyenCotDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhongLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LangPhongHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongAmLuyenCotDich",
+    "vi": "Đan Phương - Âm Luyện Cốt Dịch",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "AmLuyenCotDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "AmLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "OTruMoc",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongDuongLuyenCotDich",
+    "vi": "Đan Phương - Quang Luyện Cốt Dịch",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "DuongLuyenCotDich",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DuongLinhTinh",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "BoDeHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongNguNguyenDan",
+    "vi": "Đan Phương - Ngưng Nguyên Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "NguNguyenDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "BoThienChi",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "OTruMoc",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LongVanThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongPhucHuyetDan",
+    "vi": "Đan Phương - Phục Huyết Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "PhucHuyetDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "CuuDiepChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongTuLinhDan",
+    "vi": "Đan Phương - Tụ Linh Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "TuLinhDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "BoDeHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "ThienLinhQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongTuDinhDan",
+    "vi": "Đan Phương - Tụ Đỉnh Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "TuDinhDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "6 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "OTruMoc",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "NguLieuCan",
+            "qty": 1
+          },
+          {
+            "key": "LongLanQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongKimCangDan",
+    "vi": "Đan Phương - Kim Cang Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "KimCangDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhucLongSam",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "NguLieuCan",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongThuongLamDan",
+    "vi": "Đan Phương - Thương Lâm Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "ThuongLamDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhongHuongChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "BanYeuThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongBangHaDan",
+    "vi": "Đan Phương - Băng Hà Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "BangHaDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "TuyetNgungHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HuyenBangHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongLietDiemDan",
+    "vi": "Đan Phương - Liệt Diệm Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "LietDiemDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DangTamThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "ThienLinhQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongDiaSonDan",
+    "vi": "Đan Phương - Địa Sơn Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "DiaSonDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThachLongNhue",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LongLanQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongThienPhongDan",
+    "vi": "Đan Phương - Thiên Phong Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "ThienPhongDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "LangPhongHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "TuHauHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongHacMinhDan",
+    "vi": "Đan Phương - Hắc Minh Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "HacMinhDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "QuyCuuThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "OTruMoc",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongVanKiemDan",
+    "vi": "Đan Phương - Vạn Kiếm Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "VanKiemDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "KiemTamTruc",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "AoTamThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongTatAnhDan",
+    "vi": "Đan Phương - Tật Ảnh Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "TatAnhDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "TuHauHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LangPhongHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongKimLuyenTuyDan",
+    "vi": "Đan Phương - Kim Luyện Tủy Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "KimLuyenTuyDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "KimYeuDan",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "NganTinhChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongMocLuyenTuyDan",
+    "vi": "Đan Phương - Mộc Luyện Tủy Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "MocLuyenTuyDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "MocYeuDan",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KhoManDang",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongThuyLuyenTuyDan",
+    "vi": "Đan Phương - Thủy Luyện Tủy Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "ThuyLuyenTuyDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThuyYeuDan",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "BangTinhChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongHoaLuyenTuyDan",
+    "vi": "Đan Phương - Hỏa Luyện Tủy Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "HoaLuyenTuyDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HoaYeuDan",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HoaLinhChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongThoLuyenTuyDan",
+    "vi": "Đan Phương - Thổ Luyện Tủy Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "ThoLuyenTuyDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThoYeuDan",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HunNguyenQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongPhongLuyenTuyDan",
+    "vi": "Đan Phương - Phong Luyện Tủy Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "PhongLuyenTuyDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhongYeuDan",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HacThienMa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongAmLuyenTuyDan",
+    "vi": "Đan Phương - Âm Luyện Tủy Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "AmLuyenTuyDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "AmYeuDan",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "AmNgungThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongLoiLuyenTuyDan",
+    "vi": "Đan Phương - Lôi Luyện Tủy Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "LoiLuyenTuyDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "LoiYeuDan",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LoiYeuDan",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongDuongLuyenTuyDan",
+    "vi": "Đan Phương - Quang Luyện Tủy Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "DuongLuyenTuyDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DuongYeuDan",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DuongYeuDan",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongNgoDaoDan",
+    "vi": "Đan Phương - Ngộ Đạo Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "NgoDaoDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "TuyetHonThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HuMinhMongLan",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "OTruMoc",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongHoiNguyenDan",
+    "vi": "Đan Phương - Hồi Nguyên Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "HoiNguyenDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HuyetBoDe",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "NgocLongSam",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongTuNguyenDan",
+    "vi": "Đan Phương - Tụ Nguyên Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "TuNguyenDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HuMinhMongLan",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "CuuDiepChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongDuYeuDich",
+    "vi": "Đan Phương - Dụ Yêu Dịch",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "DuYeuDich",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DuYeuThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "BanYeuThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongKhuYeuDich",
+    "vi": "Đan Phương - Khu Yêu Dịch",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "KhuYeuDich",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "BaVuongHoa",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "CamDiaLa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongKimPhapTuongDan",
+    "vi": "Đan Phương - Kim Pháp Tướng Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "KimPhapTuongDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "NganTinhChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongMocPhapTuongDan",
+    "vi": "Đan Phương - Mộc Pháp Tướng Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "MocPhapTuongDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KhoManDang",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongThuyPhapTuongDan",
+    "vi": "Đan Phương - Thủy Pháp Tướng Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "ThuyPhapTuongDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "BangTinhChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongHoaPhapTuongDan",
+    "vi": "Đan Phương - Hỏa Pháp Tướng Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "HoaPhapTuongDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HoaLinhChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongThoPhapTuongDan",
+    "vi": "Đan Phương - Thổ Pháp Tướng Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "ThoPhapTuongDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HunNguyenQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongLoiPhapTuongDan",
+    "vi": "Đan Phương - Lôi Pháp Tướng Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "LoiPhapTuongDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "TuyetHonThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongPhongPhapTuongDan",
+    "vi": "Đan Phương - Phong Pháp Tướng Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "PhongPhapTuongDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HacThienMa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongAmPhapTuongDan",
+    "vi": "Đan Phương - Âm Pháp Tướng Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "AmPhapTuongDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "AmNgungThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongDuongPhapTuongDan",
+    "vi": "Đan Phương - Quang Pháp Tướng Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "DuongPhapTuongDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "NguyetLinhHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongDangCucDan",
+    "vi": "Đan Phương - Đăng Cực Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "DangCucDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "LangDao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "NguyetLinhHoa",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongHoiThienDan",
+    "vi": "Đan Phương - Hồi Thiên Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "HoiThienDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HuyetLienTinh",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HuyetBoDe",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongLinhUyenDan",
+    "vi": "Đan Phương - Linh Uyên Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "LinhUyenDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HuMinhMongLan",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "TrangThucThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HuyetNgocTruc",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongPhongThanDan",
+    "vi": "Đan Phương - Phong Thần Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "PhongThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HacThienMa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KeQuanThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachTramChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongThanhDocDan",
+    "vi": "Đan Phương - Thanh Độc Đan",
+    "grade": 3,
+    "min_qi_realm": 2,
+    "output_pill": "ThanhDocDan",
+    "furnace": "Lò luyện đan cấp 1",
+    "furnace_tier": 1,
+    "craft_time_display": "1 giờ",
+    "cost_cong_duc": 1800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "LongKhue",
+            "qty": 3
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "HuyenSam",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BachThaoLo",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.66,
+      "huyen": 0.25,
+      "dia": 0.07,
+      "thien": 0.02
+    }
+  },
+  {
+    "key": "DanPhuongGiaiNguyenDan",
+    "vi": "Đan Phương - Giải Nguyên Đan",
+    "grade": 4,
+    "min_qi_realm": 3,
+    "output_pill": "GiaiNguyenDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 5400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HuyenBangHoa",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BoDeHoa",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.6,
+      "huyen": 0.27,
+      "dia": 0.1,
+      "thien": 0.03
+    }
+  },
+  {
+    "key": "DanPhuongLinhTayDan",
+    "vi": "Đan Phương - Linh Tẩy Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "LinhTayDan",
+    "furnace": "Lò luyện đan cấp 2",
+    "furnace_tier": 2,
+    "craft_time_display": "2 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "BangLinhQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HuyenBangHoa",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongDaiTinhDan",
+    "vi": "Đan Phương - Đại Tịnh Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "DaiTinhDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "PhuongHuyetQua",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "BachTramChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HunNguyenQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongTrieuNguyenDan",
+    "vi": "Đan Phương - Triều Nguyên Đan",
+    "grade": 5,
+    "min_qi_realm": 4,
+    "output_pill": "TrieuNguyenDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "8 giờ",
+    "cost_cong_duc": 16200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DangTamThao",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "QuyCuuThao",
+            "qty": 1
+          },
+          {
+            "key": "NguyetLinhHoa",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HuyetNgocTruc",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.54,
+      "huyen": 0.28,
+      "dia": 0.14,
+      "thien": 0.04
+    }
+  },
+  {
+    "key": "DanPhuongKimKimThanDan",
+    "vi": "Đan Phương - Kim Kim Thân Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "KimKimThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LuuKimLinhHoa",
+            "qty": 1
+          },
+          {
+            "key": "LuyenTuyDang",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongMocKimThanDan",
+    "vi": "Đan Phương - Mộc Kim Thân Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "MocKimThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "SamDanMoc",
+            "qty": 1
+          },
+          {
+            "key": "LuyenTuyDang",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongThuyKimThanDan",
+    "vi": "Đan Phương - Thủy Kim Thân Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "ThuyKimThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaoDieuThuyDang",
+            "qty": 1
+          },
+          {
+            "key": "LuyenTuyDang",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongHoaKimThanDan",
+    "vi": "Đan Phương - Hỏa Kim Thân Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "HoaKimThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "MangDiemQua",
+            "qty": 1
+          },
+          {
+            "key": "LuyenTuyDang",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongThoKimThanDan",
+    "vi": "Đan Phương - Thổ Kim Thân Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "ThoKimThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "VoNganLinhSam",
+            "qty": 1
+          },
+          {
+            "key": "LuyenTuyDang",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongLoiKimThanDan",
+    "vi": "Đan Phương - Lôi Kim Thân Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "LoiKimThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "ThienLoiNganCan",
+            "qty": 1
+          },
+          {
+            "key": "LuyenTuyDang",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongPhongKimThanDan",
+    "vi": "Đan Phương - Phong Kim Thân Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "PhongKimThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "TamViPhongDiep",
+            "qty": 1
+          },
+          {
+            "key": "LuyenTuyDang",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongAmKimThanDan",
+    "vi": "Đan Phương - Âm Kim Thân Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "AmKimThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HuCotLinhHoa",
+            "qty": 1
+          },
+          {
+            "key": "LuyenTuyDang",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongDuongKimThanDan",
+    "vi": "Đan Phương - Quang Kim Thân Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "DuongKimThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "3 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "DiaTamHoaChi",
+            "qty": 1
+          },
+          {
+            "key": "LuyenTuyDang",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongChungDaoDan",
+    "vi": "Đan Phương - Chứng Đạo Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "ChungDaoDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "VanDaoHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DaoUanHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "ThaiHuyenVanTamQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongTruongSinhDan",
+    "vi": "Đan Phương - Trường Sinh Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "TruongSinhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "TuyetNgocCotSam",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "ThaiToThanhLinhChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongHoiLinhDan",
+    "vi": "Đan Phương - Hồi Linh Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "HoiLinhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "LuyenTamChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "BangLinhDiemThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "ThaiToThanhLinhChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongTruongThanhDan",
+    "vi": "Đan Phương - Trường Thanh Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "TruongThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThaiToThanhLinhChi",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "TamDiepThanhChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "ThatThaiNguyetLan",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongKimSieuPhamDan",
+    "vi": "Đan Phương - Kim Siêu Phàm Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "KimSieuPhamDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LuuKimLinhHoa",
+            "qty": 1
+          },
+          {
+            "key": "LuuHamThienTinhThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongMocSieuPhamDan",
+    "vi": "Đan Phương - Mộc Siêu Phàm Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "MocSieuPhamDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "SamDanMoc",
+            "qty": 1
+          },
+          {
+            "key": "DanMangCuuDiepHoa",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongThuySieuPhamDan",
+    "vi": "Đan Phương - Thủy Siêu Phàm Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "ThuySieuPhamDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HaoDieuThuyDang",
+            "qty": 1
+          },
+          {
+            "key": "KhamThuyHuyenBangQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongHoaSieuPhamDan",
+    "vi": "Đan Phương - Hỏa Siêu Phàm Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "HoaSieuPhamDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "MangDiemQua",
+            "qty": 1
+          },
+          {
+            "key": "LyHoaNgoDongChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongThoSieuPhamDan",
+    "vi": "Đan Phương - Thổ Siêu Phàm Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "ThoSieuPhamDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "VoNganLinhSam",
+            "qty": 1
+          },
+          {
+            "key": "TranLoiNhamLanQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongLoiSieuPhamDan",
+    "vi": "Đan Phương - Lôi Siêu Phàm Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "LoiSieuPhamDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "ThienLoiNganCan",
+            "qty": 1
+          },
+          {
+            "key": "BatGiacHuyenBangThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongPhongSieuPhamDan",
+    "vi": "Đan Phương - Phong Siêu Phàm Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "PhongSieuPhamDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "TamViPhongDiep",
+            "qty": 1
+          },
+          {
+            "key": "KyNhungThongThienCuc",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongAmSieuPhamDan",
+    "vi": "Đan Phương - Âm Siêu Phàm Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "AmSieuPhamDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HuCotLinhHoa",
+            "qty": 1
+          },
+          {
+            "key": "KyNhungThongThienCuc",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongDuongSieuPhamDan",
+    "vi": "Đan Phương - Quang Siêu Phàm Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "DuongSieuPhamDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "4 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "DiaTamHoaChi",
+            "qty": 1
+          },
+          {
+            "key": "DiaTamToiLinhNhu",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongVanDaoDan",
+    "vi": "Đan Phương - Vạn Đạo Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "VanDaoDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "5 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "VanDaoHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "DaoUanQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongBatDietDan",
+    "vi": "Đan Phương - Bất Diệt Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "BatDietDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "5 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DiaTamToiLinhNhu",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "ThaiToThanhLinhChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongThaiHuDan",
+    "vi": "Đan Phương - Thái Hư Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "ThaiHuDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "5 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DanLinhQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LuyenTamChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "ThaiToThanhLinhChi",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongHuKhongDonDan",
+    "vi": "Đan Phương - Hư Không Độn Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "HuKhongDonDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "5 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "HuKhongLinhCan",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "ThaiAtBichOanhHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "TamViPhongDiep",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongKimNhapThanhDan",
+    "vi": "Đan Phương - Kim Nhập Thánh Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "KimNhapThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "12 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LuuHamThienTinhThao",
+            "qty": 1
+          },
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongMocNhapThanhDan",
+    "vi": "Đan Phương - Mộc Nhập Thánh Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "MocNhapThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "12 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "DanMangCuuDiepHoa",
+            "qty": 1
+          },
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongThuyNhapThanhDan",
+    "vi": "Đan Phương - Thủy Nhập Thánh Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "ThuyNhapThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "12 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "KhamThuyHuyenBangQua",
+            "qty": 1
+          },
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongHoaNhapThanhDan",
+    "vi": "Đan Phương - Hỏa Nhập Thánh Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "HoaNhapThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "12 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "LyHoaNgoDongChi",
+            "qty": 1
+          },
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongThoNhapThanhDan",
+    "vi": "Đan Phương - Thổ Nhập Thánh Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "ThoNhapThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "12 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "TranLoiNhamLanQua",
+            "qty": 1
+          },
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongLoiNhapThanhDan",
+    "vi": "Đan Phương - Lôi Nhập Thánh Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "LoiNhapThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "12 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BatGiacHuyenBangThao",
+            "qty": 1
+          },
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongPhongNhapThanhDan",
+    "vi": "Đan Phương - Phong Nhập Thánh Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "PhongNhapThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "12 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "KyNhungThongThienCuc",
+            "qty": 1
+          },
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongAmNhapThanhDan",
+    "vi": "Đan Phương - Âm Nhập Thánh Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "AmNhapThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "12 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "MocLinhTamChamHoa",
+            "qty": 1
+          },
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongDuongNhapThanhDan",
+    "vi": "Đan Phương - Quang Nhập Thánh Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "DuongNhapThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "12 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "DiaTamToiLinhNhu",
+            "qty": 1
+          },
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongThienDaoThanhDan",
+    "vi": "Đan Phương - Thiên Đạo Thành Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "ThienDaoThanhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "5 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "MinhTamVanDaoQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "DaoUanQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongTruongSinhBatTuDan",
+    "vi": "Đan Phương - Trường Sinh Bất Tử Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "TruongSinhBatTuDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "5 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DiaTamToiLinhNhu",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KyNhungThongThienCuc",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "MocLinhTamChamHoa",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongHuLinhDan",
+    "vi": "Đan Phương - Hư Linh Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "HuLinhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "5 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DanLinhQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "BatGiacHuyenBangThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "MinhTamVanDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongHoaThanDan",
+    "vi": "Đan Phương - Hóa Thần Đan",
+    "grade": 6,
+    "min_qi_realm": 5,
+    "output_pill": "HoaThanDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "10 giờ",
+    "cost_cong_duc": 48600,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "TuyetHonThao",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "LangDao",
+            "qty": 1
+          },
+          {
+            "key": "NgocTuyChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "HuMinhMongLan",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.48,
+      "huyen": 0.3,
+      "dia": 0.17,
+      "thien": 0.05
+    }
+  },
+  {
+    "key": "DanPhuongLuyenHuDan",
+    "vi": "Đan Phương - Luyện Hư Đan",
+    "grade": 7,
+    "min_qi_realm": 6,
+    "output_pill": "LuyenHuDan",
+    "furnace": "Lò luyện đan cấp 3",
+    "furnace_tier": 3,
+    "craft_time_display": "12 giờ",
+    "cost_cong_duc": 145800,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "VanDaoHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DaoUanHoa",
+            "qty": 1
+          },
+          {
+            "key": "LuyenTamChi",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "ThaiHuyenVanTamQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.42,
+      "huyen": 0.3,
+      "dia": 0.21,
+      "thien": 0.07
+    }
+  },
+  {
+    "key": "DanPhuongHopDaoDan",
+    "vi": "Đan Phương - Hợp Đạo Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "HopDaoDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "15 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "VanDaoHoa",
+            "qty": 1
+          },
+          {
+            "key": "MinhTamVanDaoQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "DaoUanQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongDaiThuaDan",
+    "vi": "Đan Phương - Đại Thừa Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "DaiThuaDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "18 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThienDaoQua",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "DaoUanQua",
+            "qty": 1
+          },
+          {
+            "key": "MocLinhTamChamHoa",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "MinhTamVanDaoQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  },
+  {
+    "key": "DanPhuongHuyenTinhDan",
+    "vi": "Đan Phương - Huyền Tịnh Đan",
+    "grade": 8,
+    "min_qi_realm": 7,
+    "output_pill": "HuyenTinhDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "5 giờ",
+    "cost_cong_duc": 437400,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "ThaiToThanhLinhChi",
+            "qty": 2
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KyNhungThongThienCuc",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "BatGiacHuyenBangThao",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.36,
+      "huyen": 0.3,
+      "dia": 0.25,
+      "thien": 0.09
+    }
+  },
+  {
+    "key": "DanPhuongHuKhongTayDan",
+    "vi": "Đan Phương - Hư Không Tẩy Đan",
+    "grade": 9,
+    "min_qi_realm": 8,
+    "output_pill": "HuKhongTayDan",
+    "furnace": "Lò luyện đan cấp 4",
+    "furnace_tier": 4,
+    "craft_time_display": "6 giờ",
+    "cost_cong_duc": 1312200,
+    "ingredients": [
+      {
+        "role": "chu",
+        "options": [
+          {
+            "key": "DiaTamToiLinhNhu",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "phu",
+        "options": [
+          {
+            "key": "KyNhungThongThienCuc",
+            "qty": 1
+          }
+        ]
+      },
+      {
+        "role": "dan",
+        "options": [
+          {
+            "key": "DaoUanQua",
+            "qty": 1
+          }
+        ]
+      }
+    ],
+    "quality_chances": {
+      "hoan": 0.3,
+      "huyen": 0.3,
+      "dia": 0.29,
+      "thien": 0.11
+    }
+  }
+]

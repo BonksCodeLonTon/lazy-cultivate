@@ -37,9 +37,6 @@ _AXIS_CONFIGS = [
     ("formation", "🔯 Trận Đạo"),
 ]
 
-
-
-
 def _pre_breakthrough_realm(player, axis: str) -> int:
     if axis == "body":
         return player.body_realm
@@ -393,8 +390,28 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             
             player = await repo.create(discord_id=interaction.user.id, name=name)
             await session.commit()
+            rolled_const = player.constitution_type
+            rolled_linh_can = player.linh_can
 
-        embed = success_embed(f"**{name}** đã bước vào con đường tu tiên!\nDùng `/status` để xem.")
+        from src.data.registry import registry
+        const_data = registry.get_constitution(rolled_const) or {}
+        rarity_labels = {
+            "common": "Phổ Thông",
+            "uncommon": "Hiếm",
+            "rare": "Quý",
+            "epic": "Sử Thi",
+            "legendary": "Truyền Thuyết",
+        }
+        rarity = const_data.get("rarity", "common")
+        rarity_vi = rarity_labels.get(rarity, rarity)
+
+        embed = success_embed(
+            f"**{name}** đã bước vào con đường tu tiên!\n"
+            f"🌿 Linh Căn: **{rolled_linh_can or '(không)'}**\n"
+            f"🧬 Thể Chất sơ khởi: **{const_data.get('vi', rolled_const)}** "
+            f"(*{rarity_vi}*)\n"
+            f"Dùng `/status` để xem chi tiết."
+        )
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="cultivate", description="Tu luyện — áp dụng AFK ticks")

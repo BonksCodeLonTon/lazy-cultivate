@@ -1,0 +1,65 @@
+[
+  {
+    "key": "DuocVienR5_01",
+    "vi": "Dược Viên Vương Giả",
+    "en": "Medicine Garden Sovereign",
+    "rank": "dai_nang",
+    "realm_level": 5,
+    "element": "moc",
+    "base_hp": 2040,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T3",
+      "EnemyThuy_T3"
+    ],
+    "loot_table_key": "DuocVienLoot_5",
+    "base_atk": 36,
+    "base_matk": 45,
+    "base_def": 33,
+    "mp_regen_pct": 0.06
+  },
+  {
+    "key": "DuocVienR5_02",
+    "vi": "Cửu Diệp Mộc Ma",
+    "en": "Nine-Leaf Wood Demon",
+    "rank": "dai_nang",
+    "realm_level": 5,
+    "element": "moc",
+    "base_hp": 2040,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T3",
+      "EnemyThuy_T3"
+    ],
+    "loot_table_key": "DuocVienLoot_5",
+    "base_atk": 36,
+    "base_matk": 45,
+    "base_def": 33,
+    "mp_regen_pct": 0.06
+  },
+  {
+    "key": "DuocVienR5_03",
+    "vi": "Thiên Linh Đằng Thần",
+    "en": "Heavenly Spirit Vine God",
+    "rank": "chi_ton",
+    "realm_level": 5,
+    "element": "moc",
+    "base_hp": 2295,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T3",
+      "EnemyThuy_T3"
+    ],
+    "loot_table_key": "DuocVienLoot_5",
+    "base_atk": 40,
+    "base_matk": 51,
+    "base_def": 37,
+    "mp_regen_pct": 0.06
+  }
+]

@@ -47,6 +47,11 @@ class EffectMeta:
     skips_turn: bool = False
     # Whether this effect prevents skill usage (silence / interrupt)
     prevents_skills: bool = False
+    # Aura-on-hit: (effect_key, chance) — when the holder lands a hit, roll
+    # ``chance`` to apply ``effect_key`` to the target. Used for buffs whose
+    # flavor affects enemies (e.g. BuffHanKhi slows anyone the holder strikes).
+    # Applied in combat._run_on_hit_procs; respects hard-CC immunity.
+    aura_on_hit: tuple[str, float] | None = None
     # Display emoji
     emoji: str = "✨"
 
@@ -82,7 +87,7 @@ _BUFFS: list[EffectMeta] = [
         key="BuffNhietTinh",
         vi="Nhiệt Tình", en="Blazing Passion",
         kind=EffectKind.BUFF,
-        description_vi="Chiến ý bùng cháy, tăng công kích và sát thương bạo kích.",
+        description_vi="Chiến ý bùng cháy, tăng sát thương và sát thương bạo kích.",
         stat_bonus={"final_dmg_bonus": 0.20, "crit_dmg_rating": 200},
         emoji="🔥",
     ),
@@ -90,8 +95,9 @@ _BUFFS: list[EffectMeta] = [
         key="BuffHoaThan",
         vi="Hỏa Thần Giáng Lâm", en="Fire God Descent",
         kind=EffectKind.BUFF,
-        description_vi="Hỏa thần tạm hạ phàm, tăng sát thương và xác suất thiêu đốt.",
-        stat_bonus={"final_dmg_bonus": 0.20},
+        description_vi="Hỏa thần tạm hạ phàm, tăng sát thương kỹ năng Hỏa và đánh trúng có xác suất gây Thiêu Đốt.",
+        stat_bonus={"dmg_bonus_hoa": 0.20},
+        aura_on_hit=("DebuffThieuDot", 0.35),
         emoji="🔥",
     ),
     EffectMeta(
@@ -114,7 +120,7 @@ _BUFFS: list[EffectMeta] = [
         key="BuffThuyKinh",
         vi="Thủy Kính Thân", en="Water Mirror Body",
         kind=EffectKind.BUFF,
-        description_vi="Thân như gương nước, phản chiếu và giảm sát thương.",
+        description_vi="Thân như gương nước, giảm đáng kể sát thương nhận vào.",
         stat_bonus={"final_dmg_reduce": 0.15},
         emoji="💧",
     ),
@@ -122,16 +128,18 @@ _BUFFS: list[EffectMeta] = [
         key="BuffHanKhi",
         vi="Hàn Khí Tỏa Thân", en="Cold Aura",
         kind=EffectKind.BUFF,
-        description_vi="Hàn khí tỏa ra, làm chậm kẻ địch và giảm sát thương nhận.",
+        description_vi="Hàn khí tỏa ra, giảm sát thương nhận và làm chậm mọi kẻ địch bị đánh trúng.",
         stat_bonus={"final_dmg_reduce": 0.10},
+        aura_on_hit=("DebuffLamCham", 1.0),
         emoji="❄️",
     ),
     EffectMeta(
         key="BuffLoiThan",
         vi="Lôi Thần Giáng", en="Thunder God Strike",
         kind=EffectKind.BUFF,
-        description_vi="Lôi thần gia hộ, mỗi đòn có thể gây tê liệt.",
+        description_vi="Lôi thần gia hộ, tăng tỉ lệ bạo kích và đánh trúng có xác suất gây Tê Liệt.",
         stat_bonus={"crit_rating": 100},
+        aura_on_hit=("DebuffTeLiet", 0.20),
         emoji="⚡",
     ),
     EffectMeta(
@@ -313,7 +321,7 @@ _DEBUFFS_CC: list[EffectMeta] = [
         key="DebuffTroBuoc",
         vi="Trói Buộc", en="Bind",
         kind=EffectKind.DEBUFF,
-        description_vi="Bị trói buộc, giảm tốc độ và không thể tháo chạy.",
+        description_vi="Bị trói buộc, giảm mạnh tốc độ và không thể tháo chạy.",
         stat_bonus={"spd_pct": -0.50},
         emoji="⛓️",
     ),
@@ -321,7 +329,7 @@ _DEBUFFS_CC: list[EffectMeta] = [
         key="DebuffLunDat",
         vi="Lún Đất", en="Quicksand",
         kind=EffectKind.DEBUFF,
-        description_vi="Lún xuống đất, giảm mạnh tốc độ.",
+        description_vi="Lún xuống đất, giảm tốc độ.",
         stat_bonus={"spd_pct": -0.30},
         emoji="🌱",
     ),
@@ -430,6 +438,23 @@ _DEBUFFS_CC: list[EffectMeta] = [
         dot_element="loi",
         emoji="⚡",
     ),
+    EffectMeta(
+        key="DebuffSocDien",
+        vi="Sốc Điện", en="Electric Shock",
+        kind=EffectKind.DEBUFF,
+        description_vi="Thần kinh tê rần — mỗi tầng Sốc Điện khiến mục tiêu chịu thêm sát thương Lôi từ đòn đánh.",
+        # No DoT tick — the mechanic is purely an "amplify incoming Loi damage" marker,
+        # much like how burn_stacks differ from DebuffThieuDot's DoT component.
+        emoji="⚡",
+    ),
+    EffectMeta(
+        key="DebuffPhongAn",
+        vi="Phong Ấn", en="Wind Mark",
+        kind=EffectKind.DEBUFF,
+        description_vi="Ấn ký gió bám lên mục tiêu — né tránh suy giảm, dễ bị bạo kích và chịu sát thương bạo khổng lồ từ người đánh dấu.",
+        stat_bonus={"evasion_rating": -150},
+        emoji="🌀",
+    ),
 ]
 
 # ── Build registry ────────────────────────────────────────────────────────────
@@ -459,6 +484,8 @@ _DEFAULT_DURATIONS: dict[str, int] = {
     EffectKey.DEBUFF_XE_RACH: 2, EffectKey.DEBUFF_CUON_BAY: 1, EffectKey.DEBUFF_CAT_DUT: 3,
     EffectKey.CC_MUTED: 2, EffectKey.CC_STUN: 1, EffectKey.CC_INTERRUPT: 1,
     EffectKey.CC_LOCK_BREAK: 3, EffectKey.DEBUFF_SET_DANH: 2,
+    EffectKey.DEBUFF_SOC_DIEN: 3,
+    EffectKey.DEBUFF_PHONG_AN: 3,
 }
 
 
@@ -486,23 +513,18 @@ def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
     return result
 
 
-def get_periodic_damage(combatant: "Combatant") -> list[tuple[str, int, bool]]:
+def get_periodic_damage(
+    combatant: "Combatant", rng: random.Random | None = None,
+) -> list[tuple[str, int, bool]]:
     """Return list of (effect_key, damage, is_crit) for all active DoT effects.
 
-    Damage is computed as dot_pct × hp_max, floored at 1.
-    Poison is skipped if the combatant has poison_immunity.
-    If the DoT has a dot_element, the holder's resistance to that element reduces the damage
-    by the same flat amount used in the direct-damage pipeline.
-
-    Burn (``DebuffThieuDot``) multiplies by ``combatant.burn_stacks`` — each
-    stack contributes ``burn_per_stack_pct`` of hp_max to the tick.
-
-    ``is_crit`` is True for DoTs that rolled a crit (×1.5 damage). Controlled by
-    the ``dot_can_crit`` passive on the HOLDER (baked in when the DoT applier
-    hit them), rolling a 25% crit chance.
+    Policy: filters out non-DoT effects and poison on poison-immune holders,
+    then delegates the per-tick math to
+    ``src.game.engine.damage.dot.calculate_dot_damage``.
     """
-    import random as _random
-    _rng = _random.Random()
+    from src.game.engine.damage.dot import calculate_dot_damage
+
+    rng = rng or random.Random()
     results: list[tuple[str, int, bool]] = []
     for effect_key in list(combatant.effects.keys()):
         meta = EFFECTS.get(effect_key)
@@ -510,57 +532,7 @@ def get_periodic_damage(combatant: "Combatant") -> list[tuple[str, int, bool]]:
             continue
         if effect_key == EffectKey.DEBUFF_DOC_TO and combatant.poison_immunity:
             continue
-
-        # Burn: scale with stacks × per-stack percentage. Falls back to meta.dot_pct
-        # when there are no recorded stacks (first-tick case) so legacy tests still work.
-        if effect_key == EffectKey.DEBUFF_THIEU_DOT:
-            stacks = max(1, combatant.burn_stacks)
-            base_pct = combatant.burn_per_stack_pct * stacks
-        elif effect_key == EffectKey.DEBUFF_CHAY_MAU:
-            stacks = max(1, combatant.bleed_stacks)
-            base_pct = combatant.bleed_per_stack_pct * stacks
-        else:
-            base_pct = meta.dot_pct
-
-        if combatant.dot_scales_hp_pct:
-            # Legacy / late-game model: damage as % of holder's hp_max.
-            dmg = max(1, int(combatant.hp_max * base_pct))
-        else:
-            # Default: scale with applier's atk/matk power (stored at DoT apply time).
-            from src.game.constants.balance import DOT_POWER_COEF
-            max_power = max(
-                (s.get("power", 0) for s in combatant.dot_bonus_sources.values()),
-                default=0,
-            )
-            if max_power <= 0:
-                # No source stored (e.g. enemy-applied DoT with no power captured);
-                # fall back to a modest %hp tick so the effect still deals damage.
-                dmg = max(1, int(combatant.hp_max * base_pct * 0.5))
-            else:
-                dmg = max(1, int(max_power * base_pct * DOT_POWER_COEF))
-        # Apply holder's elemental resistance to reduce DoT damage
-        if meta.dot_element:
-            res_pct = max(0.0, min(0.75, combatant.resistances.get(meta.dot_element, 0.0)))
-            dmg = max(1, int(dmg * (1.0 - res_pct)))
-
-        # Apply amplifiers inherited from the attacker (propagated on DoT apply).
-        # Global dot_dmg_bonus stacks with per-type bonuses.
-        amp = combatant.dot_dmg_bonus
-        if effect_key == EffectKey.DEBUFF_THIEU_DOT:
-            amp += combatant.burn_dmg_bonus
-        elif effect_key == EffectKey.DEBUFF_CHAY_MAU:
-            amp += combatant.bleed_dmg_bonus
-        elif effect_key == EffectKey.DEBUFF_DOC_TO:
-            amp += combatant.poison_dmg_bonus
-        if amp > 0:
-            dmg = max(1, int(dmg * (1.0 + amp)))
-
-        # DoT crit — 25% chance when enabled, +50% damage
-        is_crit = False
-        if combatant.dot_can_crit and _rng.random() < 0.25:
-            dmg = int(dmg * 1.5)
-            is_crit = True
-
+        dmg, is_crit = calculate_dot_damage(combatant, effect_key, meta, rng)
         results.append((effect_key, dmg, is_crit))
     return results
 

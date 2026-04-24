@@ -1,0 +1,69 @@
+[
+  {
+    "key": "SuperCuuChuanLinhTinh",
+    "vi": "Cửu Chuẩn Linh Tinh",
+    "en": "Nine-Standard Spirit Crystal",
+    "type": "super_material",
+    "grade": 5,
+    "min_item_grade": 5,
+    "granted_passive": {
+      "crit_rating": 80,
+      "crit_dmg_rating": 100
+    },
+    "description_vi": "Linh tinh ngàn năm — nung vào pháp bảo tặng thêm Tỉ Lệ Bạo & Bạo Thương. Chỉ dùng 1 viên mỗi lần rèn."
+  },
+  {
+    "key": "SuperHuyetLongCot",
+    "vi": "Huyết Long Cốt",
+    "en": "Blood Dragon Bone",
+    "type": "super_material",
+    "grade": 6,
+    "min_item_grade": 6,
+    "granted_passive": {
+      "bleed_on_hit_pct": 0.15,
+      "bleed_heal_reduce": 0.15
+    },
+    "description_vi": "Xương huyết long — mỗi đòn 15% gây Chảy Máu kèm giảm hồi 15%. Chỉ dùng 1 viên mỗi lần rèn."
+  },
+  {
+    "key": "SuperThienThuKiep",
+    "vi": "Thiên Thụ Kiếp Quả",
+    "en": "Heavenly Tree Tribulation Fruit",
+    "type": "super_material",
+    "grade": 7,
+    "min_item_grade": 7,
+    "granted_passive": {
+      "heal_pct": 0.12,
+      "heal_can_crit": true
+    },
+    "description_vi": "Quả kiếp từ Thiên Thụ — khi rèn, vật phẩm được ban khả năng hồi phục có thể bạo kích. Chỉ dùng 1 viên mỗi lần rèn."
+  },
+  {
+    "key": "SuperThanhQuangXaLoi",
+    "vi": "Thánh Quang Xá Lợi",
+    "en": "Holy Light Śarīra",
+    "type": "super_material",
+    "grade": 8,
+    "min_item_grade": 8,
+    "granted_passive": {
+      "silence_on_crit_pct": 0.12,
+      "heal_pct": 0.1,
+      "barrier_on_cleanse": true
+    },
+    "description_vi": "Xá lợi của cổ Phật Thánh Quang — khi bạo kích 12% câm lặng, hồi phục +10%, Thanh Tẩy tạo khiên. Chỉ dùng 1 viên mỗi lần rèn."
+  },
+  {
+    "key": "SuperHonDonChiNguyen",
+    "vi": "Hỗn Độn Chi Nguyên",
+    "en": "Chaos Origin",
+    "type": "super_material",
+    "grade": 9,
+    "min_item_grade": 9,
+    "granted_passive": {
+      "final_dmg_bonus": 0.08,
+      "final_dmg_reduce": 0.05,
+      "res_all": 0.04
+    },
+    "description_vi": "Tinh hoa vũ trụ sơ khai — cân bằng công-thủ-kháng. Chỉ dùng 1 viên mỗi lần rèn."
+  }
+]

@@ -50,6 +50,9 @@ class Player(Base, TimestampMixin):
     # ── Linh Căn (Spiritual Roots) — comma-separated keys e.g. "kim,hoa" ──────
     linh_can: Mapped[str] = mapped_column(String(128), default="", nullable=False)
 
+    # ── Luyện Đan (alchemy) — accumulated pill toxicity ("Đan Độc") ──────────
+    dan_doc: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+
     # ── Titles ─────────────────────────────────────────────────────────────
     main_title: Mapped[str | None] = mapped_column(String(64), nullable=True)
     sub_title: Mapped[str | None] = mapped_column(String(64), nullable=True)

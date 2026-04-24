@@ -294,5 +294,155 @@
       "BuffHuKhong"
     ],
     "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhongMarkR2",
+    "vi": "Phong Ấn Trảm",
+    "en": "Wind Mark Cleave",
+    "realm": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.9,
+      "matk": 0.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 55,
+    "effects": [
+      "DebuffPhongAn"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhongMarkR4",
+    "vi": "Huyền Phong Vô Ảnh Ấn",
+    "en": "Mystery Wind Shadowless Mark",
+    "realm": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.05,
+      "matk": 0.0
+    },
+    "mp_cost": 40,
+    "cooldown": 3,
+    "base_dmg": 165,
+    "effects": [
+      "DebuffPhongAn",
+      "DebuffLamCham"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhongBurstR6",
+    "vi": "Phong Ấn Cửu Đạo",
+    "en": "Wind Mark Nine Strikes",
+    "realm": 6,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 70,
+    "cooldown": 5,
+    "base_dmg": 290,
+    "effects": [
+      "DebuffPhongAn",
+      "DebuffLamCham",
+      "DebuffChayMau"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhongEvaR7",
+    "vi": "Thần Phong Huyễn Ảnh Trảm",
+    "en": "Divine Wind Phantom Slash",
+    "realm": 7,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.4
+    },
+    "mp_cost": 95,
+    "cooldown": 5,
+    "base_dmg": 410,
+    "effects": [
+      "DebuffPhongAn",
+      "DebuffLamCham",
+      "DebuffCuonBay"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillDefPhongEva",
+    "vi": "Phong Vũ Hộ Thể",
+    "en": "Storm Body Guard",
+    "realm": 3,
+    "category": "defense",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 25,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "BuffNguPhong",
+      "BuffPhongVu"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovPhongR5",
+    "vi": "Phong Thần Huyễn Bộ",
+    "en": "Wind God Phantom Step",
+    "realm": 5,
+    "category": "movement",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 40,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTangToc",
+      "BuffHuKhong"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillPassivePhongEva",
+    "vi": "Phong Nguyên Thể",
+    "en": "Wind Origin Body",
+    "realm": 6,
+    "category": "passive",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "effects": [],
+    "passive_bonus": {
+      "mark_on_hit_pct": 0.2,
+      "damage_bonus_from_evasion_pct": 0.08,
+      "evasion_rating": 80
+    },
+    "formation_key": null
   }
 ]

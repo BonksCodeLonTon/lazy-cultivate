@@ -1,0 +1,95 @@
+[
+  {
+    "key": "ThanHoaLong",
+    "vi": "Hỏa Thần Long",
+    "en": "Fire Divine Dragon",
+    "rank": "than_thu",
+    "realm_level": 8,
+    "element": "hoa",
+    "base_hp": 15000,
+    "base_spd": 15,
+    "base_atk": 130,
+    "base_matk": 180,
+    "base_def": 144,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.08,
+    "skill_keys": [
+      "EnemyHoa_R8",
+      "EnemyApex_R7_Magical"
+    ],
+    "base_crit_rating": 15,
+    "base_crit_dmg_rating": 25,
+    "final_dmg_bonus": 0.0,
+    "immune_hard_cc": true
+  },
+  {
+    "key": "ThanBangCuoc",
+    "vi": "Băng Quang Cự Thú",
+    "en": "Ice Light Giant Beast",
+    "rank": "than_thu",
+    "realm_level": 8,
+    "element": "thuy",
+    "base_hp": 16000,
+    "base_spd": 13,
+    "base_atk": 130,
+    "base_matk": 190,
+    "base_def": 168,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.08,
+    "skill_keys": [
+      "EnemyBang_R8",
+      "EnemyApex_R7_Magical"
+    ],
+    "base_crit_rating": 15,
+    "base_crit_dmg_rating": 25,
+    "final_dmg_bonus": 0.0,
+    "immune_hard_cc": true
+  },
+  {
+    "key": "ThanKimGiap",
+    "vi": "Kim Thổ Thần Khải",
+    "en": "Metal Earth Divine Armored",
+    "rank": "than_thu",
+    "realm_level": 8,
+    "element": "kim",
+    "base_hp": 18000,
+    "base_spd": 16,
+    "base_atk": 190,
+    "base_matk": 140,
+    "base_def": 230,
+    "hp_scale": 1.7,
+    "mp_regen_pct": 0.1,
+    "skill_keys": [
+      "EnemyKim_R8",
+      "EnemyApex_R7_Physical",
+      "EnemyApex_R7_Magical"
+    ],
+    "base_crit_rating": 15,
+    "base_crit_dmg_rating": 25,
+    "final_dmg_bonus": 0.0,
+    "immune_hard_cc": true
+  },
+  {
+    "key": "ThanPhongUng",
+    "vi": "Phong Mộc Thần Ưng",
+    "en": "Wind Wood Divine Eagle",
+    "rank": "than_thu",
+    "realm_level": 8,
+    "element": "phong",
+    "base_hp": 12000,
+    "base_spd": 20,
+    "base_atk": 160,
+    "base_matk": 130,
+    "base_def": 120,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.08,
+    "skill_keys": [
+      "EnemyPhong_R6",
+      "EnemyApex_R7_Physical"
+    ],
+    "base_crit_rating": 25,
+    "base_crit_dmg_rating": 30,
+    "final_dmg_bonus": 0.02,
+    "immune_hard_cc": true
+  }
+]

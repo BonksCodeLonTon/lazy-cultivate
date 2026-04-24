@@ -84,7 +84,15 @@ def battle_embed(
     # if turn:
     #     lines.append(f"\n*Lượt {turn}*")
 
-    log_section = "\n".join(turn_log[-10:]) if turn_log else ""
+    # Wrap the per-turn log lines in an ``ansi`` code block so the ANSI
+    # escape sequences inserted by ``colorize_damage`` actually render as
+    # color. The status lines above (bars, names) stay in markdown because
+    # they use backtick spans and bold that Discord only parses outside
+    # code blocks.
+    from src.game.engine.damage import to_ansi_block
+
+    raw_log = "\n".join(turn_log[-10:]) if turn_log else ""
+    log_section = to_ansi_block(raw_log) if raw_log.strip() else ""
     description = "\n".join(lines) + ("\n\n" + log_section if log_section else "")
 
     return discord.Embed(title="⚔️ Chiến Đấu", description=description, color=0x3498DB)

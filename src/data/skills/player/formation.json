@@ -15,7 +15,9 @@
     "cooldown": 3,
     "base_dmg": 75,
     "effects": [
-      "DebuffXeRach"
+      "DebuffXeRach",
+      "ApplySoulDrain",
+      "ApplyStatSteal"
     ],
     "formation_key": "NhatNguyenAm"
   },
@@ -70,7 +72,10 @@
     "mp_cost": 25,
     "cooldown": 3,
     "base_dmg": 80,
-    "effects": [],
+    "effects": [
+      "DebuffPhongAn",
+      "DebuffLamCham"
+    ],
     "formation_key": "NhatNguyenPhong"
   },
   {
@@ -198,8 +203,32 @@
     "mp_cost": 35,
     "cooldown": 3,
     "base_dmg": 115,
-    "effects": [],
+    "effects": [
+      "DebuffSocDien",
+      "DebuffSocDien"
+    ],
     "formation_key": "NhatNguyenLoi"
+  },
+  {
+    "key": "SkillFrmQuang",
+    "vi": "Nhất Nguyên Quang Thức",
+    "en": "One Origin Light Form",
+    "realm": 4,
+    "category": "formation",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 30,
+    "cooldown": 3,
+    "base_dmg": 100,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffCatDut"
+    ],
+    "formation_key": "NhatNguyenQuang"
   },
   {
     "key": "SkillFrmCuuCung",

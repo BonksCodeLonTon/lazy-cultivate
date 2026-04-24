@@ -6,10 +6,19 @@
     "slot": "armor",
     "realm": 2,
     "grade": 2,
-    "fixed_stats": {
-      "def_stat": 35,
-      "hp_max": 260,
-      "crit_res_rating": 55
+    "rolled_stats": {
+      "def_stat": [
+        30,
+        40
+      ],
+      "hp_max": [
+        221,
+        299
+      ],
+      "crit_res_rating": [
+        47,
+        63
+      ]
     },
     "passive_bonus": {
       "debuff_immune_pct": 0.1,
@@ -23,12 +32,24 @@
     "base": "base_gauntlet",
     "slot": "glove",
     "realm": 5,
-    "grade": 3,
-    "fixed_stats": {
-      "atk": 35,
-      "crit_rating": 80,
-      "crit_dmg_rating": 70,
-      "final_dmg_bonus": 0.07
+    "grade": 5,
+    "rolled_stats": {
+      "atk": [
+        30,
+        40
+      ],
+      "crit_rating": [
+        68,
+        92
+      ],
+      "crit_dmg_rating": [
+        60,
+        80
+      ],
+      "final_dmg_bonus": [
+        0.0595,
+        0.0805
+      ]
     },
     "passive_bonus": {
       "crit_rating_vs_bleed": 150,
@@ -42,11 +63,20 @@
     "base": "base_sword",
     "slot": "weapon",
     "realm": 5,
-    "grade": 3,
-    "fixed_stats": {
-      "atk": 55,
-      "crit_rating": 130,
-      "crit_dmg_rating": 130
+    "grade": 5,
+    "rolled_stats": {
+      "atk": [
+        47,
+        63
+      ],
+      "crit_rating": [
+        110,
+        150
+      ],
+      "crit_dmg_rating": [
+        110,
+        150
+      ]
     },
     "passive_bonus": {
       "bleed_on_hit_pct": 0.45,
@@ -60,11 +90,20 @@
     "base": "base_leather_armor",
     "slot": "armor",
     "realm": 7,
-    "grade": 4,
-    "fixed_stats": {
-      "def_stat": 48,
-      "hp_max": 520,
-      "evasion_rating": 160
+    "grade": 7,
+    "rolled_stats": {
+      "def_stat": [
+        41,
+        55
+      ],
+      "hp_max": [
+        442,
+        598
+      ],
+      "evasion_rating": [
+        136,
+        184
+      ]
     },
     "passive_bonus": {
       "bleed_on_hit_pct": 0.6,
@@ -79,12 +118,24 @@
     "base": "base_helm",
     "slot": "helmet",
     "realm": 7,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 55,
-      "hp_max": 420,
-      "crit_rating": 150,
-      "crit_dmg_rating": 180
+    "grade": 7,
+    "rolled_stats": {
+      "atk": [
+        47,
+        63
+      ],
+      "hp_max": [
+        357,
+        483
+      ],
+      "crit_rating": [
+        128,
+        172
+      ],
+      "crit_dmg_rating": [
+        153,
+        207
+      ]
     },
     "passive_bonus": {
       "dot_can_crit": true,
@@ -98,11 +149,20 @@
     "base": "base_pendant",
     "slot": "amulet",
     "realm": 8,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 620,
-      "atk": 55,
-      "final_dmg_bonus": 0.14
+    "grade": 8,
+    "rolled_stats": {
+      "hp_max": [
+        527,
+        713
+      ],
+      "atk": [
+        47,
+        63
+      ],
+      "final_dmg_bonus": [
+        0.119,
+        0.161
+      ]
     },
     "passive_bonus": {
       "crit_rating_vs_bleed": 280,
@@ -117,11 +177,20 @@
     "base": "base_quiver",
     "slot": "off_hand",
     "realm": 8,
-    "grade": 4,
-    "fixed_stats": {
-      "crit_rating": 280,
-      "atk": 65,
-      "evasion_rating": 140
+    "grade": 8,
+    "rolled_stats": {
+      "crit_rating": [
+        238,
+        322
+      ],
+      "atk": [
+        55,
+        75
+      ],
+      "evasion_rating": [
+        119,
+        161
+      ]
     },
     "passive_bonus": {
       "crit_rating_vs_bleed": 350,
@@ -136,11 +205,20 @@
     "base": "base_bow_2h",
     "slot": "weapon",
     "realm": 8,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 155,
-      "crit_rating": 420,
-      "crit_dmg_rating": 460
+    "grade": 8,
+    "rolled_stats": {
+      "atk": [
+        132,
+        178
+      ],
+      "crit_rating": [
+        357,
+        483
+      ],
+      "crit_dmg_rating": [
+        391,
+        529
+      ]
     },
     "passive_bonus": {
       "bleed_on_hit_pct": 0.8,
@@ -155,11 +233,20 @@
     "base": "base_spear_2h",
     "slot": "weapon",
     "realm": 8,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 175,
-      "crit_rating": 340,
-      "crit_dmg_rating": 260
+    "grade": 8,
+    "rolled_stats": {
+      "atk": [
+        149,
+        201
+      ],
+      "crit_rating": [
+        289,
+        391
+      ],
+      "crit_dmg_rating": [
+        221,
+        299
+      ]
     },
     "passive_bonus": {
       "bleed_on_hit_pct": 0.8,
@@ -174,11 +261,20 @@
     "base": "base_pendant",
     "slot": "amulet",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 780,
-      "atk": 95,
-      "final_dmg_bonus": 0.2
+    "grade": 9,
+    "rolled_stats": {
+      "hp_max": [
+        663,
+        897
+      ],
+      "atk": [
+        81,
+        109
+      ],
+      "final_dmg_bonus": [
+        0.17,
+        0.23
+      ]
     },
     "passive_bonus": {
       "bleed_heal_reduce": 0.5,
@@ -193,10 +289,16 @@
     "base": "base_crown",
     "slot": "helmet",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 780,
-      "crit_rating": 300
+    "grade": 9,
+    "rolled_stats": {
+      "hp_max": [
+        663,
+        897
+      ],
+      "crit_rating": [
+        255,
+        345
+      ]
     },
     "passive_bonus": {
       "bleed_stack_cap_bonus": 5,
@@ -212,12 +314,24 @@
     "base": "base_power_ring",
     "slot": "ring",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 120,
-      "crit_rating": 320,
-      "crit_dmg_rating": 380,
-      "res_all": 0.08
+    "grade": 9,
+    "rolled_stats": {
+      "atk": [
+        102,
+        138
+      ],
+      "crit_rating": [
+        272,
+        368
+      ],
+      "crit_dmg_rating": [
+        323,
+        437
+      ],
+      "res_all": [
+        0.068,
+        0.092
+      ]
     },
     "passive_bonus": {
       "crit_rating_vs_bleed": 450,
@@ -231,11 +345,20 @@
     "base": "base_longsword_2h",
     "slot": "weapon",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 210,
-      "crit_rating": 480,
-      "crit_dmg_rating": 560
+    "grade": 9,
+    "rolled_stats": {
+      "atk": [
+        178,
+        241
+      ],
+      "crit_rating": [
+        408,
+        552
+      ],
+      "crit_dmg_rating": [
+        476,
+        644
+      ]
     },
     "passive_bonus": {
       "dot_scales_hp_pct": true,
@@ -250,11 +373,20 @@
     "base": "base_longsword_2h",
     "slot": "weapon",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 200,
-      "crit_rating": 500,
-      "crit_dmg_rating": 520
+    "grade": 9,
+    "rolled_stats": {
+      "atk": [
+        170,
+        230
+      ],
+      "crit_rating": [
+        425,
+        575
+      ],
+      "crit_dmg_rating": [
+        442,
+        598
+      ]
     },
     "passive_bonus": {
       "bleed_on_hit_pct": 1.0,

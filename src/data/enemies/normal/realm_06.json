@@ -6,13 +6,17 @@
     "rank": "hung_manh",
     "realm_level": 6,
     "element": "hoa",
-    "base_hp": 1800,
+    "base_hp": 2880,
     "base_spd": 12,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyHoa_R4",
       "EnemyKim_R4"
-    ]
+    ],
+    "base_atk": 85,
+    "base_matk": 170,
+    "base_def": 70,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "HungThuyLoi",
@@ -21,13 +25,17 @@
     "rank": "hung_manh",
     "realm_level": 6,
     "element": "thuy",
-    "base_hp": 2200,
-    "base_spd": 9,
+    "base_hp": 3520,
+    "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyThuy_R4",
       "EnemyLoi_R4"
-    ]
+    ],
+    "base_atk": 85,
+    "base_matk": 170,
+    "base_def": 70,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "HungPhongMoc",
@@ -36,13 +44,17 @@
     "rank": "hung_manh",
     "realm_level": 6,
     "element": "phong",
-    "base_hp": 1600,
+    "base_hp": 2560,
     "base_spd": 16,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyPhong_R4",
       "EnemyMoc_R4"
-    ]
+    ],
+    "base_atk": 170,
+    "base_matk": 85,
+    "base_def": 90,
+    "mp_regen_pct": 0.06
   },
   {
     "key": "HungToHoa",
@@ -51,12 +63,17 @@
     "rank": "hung_manh",
     "realm_level": 6,
     "element": "tho",
-    "base_hp": 2500,
-    "base_spd": 8,
+    "base_hp": 4200,
+    "base_spd": 12,
+    "base_atk": 210,
+    "base_matk": 180,
+    "base_def": 110,
     "hp_scale": 1.5,
+    "mp_regen_pct": 0.07,
     "skill_keys": [
       "EnemyTho_R4",
-      "EnemyHoa_R4"
+      "EnemyHoa_R4",
+      "EnemyApex_R7_Physical"
     ]
   },
   {
@@ -66,12 +83,16 @@
     "rank": "hung_manh",
     "realm_level": 6,
     "element": "thuy",
-    "base_hp": 2000,
+    "base_hp": 3200,
     "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyBang_R4",
       "EnemyKim_R4"
-    ]
+    ],
+    "base_atk": 85,
+    "base_matk": 170,
+    "base_def": 70,
+    "mp_regen_pct": 0.06
   }
 ]

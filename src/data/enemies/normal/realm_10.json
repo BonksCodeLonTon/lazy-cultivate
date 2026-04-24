@@ -1,0 +1,99 @@
+[
+  {
+    "key": "BossHoaLinh",
+    "vi": "Hỏa Linh Thần Thú",
+    "en": "Fire Spirit Divine Beast",
+    "rank": "chi_ton",
+    "realm_level": 10,
+    "element": "hoa",
+    "base_hp": 18000,
+    "base_spd": 17,
+    "base_atk": 70,
+    "base_matk": 100,
+    "base_def": 110,
+    "hp_scale": 1.2,
+    "mp_regen_pct": 0.12,
+    "skill_keys": [
+      "EnemyHoa_R9",
+      "EnemyBoss_R10_Devastate"
+    ],
+    "loot_table_key": "LootBossHoaLinh",
+    "base_crit_rating": 35,
+    "base_crit_dmg_rating": 40,
+    "final_dmg_bonus": 0.0,
+    "immune_hard_cc": true
+  },
+  {
+    "key": "BossLoiLong",
+    "vi": "Lôi Bá Thần Long",
+    "en": "Thunder Lord Divine Dragon",
+    "rank": "chi_ton",
+    "realm_level": 10,
+    "element": "loi",
+    "base_hp": 20000,
+    "base_spd": 22,
+    "base_atk": 85,
+    "base_matk": 110,
+    "base_def": 110,
+    "hp_scale": 1.2,
+    "mp_regen_pct": 0.12,
+    "skill_keys": [
+      "EnemyLoi_R9",
+      "EnemyBoss_R10_Devastate"
+    ],
+    "loot_table_key": "LootBossLoiLong",
+    "base_crit_rating": 40,
+    "base_crit_dmg_rating": 45,
+    "final_dmg_bonus": 0.02,
+    "immune_hard_cc": true
+  },
+  {
+    "key": "BossBangHon",
+    "vi": "Băng Hồn Cổ Thần",
+    "en": "Ice Soul Ancient God",
+    "rank": "chi_ton",
+    "realm_level": 10,
+    "element": "thuy",
+    "base_hp": 18000,
+    "base_spd": 18,
+    "base_atk": 70,
+    "base_matk": 100,
+    "base_def": 110,
+    "hp_scale": 1.2,
+    "mp_regen_pct": 0.12,
+    "skill_keys": [
+      "EnemyBang_R9",
+      "EnemyBoss_R10_Devastate"
+    ],
+    "loot_table_key": "LootBossBangHon",
+    "base_crit_rating": 35,
+    "base_crit_dmg_rating": 40,
+    "final_dmg_bonus": 0.0,
+    "immune_hard_cc": true
+  },
+  {
+    "key": "BossHonNguyen",
+    "vi": "Hỗn Nguyên Ma Thần",
+    "en": "Primordial Demon God",
+    "rank": "chi_ton",
+    "realm_level": 10,
+    "element": null,
+    "base_hp": 22000,
+    "base_spd": 20,
+    "base_atk": 80,
+    "base_matk": 100,
+    "base_def": 100,
+    "hp_scale": 1.2,
+    "mp_regen_pct": 0.1,
+    "skill_keys": [
+      "EnemyHoa_R9",
+      "EnemyLoi_R9",
+      "EnemyBoss_R10_BossAura"
+    ],
+    "loot_table_key": "LootBossHonNguyen",
+    "base_crit_rating": 40,
+    "base_crit_dmg_rating": 45,
+    "final_dmg_bonus": 0.02,
+    "immune_hard_cc": true
+  }
+]

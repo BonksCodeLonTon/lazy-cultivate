@@ -46,5 +46,37 @@
     "effects": ["DebuffDongBang", "DebuffLamCham"],
     "effect_chances": {"DebuffDongBang": 0.60, "DebuffLamCham": 0.80},
     "formation_key": null
+  },
+  {
+    "key": "EnemyApex_R7_Physical",
+    "vi": "Thần Thú Phá Nhạc Trảm",
+    "en": "Divine Beast Mountain-Breaker Strike",
+    "realm": 7,
+    "category": "attack",
+    "element": null,
+    "attack_type": "physical",
+    "dmg_scale": {"atk": 1.3, "matk": 0.4},
+    "mp_cost": 60,
+    "cooldown": 3,
+    "base_dmg": 400,
+    "effects": ["DebuffPhaGiap", "DebuffBaoMon"],
+    "effect_chances": {"DebuffPhaGiap": 0.60, "DebuffBaoMon": 0.55},
+    "formation_key": null
+  },
+  {
+    "key": "EnemyApex_R7_Magical",
+    "vi": "Thần Pháp Linh Hồn Khốc",
+    "en": "Divine Art Soul Lament",
+    "realm": 7,
+    "category": "attack",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {"atk": 0.4, "matk": 1.3},
+    "mp_cost": 65,
+    "cooldown": 3,
+    "base_dmg": 420,
+    "effects": ["DebuffBaoMon", "DebuffCatDut", "CCMuted"],
+    "effect_chances": {"DebuffBaoMon": 0.55, "DebuffCatDut": 0.50, "CCMuted": 0.25},
+    "formation_key": null
   }
 ]

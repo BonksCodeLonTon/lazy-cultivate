@@ -6,10 +6,20 @@
     "description": "Bí cảnh sơ cấp ẩn sâu trong rừng linh mạch. Các yêu thú sơ cấp trú ngụ nơi đây.",
     "required_qi_realm": 0,
     "wave_count": 3,
-    "enemy_pool": ["CommonHoaThu", "CommonMocThao", "CommonBangTho", "CommonKimBo", "CommonLoiTinh", "CommonPhongHo", "CommonThuyLinhCua", "CommonToRua"],
+    "enemy_pool": [
+      "CommonHoaThu",
+      "CommonMocThao",
+      "CommonBangTho",
+      "CommonKimBo",
+      "CommonLoiTinh",
+      "CommonPhongHo",
+      "CommonThuyLinhCua",
+      "CommonToRua"
+    ],
     "merit_reward": 100,
     "stone_reward": 0,
-    "cooldown_hours": 4
+    "cooldown_hours": 4,
+    "dungeon_type": "normal"
   },
   {
     "key": "DungeonTrucCo",
@@ -18,10 +28,24 @@
     "description": "Bí cảnh cấp trung ẩn trong dãy núi linh khí. Yêu thú cường giả đang ngủ yên tại đây.",
     "required_qi_realm": 1,
     "wave_count": 3,
-    "enemy_pool": ["CommonKimBo", "LinhHoaTuoc", "LinhMocLang", "LinhBangTriet", "LinhKimSai", "LinhLoiQuy", "LinhPhongDieu", "LinhThuyHaiMa", "StrongHoaLoi", "StrongLoiTo", "StrongPhongMoc", "StrongBangPhong"],
+    "enemy_pool": [
+      "CommonKimBo",
+      "LinhHoaTuoc",
+      "LinhMocLang",
+      "LinhBangTriet",
+      "LinhKimSai",
+      "LinhLoiQuy",
+      "LinhPhongDieu",
+      "LinhThuyHaiMa",
+      "StrongHoaLoi",
+      "StrongLoiTo",
+      "StrongPhongMoc",
+      "StrongBangPhong"
+    ],
     "merit_reward": 300,
     "stone_reward": 0,
-    "cooldown_hours": 6
+    "cooldown_hours": 6,
+    "dungeon_type": "normal"
   },
   {
     "key": "DungeonKimDan",
@@ -30,10 +54,22 @@
     "description": "Hang động cổ đại ẩn chứa dược liệu quý hiếm. Các yêu thú cường giả canh giữ kho báu.",
     "required_qi_realm": 2,
     "wave_count": 3,
-    "enemy_pool": ["TinhHoaLoi", "TinhBangMoc", "TinhKimTho", "TinhThuyPhong", "TinhLoiMoc", "StrongHoaLoi", "StrongThuyHoa", "StrongLoiTo", "StrongPhongMoc", "StrongKimMoc"],
+    "enemy_pool": [
+      "TinhHoaLoi",
+      "TinhBangMoc",
+      "TinhKimTho",
+      "TinhThuyPhong",
+      "TinhLoiMoc",
+      "StrongHoaLoi",
+      "StrongThuyHoa",
+      "StrongLoiTo",
+      "StrongPhongMoc",
+      "StrongKimMoc"
+    ],
     "merit_reward": 800,
     "stone_reward": 50,
-    "cooldown_hours": 8
+    "cooldown_hours": 8,
+    "dungeon_type": "normal"
   },
   {
     "key": "DungeonNguyenAnh",
@@ -42,10 +78,22 @@
     "description": "Không gian kẹt giữa hư thực, nơi các đại năng cổ đại từng chiến đấu.",
     "required_qi_realm": 3,
     "wave_count": 3,
-    "enemy_pool": ["StrongLoiTo", "StrongPhongMoc", "FierceHoaBao", "FierceKimHac", "FierceLoiMa", "FierceMocKy", "FierceBangGiao", "FiercePhongYen", "FierceThoLinh", "ElitePhongLinh"],
+    "enemy_pool": [
+      "StrongLoiTo",
+      "StrongPhongMoc",
+      "FierceHoaBao",
+      "FierceKimHac",
+      "FierceLoiMa",
+      "FierceMocKy",
+      "FierceBangGiao",
+      "FiercePhongYen",
+      "FierceThoLinh",
+      "ElitePhongLinh"
+    ],
     "merit_reward": 2000,
     "stone_reward": 150,
-    "cooldown_hours": 8
+    "cooldown_hours": 8,
+    "dungeon_type": "normal"
   },
   {
     "key": "DungeonHoaThan",
@@ -54,10 +102,25 @@
     "description": "Bí địa cổ xưa ẩn sâu dưới lòng đất, nơi linh khí tụ hội mạnh mẽ nhất.",
     "required_qi_realm": 4,
     "wave_count": 3,
-    "enemy_pool": ["FierceHoaBao", "FierceKimHac", "FierceLoiMa", "FierceMocKy", "FierceBangGiao", "FiercePhongYen", "FierceThoLinh", "HungHoaKim", "HungThuyLoi", "HungPhongMoc", "HungToHoa", "HungBangKim", "EliteKimGiap"],
+    "enemy_pool": [
+      "FierceHoaBao",
+      "FierceKimHac",
+      "FierceLoiMa",
+      "FierceMocKy",
+      "FierceBangGiao",
+      "FiercePhongYen",
+      "FierceThoLinh",
+      "HungHoaKim",
+      "HungThuyLoi",
+      "HungPhongMoc",
+      "HungToHoa",
+      "HungBangKim",
+      "EliteKimGiap"
+    ],
     "merit_reward": 5000,
     "stone_reward": 300,
-    "cooldown_hours": 12
+    "cooldown_hours": 12,
+    "dungeon_type": "normal"
   },
   {
     "key": "DungeonLuyenHu",
@@ -66,10 +129,22 @@
     "description": "Khe hở trong không gian, nơi quy tắc thiên đạo biến đổi khôn lường.",
     "required_qi_realm": 5,
     "wave_count": 3,
-    "enemy_pool": ["HungHoaKim", "HungThuyLoi", "HungPhongMoc", "HungToHoa", "HungBangKim", "EliteKimGiap", "EliteMocLinh", "EliteThuyGiao", "ElitePhongLinh", "EliteToNham"],
+    "enemy_pool": [
+      "HungHoaKim",
+      "HungThuyLoi",
+      "HungPhongMoc",
+      "HungToHoa",
+      "HungBangKim",
+      "EliteKimGiap",
+      "EliteMocLinh",
+      "EliteThuyGiao",
+      "ElitePhongLinh",
+      "EliteToNham"
+    ],
     "merit_reward": 12000,
     "stone_reward": 600,
-    "cooldown_hours": 12
+    "cooldown_hours": 12,
+    "dungeon_type": "normal"
   },
   {
     "key": "DungeonHopDao",
@@ -78,10 +153,22 @@
     "description": "Thánh địa cổ đại nơi thần thú ngủ ngàn năm. Chỉ những cao thủ thực sự mới dám đặt chân vào.",
     "required_qi_realm": 6,
     "wave_count": 3,
-    "enemy_pool": ["EliteKimGiap", "EliteMocLinh", "EliteToNham", "EliteThuyGiao", "ElitePhongLinh", "ThanHoaLong", "ThanBangCuoc", "ThanKimGiap", "ThanPhongUng", "BossHoaLinh"],
+    "enemy_pool": [
+      "EliteKimGiap",
+      "EliteMocLinh",
+      "EliteToNham",
+      "EliteThuyGiao",
+      "ElitePhongLinh",
+      "ThanHoaLong",
+      "ThanBangCuoc",
+      "ThanKimGiap",
+      "ThanPhongUng",
+      "BossHoaLinh"
+    ],
     "merit_reward": 30000,
     "stone_reward": 1500,
-    "cooldown_hours": 18
+    "cooldown_hours": 18,
+    "dungeon_type": "normal"
   },
   {
     "key": "DungeonDaiThua",
@@ -90,10 +177,21 @@
     "description": "Vùng không gian bị phong ấn bởi thần minh thượng cổ. Thần thú bên trong đã trải qua vạn năm khổ luyện.",
     "required_qi_realm": 7,
     "wave_count": 3,
-    "enemy_pool": ["ThanHoaLong", "ThanBangCuoc", "ThanKimGiap", "ThanPhongUng", "TienHoaMaVuong", "TienBangCo", "TienLoiHoang", "TienThoLinh", "BossLoiLong"],
+    "enemy_pool": [
+      "ThanHoaLong",
+      "ThanBangCuoc",
+      "ThanKimGiap",
+      "ThanPhongUng",
+      "TienHoaMaVuong",
+      "TienBangCo",
+      "TienLoiHoang",
+      "TienThoLinh",
+      "BossLoiLong"
+    ],
     "merit_reward": 80000,
     "stone_reward": 5000,
-    "cooldown_hours": 24
+    "cooldown_hours": 24,
+    "dungeon_type": "normal"
   },
   {
     "key": "DungeonDangTien",
@@ -102,9 +200,172 @@
     "description": "Cửa ải cuối cùng trước khi chứng đắc tiên đạo. Hỗn Nguyên Ma Thần canh gác cổng thiên đình.",
     "required_qi_realm": 8,
     "wave_count": 3,
-    "enemy_pool": ["TienHoaMaVuong", "TienBangCo", "TienLoiHoang", "TienThoLinh", "BossHoaLinh", "BossBangHon", "BossHonNguyen"],
+    "enemy_pool": [
+      "TienHoaMaVuong",
+      "TienBangCo",
+      "TienLoiHoang",
+      "TienThoLinh",
+      "BossHoaLinh",
+      "BossBangHon",
+      "BossHonNguyen"
+    ],
     "merit_reward": 200000,
     "stone_reward": 15000,
-    "cooldown_hours": 48
+    "cooldown_hours": 48,
+    "dungeon_type": "normal"
+  },
+  {
+    "key": "DungeonDuocVien_R1",
+    "vi": "Dược Viên Cấp 1",
+    "en": "Medicine Garden Tier 1",
+    "description": "Vườn dược linh rộng lớn, dược khí nồng đậm thấm khắp cây cỏ. Các linh thú hệ Mộc tại đây hấp thụ tinh hoa thảo dược nên hồi phục huyết mạch cực nhanh trong chiến đấu.",
+    "dungeon_type": "duoc_vien",
+    "required_qi_realm": 0,
+    "wave_count": 3,
+    "enemy_pool": [
+      "DuocVienR1_01",
+      "DuocVienR1_02",
+      "DuocVienR1_03",
+      "DuocVienR1_04"
+    ],
+    "merit_reward": 300,
+    "stone_reward": 0,
+    "cooldown_hours": 4
+  },
+  {
+    "key": "DungeonDuocVien_R2",
+    "vi": "Dược Viên Cấp 2",
+    "en": "Medicine Garden Tier 2",
+    "description": "Vườn dược linh rộng lớn, dược khí nồng đậm thấm khắp cây cỏ. Các linh thú hệ Mộc tại đây hấp thụ tinh hoa thảo dược nên hồi phục huyết mạch cực nhanh trong chiến đấu.",
+    "dungeon_type": "duoc_vien",
+    "required_qi_realm": 1,
+    "wave_count": 3,
+    "enemy_pool": [
+      "DuocVienR2_01",
+      "DuocVienR2_02",
+      "DuocVienR2_03"
+    ],
+    "merit_reward": 600,
+    "stone_reward": 0,
+    "cooldown_hours": 4
+  },
+  {
+    "key": "DungeonDuocVien_R3",
+    "vi": "Dược Viên Cấp 3",
+    "en": "Medicine Garden Tier 3",
+    "description": "Vườn dược linh rộng lớn, dược khí nồng đậm thấm khắp cây cỏ. Các linh thú hệ Mộc tại đây hấp thụ tinh hoa thảo dược nên hồi phục huyết mạch cực nhanh trong chiến đấu.",
+    "dungeon_type": "duoc_vien",
+    "required_qi_realm": 2,
+    "wave_count": 3,
+    "enemy_pool": [
+      "DuocVienR3_01",
+      "DuocVienR3_02",
+      "DuocVienR3_03"
+    ],
+    "merit_reward": 1500,
+    "stone_reward": 30,
+    "cooldown_hours": 6
+  },
+  {
+    "key": "DungeonDuocVien_R4",
+    "vi": "Dược Viên Cấp 4",
+    "en": "Medicine Garden Tier 4",
+    "description": "Vườn dược linh rộng lớn, dược khí nồng đậm thấm khắp cây cỏ. Các linh thú hệ Mộc tại đây hấp thụ tinh hoa thảo dược nên hồi phục huyết mạch cực nhanh trong chiến đấu.",
+    "dungeon_type": "duoc_vien",
+    "required_qi_realm": 3,
+    "wave_count": 3,
+    "enemy_pool": [
+      "DuocVienR4_01",
+      "DuocVienR4_02",
+      "DuocVienR4_03"
+    ],
+    "merit_reward": 3500,
+    "stone_reward": 100,
+    "cooldown_hours": 6
+  },
+  {
+    "key": "DungeonDuocVien_R5",
+    "vi": "Dược Viên Cấp 5",
+    "en": "Medicine Garden Tier 5",
+    "description": "Vườn dược linh rộng lớn, dược khí nồng đậm thấm khắp cây cỏ. Các linh thú hệ Mộc tại đây hấp thụ tinh hoa thảo dược nên hồi phục huyết mạch cực nhanh trong chiến đấu.",
+    "dungeon_type": "duoc_vien",
+    "required_qi_realm": 4,
+    "wave_count": 3,
+    "enemy_pool": [
+      "DuocVienR5_01",
+      "DuocVienR5_02",
+      "DuocVienR5_03"
+    ],
+    "merit_reward": 8000,
+    "stone_reward": 220,
+    "cooldown_hours": 6
+  },
+  {
+    "key": "DungeonDuocVien_R6",
+    "vi": "Dược Viên Cấp 6",
+    "en": "Medicine Garden Tier 6",
+    "description": "Vườn dược linh rộng lớn, dược khí nồng đậm thấm khắp cây cỏ. Các linh thú hệ Mộc tại đây hấp thụ tinh hoa thảo dược nên hồi phục huyết mạch cực nhanh trong chiến đấu.",
+    "dungeon_type": "duoc_vien",
+    "required_qi_realm": 5,
+    "wave_count": 3,
+    "enemy_pool": [
+      "DuocVienR6_01",
+      "DuocVienR6_02",
+      "DuocVienR6_03"
+    ],
+    "merit_reward": 18000,
+    "stone_reward": 500,
+    "cooldown_hours": 8
+  },
+  {
+    "key": "DungeonDuocVien_R7",
+    "vi": "Dược Viên Cấp 7",
+    "en": "Medicine Garden Tier 7",
+    "description": "Vườn dược linh rộng lớn, dược khí nồng đậm thấm khắp cây cỏ. Các linh thú hệ Mộc tại đây hấp thụ tinh hoa thảo dược nên hồi phục huyết mạch cực nhanh trong chiến đấu.",
+    "dungeon_type": "duoc_vien",
+    "required_qi_realm": 6,
+    "wave_count": 3,
+    "enemy_pool": [
+      "DuocVienR7_01",
+      "DuocVienR7_02",
+      "DuocVienR7_03"
+    ],
+    "merit_reward": 40000,
+    "stone_reward": 1200,
+    "cooldown_hours": 8
+  },
+  {
+    "key": "DungeonDuocVien_R8",
+    "vi": "Dược Viên Cấp 8",
+    "en": "Medicine Garden Tier 8",
+    "description": "Vườn dược linh rộng lớn, dược khí nồng đậm thấm khắp cây cỏ. Các linh thú hệ Mộc tại đây hấp thụ tinh hoa thảo dược nên hồi phục huyết mạch cực nhanh trong chiến đấu.",
+    "dungeon_type": "duoc_vien",
+    "required_qi_realm": 7,
+    "wave_count": 3,
+    "enemy_pool": [
+      "DuocVienR8_01",
+      "DuocVienR8_02",
+      "DuocVienR8_03"
+    ],
+    "merit_reward": 90000,
+    "stone_reward": 3500,
+    "cooldown_hours": 8
+  },
+  {
+    "key": "DungeonDuocVien_R9",
+    "vi": "Dược Viên Cấp 9",
+    "en": "Medicine Garden Tier 9",
+    "description": "Vườn dược linh rộng lớn, dược khí nồng đậm thấm khắp cây cỏ. Các linh thú hệ Mộc tại đây hấp thụ tinh hoa thảo dược nên hồi phục huyết mạch cực nhanh trong chiến đấu.",
+    "dungeon_type": "duoc_vien",
+    "required_qi_realm": 8,
+    "wave_count": 3,
+    "enemy_pool": [
+      "DuocVienR9_01",
+      "DuocVienR9_02",
+      "DuocVienR9_03"
+    ],
+    "merit_reward": 220000,
+    "stone_reward": 12000,
+    "cooldown_hours": 10
   }
 ]

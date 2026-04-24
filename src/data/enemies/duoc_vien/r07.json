@@ -1,0 +1,65 @@
+[
+  {
+    "key": "DuocVienR7_01",
+    "vi": "Bách Thảo Ma Vương",
+    "en": "Hundred Herb Demon King",
+    "rank": "chi_ton",
+    "realm_level": 7,
+    "element": "moc",
+    "base_hp": 4590,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T3",
+      "EnemyPhong_T3"
+    ],
+    "loot_table_key": "DuocVienLoot_7",
+    "base_atk": 54,
+    "base_matk": 67,
+    "base_def": 51,
+    "mp_regen_pct": 0.07
+  },
+  {
+    "key": "DuocVienR7_02",
+    "vi": "Dược Viên Chủ Thần",
+    "en": "Medicine Garden Master God",
+    "rank": "chi_ton",
+    "realm_level": 7,
+    "element": "moc",
+    "base_hp": 4590,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "EnemyMoc_T3",
+      "EnemyPhong_T3"
+    ],
+    "loot_table_key": "DuocVienLoot_7",
+    "base_atk": 54,
+    "base_matk": 67,
+    "base_def": 51,
+    "mp_regen_pct": 0.07
+  },
+  {
+    "key": "DuocVienR7_03",
+    "vi": "Linh Mộc Thiên Đế",
+    "en": "Spirit Wood Heavenly Emperor",
+    "rank": "chi_ton",
+    "realm_level": 7,
+    "element": "moc",
+    "base_hp": 4590,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "hp_regen_pct": 0.01,
+    "skill_keys": [
+      "SkillDefMoc",
+      "EnemyMoc_T3"
+    ],
+    "loot_table_key": "DuocVienLoot_7",
+    "base_atk": 54,
+    "base_matk": 67,
+    "base_def": 51,
+    "mp_regen_pct": 0.07
+  }
+]

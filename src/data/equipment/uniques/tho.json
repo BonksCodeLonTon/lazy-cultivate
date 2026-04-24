@@ -6,10 +6,19 @@
     "slot": "ring",
     "realm": 2,
     "grade": 2,
-    "fixed_stats": {
-      "hp_max": 140,
-      "def_stat": 14,
-      "hp_regen_pct": 0.02
+    "rolled_stats": {
+      "hp_max": [
+        119,
+        161
+      ],
+      "def_stat": [
+        12,
+        16
+      ],
+      "hp_regen_pct": [
+        0.017,
+        0.023
+      ]
     },
     "passive_bonus": {
       "hp_regen_flat": 30
@@ -22,11 +31,20 @@
     "base": "base_plate",
     "slot": "armor",
     "realm": 5,
-    "grade": 3,
-    "fixed_stats": {
-      "def_stat": 85,
-      "hp_max": 580,
-      "crit_res_rating": 140
+    "grade": 5,
+    "rolled_stats": {
+      "def_stat": [
+        72,
+        98
+      ],
+      "hp_max": [
+        493,
+        667
+      ],
+      "crit_res_rating": [
+        119,
+        161
+      ]
     },
     "passive_bonus": {
       "shield_regen_pct": 0.03,
@@ -41,11 +59,20 @@
     "base": "base_shield",
     "slot": "off_hand",
     "realm": 5,
-    "grade": 3,
-    "fixed_stats": {
-      "def_stat": 55,
-      "hp_max": 420,
-      "crit_res_rating": 120
+    "grade": 5,
+    "rolled_stats": {
+      "def_stat": [
+        47,
+        63
+      ],
+      "hp_max": [
+        357,
+        483
+      ],
+      "crit_res_rating": [
+        102,
+        138
+      ]
     },
     "passive_bonus": {
       "thorn_pct": 0.2,
@@ -59,11 +86,20 @@
     "base": "base_gauntlet",
     "slot": "glove",
     "realm": 6,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 70,
-      "def_stat": 45,
-      "hp_max": 380
+    "grade": 6,
+    "rolled_stats": {
+      "atk": [
+        60,
+        80
+      ],
+      "def_stat": [
+        38,
+        52
+      ],
+      "hp_max": [
+        323,
+        437
+      ]
     },
     "passive_bonus": {
       "damage_bonus_from_shield_pct": 0.35,
@@ -78,11 +114,20 @@
     "base": "base_plate",
     "slot": "armor",
     "realm": 7,
-    "grade": 4,
-    "fixed_stats": {
-      "def_stat": 140,
-      "hp_max": 1100,
-      "crit_res_rating": 220
+    "grade": 7,
+    "rolled_stats": {
+      "def_stat": [
+        119,
+        161
+      ],
+      "hp_max": [
+        935,
+        1265
+      ],
+      "crit_res_rating": [
+        187,
+        253
+      ]
     },
     "passive_bonus": {
       "shield_regen_pct": 0.05,
@@ -97,11 +142,20 @@
     "base": "base_belt",
     "slot": "belt",
     "realm": 7,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 680,
-      "def_stat": 55,
-      "res_all": 0.08
+    "grade": 7,
+    "rolled_stats": {
+      "hp_max": [
+        578,
+        782
+      ],
+      "def_stat": [
+        47,
+        63
+      ],
+      "res_all": [
+        0.068,
+        0.092
+      ]
     },
     "passive_bonus": {
       "shield_regen_flat": 80,
@@ -115,11 +169,20 @@
     "base": "base_pendant",
     "slot": "amulet",
     "realm": 8,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 820,
-      "def_stat": 70,
-      "final_dmg_bonus": 0.12
+    "grade": 8,
+    "rolled_stats": {
+      "hp_max": [
+        697,
+        943
+      ],
+      "def_stat": [
+        60,
+        80
+      ],
+      "final_dmg_bonus": [
+        0.102,
+        0.138
+      ]
     },
     "passive_bonus": {
       "damage_bonus_from_shield_pct": 0.45,
@@ -134,11 +197,20 @@
     "base": "base_power_ring",
     "slot": "ring",
     "realm": 8,
-    "grade": 4,
-    "fixed_stats": {
-      "atk": 100,
-      "def_stat": 50,
-      "hp_max": 520
+    "grade": 8,
+    "rolled_stats": {
+      "atk": [
+        85,
+        115
+      ],
+      "def_stat": [
+        42,
+        57
+      ],
+      "hp_max": [
+        442,
+        598
+      ]
     },
     "passive_bonus": {
       "stun_on_hit_pct": 0.3,
@@ -152,11 +224,20 @@
     "base": "base_jade",
     "slot": "amulet",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 1200,
-      "def_stat": 100,
-      "matk": 60
+    "grade": 9,
+    "rolled_stats": {
+      "hp_max": [
+        1020,
+        1380
+      ],
+      "def_stat": [
+        85,
+        115
+      ],
+      "matk": [
+        51,
+        69
+      ]
     },
     "passive_bonus": {
       "shield_regen_flat": 200,
@@ -171,11 +252,20 @@
     "base": "base_plate",
     "slot": "armor",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "def_stat": 220,
-      "hp_max": 1800,
-      "crit_res_rating": 380
+    "grade": 9,
+    "rolled_stats": {
+      "def_stat": [
+        187,
+        253
+      ],
+      "hp_max": [
+        1530,
+        2070
+      ],
+      "crit_res_rating": [
+        323,
+        437
+      ]
     },
     "passive_bonus": {
       "thorn_pct": 0.45,
@@ -190,11 +280,20 @@
     "base": "base_crown",
     "slot": "helmet",
     "realm": 9,
-    "grade": 4,
-    "fixed_stats": {
-      "hp_max": 1600,
-      "def_stat": 140,
-      "res_all": 0.12
+    "grade": 9,
+    "rolled_stats": {
+      "hp_max": [
+        1360,
+        1840
+      ],
+      "def_stat": [
+        119,
+        161
+      ],
+      "res_all": [
+        0.102,
+        0.138
+      ]
     },
     "passive_bonus": {
       "shield_regen_pct": 0.08,

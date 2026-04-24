@@ -13,6 +13,14 @@ from src.game.constants.balance import (
     REALM_POWER_BONUS_PER_STAGE,
     BASE_MP_REGEN_PCT,
     MAX_FINAL_DMG_REDUCE,
+    DEFAULT_BURN_STACK_CAP,
+    DEFAULT_BURN_PER_STACK_PCT,
+    DEFAULT_BLEED_STACK_CAP,
+    DEFAULT_BLEED_PER_STACK_PCT,
+    DEFAULT_SHOCK_STACK_CAP,
+    DEFAULT_SHOCK_PER_STACK_PCT,
+    DEFAULT_MANA_STACK_CAP,
+    DEFAULT_SHIELD_CAP_PCT,
 )
 from src.game.engine import linh_can_effects as lc_effects
 
@@ -65,14 +73,14 @@ class CombatStats:
     poison_immunity: bool
     debuff_immune_pct: float
     # ── Fire-DoT build ────────────────────────────────────────────────────
-    burn_stack_cap: int = 5
-    burn_per_stack_pct: float = 0.012
+    burn_stack_cap: int = DEFAULT_BURN_STACK_CAP
+    burn_per_stack_pct: float = DEFAULT_BURN_PER_STACK_PCT
     bonus_dmg_vs_burn: float = 0.0
     fire_res_shred: float = 0.0
     dot_can_crit: bool = False
     # ── Kim (bleed) build ─────────────────────────────────────────────────
-    bleed_stack_cap: int = 5
-    bleed_per_stack_pct: float = 0.010
+    bleed_stack_cap: int = DEFAULT_BLEED_STACK_CAP
+    bleed_per_stack_pct: float = DEFAULT_BLEED_PER_STACK_PCT
     bleed_on_hit_pct: float = 0.0
     bleed_heal_reduce: float = 0.0
     crit_rating_vs_bleed: int = 0
@@ -88,18 +96,43 @@ class CombatStats:
     reflect_applies_effects: bool = False
     damage_bonus_from_mp_pct: float = 0.0
     mp_leech_pct: float = 0.0
-    mana_stack_cap: int = 10
+    mana_stack_cap: int = DEFAULT_MANA_STACK_CAP
     mana_stack_per_attack: int = 0
     mana_stack_dmg_bonus: float = 0.0
     thuy_res_shred: float = 0.0
     # ── Thổ (earth/shield/thorn) build ────────────────────────────────────
     shield_regen_pct: float = 0.0
     shield_regen_flat: int = 0
-    shield_cap_pct: float = 0.30
+    shield_cap_pct: float = DEFAULT_SHIELD_CAP_PCT
     damage_bonus_from_shield_pct: float = 0.0
     thorn_pct: float = 0.0
     thorn_from_shield: bool = False
     stun_on_hit_pct: float = 0.0
+    # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
+    shock_stack_cap: int = DEFAULT_SHOCK_STACK_CAP
+    shock_per_stack_pct: float = DEFAULT_SHOCK_PER_STACK_PCT
+    shock_on_hit_pct: float = 0.0
+    loi_res_shred: float = 0.0
+    turn_steal_pct: float = 0.0
+    # ── Phong (wind/evasion/mark) build ───────────────────────────────────
+    mark_on_hit_pct: float = 0.0
+    damage_bonus_from_evasion_pct: float = 0.0
+    crit_rating_vs_marked: int = 0
+    crit_dmg_vs_marked: int = 0
+    phong_res_shred: float = 0.0
+    # ── Quang (light/silence/anti-heal) build ─────────────────────────────
+    silence_on_crit_pct: float = 0.0
+    heal_reduce_on_hit_pct: float = 0.0
+    cleanse_on_turn_pct: float = 0.0
+    quang_res_shred: float = 0.0
+    barrier_on_cleanse: bool = False
+    # ── Âm (shadow/soul-devour) build ─────────────────────────────────────
+    soul_drain_on_hit_pct: float = 0.0
+    stat_steal_on_hit_pct: float = 0.0
+    am_res_shred: float = 0.0
+    crit_rating_vs_drained: int = 0
+    # ── Mộc + Quang shared: heals may crit (×1.5) ─────────────────────────
+    heal_can_crit: bool = False
     # ── DoT damage amplifiers (cross-build) ───────────────────────────────
     dot_dmg_bonus: float = 0.0
     burn_dmg_bonus: float = 0.0
@@ -239,6 +272,30 @@ def compute_combat_stats(
     thorn_pct                    = float(bonuses.get("thorn_pct", 0.0))
     thorn_from_shield            = bool(bonuses.get("thorn_from_shield", False))
     stun_on_hit_pct              = float(bonuses.get("stun_on_hit_pct", 0.0))
+    # Lôi-build fields
+    shock_stack_cap_bonus        = int(bonuses.get("shock_stack_cap_bonus", 0))
+    shock_per_stack_pct_bonus    = float(bonuses.get("shock_per_stack_pct_bonus", 0.0))
+    shock_on_hit_pct             = float(bonuses.get("shock_on_hit_pct", 0.0))
+    loi_res_shred                = float(bonuses.get("loi_res_shred", 0.0))
+    turn_steal_pct               = float(bonuses.get("turn_steal_pct", 0.0))
+    # Phong-build fields
+    mark_on_hit_pct              = float(bonuses.get("mark_on_hit_pct", 0.0))
+    damage_bonus_from_evasion_pct= float(bonuses.get("damage_bonus_from_evasion_pct", 0.0))
+    crit_rating_vs_marked        = int(bonuses.get("crit_rating_vs_marked", 0))
+    crit_dmg_vs_marked           = int(bonuses.get("crit_dmg_vs_marked", 0))
+    phong_res_shred              = float(bonuses.get("phong_res_shred", 0.0))
+    # Quang-build fields
+    silence_on_crit_pct          = float(bonuses.get("silence_on_crit_pct", 0.0))
+    heal_reduce_on_hit_pct       = float(bonuses.get("heal_reduce_on_hit_pct", 0.0))
+    cleanse_on_turn_pct          = float(bonuses.get("cleanse_on_turn_pct", 0.0))
+    quang_res_shred              = float(bonuses.get("quang_res_shred", 0.0))
+    barrier_on_cleanse           = bool(bonuses.get("barrier_on_cleanse", False))
+    heal_can_crit                = bool(bonuses.get("heal_can_crit", False))
+    # Âm-build fields
+    soul_drain_on_hit_pct        = float(bonuses.get("soul_drain_on_hit_pct", 0.0))
+    stat_steal_on_hit_pct        = float(bonuses.get("stat_steal_on_hit_pct", 0.0))
+    am_res_shred                 = float(bonuses.get("am_res_shred", 0.0))
+    crit_rating_vs_drained       = int(bonuses.get("crit_rating_vs_drained", 0))
     # DoT-amplifier fields (cross-build)
     dot_dmg_bonus                = float(bonuses.get("dot_dmg_bonus", 0.0))
     burn_dmg_bonus               = float(bonuses.get("burn_dmg_bonus", 0.0))
@@ -337,6 +394,30 @@ def compute_combat_stats(
         thorn_pct                    += float(equip_stats.get("thorn_pct", 0.0))
         thorn_from_shield             = thorn_from_shield or bool(equip_stats.get("thorn_from_shield", False))
         stun_on_hit_pct              += float(equip_stats.get("stun_on_hit_pct", 0.0))
+        # Lôi-build fields
+        shock_stack_cap_bonus        += int(equip_stats.get("shock_stack_cap_bonus", 0))
+        shock_per_stack_pct_bonus    += float(equip_stats.get("shock_per_stack_pct_bonus", 0.0))
+        shock_on_hit_pct             += float(equip_stats.get("shock_on_hit_pct", 0.0))
+        loi_res_shred                += float(equip_stats.get("loi_res_shred", 0.0))
+        turn_steal_pct               += float(equip_stats.get("turn_steal_pct", 0.0))
+        # Phong-build fields
+        mark_on_hit_pct              += float(equip_stats.get("mark_on_hit_pct", 0.0))
+        damage_bonus_from_evasion_pct+= float(equip_stats.get("damage_bonus_from_evasion_pct", 0.0))
+        crit_rating_vs_marked        += int(equip_stats.get("crit_rating_vs_marked", 0))
+        crit_dmg_vs_marked           += int(equip_stats.get("crit_dmg_vs_marked", 0))
+        phong_res_shred              += float(equip_stats.get("phong_res_shred", 0.0))
+        # Quang-build fields
+        silence_on_crit_pct          += float(equip_stats.get("silence_on_crit_pct", 0.0))
+        heal_reduce_on_hit_pct       += float(equip_stats.get("heal_reduce_on_hit_pct", 0.0))
+        cleanse_on_turn_pct          += float(equip_stats.get("cleanse_on_turn_pct", 0.0))
+        quang_res_shred              += float(equip_stats.get("quang_res_shred", 0.0))
+        barrier_on_cleanse            = barrier_on_cleanse or bool(equip_stats.get("barrier_on_cleanse", False))
+        heal_can_crit                 = heal_can_crit or bool(equip_stats.get("heal_can_crit", False))
+        # Âm-build fields
+        soul_drain_on_hit_pct        += float(equip_stats.get("soul_drain_on_hit_pct", 0.0))
+        stat_steal_on_hit_pct        += float(equip_stats.get("stat_steal_on_hit_pct", 0.0))
+        am_res_shred                 += float(equip_stats.get("am_res_shred", 0.0))
+        crit_rating_vs_drained       += int(equip_stats.get("crit_rating_vs_drained", 0))
         # DoT-amplifier fields
         dot_dmg_bonus                += float(equip_stats.get("dot_dmg_bonus", 0.0))
         burn_dmg_bonus               += float(equip_stats.get("burn_dmg_bonus", 0.0))
@@ -381,13 +462,13 @@ def compute_combat_stats(
         freeze_on_skill=freeze_on_skill,
         poison_immunity=poison_immunity,
         debuff_immune_pct=debuff_immune_pct,
-        burn_stack_cap=5 + burn_stack_cap_bonus,
-        burn_per_stack_pct=0.012 + burn_per_stack_pct_bonus,
+        burn_stack_cap=DEFAULT_BURN_STACK_CAP + burn_stack_cap_bonus,
+        burn_per_stack_pct=DEFAULT_BURN_PER_STACK_PCT + burn_per_stack_pct_bonus,
         bonus_dmg_vs_burn=bonus_dmg_vs_burn,
         fire_res_shred=fire_res_shred,
         dot_can_crit=dot_can_crit,
-        bleed_stack_cap=5 + bleed_stack_cap_bonus,
-        bleed_per_stack_pct=0.010 + bleed_per_stack_pct_bonus,
+        bleed_stack_cap=DEFAULT_BLEED_STACK_CAP + bleed_stack_cap_bonus,
+        bleed_per_stack_pct=DEFAULT_BLEED_PER_STACK_PCT + bleed_per_stack_pct_bonus,
         bleed_on_hit_pct=bleed_on_hit_pct,
         bleed_heal_reduce=bleed_heal_reduce,
         crit_rating_vs_bleed=crit_rating_vs_bleed,
@@ -401,17 +482,37 @@ def compute_combat_stats(
         reflect_applies_effects=reflect_applies_effects,
         damage_bonus_from_mp_pct=damage_bonus_from_mp_pct,
         mp_leech_pct=mp_leech_pct,
-        mana_stack_cap=10 + mana_stack_cap_bonus,
+        mana_stack_cap=DEFAULT_MANA_STACK_CAP + mana_stack_cap_bonus,
         mana_stack_per_attack=mana_stack_per_attack,
         mana_stack_dmg_bonus=mana_stack_dmg_bonus,
         thuy_res_shred=thuy_res_shred,
         shield_regen_pct=shield_regen_pct,
         shield_regen_flat=shield_regen_flat,
-        shield_cap_pct=0.30 + shield_cap_pct_bonus,
+        shield_cap_pct=DEFAULT_SHIELD_CAP_PCT + shield_cap_pct_bonus,
         damage_bonus_from_shield_pct=damage_bonus_from_shield_pct,
         thorn_pct=thorn_pct,
         thorn_from_shield=thorn_from_shield,
         stun_on_hit_pct=stun_on_hit_pct,
+        shock_stack_cap=DEFAULT_SHOCK_STACK_CAP + shock_stack_cap_bonus,
+        shock_per_stack_pct=DEFAULT_SHOCK_PER_STACK_PCT + shock_per_stack_pct_bonus,
+        shock_on_hit_pct=shock_on_hit_pct,
+        loi_res_shred=loi_res_shred,
+        turn_steal_pct=turn_steal_pct,
+        mark_on_hit_pct=mark_on_hit_pct,
+        damage_bonus_from_evasion_pct=damage_bonus_from_evasion_pct,
+        crit_rating_vs_marked=crit_rating_vs_marked,
+        crit_dmg_vs_marked=crit_dmg_vs_marked,
+        phong_res_shred=phong_res_shred,
+        silence_on_crit_pct=silence_on_crit_pct,
+        heal_reduce_on_hit_pct=heal_reduce_on_hit_pct,
+        cleanse_on_turn_pct=cleanse_on_turn_pct,
+        quang_res_shred=quang_res_shred,
+        barrier_on_cleanse=barrier_on_cleanse,
+        heal_can_crit=heal_can_crit,
+        soul_drain_on_hit_pct=soul_drain_on_hit_pct,
+        stat_steal_on_hit_pct=stat_steal_on_hit_pct,
+        am_res_shred=am_res_shred,
+        crit_rating_vs_drained=crit_rating_vs_drained,
         dot_dmg_bonus=dot_dmg_bonus,
         burn_dmg_bonus=burn_dmg_bonus,
         bleed_dmg_bonus=bleed_dmg_bonus,

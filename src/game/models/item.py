@@ -16,6 +16,10 @@ class ItemType(StrEnum):
     ELIXIR = "elixir"          # Elixir (Đan Dược)
     ARTIFACT = "artifact"      # Pháp Bảo
     SPECIAL = "special"        # Special items (Phá Cảnh Đan, Hỗn Nguyên Thạch...)
+    HERB = "herb"              # Luyện đan ingredient (Thảo Dược)
+    YEU_THU = "yeu_thu"        # Luyện đan ingredient (Nguyên Liệu Yêu Thú)
+    PILL = "pill"              # Crafted alchemy pill (Đan Dược)
+    FURNACE = "furnace"        # Đan Lô — alchemy tool (enables/boosts pill crafting)
 
 
 @dataclass(frozen=True)
