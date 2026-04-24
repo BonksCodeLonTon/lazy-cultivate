@@ -146,12 +146,24 @@ def compute_def_stat(character: Character, bonuses: dict | None = None) -> int:
 
 
 def compute_gem_bonuses(gem_keys: list[str]) -> dict:
-    """Merge per-gem elemental bonuses from a list of inlaid gem keys.
+    """Merge per-gem bonuses from a list of inlaid gem keys.
 
-    Each gem key format: ``Gem<Element>_<grade>`` (e.g. ``GemKim_2``, ``GemHoa_4``).
-    Bonus = GEM_ELEMENT_BASE_BONUS[element] × grade, summed across all gems.
+    Two gem flavours:
+
+    1. Elemental gems (``Gem<Element>_<grade>``, e.g. ``GemKim_2``): flat
+       stat bonus = ``GEM_ELEMENT_BASE_BONUS[element] × grade``, summed.
+    2. Unique gems (``GemUnique_<Name>`` — loaded from
+       ``items/unique_gems.json``): the registry entry carries an explicit
+       ``unique_bonus`` dict with stats AND special-effect flags. The dict
+       merges as-is (no grade multiplier — uniques are tuned directly).
+
+    Stats across both flavours additively combine. Bool flags OR together.
+    Special keys ``*_stack_cap_bonus`` merge additively; they're consumed by
+    ``compute_combat_stats`` to bump the base stack cap of burn/bleed/shock/
+    mana / shield without overwriting the floor.
     """
     from src.game.constants.balance import GEM_ELEMENT_BASE_BONUS
+    from src.data.registry import registry
     merged: dict = {}
     if not gem_keys:
         return merged
@@ -165,6 +177,18 @@ def compute_gem_bonuses(gem_keys: list[str]) -> dict:
     for key in gem_keys:
         if not key or not key.startswith("Gem"):
             continue
+
+        # ── Unique gem path — stats + special effects from registry JSON ───
+        item = registry.get_item(key)
+        if item and item.get("unique"):
+            for stat, value in (item.get("unique_bonus") or {}).items():
+                if isinstance(value, bool):
+                    merged[stat] = merged.get(stat, False) or value
+                else:
+                    merged[stat] = merged.get(stat, 0) + value
+            continue
+
+        # ── Standard elemental gem path ────────────────────────────────────
         body = key[3:]  # strip "Gem" prefix
         # Split element vs grade: "Kim_2" → ("Kim", "2")
         if "_" in body:
@@ -182,6 +206,52 @@ def compute_gem_bonuses(gem_keys: list[str]) -> dict:
         for stat, value in base.items():
             merged[stat] = merged.get(stat, 0) + value * grade
     return merged
+
+
+# ── Multi-formation helpers ─────────────────────────────────────────────────
+# Mirrors ``the_chat.get_constitutions`` / ``set_constitutions``. Player
+# ``active_formation`` column is a comma-separated list of formation keys in
+# slot order; single-entry values (legacy "CuuCungBatQua") parse as a 1-slot
+# list unchanged.
+
+MAX_FORMATION_SLOT_CEILING: int = 3
+
+
+def get_active_formations(raw: str | None) -> list[str]:
+    """Parse ``player.active_formation`` column → slot-ordered list of keys."""
+    if not raw:
+        return []
+    return [k.strip() for k in raw.split(",") if k.strip()]
+
+
+def set_active_formations(keys: list[str]) -> str | None:
+    """Serialize a slot list back to the column; empty list → None for DB null."""
+    joined = ",".join(k for k in keys if k)
+    return joined or None
+
+
+def is_tran_tu(body_realm: int, qi_realm: int, formation_realm: int) -> bool:
+    """Trận Tu = formation path dominant — formation_realm ≥ every other axis."""
+    return formation_realm >= max(body_realm, qi_realm)
+
+
+def max_formation_slots(body_realm: int, qi_realm: int, formation_realm: int) -> int:
+    """How many formations the player can run simultaneously.
+
+    - Non-Trận-Tu: 1 slot (the classic single-formation behavior).
+    - Trận Tu: unlocks extra slots as Trận Đạo progresses, capped at
+      ``MAX_FORMATION_SLOT_CEILING`` (3) — matches the design intent where the
+      50 % MP-reservation ceiling becomes load-bearing because multiple
+      formations actually stack.
+
+    Slot curve (Trận Tu):
+        formation_realm 0-2 → 1 slot
+        formation_realm 3-5 → 2 slots
+        formation_realm 6-8 → 3 slots
+    """
+    if not is_tran_tu(body_realm, qi_realm, formation_realm):
+        return 1
+    return min(MAX_FORMATION_SLOT_CEILING, 1 + formation_realm // 3)
 
 
 def formation_reserve_reduction(formation_stages: int) -> float:
@@ -294,15 +364,138 @@ def compute_formation_bonuses(
     return merged
 
 
+def compute_formations_bonuses(
+    formation_keys: list[str],
+    gem_keys_by_formation: dict[str, list[str]] | None = None,
+    formation_stages: int = 0,
+) -> dict:
+    """Multi-slot variant — sum bonuses from every active formation.
+
+    Each entry in ``formation_keys`` contributes its own base + threshold +
+    per-gem bonuses (via ``compute_formation_bonuses``). Numeric stats
+    combine additively; meta fields resolve as follows:
+
+        ``_mp_reserve_pct``        — sum across all active formations,
+                                      capped at FORMATION_MAX_RESERVE_PCT
+        ``_formation_element``     — first non-null element wins (for
+                                      res_element routing); Trận Tu typically
+                                      mixes elements across slots so this is
+                                      best-effort
+        ``_formation_path_mult``   — Trận Đạo progression is a per-player
+                                      scalar, same across all slots
+
+    ``gem_keys_by_formation`` maps ``formation_key → gem_key_list``. Missing
+    entries default to 0 gems (no threshold bonuses, no elemental gem stats).
+    """
+    if not formation_keys:
+        return {}
+    from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
+
+    gem_map = gem_keys_by_formation or {}
+    merged: dict = {}
+    total_reserve = 0.0
+    first_element: str | None = None
+    path_mult_val: float | None = None
+
+    for key in formation_keys:
+        per = compute_formation_bonuses(
+            key,
+            gem_keys=gem_map.get(key),
+            formation_stages=formation_stages,
+        )
+        if not per:
+            continue
+        # Pull meta fields out before merging stats — they aren't additive.
+        total_reserve += float(per.pop("_mp_reserve_pct", 0.0))
+        elem = per.pop("_formation_element", None)
+        if first_element is None and elem:
+            first_element = elem
+        pm = per.pop("_formation_path_mult", None)
+        if pm is not None:
+            path_mult_val = pm
+        # Remaining entries are real stats — additive merge.
+        _merge_bonus_dict(merged, per)
+
+    merged["_mp_reserve_pct"] = min(FORMATION_MAX_RESERVE_PCT, total_reserve)
+    if first_element:
+        merged["_formation_element"] = first_element
+    if path_mult_val is not None:
+        merged["_formation_path_mult"] = path_mult_val
+    return merged
+
+
+# Stats excluded from ``all_passives_multiplier`` amplification.
+# These are the "compound-offensive" multipliers that already stack
+# multiplicatively with every other damage source. Amplifying them on top of
+# 8 stacked Legendary passives produces one-shot numbers vs world bosses
+# (see tests/test_endgame_the_tu_vs_world_boss.py). Defensive multipliers
+# (final_dmg_reduce) are excluded for the same reason — a Hỗn Độn carrier
+# should feel legendary, not invincible.
+_AMP_EXCLUDED_STATS: frozenset[str] = frozenset({
+    "final_dmg_bonus",
+    "true_dmg_pct",
+    "cooldown_reduce",
+    "final_dmg_reduce",
+})
+
+
 def compute_constitution_bonuses(constitution_type: str) -> dict:
-    """Returns stat_bonuses dict for the given constitution key."""
+    """Merge ``stat_bonuses`` from every equipped Thể Chất.
+
+    ``constitution_type`` is a comma-separated list of keys (legacy
+    single-key strings work unchanged). Bonuses from each equipped entry
+    are additively combined.
+
+    Special handling: any equipped Thể Chất that carries
+    ``all_passives_multiplier > 0`` (currently only Hỗn Độn Đạo Thể) scales
+    the numeric stat_bonuses from every *other* equipped entry by that
+    factor. The carrier's own stats merge un-scaled — matching the lore
+    "passives of the OTHER divine bodies are amplified". When multiple
+    carriers are present, the highest multiplier wins. The control key
+    itself is never merged as a stat so it can't leak into the merged dict.
+    Bool flags (``dot_can_crit``, ``poison_immunity``, ...) are never scaled,
+    and stats in ``_AMP_EXCLUDED_STATS`` merge at base — they compound
+    multiplicatively elsewhere and amplifying them produced one-shot damage
+    against world bosses.
+    """
     if not constitution_type:
         return {}
     from src.data.registry import registry
-    const_data = registry.get_constitution(constitution_type)
-    if not const_data:
-        return {}
-    return dict(const_data.get("stat_bonuses", {}))
+    from src.game.systems.the_chat import get_constitutions
+
+    keys = get_constitutions(constitution_type)
+
+    # First pass — find the highest multiplier among equipped entries and
+    # remember which constitution(s) provide it.
+    mult = 1.0
+    carriers: set[str] = set()
+    for k in keys:
+        c = registry.get_constitution(k) or {}
+        raw = c.get("stat_bonuses", {}).get("all_passives_multiplier", 0)
+        m = float(raw) if isinstance(raw, (int, float)) and not isinstance(raw, bool) else 0.0
+        if m > 0:
+            carriers.add(k)
+            if m > mult:
+                mult = m
+
+    # Second pass — merge each constitution's stats, scaling non-carrier
+    # entries by `mult` when it's active.
+    merged: dict = {}
+    for k in keys:
+        c = registry.get_constitution(k)
+        if not c:
+            continue
+        scale = mult if (mult > 1.0 and k not in carriers) else 1.0
+        for stat, val in (c.get("stat_bonuses") or {}).items():
+            if stat == "all_passives_multiplier":
+                continue   # control field — never a real stat
+            # Compound-offensive multipliers merge at base (see _AMP_EXCLUDED_STATS).
+            effective_scale = 1.0 if stat in _AMP_EXCLUDED_STATS else scale
+            if effective_scale != 1.0 and isinstance(val, (int, float)) and not isinstance(val, bool):
+                val = type(val)(val * effective_scale) if isinstance(val, int) else val * effective_scale
+            _merge_bonus_dict(merged, {stat: val})
+
+    return merged
 
 
 def merge_bonuses(*dicts: dict) -> dict:

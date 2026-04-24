@@ -22,9 +22,10 @@ class Player(Base, TimestampMixin):
     formation_realm: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     formation_level: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
-    # ── Constitution ───────────────────────────────────────────────────────
+    # ── Constitution — comma-separated Thể Chất keys (see the_chat.py).
+    # Thể Tu can equip up to 8 standard slots + Hỗn Độn; upper bound ~300 chars.
     constitution_type: Mapped[str] = mapped_column(
-        String(64), default="ConstitutionVanTuong", nullable=False
+        String(512), default="ConstitutionVanTuong", nullable=False
     )
     dao_ti_unlocked: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
@@ -44,8 +45,12 @@ class Player(Base, TimestampMixin):
     hp_current: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     mp_current: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
-    # ── Active formation ───────────────────────────────────────────────────
-    active_formation: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    # ── Active formations ──────────────────────────────────────────────────
+    # Comma-separated list of formation keys in slot order. Single-key legacy
+    # values still parse as a 1-slot list. Parsed via
+    # ``cultivation.get_active_formations``; slot cap enforced by
+    # ``cultivation.max_formation_slots``.
+    active_formation: Mapped[str | None] = mapped_column(String(256), nullable=True)
 
     # ── Linh Căn (Spiritual Roots) — comma-separated keys e.g. "kim,hoa" ──────
     linh_can: Mapped[str] = mapped_column(String(128), default="", nullable=False)

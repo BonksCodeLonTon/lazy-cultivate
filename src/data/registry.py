@@ -39,9 +39,11 @@ class GameRegistry:
 
     # Danh mục file item nằm trong thư mục con src/data/items/
     _ITEM_FILES = (
-        "chests", "elixirs", "gems", "materials", "scrolls", "specials",
+        "chests", "elixirs", "gems", "unique_gems", "materials", "scrolls", "specials",
         "forge_materials", "super_materials",
         "herbs", "yeu_thu", "pills", "furnaces",
+        "constitution_materials",
+        "world_boss_chests",
     )
     # Equipment definition files in src/data/equipment/
     _EQUIP_FILES = ("bases", "affixes", "uniques")

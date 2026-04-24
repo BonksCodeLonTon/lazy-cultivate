@@ -1,106 +1,622 @@
 {
   "LootChestHoang": [
-    { "item_key": "MatHuyetTinh",  "weight": 80, "qty_min": 2, "qty_max": 4 },
-    { "item_key": "MatBiPhach",    "weight": 70, "qty_min": 2, "qty_max": 4 },
-    { "item_key": "MatKhiTuDan",   "weight": 60, "qty_min": 2, "qty_max": 3 },
-    { "item_key": "MatTrucCoDan",  "weight": 45, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiHPSmall", "weight": 50, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "DanHoiMPSmall", "weight": 45, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "DanCurePoison", "weight": 30, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "GemHoa_1",   "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_hoang_gem" },
-    { "item_key": "GemMoc_1",   "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_hoang_gem" },
-    { "item_key": "GemBang_1",  "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_hoang_gem" },
-    { "item_key": "GemKim_1",   "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_hoang_gem" },
-    { "item_key": "GemLoi_1",   "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_hoang_gem" },
-    { "item_key": "GemPhong_1", "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_hoang_gem" },
-    { "item_key": "GemThuy_1",  "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_hoang_gem" },
-    { "item_key": "GemTo_1",    "weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_hoang_gem" },
-    { "item_key": "MatCanNguyen","weight": 10, "qty_min": 1, "qty_max": 1 }
+    {
+      "item_key": "MatHuyetTinh",
+      "weight": 800000,
+      "qty_min": 2,
+      "qty_max": 4
+    },
+    {
+      "item_key": "MatBiPhach",
+      "weight": 700000,
+      "qty_min": 2,
+      "qty_max": 4
+    },
+    {
+      "item_key": "MatKhiTuDan",
+      "weight": 600000,
+      "qty_min": 2,
+      "qty_max": 3
+    },
+    {
+      "item_key": "MatTrucCoDan",
+      "weight": 450000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiHPSmall",
+      "weight": 500000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "DanHoiMPSmall",
+      "weight": 450000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "DanCurePoison",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemHoa_1",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_hoang_gem"
+    },
+    {
+      "item_key": "GemMoc_1",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_hoang_gem"
+    },
+    {
+      "item_key": "GemBang_1",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_hoang_gem"
+    },
+    {
+      "item_key": "GemKim_1",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_hoang_gem"
+    },
+    {
+      "item_key": "GemLoi_1",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_hoang_gem"
+    },
+    {
+      "item_key": "GemPhong_1",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_hoang_gem"
+    },
+    {
+      "item_key": "GemThuy_1",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_hoang_gem"
+    },
+    {
+      "item_key": "GemTo_1",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_hoang_gem"
+    },
+    {
+      "item_key": "MatCanNguyen",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
   ],
-
   "LootChestHuyen": [
-    { "item_key": "MatCanNguyen",  "weight": 75, "qty_min": 2, "qty_max": 4 },
-    { "item_key": "MatCotHoa",     "weight": 65, "qty_min": 2, "qty_max": 3 },
-    { "item_key": "MatNguTang",    "weight": 55, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "MatHuyetTinh",  "weight": 60, "qty_min": 2, "qty_max": 5 },
-    { "item_key": "DanHoiHPMid",  "weight": 50, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiMPMid",  "weight": 45, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiHPMP",   "weight": 30, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanBuffCrit",  "weight": 15, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "GemHoa_1",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem1" },
-    { "item_key": "GemMoc_1",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem1" },
-    { "item_key": "GemBang_1",  "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem1" },
-    { "item_key": "GemKim_1",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem1" },
-    { "item_key": "GemLoi_1",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem1" },
-    { "item_key": "GemPhong_1", "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem1" },
-    { "item_key": "GemThuy_1",  "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem1" },
-    { "item_key": "GemTo_1",    "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem1" },
-    { "item_key": "GemHoa_2",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem2" },
-    { "item_key": "GemMoc_2",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem2" },
-    { "item_key": "GemBang_2",  "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem2" },
-    { "item_key": "GemKim_2",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem2" },
-    { "item_key": "GemLoi_2",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem2" },
-    { "item_key": "GemPhong_2", "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem2" },
-    { "item_key": "GemThuy_2",  "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem2" },
-    { "item_key": "GemTo_2",    "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_huyen_gem2" },
-    { "item_key": "MatKimDanNguyen","weight": 8, "qty_min": 1, "qty_max": 1 }
+    {
+      "item_key": "MatCanNguyen",
+      "weight": 750000,
+      "qty_min": 2,
+      "qty_max": 4
+    },
+    {
+      "item_key": "MatCotHoa",
+      "weight": 650000,
+      "qty_min": 2,
+      "qty_max": 3
+    },
+    {
+      "item_key": "MatNguTang",
+      "weight": 550000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "MatHuyetTinh",
+      "weight": 600000,
+      "qty_min": 2,
+      "qty_max": 5
+    },
+    {
+      "item_key": "DanHoiHPMid",
+      "weight": 500000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiMPMid",
+      "weight": 450000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiHPMP",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanBuffCrit",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "GemHoa_1",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem1"
+    },
+    {
+      "item_key": "GemMoc_1",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem1"
+    },
+    {
+      "item_key": "GemBang_1",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem1"
+    },
+    {
+      "item_key": "GemKim_1",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem1"
+    },
+    {
+      "item_key": "GemLoi_1",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem1"
+    },
+    {
+      "item_key": "GemPhong_1",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem1"
+    },
+    {
+      "item_key": "GemThuy_1",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem1"
+    },
+    {
+      "item_key": "GemTo_1",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem1"
+    },
+    {
+      "item_key": "GemHoa_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem2"
+    },
+    {
+      "item_key": "GemMoc_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem2"
+    },
+    {
+      "item_key": "GemBang_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem2"
+    },
+    {
+      "item_key": "GemKim_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem2"
+    },
+    {
+      "item_key": "GemLoi_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem2"
+    },
+    {
+      "item_key": "GemPhong_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem2"
+    },
+    {
+      "item_key": "GemThuy_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem2"
+    },
+    {
+      "item_key": "GemTo_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_huyen_gem2"
+    },
+    {
+      "item_key": "MatKimDanNguyen",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
   ],
-
   "LootChestDia": [
-    { "item_key": "MatKimDanNguyen",   "weight": 70, "qty_min": 2, "qty_max": 3 },
-    { "item_key": "MatNguyenAnhThach", "weight": 60, "qty_min": 2, "qty_max": 3 },
-    { "item_key": "MatHoaThanDan",     "weight": 50, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MatPhaTuongKinh",   "weight": 35, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiHPLarge",  "weight": 55, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiMPLarge",  "weight": 50, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiFull",     "weight": 20, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "DanBuffFDmg",    "weight": 15, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "DanBuffCrit",    "weight": 20, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "GemHoa_2",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem2" },
-    { "item_key": "GemMoc_2",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem2" },
-    { "item_key": "GemBang_2",  "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem2" },
-    { "item_key": "GemKim_2",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem2" },
-    { "item_key": "GemLoi_2",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem2" },
-    { "item_key": "GemPhong_2", "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem2" },
-    { "item_key": "GemThuy_2",  "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem2" },
-    { "item_key": "GemTo_2",    "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem2" },
-    { "item_key": "GemKim_3",   "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem3" },
-    { "item_key": "GemMoc_3",   "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem3" },
-    { "item_key": "GemLoi_3",   "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem3" },
-    { "item_key": "GemHoa_3",   "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem3" },
-    { "item_key": "GemThuy_3",  "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem3" },
-    { "item_key": "GemPhong_3", "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem3" },
-    { "item_key": "GemBang_3",  "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem3" },
-    { "item_key": "GemTo_3",    "weight": 10, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_gem3" },
-    { "item_key": "ScrollAtkHoang","weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_scroll" },
-    { "item_key": "ScrollDefHoang","weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_scroll" },
-    { "item_key": "ScrollSupHoang","weight": 15, "qty_min": 1, "qty_max": 1, "pool_id": "chest_dia_scroll" },
-    { "item_key": "MatHuKhongTinh", "weight": 5, "qty_min": 1, "qty_max": 1 }
+    {
+      "item_key": "MatKimDanNguyen",
+      "weight": 700000,
+      "qty_min": 2,
+      "qty_max": 3
+    },
+    {
+      "item_key": "MatNguyenAnhThach",
+      "weight": 600000,
+      "qty_min": 2,
+      "qty_max": 3
+    },
+    {
+      "item_key": "MatHoaThanDan",
+      "weight": 500000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatPhaTuongKinh",
+      "weight": 350000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiHPLarge",
+      "weight": 550000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiMPLarge",
+      "weight": 500000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanBuffFDmg",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanBuffCrit",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "GemHoa_2",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem2"
+    },
+    {
+      "item_key": "GemMoc_2",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem2"
+    },
+    {
+      "item_key": "GemBang_2",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem2"
+    },
+    {
+      "item_key": "GemKim_2",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem2"
+    },
+    {
+      "item_key": "GemLoi_2",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem2"
+    },
+    {
+      "item_key": "GemPhong_2",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem2"
+    },
+    {
+      "item_key": "GemThuy_2",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem2"
+    },
+    {
+      "item_key": "GemTo_2",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem2"
+    },
+    {
+      "item_key": "GemKim_3",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem3"
+    },
+    {
+      "item_key": "GemMoc_3",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem3"
+    },
+    {
+      "item_key": "GemLoi_3",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem3"
+    },
+    {
+      "item_key": "GemHoa_3",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem3"
+    },
+    {
+      "item_key": "GemThuy_3",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem3"
+    },
+    {
+      "item_key": "GemPhong_3",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem3"
+    },
+    {
+      "item_key": "GemBang_3",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem3"
+    },
+    {
+      "item_key": "GemTo_3",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_gem3"
+    },
+    {
+      "item_key": "ScrollAtkHoang",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_scroll"
+    },
+    {
+      "item_key": "ScrollDefHoang",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_scroll"
+    },
+    {
+      "item_key": "ScrollSupHoang",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_dia_scroll"
+    },
+    {
+      "item_key": "MatHuKhongTinh",
+      "weight": 50000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
   ],
-
   "LootChestThien": [
-    { "item_key": "MatHuKhongTinh",   "weight": 70, "qty_min": 2, "qty_max": 3 },
-    { "item_key": "MatHopDaoNgoc",    "weight": 55, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MatSieuPhamTinh",  "weight": 45, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MatDaiThuaKinh",   "weight": 35, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MatThaiDuongTinh", "weight": 25, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "MatThaiAmTinh",    "weight": 25, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "DanHoiFull",     "weight": 60, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanRegenAll",    "weight": 30, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "DanBuffFDmg",    "weight": 25, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "DanComprehend",  "weight": 10, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "GemKim_3",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_gem3" },
-    { "item_key": "GemMoc_3",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_gem3" },
-    { "item_key": "GemLoi_3",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_gem3" },
-    { "item_key": "GemHoa_3",   "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_gem3" },
-    { "item_key": "GemThuy_3",  "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_gem3" },
-    { "item_key": "GemPhong_3", "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_gem3" },
-    { "item_key": "GemBang_3",  "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_gem3" },
-    { "item_key": "GemTo_3",    "weight": 20, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_gem3" },
-    { "item_key": "ScrollAtkHuyen","weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_scroll" },
-    { "item_key": "ScrollDefHuyen","weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_scroll" },
-    { "item_key": "ScrollSupHuyen","weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "chest_thien_scroll" },
-    { "item_key": "MatChanLinhNgoc","weight": 3, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "ItemHonNguyen",  "weight": 5, "qty_min": 1, "qty_max": 1 }
+    {
+      "item_key": "MatHuKhongTinh",
+      "weight": 700000,
+      "qty_min": 2,
+      "qty_max": 3
+    },
+    {
+      "item_key": "MatHopDaoNgoc",
+      "weight": 550000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatSieuPhamTinh",
+      "weight": 450000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatDaiThuaKinh",
+      "weight": 350000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatThaiDuongTinh",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatThaiAmTinh",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 600000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanRegenAll",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanBuffFDmg",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanComprehend",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "GemKim_3",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_gem3"
+    },
+    {
+      "item_key": "GemMoc_3",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_gem3"
+    },
+    {
+      "item_key": "GemLoi_3",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_gem3"
+    },
+    {
+      "item_key": "GemHoa_3",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_gem3"
+    },
+    {
+      "item_key": "GemThuy_3",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_gem3"
+    },
+    {
+      "item_key": "GemPhong_3",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_gem3"
+    },
+    {
+      "item_key": "GemBang_3",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_gem3"
+    },
+    {
+      "item_key": "GemTo_3",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_gem3"
+    },
+    {
+      "item_key": "ScrollAtkHuyen",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_scroll"
+    },
+    {
+      "item_key": "ScrollDefHuyen",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_scroll"
+    },
+    {
+      "item_key": "ScrollSupHuyen",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_thien_scroll"
+    },
+    {
+      "item_key": "MatChanLinhNgoc",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ItemHonNguyen",
+      "weight": 50000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
   ]
 }

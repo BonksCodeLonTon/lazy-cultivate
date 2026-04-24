@@ -1,0 +1,3231 @@
+{
+  "LootChestWorldBossR1": [
+    {
+      "item_key": "KiemTamThach",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HuyenThuyTinh",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CanKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "MocNguyenThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThoLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "LoiNgoc",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "KhinhPhongThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "UAnhSa",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "NhatDieuThach",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DanPhuongKimLuyenHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongMocLuyenHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuyLuyenHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaLuyenHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThoLuyenHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhongLuyenHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLoiLuyenHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDuongLuyenHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongAmLuyenHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaUDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTayTuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTuKhiDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "uniq_hoa_linh_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_truc_co_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_moc_linh_truong",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "MatHuyetTinh",
+      "weight": 600000,
+      "qty_min": 2,
+      "qty_max": 4
+    },
+    {
+      "item_key": "DanHoiMPMid",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 3
+    }
+  ],
+  "LootChestWorldBossR2": [
+    {
+      "item_key": "KiemTamThach",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HuyenThuyTinh",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CanKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "MocNguyenThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThoLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "LoiNgoc",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "KhinhPhongThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "UAnhSa",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "NhatDieuThach",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HanTamThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CanLinhKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "TinhVanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "SamLangDong",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "NguyetLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "XichDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DoanKiemThietTinh",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "KinhLoiThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CuangPhongThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HuyenQuangThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DanPhuongKimBiCao",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongMocBiCao",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuyBiCao",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaBiCao",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThoBiCao",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLoiBiCao",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhongBiCao",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongAmBiCao",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDuongBiCao",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongBoiNguyenDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTatHanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTinhHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongNguKiemDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongChanKimDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongSamMocDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongSinhThuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTuHoaDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHuyenThoDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLuyenGiapDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTanGiaiDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongChanLoiDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongCuongPhongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongUMinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "uniq_am_linh_phu",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_dien_phu",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_kim_giap_khai",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_tinh_phu",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_linh_phu",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_than_thu",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_tho_linh_hoa",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "MatKhiTuDan",
+      "weight": 600000,
+      "qty_min": 2,
+      "qty_max": 4
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 350000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootChestWorldBossR3": [
+    {
+      "item_key": "HanTamThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CanLinhKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "TinhVanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "SamLangDong",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "NguyetLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "XichDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DoanKiemThietTinh",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "KinhLoiThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CuangPhongThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HuyenQuangThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DanPhuongKimLuyenCanDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongMocLuyenCanDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuyLuyenCanDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaLuyenCanDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThoLuyenCanDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLoiLuyenCanDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhongLuyenCanDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongAmLuyenCanDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDuongLuyenCanDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongCuongKimDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuongMocDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHanThuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLietHoaDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHauThoDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLangPhongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHuyenMinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongKiemHonDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhaCanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoiSinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThanhLinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTrucCoDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThanhDocDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "uniq_am_tam_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_dao_robe",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_wind_sash",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thunder_gauntlet",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_heavenly_helm",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_spirit_shield",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_immortal_ring",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_dragon_blade",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_huyen_anh_phong",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_nguyen_anh_chau",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_dien_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_tuyet_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_tinh_truong",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_bang_tam_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "MatCanNguyen",
+      "weight": 550000,
+      "qty_min": 2,
+      "qty_max": 3
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootChestWorldBossR4": [
+    {
+      "item_key": "HanTamThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CanLinhKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "TinhVanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "SamLangDong",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "NguyetLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "XichDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DoanKiemThietTinh",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "KinhLoiThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CuangPhongThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HuyenQuangThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienDoanKiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "NguyetSamThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienHanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienKhonKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "PhuongMinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienNguLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienLoiMinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienUAnhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DanPhuongKimLuyenCotDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongMocLuyenCotDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuyLuyenCotDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaLuyenCotDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThoLuyenCotDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLoiLuyenCotDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhongLuyenCotDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongAmLuyenCotDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDuongLuyenCotDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongNguNguyenDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhucHuyetDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTuLinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTuDinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongKimCangDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuongLamDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongBangHaDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLietDiemDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDiaSonDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThienPhongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHacMinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongVanKiemDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTatAnhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongGiaiNguyenDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "uniq_am_hac_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_chaos_pendant",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_than_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thien_kiem_ngoan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_than_boi",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phi_loi_boots",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_tieu_dao_boots",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_thanh_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "MatCotHoa",
+      "weight": 550000,
+      "qty_min": 2,
+      "qty_max": 3
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootChestWorldBossR5": [
+    {
+      "item_key": "BachNienDoanKiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "NguyetSamThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienHanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienKhonKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "PhuongMinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienNguLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienLoiMinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienUAnhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DanPhuongKimLuyenTuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongMocLuyenTuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuyLuyenTuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaLuyenTuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThoLuyenTuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhongLuyenTuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongAmLuyenTuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLoiLuyenTuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDuongLuyenTuyDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongNgoDaoDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoiNguyenDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTuNguyenDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDuYeuDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongKhuYeuDich",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLinhTayDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTrieuNguyenDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "uniq_am_huyen_boi",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_am_ma_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_luyen_hu_kinh",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_bao_tam",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_than_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_linh_dai",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_kim_long_than",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_huyet_nhan_dao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_huyet_nhan_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_than_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_dien_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_moc_sinh_dai",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_moc_linh_cay",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_vu_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_than_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_thanh_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_thien_nhan_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_tho_linh_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thach_gai_thuan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thuy_linh_pendant",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thuy_linh_orb",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "MatHoaThanDan",
+      "weight": 500000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 450000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ItemHonNguyen",
+      "weight": 50000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootChestWorldBossR6": [
+    {
+      "item_key": "BachNienDoanKiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "NguyetSamThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienHanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienKhonKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "PhuongMinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienNguLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienLoiMinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "BachNienUAnhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienDoanKiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CanhKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "NhaMocThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienHanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienKhonKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienPhongNhaiThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienNguLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienKiepLoiThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienUTuyenThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DanPhuongKimPhapTuongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongMocPhapTuongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuyPhapTuongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaPhapTuongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThoPhapTuongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLoiPhapTuongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhongPhapTuongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongAmPhapTuongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDuongPhapTuongDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDangCucDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoiThienDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLinhUyenDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhongThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDaiTinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "uniq_am_hu_the_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_huyen_vu_boi",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hop_dao_phu",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hon_nguyen_ring",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thanh_long_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_tinh_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_tho_linh_chuy",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_bang_tam_dai",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_bang_tam_kinh",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "MatPhaTuongKinh",
+      "weight": 500000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 450000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ItemHonNguyen",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootChestWorldBossR7": [
+    {
+      "item_key": "ThienNienDoanKiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CanhKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "NhaMocThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienHanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienKhonKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienPhongNhaiThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienNguLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienKiepLoiThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThienNienUTuyenThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiDoanKiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DuongKimThietTam",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "PhongLinhNhuThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiHanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiKhonKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiTatPhongThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiNguLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiLoiDinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiUAnhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DanPhuongKimKimThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongMocKimThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuyKimThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaKimThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThoKimThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLoiKimThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhongKimThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongAmKimThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDuongKimThanDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongChungDaoDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTruongSinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoiLinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTruongThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLuyenHuDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "uniq_am_hac_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_am_huyet_hai_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_linh_xa_dai",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_dai_thua_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_long_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_hoang_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_long_chau",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phan_thien_hoa_long",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_huyet_y_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_huyet_y_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_dao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_dao_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_anh_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_anh_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thien_mau_boi",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_cu_moc_than_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_long_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_long_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_minh_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thanh_quang_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_van_son_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_dia_huyet_dai",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thuy_hai_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thuy_hai_truong",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "MatKimThanDan",
+      "weight": 450000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 500000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ItemHonNguyen",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootChestWorldBossR8": [
+    {
+      "item_key": "VanTaiDoanKiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DuongKimThietTam",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "PhongLinhNhuThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiHanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiKhonKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiTatPhongThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiNguLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiLoiDinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiUAnhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DanPhuongKimSieuPhamDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongMocSieuPhamDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuySieuPhamDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaSieuPhamDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThoSieuPhamDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLoiSieuPhamDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhongSieuPhamDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongAmSieuPhamDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDuongSieuPhamDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongVanDaoDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongBatDietDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThaiHuDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHuKhongDonDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHopDaoDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHuyenTinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "uniq_am_tu_than_truong",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_am_minh_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_van_kiep_boi",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_cuu_thien_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_nguyen_pendant",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_nguyen_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_dang_tien_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_huyet_nguyet_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_huyet_tien_quiver",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_than_cung_huyet",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_truong_thuong_huyet",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_nguyen_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_nguyen_dai",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_moc_nguyen_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_van_dai",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_nguyen_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_than_quang_truong",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_minh_thien_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_son_hai_boi",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thach_vuong_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phan_chieu_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "MatSieuPhamTinh",
+      "weight": 450000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 500000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ItemHonNguyen",
+      "weight": 180000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootChestWorldBossR9": [
+    {
+      "item_key": "VanTaiDoanKiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DuongKimThietTam",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "PhongLinhNhuThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiHanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiKhonKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiTatPhongThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiNguLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiLoiDinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "VanTaiUAnhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HuyenThienKiemPhoi",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DaoQuangKimLyThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "ThuyHongMocUanThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "TienVanHanThietTinh",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DiemLyDiemThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HauThoKhonKim",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "TienVanCuongPhongThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HuyenThienLinhThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "HuyenThienLoiKiepThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "CuuUMinhVucThiet",
+      "weight": 800000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "forge"
+    },
+    {
+      "item_key": "DanPhuongKimNhapThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongMocNhapThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThuyNhapThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHoaNhapThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThoNhapThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongLoiNhapThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongPhongNhapThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongAmNhapThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDuongNhapThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongThienDaoThanhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongTruongSinhBatTuDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHuLinhDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongDaiThuaDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "DanPhuongHuKhongTayDan",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "recipe"
+    },
+    {
+      "item_key": "uniq_am_to_truong",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_am_to_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thien_co_dot_pendant",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_tien_dao_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hon_nguyen_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_truong_sinh_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_tu_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_tu_glove",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_hoa_tu_crown",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thai_thuong_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_kim_tu_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_huyet_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_kim_tu_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_huyet_co_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_kim_tu_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_tu_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_tu_boi",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_tu_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_tu_dai",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_tu_boots",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_loi_tu_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_moc_tu_glove",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_moc_tu_crown",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_moc_than_vu",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_moc_than_truong",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_tu_kiem",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_tu_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_phong_tu_boots",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_to_truong",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_to_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_quang_to_nhan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_tho_tu_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_tho_tu_giap",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_tho_tu_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thien_ha_bao",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thien_ha_gauntlet",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thuy_than_quan",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thuy_than_gioi",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "uniq_thien_ha_truong",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "unique"
+    },
+    {
+      "item_key": "MatHuKhongTinh",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 500000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ItemHonNguyen",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ]
+}

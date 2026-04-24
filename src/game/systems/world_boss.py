@@ -39,6 +39,14 @@ PARTICIPATION_MIN_DMG_PCT = 0.005   # 0.5%
 # Per-attack HP window — player fights the boss for this many combat rounds.
 ATTACK_ROUND_LIMIT = 15
 
+# Maximum damage a single attack session can apply to the shared HP pool,
+# expressed as a fraction of the boss's ``hp_max``. Enforced both in the
+# Discord cog (before write) and inside ``apply_damage_atomic`` (at the
+# authoritative row-lock) so concurrent writes and client-side bypasses both
+# hit the same wall. Keeps one whale from one-tapping a boss and prevents
+# any single attacker from dominating the damage leaderboard.
+PER_ATTACK_DMG_CAP_PCT = 0.05   # 5%
+
 
 # ── Spawn scheduling ──────────────────────────────────────────────────────────
 

@@ -60,7 +60,7 @@
     "cooldown": 1,
     "base_dmg": 22,
     "effects": ["DebuffCatDut"],
-    "effect_chances": {"DebuffCatDut": 0.15},
+    "effect_chances": {"DebuffCatDut": 0.3},
     "formation_key": null
   },
   {

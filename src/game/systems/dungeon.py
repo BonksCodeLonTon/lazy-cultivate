@@ -36,19 +36,59 @@ class DungeonResult:
     hp_remaining: int = 0
 
 
+def best_axis_realm(char: Character) -> int:
+    """Return the highest realm index across the three cultivation axes.
+
+    Dungeon entry gates are cross-path: Thể Tu progressing body counts just
+    as much as Khí Tu pushing qi or Trận Tu growing formation. A player
+    qualifies for a dungeon if **any one** of their three axes has reached
+    the required realm.
+    """
+    return max(char.body_realm, char.qi_realm, char.formation_realm)
+
+
+def qualifying_axis(char: Character, req_realm: int) -> tuple[int, int]:
+    """Return (realm, level) of the axis that best satisfies ``req_realm``.
+
+    Picks whichever of the three cultivation axes is furthest beyond the
+    requirement — ties broken by level. Used for grade-progress scaling so
+    a fully-levelled Thể Tu entering a mid-tier dungeon doesn't get treated
+    as "just arrived" (which would always roll the weakest grades).
+
+    If no axis qualifies, returns the strongest axis as-is — the caller
+    still has to gate entry via ``check_can_enter``.
+    """
+    axes = [
+        (char.body_realm, char.body_level),
+        (char.qi_realm,   char.qi_level),
+        (char.formation_realm, char.formation_level),
+    ]
+    qualified = [a for a in axes if a[0] >= req_realm]
+    return max(qualified) if qualified else max(axes)
+
+
 def check_can_enter(char: Character, dungeon_key: str) -> tuple[bool, str]:
     dungeon = registry.get_dungeon(dungeon_key)
     if not dungeon:
         return False, "Bí cảnh không tồn tại."
     req = dungeon.get("required_qi_realm", 0)
-    if char.qi_realm < req:
+    if best_axis_realm(char) < req:
         req_label = QI_REALMS[req].vi if req < len(QI_REALMS) else f"Realm {req}"
-        return False, f"Cần đạt **{req_label}** Luyện Khí để vào bí cảnh này."
+        return False, (
+            f"Cần đạt **{req_label}** trên ít nhất **một hướng tu luyện** "
+            f"(Luyện Thể / Luyện Khí / Trận Đạo) để vào bí cảnh này."
+        )
     return True, ""
 
 
 def _grade_progress(player_qi_realm: int, player_qi_level: int, dungeon_req_realm: int) -> float:
-    """0.0 = just entered dungeon realm; 1.0 = max level or beyond."""
+    """0.0 = just entered dungeon realm; 1.0 = max level or beyond.
+
+    ``player_qi_realm``/``player_qi_level`` are legacy parameter names — the
+    caller should now pass the **qualifying axis**'s realm/level (see
+    ``qualifying_axis``) so cross-path cultivators get the progression
+    scaling they've actually earned.
+    """
     if player_qi_realm > dungeon_req_realm:
         return 1.0
     return (player_qi_level - 1) / 8.0
@@ -70,9 +110,17 @@ def _roll_encounter_grade(progress: float, rng: random.Random) -> dict:
     return ENCOUNTER_GRADES[0]
 
 
-def _roll_boss_grade(progress: float, rng: random.Random) -> dict:
-    """Weighted random grade for the boss wave — minimum Tinh Anh."""
-    boss_grades = ENCOUNTER_GRADES[_BOSS_GRADE_START:]
+def _roll_boss_grade(
+    progress: float, rng: random.Random, min_grade_idx: int = _BOSS_GRADE_START,
+) -> dict:
+    """Weighted random grade for the boss wave.
+
+    ``min_grade_idx`` clamps the lowest acceptable grade (default Tinh Anh = 2).
+    Apex-only dungeons pass higher values to force Vương Giả / Truyền Thuyết
+    tier rolls.
+    """
+    min_idx = max(0, min(min_grade_idx, len(ENCOUNTER_GRADES) - 1))
+    boss_grades = ENCOUNTER_GRADES[min_idx:]
     weights = [
         g["w_min"] + (g["w_max"] - g["w_min"]) * progress
         for g in boss_grades
@@ -164,7 +212,8 @@ def run_dungeon(
     ) // 3
 
     req_realm = dungeon.get("required_qi_realm", 0)
-    progress = _grade_progress(char.qi_realm, char.qi_level, req_realm)
+    qual_realm, qual_level = qualifying_axis(char, req_realm)
+    progress = _grade_progress(qual_realm, qual_level, req_realm)
     wave_enemies = _build_wave_list(dungeon, rng)
     total_waves = len(wave_enemies)
 
@@ -172,11 +221,16 @@ def run_dungeon(
     all_logs: list[str] = []
     merit_total = 0
 
+    boss_min_grade_idx = int(dungeon.get("boss_min_grade_idx", _BOSS_GRADE_START))
+
     for i, enemy_key in enumerate(wave_enemies):
         is_boss = (i == total_waves - 1)
         _edata = registry.get_enemy(enemy_key)
 
-        grade = _roll_boss_grade(progress, rng) if is_boss else _roll_encounter_grade(progress, rng)
+        grade = (
+            _roll_boss_grade(progress, rng, min_grade_idx=boss_min_grade_idx)
+            if is_boss else _roll_encounter_grade(progress, rng)
+        )
         grade_badge = f" {grade['emoji']} **{grade['vi']}**" if grade["emoji"] else ""
 
         if is_boss:

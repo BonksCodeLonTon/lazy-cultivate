@@ -159,6 +159,17 @@ DOT_POWER_COEF: float = 4.0
 # skill and passive contributions. 0.20 = max 20% of target hp_max per hit,
 # preventing 5-shot kills even when stacking multiple true-damage sources.
 TRUE_DMG_PCT_CAP: float = 0.20
+# World bosses have shared HP pools + a 5 % per-attack damage cap (see
+# world_boss.PER_ATTACK_DMG_CAP_PCT). Percent-HP true damage is fundamentally
+# incompatible with that cap — a single 20 % chip already blows past the
+# window. Scale true damage WAY down vs world bosses so the cap stays the
+# authoritative ceiling. Also clamps the absolute per-hit true-damage amount
+# to ``floor(hp_max * TRUE_DMG_WORLD_BOSS_FLOOR_PCT)`` after scaling.
+TRUE_DMG_WORLD_BOSS_MULT: float = 0.05   # 20% → 1% per hit
+# Hard ceiling: 0.3 % hp_max per hit. With ~20 hits per 15-round attack session
+# that's ~6 % of the boss HP ceiling from true damage alone — leaves room for
+# the normal damage path without vaporizing the 5 % per-attack session cap.
+TRUE_DMG_WORLD_BOSS_FLOOR_PCT: float = 0.003
 
 # ── Âm (Shadow) soul-drain / stat-steal caps ─────────────────────────────────
 # Soul Drain (Hồn Phệ): each successful on-hit proc permanently removes

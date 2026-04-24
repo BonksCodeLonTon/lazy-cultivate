@@ -1,68 +1,320 @@
 {
   "LootChestDanLoG1": [
-    { "item_key": "DanLoBachLuyen_G1", "weight": 100, "qty_min": 1, "qty_max": 1, "pool_id": "chest_danlo_g1_pick" },
-    { "item_key": "DanLoThuong_G1",    "weight": 15,  "qty_min": 1, "qty_max": 1, "pool_id": "chest_danlo_g1_pick" },
-    { "item_key": "DaGiaoDang",        "weight": 30, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "HangTamThao",       "weight": 30, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "NganNguyetHoa",     "weight": 30, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "DanHoiHPSmall",     "weight": 40, "qty_min": 1, "qty_max": 3 }
+    {
+      "item_key": "DanLoBachLuyen_G1",
+      "weight": 1000000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_danlo_g1_pick"
+    },
+    {
+      "item_key": "DanLoThuong_G1",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_danlo_g1_pick"
+    },
+    {
+      "item_key": "DaGiaoDang",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "HangTamThao",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "NganNguyetHoa",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "DanHoiHPSmall",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 3
+    }
   ],
-
   "LootChestDanLoG2": [
-    { "item_key": "DanLoTuLinh_G2",    "weight": 100, "qty_min": 1, "qty_max": 1, "pool_id": "chest_danlo_g2_pick" },
-    { "item_key": "DanLoThuong_G2",    "weight": 15,  "qty_min": 1, "qty_max": 1, "pool_id": "chest_danlo_g2_pick" },
-    { "item_key": "KimHuyetTinh",      "weight": 25, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MocHuyetTinh",      "weight": 25, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "HoaHuyetTinh",      "weight": 25, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "ThuyHuyetTinh",     "weight": 25, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "ThoHuyetTinh",      "weight": 25, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiHPMid",       "weight": 30, "qty_min": 1, "qty_max": 2 }
+    {
+      "item_key": "DanLoTuLinh_G2",
+      "weight": 1000000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_danlo_g2_pick"
+    },
+    {
+      "item_key": "DanLoThuong_G2",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_danlo_g2_pick"
+    },
+    {
+      "item_key": "KimHuyetTinh",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MocHuyetTinh",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HoaHuyetTinh",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ThuyHuyetTinh",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ThoHuyetTinh",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiHPMid",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
   ],
-
   "LootChestDanLoG3": [
-    { "item_key": "DanLoHuyenHoang_G3","weight": 100, "qty_min": 1, "qty_max": 1, "pool_id": "chest_danlo_g3_pick" },
-    { "item_key": "DanLoThuong_G3",    "weight": 15,  "qty_min": 1, "qty_max": 1, "pool_id": "chest_danlo_g3_pick" },
-    { "item_key": "KimLinhTinh",       "weight": 20, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MocLinhTinh",       "weight": 20, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "HoaLinhTinh",       "weight": 20, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "ThuyLinhTinh",      "weight": 20, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiHPLarge",     "weight": 30, "qty_min": 1, "qty_max": 2 }
+    {
+      "item_key": "DanLoHuyenHoang_G3",
+      "weight": 1000000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_danlo_g3_pick"
+    },
+    {
+      "item_key": "DanLoThuong_G3",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_danlo_g3_pick"
+    },
+    {
+      "item_key": "KimLinhTinh",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MocLinhTinh",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HoaLinhTinh",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ThuyLinhTinh",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiHPLarge",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
   ],
-
   "LootChestDanLoG4": [
-    { "item_key": "DanLoThienMenh_G4","weight": 100, "qty_min": 1, "qty_max": 1, "pool_id": "chest_danlo_g4_pick" },
-    { "item_key": "DanLoThuong_G4",   "weight": 15,  "qty_min": 1, "qty_max": 1, "pool_id": "chest_danlo_g4_pick" },
-    { "item_key": "KimYeuDan",        "weight": 15, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "MocYeuDan",        "weight": 15, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "HoaYeuDan",        "weight": 15, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "ThuyYeuDan",       "weight": 15, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "DanHoiFull",       "weight": 25, "qty_min": 1, "qty_max": 2 }
+    {
+      "item_key": "DanLoThienMenh_G4",
+      "weight": 1000000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_danlo_g4_pick"
+    },
+    {
+      "item_key": "DanLoThuong_G4",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_danlo_g4_pick"
+    },
+    {
+      "item_key": "KimYeuDan",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MocYeuDan",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "HoaYeuDan",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ThuyYeuDan",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
   ],
-
   "LootChestDuocVien": [
-    { "item_key": "DanLoBachLuyen_G1", "weight": 5,  "qty_min": 1, "qty_max": 1, "pool_id": "chest_duocvien_rare" },
-    { "item_key": "DanLoTuLinh_G2",    "weight": 3,  "qty_min": 1, "qty_max": 1, "pool_id": "chest_duocvien_rare" },
-    { "item_key": "HaThuO",            "weight": 40, "qty_min": 2, "qty_max": 4 },
-    { "item_key": "ThatTinhThao",      "weight": 35, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "NganNguyetHoa",     "weight": 35, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "BoThienChi",        "weight": 25, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "NgocLongSam",       "weight": 20, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiHPMid",       "weight": 30, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiMPMid",       "weight": 30, "qty_min": 1, "qty_max": 2 }
+    {
+      "item_key": "DanLoBachLuyen_G1",
+      "weight": 50000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_duocvien_rare"
+    },
+    {
+      "item_key": "DanLoTuLinh_G2",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_duocvien_rare"
+    },
+    {
+      "item_key": "HaThuO",
+      "weight": 400000,
+      "qty_min": 2,
+      "qty_max": 4
+    },
+    {
+      "item_key": "ThatTinhThao",
+      "weight": 350000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "NganNguyetHoa",
+      "weight": 350000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "BoThienChi",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NgocLongSam",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiHPMid",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiMPMid",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
   ],
-
   "LootChestLuyenDan": [
-    { "item_key": "DanLoTuLinh_G2",    "weight": 8,  "qty_min": 1, "qty_max": 1, "pool_id": "chest_luyendan_rare" },
-    { "item_key": "DanLoHuyenHoang_G3","weight": 3,  "qty_min": 1, "qty_max": 1, "pool_id": "chest_luyendan_rare" },
-    { "item_key": "KimHuyetTinh",      "weight": 30, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "MocHuyetTinh",      "weight": 30, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "ThuyHuyetTinh",     "weight": 30, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "HoaHuyetTinh",      "weight": 30, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "ThoHuyetTinh",      "weight": 30, "qty_min": 1, "qty_max": 3 },
-    { "item_key": "KimLinhTinh",       "weight": 15, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MocLinhTinh",       "weight": 15, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "BoThienChi",        "weight": 25, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "OTruMoc",           "weight": 25, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiFull",        "weight": 20, "qty_min": 1, "qty_max": 1 }
+    {
+      "item_key": "DanLoTuLinh_G2",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_luyendan_rare"
+    },
+    {
+      "item_key": "DanLoHuyenHoang_G3",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "chest_luyendan_rare"
+    },
+    {
+      "item_key": "KimHuyetTinh",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "MocHuyetTinh",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "ThuyHuyetTinh",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "HoaHuyetTinh",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "ThoHuyetTinh",
+      "weight": 300000,
+      "qty_min": 1,
+      "qty_max": 3
+    },
+    {
+      "item_key": "KimLinhTinh",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MocLinhTinh",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BoThienChi",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "OTruMoc",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
   ]
 }

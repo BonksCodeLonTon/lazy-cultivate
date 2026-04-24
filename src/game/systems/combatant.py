@@ -53,6 +53,11 @@ class Combatant:
     # Total immunity to hard CC (stun/freeze/silence/interrupt/knock-up).
     # Used by world bosses — soft debuffs (slow, DoT, armor break) still apply.
     immune_hard_cc: bool = False
+    # True for persistent world-boss Combatants. Prevents any mechanic from
+    # mutating the boss's ``hp_max`` (e.g. Âm Hồn Phệ soul-drain) so the
+    # shared HP pool stays authoritative and can't be trivialized by a
+    # single attack's local-sim mutations.
+    is_world_boss: bool = False
     # Immunity / special flags
     active_flags: dict[str, bool] = field(default_factory=dict)
     # Active effects: effect_key → turns_remaining
@@ -60,6 +65,13 @@ class Combatant:
     # Skill cooldowns: skill_key → turns_remaining
     cooldowns: dict[str, int] = field(default_factory=dict)
     skill_keys: list[str] = field(default_factory=list)
+    # Formation skills — one entry per active formation slot. Fire in PARALLEL
+    # each turn after the main skill (Trận Tu multi-formation simultaneity):
+    # every formation that's off cooldown + can afford MP pings the target
+    # independently, so 3 active formations = up to 4 attacks per turn
+    # (main + 3 formations). Stored separately from ``skill_keys`` so they
+    # don't compete with the player's chosen rotation.
+    formation_skill_keys: list[str] = field(default_factory=list)
     # Linh Căn keys (spiritual roots)
     linh_can: list[str] = field(default_factory=list)
     # Thổ Hộ Thể shield (absorbs damage)

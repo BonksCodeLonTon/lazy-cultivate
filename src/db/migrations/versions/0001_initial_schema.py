@@ -33,7 +33,7 @@ def upgrade() -> None:
         sa.Column("formation_realm", sa.Integer(), server_default="0", nullable=False),
         sa.Column("formation_level", sa.Integer(), server_default="1", nullable=False),
         # Constitution
-        sa.Column("constitution_type", sa.String(64), server_default="ConstitutionVanTuong", nullable=False),
+        sa.Column("constitution_type", sa.String(512), server_default="ConstitutionVanTuong", nullable=False),
         sa.Column("dao_ti_unlocked", sa.Boolean(), server_default="false", nullable=False),
         # Currencies
         sa.Column("merit", sa.Integer(), server_default="0", nullable=False),

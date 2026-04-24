@@ -106,7 +106,7 @@ def _cultivate_embed(axis: str, result: dict) -> discord.Embed:
     cap_reached = result.get("cap_reached", False)
 
     lines = [
-        f"Trục: {axis_icon} **{axis_label}**",
+        f"Hướng: {axis_icon} **{axis_label}**",
         f"Lượt xử lý: **{turns:,}** lượt",
         f"Công Đức nhận: **+{merit:,}**",
         f"Nghiệp Lực tích lũy: **+{karma:,}**",
@@ -138,7 +138,7 @@ def _breakthrough_overview_embed(player, readiness: dict[str, bool]) -> discord.
         }[axis]
         status = "✅ Sẵn sàng đột phá" if readiness[axis] else "🔒 Chưa đủ điều kiện"
         embed.add_field(name=label, value=f"{rl}\n{status}", inline=True)
-    embed.set_footer(text="Chọn trục để tiến hành đột phá")
+    embed.set_footer(text="Chọn hướng để tiến hành đột phá")
     return embed
 
 
@@ -272,8 +272,11 @@ class BreakthroughView(discord.ui.View):
                 if trib_manager.check_needs_tribulation(char, axis):
                     equipped_skill_keys = [s.skill_key for s in player.skills]
 
-                    from src.game.systems.character_stats import active_formation_gem_keys
+                    from src.game.systems.character_stats import (
+                        active_formation_gem_keys, active_formation_gem_map,
+                    )
                     trib_gem_keys = active_formation_gem_keys(player)
+                    trib_gem_map = active_formation_gem_map(player)
                     gem_count = len(trib_gem_keys)
 
                     from src.game.engine.equipment import compute_equipment_stats
@@ -288,6 +291,7 @@ class BreakthroughView(discord.ui.View):
                         gem_count,
                         equip_stats=equip_stats,
                         gem_keys=trib_gem_keys,
+                        gem_keys_by_formation=trib_gem_map,
                     )
 
                     if not trib_result.success:
@@ -332,9 +336,15 @@ class BreakthroughView(discord.ui.View):
 
                 char = _player_to_model(player)
 
-                from src.game.systems.character_stats import active_formation_gem_keys, compute_combat_stats
+                from src.game.systems.character_stats import (
+                    active_formation_gem_keys, active_formation_gem_map, compute_combat_stats,
+                )
                 post_gem_keys = active_formation_gem_keys(player)
-                post_cs = compute_combat_stats(char, gem_count=len(post_gem_keys), gem_keys=post_gem_keys)
+                post_gem_map = active_formation_gem_map(player)
+                post_cs = compute_combat_stats(
+                    char, gem_count=len(post_gem_keys),
+                    gem_keys=post_gem_keys, gem_keys_by_formation=post_gem_map,
+                )
 
                 player.hp_current = post_cs.hp_max
                 player.mp_current = post_cs.mp_max

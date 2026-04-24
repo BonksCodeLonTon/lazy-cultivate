@@ -18,6 +18,7 @@ class DamageApplyResult:
     new_hp: int             # Boss HP after the update
     is_finisher: bool       # True if this transaction's UPDATE set hp to 0
     instance_missing: bool  # True if the boss was already inactive on lock acquisition
+    cap_hit: bool = False   # True if damage_cap clamped the input below the request
 
 
 class WorldBossRepository:
@@ -80,7 +81,8 @@ class WorldBossRepository:
         instance.is_active = False
 
     async def apply_damage_atomic(
-        self, instance_id: int, damage: int, player_id: int
+        self, instance_id: int, damage: int, player_id: int,
+        damage_cap: int | None = None,
     ) -> DamageApplyResult:
         """Apply damage to the shared HP pool under a row lock — safe under concurrency.
 
@@ -89,11 +91,22 @@ class WorldBossRepository:
         atomically. Postgres serializes concurrent callers on the same row, so
         no damage is ever lost and at most one caller is marked finisher.
 
-        Returns ``DamageApplyResult`` — callers should use ``applied`` (not the
-        raw requested ``damage``) for participation tallies to avoid inflated
-        overkill numbers.
+        ``damage_cap`` (optional) clamps the *requested* damage BEFORE it is
+        compared to remaining HP — this is the authoritative enforcement of the
+        per-attack ``PER_ATTACK_DMG_CAP_PCT`` limit. Even if client-side logic
+        is bypassed, the DB row-lock still applies the cap. Callers should use
+        ``result.applied`` (not the raw input) to credit participation so the
+        leaderboard can't be gamed by inflating local simulation damage.
+
+        Returns ``DamageApplyResult`` — ``cap_hit`` is True when the cap
+        actually truncated the request.
         """
         damage = max(0, int(damage))
+        cap_hit = False
+        if damage_cap is not None and damage > damage_cap:
+            damage = max(0, int(damage_cap))
+            cap_hit = True
+
         result = await self._session.execute(
             select(WorldBossInstance)
             .where(
@@ -104,7 +117,10 @@ class WorldBossRepository:
         )
         instance = result.scalar_one_or_none()
         if instance is None:
-            return DamageApplyResult(applied=0, new_hp=0, is_finisher=False, instance_missing=True)
+            return DamageApplyResult(
+                applied=0, new_hp=0, is_finisher=False,
+                instance_missing=True, cap_hit=cap_hit,
+            )
 
         applied = min(damage, instance.hp_current)
         new_hp = max(0, instance.hp_current - damage)
@@ -120,7 +136,8 @@ class WorldBossRepository:
                 is_finisher = True
 
         return DamageApplyResult(
-            applied=applied, new_hp=new_hp, is_finisher=is_finisher, instance_missing=False,
+            applied=applied, new_hp=new_hp, is_finisher=is_finisher,
+            instance_missing=False, cap_hit=cap_hit,
         )
 
     async def has_instance_for_window(

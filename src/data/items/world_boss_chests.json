@@ -1,0 +1,83 @@
+[
+  {
+    "key": "ChestWorldBossR1",
+    "vi": "Rương Boss Thế Giới - Luyện Khí",
+    "en": "World Boss Chest - Qi Refining",
+    "type": "chest",
+    "grade": 1,
+    "shop_price_merit": 0,
+    "description_vi": "Rương rớt từ Boss Thế Giới cảnh giới Luyện Khí. Chứa nguyên liệu rèn cấp 1, đan phương sơ giai, và có cơ hội nhỏ ra Cực Phẩm cảnh 1."
+  },
+  {
+    "key": "ChestWorldBossR2",
+    "vi": "Rương Boss Thế Giới - Trúc Cơ",
+    "en": "World Boss Chest - Foundation Establishment",
+    "type": "chest",
+    "grade": 1,
+    "shop_price_merit": 0,
+    "description_vi": "Rương rớt từ Boss Thế Giới cảnh giới Trúc Cơ. Chứa nguyên liệu rèn cấp 1-2, đan phương Trúc Cơ, và cơ hội ra Cực Phẩm cảnh 2."
+  },
+  {
+    "key": "ChestWorldBossR3",
+    "vi": "Rương Boss Thế Giới - Kim Đan",
+    "en": "World Boss Chest - Golden Core",
+    "type": "chest",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Rương rớt từ Boss Thế Giới cảnh giới Kim Đan. Chứa nguyên liệu rèn cấp 2, đan phương Kim Đan, và cơ hội ra Cực Phẩm cảnh 3."
+  },
+  {
+    "key": "ChestWorldBossR4",
+    "vi": "Rương Boss Thế Giới - Nguyên Anh",
+    "en": "World Boss Chest - Nascent Soul",
+    "type": "chest",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Rương rớt từ Boss Thế Giới cảnh giới Nguyên Anh. Chứa nguyên liệu rèn cấp 2-3, đan phương Nguyên Anh, và cơ hội ra Cực Phẩm cảnh 4."
+  },
+  {
+    "key": "ChestWorldBossR5",
+    "vi": "Rương Boss Thế Giới - Hóa Thần",
+    "en": "World Boss Chest - Spirit Transformation",
+    "type": "chest",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Rương rớt từ Boss Thế Giới cảnh giới Hóa Thần. Chứa nguyên liệu rèn cấp 3, đan phương Hóa Thần, và cơ hội ra Cực Phẩm cảnh 5."
+  },
+  {
+    "key": "ChestWorldBossR6",
+    "vi": "Rương Boss Thế Giới - Luyện Hư",
+    "en": "World Boss Chest - Void Refinement",
+    "type": "chest",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Rương rớt từ Boss Thế Giới cảnh giới Luyện Hư. Chứa nguyên liệu rèn cấp 3-4, đan phương Luyện Hư, và cơ hội ra Cực Phẩm cảnh 6."
+  },
+  {
+    "key": "ChestWorldBossR7",
+    "vi": "Rương Boss Thế Giới - Hợp Đạo",
+    "en": "World Boss Chest - Dao Integration",
+    "type": "chest",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Rương rớt từ Boss Thế Giới cảnh giới Hợp Đạo. Chứa nguyên liệu rèn cấp 4-5, đan phương Hợp Đạo, và cơ hội ra Cực Phẩm cảnh 7."
+  },
+  {
+    "key": "ChestWorldBossR8",
+    "vi": "Rương Boss Thế Giới - Đại Thừa",
+    "en": "World Boss Chest - Mahayana",
+    "type": "chest",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Rương rớt từ Boss Thế Giới cảnh giới Đại Thừa. Chứa nguyên liệu rèn cấp 5, đan phương Đại Thừa, và cơ hội ra Cực Phẩm cảnh 8."
+  },
+  {
+    "key": "ChestWorldBossR9",
+    "vi": "Rương Boss Thế Giới - Đăng Tiên",
+    "en": "World Boss Chest - Immortal Ascension",
+    "type": "chest",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Rương rớt từ Boss Thế Giới cảnh giới Đăng Tiên. Chứa nguyên liệu rèn cấp 5-6, đan phương Đăng Tiên, và cơ hội ra Cực Phẩm cảnh 9 (cực hiếm)."
+  }
+]

@@ -29,8 +29,9 @@ def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
     from src.game.constants.linh_can import LINH_CAN_DATA, parse_linh_can
 
     char = _player_to_model(player)
-    from src.game.systems.character_stats import active_formation_gem_keys
+    from src.game.systems.character_stats import active_formation_gem_keys, active_formation_gem_map
     gem_keys = active_formation_gem_keys(player)
+    gem_map = active_formation_gem_map(player)
     gem_count = len(gem_keys)
 
     linh_can_list = parse_linh_can(player.linh_can or "")
@@ -38,11 +39,23 @@ def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
     equipped_instances = [i for i in (player.item_instances or []) if i.location == "equipped"]
     equip_stats = compute_equipment_stats(equipped_instances)
 
-    cs = compute_combat_stats(char, gem_count=gem_count, equip_stats=equip_stats, gem_keys=gem_keys)
+    cs = compute_combat_stats(
+        char, gem_count=gem_count, equip_stats=equip_stats,
+        gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+    )
 
     from src.data.registry import registry as gr
-    const_data = gr.get_constitution(player.constitution_type)
-    form_data  = gr.get_formation(player.active_formation) if player.active_formation else None
+    from src.game.systems.the_chat import get_constitutions as _get_consts
+    from src.game.systems.cultivation import get_active_formations
+    equipped_const_keys = _get_consts(player.constitution_type)
+    const_names = [
+        (gr.get_constitution(k) or {}).get("vi", k) for k in equipped_const_keys
+    ]
+    active_formation_keys = get_active_formations(player.active_formation)
+    active_formation_names = [
+        (gr.get_formation(k) or {}).get("vi", k) for k in active_formation_keys
+    ]
+    form_data = gr.get_formation(active_formation_keys[0]) if active_formation_keys else None
 
     # Equipped items: slot → display_name
     equipped_by_slot: dict[str, str] = {
@@ -72,8 +85,8 @@ def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
         "merit":             player.merit,
         "karma_accum":       player.karma_accum,
         "primordial_stones": player.primordial_stones,
-        "constitution":      const_data["vi"] if const_data else player.constitution_type,
-        "active_formation":  form_data["vi"] if form_data else None,
+        "constitution":      " · ".join(const_names) if const_names else player.constitution_type,
+        "active_formation":  " · ".join(active_formation_names) if active_formation_names else None,
         "gem_count":         gem_count,
         "mp_reserved":       cs.mp_reserved,
         "mp_reserve_pct":    cs.mp_reserve_pct,
@@ -133,12 +146,13 @@ class StatusView(discord.ui.View):
             ("🌌 Boss Thế Giới",     discord.ButtonStyle.secondary, self._world_boss_cb,    0),
             ("🔯 Trận Pháp",         discord.ButtonStyle.secondary, self._formation_cb,     1),
             ("🎯 Kỹ Năng",           discord.ButtonStyle.secondary, self._skills_cb,        1),
+            ("🧬 Thể Chất Bảng",     discord.ButtonStyle.secondary, self._the_chat_cb,      1),
             ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     1),
-            ("📚 Tàng Kinh Các",     discord.ButtonStyle.secondary, self._tang_kinh_cac_cb, 1),
+            ("📚 Tàng Kinh Các",     discord.ButtonStyle.secondary, self._tang_kinh_cac_cb, 2),
             ("⚒️ Thiên Công Phường", discord.ButtonStyle.secondary, self._forge_cb,         2),
             ("⚗️ Luyện Đan",         discord.ButtonStyle.secondary, self._alchemy_cb,       2),
-            ("🏪 Phường Thị",        discord.ButtonStyle.secondary, self._shop_cb,          2),
-            ("🏮 Đấu Thương Các",    discord.ButtonStyle.secondary, self._market_cb,        2),
+            ("🏪 Phường Thị",        discord.ButtonStyle.secondary, self._shop_cb,          3),
+            ("🏮 Đấu Thương Các",    discord.ButtonStyle.secondary, self._market_cb,        3),
         ]
         for label, style, cb, row in configs:
             btn = discord.ui.Button(label=label, style=style, row=row)
@@ -229,7 +243,11 @@ class StatusView(discord.ui.View):
             if player is None:
                 await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                 return
-            qi_realm = player.qi_realm
+            # Dungeons gate by the player's STRONGEST axis — Thể/Khí/Trận
+            # Tu alike qualify once any one axis reaches the dungeon's realm.
+            player_best_realm = max(
+                player.body_realm, player.qi_realm, player.formation_realm,
+            )
             player_realm_total = (
                 player.body_realm * 9 + player.body_level
                 + player.qi_realm * 9 + player.qi_level
@@ -239,7 +257,7 @@ class StatusView(discord.ui.View):
         from src.bot.cogs.dungeon import DungeonTypeSelectView, _dungeon_type_embed
         embed = _dungeon_type_embed()
         view = DungeonTypeSelectView(
-            self._discord_id, qi_realm, player_realm_total, back_fn=_show_status,
+            self._discord_id, player_best_realm, player_realm_total, back_fn=_show_status,
         )
         await interaction.edit_original_response(embed=embed, view=view)
 
@@ -299,6 +317,15 @@ class StatusView(discord.ui.View):
         from src.bot.cogs.skills import _build_skills_embed_view
         embed, view = _build_skills_embed_view(equipped, self._discord_id, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _the_chat_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        from src.bot.cogs.constitution import render_the_chat_hub
+        await render_the_chat_hub(interaction, self._discord_id, back_fn=_show_status)
 
     async def _tang_kinh_cac_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

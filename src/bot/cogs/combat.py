@@ -162,15 +162,19 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
             return
 
         char = _player_to_model(player)
-        from src.game.systems.character_stats import active_formation_gem_keys
+        from src.game.systems.character_stats import active_formation_gem_keys, active_formation_gem_map
         gem_keys = active_formation_gem_keys(player)
+        gem_map = active_formation_gem_map(player)
         gem_count = len(gem_keys)
 
         equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
         equip_stats = compute_equipment_stats(equipped)
 
         from src.game.systems.character_stats import compute_combat_stats
-        cs_preview = compute_combat_stats(char, gem_count=gem_count, equip_stats=equip_stats, gem_keys=gem_keys)
+        cs_preview = compute_combat_stats(
+            char, gem_count=gem_count, equip_stats=equip_stats,
+            gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+        )
         hp_max_val = cs_preview.hp_max
         mp_max_val = cs_preview.mp_max
         if player.hp_current <= 0:
@@ -201,7 +205,10 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
 
     realm_total = _realm_total(char)
 
-    player_c = build_player_combatant(char, skill_keys, gem_count=gem_count, equip_stats=equip_stats, gem_keys=gem_keys)
+    player_c = build_player_combatant(
+        char, skill_keys, gem_count=gem_count, equip_stats=equip_stats,
+        gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+    )
     player_c.hp = hp_current
     player_c.mp = mp_current
 
@@ -410,8 +417,11 @@ class CombatCog(commands.Cog, name="Combat"):
             await _apply_ticks_to_player(player, prepo, player.active_axis or "qi")
 
             char = _player_to_model(player)
-            from src.game.systems.character_stats import active_formation_gem_keys, compute_combat_stats
+            from src.game.systems.character_stats import (
+                active_formation_gem_keys, active_formation_gem_map, compute_combat_stats,
+            )
             gem_keys = active_formation_gem_keys(player)
+            gem_map = active_formation_gem_map(player)
 
             # Fold in equipment bonuses so hp_max/mp_max reflect the real
             # effective caps (equipment often contributes flat hp_max).
@@ -423,6 +433,7 @@ class CombatCog(commands.Cog, name="Combat"):
                 gem_count=len(gem_keys),
                 equip_stats=equip_stats,
                 gem_keys=gem_keys,
+                gem_keys_by_formation=gem_map,
             )
             player.hp_current = cs.hp_max
             player.mp_current = cs.mp_max

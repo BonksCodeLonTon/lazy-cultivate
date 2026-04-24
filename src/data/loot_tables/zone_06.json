@@ -1,30 +1,178 @@
 {
   "LootZone_6": [
-    { "item_key": "MatNguTang",       "weight": 45, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MatKimDanNguyen",  "weight": 35, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MatNguyenAnhThach","weight": 25, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "MatCotHoa",        "weight": 40, "qty_min": 1, "qty_max": 2 },
-    { "item_key": "DanHoiHPMid",   "weight": 25, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "DanHoiMPMid",   "weight": 20, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "DanHoiHPLarge", "weight": 10, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "GemHoa_2",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_gem2" },
-    { "item_key": "GemMoc_2",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_gem2" },
-    { "item_key": "GemBang_2",  "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_gem2" },
-    { "item_key": "GemKim_2",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_gem2" },
-    { "item_key": "GemLoi_2",   "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_gem2" },
-    { "item_key": "GemPhong_2", "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_gem2" },
-    { "item_key": "GemThuy_2",  "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_gem2" },
-    { "item_key": "GemTo_2",    "weight": 12, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_gem2" },
-    { "item_key": "ChestHuyen", "weight": 5, "qty_min": 1, "qty_max": 1 },
-    { "item_key": "HanTamThiet",        "weight": 8, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_mat2" },
-    { "item_key": "CanLinhKim",         "weight": 8, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_mat2" },
-    { "item_key": "TinhVanThiet",       "weight": 8, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_mat2" },
-    { "item_key": "SamLangDong",        "weight": 8, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_mat2" },
-    { "item_key": "NguyetLinhThiet",    "weight": 8, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_mat2" },
-    { "item_key": "XichDiemThiet",      "weight": 8, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_mat2" },
-    { "item_key": "DoanKiemThietTinh",  "weight": 8, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_mat2" },
-    { "item_key": "KinhLoiThiet",       "weight": 8, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_mat2" },
-    { "item_key": "CuangPhongThiet",    "weight": 8, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_mat2" },
-    { "item_key": "HuyenQuangThiet",    "weight": 8, "qty_min": 1, "qty_max": 1, "pool_id": "zone6_mat2" }
+    {
+      "item_key": "MatNguTang",
+      "weight": 450000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatKimDanNguyen",
+      "weight": 350000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatNguyenAnhThach",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatCotHoa",
+      "weight": 400000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DanHoiHPMid",
+      "weight": 250000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanHoiMPMid",
+      "weight": 200000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanHoiHPLarge",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "GemHoa_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_gem2"
+    },
+    {
+      "item_key": "GemMoc_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_gem2"
+    },
+    {
+      "item_key": "GemBang_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_gem2"
+    },
+    {
+      "item_key": "GemKim_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_gem2"
+    },
+    {
+      "item_key": "GemLoi_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_gem2"
+    },
+    {
+      "item_key": "GemPhong_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_gem2"
+    },
+    {
+      "item_key": "GemThuy_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_gem2"
+    },
+    {
+      "item_key": "GemTo_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_gem2"
+    },
+    {
+      "item_key": "ChestHuyen",
+      "weight": 50000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "HanTamThiet",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_mat2"
+    },
+    {
+      "item_key": "CanLinhKim",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_mat2"
+    },
+    {
+      "item_key": "TinhVanThiet",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_mat2"
+    },
+    {
+      "item_key": "SamLangDong",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_mat2"
+    },
+    {
+      "item_key": "NguyetLinhThiet",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_mat2"
+    },
+    {
+      "item_key": "XichDiemThiet",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_mat2"
+    },
+    {
+      "item_key": "DoanKiemThietTinh",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_mat2"
+    },
+    {
+      "item_key": "KinhLoiThiet",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_mat2"
+    },
+    {
+      "item_key": "CuangPhongThiet",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_mat2"
+    },
+    {
+      "item_key": "HuyenQuangThiet",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 1,
+      "pool_id": "zone6_mat2"
+    }
   ]
 }

@@ -1,13 +1,17 @@
 """Database connection setup (SQLAlchemy async + PostgreSQL)."""
 from __future__ import annotations
 
+import logging
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
 from src.db.models.base import Base
 from src.utils.config import settings
+
+log = logging.getLogger(__name__)
 
 # Import all models so Base.metadata knows about every table
 import src.db.models.player  # noqa: F401
@@ -47,6 +51,32 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def init_db() -> None:
-    """Create all tables (dev/test only — use Alembic migrations in production)."""
+    """Create all tables and auto-patch known ORM/schema drift.
+
+    Dev/test convenience only — production must run ``alembic upgrade head``.
+    ``Base.metadata.create_all`` doesn't ALTER existing columns, so any time
+    a column's ``String(N)`` changes in the ORM we either need an Alembic
+    migration to run or this block to self-heal. Each patch is idempotent
+    (gated by an ``information_schema`` check) so it's safe on every start.
+    """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+        # ── 0009: players.constitution_type VARCHAR(64) → VARCHAR(512) ────
+        # Thể Tu can now hold up to 8 comma-separated legendary keys
+        # (~209 chars). Older dev DBs from before this change still have 64.
+        await conn.execute(text("""
+            DO $$
+            BEGIN
+                IF EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                    WHERE table_name = 'players'
+                      AND column_name = 'constitution_type'
+                      AND character_maximum_length < 512
+                ) THEN
+                    ALTER TABLE players
+                        ALTER COLUMN constitution_type TYPE VARCHAR(512);
+                    RAISE NOTICE 'auto-patched players.constitution_type to VARCHAR(512)';
+                END IF;
+            END$$;
+        """))

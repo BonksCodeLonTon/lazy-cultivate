@@ -278,9 +278,14 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
     if active_form:
         reserve_tag = f" · 🔒 Trấn: **{reserve_pct * 100:.1f}%** MP" if reserve_pct > 0 else ""
         from src.db.models.formation import FORMATION_GEM_SLOTS as _MAX_SLOTS
+        # ``active_form`` may be one key or multiple joined with " · " (Trận
+        # Tu multi-slot). Cap total gem slots by the number of active
+        # formations so the "n/max" display stays sensible.
+        slot_count = active_form.count("·") + 1
+        total_slots = _MAX_SLOTS * slot_count
         detail = (
             f"🧬 **{constitution}**\n"
-            f"🔯 **{active_form}**  `{progress_bar(gem_count, _MAX_SLOTS, 8)}` {gem_count}/{_MAX_SLOTS} ngọc"
+            f"🔯 **{active_form}**  `{progress_bar(gem_count, total_slots, 8)}` {gem_count}/{total_slots} ngọc"
             f"{reserve_tag}"
         )
     else:

@@ -40,6 +40,7 @@ class TribulationManager:
         gem_count: int = 0,
         equip_stats: dict | None = None,
         gem_keys: list[str] | None = None,
+        gem_keys_by_formation: dict[str, list[str]] | None = None,
     ) -> TribulationResult:
 
         target_realm_idx = getattr(char, f"{axis}_realm") + 1
@@ -47,7 +48,8 @@ class TribulationManager:
 
         # ── Build combatants ─────────────────────────
         player_c = build_player_combatant(
-            char, skill_keys, gem_count, equip_stats=equip_stats, gem_keys=gem_keys,
+            char, skill_keys, gem_count, equip_stats=equip_stats,
+            gem_keys=gem_keys, gem_keys_by_formation=gem_keys_by_formation,
         )
 
         player_realm_total = (

@@ -1,0 +1,194 @@
+[
+  {
+    "key": "MatDaoCotTinh",
+    "vi": "Đạo Cốt Tinh",
+    "en": "Dao Bone Essence",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hoa xương đạo kết tinh từ Thần Cốt Địa. Nguyên liệu nền để chuyển hóa Thể Chất — mọi tầng Thần Cốt đều có thể rớt."
+  },
+  {
+    "key": "MatThienDaoTuy",
+    "vi": "Thiên Đạo Tủy",
+    "en": "Heaven Dao Marrow",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Tủy đạo tinh luyện từ Apex Boss cao giai. Cần để chuyển hóa Thể Chất hạng Quý trở lên. Chỉ rớt từ Thần Cốt Địa Thượng Cấp (R7) và Đỉnh Phong (R9)."
+  },
+  {
+    "key": "MatHonNguyenCot",
+    "vi": "Hỗn Nguyên Cốt",
+    "en": "Primordial Chaos Bone",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Xương hỗn nguyên do Apex Boss đỉnh phong tạo thành. Nguyên liệu duy nhất để chuyển hóa Thể Chất Truyền Thuyết — chỉ rớt từ Thần Cốt Địa Đỉnh Phong (R9)."
+  },
+
+  {
+    "key": "ElemEssKim",
+    "vi": "Kim Hồn Tinh",
+    "en": "Metal Soul Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hồn hệ Kim kết tinh trong Thần Cốt Địa — nguyên liệu chuyển hóa các Thể Chất hệ Kim."
+  },
+  {
+    "key": "ElemEssMoc",
+    "vi": "Mộc Hồn Tinh",
+    "en": "Wood Soul Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hồn hệ Mộc kết tinh trong Thần Cốt Địa — nguyên liệu chuyển hóa các Thể Chất hệ Mộc."
+  },
+  {
+    "key": "ElemEssThuy",
+    "vi": "Thủy Hồn Tinh",
+    "en": "Water Soul Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hồn hệ Thủy kết tinh trong Thần Cốt Địa — nguyên liệu chuyển hóa các Thể Chất hệ Thủy."
+  },
+  {
+    "key": "ElemEssHoa",
+    "vi": "Hỏa Hồn Tinh",
+    "en": "Fire Soul Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hồn hệ Hỏa kết tinh trong Thần Cốt Địa — nguyên liệu chuyển hóa các Thể Chất hệ Hỏa."
+  },
+  {
+    "key": "ElemEssTho",
+    "vi": "Thổ Hồn Tinh",
+    "en": "Earth Soul Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hồn hệ Thổ kết tinh trong Thần Cốt Địa — nguyên liệu chuyển hóa các Thể Chất hệ Thổ."
+  },
+  {
+    "key": "ElemEssLoi",
+    "vi": "Lôi Hồn Tinh",
+    "en": "Thunder Soul Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hồn hệ Lôi kết tinh trong Thần Cốt Địa — nguyên liệu chuyển hóa các Thể Chất hệ Lôi."
+  },
+  {
+    "key": "ElemEssPhong",
+    "vi": "Phong Hồn Tinh",
+    "en": "Wind Soul Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hồn hệ Phong kết tinh trong Thần Cốt Địa — nguyên liệu chuyển hóa các Thể Chất hệ Phong."
+  },
+  {
+    "key": "ElemEssQuang",
+    "vi": "Quang Hồn Tinh",
+    "en": "Light Soul Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hồn hệ Quang kết tinh trong Thần Cốt Địa — nguyên liệu chuyển hóa các Thể Chất hệ Quang."
+  },
+  {
+    "key": "ElemEssAm",
+    "vi": "Ám Hồn Tinh",
+    "en": "Dark Soul Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hồn hệ Ám kết tinh trong Thần Cốt Địa — nguyên liệu chuyển hóa các Thể Chất hệ Ám."
+  },
+
+  {
+    "key": "ArchSatYTinh",
+    "vi": "Sát Ý Tinh",
+    "en": "Killing Intent Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Sát ý ngưng kết từ Apex Boss sát khí đỉnh phong. Dùng cho Thể Chất thiên công kích / bạo kích (Bạch Hổ, Tử Kiếm, Phá Thiên…)."
+  },
+  {
+    "key": "ArchHoTheTinh",
+    "vi": "Hộ Thể Tinh",
+    "en": "Guardian Body Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Hộ khí ngưng kết thành tinh. Dùng cho Thể Chất thiên phòng thủ / kháng (Huyền Quy, Huyền Thiên, Hậu Thổ, Trấn Giới…)."
+  },
+  {
+    "key": "ArchPhongDangTinh",
+    "vi": "Phong Đằng Tinh",
+    "en": "Windswift Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Phong vận kết tinh. Dùng cho Thể Chất thiên tốc độ / né tránh (Thần Tốc, Tiêu Dao…)."
+  },
+  {
+    "key": "ArchThongHueTinh",
+    "vi": "Thông Huệ Tinh",
+    "en": "Sagacity Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Linh khí thông huệ. Dùng cho Thể Chất thiên linh khí / hồi chiêu (Đạo Cổ, Khí Hải, Linh Lung…)."
+  },
+  {
+    "key": "ArchTrungSinhTinh",
+    "vi": "Trường Sinh Tinh",
+    "en": "Longevity Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hoa trường sinh bất lão. Dùng cho Thể Chất thiên hồi phục / sinh lực (Bất Diệt…)."
+  },
+  {
+    "key": "ArchLoiNguyenTinh",
+    "vi": "Lôi Nguyên Tinh",
+    "en": "Thunder Origin Essence",
+    "type": "constitution_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Lôi nguyên kết tinh. Dùng cho Thể Chất thiên lôi / tốc-sát (Nghê Đình…)."
+  },
+
+  {
+    "key": "SupremeDuongTinh",
+    "vi": "Tối Thượng Dương Tinh",
+    "en": "Supreme Yang Essence",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Dương cực đạo tinh, chỉ có thể luyện thành bởi tu sĩ đã đạt Đạo Thể. Nguyên liệu riêng của Thái Dương Thần Thể."
+  },
+  {
+    "key": "SupremeAmTinh",
+    "vi": "Tối Thượng Âm Tinh",
+    "en": "Supreme Yin Essence",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Âm cực đạo tinh, chỉ có thể luyện thành bởi tu sĩ đã đạt Đạo Thể. Nguyên liệu riêng của Thái Âm Thần Thể."
+  },
+  {
+    "key": "SupremeHonDonTinh",
+    "vi": "Hỗn Độn Đạo Tinh",
+    "en": "Primordial Chaos Dao Essence",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Đạo tinh thuần khiết nhất của thiên địa, chỉ có thể kết tinh khi cả Dương cực và Âm cực hợp nhất. Nguyên liệu duy nhất của Hỗn Độn Đạo Thể."
+  }
+]

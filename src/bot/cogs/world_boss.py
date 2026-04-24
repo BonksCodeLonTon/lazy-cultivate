@@ -25,7 +25,7 @@ from src.game.systems.combat import (
     build_player_combatant, build_world_boss_combatant,
 )
 from src.game.systems.world_boss import (
-    ATTACK_ROUND_LIMIT,
+    ATTACK_ROUND_LIMIT, PER_ATTACK_DMG_CAP_PCT,
     compute_rewards, format_leaderboard, is_boss_live_now,
 )
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
@@ -57,12 +57,15 @@ def _boss_summary_embed(instance: WorldBossInstance, boss_data: dict) -> discord
         if 1 <= boss_data.get("realm", 1) <= len(QI_REALMS)
         else f"Realm {boss_data.get('realm')}"
     )
+    cap_dmg = int(instance.hp_max * PER_ATTACK_DMG_CAP_PCT)
     desc = (
         f"*{boss_data.get('description_vi', '')}*\n\n"
         f"🏯 **Cảnh Giới**: {realm_label}\n"
         f"⏳ **Còn lại**: {remaining_str}\n\n"
         f"❤️ `{_format_hp_bar(instance.hp_current, instance.hp_max)}`\n"
-        f"**{instance.hp_current:,} / {instance.hp_max:,}** HP ({pct*100:.2f}%)"
+        f"**{instance.hp_current:,} / {instance.hp_max:,}** HP ({pct*100:.2f}%)\n"
+        f"🛡️ Trần ST/đòn: **{PER_ATTACK_DMG_CAP_PCT * 100:.0f}%** HP Boss "
+        f"(tối đa {cap_dmg:,} mỗi trận)"
     )
     return base_embed(f"👹 {boss_data['vi']}", desc, color=color)
 
@@ -179,11 +182,17 @@ async def _execute_boss_attack(
             return
 
         char = _player_to_model(player)
-        from src.game.systems.character_stats import active_formation_gem_keys, compute_combat_stats
+        from src.game.systems.character_stats import (
+            active_formation_gem_keys, active_formation_gem_map, compute_combat_stats,
+        )
         gem_keys = active_formation_gem_keys(player)
+        gem_map = active_formation_gem_map(player)
         equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
         equip_stats = compute_equipment_stats(equipped)
-        cs = compute_combat_stats(char, gem_count=len(gem_keys), equip_stats=equip_stats, gem_keys=gem_keys)
+        cs = compute_combat_stats(
+            char, gem_count=len(gem_keys), equip_stats=equip_stats,
+            gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+        )
         if player.hp_current <= 0:
             player.hp_current = cs.hp_max
             char.hp_current = player.hp_current
@@ -196,7 +205,10 @@ async def _execute_boss_attack(
             + char.formation_realm * 9 + char.formation_level
         ) // 3
 
-        player_c = build_player_combatant(char, skill_keys, len(gem_keys), equip_stats=equip_stats, gem_keys=gem_keys)
+        player_c = build_player_combatant(
+            char, skill_keys, len(gem_keys), equip_stats=equip_stats,
+            gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+        )
         boss_c = build_world_boss_combatant(boss_data, instance.hp_current, realm_total)
 
         session_obj = CombatSession(
@@ -208,6 +220,11 @@ async def _execute_boss_attack(
         )
 
         starting_hp = boss_c.hp
+        # Snapshot hp_max BEFORE combat — mechanics like Âm Hồn Phệ used to
+        # shrink it during the local sim, which would drop the cap denominator.
+        # The is_world_boss flag now blocks that, but snapshotting makes the
+        # cap immune to any future mutation regardless.
+        starting_hp_max = boss_c.hp_max
         player_name = player.name
         instance_id = instance.id
 
@@ -254,6 +271,17 @@ async def _execute_boss_attack(
     ending_hp = max(0, boss_c.hp)
     damage_dealt_local = max(0, starting_hp - ending_hp)
 
+    # Per-attack damage cap: prevents high-grade players from one-tapping a
+    # boss in a single session and keeps any one attacker from dominating the
+    # damage leaderboard. Applied both here (early, for accurate UX) and
+    # inside ``apply_damage_atomic`` (authoritative, so client-side bypass
+    # still hits the wall). Denominator is the PRE-combat snapshot so no
+    # hp_max-mutating mechanic can shrink the cap.
+    dmg_cap = int(starting_hp_max * PER_ATTACK_DMG_CAP_PCT)
+    uncapped_damage = damage_dealt_local
+    damage_dealt_local = min(damage_dealt_local, dmg_cap)
+    cap_hit = uncapped_damage > dmg_cap
+
     # Persist damage to DB atomically. apply_damage_atomic takes a row lock so
     # concurrent attackers serialize safely: no lost updates, exactly one
     # finisher, and participation is credited only for damage actually applied
@@ -271,11 +299,14 @@ async def _execute_boss_attack(
         if player is not None:
             apply_result = await wrepo.apply_damage_atomic(
                 instance_id, damage_dealt_local, player.id,
+                damage_cap=dmg_cap,
             )
             if not apply_result.instance_missing:
                 applied_damage = apply_result.applied
                 killed_by_us = apply_result.is_finisher
                 ending_hp_shared = apply_result.new_hp
+                if apply_result.cap_hit:
+                    cap_hit = True
                 if applied_damage > 0:
                     await wrepo.upsert_damage(instance_id, player.id, applied_damage)
 
@@ -291,9 +322,15 @@ async def _execute_boss_attack(
     else:
         header = f"⚔️ **{player_name}** gây **{applied_damage:,}** sát thương!"
         color = 0x2ECC71
-    if damage_dealt_local > applied_damage:
+    if cap_hit:
+        header += (
+            f"\n🛡️ *Trần sát thương mỗi đòn: **{PER_ATTACK_DMG_CAP_PCT * 100:.0f}%** "
+            f"HP Boss ({dmg_cap:,}). Bạn gây thật **{uncapped_damage:,}** ST nhưng "
+            f"Boss chỉ nhận **{applied_damage:,}**.*"
+        )
+    elif uncapped_damage > applied_damage:
         # Overkill — someone else landed the final blow while the player was fighting
-        header += f" *(đánh thừa {damage_dealt_local - applied_damage:,} khi boss đã hết máu)*"
+        header += f" *(đánh thừa {uncapped_damage - applied_damage:,} khi boss đã hết máu)*"
 
     footer = ""
     if killed_by_us:

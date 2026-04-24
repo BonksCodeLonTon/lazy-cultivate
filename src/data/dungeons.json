@@ -367,5 +367,61 @@
     "merit_reward": 220000,
     "stone_reward": 12000,
     "cooldown_hours": 10
+  },
+  {
+    "key": "DungeonThanCot_R3",
+    "vi": "Thần Cốt Địa — Sơ Cấp",
+    "en": "Divine Bone Realm — Lesser",
+    "description": "Mật cảnh thiêng chỉ có một Apex Boss canh giữ. Đánh bại mới có cơ hội thu được **Đạo Cốt Tinh** — nguyên liệu duy nhất để chuyển hóa Thể Chất.",
+    "dungeon_type": "the_chat",
+    "required_qi_realm": 2,
+    "wave_count": 1,
+    "boss_min_grade_idx": 3,
+    "enemy_pool": ["ApexDaoCot_R3"],
+    "merit_reward": 2000,
+    "stone_reward": 100,
+    "cooldown_hours": 12
+  },
+  {
+    "key": "DungeonThanCot_R5",
+    "vi": "Thần Cốt Địa — Trung Cấp",
+    "en": "Divine Bone Realm — Greater",
+    "description": "Mật cảnh thiêng chỉ có một Apex Boss canh giữ. Đánh bại mới có cơ hội thu được **Đạo Cốt Tinh** — nguyên liệu duy nhất để chuyển hóa Thể Chất.",
+    "dungeon_type": "the_chat",
+    "required_qi_realm": 4,
+    "wave_count": 1,
+    "boss_min_grade_idx": 3,
+    "enemy_pool": ["ApexDaoCot_R5"],
+    "merit_reward": 8000,
+    "stone_reward": 400,
+    "cooldown_hours": 18
+  },
+  {
+    "key": "DungeonThanCot_R7",
+    "vi": "Thần Cốt Địa — Thượng Cấp",
+    "en": "Divine Bone Realm — Superior",
+    "description": "Mật cảnh thiêng chỉ có một Apex Boss canh giữ. Đánh bại mới có cơ hội thu được **Đạo Cốt Tinh** — nguyên liệu duy nhất để chuyển hóa Thể Chất.",
+    "dungeon_type": "the_chat",
+    "required_qi_realm": 6,
+    "wave_count": 1,
+    "boss_min_grade_idx": 4,
+    "enemy_pool": ["ApexDaoCot_R7"],
+    "merit_reward": 40000,
+    "stone_reward": 2000,
+    "cooldown_hours": 24
+  },
+  {
+    "key": "DungeonThanCot_R9",
+    "vi": "Thần Cốt Địa — Đỉnh Phong",
+    "en": "Divine Bone Realm — Apex",
+    "description": "Mật cảnh thiêng chỉ có một Apex Boss canh giữ. Đánh bại mới có cơ hội thu được **Đạo Cốt Tinh** — nguyên liệu duy nhất để chuyển hóa Thể Chất.",
+    "dungeon_type": "the_chat",
+    "required_qi_realm": 8,
+    "wave_count": 1,
+    "boss_min_grade_idx": 4,
+    "enemy_pool": ["ApexDaoCot_R9"],
+    "merit_reward": 150000,
+    "stone_reward": 8000,
+    "cooldown_hours": 36
   }
 ]

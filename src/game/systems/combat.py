@@ -20,7 +20,7 @@ from src.game.constants.balance import (
     ENEMY_RANK_BASE_ATK, ENEMY_RANK_BASE_MATK, ENEMY_RANK_BASE_DEF, ENEMY_RANK_BASE_EVASION,
     ENEMY_SCALE_MAX, ENEMY_HP_SCALE_FACTOR, ENEMY_DMG_BONUS_SCALE, ENEMY_BASE_ELEM_RES,
     ENEMY_REALM_LEVEL_STAT_MULT,
-    TRUE_DMG_PCT_CAP,
+    TRUE_DMG_PCT_CAP, TRUE_DMG_WORLD_BOSS_MULT, TRUE_DMG_WORLD_BOSS_FLOOR_PCT,
     SPD_EXTRA_TURN_SCALE, SPD_EXTRA_TURN_MAX_PCT,
     HEAL_CRIT_CHANCE, HEAL_CRIT_MULT,
     SOUL_DRAIN_PER_PROC_PCT, SOUL_DRAIN_CAP_PCT, SOUL_DRAIN_SELF_GAIN_PCT,
@@ -365,6 +365,22 @@ class CombatSession:
             self._auto_attack(actor, target)
             return
 
+        self._cast_skill(actor, target, skill_key, skill_data, mp_cost)
+
+        # Parallel formation barrage — each active formation whose signature
+        # skill is off cooldown + affordable fires after the main cast.
+        # Gives multi-slot Trận Tu true simultaneity: all active formations
+        # act each turn rather than time-sharing the main rotation.
+        if target.is_alive():
+            self._fire_formation_skills(actor, target)
+
+    def _cast_skill(
+        self, actor: Combatant, target: Combatant,
+        skill_key: str, skill_data: dict, mp_cost: int,
+    ) -> None:
+        """Execute one skill cast — MP spend, damage pipeline or support
+        effects, on-hit procs, and cooldown. Extracted so the main rotation
+        and parallel formation firing share the same machinery."""
         actor.mp = max(0, actor.mp - mp_cost)
         base_dmg = skill_data.get("base_dmg", 0)
 
@@ -422,14 +438,15 @@ class CombatSession:
                     f" | {target.name}: {target.hp:,}/{target.hp_max:,} HP"
                 )
 
-                # True damage — Kim playstyle. Percentage of target max HP that
-                # bypasses def, res, and damage-reduction. Combined skill pct
-                # (skill_data["true_dmg_pct"]) and passive pct (actor.true_dmg_pct),
-                # capped at TRUE_DMG_PCT_CAP per hit to prevent 1-shot abuse.
                 skill_true_pct = float(skill_data.get("true_dmg_pct", 0.0))
                 total_true_pct = min(
                     TRUE_DMG_PCT_CAP, skill_true_pct + actor.true_dmg_pct,
                 )
+                if target.is_world_boss:
+                    total_true_pct = min(
+                        TRUE_DMG_WORLD_BOSS_FLOOR_PCT,
+                        total_true_pct * TRUE_DMG_WORLD_BOSS_MULT,
+                    )
                 if target.is_alive() and total_true_pct > 0:
                     true_dmg = max(1, int(target.hp_max * total_true_pct))
                     if result.is_crit:
@@ -457,6 +474,31 @@ class CombatSession:
             self._apply_support_skill(skill_data, actor, target)
 
         actor.set_cooldown(skill_key, skill_data.get("cooldown", 1))
+
+    def _fire_formation_skills(self, actor: Combatant, target: Combatant) -> None:
+        """Parallel formation barrage — after the main cast, each active
+        formation's signature skill auto-fires if it's off cooldown and the
+        actor can afford the MP. Unlike the main rotation, a formation skill
+        that can't afford MP simply sits out (no auto-attack fallback).
+        Insufficient-cooldown and MP guards are silent to keep the log clean.
+        """
+        if not actor.formation_skill_keys:
+            return
+        for frm_key in actor.formation_skill_keys:
+            if not target.is_alive():
+                break
+            if actor.skill_on_cooldown(frm_key):
+                continue
+            skill_data = registry.get_skill(frm_key)
+            if not skill_data:
+                continue
+            mp_cost = skill_data.get("mp_cost", 999)
+            if actor.mp < mp_cost:
+                continue
+            self.log.append(
+                f"  🔯 **{actor.name}** · **{skill_data.get('vi', frm_key)}** (trận song phát):"
+            )
+            self._cast_skill(actor, target, frm_key, skill_data, mp_cost)
 
     def _apply_support_skill(
         self, skill_data: dict, actor: Combatant, target: Combatant
@@ -713,7 +755,16 @@ class CombatSession:
         No-op once the cap (SOUL_DRAIN_CAP_PCT of target's starting hp_max)
         is reached. The drained amount also removes current HP in parallel
         so the immediate fight impact matches the long-term one.
+
+        World bosses are immune: mutating ``hp_max`` on a shared-pool entity
+        would double-credit the attacker via the local-sim damage calc.
         """
+        if target.is_world_boss:
+            self.log.append(
+                f"    🌑 **Hồn Phệ** vô hiệu — **{target.name}** là Boss Thế Giới, "
+                f"HP Max không thể bị xói mòn."
+            )
+            return
         start = self._snapshot_original(target, "hp_max_original", target.hp_max)
         cap = int(start * SOUL_DRAIN_CAP_PCT)
         remaining = cap - target.hp_max_drained
@@ -1116,23 +1167,36 @@ def build_player_combatant(
     gem_count: int = 0,
     equip_stats: dict | None = None,
     gem_keys: list[str] | None = None,
+    gem_keys_by_formation: dict[str, list[str]] | None = None,
 ) -> Combatant:
     """Build a Combatant from a Character dataclass.
 
     Delegates all stat math to compute_combat_stats — single source of truth.
+    Multi-slot Trận Tu callers should pass ``gem_keys_by_formation`` so each
+    formation's threshold bonuses attach to the right gem set.
     """
     from src.game.systems.character_stats import compute_combat_stats
+    from src.game.systems.cultivation import get_active_formations
 
-    cs = compute_combat_stats(char, gem_count=gem_count, equip_stats=equip_stats, gem_keys=gem_keys)
+    cs = compute_combat_stats(
+        char, gem_count=gem_count, equip_stats=equip_stats,
+        gem_keys=gem_keys, gem_keys_by_formation=gem_keys_by_formation,
+    )
 
-    # Auto-inject formation skill if active and not already in skill list
+    # Formation skills — every active slot contributes its signature skill
+    # to a SEPARATE bar that fires in parallel to the main cast each turn
+    # (see ``CombatSession._fire_formation_skills``). Kept out of the main
+    # rotation so multi-slot Trận Tu truly has all its formations active
+    # simultaneously rather than time-sharing a single skill slot.
     final_skill_keys = list(player_skill_keys)
-    if char.active_formation:
-        form_data = registry.get_formation(char.active_formation)
-        if form_data:
-            frm_skill = form_data.get("formation_skill_key")
-            if frm_skill and frm_skill not in final_skill_keys:
-                final_skill_keys.append(frm_skill)
+    formation_skill_keys: list[str] = []
+    for active_key in get_active_formations(char.active_formation):
+        form_data = registry.get_formation(active_key)
+        if not form_data:
+            continue
+        frm_skill = form_data.get("formation_skill_key")
+        if frm_skill and frm_skill not in formation_skill_keys:
+            formation_skill_keys.append(frm_skill)
 
     hp_current = min(char.hp_current, cs.hp_max) if char.hp_current > 0 else cs.hp_max
     mp_current = min(char.mp_current, cs.mp_max) if char.mp_current > 0 else cs.mp_max
@@ -1150,6 +1214,7 @@ def build_player_combatant(
         mp=mp_current,
         element=None,
         skill_keys=final_skill_keys,
+        formation_skill_keys=formation_skill_keys,
         linh_can=list(char.linh_can),
         **cs_kwargs,
     )
@@ -1287,5 +1352,6 @@ def build_world_boss_combatant(
         final_dmg_bonus=enemy_dmg_bonus,
         mp_regen_pct=0.08,
         immune_hard_cc=True,
+        is_world_boss=True,      # blocks hp_max mutations (Âm soul-drain, etc.)
         final_dmg_reduce=0.15,   # World bosses shrug off 15% of damage by default
     )

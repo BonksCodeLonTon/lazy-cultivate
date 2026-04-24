@@ -17,8 +17,12 @@ from src.game.constants.grades import Grade
 from src.game.constants.realms import FORMATION_REALMS, realm_label
 from src.game.systems.cultivation import (
     compute_formation_bonuses,
+    compute_formations_bonuses,
     formation_path_multiplier,
     formation_reserve_reduction,
+    get_active_formations,
+    max_formation_slots,
+    set_active_formations,
 )
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
@@ -56,16 +60,24 @@ def _gem_display(gem_key: str | None) -> str:
 
 # ── Embeds ────────────────────────────────────────────────────────────────────
 
-def _formation_hub_embed(player, form_bonuses: dict) -> discord.Embed:
-    active_key = player.active_formation
-    form_data = registry.get_formation(active_key) if active_key else None
+def _formation_hub_embed(player, active_forms: list[dict], form_bonuses: dict, gem_map: dict) -> discord.Embed:
+    """Hub embed — renders every active formation slot plus aggregate bonuses.
+
+    - When no formations are active: zero-state card.
+    - When one is active: legacy single-formation detail view (unchanged shape
+      for existing users).
+    - When multiple are active: multi-slot summary card listing each slot.
+    """
     stages = player.formation_realm * 9 + player.formation_level
     path_mult = formation_path_multiplier(stages)
     path_label = realm_label("formation", player.formation_realm, player.formation_xp)
+    slot_cap = max_formation_slots(
+        player.body_realm, player.qi_realm, player.formation_realm,
+    )
 
-    if form_data is None:
+    if not active_forms:
         desc = (
-            "Chưa kích hoạt trận pháp nào.\n"
+            f"Chưa kích hoạt trận pháp nào. ({len(active_forms)}/{slot_cap} ổ)\n"
             "Dùng nút **🔯 Đổi Trận** để chọn trận pháp phù hợp với lộ trình tu luyện."
         )
         embed = base_embed("🔯 Trận Pháp", desc, color=0x555555)
@@ -76,9 +88,93 @@ def _formation_hub_embed(player, form_bonuses: dict) -> discord.Embed:
         )
         return embed
 
-    # Build gem slot overview
-    slots = dict(form_data and {} or {})
-    return _formation_detail_embed(player, form_data, form_bonuses)
+    if len(active_forms) == 1:
+        return _formation_detail_embed(player, active_forms[0], form_bonuses)
+
+    return _formation_multi_embed(player, active_forms, form_bonuses, gem_map, slot_cap)
+
+
+def _formation_multi_embed(
+    player, active_forms: list[dict], form_bonuses: dict,
+    gem_map: dict, slot_cap: int,
+) -> discord.Embed:
+    """Multi-slot summary: one line per active formation + aggregate bonuses."""
+    from src.db.models.formation import FORMATION_GEM_SLOTS as MAX
+    stages = player.formation_realm * 9 + player.formation_level
+    path_mult = formation_path_multiplier(stages)
+    path_label = realm_label("formation", player.formation_realm, player.formation_xp)
+    total_reserve = form_bonuses.get("_mp_reserve_pct", 0.0) * 100
+    reserve_mult = formation_reserve_reduction(stages)
+    reserve_note = (
+        f" *(giảm xuống {reserve_mult * 100:.0f}% / trận nhờ Trận Đạo)*"
+        if reserve_mult < 0.999
+        else ""
+    )
+
+    embed = base_embed(
+        f"🔯 Tổ Hợp Trận Pháp ({len(active_forms)}/{slot_cap} ổ)",
+        f"🏯 **Trận Đạo**: {path_label} · Hệ số **×{path_mult:.2f}**\n"
+        f"🔒 **Tổng MP trấn giữ**: {total_reserve:.1f}%{reserve_note}",
+        color=0x9B59B6,
+    )
+
+    # One field per active slot
+    for idx, fd in enumerate(active_forms):
+        elem = fd.get("element") or "—"
+        elem_vi = _GEM_ELEMENT_VI.get(elem, elem.title())
+        gems = gem_map.get(fd["key"], [])
+        thresholds = [int(t) for t in (fd.get("gem_threshold_bonuses") or {}).keys()]
+        next_t = next((t for t in sorted(thresholds) if t > len(gems)), None)
+        th_note = f"Ngưỡng tiếp: **{next_t}** ngọc" if next_t else "✨ Đạt ngưỡng cao nhất"
+        embed.add_field(
+            name=f"#{idx + 1}  🔯 {fd['vi']}",
+            value=(
+                f"Hệ: **{elem_vi}** · Ngọc: **{len(gems)}/{MAX}**\n"
+                f"{th_note} · Skill: `{fd.get('formation_skill_key', '—')}`"
+            ),
+            inline=False,
+        )
+
+    # Aggregated bonus summary — re-uses the single-formation formatter logic
+    lines: list[str] = []
+    pct_keys = {
+        "hp_pct", "mp_pct", "final_dmg_bonus", "final_dmg_reduce",
+        "hp_regen_pct", "mp_regen_pct", "cooldown_reduce",
+        "burn_on_hit_pct", "slow_on_hit_pct",
+    }
+    name_map = {
+        "hp_pct": "HP", "mp_pct": "MP",
+        "final_dmg_bonus": "Tăng ST", "final_dmg_reduce": "Giảm ST",
+        "hp_regen_pct": "Hồi HP%", "mp_regen_pct": "Hồi MP%",
+        "cooldown_reduce": "Hồi Chiêu-",
+        "crit_rating": "Bạo Kích",
+        "crit_dmg_rating": "Bạo Thương",
+        "crit_res_rating": "Kháng Bạo",
+        "evasion_rating": "Né",
+        "res_element": "Kháng Hệ",
+        "res_all": "Kháng TN",
+        "spd_bonus": "Tốc Độ",
+    }
+    for k, v in form_bonuses.items():
+        if k.startswith("_") or k == "note":
+            continue
+        if isinstance(v, bool):
+            if v:
+                lines.append(f"✨ **{name_map.get(k, k)}**")
+            continue
+        if not isinstance(v, (int, float)) or v == 0:
+            continue
+        label = name_map.get(k, k)
+        if k in pct_keys:
+            lines.append(f"• {label}: **+{v * 100:.1f}%**")
+        else:
+            lines.append(f"• {label}: **+{int(v):,}**")
+    embed.add_field(
+        name="📊 Hiệu Ứng Tổng",
+        value="\n".join(lines) if lines else "*(không có)*",
+        inline=False,
+    )
+    return embed
 
 
 def _formation_detail_embed(player, form_data: dict, form_bonuses: dict) -> discord.Embed:
@@ -181,32 +277,53 @@ def _formation_detail_embed(player, form_data: dict, form_bonuses: dict) -> disc
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 async def _load_formation_view_state(discord_id: int):
-    """Return (player, active_form_data, form_bonuses) from the DB."""
+    """Return (player, active_form_data_list, aggregated_form_bonuses, gem_map).
+
+    ``active_form_data_list`` is a list of registry-dict entries for every
+    currently-active slot (empty when no formation is active). Aggregated
+    bonuses are summed across all slots (``compute_formations_bonuses``)
+    with MP reservation totaling and capping at the 50 % ceiling.
+    ``gem_map`` is ``{formation_key: [gem_keys]}`` covering all active slots
+    — callers use it to route socket operations to the right formation.
+    """
     async with get_session() as session:
         prepo = PlayerRepository(session)
         player = await prepo.get_by_discord_id(discord_id)
         if player is None:
-            return None, None, None
-        form_data = registry.get_formation(player.active_formation) if player.active_formation else None
-        gem_keys = _active_formation_gem_keys(player)
+            return None, [], {}, {}
+
+        active_keys = get_active_formations(player.active_formation)
+        active_form_data = [
+            fd for fd in (registry.get_formation(k) for k in active_keys) if fd
+        ]
+        gem_map = _active_formation_gem_map(player)
         stages = player.formation_realm * 9 + player.formation_level
-        form_bonuses = compute_formation_bonuses(
-            player.active_formation,
-            gem_count=len(gem_keys),
-            gem_keys=gem_keys,
+        form_bonuses = compute_formations_bonuses(
+            active_keys,
+            gem_keys_by_formation=gem_map,
             formation_stages=stages,
-        ) if form_data else {}
-    return player, form_data, form_bonuses
+        ) if active_keys else {}
+    return player, active_form_data, form_bonuses, gem_map
+
+
+def _active_formation_gem_map(player) -> dict[str, list[str]]:
+    """Per-formation gem lists for every currently-active slot."""
+    active = set(get_active_formations(player.active_formation))
+    return {
+        f.formation_key: list((f.gem_slots or {}).values())
+        for f in (player.formations or [])
+        if f.formation_key in active
+    }
 
 
 def _active_formation_gem_keys(player) -> list[str]:
-    """Return the list of gem_keys socketed in the player's active formation."""
-    if not player.active_formation:
-        return []
-    for f in player.formations or []:
-        if f.formation_key == player.active_formation:
-            return [v for v in f.gem_slots.values()]
-    return []
+    """Flat concatenation of all active formations' gems — kept for any
+    caller that wants a single gem list (e.g. totals + thresholds summary)."""
+    gm = _active_formation_gem_map(player)
+    flat: list[str] = []
+    for keys in gm.values():
+        flat.extend(keys)
+    return flat
 
 
 async def _player_gem_inventory(player_db_id: int) -> list[dict]:
@@ -232,15 +349,16 @@ async def _player_gem_inventory(player_db_id: int) -> list[dict]:
 
 async def _render_hub(interaction: discord.Interaction, discord_id: int, back_fn=None) -> None:
     """Re-read state and render the formation hub on the current message."""
-    player, form_data, form_bonuses = await _load_formation_view_state(discord_id)
+    player, active_forms, form_bonuses, gem_map = await _load_formation_view_state(discord_id)
     if player is None:
         await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
         return
-    if form_data is None:
-        embed = _formation_hub_embed(player, {})
-    else:
-        embed = _formation_detail_embed(player, form_data, form_bonuses)
-    view = FormationHubView(discord_id, has_active=form_data is not None, back_fn=back_fn)
+    embed = _formation_hub_embed(player, active_forms, form_bonuses, gem_map)
+    view = FormationHubView(
+        discord_id,
+        has_active=bool(active_forms),
+        back_fn=back_fn,
+    )
     await interaction.edit_original_response(embed=embed, view=view)
 
 
@@ -310,35 +428,53 @@ class FormationHubView(discord.ui.View):
 
 async def _render_formation_picker(interaction: discord.Interaction, discord_id: int, back_fn=None) -> None:
     all_forms = sorted(registry.formations.values(), key=lambda f: f.get("vi", ""))
-    player, _, _ = await _load_formation_view_state(discord_id)
-    active_key = player.active_formation if player else None
+    player, _, _, _ = await _load_formation_view_state(discord_id)
+    active_keys = set(get_active_formations(player.active_formation)) if player else set()
+    slot_cap = (
+        max_formation_slots(player.body_realm, player.qi_realm, player.formation_realm)
+        if player else 1
+    )
 
-    desc_lines = ["Chọn trận pháp muốn kích hoạt. Trận đang dùng sẽ được lưu tiến độ khi chuyển."]
-    if active_key:
-        active_form = registry.get_formation(active_key)
-        if active_form:
-            desc_lines.append(f"\n🔯 Hiện đang dùng: **{active_form['vi']}**")
+    desc_lines = [
+        f"Chọn **tới {slot_cap} trận pháp** muốn kích hoạt đồng thời. "
+        f"Mỗi trận chiếm một ổ và cộng MP trấn giữ (tổng cap 50%).",
+        f"Trận đã chọn: **{len(active_keys)}/{slot_cap}**.",
+    ]
+    if active_keys:
+        names = [registry.get_formation(k) or {} for k in active_keys]
+        names_str = ", ".join(n.get("vi", "?") for n in names)
+        desc_lines.append(f"\n🔯 Hiện đang dùng: **{names_str}**")
     embed = base_embed("🔯 Chọn Trận Pháp", "\n".join(desc_lines), color=0x9B59B6)
 
     for f in all_forms[:10]:
         elem = f.get("element") or "—"
         elem_vi = _GEM_ELEMENT_VI.get(elem, elem.title())
-        marker = " ◀ Đang dùng" if f["key"] == active_key else ""
+        marker = " ◀ Đang dùng" if f["key"] in active_keys else ""
         embed.add_field(
             name=f"{f['vi']}{marker}",
             value=f"Hệ: {elem_vi} · Skill: `{f.get('formation_skill_key', '—')}`",
             inline=False,
         )
 
-    view = FormationPickerView(discord_id, all_forms, back_fn=back_fn)
+    view = FormationPickerView(
+        discord_id, all_forms, active_keys=active_keys,
+        slot_cap=slot_cap, back_fn=back_fn,
+    )
     await interaction.edit_original_response(embed=embed, view=view)
 
 
 class FormationPickerView(discord.ui.View):
-    def __init__(self, discord_id: int, forms: list[dict], back_fn=None) -> None:
+    """Multi-select picker. User chooses up to ``slot_cap`` formations at once;
+    the selection replaces ``active_formation`` (comma-separated list)."""
+
+    def __init__(
+        self, discord_id: int, forms: list[dict],
+        active_keys: set[str], slot_cap: int, back_fn=None,
+    ) -> None:
         super().__init__(timeout=180)
         self.discord_id = discord_id
         self._back_fn = back_fn
+        self._slot_cap = slot_cap
 
         options = [
             discord.SelectOption(
@@ -346,10 +482,17 @@ class FormationPickerView(discord.ui.View):
                 value=f["key"],
                 description=f"Hệ: {_GEM_ELEMENT_VI.get(f.get('element') or '', '—')}"[:100],
                 emoji="🔯",
+                default=f["key"] in active_keys,
             )
             for f in forms[:25]
         ]
-        select = discord.ui.Select(placeholder="Chọn trận pháp...", options=options, row=0)
+        select = discord.ui.Select(
+            placeholder=f"Chọn tối đa {slot_cap} trận pháp...",
+            options=options,
+            min_values=0,
+            max_values=min(slot_cap, len(options)),
+            row=0,
+        )
         select.callback = self._on_pick
         self.add_item(select)
 
@@ -364,7 +507,7 @@ class FormationPickerView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        key = interaction.data["values"][0]
+        picked = list(interaction.data["values"])[: self._slot_cap]
         async with get_session() as session:
             prepo = PlayerRepository(session)
             frepo = FormationRepository(session)
@@ -372,8 +515,11 @@ class FormationPickerView(discord.ui.View):
             if player is None:
                 await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
-            await frepo.get_or_create(player.id, key)
-            player.active_formation = key
+            # Ensure a PlayerFormation row exists for every newly selected slot
+            # so gem state is preserved across activate/deactivate cycles.
+            for k in picked:
+                await frepo.get_or_create(player.id, k)
+            player.active_formation = set_active_formations(picked)
             await prepo.save(player)
         await interaction.response.defer()
         await _render_hub(interaction, self.discord_id, back_fn=self._back_fn)
@@ -388,13 +534,28 @@ class FormationPickerView(discord.ui.View):
 
 # ── Socket manager ────────────────────────────────────────────────────────────
 
-async def _render_socket_manager(interaction: discord.Interaction, discord_id: int, back_fn=None) -> None:
-    player, form_data, _ = await _load_formation_view_state(discord_id)
-    if player is None or form_data is None:
+async def _render_socket_manager(
+    interaction: discord.Interaction, discord_id: int, back_fn=None,
+    target_formation_key: str | None = None,
+) -> None:
+    """Render the socket manager. When multiple formations are active,
+    ``target_formation_key`` specifies which one to manage — defaults to the
+    first active slot when not provided.
+    """
+    player, active_forms, _, _ = await _load_formation_view_state(discord_id)
+    if player is None or not active_forms:
         await interaction.edit_original_response(
             embed=error_embed("Chưa kích hoạt trận pháp nào."), view=None,
         )
         return
+
+    # Pick which formation to manage gems for.
+    if target_formation_key is None:
+        target_formation_key = active_forms[0]["key"]
+    form_data = next(
+        (fd for fd in active_forms if fd["key"] == target_formation_key),
+        active_forms[0],
+    )
 
     active_form = next(
         (f for f in (player.formations or []) if f.formation_key == form_data["key"]),
@@ -406,9 +567,14 @@ async def _render_socket_manager(interaction: discord.Interaction, discord_id: i
 
     lines = [
         f"Khảm ngọc để mở ngưỡng **1 / 3 / 5 / 7 / {FORMATION_GEM_SLOTS}**.",
-        f"**Trận đang dùng**: {form_data['vi']}",
-        "",
+        f"**Trận đang khảm**: {form_data['vi']}",
     ]
+    if len(active_forms) > 1:
+        lines.append(
+            f"*(Đang kích hoạt {len(active_forms)} trận — chọn dropdown trên "
+            f"để đổi trận cần khảm.)*"
+        )
+    lines.append("")
     for i in range(FORMATION_GEM_SLOTS):
         gem_key = gem_slots.get(str(i))
         lines.append(f"`[{i}]` {_gem_display(gem_key)}")
@@ -426,12 +592,20 @@ async def _render_socket_manager(interaction: discord.Interaction, discord_id: i
         color=0x9B59B6,
     )
 
-    view = SocketManagerView(discord_id, gem_slots, gems_inv, back_fn=back_fn)
+    view = SocketManagerView(
+        discord_id, gem_slots, gems_inv, back_fn=back_fn,
+        active_forms=active_forms, target_formation_key=form_data["key"],
+    )
     await interaction.edit_original_response(embed=embed, view=view)
 
 
 class SocketManagerView(discord.ui.View):
-    """Pick a slot + (optionally) a gem → Khảm / Gỡ."""
+    """Pick a slot + (optionally) a gem → Khảm / Gỡ.
+
+    When multiple formations are active the view also shows a top-row
+    formation selector so the user can choose which formation to manage gems
+    for without leaving the socket hub.
+    """
 
     def __init__(
         self,
@@ -439,6 +613,8 @@ class SocketManagerView(discord.ui.View):
         gem_slots: dict,
         gems_inv: list[dict],
         back_fn=None,
+        active_forms: list[dict] | None = None,
+        target_formation_key: str | None = None,
     ) -> None:
         super().__init__(timeout=240)
         self.discord_id = discord_id
@@ -447,8 +623,32 @@ class SocketManagerView(discord.ui.View):
         self._back_fn = back_fn
         self._selected_slot: int | None = None
         self._selected_gem_key: str | None = None
+        self._target_formation_key = target_formation_key
+        self._active_forms = active_forms or []
 
-        # Row 0: slot select — all 10 slots, showing whether occupied
+        # Row 0: formation selector (only shown when ≥2 active slots).
+        # Keeps simple single-formation UI unchanged for normal players.
+        row_offset = 0
+        if len(self._active_forms) >= 2 and target_formation_key:
+            form_opts = [
+                discord.SelectOption(
+                    label=fd["vi"][:100],
+                    value=fd["key"],
+                    default=(fd["key"] == target_formation_key),
+                    emoji="🔯",
+                )
+                for fd in self._active_forms
+            ]
+            self._form_select = discord.ui.Select(
+                placeholder="🔯 Chọn trận pháp cần khảm...",
+                options=form_opts,
+                row=0,
+            )
+            self._form_select.callback = self._on_form_pick
+            self.add_item(self._form_select)
+            row_offset = 1
+
+        # Slot select — all 10 slots, showing whether occupied
         slot_opts = []
         for i in range(FORMATION_GEM_SLOTS):
             gk = gem_slots.get(str(i))
@@ -468,12 +668,12 @@ class SocketManagerView(discord.ui.View):
         self._slot_select = discord.ui.Select(
             placeholder="🎯 Chọn slot...",
             options=slot_opts,
-            row=0,
+            row=row_offset,
         )
         self._slot_select.callback = self._on_slot_pick
         self.add_item(self._slot_select)
 
-        # Row 1: gem select from inventory (only when gems exist)
+        # Gem select from inventory (only when gems exist)
         if gems_inv:
             gem_opts = []
             for g in gems_inv[:25]:
@@ -488,25 +688,37 @@ class SocketManagerView(discord.ui.View):
             self._gem_select = discord.ui.Select(
                 placeholder="💠 Chọn ngọc để khảm...",
                 options=gem_opts,
-                row=1,
+                row=row_offset + 1,
             )
             self._gem_select.callback = self._on_gem_pick
             self.add_item(self._gem_select)
         else:
             self._gem_select = None
 
-        # Row 2: action buttons
-        inlay_btn = discord.ui.Button(label="✨ Khảm", style=discord.ButtonStyle.green, row=2)
+        # Action buttons on the last row (Discord caps at row=4).
+        action_row = min(4, row_offset + 2)
+        inlay_btn = discord.ui.Button(label="✨ Khảm", style=discord.ButtonStyle.green, row=action_row)
         inlay_btn.callback = self._on_inlay
         self.add_item(inlay_btn)
 
-        remove_btn = discord.ui.Button(label="🗑️ Gỡ Ngọc", style=discord.ButtonStyle.red, row=2)
+        remove_btn = discord.ui.Button(label="🗑️ Gỡ Ngọc", style=discord.ButtonStyle.red, row=action_row)
         remove_btn.callback = self._on_remove
         self.add_item(remove_btn)
 
-        back_btn = discord.ui.Button(label="◀ Trở Lại Trận", style=discord.ButtonStyle.secondary, row=2)
+        back_btn = discord.ui.Button(label="◀ Trở Lại Trận", style=discord.ButtonStyle.secondary, row=action_row)
         back_btn.callback = self._on_back
         self.add_item(back_btn)
+
+    async def _on_form_pick(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        picked = interaction.data["values"][0]
+        await _render_socket_manager(
+            interaction, self.discord_id, back_fn=self._back_fn,
+            target_formation_key=picked,
+        )
 
     def _guard(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self.discord_id
@@ -547,11 +759,12 @@ class SocketManagerView(discord.ui.View):
             frepo = FormationRepository(session)
             irepo = InventoryRepository(session)
             player = await prepo.get_by_discord_id(self.discord_id)
-            if player is None or not player.active_formation:
+            if player is None or not self._target_formation_key:
                 await interaction.followup.send(
                     embed=error_embed("Chưa kích hoạt trận pháp."), ephemeral=True,
                 )
                 return
+            target = self._target_formation_key
 
             gem_data = registry.get_item(self._selected_gem_key) or {}
             grade = Grade(gem_data.get("grade", 1))
@@ -563,7 +776,7 @@ class SocketManagerView(discord.ui.View):
                 return
 
             # If slot was occupied, return the old gem to inventory first
-            existing = await frepo.get(player.id, player.active_formation)
+            existing = await frepo.get(player.id, target)
             old_key = None
             if existing:
                 old_key = existing.gem_slots.get(str(self._selected_slot))
@@ -573,12 +786,15 @@ class SocketManagerView(discord.ui.View):
                 await irepo.add_item(player.id, old_key, old_grade, 1)
 
             await frepo.inlay_gem(
-                player.id, player.active_formation,
+                player.id, target,
                 self._selected_slot, self._selected_gem_key,
             )
             await irepo.remove_item(player.id, self._selected_gem_key, grade, 1)
 
-        await _render_socket_manager(interaction, self.discord_id, back_fn=self._back_fn)
+        await _render_socket_manager(
+            interaction, self.discord_id, back_fn=self._back_fn,
+            target_formation_key=self._target_formation_key,
+        )
 
     async def _on_remove(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
@@ -597,13 +813,14 @@ class SocketManagerView(discord.ui.View):
             frepo = FormationRepository(session)
             irepo = InventoryRepository(session)
             player = await prepo.get_by_discord_id(self.discord_id)
-            if player is None or not player.active_formation:
+            if player is None or not self._target_formation_key:
                 await interaction.followup.send(
                     embed=error_embed("Chưa kích hoạt trận pháp."), ephemeral=True,
                 )
                 return
+            target = self._target_formation_key
 
-            existing = await frepo.get(player.id, player.active_formation)
+            existing = await frepo.get(player.id, target)
             old_key = existing.gem_slots.get(str(self._selected_slot)) if existing else None
             if not old_key:
                 await interaction.followup.send(
@@ -614,9 +831,12 @@ class SocketManagerView(discord.ui.View):
             old_data = registry.get_item(old_key) or {}
             old_grade = Grade(old_data.get("grade", 1))
             await irepo.add_item(player.id, old_key, old_grade, 1)
-            await frepo.remove_gem(player.id, player.active_formation, self._selected_slot)
+            await frepo.remove_gem(player.id, target, self._selected_slot)
 
-        await _render_socket_manager(interaction, self.discord_id, back_fn=self._back_fn)
+        await _render_socket_manager(
+            interaction, self.discord_id, back_fn=self._back_fn,
+            target_formation_key=self._target_formation_key,
+        )
 
     async def _on_back(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

@@ -14,7 +14,10 @@
       "crit_rating": 60,
       "res_all": 15
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2
+    }
   },
   {
     "key": "ConstitutionHuyenQuiThe",
@@ -31,7 +34,11 @@
       "final_dmg_reduce": 0.04,
       "hp_regen_pct": 0.01
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 1,
+      "ArchHoTheTinh": 2
+    }
   },
   {
     "key": "ConstitutionBachHoThe",
@@ -47,7 +54,11 @@
       "crit_rating": 120,
       "crit_dmg_rating": 60
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 1,
+      "ArchSatYTinh": 2
+    }
   },
   {
     "key": "ConstitutionThanTocThe",
@@ -64,7 +75,11 @@
       "cooldown_reduce": 0.05,
       "crit_rating": 40
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 1,
+      "ArchPhongDangTinh": 2
+    }
   },
   {
     "key": "ConstitutionTuKiemThe",
@@ -81,7 +96,12 @@
       "crit_dmg_rating": 150,
       "true_dmg_pct": 0.05
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ArchSatYTinh": 3
+    }
   },
   {
     "key": "ConstitutionHuyenThienKien",
@@ -99,7 +119,12 @@
       "hp_regen_pct": 0.02,
       "crit_res_rating": 150
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ArchHoTheTinh": 3
+    }
   },
   {
     "key": "ConstitutionDaoCoThe",
@@ -117,7 +142,12 @@
       "cooldown_reduce": 0.08,
       "final_dmg_bonus": 0.05
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ArchThongHueTinh": 3
+    }
   },
   {
     "key": "ConstitutionKimCotThe",
@@ -133,7 +163,11 @@
       "crit_rating": 60,
       "bleed_on_hit_pct": 0.04
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssKim": 3
+    }
   },
   {
     "key": "ConstitutionBachLuyenKim",
@@ -150,7 +184,12 @@
       "true_dmg_pct": 0.04,
       "bleed_dmg_bonus": 0.1
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssKim": 4
+    }
   },
   {
     "key": "ConstitutionThaiCucKim",
@@ -170,7 +209,13 @@
       "true_dmg_pct": 0.12,
       "bleed_dmg_bonus": 0.25
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssKim": 6
+    }
   },
   {
     "key": "ConstitutionMocLinhThe",
@@ -186,7 +231,11 @@
       "hp_regen_pct": 0.01,
       "heal_pct": 0.05
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssMoc": 3
+    }
   },
   {
     "key": "ConstitutionThanhMocThe",
@@ -203,7 +252,12 @@
       "dot_leech_pct": 0.1,
       "heal_pct": 0.1
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssMoc": 4
+    }
   },
   {
     "key": "ConstitutionHongMongMoc",
@@ -222,7 +276,13 @@
       "moc_res_shred": 0.15,
       "heal_can_crit": true
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssMoc": 6
+    }
   },
   {
     "key": "ConstitutionThuyLinhThe",
@@ -238,7 +298,11 @@
       "cooldown_reduce": 0.05,
       "mp_regen_pct": 0.01
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssThuy": 3
+    }
   },
   {
     "key": "ConstitutionBangTinhThuy",
@@ -256,7 +320,12 @@
       "mp_regen_pct": 0.02,
       "mana_stack_per_attack": 1
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssThuy": 4
+    }
   },
   {
     "key": "ConstitutionCuuTuyetThuy",
@@ -277,7 +346,13 @@
       "reflect_applies_effects": true,
       "thuy_res_shred": 0.15
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssThuy": 6
+    }
   },
   {
     "key": "ConstitutionHoaLinhThe",
@@ -293,7 +368,11 @@
       "burn_on_hit_pct": 0.08,
       "crit_rating": 40
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssHoa": 3
+    }
   },
   {
     "key": "ConstitutionLietHoaThe",
@@ -311,7 +390,12 @@
       "bonus_dmg_vs_burn": 0.15,
       "burn_dmg_bonus": 0.1
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssHoa": 4
+    }
   },
   {
     "key": "ConstitutionDeHoaPhanThien",
@@ -332,7 +416,13 @@
       "fire_res_shred": 0.2,
       "dot_can_crit": true
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssHoa": 6
+    }
   },
   {
     "key": "ConstitutionThoGiapThe",
@@ -348,7 +438,11 @@
       "shield_regen_pct": 0.02,
       "res_all": 20
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssTho": 3
+    }
   },
   {
     "key": "ConstitutionCuongThoThe",
@@ -366,7 +460,12 @@
       "res_all": 40,
       "stun_on_hit_pct": 0.05
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssTho": 4
+    }
   },
   {
     "key": "ConstitutionThienDiaCuong",
@@ -387,7 +486,13 @@
       "stun_on_hit_pct": 0.1,
       "res_all": 60
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssTho": 6
+    }
   },
   {
     "key": "ConstitutionLoiLinhThe",
@@ -403,7 +508,11 @@
       "crit_rating": 60,
       "shock_on_hit_pct": 0.08
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssLoi": 3
+    }
   },
   {
     "key": "ConstitutionTuLoiThe",
@@ -421,7 +530,12 @@
       "loi_res_shred": 0.1,
       "final_dmg_bonus": 0.05
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssLoi": 4
+    }
   },
   {
     "key": "ConstitutionThienLoiThan",
@@ -442,7 +556,13 @@
       "turn_steal_pct": 0.12,
       "final_dmg_bonus": 0.1
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssLoi": 6
+    }
   },
   {
     "key": "ConstitutionPhongLinhThe",
@@ -458,7 +578,11 @@
       "spd_bonus": 3,
       "mark_on_hit_pct": 0.05
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssPhong": 3
+    }
   },
   {
     "key": "ConstitutionTieuPhongThe",
@@ -476,7 +600,12 @@
       "crit_rating_vs_marked": 120,
       "phong_res_shred": 0.08
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssPhong": 4
+    }
   },
   {
     "key": "ConstitutionCuongPhongThan",
@@ -497,7 +626,13 @@
       "phong_res_shred": 0.18,
       "final_dmg_bonus": 0.08
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssPhong": 6
+    }
   },
   {
     "key": "ConstitutionQuangMinhThe",
@@ -514,7 +649,11 @@
       "cleanse_on_turn_pct": 0.08,
       "heal_pct": 0.05
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssQuang": 3
+    }
   },
   {
     "key": "ConstitutionThanhQuangThe",
@@ -532,7 +671,12 @@
       "cleanse_on_turn_pct": 0.12,
       "heal_pct": 0.1
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssQuang": 4
+    }
   },
   {
     "key": "ConstitutionVoLuongQuang",
@@ -554,7 +698,13 @@
       "heal_reduce_on_hit_pct": 0.25,
       "quang_res_shred": 0.15
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssQuang": 6
+    }
   },
   {
     "key": "ConstitutionAmLinhThe",
@@ -570,7 +720,11 @@
       "soul_drain_on_hit_pct": 0.08,
       "debuff_immune_pct": 0.05
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssAm": 3
+    }
   },
   {
     "key": "ConstitutionHuyenAmThe",
@@ -588,7 +742,12 @@
       "am_res_shred": 0.1,
       "debuff_immune_pct": 0.1
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssAm": 4
+    }
   },
   {
     "key": "ConstitutionUMinhAm",
@@ -608,7 +767,13 @@
       "debuff_immune_pct": 0.2,
       "poison_dmg_bonus": 0.2
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssAm": 6
+    }
   },
   {
     "key": "ConstitutionPhaTien",
@@ -620,13 +785,19 @@
     "cost_merit": 100000,
     "passive_description_vi": "Thần thể phá thiên, mỗi đòn tấn công đều mang sức mạnh hủy diệt. Bạo kích đẩy lên đỉnh cao và phá nát mọi phòng ngự.",
     "stat_bonuses": {
-      "final_dmg_bonus": 0.3,
+      "final_dmg_bonus": 0.25,
       "crit_rating": 400,
       "crit_dmg_rating": 400,
-      "true_dmg_pct": 0.1,
+      "true_dmg_pct": 0.04,
       "paralysis_on_crit": true
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchSatYTinh": 5
+    }
   },
   {
     "key": "ConstitutionHauTo",
@@ -645,7 +816,13 @@
       "stun_on_hit_pct": 0.08,
       "shield_regen_pct": 0.05
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchHoTheTinh": 5
+    }
   },
   {
     "key": "ConstitutionNgheDinh",
@@ -664,7 +841,13 @@
       "shock_on_hit_pct": 0.2,
       "turn_steal_pct": 0.08
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchLoiNguyenTinh": 5
+    }
   },
   {
     "key": "ConstitutionTieuDao",
@@ -683,7 +866,13 @@
       "damage_bonus_from_evasion_pct": 0.12,
       "cooldown_reduce": 0.1
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchPhongDangTinh": 5
+    }
   },
   {
     "key": "ConstitutionKhiHai",
@@ -702,7 +891,13 @@
       "mana_stack_per_attack": 1,
       "mana_stack_dmg_bonus": 0.03
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchThongHueTinh": 5
+    }
   },
   {
     "key": "ConstitutionBatDiet",
@@ -721,7 +916,13 @@
       "heal_can_crit": true,
       "final_dmg_reduce": 0.08
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchTrungSinhTinh": 5
+    }
   },
   {
     "key": "ConstitutionTranGioi",
@@ -740,7 +941,14 @@
       "final_dmg_reduce": 0.1,
       "poison_immunity": true
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchHoTheTinh": 4,
+      "ArchTrungSinhTinh": 2
+    }
   },
   {
     "key": "ConstitutionLinhLung",
@@ -758,7 +966,12 @@
       "cooldown_reduce": 0.05,
       "crit_rating": 80
     },
-    "special_requirements": null
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 2,
+      "ArchThongHueTinh": 4
+    }
   },
   {
     "key": "ConstitutionThaiDuong",
@@ -778,7 +991,15 @@
       "fire_res_shred": 0.2,
       "dot_can_crit": true
     },
-    "special_requirements": "requires_dao_ti_yang"
+    "special_requirements": "requires_dao_ti_yang",
+    "materials": {
+      "MatDaoCotTinh": 8,
+      "MatThienDaoTuy": 5,
+      "MatHonNguyenCot": 2,
+      "SupremeDuongTinh": 3,
+      "ElemEssHoa": 3
+    },
+    "activation_chance": 0.25
   },
   {
     "key": "ConstitutionThaiAm",
@@ -798,7 +1019,15 @@
       "am_res_shred": 0.15,
       "barrier_on_cleanse": true
     },
-    "special_requirements": "requires_dao_ti_yin"
+    "special_requirements": "requires_dao_ti_yin",
+    "materials": {
+      "MatDaoCotTinh": 8,
+      "MatThienDaoTuy": 5,
+      "MatHonNguyenCot": 2,
+      "SupremeAmTinh": 3,
+      "ElemEssThuy": 3
+    },
+    "activation_chance": 0.25
   },
   {
     "key": "ConstitutionHonDon",
@@ -808,16 +1037,29 @@
     "element": null,
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Hỗn độn chi thể, hội tụ đạo lý nguyên thủy của thiên địa. Tất cả passive của các thần thể khác đều được tăng cường 2.0 lần, kèm theo chỉ số nền áp chế vạn đạo. Yêu cầu giác ngộ toàn bộ đạo ti.",
+    "passive_description_vi": "Hỗn độn chi thể, hội tụ đạo lý nguyên thủy của thiên địa. Passive nền của các thần thể khác được khuếch đại 1.25 lần (không áp dụng cho hệ số sát thương/hồi chiêu đã nhân kép), kèm chỉ số nền áp chế vạn đạo. Yêu cầu giác ngộ toàn bộ đạo ti.",
     "stat_bonuses": {
-      "all_passives_multiplier": 2.0,
+      "all_passives_multiplier": 1.25,
       "hp_pct": 0.3,
       "mp_pct": 0.3,
-      "final_dmg_bonus": 0.2,
-      "crit_rating": 400,
-      "res_all": 80,
-      "cooldown_reduce": 0.1
+      "final_dmg_bonus": 0.15,
+      "crit_rating": 300,
+      "res_all": 60,
+      "cooldown_reduce": 0.08
     },
-    "special_requirements": "requires_all_dao_ti"
+    "special_requirements": [
+      "requires_the_tu",
+      "requires_all_dao_ti",
+      "requires_all_legendary_equipped"
+    ],
+    "materials": {
+      "MatDaoCotTinh": 15,
+      "MatThienDaoTuy": 10,
+      "MatHonNguyenCot": 5,
+      "SupremeDuongTinh": 2,
+      "SupremeAmTinh": 2,
+      "SupremeHonDonTinh": 1
+    },
+    "activation_chance": 0.2
   }
 ]

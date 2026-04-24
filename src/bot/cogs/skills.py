@@ -661,19 +661,28 @@ def _build_skills_embed_view(
     else:
         for s in equipped:
             skill_data = registry.get_skill(s.skill_key)
-            if skill_data:
-                t_emoji = _TYPE_EMOJI.get(skill_data.get("category", ""), "❓")
-                eff_str = ", ".join(skill_data.get("effects", [])) or "—"
-                embed.add_field(
-                    name=f"[Slot {s.slot_index}] {t_emoji} {skill_data['vi']}",
-                    value=(
-                        f"MP: **{skill_data.get('mp_cost', 0)}** | "
-                        f"DMG: **{skill_data.get('base_dmg', 0)}** | "
-                        f"CD: **{skill_data.get('cooldown', 1)}t**\n"
-                        f"Hiệu ứng: {eff_str}"
-                    ),
-                    inline=True,
-                )
+            if not skill_data:
+                continue
+            category = skill_data.get("category", "")
+            t_emoji   = _TYPE_EMOJI.get(category, "❓")
+            t_label   = _TYPE_LABEL.get(category, category or "—")
+            elem      = skill_data.get("element")
+            elem_tag  = (
+                f" · {_ELEM_EMOJI.get(elem, '')} {elem.capitalize()}"
+                if elem else ""
+            )
+            effects = _format_skill_effects(skill_data.get("effects", []))
+            embed.add_field(
+                name=f"[Slot {s.slot_index}] {t_emoji} {skill_data['vi']}",
+                value=(
+                    f"*{t_label}{elem_tag}*\n"
+                    f"💙 MP **{skill_data.get('mp_cost', 0)}** · "
+                    f"⚔️ ST **{skill_data.get('base_dmg', 0)}** · "
+                    f"⏱️ CD **{skill_data.get('cooldown', 1)}t**\n"
+                    f"**Hiệu ứng:** {effects}"
+                ),
+                inline=False,
+            )
     footer = "Nhấn 🗑 để xoá kỹ năng khỏi slot."
     if back_fn:
         footer += " • ◀ để trở về danh sách."

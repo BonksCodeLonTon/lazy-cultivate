@@ -2,8 +2,9 @@
 
 Supports two drop modes per entry:
 
-  Independent  (no pool_id)    — each entry rolls on its own; weight is a 0–100
-                                  percentage chance. Multiple items can drop at once.
+  Independent  (no pool_id)    — each entry rolls on its own; weight is in
+                                  units of ``POOL_RANGE`` (1,000,000 = 100%).
+                                  Multiple items can drop at once.
 
   Exclusive pool (pool_id="X") — all entries sharing the same pool_id compete.
                                   The pool fires once with a chance equal to the
@@ -18,7 +19,7 @@ Optional per-entry fields:
 Entry format (JSON):
   {
     "item_key":  "MatHoaThanDan",
-    "weight":    5,           // 0-100 chance for independent; relative for pool
+    "weight":    50000,       // out of 1,000,000 (5%) for independent; relative for pool
     "qty_min":   1,
     "qty_max":   2,
     "pool_id":   null,        // null = independent; string = exclusive pool key
@@ -31,7 +32,10 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass, field
 
-POOL_RANGE = 100.0
+# Base weight reference — a weight of POOL_RANGE is a guaranteed drop (100%).
+# Scaled from the original 100.0 to 1,000,000.0 to allow finer probability
+# tuning (minimum step = 0.0001% when weight==1).
+POOL_RANGE = 1_000_000.0
 
 
 @dataclass
@@ -103,8 +107,9 @@ def _roll_independent(entry: dict, rng: random.Random, luck_pct: float, result: 
 def _roll_pool(entries: list[dict], rng: random.Random, luck_pct: float, result: DropResult) -> None:
     """Weighted exclusive selection within a pool.
 
-    Pool activation chance = max individual weight in the group (capped at 100).
-    If the pool fires, one entry is chosen proportionally by its effective weight.
+    Pool activation chance = max individual weight in the group (clamped to
+    ``POOL_RANGE`` = 1,000,000). If the pool fires, one entry is chosen
+    proportionally by its effective weight.
     """
     weighted = [(e, _effective_weight(e, luck_pct)) for e in entries]
     pool_chance = max(w for _, w in weighted)

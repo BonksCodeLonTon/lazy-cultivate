@@ -395,7 +395,7 @@ _DEBUFFS_CC: list[EffectMeta] = [
         vi="Cắt Đứt Linh Khí", en="Qi Severance",
         kind=EffectKind.DEBUFF,
         description_vi="Linh khí bị cắt đứt, giảm hiệu quả hồi sinh lực.",
-        stat_bonus={"hp_regen_pct": -0.03},
+        stat_bonus={"hp_regen_pct": -0.3},
         emoji="✂️",
     ),
     EffectMeta(

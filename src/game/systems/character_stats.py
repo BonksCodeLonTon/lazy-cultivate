@@ -26,19 +26,45 @@ from src.game.engine import linh_can_effects as lc_effects
 
 
 def active_formation_gem_keys(player) -> list[str]:
-    """Extract the gem_keys list of the player's active formation.
+    """Flattened gem_keys across EVERY active formation slot.
 
-    Accepts any object exposing ``active_formation`` and an iterable ``formations``
-    whose items have ``formation_key`` + ``gem_slots``. Returns an empty list when
-    no formation is active or no gems are inlaid.
+    ``player.active_formation`` holds a comma-separated list of formation keys
+    (one per active slot); this returns the concatenation of each active
+    formation's inlaid gems. Preserves the legacy single-slot return shape
+    when the player has only one formation equipped.
     """
-    active = getattr(player, "active_formation", None)
-    if not active:
+    from src.game.systems.cultivation import get_active_formations
+
+    actives = get_active_formations(getattr(player, "active_formation", None))
+    if not actives:
         return []
-    for f in getattr(player, "formations", None) or []:
-        if getattr(f, "formation_key", None) == active:
-            return list((f.gem_slots or {}).values())
-    return []
+    by_key = {
+        getattr(f, "formation_key", None): list((f.gem_slots or {}).values())
+        for f in getattr(player, "formations", None) or []
+    }
+    out: list[str] = []
+    for key in actives:
+        out.extend(by_key.get(key) or [])
+    return out
+
+
+def active_formation_gem_map(player) -> dict[str, list[str]]:
+    """Per-formation gem lists keyed by formation_key, restricted to the
+    formations currently in an active slot. Used by compute_formations_bonuses
+    so each formation's own threshold bonuses + per-gem elemental bonuses fire
+    with the right gem set — flattening via ``active_formation_gem_keys``
+    would misattribute gems across formations.
+    """
+    from src.game.systems.cultivation import get_active_formations
+
+    actives = set(get_active_formations(getattr(player, "active_formation", None)))
+    if not actives:
+        return {}
+    return {
+        getattr(f, "formation_key"): list((f.gem_slots or {}).values())
+        for f in getattr(player, "formations", None) or []
+        if getattr(f, "formation_key", None) in actives
+    }
 
 
 @dataclass
@@ -150,6 +176,7 @@ def compute_combat_stats(
     gem_count: int = 0,
     equip_stats: dict | None = None,
     gem_keys: list[str] | None = None,
+    gem_keys_by_formation: dict[str, list[str]] | None = None,
 ) -> CombatStats:
     """Compute all derived combat stats for a player character.
 
@@ -160,13 +187,16 @@ def compute_combat_stats(
     Args:
         char:        Character dataclass (from DB or model layer).
         gem_count:   Number of gems inlaid in the active formation (used if
-                     ``gem_keys`` is not supplied).
+                     ``gem_keys`` is not supplied and only one slot active).
         equip_stats: Pre-computed equipment stat totals from
                      ``compute_equipment_stats(equipped_instances)``.
                      Pass None (or {}) when equipment should be ignored.
-        gem_keys:    Explicit list of gem item_keys (e.g. ``["GemKim_2", ...]``).
-                     When provided, per-gem elemental bonuses are added on top
-                     of the formation's threshold bonuses.
+        gem_keys:    Flat gem list — valid ONLY when the character has a
+                     single formation active. Multi-slot Trận Tu callers must
+                     pass ``gem_keys_by_formation`` instead so threshold +
+                     per-gem bonuses attach to the right formation.
+        gem_keys_by_formation: ``{formation_key: [gem_keys]}`` when multiple
+                     formations are active. Takes precedence over ``gem_keys``.
 
     Returns:
         CombatStats with every field ready for use in Combatant construction
@@ -176,7 +206,8 @@ def compute_combat_stats(
     from src.game.systems.cultivation import (
         compute_hp_max, compute_mp_max,
         compute_atk, compute_matk, compute_def_stat,
-        compute_formation_bonuses, compute_constitution_bonuses, merge_bonuses,
+        compute_formations_bonuses, compute_constitution_bonuses, merge_bonuses,
+        get_active_formations,
     )
     from src.game.constants.linh_can import compute_linh_can_bonuses
 
@@ -184,10 +215,20 @@ def compute_combat_stats(
     # Trận Đạo cultivation progress scales formation bonuses: late-game
     # formation cultivators get meaningfully stronger formation effects.
     formation_stages = char.formation_realm * 9 + char.formation_level
-    form_bonuses  = compute_formation_bonuses(
-        char.active_formation,
-        gem_count=gem_count,
-        gem_keys=gem_keys,
+    active_formations = get_active_formations(char.active_formation)
+
+    # Build a per-formation gem map. Callers that only have a flat gem list
+    # (legacy single-formation flow) still work because a single active
+    # formation always owns all the gems.
+    if gem_keys_by_formation is None:
+        if len(active_formations) == 1 and gem_keys:
+            gem_keys_by_formation = {active_formations[0]: list(gem_keys)}
+        else:
+            gem_keys_by_formation = {}
+
+    form_bonuses = compute_formations_bonuses(
+        active_formations,
+        gem_keys_by_formation=gem_keys_by_formation,
         formation_stages=formation_stages,
     )
     const_bonuses = compute_constitution_bonuses(char.constitution_type)

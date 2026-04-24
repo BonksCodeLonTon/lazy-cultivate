@@ -316,6 +316,8 @@ class InventoryCog(commands.Cog, name="Inventory"):
 
             frepo = FormationRepository(session)
             await frepo.get_or_create(player.id, formation_key)
+            # Legacy CLI: single-formation assignment. The new formation hub
+            # UI is where multi-slot Trận Tu manages multiple slots.
             player.active_formation = formation_key
             await prepo.save(player)
 
@@ -349,11 +351,16 @@ class InventoryCog(commands.Cog, name="Inventory"):
                 await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
 
-            if not player.active_formation:
+            from src.game.systems.cultivation import get_active_formations
+            active_keys = get_active_formations(player.active_formation)
+            if not active_keys:
                 await interaction.response.send_message(
                     embed=error_embed("Chưa chọn trận pháp. Dùng `/formation <key>` trước."), ephemeral=True
                 )
                 return
+            # CLI inlay targets the FIRST active slot. Multi-slot management
+            # (pick which formation to inlay into) is in the formation hub UI.
+            target_formation = active_keys[0]
 
             irepo = InventoryRepository(session)
             grade = Grade(gem_data.get("grade", 1))
@@ -364,7 +371,7 @@ class InventoryCog(commands.Cog, name="Inventory"):
                 return
 
             frepo = FormationRepository(session)
-            formation = await frepo.inlay_gem(player.id, player.active_formation, slot_index, gem_key)
+            formation = await frepo.inlay_gem(player.id, target_formation, slot_index, gem_key)
             await irepo.remove_item(player.id, gem_key, grade, 1)
 
         filled = len(formation.gem_slots)
@@ -535,95 +542,6 @@ class InventoryCog(commands.Cog, name="Inventory"):
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @app_commands.command(name="constitution", description="Chuyển đổi Thần Thể (Thể Chất)")
-    @app_commands.describe(constitution_key="Key Thể Chất (vd: ConstitutionPhaTien)")
-    async def constitution(self, interaction: discord.Interaction, constitution_key: str) -> None:
-        const_data = registry.get_constitution(constitution_key)
-        if not const_data:
-            available = ", ".join(registry.constitutions.keys())
-            await interaction.response.send_message(
-                embed=error_embed(f"Thể chất không hợp lệ.\nCó sẵn: `{available}`"),
-                ephemeral=True,
-            )
-            return
-
-        async with get_session() as session:
-            prepo = PlayerRepository(session)
-            player = await prepo.get_by_discord_id(interaction.user.id)
-            if player is None:
-                await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
-                return
-
-            # Check special requirements
-            req = const_data.get("special_requirements")
-            if req == "requires_dao_ti_yang" or req == "requires_dao_ti_yin":
-                if not player.dao_ti_unlocked:
-                    await interaction.response.send_message(
-                        embed=error_embed(
-                            f"**{const_data['vi']}** yêu cầu mở khóa **Đạo Thể** trước.\n"
-                            f"Đạo Thể mở khi Luyện Thể đột phá đến Cảnh Giới 9."
-                        ),
-                        ephemeral=True,
-                    )
-                    return
-            elif req == "requires_all_dao_ti":
-                # Requires all three axes at max — simplify: requires dao_ti_unlocked for now
-                if not player.dao_ti_unlocked:
-                    await interaction.response.send_message(
-                        embed=error_embed(
-                            f"**{const_data['vi']}** yêu cầu giác ngộ toàn bộ Đạo Thể (Nhập Thánh cả ba trục)."
-                        ),
-                        ephemeral=True,
-                    )
-                    return
-
-            # Check and deduct merit cost
-            cost = const_data.get("cost_merit", 0)
-            if cost > 0:
-                if player.merit < cost:
-                    await interaction.response.send_message(
-                        embed=error_embed(
-                            f"Không đủ Công Đức. Cần ✨ **{cost:,}**, có **{player.merit:,}**."
-                        ),
-                        ephemeral=True,
-                    )
-                    return
-                player.merit -= cost
-
-            player.constitution_type = constitution_key
-            await prepo.save(player)
-
-        # Build bonus preview
-        bonuses = const_data.get("stat_bonuses", {})
-        bonus_lines = []
-        if bonuses.get("hp_pct"):
-            bonus_lines.append(f"❤️ HP +{bonuses['hp_pct']*100:.0f}%")
-        if bonuses.get("mp_pct"):
-            bonus_lines.append(f"💙 MP +{bonuses['mp_pct']*100:.0f}%")
-        if bonuses.get("final_dmg_bonus"):
-            bonus_lines.append(f"⚔️ Sát thương cuối +{bonuses['final_dmg_bonus']*100:.0f}%")
-        if bonuses.get("crit_rating"):
-            bonus_lines.append(f"💥 Bạo Kích Rating +{bonuses['crit_rating']}")
-        if bonuses.get("crit_dmg_rating"):
-            bonus_lines.append(f"💥 Bạo Kích DMG Rating +{bonuses['crit_dmg_rating']}")
-        if bonuses.get("evasion_rating"):
-            bonus_lines.append(f"🌀 Né Tránh Rating +{bonuses['evasion_rating']}")
-        if bonuses.get("crit_res_rating"):
-            bonus_lines.append(f"🛡️ Kháng Bạo Rating +{bonuses['crit_res_rating']}")
-        if bonuses.get("res_all"):
-            bonus_lines.append(f"🛡️ Kháng nguyên tố tất cả +{bonuses['res_all']}")
-        if bonuses.get("spd_bonus"):
-            bonus_lines.append(f"⚡ Tốc độ +{bonuses['spd_bonus']}")
-        if bonuses.get("cooldown_reduce"):
-            bonus_lines.append(f"⏱️ Giảm Hạn Chiêu -{bonuses['cooldown_reduce']*100:.0f}%")
-
-        cost_str = f"\nTiêu: ✨ **{cost:,}** Công Đức" if cost > 0 else ""
-        embed = success_embed(
-            f"Đã kích hoạt **{const_data['vi']}**!{cost_str}\n\n"
-            + const_data.get("passive_description_vi", "")
-            + ("\n\n**Chỉ số:**\n" + "\n".join(bonus_lines) if bonus_lines else "")
-        )
-        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 def _apply_elixir(player, item_key: str, item_data: dict, quantity: int) -> list[str]:

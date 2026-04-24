@@ -28,6 +28,17 @@ _CHEST_LOOT_TABLE: dict[str, str] = {
     # Themed chests — mostly herb-heavy with a rare Đan Lô chance.
     "ChestDuocVien": "LootChestDuocVien",
     "ChestLuyenDan": "LootChestLuyenDan",
+    # World-boss realm chests — drop forge_materials, pill recipes, and
+    # uniques scoped to the matching cultivation realm (1-9).
+    "ChestWorldBossR1": "LootChestWorldBossR1",
+    "ChestWorldBossR2": "LootChestWorldBossR2",
+    "ChestWorldBossR3": "LootChestWorldBossR3",
+    "ChestWorldBossR4": "LootChestWorldBossR4",
+    "ChestWorldBossR5": "LootChestWorldBossR5",
+    "ChestWorldBossR6": "LootChestWorldBossR6",
+    "ChestWorldBossR7": "LootChestWorldBossR7",
+    "ChestWorldBossR8": "LootChestWorldBossR8",
+    "ChestWorldBossR9": "LootChestWorldBossR9",
 }
 
 
