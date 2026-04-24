@@ -129,8 +129,8 @@ _DUNGEON_TYPE_META: dict[str, dict[str, Any]] = {
     "the_chat": {
         "title": "🧬 Thần Cốt Địa",
         "intro": (
-            "Mật cảnh cô độc chỉ có **một Apex Boss** canh giữ — không có đợt "
-            "thường. Đánh bại Apex mới có cơ hội thu được **Đạo Cốt Tinh**, "
+            "Mật cảnh cô độc chỉ có **một đại Boss** canh giữ — không có đợt "
+            "thường. Đánh bại Boss mới có cơ hội thu được **Đạo Cốt Tinh**, "
             "nguyên liệu duy nhất để chuyển hóa Thể Chất."
         ),
         "color": 0xB8860B,
