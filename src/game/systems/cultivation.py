@@ -16,6 +16,9 @@ from src.game.constants.realms import (
     QI_REALMS,
     FORMATION_REALMS,
     LEVELS_PER_REALM,
+    MERIT_TO_FORMATION_EXP_RATIO,
+    TRIBULATION_EXP_COST,
+    get_level_from_exp
 )
 from src.game.models.character import Character
 
@@ -357,59 +360,15 @@ def get_breakthrough_requirements(axis: str, realm: int) -> dict:
     return {"item_key": None, "quantity": 0, "merit_cost": 0}
 
 
-def can_breakthrough(
-    character: Character,
-    axis: str,
-    inventory: dict[str, int] | None = None,
-) -> tuple[bool, str]:
-    """Check if *character* can attempt a realm breakthrough on *axis*.
-
-    *inventory* is an optional mapping of ``{item_key: quantity}`` from the
-    player's inventory.  When omitted, material checks are skipped (useful for
-    display-only queries).
-    """
-    if axis == "body":
-        realm, level = character.body_realm, character.body_level
-        realms = BODY_REALMS
-    elif axis == "qi":
-        realm, level = character.qi_realm, character.qi_level
-        realms = QI_REALMS
-    elif axis == "formation":
-        realm, level = character.formation_realm, character.formation_level
-        realms = FORMATION_REALMS
-    else:
-        return False, "Trục tu luyện không hợp lệ."
-
-    if level < LEVELS_PER_REALM:
-        return False, f"Cần đạt Cấp {LEVELS_PER_REALM} trước khi đột phá."
-    if realm >= len(realms) - 1:
-        return False, "Đã đạt cảnh giới tối cao của trục này."
-
-    reqs = get_breakthrough_requirements(axis, realm)
-
-    # Material check (body / qi)
-    if reqs["item_key"] and inventory is not None:
-        have = inventory.get(reqs["item_key"], 0)
-        if have < reqs["quantity"]:
-            from src.data.registry import registry
-            item_data = registry.get_item(reqs["item_key"])
-            item_name = item_data["vi"] if item_data else reqs["item_key"]
-            return (
-                False,
-                f"Cần **{reqs['quantity']}× {item_name}** để đột phá "
-                f"(hiện có: {have}).",
-            )
-
-    # Merit check (formation)
-    if reqs["merit_cost"] > 0:
-        if character.merit < reqs["merit_cost"]:
-            return (
-                False,
-                f"Cần **{reqs['merit_cost']:,} Công Đức** để đột phá Trận Đạo "
-                f"(hiện có: {character.merit:,}).",
-            )
-
-    return True, ""
+def can_breakthrough(character: Character, axis: str) -> tuple[bool, str]:
+    xp_attr = f"{axis}_xp"
+    current_xp = getattr(character, xp_attr)
+    
+    if current_xp < TRIBULATION_EXP_COST:
+        needed = TRIBULATION_EXP_COST - current_xp
+        return False, f"Linh khí chưa đủ tụ (Thiếu {needed:,} EXP để Độ Kiếp)."
+    
+    return True, "Cảm nhận thiên địa dị động, Thiên Kiếp chuẩn bị giáng xuống!"
 
 
 def consume_breakthrough_costs(
@@ -448,41 +407,26 @@ def apply_breakthrough(
     axis: str,
     inventory: dict[str, int] | None = None,
 ) -> None:
-    """Advance *character* to the next realm on *axis* and consume costs.
+    
+    realm_idx = getattr(character, f"{axis}_realm")
+    reqs = get_breakthrough_requirements(axis, realm_idx)
 
-    Mutates *character* (realm, level, merit) and *inventory* in-place.
-    Assumes ``can_breakthrough`` has already been called successfully.
-    """
-    consume_breakthrough_costs(character, axis, inventory)
-    apply_realm_up(character, axis)
-    realm: int
-    if axis == "body":
-        realm = character.body_realm
-        reqs  = get_breakthrough_requirements("body", realm)
-        if inventory is not None and reqs["item_key"]:
-            inventory[reqs["item_key"]] = inventory.get(reqs["item_key"], 0) - reqs["quantity"]
-        character.body_realm += 1
-        character.body_level  = 1
-        character.body_xp     = 0
-        if character.body_realm == len(BODY_REALMS) - 1 and not character.dao_ti_unlocked:
-            character.dao_ti_unlocked = True
-
-    elif axis == "qi":
-        realm = character.qi_realm
-        reqs  = get_breakthrough_requirements("qi", realm)
-        if inventory is not None and reqs["item_key"]:
-            inventory[reqs["item_key"]] = inventory.get(reqs["item_key"], 0) - reqs["quantity"]
-        character.qi_realm += 1
-        character.qi_level  = 1
-        character.qi_xp     = 0
-
+    if axis in ["body", "qi"]:
+        if inventory is not None and reqs.get("item_key"):
+            item_key = reqs["item_key"]
+            inventory[item_key] = inventory.get(item_key, 0) - reqs["quantity"]
+            
     elif axis == "formation":
-        realm = character.formation_realm
-        reqs  = get_breakthrough_requirements("formation", realm)
-        character.merit -= reqs["merit_cost"]
-        character.formation_realm += 1
-        character.formation_level  = 1
-        character.formation_xp     = 0
+        character.merit -= reqs.get("merit_cost", 0)
+
+    new_realm = realm_idx + 1
+    setattr(character, f"{axis}_realm", new_realm)
+    setattr(character, f"{axis}_level", 1)
+    setattr(character, f"{axis}_xp", 0)
+
+    if axis == "body" and new_realm == len(BODY_REALMS) - 1:
+        if hasattr(character, "dao_ti_unlocked"):
+            character.dao_ti_unlocked = True
 
 
 def advance_cultivation_xp(character: Character, turns: int) -> dict:
@@ -538,4 +482,64 @@ def advance_cultivation_xp(character: Character, turns: int) -> dict:
         "merit_spent":      merit_spent,
         "blocked_by_merit": blocked_by_merit,
         "blocked_at_9":     level >= LEVELS_PER_REALM,
+    }
+
+
+def advance_cultivation_xp(character: Character, turns: int) -> dict:
+    axis = character.active_axis
+    
+    realms_map = {
+        "qi": QI_REALMS,
+        "body": BODY_REALMS,
+        "formation": FORMATION_REALMS
+    }
+    r_list = realms_map.get(axis, QI_REALMS)
+    realm_idx = getattr(character, f"{axis}_realm")
+    realm = r_list[realm_idx]
+    
+    exp_gained = turns * realm.base_exp_rate
+    
+    xp_attr = f"{axis}_xp"
+    current_xp = getattr(character, xp_attr)
+    new_total_xp = current_xp + exp_gained
+    setattr(character, xp_attr, new_total_xp)
+    
+    level_attr = f"{axis}_level" if axis != "formation" else "formation_level"
+    old_level = getattr(character, level_attr)
+    new_level = get_level_from_exp(new_total_xp)
+    setattr(character, level_attr, new_level)
+    
+    return {
+        "axis": axis,
+        "exp_gained": exp_gained,
+        "current_total_xp": new_total_xp,
+        "levels_gained": max(0, new_level - old_level),
+        "is_ready_for_tribulation": new_total_xp >= TRIBULATION_EXP_COST
+    }
+
+def study_formation_with_merit(character: Character, merits: int) -> dict:
+    """
+    Hàm mới: Tu luyện Trận Đạo bằng cách tiêu tốn Công Đức.
+    Dùng cho yêu cầu: 'Trận pháp nâng cấp bằng công đức'.
+    """
+    if merits <= 0:
+        return {"success": False, "error": "Số lượng Công Đức không hợp lệ."}
+        
+    if character.merit < merits:
+        return {"success": False, "error": f"Không đủ Công Đức (Cần {merits}, hiện có {character.merit})"}
+    
+    exp_gained = merits * MERIT_TO_FORMATION_EXP_RATIO
+    
+    character.merit -= merits
+    character.formation_xp += exp_gained
+    
+    new_level = get_level_from_exp(character.formation_xp)
+    character.formation_level = new_level
+    
+    return {
+        "success": True,
+        "merit_spent": merits,
+        "exp_gained": exp_gained,
+        "current_total_xp": character.formation_xp,
+        "current_level": new_level
     }

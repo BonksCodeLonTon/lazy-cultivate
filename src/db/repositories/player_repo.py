@@ -74,6 +74,8 @@ class PlayerRepository:
         player.hp_current = init_cs.hp_max
         player.mp_current = init_cs.mp_max
 
+
+
         # Assign one starting skill that matches a random element from the player's Linh Căn
         from src.data.registry import registry as _registry
         from src.db.models.skill import CharacterSkill
