@@ -238,6 +238,8 @@ async def _execute_boss_attack(
             player_c.mp, player_c.mp_max,
             boss_c.name, boss_c.hp, boss_c.hp_max,
             0, [],
+            player_shield=player_c.shield, player_shield_cap=player_c.shield_cap(),
+            enemy_shield=boss_c.shield, enemy_shield_cap=boss_c.shield_cap(),
         ),
         view=None,
     )
@@ -260,6 +262,8 @@ async def _execute_boss_attack(
                     player_c.mp, player_c.mp_max,
                     boss_c.name, boss_c.hp, boss_c.hp_max,
                     session_obj.turn, new_lines,
+                    player_shield=player_c.shield, player_shield_cap=player_c.shield_cap(),
+                    enemy_shield=boss_c.shield, enemy_shield_cap=boss_c.shield_cap(),
                 ),
                 view=None,
             )

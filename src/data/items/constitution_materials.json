@@ -15,7 +15,7 @@
     "type": "constitution_material",
     "grade": 4,
     "shop_price_merit": 0,
-    "description_vi": "Tủy đạo tinh luyện từ Apex Boss cao giai. Cần để chuyển hóa Thể Chất hạng Quý trở lên. Chỉ rớt từ Thần Cốt Địa Thượng Cấp (R7) và Đỉnh Phong (R9)."
+    "description_vi": "Tủy đạo tinh luyện từ Đại Boss cao giai. Cần để chuyển hóa Thể Chất hạng Quý trở lên. Chỉ rớt từ Thần Cốt Địa Thượng Cấp (R7) và Đỉnh Phong (R9)."
   },
   {
     "key": "MatHonNguyenCot",
@@ -24,7 +24,7 @@
     "type": "constitution_material",
     "grade": 4,
     "shop_price_merit": 0,
-    "description_vi": "Xương hỗn nguyên do Apex Boss đỉnh phong tạo thành. Nguyên liệu duy nhất để chuyển hóa Thể Chất Truyền Thuyết — chỉ rớt từ Thần Cốt Địa Đỉnh Phong (R9)."
+    "description_vi": "Xương hỗn nguyên do Đại Boss đỉnh phong tạo thành. Nguyên liệu duy nhất để chuyển hóa Thể Chất Truyền Thuyết — chỉ rớt từ Thần Cốt Địa Đỉnh Phong (R9)."
   },
 
   {
@@ -116,7 +116,7 @@
     "type": "constitution_material",
     "grade": 3,
     "shop_price_merit": 0,
-    "description_vi": "Sát ý ngưng kết từ Apex Boss sát khí đỉnh phong. Dùng cho Thể Chất thiên công kích / bạo kích (Bạch Hổ, Tử Kiếm, Phá Thiên…)."
+    "description_vi": "Sát ý ngưng kết từ Đại Boss sát khí đỉnh phong. Dùng cho Thể Chất thiên công kích / bạo kích (Bạch Hổ, Tử Kiếm, Phá Thiên…)."
   },
   {
     "key": "ArchHoTheTinh",

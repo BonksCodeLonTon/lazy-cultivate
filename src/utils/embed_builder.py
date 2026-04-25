@@ -66,8 +66,16 @@ def battle_embed(
     enemy_hp_max: int,
     turn: int,
     turn_log: list[str],
+    player_shield: int = 0,
+    player_shield_cap: int = 0,
+    enemy_shield: int = 0,
+    enemy_shield_cap: int = 0,
 ) -> discord.Embed:
-    """Real-time battle embed — updated each turn."""
+    """Real-time battle embed — updated each turn.
+
+    Shield rows (🛡️) render only when the corresponding shield > 0 so
+    builds that never generate a Thổ shield stay visually uncluttered.
+    """
     p_hp_bar = progress_bar(player_hp, player_hp_max, 10)
     p_mp_bar = progress_bar(player_mp, player_mp_max, 10)
     e_hp_bar = progress_bar(enemy_hp, enemy_hp_max, 10)
@@ -77,10 +85,16 @@ def battle_embed(
         f"**{wave_header}** — {wave_label}",
         "",
         f"❤️ `{p_hp_bar}` {player_hp:,}/{player_hp_max:,}  **{player_name}**",
-        f"💙 `{p_mp_bar}` {player_mp:,}/{player_mp_max:,} MP",
-        "─" * 24,
-        f"👹 `{e_hp_bar}` {enemy_hp:,}/{enemy_hp_max:,}  **{enemy_name}**",
     ]
+    if player_shield > 0:
+        cap = max(player_shield, player_shield_cap)
+        lines.append(f"🛡️ `{progress_bar(player_shield, cap, 10)}` {player_shield:,}/{cap:,}")
+    lines.append(f"💙 `{p_mp_bar}` {player_mp:,}/{player_mp_max:,} MP")
+    lines.append("─" * 24)
+    lines.append(f"👹 `{e_hp_bar}` {enemy_hp:,}/{enemy_hp_max:,}  **{enemy_name}**")
+    if enemy_shield > 0:
+        cap = max(enemy_shield, enemy_shield_cap)
+        lines.append(f"🛡️ `{progress_bar(enemy_shield, cap, 10)}` {enemy_shield:,}/{cap:,}")
     # if turn:
     #     lines.append(f"\n*Lượt {turn}*")
 

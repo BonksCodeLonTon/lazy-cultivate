@@ -93,7 +93,9 @@ class TribulationManager:
                 player_c.name, player_c.hp, player_c.hp_max,
                 player_c.mp, player_c.mp_max,
                 trib_c.name, trib_c.hp, trib_c.hp_max,
-                0, []
+                0, [],
+                player_shield=player_c.shield, player_shield_cap=player_c.shield_cap(),
+                enemy_shield=trib_c.shield, enemy_shield_cap=trib_c.shield_cap(),
             ),
             view=view
         )
@@ -118,7 +120,9 @@ class TribulationManager:
                         player_c.mp, player_c.mp_max,
                         trib_c.name, trib_c.hp, trib_c.hp_max,
                         session.turn,
-                        new_lines
+                        new_lines,
+                        player_shield=player_c.shield, player_shield_cap=player_c.shield_cap(),
+                        enemy_shield=trib_c.shield, enemy_shield_cap=trib_c.shield_cap(),
                     ),
                     view=view
                 )

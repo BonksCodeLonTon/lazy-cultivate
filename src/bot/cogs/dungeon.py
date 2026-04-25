@@ -157,7 +157,7 @@ def _dungeon_type_embed() -> discord.Embed:
         "Chọn loại bí cảnh để bắt đầu:\n\n"
         "⚔️ **Bí Cảnh Thường** — Yêu thú đa hệ, rớt trang bị & nguyên liệu luyện khí.\n"
         "🌿 **Dược Viên** — Yêu thú hệ Mộc với khả năng hồi máu, rớt thảo dược luyện đan.\n"
-        "🧬 **Thần Cốt Địa** — Chỉ một Apex Boss, rớt **Đạo Cốt Tinh** để chuyển Thể Chất.",
+        "🧬 **Thần Cốt Địa** — Chỉ một Đại Boss, rớt **Đạo Cốt Tinh** để chuyển Thể Chất.",
         color=0x7B2D8B,
     )
 
@@ -413,6 +413,8 @@ async def _execute_dungeon(
                 player_c.mp, player_c.mp_max,
                 enemy_c.name, enemy_c.hp, enemy_c.hp_max,
                 0, [],
+                player_shield=player_c.shield, player_shield_cap=player_c.shield_cap(),
+                enemy_shield=enemy_c.shield, enemy_shield_cap=enemy_c.shield_cap(),
             ),
             view=None,
         )
@@ -437,6 +439,8 @@ async def _execute_dungeon(
                     player_c.mp, player_c.mp_max,
                     enemy_c.name, enemy_c.hp, enemy_c.hp_max,
                     combat_session.turn, new_lines,
+                    player_shield=player_c.shield, player_shield_cap=player_c.shield_cap(),
+                    enemy_shield=enemy_c.shield, enemy_shield_cap=enemy_c.shield_cap(),
                 ),
                 view=None,
             )

@@ -236,6 +236,8 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
             player_c.mp, player_c.mp_max,
             enemy_c.name, enemy_c.hp, enemy_c.hp_max,
             0, [],
+            player_shield=player_c.shield, player_shield_cap=player_c.shield_cap(),
+            enemy_shield=enemy_c.shield, enemy_shield_cap=enemy_c.shield_cap(),
         ),
         view=None,
     )
@@ -256,6 +258,8 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
                 player_c.mp, player_c.mp_max,
                 enemy_c.name, enemy_c.hp, enemy_c.hp_max,
                 combat.turn, new_lines,
+                player_shield=player_c.shield, player_shield_cap=player_c.shield_cap(),
+                enemy_shield=enemy_c.shield, enemy_shield_cap=enemy_c.shield_cap(),
             ),
             view=None,
         )
