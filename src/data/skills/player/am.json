@@ -77,7 +77,12 @@
     "effects": [
       "DebuffChayMau"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0363
+      }
+    }
   },
   {
     "key": "SkillSupAm",
@@ -98,7 +103,17 @@
       "DebuffDocTo",
       "DebuffCatDut"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.044
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.33
+        }
+      }
+    }
   },
   {
     "key": "SkillDefAm",
@@ -118,7 +133,14 @@
     "effects": [
       "BuffHuKhong"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 275
+        }
+      }
+    }
   },
   {
     "key": "SkillMovAm_R3",
@@ -138,7 +160,14 @@
     "effects": [
       "BuffHuKhong"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 275
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkAm_R5v2",
@@ -161,7 +190,19 @@
       "ApplySoulDrain",
       "ApplyStatSteal"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.39
+        }
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.104
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkAm_R7v2",
@@ -186,7 +227,19 @@
       "ApplyStatSteal"
     ],
     "soul_drain_procs": 3,
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.45
+        },
+        "duration": 4
+      },
+      "DebuffDocTo": {
+        "dot_pct": 0.06,
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillAtkAm_R9v2",
@@ -212,7 +265,24 @@
     ],
     "soul_drain_procs": 5,
     "stat_steal_procs": 3,
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.51
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "CCMuted": {
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillAtkAm_R4",
@@ -233,7 +303,17 @@
       "DebuffDocTo",
       "DebuffCatDut"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.048
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.36
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkAm3",
@@ -254,7 +334,17 @@
       "DebuffDocTo",
       "DebuffBaoMon"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.052
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.065
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkAm_R6",
@@ -276,7 +366,17 @@
       "DebuffBaoMon",
       "CCMuted"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.056
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.07
+        }
+      }
+    }
   },
   {
     "key": "SkillMovAm_R6",
@@ -297,7 +397,19 @@
       "BuffHuKhong",
       "BuffTangToc"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 350
+        }
+      },
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.42
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkAm_R7",
@@ -320,7 +432,28 @@
       "DebuffBaoMon",
       "CCMuted"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.06,
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.45
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      },
+      "CCMuted": {
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillAtkAm_R8",
@@ -344,7 +477,34 @@
       "CCMuted",
       "DebuffXeRach"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.064,
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.48
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      },
+      "CCMuted": {
+        "duration": 3
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.128
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillAtkAm_R9",
@@ -369,6 +529,36 @@
       "DebuffXeRach",
       "CCInterrupt"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.068,
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.51
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "CCMuted": {
+        "duration": 3
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.136
+        },
+        "duration": 3
+      },
+      "CCInterrupt": {
+        "duration": 2
+      }
+    }
   }
 ]

@@ -499,6 +499,12 @@ def default_duration(effect_key: str) -> int:
 def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
     """Aggregate all active effect stat bonuses/penalties on a combatant.
 
+    Per-instance overrides (``combatant.effect_overrides[key]['stat_bonus']``)
+    win on a per-stat basis: if a heavy skill stamped DebuffXeRach with
+    ``res_all: -0.20``, that supersedes the meta default ``-0.08``. Stats
+    not present in the override fall back to the meta value, so a skill
+    can override one stat without nuking the rest.
+
     Returns a dict with signed float values per stat key:
       final_dmg_bonus, final_dmg_reduce, crit_rating, crit_dmg_rating,
       evasion_rating, crit_res_rating, spd_pct, hp_regen_pct, res_all
@@ -508,8 +514,15 @@ def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
         meta = EFFECTS.get(effect_key)
         if not meta:
             continue
+        override = combatant.effect_overrides.get(effect_key) or {}
+        override_stats = override.get("stat_bonus") or {}
         for stat, val in meta.stat_bonus.items():
-            result[stat] = result.get(stat, 0.0) + val
+            effective = override_stats.get(stat, val)
+            result[stat] = result.get(stat, 0.0) + effective
+        # Stats present only in the override (not in the meta) still apply.
+        for stat, val in override_stats.items():
+            if stat not in meta.stat_bonus:
+                result[stat] = result.get(stat, 0.0) + val
     return result
 
 
@@ -521,6 +534,10 @@ def get_periodic_damage(
     Policy: filters out non-DoT effects and poison on poison-immune holders,
     then delegates the per-tick math to
     ``src.game.engine.damage.dot.calculate_dot_damage``.
+
+    Per-instance overrides (``effect_overrides[key]['dot_pct'/'dot_element']``)
+    are folded into the meta passed downstream so a skill that stamps
+    DebuffThieuDot with ``dot_pct=0.08`` ticks for 2× the meta default.
     """
     from src.game.engine.damage.dot import calculate_dot_damage
 
@@ -528,13 +545,34 @@ def get_periodic_damage(
     results: list[tuple[str, int, bool]] = []
     for effect_key in list(combatant.effects.keys()):
         meta = EFFECTS.get(effect_key)
-        if not meta or meta.dot_pct <= 0:
+        if not meta:
+            continue
+        override = combatant.effect_overrides.get(effect_key) or {}
+        effective_meta = _meta_with_override(meta, override)
+        if effective_meta.dot_pct <= 0:
             continue
         if effect_key == EffectKey.DEBUFF_DOC_TO and combatant.poison_immunity:
             continue
-        dmg, is_crit = calculate_dot_damage(combatant, effect_key, meta, rng)
+        dmg, is_crit = calculate_dot_damage(combatant, effect_key, effective_meta, rng)
         results.append((effect_key, dmg, is_crit))
     return results
+
+
+def _meta_with_override(meta: EffectMeta, override: dict) -> EffectMeta:
+    """Return a copy of ``meta`` with override values applied.
+
+    Only ``dot_pct`` and ``dot_element`` are spliced here — stat_bonus
+    overrides are handled in ``get_combat_modifiers`` so they don't have
+    to allocate a new EffectMeta on every modifier query.
+    """
+    if not override or not any(k in override for k in ("dot_pct", "dot_element")):
+        return meta
+    from dataclasses import replace
+    return replace(
+        meta,
+        dot_pct=float(override.get("dot_pct", meta.dot_pct)),
+        dot_element=override.get("dot_element", meta.dot_element),
+    )
 
 
 def check_cc_skip_turn(

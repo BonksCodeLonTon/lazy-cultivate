@@ -135,6 +135,17 @@ _DUNGEON_TYPE_META: dict[str, dict[str, Any]] = {
         ),
         "color": 0xB8860B,
     },
+    "linh_can": {
+        "title": "🌌 Linh Căn Bí Cảnh",
+        "intro": (
+            "Mật mạch tụ linh khí 9 nguyên tố, mỗi mạch chỉ rớt nguyên liệu "
+            "khai mở & nâng cấp **Linh Căn** cùng hệ. Có thể đăng bán hoặc "
+            "tìm mua tại **Đấu Thương Các** nếu muốn tiết kiệm thời gian.\n\n"
+            "⚠️ Tỉ lệ rớt **giảm dần theo cảnh giới Luyện Khí** — luyện sớm "
+            "trước khi đột phá để tích trữ nguyên liệu cao cấp."
+        ),
+        "color": 0x8E44AD,
+    },
 }
 
 
@@ -157,7 +168,9 @@ def _dungeon_type_embed() -> discord.Embed:
         "Chọn loại bí cảnh để bắt đầu:\n\n"
         "⚔️ **Bí Cảnh Thường** — Yêu thú đa hệ, rớt trang bị & nguyên liệu luyện khí.\n"
         "🌿 **Dược Viên** — Yêu thú hệ Mộc với khả năng hồi máu, rớt thảo dược luyện đan.\n"
-        "🧬 **Thần Cốt Địa** — Chỉ một Đại Boss, rớt **Đạo Cốt Tinh** để chuyển Thể Chất.",
+        "🧬 **Thần Cốt Địa** — Chỉ một Đại Boss, rớt **Đạo Cốt Tinh** để chuyển Thể Chất.\n"
+        "🌌 **Linh Căn Bí Cảnh** — 9 mạch linh khí theo nguyên tố, rớt nguyên liệu khai mở "
+        "& nâng cấp **Linh Căn** (giảm tỉ lệ ở cảnh giới cao).",
         color=0x7B2D8B,
     )
 
@@ -217,6 +230,27 @@ def _dungeon_detail_embed(
             f"👑 Đợt cuối luôn có cấp **{min_grade_name}** trở lên",
         ]
     embed.add_field(name="📋 Thông Tin Bí Cảnh", value="\n".join(wave_lines), inline=False)
+
+    # ── Linh Căn environmental effect preview ─────────────────────────────
+    # Show the bí cảnh's signature pressure with the player's current
+    # realm baked in so they can see exactly what's coming.
+    env = d.get("environmental_effect")
+    if env:
+        from src.game.systems.linh_can_environment import scaled_strength
+        from src.db.connection import get_session  # noqa: F401  (env preview is sync)
+        # We don't have qi_realm in scope here without an extra DB hop; use
+        # ``player_best_realm`` as a reasonable proxy for the dungeon detail
+        # preview. Actual combat uses char.qi_realm (always exact).
+        strength = scaled_strength(env, player_best_realm)
+        embed.add_field(
+            name=f"🌌 Hiệu Ứng Môi Trường — {env.get('vi', env.get('key', ''))}",
+            value=(
+                f"Cường độ scaling theo cảnh giới của bạn: **×{1 + env.get('scale_per_realm', 0.0) * player_best_realm:.2f}** "
+                f"(giá trị ước tính: {strength:.2f}).\n"
+                "Hiệu ứng được kích hoạt mỗi đợt và xuất hiện ở đầu nhật ký chiến đấu."
+            ),
+            inline=False,
+        )
 
     return embed
 
@@ -685,6 +719,7 @@ class DungeonSelect(discord.ui.Select):
         placeholder = {
             "duoc_vien": "🌿 Chọn Dược Viên...",
             "the_chat":  "🧬 Chọn Thần Cốt Địa...",
+            "linh_can":  "🌌 Chọn Linh Mạch...",
         }.get(dungeon_type, "⚔️ Chọn Bí Cảnh...")
         if not options:
             options = [discord.SelectOption(label="(Không có)", value="__none__")]
@@ -777,9 +812,15 @@ class DungeonTypeSelectView(discord.ui.View):
         the_chat_btn.callback = self._pick_the_chat
         self.add_item(the_chat_btn)
 
+        linh_can_btn = discord.ui.Button(
+            label="🌌 Linh Căn Bí Cảnh", style=discord.ButtonStyle.secondary, row=1,
+        )
+        linh_can_btn.callback = self._pick_linh_can
+        self.add_item(linh_can_btn)
+
         if back_fn:
             back_btn = discord.ui.Button(
-                label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1,
+                label="◀ Trở về", style=discord.ButtonStyle.secondary, row=2,
             )
             back_btn.callback = self._back_cb
             self.add_item(back_btn)
@@ -806,6 +847,9 @@ class DungeonTypeSelectView(discord.ui.View):
 
     async def _pick_the_chat(self, interaction: discord.Interaction) -> None:
         await self._open_list(interaction, "the_chat")
+
+    async def _pick_linh_can(self, interaction: discord.Interaction) -> None:
+        await self._open_list(interaction, "linh_can")
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

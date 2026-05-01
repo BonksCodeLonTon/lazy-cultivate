@@ -95,7 +95,14 @@
     "effects": [
       "DebuffTroBuoc"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.55
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkTho_R4",
@@ -116,7 +123,19 @@
       "DebuffTroBuoc",
       "DebuffLunDat"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.6
+        }
+      },
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.36
+        }
+      }
+    }
   },
   {
     "key": "SkillThoShieldBuild",
@@ -137,7 +156,15 @@
       "BuffHoPhap"
     ],
     "formation_key": null,
-    "description_vi": "Triệu Hồi Thổ Tường — +15% hp_max thành khiên ngay lập tức, nhận Hộ Pháp (tăng phòng thủ)."
+    "description_vi": "Triệu Hồi Thổ Tường — +15% hp_max thành khiên ngay lập tức, nhận Hộ Pháp (tăng phòng thủ).",
+    "effect_overrides": {
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.3,
+          "crit_res_rating": 120
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkTo3",
@@ -158,7 +185,19 @@
       "DebuffTroBuoc",
       "DebuffLunDat"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.65
+        }
+      },
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.39
+        }
+      }
+    }
   },
   {
     "key": "SkillThoStun_R5",
@@ -186,7 +225,19 @@
       "DebuffPhaGiap": 0.5
     },
     "formation_key": null,
-    "description_vi": "Đập mạnh xuống đất — 70% choáng, 60% quật ngã, 50% phá giáp."
+    "description_vi": "Đập mạnh xuống đất — 70% choáng, 60% quật ngã, 50% phá giáp.",
+    "effect_overrides": {
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.39
+        }
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.195
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkTho_R6",
@@ -208,7 +259,19 @@
       "DebuffLunDat",
       "CCStun"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.7
+        }
+      },
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.42
+        }
+      }
+    }
   },
   {
     "key": "SkillDefTho_R6",
@@ -229,7 +292,20 @@
       "BuffDaiDia",
       "BuffTrongTo"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffDaiDia": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.35
+        }
+      },
+      "BuffTrongTo": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.14,
+          "res_all": 0.07
+        }
+      }
+    }
   },
   {
     "key": "SkillThoThornAura_R6",
@@ -251,7 +327,21 @@
       "BuffHoPhap"
     ],
     "formation_key": null,
-    "description_vi": "Bao bọc thân bằng gai thổ — Trọng Tố + Hộ Pháp, tăng mạnh phản đòn (gai) trong 4 lượt."
+    "description_vi": "Bao bọc thân bằng gai thổ — Trọng Tố + Hộ Pháp, tăng mạnh phản đòn (gai) trong 4 lượt.",
+    "effect_overrides": {
+      "BuffTrongTo": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.14,
+          "res_all": 0.07
+        }
+      },
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.35,
+          "crit_res_rating": 140
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkTho_R7",
@@ -274,7 +364,30 @@
       "CCStun",
       "DebuffPhaGiap"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.75
+        },
+        "duration": 3
+      },
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.45
+        },
+        "duration": 3
+      },
+      "CCStun": {
+        "duration": 2
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.225
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillThoShieldBurst_R7",
@@ -302,7 +415,18 @@
     },
     "burst_shield_mult": 1.8,
     "formation_key": null,
-    "description_vi": "Nổ Thổ Tường — phá khiên để gây sát thương bằng 180% lượng khiên tiêu hao, có xác suất choáng và phá giáp."
+    "description_vi": "Nổ Thổ Tường — phá khiên để gây sát thương bằng 180% lượng khiên tiêu hao, có xác suất choáng và phá giáp.",
+    "effect_overrides": {
+      "CCStun": {
+        "duration": 2
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.225
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillAtkTho_R8",
@@ -326,7 +450,36 @@
       "DebuffPhaGiap",
       "DebuffBaoMon"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.8
+        },
+        "duration": 3
+      },
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.48
+        },
+        "duration": 3
+      },
+      "CCStun": {
+        "duration": 2
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.24
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillThoTitan_R8",
@@ -356,7 +509,27 @@
       "DebuffCuonBay": 0.4
     },
     "formation_key": null,
-    "description_vi": "Cú giậm của Thổ Thần — 80% choáng, 70% quật ngã, chắc phá giáp, 40% cuốn bay."
+    "description_vi": "Cú giậm của Thổ Thần — 80% choáng, 70% quật ngã, chắc phá giáp, 40% cuốn bay.",
+    "effect_overrides": {
+      "CCStun": {
+        "duration": 2
+      },
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.48
+        },
+        "duration": 3
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.24
+        },
+        "duration": 4
+      },
+      "DebuffCuonBay": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "SkillAtkTho_R9",
@@ -381,7 +554,39 @@
       "DebuffBaoMon",
       "CCInterrupt"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.85
+        },
+        "duration": 3
+      },
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.51
+        },
+        "duration": 3
+      },
+      "CCStun": {
+        "duration": 2
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.255
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "CCInterrupt": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "SkillThoEarthTower_R9",
@@ -414,6 +619,29 @@
     },
     "burst_shield_mult": 2.5,
     "formation_key": null,
-    "description_vi": "Đỉnh cao Thổ Đạo — triệu hồi núi thiêng đè đối thủ, 8% HP chân thương, chắc choáng + phá giáp, nổ toàn bộ Thổ Tường với hệ số 250%."
+    "description_vi": "Đỉnh cao Thổ Đạo — triệu hồi núi thiêng đè đối thủ, 8% HP chân thương, chắc choáng + phá giáp, nổ toàn bộ Thổ Tường với hệ số 250%.",
+    "effect_overrides": {
+      "CCStun": {
+        "duration": 2
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.255
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.51
+        },
+        "duration": 3
+      }
+    }
   }
 ]

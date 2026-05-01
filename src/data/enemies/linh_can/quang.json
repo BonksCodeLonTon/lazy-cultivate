@@ -1,0 +1,106 @@
+[
+  {
+    "key": "LCQuang_T1_HoangQuangLinhSu",
+    "vi": "Hoàng Quang Linh Sứ",
+    "en": "Golden Light Spirit Envoy",
+    "rank": "tinh_anh",
+    "realm_level": 2,
+    "element": "quang",
+    "base_hp": 1980,
+    "base_spd": 11,
+    "hp_scale": 1.6,
+    "skill_keys": [
+      "EnemyLCQuang_T1",
+      "EnemyHoa_T1"
+    ],
+    "base_atk": 67,
+    "base_matk": 97,
+    "base_def": 90,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Quang",
+    "final_dmg_bonus": 0.05,
+    "base_res": {
+      "quang": 0.25
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCQuang_T2_ThanhQuangVeTuong",
+    "vi": "Thánh Quang Vệ Tướng",
+    "en": "Holy Light Guard Commander",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "quang",
+    "base_hp": 5000,
+    "base_spd": 12,
+    "hp_scale": 1.7,
+    "skill_keys": [
+      "EnemyLCQuang_T1",
+      "EnemyLCQuang_T2"
+    ],
+    "base_atk": 153,
+    "base_matk": 229,
+    "base_def": 170,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Quang",
+    "final_dmg_bonus": 0.08,
+    "base_res": {
+      "quang": 0.35
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCQuang_T3_PhatTamBoTat",
+    "vi": "Phật Tâm Bồ Tát",
+    "en": "Buddha-Heart Bodhisattva",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "quang",
+    "base_hp": 13920,
+    "base_spd": 13,
+    "hp_scale": 1.9,
+    "skill_keys": [
+      "EnemyLCQuang_T2",
+      "EnemyLCQuang_T3",
+      "EnemyLCQuang_Apex"
+    ],
+    "base_atk": 304,
+    "base_matk": 475,
+    "base_def": 323,
+    "mp_regen_pct": 0.08,
+    "loot_table_key": "LinhCanLoot_Quang",
+    "final_dmg_bonus": 0.12,
+    "base_res": {
+      "quang": 0.5,
+      "kim": 0.1
+    },
+    "res_cap_pct": 0.9
+  },
+  {
+    "key": "LCQuang_Apex_DaiLaQuangDe",
+    "vi": "Đại La Quang Đế",
+    "en": "Great Luo Light Sovereign",
+    "rank": "dai_nang",
+    "realm_level": 8,
+    "element": "quang",
+    "base_hp": 37500,
+    "base_spd": 14,
+    "hp_scale": 2.0,
+    "skill_keys": [
+      "EnemyLCQuang_Apex",
+      "EnemyLCQuang_T3",
+      "EnemyLCQuang_T2"
+    ],
+    "base_atk": 630,
+    "base_matk": 966,
+    "base_def": 588,
+    "mp_regen_pct": 0.09,
+    "final_dmg_bonus": 0.28,
+    "loot_table_key": "LinhCanLoot_Quang",
+    "base_res": {
+      "quang": 0.65,
+      "kim": 0.2
+    },
+    "res_cap_pct": 0.9
+  }
+]

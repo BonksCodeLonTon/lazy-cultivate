@@ -1,0 +1,86 @@
+[
+  {
+    "key": "EnemyLCThuy_T1",
+    "vi": "Hàn Băng Triệt Cốt",
+    "en": "Frigid Ice Bone-Piercer",
+    "realm": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 13,
+    "cooldown": 1,
+    "base_dmg": 17,
+    "effects": [
+      "DebuffLamCham",
+      "EffectNgungDong"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3,
+      "EffectNgungDong": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCThuy_T2",
+    "vi": "Băng Tủy Phong Vực",
+    "en": "Ice Marrow Sealed Domain",
+    "realm": 4,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.62
+    },
+    "mp_cost": 26,
+    "cooldown": 2,
+    "base_dmg": 34,
+    "effects": [
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffDongBang": 0.25
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCThuy_T3",
+    "vi": "Hải Triều Cuồng Tập",
+    "en": "Tidal Surge Frenzy",
+    "realm": 6,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.88
+    },
+    "mp_cost": 42,
+    "cooldown": 3,
+    "base_dmg": 74,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.5,
+      "DebuffDongBang": 0.3
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "duration": 3,
+        "stat_bonus": {
+          "spd_pct": -0.35
+        }
+      },
+      "DebuffDongBang": {
+        "duration": 2
+      }
+    }
+  }
+]

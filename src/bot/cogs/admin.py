@@ -12,7 +12,10 @@ from src.db.models.skill import CharacterSkill, MAX_SKILL_SLOTS
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository
 from src.game.constants.grades import Grade
-from src.game.constants.linh_can import ALL_LINH_CAN, format_linh_can
+from src.game.constants.linh_can import (
+    ALL_LINH_CAN, LINH_CAN_MAX_LEVEL, format_linh_can, format_linh_can_levels,
+    max_linh_can_level,
+)
 from src.game.systems.the_chat import set_constitutions
 from src.utils.embed_builder import error_embed, success_embed
 
@@ -55,7 +58,8 @@ def _preset_config(preset: str) -> dict:
         # is False → 1 constitution slot. All 9 Linh Căn active so every
         # element-specific passive (Kim Xuyên Thấu, Hỏa Bạo Liệt, Quang Thanh
         # Tẩy, etc.) runs side-by-side. Phá Thiên is a neutral-element
-        # legendary so no single element dominates the build.
+        # legendary so no single element dominates the build. Linh Căn maxed
+        # to Lv9 so every threshold effect (Lv3/5/7/9) is active.
         return {
             "body_realm": 1, "body_level": 1,
             "qi_realm": 8,   "qi_level": 9,
@@ -63,7 +67,7 @@ def _preset_config(preset: str) -> dict:
             "dao_ti_unlocked": False,
             "merit": 10_000_000,
             "primordial_stones": 500_000,
-            "linh_can": list(ALL_LINH_CAN),   # all 9 elements
+            "linh_can_levels": {elem: 9 for elem in ALL_LINH_CAN},
             "constitutions": ["ConstitutionPhaTien"],
             "skills": [
                 "SkillAtkKim_R8",
@@ -89,7 +93,7 @@ def _preset_config(preset: str) -> dict:
             "dao_ti_unlocked": False,
             "merit": 10_000_000,
             "primordial_stones": 500_000,
-            "linh_can": ["kim", "hoa", "loi", "phong", "quang", "am"],
+            "linh_can_levels": {"kim": 7, "hoa": 7, "loi": 7, "phong": 7, "quang": 7, "am": 7},
             "constitutions": ["ConstitutionKhiHai"],
             "skills": [
                 "SkillFrmHonNguyen_R9",   # apex formation skill
@@ -243,10 +247,23 @@ async def _apply_testbuild(session, player, cfg: dict) -> list[str]:
         )
 
     # ── Linh Căn ────────────────────────────────────────────────────────────
-    if "linh_can" in cfg:
-        lc_list = [lc for lc in cfg["linh_can"] if lc in ALL_LINH_CAN]
-        player.linh_can = format_linh_can(lc_list)
-        lines.append(f"🌿 Linh Căn: {player.linh_can or '(trống)'}")
+    # Two preset shapes are accepted:
+    #   "linh_can": ["kim", "hoa"]                — list, each at level 1
+    #   "linh_can_levels": {"kim": 9, "hoa": 9}   — explicit per-element level
+    # Levels are clamped to the player's qi_realm cap so a fresh starter
+    # preset can't accidentally hand out endgame Linh Căn power.
+    if "linh_can_levels" in cfg or "linh_can" in cfg:
+        cap = max_linh_can_level(int(player.qi_realm))
+        if "linh_can_levels" in cfg:
+            raw_map = {
+                lc: int(lvl) for lc, lvl in cfg["linh_can_levels"].items()
+                if lc in ALL_LINH_CAN
+            }
+        else:
+            raw_map = {lc: 1 for lc in cfg["linh_can"] if lc in ALL_LINH_CAN}
+        clamped = {lc: max(1, min(cap, lvl)) for lc, lvl in raw_map.items()}
+        player.linh_can = format_linh_can_levels(clamped)
+        lines.append(f"🌿 Linh Căn (cap Lv{cap}): {player.linh_can or '(trống)'}")
 
     # ── Constitutions ───────────────────────────────────────────────────────
     if "constitutions" in cfg:
@@ -406,6 +423,56 @@ class AdminCog(commands.Cog, name="Admin"):
             + "\n".join(change_lines)
         )
         await interaction.followup.send(embed=success_embed(summary), ephemeral=True)
+
+    @app_commands.command(
+        name="admin_reset",
+        description="[Admin] Xóa nhân vật của người chơi (phải /register lại)",
+    )
+    @app_commands.default_permissions(administrator=True)
+    @app_commands.describe(
+        target="Người chơi cần reset (mặc định: chính bạn)",
+        confirm="Gõ XOA để xác nhận xóa nhân vật",
+    )
+    async def admin_reset(
+        self,
+        interaction: discord.Interaction,
+        confirm: str,
+        target: discord.User | None = None,
+    ) -> None:
+        await interaction.response.defer(ephemeral=True)
+        if confirm.strip().upper() != "XOA":
+            await interaction.followup.send(
+                embed=error_embed(
+                    "Hủy reset — phải gõ chính xác `XOA` vào ô confirm để xác nhận."
+                ),
+                ephemeral=True,
+            )
+            return
+
+        target_user = target or interaction.user
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(target_user.id)
+            if player is None:
+                await interaction.followup.send(
+                    embed=error_embed(
+                        f"{target_user.mention} chưa có nhân vật để reset."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
+            old_name = player.name
+            await session.delete(player)
+            await session.commit()
+
+        await interaction.followup.send(
+            embed=success_embed(
+                f"✅ Đã xóa nhân vật **{old_name}** của {target_user.mention}.\n"
+                f"Người chơi cần dùng `/register` để tạo nhân vật mới."
+            ),
+            ephemeral=True,
+        )
 
     @app_commands.command(
         name="admin_grant_item",

@@ -6,22 +6,29 @@
     "rank": "chi_ton",
     "realm_level": 3,
     "element": null,
-    "base_hp": 3500,
+    "base_hp": 9100,
     "base_spd": 14,
-    "base_atk": 45,
-    "base_matk": 55,
-    "base_def": 60,
+    "base_atk": 90,
+    "base_matk": 110,
+    "base_def": 108,
     "hp_scale": 1.4,
-    "mp_regen_pct": 0.10,
+    "mp_regen_pct": 0.15,
     "skill_keys": [
+      "TheChat_DaoCotPhaLinh",
       "EnemyKim_T3",
       "EnemyTho_T3"
     ],
     "loot_table_key": "LootTheChatApex_R3",
-    "base_crit_rating": 40,
-    "base_crit_dmg_rating": 50,
-    "final_dmg_bonus": 0.05,
-    "immune_hard_cc": true
+    "base_crit_rating": 60,
+    "base_crit_dmg_rating": 80,
+    "final_dmg_bonus": 0.15,
+    "immune_hard_cc": true,
+    "hp_regen_pct": 0.02,
+    "base_res": {
+      "kim": 0.2,
+      "tho": 0.2
+    },
+    "res_cap_pct": 0.9
   },
   {
     "key": "ApexDaoCot_R5",
@@ -30,23 +37,31 @@
     "rank": "chi_ton",
     "realm_level": 5,
     "element": null,
-    "base_hp": 7000,
+    "base_hp": 18900,
     "base_spd": 16,
-    "base_atk": 60,
-    "base_matk": 75,
-    "base_def": 85,
+    "base_atk": 120,
+    "base_matk": 150,
+    "base_def": 153,
     "hp_scale": 1.4,
-    "mp_regen_pct": 0.10,
+    "mp_regen_pct": 0.15,
     "skill_keys": [
-      "EnemyKim_T3",
-      "EnemyTho_T3",
-      "EnemyLoi_T3"
+      "TheChat_DaoCotPhaLinh",
+      "TheChat_VoThuongDaoAp",
+      "TheChat_CuuChuyenDaoTam",
+      "EnemyKim_T3"
     ],
     "loot_table_key": "LootTheChatApex_R5",
-    "base_crit_rating": 50,
-    "base_crit_dmg_rating": 60,
-    "final_dmg_bonus": 0.08,
-    "immune_hard_cc": true
+    "base_crit_rating": 80,
+    "base_crit_dmg_rating": 102,
+    "final_dmg_bonus": 0.2,
+    "immune_hard_cc": true,
+    "hp_regen_pct": 0.02,
+    "base_res": {
+      "kim": 0.3,
+      "tho": 0.3,
+      "loi": 0.1
+    },
+    "res_cap_pct": 0.9
   },
   {
     "key": "ApexDaoCot_R7",
@@ -55,23 +70,33 @@
     "rank": "chi_ton",
     "realm_level": 7,
     "element": null,
-    "base_hp": 12500,
+    "base_hp": 35000,
     "base_spd": 18,
-    "base_atk": 75,
-    "base_matk": 95,
-    "base_def": 100,
+    "base_atk": 157,
+    "base_matk": 199,
+    "base_def": 190,
     "hp_scale": 1.3,
-    "mp_regen_pct": 0.12,
+    "mp_regen_pct": 0.15,
     "skill_keys": [
-      "EnemyBoss_R10_BossAura",
-      "EnemyKim_T3",
-      "EnemyTho_T3"
+      "TheChat_DaoCotPhaLinh",
+      "TheChat_VoThuongDaoAp",
+      "TheChat_HuyetDaoPhanPhe",
+      "TheChat_CuuChuyenDaoTam",
+      "EnemyBoss_R10_BossAura"
     ],
     "loot_table_key": "LootTheChatApex_R7",
-    "base_crit_rating": 60,
-    "base_crit_dmg_rating": 80,
-    "final_dmg_bonus": 0.10,
-    "immune_hard_cc": true
+    "base_crit_rating": 102,
+    "base_crit_dmg_rating": 144,
+    "final_dmg_bonus": 0.25,
+    "immune_hard_cc": true,
+    "hp_regen_pct": 0.02,
+    "base_res": {
+      "kim": 0.4,
+      "tho": 0.4,
+      "loi": 0.2,
+      "phong": 0.15
+    },
+    "res_cap_pct": 0.9
   },
   {
     "key": "ApexDaoCot_R9",
@@ -80,22 +105,38 @@
     "rank": "chi_ton",
     "realm_level": 9,
     "element": null,
-    "base_hp": 22000,
+    "base_hp": 66000,
     "base_spd": 22,
-    "base_atk": 95,
-    "base_matk": 120,
-    "base_def": 130,
+    "base_atk": 209,
+    "base_matk": 264,
+    "base_def": 260,
     "hp_scale": 1.25,
-    "mp_regen_pct": 0.12,
+    "mp_regen_pct": 0.15,
     "skill_keys": [
-      "EnemyBoss_R10_BossAura",
-      "EnemyBoss_R10_Devastate",
-      "EnemyKim_T3"
+      "TheChat_HonDonDaoCotKhi",
+      "TheChat_ThienDaoLoiDinh",
+      "TheChat_HuyetDaoPhanPhe",
+      "TheChat_VoThuongDaoAp",
+      "TheChat_CuuChuyenDaoTam",
+      "EnemyBoss_R10_Devastate"
     ],
     "loot_table_key": "LootTheChatApex_R9",
-    "base_crit_rating": 75,
-    "base_crit_dmg_rating": 100,
-    "final_dmg_bonus": 0.15,
-    "immune_hard_cc": true
+    "base_crit_rating": 135,
+    "base_crit_dmg_rating": 190,
+    "final_dmg_bonus": 0.35,
+    "immune_hard_cc": true,
+    "hp_regen_pct": 0.02,
+    "base_res": {
+      "kim": 0.55,
+      "tho": 0.5,
+      "loi": 0.3,
+      "phong": 0.25,
+      "hoa": 0.2,
+      "thuy": 0.2,
+      "moc": 0.2,
+      "quang": 0.15,
+      "am": 0.15
+    },
+    "res_cap_pct": 0.9
   }
 ]

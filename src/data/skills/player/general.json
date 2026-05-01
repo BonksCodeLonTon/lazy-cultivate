@@ -37,7 +37,15 @@
     "effects": [
       "BuffHoPhap"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.275,
+          "crit_res_rating": 110
+        }
+      }
+    }
   },
   {
     "key": "SkillSupHeal1",
@@ -78,7 +86,19 @@
       "BuffTangToc",
       "BuffSinhCo"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.39
+        }
+      },
+      "BuffSinhCo": {
+        "stat_bonus": {
+          "hp_regen_pct": 0.065
+        }
+      }
+    }
   },
   {
     "key": "SkillDefChung_R6",
@@ -100,7 +120,20 @@
       "BuffCanCo",
       "HpRegen"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.35,
+          "crit_res_rating": 140
+        }
+      },
+      "BuffCanCo": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.21
+        }
+      }
+    }
   },
   {
     "key": "SkillDefChung_R8",
@@ -123,7 +156,25 @@
       "BuffHuKhong",
       "HpRegen"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffBatTu": {
+        "duration": 2
+      },
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.4,
+          "crit_res_rating": 160
+        },
+        "duration": 5
+      },
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 400
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillDefDangTien_R9",
@@ -148,7 +199,31 @@
       "HpRegen",
       "MpRegen"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffBatTu": {
+        "duration": 2
+      },
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.425,
+          "crit_res_rating": 170
+        },
+        "duration": 5
+      },
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 425
+        },
+        "duration": 3
+      },
+      "BuffCanCo": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.255
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillPasDangTien_R9",
@@ -171,6 +246,33 @@
       "BuffDaiDia",
       "BuffLietDiem"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffVoNgaKiemTam": {
+        "stat_bonus": {
+          "final_dmg_bonus": 0.68
+        },
+        "duration": 4
+      },
+      "BuffHoangKim": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.255,
+          "res_all": 0.17
+        },
+        "duration": 4
+      },
+      "BuffDaiDia": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.425
+        },
+        "duration": 4
+      },
+      "BuffLietDiem": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.17
+        },
+        "duration": 4
+      }
+    }
   }
 ]

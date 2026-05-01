@@ -1,0 +1,110 @@
+[
+  {
+    "key": "LCPhong_T1_TuVuLinhDieu",
+    "vi": "Tử Vũ Linh Điểu",
+    "en": "Purple-Feather Spirit Bird",
+    "rank": "tinh_anh",
+    "realm_level": 2,
+    "element": "phong",
+    "base_hp": 1710,
+    "base_spd": 16,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "EnemyLCPhong_T1",
+      "EnemyPhong_T1"
+    ],
+    "base_atk": 97,
+    "base_matk": 37,
+    "base_def": 67,
+    "mp_regen_pct": 0.07,
+    "base_evasion": 37,
+    "loot_table_key": "LinhCanLoot_Phong",
+    "final_dmg_bonus": 0.05,
+    "base_res": {
+      "phong": 0.25
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCPhong_T2_CuongPhongYeuHo",
+    "vi": "Cuồng Phong Yêu Hồ",
+    "en": "Tempest Demon Fox",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "phong",
+    "base_hp": 4400,
+    "base_spd": 18,
+    "hp_scale": 1.6,
+    "skill_keys": [
+      "EnemyLCPhong_T1",
+      "EnemyLCPhong_T2"
+    ],
+    "base_atk": 204,
+    "base_matk": 85,
+    "base_def": 136,
+    "mp_regen_pct": 0.07,
+    "base_evasion": 56,
+    "loot_table_key": "LinhCanLoot_Phong",
+    "final_dmg_bonus": 0.08,
+    "base_res": {
+      "phong": 0.35
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCPhong_T3_PhongThanLinhTuong",
+    "vi": "Phong Thần Linh Tướng",
+    "en": "Wind God Spirit General",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "phong",
+    "base_hp": 12480,
+    "base_spd": 20,
+    "hp_scale": 1.8,
+    "skill_keys": [
+      "EnemyLCPhong_T2",
+      "EnemyLCPhong_T3",
+      "EnemyLCPhong_Apex"
+    ],
+    "base_atk": 437,
+    "base_matk": 190,
+    "base_def": 266,
+    "mp_regen_pct": 0.07,
+    "base_evasion": 85,
+    "loot_table_key": "LinhCanLoot_Phong",
+    "final_dmg_bonus": 0.12,
+    "base_res": {
+      "phong": 0.5,
+      "moc": 0.1
+    },
+    "res_cap_pct": 0.9
+  },
+  {
+    "key": "LCPhong_Apex_BanCoPhongDe",
+    "vi": "Bàn Cổ Phong Đế",
+    "en": "Pangu Wind Sovereign",
+    "rank": "dai_nang",
+    "realm_level": 8,
+    "element": "phong",
+    "base_hp": 33000,
+    "base_spd": 22,
+    "hp_scale": 1.9,
+    "skill_keys": [
+      "EnemyLCPhong_Apex",
+      "EnemyLCPhong_T3",
+      "EnemyLCPhong_T2"
+    ],
+    "base_atk": 840,
+    "base_matk": 420,
+    "base_def": 504,
+    "mp_regen_pct": 0.08,
+    "base_evasion": 144,
+    "final_dmg_bonus": 0.28,
+    "loot_table_key": "LinhCanLoot_Phong",
+    "base_res": {
+      "phong": 0.65,
+      "moc": 0.2
+    },
+    "res_cap_pct": 0.9
+  }
+]

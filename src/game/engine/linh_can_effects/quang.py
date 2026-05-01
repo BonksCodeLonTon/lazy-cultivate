@@ -27,6 +27,8 @@ from src.game.systems.combatant import Combatant
 _BASE_CLEANSE_CHANCE = 0.15
 _BASE_MP_RESTORE_PCT = 0.05
 _BARRIER_MATK_SCALE = 0.5
+_CLEANSE_PER_LEVEL = 0.015   # +1.5% Thanh Tẩy per Quang level above 1
+_MP_RESTORE_PER_LEVEL = 0.005  # +0.5% MP restore per Quang level above 1
 
 
 def _try_restore_am_mutations(actor: Combatant, log: list[str]) -> bool:
@@ -87,7 +89,9 @@ def try_cleanse(actor: Combatant, rng: random.Random, log: list[str]) -> None:
     """
     if "quang" not in actor.linh_can:
         return
-    chance = _BASE_CLEANSE_CHANCE + actor.cleanse_on_turn_pct
+    level = actor.linh_can_levels.get("quang", 1) if actor.linh_can_levels else 1
+    level_bonus = max(0, level - 1) * _CLEANSE_PER_LEVEL
+    chance = _BASE_CLEANSE_CHANCE + actor.cleanse_on_turn_pct + level_bonus
     if rng.random() >= chance:
         return
 
@@ -106,7 +110,8 @@ def try_cleanse(actor: Combatant, rng: random.Random, log: list[str]) -> None:
     if not did_cleanse:
         return
 
-    mp_restore = int(actor.mp_max * _BASE_MP_RESTORE_PCT * (1.0 + actor.heal_pct))
+    mp_pct = _BASE_MP_RESTORE_PCT + max(0, level - 1) * _MP_RESTORE_PER_LEVEL
+    mp_restore = int(actor.mp_max * mp_pct * (1.0 + actor.heal_pct))
     actor.mp = min(actor.mp_max, actor.mp + mp_restore)
     log.append(f"    💙 +{mp_restore} MP")
 

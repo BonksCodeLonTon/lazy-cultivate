@@ -76,7 +76,19 @@
       "DebuffPhongAn",
       "DebuffLamCham"
     ],
-    "formation_key": "NhatNguyenPhong"
+    "formation_key": "NhatNguyenPhong",
+    "effect_overrides": {
+      "DebuffPhongAn": {
+        "stat_bonus": {
+          "evasion_rating": -165
+        }
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.275
+        }
+      }
+    }
   },
   {
     "key": "SkillFrmTo",
@@ -150,7 +162,14 @@
     "effects": [
       "DebuffPhaGiap"
     ],
-    "formation_key": "NhatNguyenQuang"
+    "formation_key": "NhatNguyenQuang",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.18
+        }
+      }
+    }
   },
   {
     "key": "SkillFrmTamTai_R4",
@@ -228,7 +247,19 @@
       "DebuffPhaGiap",
       "DebuffCatDut"
     ],
-    "formation_key": "NhatNguyenQuang"
+    "formation_key": "NhatNguyenQuang",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.18
+        }
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.36
+        }
+      }
+    }
   },
   {
     "key": "SkillFrmCuuCung",
@@ -284,7 +315,14 @@
     "effects": [
       "DebuffPhaGiap"
     ],
-    "formation_key": "LuongNghi"
+    "formation_key": "LuongNghi",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.21
+        }
+      }
+    }
   },
   {
     "key": "SkillFrmTuTuong_R6",
@@ -323,7 +361,21 @@
       "DebuffPhaGiap",
       "DebuffBaoMon"
     ],
-    "formation_key": "BatQuaiThienDia"
+    "formation_key": "BatQuaiThienDia",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.225
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillFrmNguHanh_R7",
@@ -344,7 +396,19 @@
       "DebuffBaoMon",
       "DebuffSetDanh"
     ],
-    "formation_key": "NguHanhTuongKhac"
+    "formation_key": "NguHanhTuongKhac",
+    "effect_overrides": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.075,
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillFrmThienMa_R8",
@@ -366,7 +430,22 @@
       "DebuffBaoMon",
       "CCMuted"
     ],
-    "formation_key": "ThienMaDietThe"
+    "formation_key": "ThienMaDietThe",
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.064,
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      },
+      "CCMuted": {
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillFrmCuuChuyen_R8",
@@ -387,7 +466,21 @@
       "DebuffPhaGiap",
       "DebuffBaoMon"
     ],
-    "formation_key": "CuuChuyenThienTam"
+    "formation_key": "CuuChuyenThienTam",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.24
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillFrmChuThien_R9",
@@ -410,7 +503,28 @@
       "DebuffSetDanh",
       "CCStun"
     ],
-    "formation_key": "ChuThienVanGioi"
+    "formation_key": "ChuThienVanGioi",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.255
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.085,
+        "duration": 3
+      },
+      "CCStun": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "SkillFrmHonNguyen_R9",
@@ -432,6 +546,23 @@
       "DebuffBaoMon",
       "CCMuted"
     ],
-    "formation_key": "HonNguyenNhatKhi"
+    "formation_key": "HonNguyenNhatKhi",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.255
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "CCMuted": {
+        "duration": 3
+      }
+    }
   }
 ]

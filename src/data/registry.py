@@ -43,6 +43,7 @@ class GameRegistry:
         "forge_materials", "super_materials",
         "herbs", "yeu_thu", "pills", "furnaces",
         "constitution_materials",
+        "linh_can_material",
         "world_boss_chests",
     )
     # Equipment definition files in src/data/equipment/
@@ -277,6 +278,29 @@ class GameRegistry:
 
     def get_world_boss(self, key: str) -> dict | None:
         return self.world_bosses.get(key)
+
+    def get_linh_can_material(self, key: str) -> dict | None:
+        item = self.items.get(key)
+        if item and item.get("type") == "linh_can_material":
+            return item
+        return None
+
+    def linh_can_materials_for(
+        self, element: str, role: str, level: int | None = None,
+    ) -> list[dict]:
+        """Lookup linh_can materials by element and role (unlock/upgrade/catalyst)."""
+        out: list[dict] = []
+        for item in self.items.values():
+            if item.get("type") != "linh_can_material":
+                continue
+            if item.get("linh_can_role") != role:
+                continue
+            if role != "catalyst" and item.get("linh_can_element") != element:
+                continue
+            if role == "upgrade" and level is not None and item.get("linh_can_level") != level:
+                continue
+            out.append(item)
+        return out
 
     def get_pill_recipe(self, key: str) -> dict | None:
         return self.pill_recipes.get(key)

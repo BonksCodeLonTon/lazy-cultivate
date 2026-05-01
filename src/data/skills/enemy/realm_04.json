@@ -7,13 +7,30 @@
     "category": "attack",
     "element": "hoa",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.8},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
     "mp_cost": 30,
     "cooldown": 2,
     "base_dmg": 75,
-    "effects": ["DebuffThieuDot", "DebuffDotChay"],
-    "effect_chances": {"DebuffThieuDot": 0.40, "DebuffDotChay": 0.20},
-    "formation_key": null
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.4,
+      "DebuffDotChay": 0.2
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.048
+      },
+      "DebuffDotChay": {
+        "dot_pct": 0.096
+      }
+    }
   },
   {
     "key": "EnemyLoi_R4",
@@ -23,13 +40,27 @@
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.8},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
     "mp_cost": 32,
     "cooldown": 2,
     "base_dmg": 80,
-    "effects": ["DebuffTeLiet", "DebuffSetDanh"],
-    "effect_chances": {"DebuffTeLiet": 0.35, "DebuffSetDanh": 0.25},
-    "formation_key": null
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.35,
+      "DebuffSetDanh": 0.25
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffSetDanh": {
+        "dot_pct": 0.06
+      }
+    }
   },
   {
     "key": "EnemyBang_R4",
@@ -39,13 +70,29 @@
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.8},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
     "mp_cost": 28,
     "cooldown": 2,
     "base_dmg": 70,
-    "effects": ["DebuffLamCham", "DebuffDongBang"],
-    "effect_chances": {"DebuffLamCham": 0.45, "DebuffDongBang": 0.15},
-    "formation_key": null
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.45,
+      "DebuffDongBang": 0.15
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.3
+        }
+      }
+    }
   },
   {
     "key": "EnemyKim_R4",
@@ -55,13 +102,27 @@
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
-    "dmg_scale": {"atk": 0.8, "matk": 0.0},
+    "dmg_scale": {
+      "atk": 0.8,
+      "matk": 0.0
+    },
     "mp_cost": 26,
     "cooldown": 2,
     "base_dmg": 65,
-    "effects": ["DebuffBaoMon"],
-    "effect_chances": {"DebuffBaoMon": 0.40},
-    "formation_key": null
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.4
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.06
+        }
+      }
+    }
   },
   {
     "key": "EnemyMoc_R4",
@@ -71,13 +132,32 @@
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.8},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
     "mp_cost": 26,
     "cooldown": 2,
     "base_dmg": 60,
-    "effects": ["DebuffDocTo", "DebuffBaoMon"],
-    "effect_chances": {"DebuffDocTo": 0.45, "DebuffBaoMon": 0.20},
-    "formation_key": null
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.45,
+      "DebuffBaoMon": 0.2
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.048
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.06
+        }
+      }
+    }
   },
   {
     "key": "EnemyPhong_R4",
@@ -87,13 +167,27 @@
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
-    "dmg_scale": {"atk": 0.8, "matk": 0.0},
+    "dmg_scale": {
+      "atk": 0.8,
+      "matk": 0.0
+    },
     "mp_cost": 26,
     "cooldown": 2,
     "base_dmg": 62,
-    "effects": ["DebuffChayMau", "DebuffCuonBay"],
-    "effect_chances": {"DebuffChayMau": 0.35, "DebuffCuonBay": 0.18},
-    "formation_key": null
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.35,
+      "DebuffCuonBay": 0.18
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0396
+      }
+    }
   },
   {
     "key": "EnemyTho_R4",
@@ -103,13 +197,34 @@
     "category": "attack",
     "element": "tho",
     "attack_type": "physical",
-    "dmg_scale": {"atk": 0.8, "matk": 0.0},
+    "dmg_scale": {
+      "atk": 0.8,
+      "matk": 0.0
+    },
     "mp_cost": 32,
     "cooldown": 3,
     "base_dmg": 85,
-    "effects": ["DebuffTroBuoc", "DebuffLunDat"],
-    "effect_chances": {"DebuffTroBuoc": 0.40, "DebuffLunDat": 0.20},
-    "formation_key": null
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.4,
+      "DebuffLunDat": 0.2
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.6
+        }
+      },
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.36
+        }
+      }
+    }
   },
   {
     "key": "EnemyThuy_R4",
@@ -119,12 +234,31 @@
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.8},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
     "mp_cost": 28,
     "cooldown": 2,
     "base_dmg": 72,
-    "effects": ["DebuffLamCham", "DebuffChayMau"],
-    "effect_chances": {"DebuffLamCham": 0.40, "DebuffChayMau": 0.25},
-    "formation_key": null
+    "effects": [
+      "DebuffLamCham",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.4,
+      "DebuffChayMau": 0.25
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.3
+        }
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0396
+      }
+    }
   }
 ]

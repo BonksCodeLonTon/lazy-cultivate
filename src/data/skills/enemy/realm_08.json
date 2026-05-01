@@ -7,13 +7,48 @@
     "category": "attack",
     "element": "hoa",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.5, "matk": 1.2},
+    "dmg_scale": {
+      "atk": 0.5,
+      "matk": 1.2
+    },
     "mp_cost": 90,
     "cooldown": 4,
     "base_dmg": 400,
-    "effects": ["DebuffThieuDot", "DebuffDotChay", "DebuffBaoMon", "DebuffPhaGiap"],
-    "effect_chances": {"DebuffThieuDot": 0.80, "DebuffDotChay": 0.55, "DebuffBaoMon": 0.40, "DebuffPhaGiap": 0.35},
-    "formation_key": null
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay",
+      "DebuffBaoMon",
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.8,
+      "DebuffDotChay": 0.55,
+      "DebuffBaoMon": 0.4,
+      "DebuffPhaGiap": 0.35
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.064,
+        "duration": 4
+      },
+      "DebuffDotChay": {
+        "dot_pct": 0.128,
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.24
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "EnemyLoi_R8",
@@ -23,13 +58,41 @@
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.5, "matk": 1.2},
+    "dmg_scale": {
+      "atk": 0.5,
+      "matk": 1.2
+    },
     "mp_cost": 95,
     "cooldown": 5,
     "base_dmg": 430,
-    "effects": ["DebuffTeLiet", "DebuffSetDanh", "CCStun", "CCInterrupt"],
-    "effect_chances": {"DebuffTeLiet": 0.75, "DebuffSetDanh": 0.65, "CCStun": 0.40, "CCInterrupt": 0.30},
-    "formation_key": null
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh",
+      "CCStun",
+      "CCInterrupt"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.75,
+      "DebuffSetDanh": 0.65,
+      "CCStun": 0.4,
+      "CCInterrupt": 0.3
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 3
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.08,
+        "duration": 3
+      },
+      "CCStun": {
+        "duration": 2
+      },
+      "CCInterrupt": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "EnemyBang_R8",
@@ -39,13 +102,44 @@
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.5, "matk": 1.2},
+    "dmg_scale": {
+      "atk": 0.5,
+      "matk": 1.2
+    },
     "mp_cost": 92,
     "cooldown": 5,
     "base_dmg": 420,
-    "effects": ["DebuffLamCham", "DebuffDongBang", "DebuffChayMau", "CCStun"],
-    "effect_chances": {"DebuffLamCham": 0.85, "DebuffDongBang": 0.55, "DebuffChayMau": 0.40, "CCStun": 0.25},
-    "formation_key": null
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang",
+      "DebuffChayMau",
+      "CCStun"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.85,
+      "DebuffDongBang": 0.55,
+      "DebuffChayMau": 0.4,
+      "CCStun": 0.25
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.4
+        },
+        "duration": 3
+      },
+      "DebuffDongBang": {
+        "duration": 3
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0528,
+        "duration": 4
+      },
+      "CCStun": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "EnemyKim_R8",
@@ -55,13 +149,50 @@
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
-    "dmg_scale": {"atk": 1.2, "matk": 0.5},
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.5
+    },
     "mp_cost": 85,
     "cooldown": 4,
     "base_dmg": 380,
-    "effects": ["DebuffBaoMon", "DebuffPhaGiap", "DebuffCatDut", "DebuffChayMau"],
-    "effect_chances": {"DebuffBaoMon": 0.70, "DebuffPhaGiap": 0.55, "DebuffCatDut": 0.45, "DebuffChayMau": 0.35},
-    "formation_key": null
+    "effects": [
+      "DebuffBaoMon",
+      "DebuffPhaGiap",
+      "DebuffCatDut",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.7,
+      "DebuffPhaGiap": 0.55,
+      "DebuffCatDut": 0.45,
+      "DebuffChayMau": 0.35
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.24
+        },
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.48
+        },
+        "duration": 4
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0528,
+        "duration": 4
+      }
+    }
   },
   {
     "key": "EnemyMoc_R8",
@@ -71,13 +202,50 @@
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.5, "matk": 1.2},
+    "dmg_scale": {
+      "atk": 0.5,
+      "matk": 1.2
+    },
     "mp_cost": 88,
     "cooldown": 4,
     "base_dmg": 395,
-    "effects": ["DebuffDocTo", "DebuffTroBuoc", "DebuffBaoMon", "DebuffCatDut"],
-    "effect_chances": {"DebuffDocTo": 0.80, "DebuffTroBuoc": 0.50, "DebuffBaoMon": 0.40, "DebuffCatDut": 0.30},
-    "formation_key": null
+    "effects": [
+      "DebuffDocTo",
+      "DebuffTroBuoc",
+      "DebuffBaoMon",
+      "DebuffCatDut"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.8,
+      "DebuffTroBuoc": 0.5,
+      "DebuffBaoMon": 0.4,
+      "DebuffCatDut": 0.3
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.064,
+        "duration": 4
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.8
+        },
+        "duration": 3
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.48
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "EnemyPhong_R8",
@@ -87,13 +255,47 @@
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
-    "dmg_scale": {"atk": 1.2, "matk": 0.5},
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.5
+    },
     "mp_cost": 85,
     "cooldown": 4,
     "base_dmg": 385,
-    "effects": ["DebuffChayMau", "DebuffCuonBay", "DebuffLamCham", "DebuffCatDut"],
-    "effect_chances": {"DebuffChayMau": 0.70, "DebuffCuonBay": 0.50, "DebuffLamCham": 0.40, "DebuffCatDut": 0.35},
-    "formation_key": null
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay",
+      "DebuffLamCham",
+      "DebuffCatDut"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.7,
+      "DebuffCuonBay": 0.5,
+      "DebuffLamCham": 0.4,
+      "DebuffCatDut": 0.35
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0528,
+        "duration": 4
+      },
+      "DebuffCuonBay": {
+        "duration": 2
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.4
+        },
+        "duration": 3
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.48
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "EnemyTho_R8",
@@ -103,13 +305,49 @@
     "category": "attack",
     "element": "tho",
     "attack_type": "physical",
-    "dmg_scale": {"atk": 1.2, "matk": 0.5},
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.5
+    },
     "mp_cost": 100,
     "cooldown": 5,
     "base_dmg": 460,
-    "effects": ["DebuffTroBuoc", "DebuffLunDat", "CCStun", "DebuffPhaGiap"],
-    "effect_chances": {"DebuffTroBuoc": 0.75, "DebuffLunDat": 0.55, "CCStun": 0.45, "DebuffPhaGiap": 0.30},
-    "formation_key": null
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat",
+      "CCStun",
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.75,
+      "DebuffLunDat": 0.55,
+      "CCStun": 0.45,
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.8
+        },
+        "duration": 3
+      },
+      "DebuffLunDat": {
+        "stat_bonus": {
+          "spd_pct": -0.48
+        },
+        "duration": 3
+      },
+      "CCStun": {
+        "duration": 2
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.24
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "EnemyThuy_R8",
@@ -119,13 +357,47 @@
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.5, "matk": 1.2},
+    "dmg_scale": {
+      "atk": 0.5,
+      "matk": 1.2
+    },
     "mp_cost": 92,
     "cooldown": 4,
     "base_dmg": 415,
-    "effects": ["DebuffLamCham", "DebuffChayMau", "DebuffBaoMon", "CCStun"],
-    "effect_chances": {"DebuffLamCham": 0.75, "DebuffChayMau": 0.55, "DebuffBaoMon": 0.40, "CCStun": 0.25},
-    "formation_key": null
+    "effects": [
+      "DebuffLamCham",
+      "DebuffChayMau",
+      "DebuffBaoMon",
+      "CCStun"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.75,
+      "DebuffChayMau": 0.55,
+      "DebuffBaoMon": 0.4,
+      "CCStun": 0.25
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.4
+        },
+        "duration": 3
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0528,
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      },
+      "CCStun": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "EnemyAm_R8",
@@ -135,12 +407,46 @@
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.5, "matk": 1.2},
+    "dmg_scale": {
+      "atk": 0.5,
+      "matk": 1.2
+    },
     "mp_cost": 90,
     "cooldown": 4,
     "base_dmg": 400,
-    "effects": ["DebuffDocTo", "DebuffCatDut", "DebuffXeRach", "CCMuted"],
-    "effect_chances": {"DebuffDocTo": 0.70, "DebuffCatDut": 0.55, "DebuffXeRach": 0.40, "CCMuted": 0.30},
-    "formation_key": null
+    "effects": [
+      "DebuffDocTo",
+      "DebuffCatDut",
+      "DebuffXeRach",
+      "CCMuted"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.7,
+      "DebuffCatDut": 0.55,
+      "DebuffXeRach": 0.4,
+      "CCMuted": 0.3
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.064,
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.48
+        },
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.128
+        },
+        "duration": 3
+      },
+      "CCMuted": {
+        "duration": 3
+      }
+    }
   }
 ]

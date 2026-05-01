@@ -78,6 +78,10 @@ class CombatSession:
     # entries (low-weight, low-activation pools) become meaningfully more likely
     # at higher grades instead of only multiplying the amount when they land.
     loot_luck_pct: float = 0.0
+    # Optional override that bypasses the enemy's ``loot_table_key`` lookup.
+    # Used by Linh Căn dungeons so every wave drops from the element's own
+    # material table regardless of which enemy was actually killed.
+    loot_table_override: str | None = None
 
     # ── Turn orchestration ────────────────────────────────────────────────
 
@@ -372,10 +376,17 @@ class CombatSession:
 
     def _roll_loot(self) -> list[dict]:
         enemy_data = registry.get_enemy(self.enemy.key)
-        if not enemy_data:
+        # ``loot_table_override`` (set by themed dungeons) takes precedence so
+        # every wave can pull from the same dungeon-specific table regardless
+        # of which enemy was actually killed.
+        if self.loot_table_override:
+            loot_key = self.loot_table_override
+        elif enemy_data:
+            # Use enemy-specific table if defined (special bosses), else fall
+            # back to zone table.
+            loot_key = enemy_data.get("loot_table_key") or f"LootZone_{enemy_data.get('realm_level', 1)}"
+        else:
             return []
-        # Use enemy-specific table if defined (special bosses), else fall back to zone table.
-        loot_key = enemy_data.get("loot_table_key") or f"LootZone_{enemy_data.get('realm_level', 1)}"
         drop_table = registry.get_loot_table(loot_key)
         drops = roll_drops(drop_table, self.rng, luck_pct=self.loot_luck_pct).merge()
         if self.loot_qty_multiplier != 1.0:

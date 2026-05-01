@@ -1,0 +1,84 @@
+[
+  {
+    "key": "EnemyLCTho_T1",
+    "vi": "Cương Thổ Trảm",
+    "en": "Steel Earth Slash",
+    "realm": 2,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.5,
+      "matk": 0.0
+    },
+    "mp_cost": 12,
+    "cooldown": 1,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.25
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCTho_T2",
+    "vi": "Hậu Thổ Trấn Sơn",
+    "en": "Sovereign Earth Mountain-Press",
+    "realm": 4,
+    "category": "defense",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 0.0
+    },
+    "mp_cost": 22,
+    "cooldown": 3,
+    "base_dmg": 24,
+    "effects": [
+      "BuffKimCuong"
+    ],
+    "effect_chances": {
+      "BuffKimCuong": 1.0
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCTho_T3",
+    "vi": "Bàn Cổ Thiên Trùy",
+    "en": "Pangu Heaven Hammer",
+    "realm": 6,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.9,
+      "matk": 0.0
+    },
+    "mp_cost": 42,
+    "cooldown": 3,
+    "base_dmg": 80,
+    "effects": [
+      "CCStun",
+      "DebuffLunDat"
+    ],
+    "effect_chances": {
+      "CCStun": 0.2,
+      "DebuffLunDat": 0.4
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "CCStun": {
+        "duration": 2
+      },
+      "DebuffLunDat": {
+        "duration": 3,
+        "stat_bonus": {
+          "spd_pct": -0.4
+        }
+      }
+    }
+  }
+]

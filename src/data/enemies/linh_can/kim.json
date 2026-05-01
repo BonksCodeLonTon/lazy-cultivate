@@ -1,0 +1,108 @@
+[
+  {
+    "key": "LCKim_T1_KimCuongThietSai",
+    "vi": "Kim Cương Thiết Sai",
+    "en": "Diamond Iron Knight",
+    "rank": "tinh_anh",
+    "realm_level": 2,
+    "element": "kim",
+    "base_hp": 1980,
+    "base_spd": 11,
+    "hp_scale": 1.6,
+    "skill_keys": [
+      "EnemyLCKim_T1",
+      "EnemyKim_T1"
+    ],
+    "base_atk": 90,
+    "base_matk": 30,
+    "base_def": 82,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Kim",
+    "final_dmg_bonus": 0.05,
+    "base_res": {
+      "kim": 0.25
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCKim_T2_BachNganLongPhach",
+    "vi": "Bạch Ngân Long Phách",
+    "en": "White Silver Dragon Soul",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "kim",
+    "base_hp": 4800,
+    "base_spd": 13,
+    "hp_scale": 1.7,
+    "skill_keys": [
+      "EnemyLCKim_T1",
+      "EnemyLCKim_T2"
+    ],
+    "base_atk": 187,
+    "base_matk": 59,
+    "base_def": 153,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Kim",
+    "final_dmg_bonus": 0.08,
+    "base_res": {
+      "kim": 0.35
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCKim_T3_CuKimQuanTuong",
+    "vi": "Cự Kim Quan Tướng",
+    "en": "Colossal Metal Commander",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "kim",
+    "base_hp": 12960,
+    "base_spd": 14,
+    "hp_scale": 1.8,
+    "skill_keys": [
+      "EnemyLCKim_T2",
+      "EnemyLCKim_T3",
+      "EnemyLCKim_Apex"
+    ],
+    "base_atk": 380,
+    "base_matk": 114,
+    "base_def": 304,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Kim",
+    "final_dmg_bonus": 0.12,
+    "base_res": {
+      "kim": 0.5,
+      "tho": 0.1
+    },
+    "res_cap_pct": 0.9
+  },
+  {
+    "key": "LCKim_Apex_HonKimDaiDe",
+    "vi": "Hỗn Kim Đại Đế",
+    "en": "Chaos Metal Sovereign",
+    "rank": "dai_nang",
+    "realm_level": 8,
+    "element": "kim",
+    "base_hp": 36000,
+    "base_spd": 16,
+    "hp_scale": 2.0,
+    "skill_keys": [
+      "EnemyLCKim_Apex",
+      "EnemyLCKim_T3",
+      "EnemyLCKim_T2"
+    ],
+    "base_atk": 756,
+    "base_matk": 231,
+    "base_def": 588,
+    "mp_regen_pct": 0.07,
+    "base_crit_rating": 108,
+    "base_crit_dmg_rating": 144,
+    "final_dmg_bonus": 0.28,
+    "loot_table_key": "LinhCanLoot_Kim",
+    "base_res": {
+      "kim": 0.65,
+      "tho": 0.2
+    },
+    "res_cap_pct": 0.9
+  }
+]

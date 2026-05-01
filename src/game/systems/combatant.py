@@ -62,6 +62,12 @@ class Combatant:
     active_flags: dict[str, bool] = field(default_factory=dict)
     # Active effects: effect_key → turns_remaining
     effects: dict[str, int] = field(default_factory=dict)
+    # Per-instance magnitude overrides applied on top of the EffectMeta
+    # defaults. Keyed by effect_key; the inner dict mirrors the subset of
+    # EffectMeta fields a skill may override (stat_bonus, dot_pct,
+    # dot_element). Read by ``effects.get_combat_modifiers`` and the DoT
+    # tick path. Cleared automatically when the effect expires.
+    effect_overrides: dict[str, dict] = field(default_factory=dict)
     # Skill cooldowns: skill_key → turns_remaining
     cooldowns: dict[str, int] = field(default_factory=dict)
     skill_keys: list[str] = field(default_factory=list)
@@ -72,8 +78,12 @@ class Combatant:
     # (main + 3 formations). Stored separately from ``skill_keys`` so they
     # don't compete with the player's chosen rotation.
     formation_skill_keys: list[str] = field(default_factory=list)
-    # Linh Căn keys (spiritual roots)
+    # Linh Căn keys (spiritual roots) + per-element progression level (1..9).
+    # ``linh_can`` stays as a bare list so existing membership checks
+    # (``"kim" in actor.linh_can``) keep working; ``linh_can_levels`` is what
+    # the effect modules read for proc-chance / potency scaling.
     linh_can: list[str] = field(default_factory=list)
+    linh_can_levels: dict[str, int] = field(default_factory=dict)
     # Thổ Hộ Thể shield (absorbs damage)
     shield: int = 0
     ho_the_used: bool = False
@@ -343,12 +353,33 @@ class Combatant:
     def has_effect(self, effect: str) -> bool:
         return self.effects.get(effect, 0) > 0
 
-    def apply_effect(self, effect: str, duration: int) -> None:
+    def apply_effect(
+        self, effect: str, duration: int, overrides: dict | None = None,
+    ) -> None:
+        """Apply or refresh an effect with optional per-instance overrides.
+
+        ``overrides`` lets a skill stamp custom magnitudes onto the holder's
+        copy of the effect — e.g. a powerful skill can apply DebuffXeRach
+        with ``stat_bonus={"res_all": -0.20}`` instead of the meta default
+        (-0.08). Recognised keys: ``stat_bonus`` (dict, merged into the
+        meta's stat_bonus per-key), ``dot_pct`` (float), ``dot_element``
+        (str). When the same effect is reapplied the *stronger* value of
+        each numeric field wins, so refreshing a -0.08 res shred with
+        another -0.08 doesn't accidentally erase a previously stamped
+        -0.20 from a heavier skill.
+        """
         self.effects[effect] = max(self.effects.get(effect, 0), duration)
+        if overrides:
+            existing = self.effect_overrides.get(effect, {})
+            self.effect_overrides[effect] = _merge_effect_overrides(existing, overrides)
 
     def tick_effects(self) -> list[str]:
         expired = [k for k, v in self.effects.items() if v <= 1]
         self.effects = {k: v - 1 for k, v in self.effects.items() if v > 1}
+        # Per-instance overrides die with the effect — a refreshed application
+        # has to re-stamp them rather than inherit a stale magnitude.
+        for k in expired:
+            self.effect_overrides.pop(k, None)
         # Burn stacks decay with the burn debuff: when DebuffThieuDot expires,
         # all remaining stacks are cleared.
         if "DebuffThieuDot" in expired:
@@ -368,3 +399,47 @@ class Combatant:
     def set_cooldown(self, skill_key: str, turns: int) -> None:
         effective = max(1, int(turns * (1.0 - self.cooldown_reduce)))
         self.cooldowns[skill_key] = effective
+
+
+
+# ── Effect-override merge helper ─────────────────────────────────────────────
+
+def _merge_effect_overrides(existing: dict, incoming: dict) -> dict:
+    """Combine two override dicts so the *stronger* magnitude wins.
+
+    Used when an effect is reapplied while still active — a fresh stamp
+    from a heavy skill must not be erased by a weaker reapplication of
+    the same effect from a lighter skill. Stronger means:
+
+      • numeric stat_bonus values (debuffs are negative): farther from 0
+      • dot_pct: the higher value
+      • dot_element: incoming wins (str overrides aren't ranked)
+
+    Unknown override keys are pass-through (incoming wins) so future
+    fields don't need to retro-fit this helper.
+    """
+    out: dict = dict(existing)
+
+    # stat_bonus is the most common override — merge per-stat by magnitude.
+    inc_stats = incoming.get("stat_bonus") or {}
+    if inc_stats:
+        merged_stats = dict(out.get("stat_bonus") or {})
+        for k, v in inc_stats.items():
+            if k in merged_stats and isinstance(v, (int, float)) and not isinstance(v, bool):
+                # Keep whichever value has the larger absolute magnitude.
+                merged_stats[k] = v if abs(v) > abs(merged_stats[k]) else merged_stats[k]
+            else:
+                merged_stats[k] = v
+        out["stat_bonus"] = merged_stats
+
+    if "dot_pct" in incoming:
+        out["dot_pct"] = max(float(incoming["dot_pct"]), float(out.get("dot_pct", 0.0)))
+    if "dot_element" in incoming:
+        out["dot_element"] = incoming["dot_element"]
+
+    # Any other custom keys: incoming wins.
+    for k, v in incoming.items():
+        if k in ("stat_bonus", "dot_pct", "dot_element"):
+            continue
+        out[k] = v
+    return out

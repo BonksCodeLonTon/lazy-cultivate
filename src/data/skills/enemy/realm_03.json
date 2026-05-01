@@ -7,13 +7,25 @@
     "category": "attack",
     "element": "hoa",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.6},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
     "mp_cost": 20,
     "cooldown": 2,
     "base_dmg": 35,
-    "effects": ["DebuffThieuDot"],
-    "effect_chances": {"DebuffThieuDot": 0.30},
-    "formation_key": null
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.3
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.044
+      }
+    }
   },
   {
     "key": "EnemyLoi_T2",
@@ -23,12 +35,19 @@
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.6},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
     "mp_cost": 22,
     "cooldown": 2,
     "base_dmg": 40,
-    "effects": ["DebuffTeLiet"],
-    "effect_chances": {"DebuffTeLiet": 0.25},
+    "effects": [
+      "DebuffTeLiet"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.25
+    },
     "formation_key": null
   },
   {
@@ -39,13 +58,27 @@
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.6},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
     "mp_cost": 20,
     "cooldown": 2,
     "base_dmg": 35,
-    "effects": ["DebuffLamCham"],
-    "effect_chances": {"DebuffLamCham": 0.30},
-    "formation_key": null
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.275
+        }
+      }
+    }
   },
   {
     "key": "EnemyKim_T2",
@@ -55,7 +88,10 @@
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
-    "dmg_scale": {"atk": 0.6, "matk": 0.0},
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 0.0
+    },
     "mp_cost": 18,
     "cooldown": 2,
     "base_dmg": 30,
@@ -71,13 +107,25 @@
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.6},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
     "mp_cost": 18,
     "cooldown": 2,
     "base_dmg": 28,
-    "effects": ["DebuffDocTo"],
-    "effect_chances": {"DebuffDocTo": 0.28},
-    "formation_key": null
+    "effects": [
+      "DebuffDocTo"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.28
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.044
+      }
+    }
   },
   {
     "key": "EnemyPhong_T2",
@@ -87,13 +135,25 @@
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
-    "dmg_scale": {"atk": 0.6, "matk": 0.0},
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 0.0
+    },
     "mp_cost": 18,
     "cooldown": 2,
     "base_dmg": 30,
-    "effects": ["DebuffChayMau"],
-    "effect_chances": {"DebuffChayMau": 0.25},
-    "formation_key": null
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.25
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0363
+      }
+    }
   },
   {
     "key": "EnemyTho_T2",
@@ -103,13 +163,27 @@
     "category": "attack",
     "element": "tho",
     "attack_type": "physical",
-    "dmg_scale": {"atk": 0.6, "matk": 0.0},
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 0.0
+    },
     "mp_cost": 22,
     "cooldown": 3,
     "base_dmg": 35,
-    "effects": ["DebuffTroBuoc"],
-    "effect_chances": {"DebuffTroBuoc": 0.28},
-    "formation_key": null
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.28
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.55
+        }
+      }
+    }
   },
   {
     "key": "EnemyThuy_T2",
@@ -119,13 +193,27 @@
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.6},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
     "mp_cost": 20,
     "cooldown": 2,
     "base_dmg": 35,
-    "effects": ["DebuffLamCham"],
-    "effect_chances": {"DebuffLamCham": 0.28},
-    "formation_key": null
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.28
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.275
+        }
+      }
+    }
   },
   {
     "key": "EnemyTribLoi_T2",
@@ -135,12 +223,26 @@
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 1.0},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
     "mp_cost": 30,
     "cooldown": 2,
     "base_dmg": 100,
-    "effects": ["DebuffTeLiet", "DebuffSetDanh"],
-    "effect_chances": {"DebuffTeLiet": 0.50, "DebuffSetDanh": 0.40},
-    "formation_key": null
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.5,
+      "DebuffSetDanh": 0.4
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffSetDanh": {
+        "dot_pct": 0.055
+      }
+    }
   }
 ]

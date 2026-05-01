@@ -19,7 +19,10 @@
     ],
     "base_crit_rating": 15,
     "base_crit_dmg_rating": 25,
-    "final_dmg_bonus": 0.0
+    "final_dmg_bonus": 0.0,
+    "base_res": {
+      "kim": 0.15
+    }
   },
   {
     "key": "EliteMocLinh",
@@ -41,7 +44,10 @@
     ],
     "base_crit_rating": 15,
     "base_crit_dmg_rating": 25,
-    "final_dmg_bonus": 0.0
+    "final_dmg_bonus": 0.0,
+    "base_res": {
+      "moc": 0.15
+    }
   },
   {
     "key": "EliteThuyGiao",
@@ -63,7 +69,10 @@
     ],
     "base_crit_rating": 12,
     "base_crit_dmg_rating": 25,
-    "final_dmg_bonus": 0.0
+    "final_dmg_bonus": 0.0,
+    "base_res": {
+      "thuy": 0.15
+    }
   },
   {
     "key": "ElitePhongLinh",
@@ -85,7 +94,10 @@
     ],
     "base_crit_rating": 20,
     "base_crit_dmg_rating": 30,
-    "final_dmg_bonus": 0.02
+    "final_dmg_bonus": 0.02,
+    "base_res": {
+      "phong": 0.15
+    }
   },
   {
     "key": "EliteToNham",
@@ -107,6 +119,9 @@
     ],
     "base_crit_rating": 15,
     "base_crit_dmg_rating": 25,
-    "final_dmg_bonus": 0.0
+    "final_dmg_bonus": 0.0,
+    "base_res": {
+      "tho": 0.15
+    }
   }
 ]

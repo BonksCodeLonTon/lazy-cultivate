@@ -113,7 +113,14 @@
     "effects": [
       "DebuffLamCham"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.275
+        }
+      }
+    }
   },
   {
     "key": "SkillDefBang",
@@ -133,7 +140,14 @@
     "effects": [
       "BuffBangGiap"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffBangGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.22
+        }
+      }
+    }
   },
   {
     "key": "SkillDefThuy",
@@ -153,7 +167,14 @@
     "effects": [
       "BuffThuyKinh"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffThuyKinh": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.165
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkThuy_R4",
@@ -174,7 +195,14 @@
       "DebuffLamCham",
       "DebuffDongBang"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.3
+        }
+      }
+    }
   },
   {
     "key": "SkillThuyManaStack",
@@ -200,7 +228,19 @@
       "DebuffThuyXuyenThau": 0.6
     },
     "formation_key": null,
-    "description_vi": "Làm chậm đối thủ, xuyên Kháng Thủy. Tích Linh Khí stack cho đòn bùng nổ kế."
+    "description_vi": "Làm chậm đối thủ, xuyên Kháng Thủy. Tích Linh Khí stack cho đòn bùng nổ kế.",
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.3
+        }
+      },
+      "DebuffThuyXuyenThau": {
+        "stat_bonus": {
+          "res_thuy": -0.18
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkBang3",
@@ -240,7 +280,12 @@
     "effects": [
       "DebuffChayMau"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0429
+      }
+    }
   },
   {
     "key": "SkillThuyMirror_R5",
@@ -262,7 +307,21 @@
       "BuffHoPhap"
     ],
     "formation_key": null,
-    "description_vi": "Dệt gương băng hộ thể — nhận Trọng Tố + Hộ Pháp. Trong khi hoạt động, đòn đánh tới đều bị phản chiếu mang theo đông băng/làm chậm."
+    "description_vi": "Dệt gương băng hộ thể — nhận Trọng Tố + Hộ Pháp. Trong khi hoạt động, đòn đánh tới đều bị phản chiếu mang theo đông băng/làm chậm.",
+    "effect_overrides": {
+      "BuffTrongTo": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.13,
+          "res_all": 0.065
+        }
+      },
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.325,
+          "crit_res_rating": 130
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkThuy_R6",
@@ -284,7 +343,17 @@
       "DebuffLamCham",
       "DebuffChayMau"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.35
+        }
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0462
+      }
+    }
   },
   {
     "key": "SkillThuyFreeze_R6",
@@ -312,7 +381,19 @@
       "DebuffThuyXuyenThau": 1.0
     },
     "formation_key": null,
-    "description_vi": "Đóng băng đối thủ (70%), làm chậm và xuyên kháng thủy."
+    "description_vi": "Đóng băng đối thủ (70%), làm chậm và xuyên kháng thủy.",
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.35
+        }
+      },
+      "DebuffThuyXuyenThau": {
+        "stat_bonus": {
+          "res_thuy": -0.21
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkThuy_R7",
@@ -335,7 +416,25 @@
       "DebuffChayMau",
       "CCStun"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDongBang": {
+        "duration": 3
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.375
+        },
+        "duration": 3
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0495,
+        "duration": 4
+      },
+      "CCStun": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "SkillPasThuy_R7",
@@ -356,7 +455,21 @@
       "BuffHanKhi",
       "BuffThuyKinh"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffHanKhi": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.15
+        },
+        "duration": 4
+      },
+      "BuffThuyKinh": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.225
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillAtkThuy_R8",
@@ -380,7 +493,31 @@
       "CCStun",
       "DebuffBaoMon"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDongBang": {
+        "duration": 3
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.4
+        },
+        "duration": 3
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0528,
+        "duration": 4
+      },
+      "CCStun": {
+        "duration": 2
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillThuyManaBurst_R8",
@@ -408,7 +545,18 @@
     },
     "burst_per_mana_stack_mult": 0.15,
     "formation_key": null,
-    "description_vi": "Nổ toàn bộ tầng Linh Khí Tích Lũy — mỗi tầng thêm 15% MP tối đa làm ST, xuyên Kháng Thủy, 50% đóng băng."
+    "description_vi": "Nổ toàn bộ tầng Linh Khí Tích Lũy — mỗi tầng thêm 15% MP tối đa làm ST, xuyên Kháng Thủy, 50% đóng băng.",
+    "effect_overrides": {
+      "DebuffThuyXuyenThau": {
+        "stat_bonus": {
+          "res_thuy": -0.24
+        },
+        "duration": 4
+      },
+      "DebuffDongBang": {
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillAtkThuy_R9",
@@ -433,7 +581,34 @@
       "DebuffBaoMon",
       "CCMuted"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDongBang": {
+        "duration": 3
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.425
+        },
+        "duration": 3
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0561,
+        "duration": 4
+      },
+      "CCStun": {
+        "duration": 2
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "CCMuted": {
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillThuyDaoWorld_R9",
@@ -466,6 +641,26 @@
     },
     "burst_per_mana_stack_mult": 0.22,
     "formation_key": null,
-    "description_vi": "Đỉnh cao Thủy Đạo — đóng băng, làm chậm, xuyên Kháng Thủy, ngắt kỹ năng và nổ toàn bộ tầng Linh Khí. Đòn kết thúc của cao thủ kiểm soát."
+    "description_vi": "Đỉnh cao Thủy Đạo — đóng băng, làm chậm, xuyên Kháng Thủy, ngắt kỹ năng và nổ toàn bộ tầng Linh Khí. Đòn kết thúc của cao thủ kiểm soát.",
+    "effect_overrides": {
+      "DebuffDongBang": {
+        "duration": 3
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.425
+        },
+        "duration": 3
+      },
+      "DebuffThuyXuyenThau": {
+        "stat_bonus": {
+          "res_thuy": -0.255
+        },
+        "duration": 4
+      },
+      "CCInterrupt": {
+        "duration": 2
+      }
+    }
   }
 ]

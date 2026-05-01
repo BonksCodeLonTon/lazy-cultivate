@@ -95,7 +95,12 @@
     "effects": [
       "DebuffChayMau"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0363
+      }
+    }
   },
   {
     "key": "SkillSupPhong",
@@ -115,7 +120,14 @@
     "effects": [
       "BuffTangToc"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.33
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkPhong_R4",
@@ -136,7 +148,12 @@
       "DebuffChayMau",
       "DebuffCuonBay"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0396
+      }
+    }
   },
   {
     "key": "SkillAtkPhong3",
@@ -176,7 +193,17 @@
       "DebuffCuonBay",
       "DebuffLamCham"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0462
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.35
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkPhong_R7",
@@ -199,7 +226,28 @@
       "DebuffLamCham",
       "DebuffCatDut"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0495,
+        "duration": 4
+      },
+      "DebuffCuonBay": {
+        "duration": 2
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.375
+        },
+        "duration": 3
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.45
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillMovPhong_R7",
@@ -221,7 +269,28 @@
       "BuffTangToc",
       "BuffHuKhong"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffPhongVu": {
+        "stat_bonus": {
+          "evasion_rating": 150,
+          "crit_rating": 150
+        },
+        "duration": 4
+      },
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.45
+        },
+        "duration": 4
+      },
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 375
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillAtkPhong_R8",
@@ -245,7 +314,34 @@
       "DebuffCatDut",
       "DebuffXeRach"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0528,
+        "duration": 4
+      },
+      "DebuffCuonBay": {
+        "duration": 2
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.4
+        },
+        "duration": 3
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.48
+        },
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.128
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillAtkPhong_R9",
@@ -270,7 +366,37 @@
       "DebuffXeRach",
       "CCInterrupt"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0561,
+        "duration": 4
+      },
+      "DebuffCuonBay": {
+        "duration": 2
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.425
+        },
+        "duration": 3
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.51
+        },
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.136
+        },
+        "duration": 3
+      },
+      "CCInterrupt": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "SkillMovDangTien_R9",
@@ -293,7 +419,34 @@
       "BuffTangToc",
       "BuffHuKhong"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffPhongVu": {
+        "stat_bonus": {
+          "evasion_rating": 170,
+          "crit_rating": 170
+        },
+        "duration": 4
+      },
+      "BuffTocLoi": {
+        "stat_bonus": {
+          "spd_pct": 0.85
+        },
+        "duration": 3
+      },
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.51
+        },
+        "duration": 4
+      },
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 425
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillAtkPhongMarkR2",
@@ -334,7 +487,19 @@
       "DebuffPhongAn",
       "DebuffLamCham"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhongAn": {
+        "stat_bonus": {
+          "evasion_rating": -180
+        }
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.3
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkPhongBurstR6",
@@ -356,7 +521,22 @@
       "DebuffLamCham",
       "DebuffChayMau"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhongAn": {
+        "stat_bonus": {
+          "evasion_rating": -210
+        }
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.35
+        }
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0462
+      }
+    }
   },
   {
     "key": "SkillAtkPhongEvaR7",
@@ -378,7 +558,24 @@
       "DebuffLamCham",
       "DebuffCuonBay"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhongAn": {
+        "stat_bonus": {
+          "evasion_rating": -225
+        },
+        "duration": 4
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.375
+        },
+        "duration": 3
+      },
+      "DebuffCuonBay": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "SkillDefPhongEva",
@@ -399,7 +596,20 @@
       "BuffNguPhong",
       "BuffPhongVu"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffNguPhong": {
+        "stat_bonus": {
+          "evasion_rating": 220
+        }
+      },
+      "BuffPhongVu": {
+        "stat_bonus": {
+          "evasion_rating": 110,
+          "crit_rating": 110
+        }
+      }
+    }
   },
   {
     "key": "SkillMovPhongR5",
@@ -420,7 +630,19 @@
       "BuffTangToc",
       "BuffHuKhong"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.39
+        }
+      },
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 325
+        }
+      }
+    }
   },
   {
     "key": "SkillPassivePhongEva",

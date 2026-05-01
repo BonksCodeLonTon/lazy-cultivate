@@ -1,0 +1,87 @@
+[
+  {
+    "key": "EnemyLCKim_T1",
+    "vi": "Kim Quang Trảm",
+    "en": "Metal Light Slash",
+    "realm": 2,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.45,
+      "matk": 0.0
+    },
+    "mp_cost": 12,
+    "cooldown": 1,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCKim_T2",
+    "vi": "Tích Kim Phá Sơn",
+    "en": "Hoarded Metal Mountain-Breaker",
+    "realm": 4,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.65,
+      "matk": 0.0
+    },
+    "mp_cost": 22,
+    "cooldown": 2,
+    "base_dmg": 36,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3,
+      "DebuffChayMau": 0.25
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCKim_T3",
+    "vi": "Cuồng Kim Loạn Vũ",
+    "en": "Wild Metal Frenzy Dance",
+    "realm": 6,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 38,
+    "cooldown": 3,
+    "base_dmg": 78,
+    "effects": [
+      "DebuffXeRach",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffXeRach": 0.35,
+      "DebuffChayMau": 0.4
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffXeRach": {
+        "duration": 3,
+        "stat_bonus": {
+          "res_all": -0.13
+        }
+      },
+      "DebuffChayMau": {
+        "duration": 4,
+        "dot_pct": 0.05
+      }
+    }
+  }
+]

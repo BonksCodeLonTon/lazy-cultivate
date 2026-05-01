@@ -57,7 +57,14 @@
     "effects": [
       "DebuffBaoMon"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.055
+        }
+      }
+    }
   },
   {
     "key": "SkillDefQuang",
@@ -98,7 +105,14 @@
       "HpRegen",
       "BuffSinhCo"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffSinhCo": {
+        "stat_bonus": {
+          "hp_regen_pct": 0.055
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkQuang_R4",
@@ -119,7 +133,17 @@
       "DebuffPhaGiap",
       "DebuffSetDanh"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.18
+        }
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.06
+      }
+    }
   },
   {
     "key": "SkillAtkQuang3",
@@ -140,7 +164,19 @@
       "DebuffPhaGiap",
       "DebuffBaoMon"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.195
+        }
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.065
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkQuang_R6",
@@ -162,7 +198,22 @@
       "DebuffBaoMon",
       "DebuffSetDanh"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.21
+        }
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.07
+        }
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.07
+      }
+    }
   },
   {
     "key": "SkillAtkQuang_R7",
@@ -185,7 +236,31 @@
       "DebuffSetDanh",
       "DebuffXeRach"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.225
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.075,
+        "duration": 3
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.12
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillDefQuang_R7",
@@ -207,7 +282,25 @@
       "BuffHoPhap",
       "BuffSinhCo"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffBatTu": {
+        "duration": 2
+      },
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.375,
+          "crit_res_rating": 150
+        },
+        "duration": 5
+      },
+      "BuffSinhCo": {
+        "stat_bonus": {
+          "hp_regen_pct": 0.075
+        },
+        "duration": 5
+      }
+    }
   },
   {
     "key": "SkillAtkQuang_R8",
@@ -231,7 +324,34 @@
       "DebuffXeRach",
       "CCMuted"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.24
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.08,
+        "duration": 3
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.128
+        },
+        "duration": 3
+      },
+      "CCMuted": {
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillPasQuang_R8",
@@ -252,7 +372,22 @@
       "BuffLietDiem",
       "BuffHoangKim"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffLietDiem": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.16
+        },
+        "duration": 4
+      },
+      "BuffHoangKim": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.24,
+          "res_all": 0.16
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillAtkQuang_R9",
@@ -277,6 +412,39 @@
       "CCMuted",
       "DebuffCatDut"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.255
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.085,
+        "duration": 3
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.136
+        },
+        "duration": 3
+      },
+      "CCMuted": {
+        "duration": 3
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.51
+        },
+        "duration": 4
+      }
+    }
   }
 ]

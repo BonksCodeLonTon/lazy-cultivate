@@ -1,0 +1,107 @@
+[
+  {
+    "key": "LCAm_T1_HacDieuYeuHon",
+    "vi": "Hắc Diệu Yêu Hồn",
+    "en": "Black Obsidian Demon Soul",
+    "rank": "tinh_anh",
+    "realm_level": 2,
+    "element": "am",
+    "base_hp": 1890,
+    "base_spd": 12,
+    "hp_scale": 1.6,
+    "skill_keys": [
+      "EnemyLCAm_T1",
+      "EnemyBang_T1"
+    ],
+    "base_atk": 82,
+    "base_matk": 90,
+    "base_def": 75,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Am",
+    "final_dmg_bonus": 0.05,
+    "base_res": {
+      "am": 0.25
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCAm_T2_CuuAmULinh",
+    "vi": "Cửu Âm U Linh",
+    "en": "Nine-Yin Wraith",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "am",
+    "base_hp": 4600,
+    "base_spd": 14,
+    "hp_scale": 1.7,
+    "skill_keys": [
+      "EnemyLCAm_T1",
+      "EnemyLCAm_T2"
+    ],
+    "base_atk": 170,
+    "base_matk": 221,
+    "base_def": 136,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Am",
+    "final_dmg_bonus": 0.08,
+    "base_res": {
+      "am": 0.35
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCAm_T3_UMinhDaiTuong",
+    "vi": "U Minh Đại Tướng",
+    "en": "Netherworld Grand General",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "am",
+    "base_hp": 12960,
+    "base_spd": 15,
+    "hp_scale": 1.9,
+    "skill_keys": [
+      "EnemyLCAm_T2",
+      "EnemyLCAm_T3",
+      "EnemyLCAm_Apex"
+    ],
+    "base_atk": 342,
+    "base_matk": 475,
+    "base_def": 266,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Am",
+    "final_dmg_bonus": 0.12,
+    "base_res": {
+      "am": 0.5,
+      "thuy": 0.1
+    },
+    "res_cap_pct": 0.9
+  },
+  {
+    "key": "LCAm_Apex_DietTheHacDe",
+    "vi": "Diệt Thế Hắc Đế",
+    "en": "World-Ending Black Sovereign",
+    "rank": "dai_nang",
+    "realm_level": 8,
+    "element": "am",
+    "base_hp": 35400,
+    "base_spd": 17,
+    "hp_scale": 2.0,
+    "skill_keys": [
+      "EnemyLCAm_Apex",
+      "EnemyLCAm_T3",
+      "EnemyLCAm_T2"
+    ],
+    "base_atk": 672,
+    "base_matk": 966,
+    "base_def": 525,
+    "mp_regen_pct": 0.08,
+    "base_evasion": 72,
+    "final_dmg_bonus": 0.3,
+    "loot_table_key": "LinhCanLoot_Am",
+    "base_res": {
+      "am": 0.65,
+      "thuy": 0.2
+    },
+    "res_cap_pct": 0.9
+  }
+]

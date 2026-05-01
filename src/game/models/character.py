@@ -94,7 +94,11 @@ class Character:
     evil_title: Optional[str] = None   # Auto-assigned, unremovable
 
     # Linh Căn (Spiritual Roots) — randomly assigned on registration
+    # ``linh_can`` is the bare element list (e.g. ["kim", "hoa"]) used for
+    # legacy membership checks. ``linh_can_levels`` carries the per-element
+    # progression level (1..9) consumed by stat scaling and effect modules.
     linh_can: list[str] = field(default_factory=list)
+    linh_can_levels: dict[str, int] = field(default_factory=dict)
 
     # HP/MP current (session state — not persisted separately)
     hp_current: int = 0

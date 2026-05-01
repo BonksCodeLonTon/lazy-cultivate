@@ -235,6 +235,18 @@ def is_tran_tu(body_realm: int, qi_realm: int, formation_realm: int) -> bool:
     return formation_realm >= max(body_realm, qi_realm)
 
 
+def is_khi_tu(body_realm: int, qi_realm: int, formation_realm: int) -> bool:
+    """Khí Tu = qi axis dominant.
+
+    Mirror of ``is_the_tu`` / ``is_tran_tu``: the qi realm must be strictly
+    greater than every other axis. The strict inequality (vs Trận Tu's
+    ``>=``) keeps tied 0/0/0 starters out of the archetype until the
+    player commits to qi. Used to gate the Linh Căn breadth multiplier so
+    body-leaning players can't dip into the bonus by maxing qi later.
+    """
+    return qi_realm > max(body_realm, formation_realm)
+
+
 def max_formation_slots(body_realm: int, qi_realm: int, formation_realm: int) -> int:
     """How many formations the player can run simultaneously.
 

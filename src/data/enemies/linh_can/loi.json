@@ -1,0 +1,111 @@
+[
+  {
+    "key": "LCLoi_T1_TuDienLoiSai",
+    "vi": "Tử Điện Lôi Sai",
+    "en": "Purple-Bolt Thunder Knight",
+    "rank": "tinh_anh",
+    "realm_level": 2,
+    "element": "loi",
+    "base_hp": 1890,
+    "base_spd": 13,
+    "hp_scale": 1.6,
+    "skill_keys": [
+      "EnemyLCLoi_T1",
+      "EnemyLoi_T1"
+    ],
+    "base_atk": 75,
+    "base_matk": 97,
+    "base_def": 82,
+    "mp_regen_pct": 0.07,
+    "base_crit_rating": 45,
+    "loot_table_key": "LinhCanLoot_Loi",
+    "final_dmg_bonus": 0.05,
+    "base_res": {
+      "loi": 0.25
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCLoi_T2_CuuKhucLoiLong",
+    "vi": "Cửu Khúc Lôi Long",
+    "en": "Nine-Bend Thunder Dragon",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "loi",
+    "base_hp": 4800,
+    "base_spd": 15,
+    "hp_scale": 1.7,
+    "skill_keys": [
+      "EnemyLCLoi_T1",
+      "EnemyLCLoi_T2"
+    ],
+    "base_atk": 170,
+    "base_matk": 238,
+    "base_def": 153,
+    "mp_regen_pct": 0.07,
+    "base_crit_rating": 80,
+    "loot_table_key": "LinhCanLoot_Loi",
+    "final_dmg_bonus": 0.08,
+    "base_res": {
+      "loi": 0.35
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCLoi_T3_ThanLoiLinhTuong",
+    "vi": "Thần Lôi Linh Tướng",
+    "en": "Divine Thunder Spirit General",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "loi",
+    "base_hp": 13200,
+    "base_spd": 16,
+    "hp_scale": 1.9,
+    "skill_keys": [
+      "EnemyLCLoi_T2",
+      "EnemyLCLoi_T3",
+      "EnemyLCLoi_Apex"
+    ],
+    "base_atk": 342,
+    "base_matk": 494,
+    "base_def": 285,
+    "mp_regen_pct": 0.07,
+    "base_crit_rating": 136,
+    "loot_table_key": "LinhCanLoot_Loi",
+    "final_dmg_bonus": 0.12,
+    "base_res": {
+      "loi": 0.5,
+      "phong": 0.1
+    },
+    "res_cap_pct": 0.9
+  },
+  {
+    "key": "LCLoi_Apex_ThaiSoLoiDe",
+    "vi": "Thái Sơ Lôi Đế",
+    "en": "Primordial Thunder Sovereign",
+    "rank": "dai_nang",
+    "realm_level": 8,
+    "element": "loi",
+    "base_hp": 36000,
+    "base_spd": 18,
+    "hp_scale": 2.0,
+    "skill_keys": [
+      "EnemyLCLoi_Apex",
+      "EnemyLCLoi_T3",
+      "EnemyLCLoi_T2"
+    ],
+    "base_atk": 672,
+    "base_matk": 966,
+    "base_def": 546,
+    "mp_regen_pct": 0.08,
+    "base_crit_rating": 234,
+    "base_crit_dmg_rating": 180,
+    "final_dmg_bonus": 0.3,
+    "loot_table_key": "LinhCanLoot_Loi",
+    "base_res": {
+      "loi": 0.65,
+      "phong": 0.2
+    },
+    "res_cap_pct": 0.9
+  }
+]

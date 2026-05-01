@@ -93,7 +93,14 @@
     "effects": [
       "BuffSinhCo"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffSinhCo": {
+        "stat_bonus": {
+          "hp_regen_pct": 0.055
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkMoc_R4",
@@ -114,7 +121,17 @@
       "DebuffDocTo",
       "DebuffTroBuoc"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.048
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.6
+        }
+      }
+    }
   },
   {
     "key": "SkillMocPoison",
@@ -140,7 +157,17 @@
       "DebuffMocXuyenThau": 0.8
     },
     "formation_key": null,
-    "description_vi": "Độc nhiễm linh khí, áp Độc Tố và xuyên thủng Kháng Mộc."
+    "description_vi": "Độc nhiễm linh khí, áp Độc Tố và xuyên thủng Kháng Mộc.",
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.048
+      },
+      "DebuffMocXuyenThau": {
+        "stat_bonus": {
+          "res_moc": -0.18
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkMoc3",
@@ -161,7 +188,17 @@
       "DebuffDocTo",
       "DebuffBaoMon"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.052
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.065
+        }
+      }
+    }
   },
   {
     "key": "SkillMocHeal_R5",
@@ -183,7 +220,15 @@
       "BuffHoPhap"
     ],
     "formation_key": null,
-    "description_vi": "Hồi 10% HP và kích hoạt Hộ Pháp — Dưỡng Sinh Hóa Sát biến máu hồi thành sát thương đòn kế tiếp."
+    "description_vi": "Hồi 10% HP và kích hoạt Hộ Pháp — Dưỡng Sinh Hóa Sát biến máu hồi thành sát thương đòn kế tiếp.",
+    "effect_overrides": {
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.325,
+          "crit_res_rating": 130
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkMoc_R6",
@@ -205,7 +250,22 @@
       "DebuffTroBuoc",
       "DebuffBaoMon"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.056
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.7
+        }
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.07
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkMoc_R7",
@@ -227,7 +287,25 @@
       "DebuffTroBuoc",
       "DebuffBaoMon"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.06,
+        "duration": 4
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.75
+        },
+        "duration": 3
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillMocSoulDrain_R7",
@@ -255,7 +333,25 @@
       "DebuffMocXuyenThau": 1.0
     },
     "formation_key": null,
-    "description_vi": "Rễ độc hút linh khí — mỗi lượt DoT ticking hút 30% sát thương thành HP + MP cho chính mình."
+    "description_vi": "Rễ độc hút linh khí — mỗi lượt DoT ticking hút 30% sát thương thành HP + MP cho chính mình.",
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.06,
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.45
+        },
+        "duration": 4
+      },
+      "DebuffMocXuyenThau": {
+        "stat_bonus": {
+          "res_moc": -0.225
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillAtkMoc_R8",
@@ -278,7 +374,31 @@
       "DebuffBaoMon",
       "DebuffXeRach"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.064,
+        "duration": 4
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.8
+        },
+        "duration": 3
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.128
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillDefMoc_R8",
@@ -300,7 +420,21 @@
       "BuffCanCo",
       "HpRegen"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffSinhCo": {
+        "stat_bonus": {
+          "hp_regen_pct": 0.08
+        },
+        "duration": 5
+      },
+      "BuffCanCo": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.24
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillMocTitan_R8",
@@ -323,7 +457,23 @@
       "BuffTrongTo"
     ],
     "formation_key": null,
-    "description_vi": "Hóa thân làm cự mộc — hồi 10% HP, nhận Vô Lượng + Trọng Tố, mỗi 1% HP tối đa thành sát thương đòn tới."
+    "description_vi": "Hóa thân làm cự mộc — hồi 10% HP, nhận Vô Lượng + Trọng Tố, mỗi 1% HP tối đa thành sát thương đòn tới.",
+    "effect_overrides": {
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.4,
+          "crit_res_rating": 160
+        },
+        "duration": 5
+      },
+      "BuffTrongTo": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.16,
+          "res_all": 0.08
+        },
+        "duration": 5
+      }
+    }
   },
   {
     "key": "SkillAtkMoc_R9",
@@ -347,7 +497,37 @@
       "DebuffXeRach",
       "DebuffCatDut"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.068,
+        "duration": 4
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.85
+        },
+        "duration": 3
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.136
+        },
+        "duration": 3
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.51
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillMocWorldTree_R9",
@@ -378,6 +558,24 @@
       "DebuffCatDut": 1.0
     },
     "formation_key": null,
-    "description_vi": "Đỉnh cao Mộc Đạo — chồng 2 tầng Độc Tố, xuyên 15% Kháng Mộc, cắt đứt hồi phục, gây 8% HP chân thương và tự hồi 10% HP để nuôi sát thương kế."
+    "description_vi": "Đỉnh cao Mộc Đạo — chồng 2 tầng Độc Tố, xuyên 15% Kháng Mộc, cắt đứt hồi phục, gây 8% HP chân thương và tự hồi 10% HP để nuôi sát thương kế.",
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.068,
+        "duration": 4
+      },
+      "DebuffMocXuyenThau": {
+        "stat_bonus": {
+          "res_moc": -0.255
+        },
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.51
+        },
+        "duration": 4
+      }
+    }
   }
 ]

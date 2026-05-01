@@ -1,0 +1,110 @@
+[
+  {
+    "key": "LCMoc_T1_LucDiepYeuDang",
+    "vi": "Lục Diệp Yêu Đằng",
+    "en": "Verdant Demon Vine",
+    "rank": "tinh_anh",
+    "realm_level": 2,
+    "element": "moc",
+    "base_hp": 2160,
+    "base_spd": 9,
+    "hp_scale": 1.7,
+    "skill_keys": [
+      "EnemyLCMoc_T1",
+      "EnemyMoc_T1"
+    ],
+    "base_atk": 60,
+    "base_matk": 97,
+    "base_def": 75,
+    "mp_regen_pct": 0.07,
+    "hp_regen_pct": 0.03,
+    "loot_table_key": "LinhCanLoot_Moc",
+    "final_dmg_bonus": 0.05,
+    "base_res": {
+      "moc": 0.25
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCMoc_T2_TuDangMocLinh",
+    "vi": "Tử Đằng Mộc Linh",
+    "en": "Purple Vine Wood Spirit",
+    "rank": "cuong_gia",
+    "realm_level": 4,
+    "element": "moc",
+    "base_hp": 5400,
+    "base_spd": 10,
+    "hp_scale": 1.8,
+    "skill_keys": [
+      "EnemyLCMoc_T1",
+      "EnemyLCMoc_T2"
+    ],
+    "base_atk": 119,
+    "base_matk": 221,
+    "base_def": 136,
+    "mp_regen_pct": 0.07,
+    "hp_regen_pct": 0.035,
+    "loot_table_key": "LinhCanLoot_Moc",
+    "final_dmg_bonus": 0.08,
+    "base_res": {
+      "moc": 0.35
+    },
+    "res_cap_pct": 0.85
+  },
+  {
+    "key": "LCMoc_T3_BoDeCoTinh",
+    "vi": "Bồ Đề Cổ Tinh",
+    "en": "Ancient Bodhi Spirit",
+    "rank": "hung_manh",
+    "realm_level": 6,
+    "element": "moc",
+    "base_hp": 14880,
+    "base_spd": 11,
+    "hp_scale": 1.9,
+    "skill_keys": [
+      "EnemyLCMoc_T2",
+      "EnemyLCMoc_T3",
+      "EnemyLCMoc_Apex"
+    ],
+    "base_atk": 247,
+    "base_matk": 456,
+    "base_def": 266,
+    "mp_regen_pct": 0.07,
+    "hp_regen_pct": 0.04,
+    "loot_table_key": "LinhCanLoot_Moc",
+    "final_dmg_bonus": 0.12,
+    "base_res": {
+      "moc": 0.5,
+      "thuy": 0.1
+    },
+    "res_cap_pct": 0.9
+  },
+  {
+    "key": "LCMoc_Apex_HonNguyenLinhMoc",
+    "vi": "Hỗn Nguyên Linh Mộc",
+    "en": "Chaos Origin Spirit Wood",
+    "rank": "dai_nang",
+    "realm_level": 8,
+    "element": "moc",
+    "base_hp": 42000,
+    "base_spd": 12,
+    "hp_scale": 2.1,
+    "skill_keys": [
+      "EnemyLCMoc_Apex",
+      "EnemyLCMoc_T3",
+      "EnemyLCMoc_T2"
+    ],
+    "base_atk": 504,
+    "base_matk": 882,
+    "base_def": 504,
+    "mp_regen_pct": 0.08,
+    "hp_regen_pct": 0.05,
+    "final_dmg_bonus": 0.28,
+    "loot_table_key": "LinhCanLoot_Moc",
+    "base_res": {
+      "moc": 0.65,
+      "thuy": 0.2
+    },
+    "res_cap_pct": 0.9
+  }
+]

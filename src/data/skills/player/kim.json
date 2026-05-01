@@ -93,7 +93,14 @@
     "effects": [
       "DebuffBaoMon"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.06
+        }
+      }
+    }
   },
   {
     "key": "SkillKimSlice",
@@ -118,7 +125,12 @@
       "DebuffChayMau": 1.0
     },
     "formation_key": null,
-    "description_vi": "Vết cắt nhanh như chớp — mỗi lần thi triển chồng 2 tầng Chảy Máu lên mục tiêu."
+    "description_vi": "Vết cắt nhanh như chớp — mỗi lần thi triển chồng 2 tầng Chảy Máu lên mục tiêu.",
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0396
+      }
+    }
   },
   {
     "key": "SkillDefKim_R4",
@@ -139,7 +151,20 @@
       "BuffHoangKim",
       "BuffKimCuong"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffHoangKim": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.18,
+          "res_all": 0.12
+        }
+      },
+      "BuffKimCuong": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.24
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkKim3",
@@ -184,7 +209,17 @@
       "DebuffPhaGiap": 0.8
     },
     "formation_key": null,
-    "description_vi": "Kiếm khí xuyên mọi phòng ngự — gây thêm 6% HP tối đa mục tiêu làm chân thương."
+    "description_vi": "Kiếm khí xuyên mọi phòng ngự — gây thêm 6% HP tối đa mục tiêu làm chân thương.",
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0429
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.195
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkKim_R6",
@@ -206,7 +241,24 @@
       "DebuffPhaGiap",
       "DebuffCatDut"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.07
+        }
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.21
+        }
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.42
+        }
+      }
+    }
   },
   {
     "key": "SkillKimCritBuff",
@@ -228,7 +280,20 @@
       "BuffKiemY"
     ],
     "formation_key": null,
-    "description_vi": "Hội tụ kiếm ý, nhận buff Kiếm Khí + Kiếm Ý — tăng mạnh bạo kích và sát thương."
+    "description_vi": "Hội tụ kiếm ý, nhận buff Kiếm Khí + Kiếm Ý — tăng mạnh bạo kích và sát thương.",
+    "effect_overrides": {
+      "BuffKiemKhi": {
+        "stat_bonus": {
+          "final_dmg_bonus": 0.21,
+          "crit_rating": 210
+        }
+      },
+      "BuffKiemY": {
+        "stat_bonus": {
+          "final_dmg_bonus": 0.35
+        }
+      }
+    }
   },
   {
     "key": "SkillPasKim_R6",
@@ -249,7 +314,20 @@
       "BuffKiemKhi",
       "BuffLietDiem"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffKiemKhi": {
+        "stat_bonus": {
+          "final_dmg_bonus": 0.21,
+          "crit_rating": 210
+        }
+      },
+      "BuffLietDiem": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.14
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkKim_R7",
@@ -272,7 +350,31 @@
       "DebuffCatDut",
       "DebuffChayMau"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.225
+        },
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.45
+        },
+        "duration": 4
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0495,
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillKimExecute_R7",
@@ -302,7 +404,25 @@
       "DebuffBaoMon": 0.6
     },
     "formation_key": null,
-    "description_vi": "Đòn chém chuyên khóa mục tiêu chảy máu — chồng 2 tầng, gây 10% HP tối đa làm chân thương."
+    "description_vi": "Đòn chém chuyên khóa mục tiêu chảy máu — chồng 2 tầng, gây 10% HP tối đa làm chân thương.",
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0495,
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.225
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillDefKim_R7",
@@ -323,7 +443,21 @@
       "BuffVoNgaKiemTam",
       "BuffKiemY"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffVoNgaKiemTam": {
+        "stat_bonus": {
+          "final_dmg_bonus": 0.6
+        },
+        "duration": 4
+      },
+      "BuffKiemY": {
+        "stat_bonus": {
+          "final_dmg_bonus": 0.375
+        },
+        "duration": 5
+      }
+    }
   },
   {
     "key": "SkillAtkKim_R8",
@@ -346,7 +480,31 @@
       "DebuffCatDut",
       "DebuffChayMau"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.24
+        },
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.48
+        },
+        "duration": 4
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0528,
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillAtkKim_R9",
@@ -370,7 +528,37 @@
       "DebuffChayMau",
       "DebuffXeRach"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.255
+        },
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.51
+        },
+        "duration": 4
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0561,
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.136
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillKimBloodbath_R9",
@@ -401,6 +589,24 @@
       "DebuffCatDut": 0.8
     },
     "formation_key": null,
-    "description_vi": "Đỉnh cao Kim Đạo — chồng 3 tầng Chảy Máu và gây 18% HP tối đa làm chân thương, cắt đứt linh khí ngăn hồi phục."
+    "description_vi": "Đỉnh cao Kim Đạo — chồng 3 tầng Chảy Máu và gây 18% HP tối đa làm chân thương, cắt đứt linh khí ngăn hồi phục.",
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0561,
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.255
+        },
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.51
+        },
+        "duration": 4
+      }
+    }
   }
 ]

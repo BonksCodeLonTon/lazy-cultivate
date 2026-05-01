@@ -147,7 +147,8 @@ class StatusView(discord.ui.View):
             ("🔯 Trận Pháp",         discord.ButtonStyle.secondary, self._formation_cb,     1),
             ("🎯 Kỹ Năng",           discord.ButtonStyle.secondary, self._skills_cb,        1),
             ("🧬 Thể Chất Bảng",     discord.ButtonStyle.secondary, self._the_chat_cb,      1),
-            ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     1),
+            ("🌿 Linh Căn Bảng",     discord.ButtonStyle.secondary, self._linh_can_cb,      1),
+            ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     2),
             ("📚 Tàng Kinh Các",     discord.ButtonStyle.secondary, self._tang_kinh_cac_cb, 2),
             ("⚒️ Thiên Công Phường", discord.ButtonStyle.secondary, self._forge_cb,         2),
             ("⚗️ Luyện Đan",         discord.ButtonStyle.secondary, self._alchemy_cb,       2),
@@ -326,6 +327,15 @@ class StatusView(discord.ui.View):
 
         from src.bot.cogs.constitution import render_the_chat_hub
         await render_the_chat_hub(interaction, self._discord_id, back_fn=_show_status)
+
+    async def _linh_can_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        from src.bot.cogs.linh_can import render_linh_can_hub
+        await render_linh_can_hub(interaction, self._discord_id, back_fn=_show_status)
 
     async def _tang_kinh_cac_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

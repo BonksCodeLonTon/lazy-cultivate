@@ -27,6 +27,7 @@ COGS = [
     "src.bot.cogs.direct_trade",
     "src.bot.cogs.forge",
     "src.bot.cogs.alchemy",
+    "src.bot.cogs.linh_can",
     "src.bot.cogs.admin",
 ]
 

@@ -95,7 +95,14 @@
     "effects": [
       "BuffLoiThan"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffLoiThan": {
+        "stat_bonus": {
+          "crit_rating": 110
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkLoi_R4",
@@ -116,7 +123,12 @@
       "DebuffTeLiet",
       "DebuffSetDanh"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffSetDanh": {
+        "dot_pct": 0.06
+      }
+    }
   },
   {
     "key": "SkillMovLoi_R4",
@@ -137,7 +149,19 @@
       "BuffTocLoi",
       "BuffTangToc"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTocLoi": {
+        "stat_bonus": {
+          "spd_pct": 0.6
+        }
+      },
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.36
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkLoi3",
@@ -177,7 +201,12 @@
       "DebuffSetDanh",
       "CCStun"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffSetDanh": {
+        "dot_pct": 0.07
+      }
+    }
   },
   {
     "key": "SkillAtkLoi_R7",
@@ -200,7 +229,22 @@
       "CCStun",
       "CCInterrupt"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 3
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.075,
+        "duration": 3
+      },
+      "CCStun": {
+        "duration": 2
+      },
+      "CCInterrupt": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "SkillAtkLoi_R8",
@@ -224,7 +268,28 @@
       "CCInterrupt",
       "DebuffPhaGiap"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 3
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.08,
+        "duration": 3
+      },
+      "CCStun": {
+        "duration": 2
+      },
+      "CCInterrupt": {
+        "duration": 2
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.24
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillMovLoi_R8",
@@ -246,7 +311,27 @@
       "BuffTangToc",
       "BuffHuKhong"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTocLoi": {
+        "stat_bonus": {
+          "spd_pct": 0.8
+        },
+        "duration": 3
+      },
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.48
+        },
+        "duration": 4
+      },
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 400
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillAtkLoi_R9",
@@ -270,7 +355,28 @@
       "CCInterrupt",
       "DebuffPhaGiap"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 3
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.085,
+        "duration": 3
+      },
+      "CCStun": {
+        "duration": 2
+      },
+      "CCInterrupt": {
+        "duration": 2
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.255
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillAtkLoiSocR2",
@@ -358,7 +464,22 @@
       "DebuffSetDanh",
       "DebuffPhaGiap"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffSocDien": {
+        "duration": 4
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.075,
+        "duration": 3
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.225
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillDefLoiPassive",
@@ -379,7 +500,19 @@
       "BuffTocLoi",
       "BuffLoiThan"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTocLoi": {
+        "stat_bonus": {
+          "spd_pct": 0.55
+        }
+      },
+      "BuffLoiThan": {
+        "stat_bonus": {
+          "crit_rating": 110
+        }
+      }
+    }
   },
   {
     "key": "SkillMovLoiSteal",
@@ -401,7 +534,24 @@
       "BuffTangToc",
       "BuffHuKhong"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTocLoi": {
+        "stat_bonus": {
+          "spd_pct": 0.65
+        }
+      },
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.39
+        }
+      },
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 325
+        }
+      }
+    }
   },
   {
     "key": "SkillMovLoiFinal",
@@ -424,7 +574,34 @@
       "BuffHuKhong",
       "BuffPhongVu"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTocLoi": {
+        "stat_bonus": {
+          "spd_pct": 0.8
+        },
+        "duration": 3
+      },
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.48
+        },
+        "duration": 4
+      },
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 400
+        },
+        "duration": 3
+      },
+      "BuffPhongVu": {
+        "stat_bonus": {
+          "evasion_rating": 160,
+          "crit_rating": 160
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillPassiveLoiShock",

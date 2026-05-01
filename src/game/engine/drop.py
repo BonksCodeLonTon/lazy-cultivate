@@ -91,8 +91,17 @@ def roll_drops(
 # ── Internal helpers ──────────────────────────────────────────────────────────
 
 def _effective_weight(entry: dict, luck_pct: float) -> float:
+    """Scale a drop entry's weight by ``luck_pct``.
+
+    ``luck_pct`` is signed: positive values boost the weight (good luck /
+    grade bonus), negative values shrink it (used by Linh Căn dungeons to
+    decay drop rate per realm). The result is clamped to
+    ``[0, POOL_RANGE]`` so a sufficiently negative luck can't produce a
+    negative weight that breaks pool selection arithmetic.
+    """
     scale = entry.get("luck_scale", 1.0)
-    return min(POOL_RANGE, entry.get("weight", 10) * (1.0 + luck_pct * scale))
+    raw = entry.get("weight", 10) * (1.0 + luck_pct * scale)
+    return max(0.0, min(POOL_RANGE, raw))
 
 
 def _pick_qty(entry: dict, rng: random.Random) -> int:

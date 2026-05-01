@@ -1,0 +1,86 @@
+[
+  {
+    "key": "EnemyLCQuang_T1",
+    "vi": "Thánh Quang Lệ Trảm",
+    "en": "Holy Light Tear Slash",
+    "realm": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.46
+    },
+    "mp_cost": 13,
+    "cooldown": 1,
+    "base_dmg": 17,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCQuang_T2",
+    "vi": "Phật Tâm Tịnh Quang",
+    "en": "Buddha Heart Pure Light",
+    "realm": 4,
+    "category": "defense",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 24,
+    "cooldown": 3,
+    "base_dmg": 24,
+    "effects": [
+      "BuffHoPhap",
+      "BuffHoangKim"
+    ],
+    "effect_chances": {
+      "BuffHoPhap": 1.0,
+      "BuffHoangKim": 1.0
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCQuang_T3",
+    "vi": "Đại La Quang Hỏa",
+    "en": "Great Luo Light Fire",
+    "realm": 6,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.9
+    },
+    "mp_cost": 44,
+    "cooldown": 3,
+    "base_dmg": 78,
+    "effects": [
+      "CCMuted",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "CCMuted": 0.3,
+      "DebuffBaoMon": 0.45
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "CCMuted": {
+        "duration": 2
+      },
+      "DebuffBaoMon": {
+        "duration": 4,
+        "stat_bonus": {
+          "res_all": -0.1
+        }
+      }
+    }
+  }
+]

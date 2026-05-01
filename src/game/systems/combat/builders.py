@@ -74,6 +74,7 @@ def build_player_combatant(
         skill_keys=final_skill_keys,
         formation_skill_keys=formation_skill_keys,
         linh_can=list(char.linh_can),
+        linh_can_levels=dict(getattr(char, "linh_can_levels", {}) or {}),
         **cs_kwargs,
     )
 
@@ -108,9 +109,21 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
 
     res: dict[str, float] = {}
     elem = enemy_data.get("element")
+    # Per-enemy resistance overrides: ``base_res: {kim: 0.50, hoa: 0.15}``
+    # in the enemy JSON layers on top of the default own-element res so
+    # late-dungeon and themed bosses can carry meaningfully heavier
+    # resistance profiles. Each entry is clamped to ``res_cap_pct`` (also
+    # JSON-tunable; defaults to 0.75 to leave a 25% damage floor).
+    res_cap = float(enemy_data.get("res_cap_pct", 0.75))
     if elem:
-        # Scale with player realm, cap at 35% to keep combat fair
+        # Default own-element res scales with player realm, capped at 35%.
         res[elem] = min(0.35, ENEMY_BASE_ELEM_RES * realm_scale)
+    for r_elem, r_val in (enemy_data.get("base_res") or {}).items():
+        # Stack JSON-supplied res additively on top of the default (so a
+        # Linh Căn apex with ``base_res: {kim: 0.40}`` ends up at 40%
+        # instead of being silently overwritten by the 10%-default).
+        merged = res.get(r_elem, 0.0) + float(r_val)
+        res[r_elem] = max(0.0, min(res_cap, merged))
 
     # Enemies regen MP so they can keep casting skills across a long fight.
     # Without this, their small MP pool empties after a handful of turns and

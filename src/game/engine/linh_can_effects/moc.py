@@ -10,8 +10,11 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 HOI_XUAN_PCT = 0.04
+HOI_XUAN_PER_LEVEL = 0.005   # +0.5% HP/turn per level above 1
 
 
-def get_regen_bonus(linh_can: Iterable[str]) -> float:
-    """Return the Hồi Xuân max-HP regen fraction for the given Linh Căn list."""
-    return HOI_XUAN_PCT if "moc" in linh_can else 0.0
+def get_regen_bonus(linh_can: Iterable[str], level: int = 1) -> float:
+    """Return the Hồi Xuân max-HP regen fraction, scaled by Mộc level."""
+    if "moc" not in linh_can:
+        return 0.0
+    return HOI_XUAN_PCT + max(0, level - 1) * HOI_XUAN_PER_LEVEL

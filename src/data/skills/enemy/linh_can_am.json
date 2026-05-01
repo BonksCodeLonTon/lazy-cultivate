@@ -1,0 +1,85 @@
+[
+  {
+    "key": "EnemyLCAm_T1",
+    "vi": "Hắc Diệu Trảm",
+    "en": "Black Obsidian Slash",
+    "realm": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.48,
+      "matk": 0.0
+    },
+    "mp_cost": 12,
+    "cooldown": 1,
+    "base_dmg": 17,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCAm_T2",
+    "vi": "U Minh Thực Hồn",
+    "en": "Netherworld Soul Devour",
+    "realm": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.66
+    },
+    "mp_cost": 26,
+    "cooldown": 2,
+    "base_dmg": 36,
+    "effects": [
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffXeRach": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCAm_T3",
+    "vi": "Tử Khí Hư Linh",
+    "en": "Death Aura Hollow Spirit",
+    "realm": 6,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.9
+    },
+    "mp_cost": 44,
+    "cooldown": 3,
+    "base_dmg": 80,
+    "effects": [
+      "DebuffXeRach",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffXeRach": 0.5,
+      "DebuffChayMau": 0.45
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffXeRach": {
+        "duration": 4,
+        "stat_bonus": {
+          "res_all": -0.15
+        }
+      },
+      "DebuffChayMau": {
+        "duration": 4,
+        "dot_pct": 0.05
+      }
+    }
+  }
+]

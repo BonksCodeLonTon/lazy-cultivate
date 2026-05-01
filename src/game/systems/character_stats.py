@@ -232,10 +232,42 @@ def compute_combat_stats(
         formation_stages=formation_stages,
     )
     const_bonuses = compute_constitution_bonuses(char.constitution_type)
-    lc_bonuses    = compute_linh_can_bonuses(char.linh_can)
+    # Per-element levels drive the linh_can stat scaling. Falls back to the
+    # legacy list (treated as level 1 each) when ``linh_can_levels`` isn't set
+    # — keeps NPC-style Characters that never went through the DB working.
+    lc_levels = dict(getattr(char, "linh_can_levels", {}) or {})
+    if not lc_levels:
+        lc_levels = {elem: 1 for elem in char.linh_can}
+    lc_bonuses    = compute_linh_can_bonuses(lc_levels)
+
+    # Khí Tu archetype payoff — rewards breadth (many high-level Linh Căn)
+    # in the same data-driven shape as Hỗn Độn's all_passives_multiplier.
+    # Gated on is_khi_tu so a Thể-leaning player can't dip into the bonus
+    # by maxing qi later. Compound-offensive stats are excluded for the
+    # same reason they're excluded from Hỗn Độn — preventing one-shot
+    # damage against world bosses.
+    from src.game.systems.cultivation import is_khi_tu
+    from src.game.constants.linh_can import (
+        linh_can_breadth_multiplier, LINH_CAN_BREADTH_MAX_MULT,
+    )
+    _BREADTH_EXCLUDED_STATS: frozenset[str] = frozenset({
+        "final_dmg_bonus", "true_dmg_pct", "cooldown_reduce", "final_dmg_reduce",
+    })
+    if is_khi_tu(char.body_realm, char.qi_realm, char.formation_realm):
+        breadth_mult = linh_can_breadth_multiplier(lc_levels)
+        if breadth_mult > 1.0:
+            scaled: dict = {}
+            for k, v in lc_bonuses.items():
+                if isinstance(v, bool) or k in _BREADTH_EXCLUDED_STATS:
+                    scaled[k] = v
+                elif isinstance(v, (int, float)):
+                    scaled[k] = type(v)(v * breadth_mult) if isinstance(v, int) else v * breadth_mult
+                else:
+                    scaled[k] = v
+            lc_bonuses = scaled
 
     # Mộc Linh Căn passive: Hồi Xuân — always heals a flat % HP per turn in combat
-    moc_regen = lc_effects.get_regen_bonus(char.linh_can)
+    moc_regen = lc_effects.get_regen_bonus(char.linh_can, lc_levels.get("moc", 1))
     if moc_regen:
         lc_bonuses["hp_regen_pct"] = lc_bonuses.get("hp_regen_pct", 0.0) + moc_regen
 

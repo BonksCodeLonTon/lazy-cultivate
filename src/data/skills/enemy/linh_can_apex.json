@@ -1,0 +1,182 @@
+[
+  {
+    "key": "EnemyLCKim_Apex",
+    "vi": "Hỗn Kim Phá Thiên Trận",
+    "en": "Chaos Metal Heaven-Splitting Array",
+    "realm": 9, "category": "attack", "element": "kim", "attack_type": "physical",
+    "dmg_scale": {"atk": 1.10, "matk": 0.0},
+    "mp_cost": 55, "cooldown": 4, "base_dmg": 160,
+    "effects": ["DebuffPhaGiap", "DebuffChayMau", "DebuffXeRach", "DebuffCatDut"],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.60, "DebuffChayMau": 0.70,
+      "DebuffXeRach": 0.45, "DebuffCatDut": 0.30
+    },
+    "effect_overrides": {
+      "DebuffPhaGiap": {"duration": 5, "stat_bonus": {"final_dmg_reduce": -0.30}},
+      "DebuffChayMau": {"duration": 5, "dot_pct": 0.07},
+      "DebuffXeRach": {"duration": 4, "stat_bonus": {"res_all": -0.20}},
+      "DebuffCatDut": {"duration": 4, "stat_bonus": {"hp_regen_pct": -0.50}}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCMoc_Apex",
+    "vi": "Hỗn Nguyên Cộng Sinh",
+    "en": "Chaos Origin Symbiosis",
+    "realm": 9, "category": "attack", "element": "moc", "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 1.10},
+    "mp_cost": 55, "cooldown": 4, "base_dmg": 150,
+    "effects": ["DebuffTroBuoc", "DebuffMocXuyenThau", "BuffSinhCo", "DebuffDocTo"],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.55, "DebuffMocXuyenThau": 0.50,
+      "BuffSinhCo": 1.0, "DebuffDocTo": 0.45
+    },
+    "effect_overrides": {
+      "DebuffTroBuoc": {"duration": 3, "stat_bonus": {"spd_pct": -0.65}},
+      "DebuffMocXuyenThau": {"duration": 4, "stat_bonus": {"res_moc": -0.25}},
+      "BuffSinhCo": {"duration": 6, "stat_bonus": {"hp_regen_pct": 0.10}},
+      "DebuffDocTo": {"duration": 5, "dot_pct": 0.07}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCThuy_Apex",
+    "vi": "Cửu U Băng Vực",
+    "en": "Nine-Abyss Ice Domain",
+    "realm": 9, "category": "attack", "element": "thuy", "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 1.10},
+    "mp_cost": 55, "cooldown": 4, "base_dmg": 160,
+    "effects": ["DebuffDongBang", "DebuffLamCham", "EffectNgungDong", "DebuffThuyXuyenThau"],
+    "effect_chances": {
+      "DebuffDongBang": 0.40, "DebuffLamCham": 0.70,
+      "EffectNgungDong": 0.50, "DebuffThuyXuyenThau": 0.55
+    },
+    "effect_overrides": {
+      "DebuffDongBang": {"duration": 2},
+      "DebuffLamCham": {"duration": 4, "stat_bonus": {"spd_pct": -0.40}},
+      "EffectNgungDong": {"duration": 4, "stat_bonus": {"spd_pct": -0.40}},
+      "DebuffThuyXuyenThau": {"duration": 4, "stat_bonus": {"res_thuy": -0.25}}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCHoa_Apex",
+    "vi": "Phần Thiên Hỏa Đạo",
+    "en": "Sky-Burning Fire Path",
+    "realm": 9, "category": "attack", "element": "hoa", "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 1.20},
+    "mp_cost": 60, "cooldown": 4, "base_dmg": 180,
+    "effects": ["DebuffThieuDot", "DebuffDotChay", "DebuffHoaXuyenThau", "BuffLietDiem"],
+    "effect_chances": {
+      "DebuffThieuDot": 0.85, "DebuffDotChay": 0.55,
+      "DebuffHoaXuyenThau": 0.50, "BuffLietDiem": 1.0
+    },
+    "effect_overrides": {
+      "DebuffThieuDot": {"duration": 5, "dot_pct": 0.07},
+      "DebuffDotChay": {"duration": 4, "dot_pct": 0.13},
+      "DebuffHoaXuyenThau": {"duration": 4, "stat_bonus": {"res_hoa": -0.25}},
+      "BuffLietDiem": {"duration": 5, "stat_bonus": {"final_dmg_reduce": 0.18}}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCTho_Apex",
+    "vi": "Thái Sơn Áp Đỉnh",
+    "en": "Mount Tai Apex Press",
+    "realm": 9, "category": "attack", "element": "tho", "attack_type": "physical",
+    "dmg_scale": {"atk": 1.20, "matk": 0.0},
+    "mp_cost": 60, "cooldown": 4, "base_dmg": 180,
+    "effects": ["CCStun", "DebuffLunDat", "DebuffPhaGiap", "BuffKimCuong"],
+    "effect_chances": {
+      "CCStun": 0.30, "DebuffLunDat": 0.55,
+      "DebuffPhaGiap": 0.55, "BuffKimCuong": 1.0
+    },
+    "effect_overrides": {
+      "CCStun": {"duration": 2},
+      "DebuffLunDat": {"duration": 3, "stat_bonus": {"spd_pct": -0.50}},
+      "DebuffPhaGiap": {"duration": 5, "stat_bonus": {"final_dmg_reduce": -0.30}},
+      "BuffKimCuong": {"duration": 5, "stat_bonus": {"final_dmg_reduce": 0.32}}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCPhong_Apex",
+    "vi": "Thiên Phong Hủy Linh",
+    "en": "Heavenly Wind Soul-Render",
+    "realm": 9, "category": "attack", "element": "phong", "attack_type": "physical",
+    "dmg_scale": {"atk": 1.05, "matk": 0.0},
+    "mp_cost": 55, "cooldown": 4, "base_dmg": 160,
+    "effects": ["DebuffSetDanh", "DebuffPhongAn", "DebuffCuonBay", "BuffTangToc"],
+    "effect_chances": {
+      "DebuffSetDanh": 0.60, "DebuffPhongAn": 0.55,
+      "DebuffCuonBay": 0.40, "BuffTangToc": 1.0
+    },
+    "effect_overrides": {
+      "DebuffSetDanh": {"duration": 4, "dot_pct": 0.08},
+      "DebuffPhongAn": {"duration": 4, "stat_bonus": {"evasion_rating": -250}},
+      "DebuffCuonBay": {"duration": 2},
+      "BuffTangToc": {"duration": 5, "stat_bonus": {"spd_pct": 0.50, "evasion_rating": 200}}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCLoi_Apex",
+    "vi": "Lôi Đình Hủy Vũ",
+    "en": "Thunder Court World-Annihilation",
+    "realm": 9, "category": "attack", "element": "loi", "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 1.20},
+    "mp_cost": 60, "cooldown": 4, "base_dmg": 180,
+    "effects": ["CCStun", "DebuffTeLiet", "DebuffSocDien", "BuffLoiThan"],
+    "effect_chances": {
+      "CCStun": 0.30, "DebuffTeLiet": 0.50,
+      "DebuffSocDien": 0.70, "BuffLoiThan": 1.0
+    },
+    "effect_overrides": {
+      "CCStun": {"duration": 2},
+      "DebuffTeLiet": {"duration": 3},
+      "DebuffSocDien": {"duration": 5},
+      "BuffLoiThan": {"duration": 5, "stat_bonus": {"crit_rating": 200, "crit_dmg_rating": 150}}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCQuang_Apex",
+    "vi": "Thánh Quang Cấm Chú",
+    "en": "Holy Light Forbidden Curse",
+    "realm": 9, "category": "attack", "element": "quang", "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 1.10},
+    "mp_cost": 55, "cooldown": 4, "base_dmg": 160,
+    "effects": ["CCMuted", "DebuffBaoMon", "BuffHoangKim", "BuffHoPhap"],
+    "effect_chances": {
+      "CCMuted": 0.45, "DebuffBaoMon": 0.55,
+      "BuffHoangKim": 1.0, "BuffHoPhap": 1.0
+    },
+    "effect_overrides": {
+      "CCMuted": {"duration": 3},
+      "DebuffBaoMon": {"duration": 4, "stat_bonus": {"res_all": -0.15}},
+      "BuffHoangKim": {"duration": 5, "stat_bonus": {"final_dmg_reduce": 0.25, "res_all": 0.18}},
+      "BuffHoPhap": {"duration": 5, "stat_bonus": {"final_dmg_reduce": 0.35, "crit_res_rating": 200}}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCAm_Apex",
+    "vi": "Hắc Hóa U Linh",
+    "en": "Black Transformation Wraith",
+    "realm": 9, "category": "attack", "element": "am", "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 1.20},
+    "mp_cost": 60, "cooldown": 4, "base_dmg": 180,
+    "effects": ["DebuffXeRach", "DebuffChayMau", "DebuffCatDut", "DebuffSetDanh"],
+    "effect_chances": {
+      "DebuffXeRach": 0.65, "DebuffChayMau": 0.55,
+      "DebuffCatDut": 0.40, "DebuffSetDanh": 0.45
+    },
+    "effect_overrides": {
+      "DebuffXeRach": {"duration": 5, "stat_bonus": {"res_all": -0.22}},
+      "DebuffChayMau": {"duration": 5, "dot_pct": 0.07},
+      "DebuffCatDut": {"duration": 4, "stat_bonus": {"hp_regen_pct": -0.55}},
+      "DebuffSetDanh": {"duration": 4, "dot_pct": 0.07}
+    },
+    "formation_key": null
+  }
+]

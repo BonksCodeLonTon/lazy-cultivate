@@ -1,0 +1,85 @@
+[
+  {
+    "key": "EnemyLCHoa_T1",
+    "vi": "Liệt Diễm Phần Tâm",
+    "en": "Blazing Flame Heart-Burner",
+    "realm": 2,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 12,
+    "cooldown": 1,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCHoa_T2",
+    "vi": "Phượng Lưu Bộc Phá",
+    "en": "Phoenix Stream Detonation",
+    "realm": 4,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.65
+    },
+    "mp_cost": 26,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffHoaXuyenThau"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.5,
+      "DebuffHoaXuyenThau": 0.25
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCHoa_T3",
+    "vi": "Phần Thiên Hỏa Hải",
+    "en": "Sky-Burning Sea of Flame",
+    "realm": 6,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.92
+    },
+    "mp_cost": 44,
+    "cooldown": 3,
+    "base_dmg": 82,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.6,
+      "DebuffDotChay": 0.4
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "duration": 4,
+        "dot_pct": 0.05
+      },
+      "DebuffDotChay": {
+        "duration": 3,
+        "dot_pct": 0.1
+      }
+    }
+  }
+]

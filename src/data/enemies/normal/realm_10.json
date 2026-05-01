@@ -21,7 +21,10 @@
     "base_crit_rating": 55,
     "base_crit_dmg_rating": 60,
     "final_dmg_bonus": 0.06,
-    "immune_hard_cc": true
+    "immune_hard_cc": true,
+    "base_res": {
+      "hoa": 0.3
+    }
   },
   {
     "key": "BossLoiLong",
@@ -45,7 +48,10 @@
     "base_crit_rating": 60,
     "base_crit_dmg_rating": 65,
     "final_dmg_bonus": 0.08,
-    "immune_hard_cc": true
+    "immune_hard_cc": true,
+    "base_res": {
+      "loi": 0.3
+    }
   },
   {
     "key": "BossBangHon",
@@ -69,7 +75,10 @@
     "base_crit_rating": 55,
     "base_crit_dmg_rating": 60,
     "final_dmg_bonus": 0.06,
-    "immune_hard_cc": true
+    "immune_hard_cc": true,
+    "base_res": {
+      "thuy": 0.3
+    }
   },
   {
     "key": "BossHonNguyen",
@@ -84,7 +93,7 @@
     "base_matk": 170,
     "base_def": 170,
     "hp_scale": 2.2,
-    "mp_regen_pct": 0.10,
+    "mp_regen_pct": 0.1,
     "skill_keys": [
       "EnemyHoa_R9",
       "EnemyLoi_R9",
@@ -93,7 +102,7 @@
     "loot_table_key": "LootBossHonNguyen",
     "base_crit_rating": 60,
     "base_crit_dmg_rating": 65,
-    "final_dmg_bonus": 0.10,
+    "final_dmg_bonus": 0.1,
     "immune_hard_cc": true
   }
 ]

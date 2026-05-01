@@ -70,6 +70,6 @@ def check_shield(combatant: "Combatant", log: list[str]) -> None:
     tho.check_shield(combatant, log)
 
 
-def get_regen_bonus(linh_can: Iterable[str]) -> float:
-    """Stat-bonus: Mộc grants a flat max-HP regen fraction when present."""
-    return moc.get_regen_bonus(linh_can)
+def get_regen_bonus(linh_can: Iterable[str], level: int = 1) -> float:
+    """Stat-bonus: Mộc grants a flat max-HP regen fraction (scaled by level)."""
+    return moc.get_regen_bonus(linh_can, level)

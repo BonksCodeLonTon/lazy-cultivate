@@ -1,0 +1,83 @@
+[
+  {
+    "key": "EnemyLCLoi_T1",
+    "vi": "Tử Điện Trảm",
+    "en": "Purple Lightning Slash",
+    "realm": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.48
+    },
+    "mp_cost": 13,
+    "cooldown": 1,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffTeLiet"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCLoi_T2",
+    "vi": "Cửu Khúc Lôi Đình",
+    "en": "Nine-Bend Thunder Court",
+    "realm": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.66
+    },
+    "mp_cost": 26,
+    "cooldown": 2,
+    "base_dmg": 36,
+    "effects": [
+      "DebuffSocDien",
+      "DebuffTeLiet"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.4,
+      "DebuffTeLiet": 0.25
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCLoi_T3",
+    "vi": "Thiên Lôi Hủy Diệt",
+    "en": "Heavenly Thunder Annihilation",
+    "realm": 6,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.92
+    },
+    "mp_cost": 44,
+    "cooldown": 3,
+    "base_dmg": 84,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.4,
+      "DebuffSocDien": 0.55
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 3
+      },
+      "DebuffSocDien": {
+        "duration": 4
+      }
+    }
+  }
+]

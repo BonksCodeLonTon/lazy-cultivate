@@ -1,0 +1,106 @@
+[
+  {
+    "key": "TheChat_DaoCotPhaLinh",
+    "vi": "Đạo Cốt Phá Linh",
+    "en": "Dao Bone Soul-Shatter",
+    "realm": 5, "category": "attack", "element": null, "attack_type": "physical",
+    "dmg_scale": {"atk": 0.85, "matk": 0.0},
+    "mp_cost": 28, "cooldown": 2, "base_dmg": 90,
+    "effects": ["DebuffPhaGiap", "DebuffChayMau", "DebuffXeRach"],
+    "effect_chances": {"DebuffPhaGiap": 0.55, "DebuffChayMau": 0.45, "DebuffXeRach": 0.30},
+    "effect_overrides": {
+      "DebuffPhaGiap": {"duration": 4, "stat_bonus": {"final_dmg_reduce": -0.25}},
+      "DebuffXeRach": {"duration": 3, "stat_bonus": {"res_all": -0.15}},
+      "DebuffChayMau": {"duration": 4}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "TheChat_VoThuongDaoAp",
+    "vi": "Vô Thượng Đạo Áp",
+    "en": "Supreme Dao Pressure",
+    "realm": 6, "category": "attack", "element": null, "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 0.95},
+    "mp_cost": 38, "cooldown": 3, "base_dmg": 110,
+    "effects": ["CCMuted", "DebuffSocDien", "DebuffBaoMon"],
+    "effect_chances": {"CCMuted": 0.40, "DebuffSocDien": 0.55, "DebuffBaoMon": 0.45},
+    "effect_overrides": {
+      "CCMuted": {"duration": 3},
+      "DebuffSocDien": {"duration": 4},
+      "DebuffBaoMon": {"duration": 4, "stat_bonus": {"res_all": -0.12}}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "TheChat_CuuChuyenDaoTam",
+    "vi": "Cửu Chuyển Đạo Tâm",
+    "en": "Nine-Turn Dao Heart",
+    "realm": 7, "category": "defense", "element": null, "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 0.40},
+    "mp_cost": 32, "cooldown": 4, "base_dmg": 60,
+    "effects": ["BuffKimCuong", "BuffHoPhap", "BuffBatTu"],
+    "effect_chances": {"BuffKimCuong": 1.0, "BuffHoPhap": 1.0, "BuffBatTu": 0.50},
+    "effect_overrides": {
+      "BuffKimCuong": {"duration": 5, "stat_bonus": {"final_dmg_reduce": 0.30}},
+      "BuffHoPhap": {"duration": 5, "stat_bonus": {"final_dmg_reduce": 0.35, "crit_res_rating": 200}},
+      "BuffBatTu": {"duration": 2}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "TheChat_ThienDaoLoiDinh",
+    "vi": "Thiên Đạo Lôi Đình",
+    "en": "Heavenly Dao Thunder Court",
+    "realm": 9, "category": "attack", "element": "loi", "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 1.10},
+    "mp_cost": 55, "cooldown": 4, "base_dmg": 180,
+    "effects": ["CCStun", "DebuffTeLiet", "DebuffSocDien", "DebuffSetDanh"],
+    "effect_chances": {
+      "CCStun": 0.30, "DebuffTeLiet": 0.50,
+      "DebuffSocDien": 0.65, "DebuffSetDanh": 0.40
+    },
+    "effect_overrides": {
+      "CCStun": {"duration": 2},
+      "DebuffTeLiet": {"duration": 3},
+      "DebuffSocDien": {"duration": 5},
+      "DebuffSetDanh": {"duration": 3, "dot_pct": 0.08}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "TheChat_HuyetDaoPhanPhe",
+    "vi": "Huyết Đạo Phản Phệ",
+    "en": "Blood Dao Backlash",
+    "realm": 7, "category": "attack", "element": "am", "attack_type": "physical",
+    "dmg_scale": {"atk": 0.95, "matk": 0.0},
+    "mp_cost": 35, "cooldown": 3, "base_dmg": 130,
+    "effects": ["DebuffChayMau", "DebuffXeRach", "DebuffCatDut"],
+    "effect_chances": {"DebuffChayMau": 0.70, "DebuffXeRach": 0.50, "DebuffCatDut": 0.30},
+    "effect_overrides": {
+      "DebuffChayMau": {"duration": 5, "dot_pct": 0.06},
+      "DebuffXeRach": {"duration": 4, "stat_bonus": {"res_all": -0.18}},
+      "DebuffCatDut": {"duration": 4, "stat_bonus": {"hp_regen_pct": -0.60}}
+    },
+    "formation_key": null
+  },
+  {
+    "key": "TheChat_HonDonDaoCotKhi",
+    "vi": "Hỗn Độn Đạo Cốt Khí",
+    "en": "Chaos Dao Bone Aura",
+    "realm": 9, "category": "attack", "element": null, "attack_type": "physical",
+    "dmg_scale": {"atk": 1.20, "matk": 0.40},
+    "mp_cost": 65, "cooldown": 5, "base_dmg": 220,
+    "effects": ["DebuffPhaGiap", "DebuffChayMau", "DebuffXeRach", "CCInterrupt"],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.70, "DebuffChayMau": 0.65,
+      "DebuffXeRach": 0.55, "CCInterrupt": 0.30
+    },
+    "effect_overrides": {
+      "DebuffPhaGiap": {"duration": 5, "stat_bonus": {"final_dmg_reduce": -0.35}},
+      "DebuffChayMau": {"duration": 6, "dot_pct": 0.08},
+      "DebuffXeRach": {"duration": 5, "stat_bonus": {"res_all": -0.25}},
+      "CCInterrupt": {"duration": 2}
+    },
+    "formation_key": null
+  }
+]

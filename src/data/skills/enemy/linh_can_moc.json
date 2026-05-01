@@ -1,0 +1,84 @@
+[
+  {
+    "key": "EnemyLCMoc_T1",
+    "vi": "Bích Mộc Phong Bế",
+    "en": "Verdant Wood Seal",
+    "realm": 2,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 14,
+    "cooldown": 1,
+    "base_dmg": 16,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCMoc_T2",
+    "vi": "Diệp Vũ Hấp Tinh",
+    "en": "Leaf Rain Essence Drain",
+    "realm": 4,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 24,
+    "cooldown": 2,
+    "base_dmg": 32,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.25
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCMoc_T3",
+    "vi": "Cự Mộc Trấn Tâm",
+    "en": "Colossal Wood Heart-Suppression",
+    "realm": 6,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 40,
+    "cooldown": 3,
+    "base_dmg": 70,
+    "effects": [
+      "CCMuted",
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "CCMuted": 0.3,
+      "DebuffLamCham": 0.45
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "CCMuted": {
+        "duration": 2
+      },
+      "DebuffLamCham": {
+        "duration": 3,
+        "stat_bonus": {
+          "spd_pct": -0.35
+        }
+      }
+    }
+  }
+]

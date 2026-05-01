@@ -11,7 +11,9 @@ from sqlalchemy.orm import selectinload
 from src.db.models.player import Player
 from src.db.models.turn_tracker import TurnTracker
 from src.game.constants.currencies import BONUS_TURNS
-from src.game.constants.linh_can import ALL_LINH_CAN, format_linh_can, parse_linh_can
+from src.game.constants.linh_can import (
+    ALL_LINH_CAN, format_linh_can, parse_linh_can, parse_linh_can_levels,
+)
 
 
 class PlayerRepository:
@@ -157,6 +159,8 @@ def _player_to_model(player: Player):
     """Convert ORM Player to game Character dataclass for stat computation."""
     from src.game.models.character import Character as CharModel
     tracker = player.turn_tracker
+    raw_linh_can = player.linh_can or ""
+    levels = parse_linh_can_levels(raw_linh_can)
     return CharModel(
         player_id=player.id,
         discord_id=player.discord_id,
@@ -185,5 +189,6 @@ def _player_to_model(player: Player):
         formation_xp=player.formation_xp,
         turns_today=tracker.turns_today if tracker else 0,
         bonus_turns_remaining=tracker.bonus_turns_remaining if tracker else 440,
-        linh_can=parse_linh_can(player.linh_can or ""),
+        linh_can=list(levels.keys()),
+        linh_can_levels=dict(levels),
     )

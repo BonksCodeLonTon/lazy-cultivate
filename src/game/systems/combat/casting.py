@@ -167,6 +167,7 @@ def apply_support_skill(
 ) -> None:
     """Handle a support/defense skill: instant heals and buff application."""
     effect_chances: dict[str, float] = skill_data.get("effect_chances", {})
+    effect_overrides: dict[str, dict] = skill_data.get("effect_overrides", {})
     for effect_key in skill_data.get("effects", []):
         meta = EFFECTS.get(effect_key)
 
@@ -190,9 +191,12 @@ def apply_support_skill(
             session.log.append(f"    💙 +{regen:,} MP")
 
         elif meta and meta.kind.value == "buff":
-            # Apply buff to self (actor)
-            dur = default_duration(effect_key)
-            actor.apply_effect(effect_key, dur)
+            # Apply buff to self (actor) — overrides may carry custom duration
+            # or stronger stat_bonus values.
+            override = effect_overrides.get(effect_key)
+            dur = int((override or {}).get("duration", default_duration(effect_key)))
+            stamp = {k: v for k, v in (override or {}).items() if k != "duration"} or None
+            actor.apply_effect(effect_key, dur, overrides=stamp)
             session.log.append(
                 f"    {meta.emoji} **{meta.vi}** ({dur}t) — {meta.description_vi}"
             )
@@ -202,7 +206,10 @@ def apply_support_skill(
             base_chance = effect_chances.get(effect_key, 1.0)
             effective_chance = base_chance * (1.0 - target.debuff_immune_pct)
             if effective_chance >= 1.0 or session.rng.random() < effective_chance:
-                inflict_debuff(session, effect_key, meta, target, actor=actor)
+                inflict_debuff(
+                    session, effect_key, meta, target, actor=actor,
+                    overrides=effect_overrides.get(effect_key),
+                )
 
 
 def apply_skill_effects(
@@ -219,6 +226,7 @@ def apply_skill_effects(
         burst damage proportional to stack count.
     """
     effect_chances: dict[str, float] = skill_data.get("effect_chances", {})
+    effect_overrides: dict[str, dict] = skill_data.get("effect_overrides", {})
     for effect_key in skill_data.get("effects", []):
         # ── Special: burn burst ───────────────────────────────────────────
         if effect_key == "ConsumeBurnBurst":
@@ -253,27 +261,38 @@ def apply_skill_effects(
         meta = EFFECTS.get(effect_key)
         if not meta:
             continue
+        override = effect_overrides.get(effect_key)
         if meta.kind.value == "buff":
-            # Self-buff (actor), e.g. a skill that deals damage AND grants a buff
-            dur = default_duration(effect_key)
-            actor.apply_effect(effect_key, dur)
+            # Self-buff (actor), e.g. a skill that deals damage AND grants a buff.
+            # Override may carry a custom duration or stronger stat_bonus.
+            dur = int((override or {}).get("duration", default_duration(effect_key)))
+            stamp = {k: v for k, v in (override or {}).items() if k != "duration"} or None
+            actor.apply_effect(effect_key, dur, overrides=stamp)
             session.log.append(f"    {meta.emoji} **{actor.name}** nhận **{meta.vi}** ({dur}t)")
         elif hit and meta.kind.value in ("debuff", "cc"):
             base_chance = effect_chances.get(effect_key, 1.0)
             effective_chance = base_chance * (1.0 - target.debuff_immune_pct)
             if effective_chance >= 1.0 or session.rng.random() < effective_chance:
-                inflict_debuff(session, effect_key, meta, target, actor=actor)
+                inflict_debuff(
+                    session, effect_key, meta, target, actor=actor,
+                    overrides=override,
+                )
 
 
 def inflict_debuff(
     session: "CombatSession", effect_key: str, meta: EffectMeta, target: Combatant,
     actor: Combatant | None = None,
+    overrides: dict | None = None,
 ) -> None:
     """Apply a debuff or CC to target, respecting immunities.
 
     ``actor`` is optional; when provided, fire-build flags (dot_can_crit,
     burn_per_stack_pct) are propagated to the target so DoT ticks honor
     the attacker's build.
+    ``overrides`` is the per-instance magnitude override dict from the
+    skill's ``effect_overrides[<key>]`` entry. May contain a ``duration``
+    field to lengthen the effect beyond the meta default; everything else
+    (stat_bonus, dot_pct, dot_element) is forwarded to ``apply_effect``.
     """
     if effect_key == EffectKey.DEBUFF_DOC_TO and target.poison_immunity:
         session.log.append(f"    💚 **{target.name}** miễn dịch Độc Tố!")
@@ -285,8 +304,11 @@ def inflict_debuff(
             f"    🛡️ **{target.name}** miễn dịch khống chế — **{meta.vi}** vô hiệu!"
         )
         return
-    dur = default_duration(effect_key)
-    target.apply_effect(effect_key, dur)
+    dur = int((overrides or {}).get("duration", default_duration(effect_key)))
+    # Strip duration from the dict before stamping — it's a turn count, not
+    # an effect-magnitude field, and apply_effect already takes it as arg.
+    stamp = {k: v for k, v in (overrides or {}).items() if k != "duration"} or None
+    target.apply_effect(effect_key, dur, overrides=stamp)
     # Burn stacks on every application — fire-build cornerstone
     if effect_key == EffectKey.DEBUFF_THIEU_DOT:
         if actor is not None:

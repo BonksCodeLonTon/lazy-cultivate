@@ -75,7 +75,12 @@
     "effects": [
       "DebuffThieuDot"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.044
+      }
+    }
   },
   {
     "key": "SkillDefHoa",
@@ -95,7 +100,14 @@
     "effects": [
       "BuffHoaThan"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffHoaThan": {
+        "stat_bonus": {
+          "dmg_bonus_hoa": 0.22
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkHoa_R4",
@@ -116,7 +128,15 @@
       "DebuffThieuDot",
       "DebuffDotChay"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.048
+      },
+      "DebuffDotChay": {
+        "dot_pct": 0.096
+      }
+    }
   },
   {
     "key": "SkillFireStackApply",
@@ -141,7 +161,12 @@
       "DebuffThieuDot": 1.0
     },
     "formation_key": null,
-    "description_vi": "Mỗi lần thi triển chồng thêm 2 tầng Thiêu Đốt lên mục tiêu."
+    "description_vi": "Mỗi lần thi triển chồng thêm 2 tầng Thiêu Đốt lên mục tiêu.",
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.048
+      }
+    }
   },
   {
     "key": "SkillDefHoa_R4",
@@ -162,7 +187,20 @@
       "BuffNhietTinh",
       "BuffSinhCo"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffNhietTinh": {
+        "stat_bonus": {
+          "final_dmg_bonus": 0.24,
+          "crit_dmg_rating": 240
+        }
+      },
+      "BuffSinhCo": {
+        "stat_bonus": {
+          "hp_regen_pct": 0.06
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkHoa3",
@@ -206,7 +244,14 @@
     },
     "burst_per_stack_mult": 0.4,
     "formation_key": null,
-    "description_vi": "Kích hoạt toàn bộ tầng Thiêu Đốt, mỗi tầng bổ sung 40% sát thương ST cơ bản + pháp công."
+    "description_vi": "Kích hoạt toàn bộ tầng Thiêu Đốt, mỗi tầng bổ sung 40% sát thương ST cơ bản + pháp công.",
+    "effect_overrides": {
+      "DebuffHoaXuyenThau": {
+        "stat_bonus": {
+          "res_hoa": -0.195
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkHoa_R6",
@@ -228,7 +273,20 @@
       "DebuffDotChay",
       "DebuffPhaGiap"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.056
+      },
+      "DebuffDotChay": {
+        "dot_pct": 0.112
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.21
+        }
+      }
+    }
   },
   {
     "key": "SkillAtkHoa_R7",
@@ -250,7 +308,23 @@
       "DebuffDotChay",
       "DebuffPhaGiap"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.06,
+        "duration": 4
+      },
+      "DebuffDotChay": {
+        "dot_pct": 0.12,
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.225
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillFireShred_R7",
@@ -278,7 +352,25 @@
       "DebuffPhaGiap": 0.5
     },
     "formation_key": null,
-    "description_vi": "Vừa chồng tầng Thiêu Đốt vừa xuyên thủng kháng hỏa, chuẩn bị cho đòn bùng phát."
+    "description_vi": "Vừa chồng tầng Thiêu Đốt vừa xuyên thủng kháng hỏa, chuẩn bị cho đòn bùng phát.",
+    "effect_overrides": {
+      "DebuffHoaXuyenThau": {
+        "stat_bonus": {
+          "res_hoa": -0.225
+        },
+        "duration": 4
+      },
+      "DebuffThieuDot": {
+        "dot_pct": 0.06,
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.225
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillAtkHoa_R8",
@@ -301,7 +393,29 @@
       "DebuffPhaGiap",
       "DebuffBaoMon"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.064,
+        "duration": 4
+      },
+      "DebuffDotChay": {
+        "dot_pct": 0.128,
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.24
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "SkillAtkHoa_R9",
@@ -325,7 +439,32 @@
       "DebuffBaoMon",
       "CCStun"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.068,
+        "duration": 4
+      },
+      "DebuffDotChay": {
+        "dot_pct": 0.136,
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.255
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "CCStun": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "SkillFireDetonate_R9",
@@ -353,6 +492,20 @@
     },
     "burst_per_stack_mult": 0.65,
     "formation_key": null,
-    "description_vi": "Tiên cấp hỏa bùng phát — xuyên thủng kháng hỏa đối thủ, nổ tất cả tầng Thiêu Đốt với hệ số 65% mỗi tầng."
+    "description_vi": "Tiên cấp hỏa bùng phát — xuyên thủng kháng hỏa đối thủ, nổ tất cả tầng Thiêu Đốt với hệ số 65% mỗi tầng.",
+    "effect_overrides": {
+      "DebuffHoaXuyenThau": {
+        "stat_bonus": {
+          "res_hoa": -0.255
+        },
+        "duration": 4
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.255
+        },
+        "duration": 4
+      }
+    }
   }
 ]

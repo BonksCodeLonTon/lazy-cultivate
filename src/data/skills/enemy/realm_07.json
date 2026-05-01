@@ -7,13 +7,32 @@
     "category": "attack",
     "element": "hoa",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 1.2},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
     "mp_cost": 65,
     "cooldown": 5,
     "base_dmg": 250,
-    "effects": ["DebuffThieuDot", "DebuffDotChay"],
-    "effect_chances": {"DebuffThieuDot": 0.75, "DebuffDotChay": 0.50},
-    "formation_key": null
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.75,
+      "DebuffDotChay": 0.5
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffThieuDot": {
+        "dot_pct": 0.06,
+        "duration": 4
+      },
+      "DebuffDotChay": {
+        "dot_pct": 0.12,
+        "duration": 4
+      }
+    }
   },
   {
     "key": "EnemyLoi_T4",
@@ -23,13 +42,36 @@
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 1.2},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
     "mp_cost": 70,
     "cooldown": 5,
     "base_dmg": 280,
-    "effects": ["DebuffTeLiet", "DebuffSetDanh", "CCStun"],
-    "effect_chances": {"DebuffTeLiet": 0.65, "DebuffSetDanh": 0.55, "CCStun": 0.35},
-    "formation_key": null
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh",
+      "CCStun"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.65,
+      "DebuffSetDanh": 0.55,
+      "CCStun": 0.35
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 3
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.075,
+        "duration": 3
+      },
+      "CCStun": {
+        "duration": 2
+      }
+    }
   },
   {
     "key": "EnemyBang_T4",
@@ -39,13 +81,33 @@
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 1.2},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
     "mp_cost": 68,
     "cooldown": 5,
     "base_dmg": 260,
-    "effects": ["DebuffDongBang", "DebuffLamCham"],
-    "effect_chances": {"DebuffDongBang": 0.60, "DebuffLamCham": 0.80},
-    "formation_key": null
+    "effects": [
+      "DebuffDongBang",
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffDongBang": 0.6,
+      "DebuffLamCham": 0.8
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffDongBang": {
+        "duration": 3
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.375
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "EnemyApex_R7_Physical",
@@ -55,13 +117,36 @@
     "category": "attack",
     "element": null,
     "attack_type": "physical",
-    "dmg_scale": {"atk": 1.3, "matk": 0.4},
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.4
+    },
     "mp_cost": 60,
     "cooldown": 3,
     "base_dmg": 400,
-    "effects": ["DebuffPhaGiap", "DebuffBaoMon"],
-    "effect_chances": {"DebuffPhaGiap": 0.60, "DebuffBaoMon": 0.55},
-    "formation_key": null
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.6,
+      "DebuffBaoMon": 0.55
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.225
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      }
+    }
   },
   {
     "key": "EnemyApex_R7_Magical",
@@ -71,12 +156,40 @@
     "category": "attack",
     "element": null,
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.4, "matk": 1.3},
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 1.3
+    },
     "mp_cost": 65,
     "cooldown": 3,
     "base_dmg": 420,
-    "effects": ["DebuffBaoMon", "DebuffCatDut", "CCMuted"],
-    "effect_chances": {"DebuffBaoMon": 0.55, "DebuffCatDut": 0.50, "CCMuted": 0.25},
-    "formation_key": null
+    "effects": [
+      "DebuffBaoMon",
+      "DebuffCatDut",
+      "CCMuted"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.55,
+      "DebuffCatDut": 0.5,
+      "CCMuted": 0.25
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.45
+        },
+        "duration": 4
+      },
+      "CCMuted": {
+        "duration": 3
+      }
+    }
   }
 ]

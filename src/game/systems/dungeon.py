@@ -223,6 +223,21 @@ def run_dungeon(
 
     boss_min_grade_idx = int(dungeon.get("boss_min_grade_idx", _BOSS_GRADE_START))
 
+    # ── Linh Căn element dungeons ──────────────────────────────────────────
+    # These dungeons override the per-enemy loot table so every wave drops
+    # from the element's bespoke material table, and apply a *negative* luck
+    # so high-realm players get fewer drops (encouraging early-realm
+    # farming). The decay is per-realm (qi_realm 0..8): at decay=0.10 a
+    # Đăng Tiên player (qi_realm=8) sees -80% effective drop weight.
+    linh_can_loot_table: str | None = dungeon.get("linh_can_loot_table")
+    linh_can_decay = float(dungeon.get("linh_can_loot_decay_per_realm", 0.0))
+    realm_loot_penalty = -min(0.95, linh_can_decay * char.qi_realm) if linh_can_loot_table else 0.0
+    # Per-element environmental effect (Hỏa burns the player, Mộc heals the
+    # enemy, Quang grants debuff immunity, etc). Applied per-wave after the
+    # encounter grade so the realm-scaled effect lands on the final stat
+    # block, not the raw base stats.
+    env_effect_cfg: dict | None = dungeon.get("environmental_effect")
+
     for i, enemy_key in enumerate(wave_enemies):
         is_boss = (i == total_waves - 1)
         _edata = registry.get_enemy(enemy_key)
@@ -248,19 +263,31 @@ def run_dungeon(
 
         _apply_encounter_grade(enemy_c, grade, rng)
 
+        if env_effect_cfg:
+            from src.game.systems.linh_can_environment import apply_environmental_effect
+            env_log = apply_environmental_effect(
+                env_effect_cfg, player_c, enemy_c, char.qi_realm,
+            )
+            if env_log:
+                all_logs.append(env_log)
+
         if i > 0:
             recovered_hp = player_c.hp_max // 2
             player_c.hp = min(player_c.hp_max, player_c.hp + recovered_hp)
             player_c.mp = min(player_c.mp_max, player_c.mp + player_c.mp_max // 3)
             all_logs.append(f"💚 Hồi phục: +{recovered_hp} HP | ❤️ {player_c.hp}/{player_c.hp_max}")
 
+        # Stack the dungeon-wide realm penalty on top of the grade's own luck
+        # so a Trận-grade boss in an endgame Linh Căn dungeon is still subject
+        # to the realm decay (it just compresses the harsh penalty a bit).
         session = CombatSession(
             player=player_c,
             enemy=enemy_c,
             player_skill_keys=skill_keys,
             rng=rng,
             loot_qty_multiplier=grade["loot_mult"],
-            loot_luck_pct=grade.get("luck_pct", 0.0),
+            loot_luck_pct=grade.get("luck_pct", 0.0) + realm_loot_penalty,
+            loot_table_override=linh_can_loot_table,
         )
         result = session.run()
         all_logs.extend(result.log)

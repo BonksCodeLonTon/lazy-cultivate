@@ -1,0 +1,87 @@
+[
+  {
+    "key": "EnemyLCPhong_T1",
+    "vi": "Truy Phong Trảm",
+    "en": "Pursuing Wind Slash",
+    "realm": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.48,
+      "matk": 0.0
+    },
+    "mp_cost": 11,
+    "cooldown": 1,
+    "base_dmg": 17,
+    "effects": [
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffSetDanh": 0.25
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCPhong_T2",
+    "vi": "Cuồng Phong Tế Kiếm",
+    "en": "Tempest Sword Rite",
+    "realm": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.62,
+      "matk": 0.0
+    },
+    "mp_cost": 24,
+    "cooldown": 2,
+    "base_dmg": 34,
+    "effects": [
+      "BuffTangToc",
+      "DebuffPhongAn"
+    ],
+    "effect_chances": {
+      "BuffTangToc": 1.0,
+      "DebuffPhongAn": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyLCPhong_T3",
+    "vi": "Phong Thần Hư Vân",
+    "en": "Wind God Void Cloud",
+    "realm": 6,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.88,
+      "matk": 0.0
+    },
+    "mp_cost": 42,
+    "cooldown": 3,
+    "base_dmg": 76,
+    "effects": [
+      "DebuffPhongAn",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffPhongAn": 0.45,
+      "DebuffSetDanh": 0.4
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffPhongAn": {
+        "duration": 4,
+        "stat_bonus": {
+          "evasion_rating": -200
+        }
+      },
+      "DebuffSetDanh": {
+        "duration": 3,
+        "dot_pct": 0.06
+      }
+    }
+  }
+]
