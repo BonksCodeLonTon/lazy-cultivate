@@ -1,0 +1,430 @@
+[
+  {
+    "key": "ConstitutionQuangKim_Com",
+    "vi": "Kim Quang Thể",
+    "en": "Golden Light Body",
+    "rarity": "common",
+    "element": "quang",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Quang sơ khởi tụ trong thân, mọi thuộc tính kháng bạo đều được khơi dậy.",
+    "stat_bonuses": {
+      "hp_pct": 0.06,
+      "final_dmg_bonus": 0.04,
+      "crit_res_rating": 60
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssQuang": 3
+    }
+  },
+  {
+    "key": "ConstitutionQuangLien_Com",
+    "vi": "Bạch Liên Thể",
+    "en": "White Lotus Body",
+    "rarity": "common",
+    "element": "quang",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Quang sơ khởi tụ trong thân, mọi thuộc tính linh lực đều được khơi dậy.",
+    "stat_bonuses": {
+      "mp_pct": 0.08,
+      "heal_pct": 0.07,
+      "debuff_immune_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssQuang": 3
+    }
+  },
+  {
+    "key": "ConstitutionQuangMinhThe",
+    "vi": "Quang Minh Thể",
+    "en": "Luminous Body",
+    "rarity": "common",
+    "element": "quang",
+    "roll_weight": 40,
+    "cost_merit": 0,
+    "passive_description_vi": "Thần quang nhẹ tỏa, tự thanh lọc debuff và hồi phục nhẹ mỗi lượt.",
+    "stat_bonuses": {
+      "hp_pct": 0.06,
+      "mp_pct": 0.05,
+      "cleanse_on_turn_pct": 0.08,
+      "heal_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssQuang": 3
+    }
+  },
+  {
+    "key": "ConstitutionQuangTinh_Com",
+    "vi": "Tịnh Quang Thể",
+    "en": "Pure Light Body",
+    "rarity": "common",
+    "element": "quang",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Quang sơ khởi tụ trong thân, mọi thuộc tính thanh tẩy đều được khơi dậy.",
+    "stat_bonuses": {
+      "hp_pct": 0.07,
+      "cleanse_on_turn_pct": 0.1,
+      "heal_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssQuang": 3
+    }
+  },
+  {
+    "key": "ConstitutionBachQuangThe",
+    "vi": "Bạch Quang Thể",
+    "en": "White Light Body",
+    "rarity": "uncommon",
+    "element": "quang",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Hào quang trắng tinh khiết bao quanh thân, gột rửa độc tố và hồi phục thường xuyên.",
+    "stat_bonuses": {
+      "hp_pct": 0.1,
+      "mp_pct": 0.08,
+      "cleanse_on_turn_pct": 0.12,
+      "heal_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssQuang": 4
+    }
+  },
+  {
+    "key": "ConstitutionQuangKim_Unc",
+    "vi": "Hậu Kim Quang Thể",
+    "en": "Greater Golden Light Body",
+    "rarity": "uncommon",
+    "element": "quang",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Quang đã hậu nhập huyết mạch — sức mạnh kháng bạo vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "hp_pct": 0.096,
+      "final_dmg_bonus": 0.064,
+      "crit_res_rating": 96
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssQuang": 4
+    }
+  },
+  {
+    "key": "ConstitutionQuangLien_Unc",
+    "vi": "Hậu Bạch Liên Thể",
+    "en": "Greater White Lotus Body",
+    "rarity": "uncommon",
+    "element": "quang",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Quang đã hậu nhập huyết mạch — sức mạnh linh lực vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "mp_pct": 0.128,
+      "heal_pct": 0.112,
+      "debuff_immune_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssQuang": 4
+    }
+  },
+  {
+    "key": "ConstitutionQuangTinh_Unc",
+    "vi": "Hậu Tịnh Quang Thể",
+    "en": "Greater Pure Light Body",
+    "rarity": "uncommon",
+    "element": "quang",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Quang đã hậu nhập huyết mạch — sức mạnh thanh tẩy vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "hp_pct": 0.112,
+      "cleanse_on_turn_pct": 0.16,
+      "heal_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssQuang": 4
+    }
+  },
+  {
+    "key": "ConstitutionQuangKim_Rar",
+    "vi": "Linh Kim Quang Thể",
+    "en": "Spirit Golden Light Body",
+    "rarity": "rare",
+    "element": "quang",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Quang, kháng bạo mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "hp_pct": 0.144,
+      "final_dmg_bonus": 0.096,
+      "crit_res_rating": 144
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssQuang": 4
+    }
+  },
+  {
+    "key": "ConstitutionQuangLien_Rar",
+    "vi": "Linh Bạch Liên Thể",
+    "en": "Spirit White Lotus Body",
+    "rarity": "rare",
+    "element": "quang",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Quang, linh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "mp_pct": 0.192,
+      "heal_pct": 0.168,
+      "debuff_immune_pct": 0.12
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssQuang": 4
+    }
+  },
+  {
+    "key": "ConstitutionQuangTinh_Rar",
+    "vi": "Linh Tịnh Quang Thể",
+    "en": "Spirit Pure Light Body",
+    "rarity": "rare",
+    "element": "quang",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Quang, thanh tẩy mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "hp_pct": 0.168,
+      "cleanse_on_turn_pct": 0.24,
+      "heal_pct": 0.12
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssQuang": 4
+    }
+  },
+  {
+    "key": "ConstitutionThanhQuangThe",
+    "vi": "Thánh Quang Kim Thân",
+    "en": "Holy Light Golden Body",
+    "rarity": "rare",
+    "element": "quang",
+    "roll_weight": 6,
+    "cost_merit": 15000,
+    "passive_description_vi": "Thân mang thánh quang áp chế tà khí, cấm phép và khóa hồi máu đối thủ.",
+    "stat_bonuses": {
+      "hp_pct": 0.15,
+      "heal_reduce_on_hit_pct": 0.15,
+      "silence_on_crit_pct": 0.15,
+      "cleanse_on_turn_pct": 0.12,
+      "heal_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssQuang": 4
+    }
+  },
+  {
+    "key": "ConstitutionQuangKim_Epi",
+    "vi": "Thần Kim Quang Thể",
+    "en": "Divine Golden Light Body",
+    "rarity": "epic",
+    "element": "quang",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Quang cộng hưởng với đại đạo, kháng bạo bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "hp_pct": 0.21,
+      "final_dmg_bonus": 0.14,
+      "crit_res_rating": 210
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssQuang": 5
+    }
+  },
+  {
+    "key": "ConstitutionQuangLien_Epi",
+    "vi": "Thần Bạch Liên Thể",
+    "en": "Divine White Lotus Body",
+    "rarity": "epic",
+    "element": "quang",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Quang cộng hưởng với đại đạo, linh lực bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "mp_pct": 0.28,
+      "heal_pct": 0.245,
+      "debuff_immune_pct": 0.175
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssQuang": 5
+    }
+  },
+  {
+    "key": "ConstitutionQuangTinh_Epi",
+    "vi": "Thần Tịnh Quang Thể",
+    "en": "Divine Pure Light Body",
+    "rarity": "epic",
+    "element": "quang",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Quang cộng hưởng với đại đạo, thanh tẩy bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "hp_pct": 0.245,
+      "cleanse_on_turn_pct": 0.35,
+      "heal_pct": 0.175
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssQuang": 5
+    }
+  },
+  {
+    "key": "ConstitutionThienQuangHoThanThe",
+    "vi": "Thiên Quang Hộ Thân Thể",
+    "en": "Heavenly Light Guardian Body",
+    "rarity": "epic",
+    "element": "quang",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thiên quang bao phủ toàn thân, mọi tà khí đều bị thanh tẩy, mọi vết thương đều mau lành.",
+    "stat_bonuses": {
+      "hp_pct": 0.2,
+      "mp_pct": 0.12,
+      "cleanse_on_turn_pct": 0.2,
+      "heal_pct": 0.18,
+      "heal_reduce_on_hit_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssQuang": 5
+    }
+  },
+  {
+    "key": "ConstitutionQuangKim_Leg",
+    "vi": "Đế Kim Quang Thể",
+    "en": "Imperial Golden Light Body",
+    "rarity": "legendary",
+    "element": "quang",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Quang — đỉnh cao của lộ trình kháng bạo, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "hp_pct": 0.3,
+      "final_dmg_bonus": 0.2,
+      "crit_res_rating": 300
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssQuang": 6
+    }
+  },
+  {
+    "key": "ConstitutionQuangLien_Leg",
+    "vi": "Đế Bạch Liên Thể",
+    "en": "Imperial White Lotus Body",
+    "rarity": "legendary",
+    "element": "quang",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Quang — đỉnh cao của lộ trình linh lực, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "mp_pct": 0.4,
+      "heal_pct": 0.35,
+      "debuff_immune_pct": 0.25
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssQuang": 6
+    }
+  },
+  {
+    "key": "ConstitutionQuangTinh_Leg",
+    "vi": "Đế Tịnh Quang Thể",
+    "en": "Imperial Pure Light Body",
+    "rarity": "legendary",
+    "element": "quang",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Quang — đỉnh cao của lộ trình thanh tẩy, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "hp_pct": 0.35,
+      "cleanse_on_turn_pct": 0.5,
+      "heal_pct": 0.25
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssQuang": 6
+    }
+  },
+  {
+    "key": "ConstitutionVoLuongQuang",
+    "vi": "Vô Lượng Thánh Quang Thể",
+    "en": "Infinite Holy Light Body",
+    "rarity": "legendary",
+    "element": "quang",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Hóa thân Thánh Quang bất diệt, mỗi lần thanh tẩy sinh khiên, trị liệu có thể bạo kích và áp chế toàn diện kẻ thù.",
+    "stat_bonuses": {
+      "hp_pct": 0.25,
+      "mp_pct": 0.15,
+      "heal_pct": 0.25,
+      "heal_can_crit": true,
+      "barrier_on_cleanse": true,
+      "cleanse_on_turn_pct": 0.25,
+      "silence_on_crit_pct": 0.3,
+      "heal_reduce_on_hit_pct": 0.25,
+      "quang_res_shred": 0.15
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssQuang": 6
+    }
+  }
+]

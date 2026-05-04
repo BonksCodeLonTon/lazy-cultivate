@@ -385,9 +385,10 @@
     },
     "passive_bonus": {
       "cooldown_reduce": 0.12,
-      "freeze_on_skill": true
+      "mana_stack_per_attack": 1,
+      "damage_bonus_from_mp_pct": 0.08
     },
-    "description_vi": "Ấn Luyện Hư chân nhân, giảm CD, kỹ năng đóng băng."
+    "description_vi": "Ấn Luyện Hư chân nhân, giảm CD; mỗi đòn đánh tích Linh Khí, túi linh càng đầy thì sát thương càng cao."
   },
   {
     "key": "uniq_huyen_vu_boi",
@@ -494,9 +495,11 @@
     },
     "passive_bonus": {
       "paralysis_on_crit": true,
-      "freeze_on_skill": true
+      "bleed_on_hit_pct": 0.15,
+      "crit_rating_vs_bleed": 100,
+      "crit_dmg_vs_bleed": 100
     },
-    "description_vi": "Thanh long kiếm thượng cổ, bạo kích tê liệt, kỹ năng đóng băng."
+    "description_vi": "Thanh long kiếm thượng cổ — bạo kích tê liệt; lưỡi kiếm xé toang da thịt gây chảy máu, mỗi vết thương đều bị bạo kích bồi thêm."
   },
   {
     "key": "uniq_linh_xa_dai",
@@ -697,9 +700,10 @@
     },
     "passive_bonus": {
       "cooldown_reduce": 0.25,
-      "freeze_on_skill": true
+      "damage_bonus_from_mp_pct": 0.15,
+      "mana_stack_per_attack": 1
     },
-    "description_vi": "Pháp quan hỗn nguyên, giảm mạnh CD, kỹ năng đóng băng."
+    "description_vi": "Pháp quan hỗn nguyên, giảm mạnh CD; biển linh trong thân biến thành sát thương kinh hoàng, mỗi đòn đều tích thêm Linh Khí."
   },
   {
     "key": "uniq_truong_sinh_nhan",

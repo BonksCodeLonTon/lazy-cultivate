@@ -1,0 +1,439 @@
+[
+  {
+    "key": "ConstitutionThuyBang_Com",
+    "vi": "Hàn Băng Thể",
+    "en": "Cold Frost Body",
+    "rarity": "common",
+    "element": "thuy",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Thủy sơ khởi tụ trong thân, mọi thuộc tính né tránh đều được khơi dậy.",
+    "stat_bonuses": {
+      "mp_pct": 0.08,
+      "slow_on_hit_pct": 0.05,
+      "evasion_rating": 60
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssThuy": 3
+    }
+  },
+  {
+    "key": "ConstitutionThuyHai_Com",
+    "vi": "Bích Hải Thể",
+    "en": "Azure Sea Body",
+    "rarity": "common",
+    "element": "thuy",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Thủy sơ khởi tụ trong thân, mọi thuộc tính linh lực đều được khơi dậy.",
+    "stat_bonuses": {
+      "mp_pct": 0.12,
+      "cooldown_reduce": 0.05,
+      "reflect_pct": 0.04
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssThuy": 3
+    }
+  },
+  {
+    "key": "ConstitutionThuyLinhThe",
+    "vi": "Thủy Linh Thể",
+    "en": "Water Spirit Body",
+    "rarity": "common",
+    "element": "thuy",
+    "roll_weight": 40,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí chảy như dòng nước, hồi chiêu mau và tích mana tự nhiên.",
+    "stat_bonuses": {
+      "mp_pct": 0.1,
+      "cooldown_reduce": 0.05,
+      "mp_regen_pct": 0.01
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssThuy": 3
+    }
+  },
+  {
+    "key": "ConstitutionThuyLuu_Com",
+    "vi": "Lưu Vân Thể",
+    "en": "Flowing Cloud Body",
+    "rarity": "common",
+    "element": "thuy",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Thủy sơ khởi tụ trong thân, mọi thuộc tính linh lực đều được khơi dậy.",
+    "stat_bonuses": {
+      "mp_pct": 0.1,
+      "mp_regen_pct": 0.015,
+      "cooldown_reduce": 0.04
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssThuy": 3
+    }
+  },
+  {
+    "key": "ConstitutionBichHaiThe",
+    "vi": "Bích Hải Thể",
+    "en": "Azure Sea Body",
+    "rarity": "uncommon",
+    "element": "thuy",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí chảy như sóng biển, kỹ năng tuôn ra liên tục mà không cạn linh lực.",
+    "stat_bonuses": {
+      "mp_pct": 0.14,
+      "cooldown_reduce": 0.06,
+      "mp_regen_pct": 0.015,
+      "reflect_pct": 0.04
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssThuy": 4
+    }
+  },
+  {
+    "key": "ConstitutionThuyBang_Unc",
+    "vi": "Hậu Hàn Băng Thể",
+    "en": "Greater Cold Frost Body",
+    "rarity": "uncommon",
+    "element": "thuy",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Thủy đã hậu nhập huyết mạch — sức mạnh né tránh vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "mp_pct": 0.128,
+      "slow_on_hit_pct": 0.08,
+      "evasion_rating": 96
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssThuy": 4
+    }
+  },
+  {
+    "key": "ConstitutionThuyHai_Unc",
+    "vi": "Hậu Bích Hải Thể",
+    "en": "Greater Azure Sea Body",
+    "rarity": "uncommon",
+    "element": "thuy",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Thủy đã hậu nhập huyết mạch — sức mạnh linh lực vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "mp_pct": 0.192,
+      "cooldown_reduce": 0.08,
+      "reflect_pct": 0.064
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssThuy": 4
+    }
+  },
+  {
+    "key": "ConstitutionThuyLuu_Unc",
+    "vi": "Hậu Lưu Vân Thể",
+    "en": "Greater Flowing Cloud Body",
+    "rarity": "uncommon",
+    "element": "thuy",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Thủy đã hậu nhập huyết mạch — sức mạnh linh lực vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "mp_pct": 0.16,
+      "mp_regen_pct": 0.024,
+      "cooldown_reduce": 0.064
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssThuy": 4
+    }
+  },
+  {
+    "key": "ConstitutionBangTinhThuy",
+    "vi": "Băng Tinh Thủy Thể",
+    "en": "Ice Crystal Water Body",
+    "rarity": "rare",
+    "element": "thuy",
+    "roll_weight": 6,
+    "cost_merit": 15000,
+    "passive_description_vi": "Thân như gương băng, đòn đánh kẻ thù phần nào sẽ quay ngược về chính chúng.",
+    "stat_bonuses": {
+      "mp_pct": 0.18,
+      "cooldown_reduce": 0.08,
+      "reflect_pct": 0.08,
+      "mp_regen_pct": 0.02,
+      "mana_stack_per_attack": 1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssThuy": 4
+    }
+  },
+  {
+    "key": "ConstitutionThuyBang_Rar",
+    "vi": "Linh Hàn Băng Thể",
+    "en": "Spirit Cold Frost Body",
+    "rarity": "rare",
+    "element": "thuy",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Thủy, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "mp_pct": 0.192,
+      "slow_on_hit_pct": 0.12,
+      "evasion_rating": 144
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssThuy": 4
+    }
+  },
+  {
+    "key": "ConstitutionThuyHai_Rar",
+    "vi": "Linh Bích Hải Thể",
+    "en": "Spirit Azure Sea Body",
+    "rarity": "rare",
+    "element": "thuy",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Thủy, linh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "mp_pct": 0.288,
+      "cooldown_reduce": 0.12,
+      "reflect_pct": 0.096
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssThuy": 4
+    }
+  },
+  {
+    "key": "ConstitutionThuyLuu_Rar",
+    "vi": "Linh Lưu Vân Thể",
+    "en": "Spirit Flowing Cloud Body",
+    "rarity": "rare",
+    "element": "thuy",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Thủy, linh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "mp_pct": 0.24,
+      "mp_regen_pct": 0.036,
+      "cooldown_reduce": 0.096
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssThuy": 4
+    }
+  },
+  {
+    "key": "ConstitutionThienHaThuyThe",
+    "vi": "Thiên Hà Thủy Thể",
+    "en": "Galactic River Body",
+    "rarity": "epic",
+    "element": "thuy",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Linh khí cuộn như Thiên Hà, sóng chảy ngược dòng phản kích mọi đòn tấn công.",
+    "stat_bonuses": {
+      "mp_pct": 0.25,
+      "cooldown_reduce": 0.11,
+      "mp_regen_pct": 0.03,
+      "reflect_pct": 0.12,
+      "mana_stack_per_attack": 1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssThuy": 5
+    }
+  },
+  {
+    "key": "ConstitutionThuyBang_Epi",
+    "vi": "Thần Hàn Băng Thể",
+    "en": "Divine Cold Frost Body",
+    "rarity": "epic",
+    "element": "thuy",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Hàn Băng — hàn khí thấm xương khiến kẻ địch như di chuyển trong dòng nước đặc, kèm theo phản kích băng giá.",
+    "stat_bonuses": {
+      "mp_pct": 0.28,
+      "slow_on_hit_pct": 0.175,
+      "evasion_rating": 210,
+      "reflect_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssThuy": 5
+    }
+  },
+  {
+    "key": "ConstitutionThuyHai_Epi",
+    "vi": "Thần Bích Hải Thể",
+    "en": "Divine Azure Sea Body",
+    "rarity": "epic",
+    "element": "thuy",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Thủy cộng hưởng với đại đạo, linh lực bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "mp_pct": 0.42,
+      "cooldown_reduce": 0.175,
+      "reflect_pct": 0.14
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssThuy": 5
+    }
+  },
+  {
+    "key": "ConstitutionThuyLuu_Epi",
+    "vi": "Thần Lưu Vân Thể",
+    "en": "Divine Flowing Cloud Body",
+    "rarity": "epic",
+    "element": "thuy",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Thủy cộng hưởng với đại đạo, linh lực bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "mp_pct": 0.35,
+      "mp_regen_pct": 0.052,
+      "cooldown_reduce": 0.14
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssThuy": 5
+    }
+  },
+  {
+    "key": "ConstitutionCuuTuyetThuy",
+    "vi": "Cửu Tuyệt Thủy Long Thể",
+    "en": "Nine Abyss Water Dragon Body",
+    "rarity": "legendary",
+    "element": "thuy",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Dung hòa huyết mạch thủy long cửu uyên, linh khí càng tràn đầy thì sát thương càng khủng khiếp.",
+    "stat_bonuses": {
+      "mp_pct": 0.35,
+      "cooldown_reduce": 0.15,
+      "mana_stack_per_attack": 2,
+      "mana_stack_dmg_bonus": 0.05,
+      "damage_bonus_from_mp_pct": 0.15,
+      "reflect_pct": 0.15,
+      "reflect_applies_effects": true,
+      "thuy_res_shred": 0.15
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssThuy": 6
+    }
+  },
+  {
+    "key": "ConstitutionThuyBang_Leg",
+    "vi": "Đế Hàn Băng Thể",
+    "en": "Imperial Cold Frost Body",
+    "rarity": "legendary",
+    "element": "thuy",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Hàn Băng — vạn vật chạm phải đều bị đóng băng kết tinh; mỗi kỹ năng tung ra có 20% cơ hội Đông Băng đối thủ, gương băng phản kích đòn tấn công.",
+    "stat_bonuses": {
+      "mp_pct": 0.4,
+      "slow_on_hit_pct": 0.25,
+      "evasion_rating": 300,
+      "freeze_on_skill_chance": 0.2,
+      "reflect_pct": 0.12,
+      "thuy_res_shred": 0.12,
+      "damage_bonus_from_evasion_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssThuy": 6
+    }
+  },
+  {
+    "key": "ConstitutionThuyHai_Leg",
+    "vi": "Đế Bích Hải Thể",
+    "en": "Imperial Azure Sea Body",
+    "rarity": "legendary",
+    "element": "thuy",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Linh lực sâu như Bích Hải, mỗi đòn tấn công đều tích tụ Linh Khí — biển càng đầy, sát thương càng kinh hoàng.",
+    "stat_bonuses": {
+      "mp_pct": 0.6,
+      "cooldown_reduce": 0.25,
+      "reflect_pct": 0.2,
+      "damage_bonus_from_mp_pct": 0.15,
+      "mana_stack_per_attack": 1,
+      "mana_stack_dmg_bonus": 0.04
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssThuy": 6
+    }
+  },
+  {
+    "key": "ConstitutionThuyLuu_Leg",
+    "vi": "Đế Lưu Vân Thể",
+    "en": "Imperial Flowing Cloud Body",
+    "rarity": "legendary",
+    "element": "thuy",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Thân hóa lưu thủy phù vân — đòn phản kích không chỉ trả sát thương, mà còn ép ngược mọi hiệu ứng kẻ thù vừa giáng xuống.",
+    "stat_bonuses": {
+      "mp_pct": 0.5,
+      "mp_regen_pct": 0.075,
+      "cooldown_reduce": 0.2,
+      "reflect_applies_effects": true,
+      "damage_bonus_from_mp_pct": 0.12,
+      "thuy_res_shred": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssThuy": 6
+    }
+  }
+]

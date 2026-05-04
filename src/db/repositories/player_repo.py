@@ -99,7 +99,8 @@ class PlayerRepository:
         for elem in shuffled_elements:
             candidates = [
                 s["key"] for s in _registry.skills.values()
-                if s.get("element") == elem
+                if not s.get("key", "").startswith("Enemy")
+                and s.get("element") == elem
                 and s.get("category") == "attack"
                 and s.get("realm", 99) == 1
                 and s.get("mp_cost", 999) <= 15
@@ -130,27 +131,24 @@ class PlayerRepository:
 
 
 def _roll_starter_constitution(linh_can_list: list[str]) -> str:
-    """Weighted random roll among constitutions with ``roll_weight`` > 0.
+    """Weighted random roll among constitutions matching the player's Linh Căn.
 
-    Constitutions whose ``element`` matches one of the player's Linh Căn
-    get a 2× weight multiplier, so newcomers lean toward a constitution
-    that synergises with their rolled elements. Falls back to the default
-    Vạn Tượng body if the rollable pool is ever empty.
+    Hard-filters the rollable pool to **universal** (element=None) constitutions
+    plus **matching-element** ones — newcomers can never roll a body whose
+    element clashes with their rolled roots. Falls back to the default Vạn
+    Tượng body if the filtered pool is ever empty.
     """
     from src.data.registry import registry
 
-    pool = registry.rollable_constitutions()
+    player_elems = set(linh_can_list)
+    pool = [
+        c for c in registry.rollable_constitutions()
+        if c.get("element") is None or c.get("element") in player_elems
+    ]
     if not pool:
         return "ConstitutionVanTuong"
 
-    player_elems = set(linh_can_list)
-    weights: list[float] = []
-    for const in pool:
-        w = float(const.get("roll_weight", 0))
-        if const.get("element") and const["element"] in player_elems:
-            w *= 2.0
-        weights.append(w)
-
+    weights = [float(c.get("roll_weight", 0)) for c in pool]
     chosen = random.choices(pool, weights=weights, k=1)[0]
     return chosen["key"]
 

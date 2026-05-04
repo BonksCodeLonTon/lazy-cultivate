@@ -1,0 +1,622 @@
+[
+  {
+    "key": "ConstitutionBachHoThe",
+    "vi": "Bạch Hổ Sát Thể",
+    "en": "White Tiger Slayer Body",
+    "rarity": "common",
+    "element": null,
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Hung uy như Bạch Hổ hạ sơn, mỗi đòn đều mang sát khí sắc lạnh.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.07,
+      "crit_rating": 120,
+      "crit_dmg_rating": 60
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 1,
+      "ArchSatYTinh": 2
+    }
+  },
+  {
+    "key": "ConstitutionHuyenQuiThe",
+    "vi": "Huyền Quy Thể",
+    "en": "Black Tortoise Body",
+    "rarity": "common",
+    "element": null,
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Thân như Huyền Quy ẩn giữa biển sâu, lớp giáp dày chống chọi mọi nguyên tố.",
+    "stat_bonuses": {
+      "hp_pct": 0.12,
+      "res_all": 35,
+      "final_dmg_reduce": 0.04,
+      "hp_regen_pct": 0.01
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 1,
+      "ArchHoTheTinh": 2
+    }
+  },
+  {
+    "key": "ConstitutionThanTocThe",
+    "vi": "Thần Tốc Thể",
+    "en": "Swift Divine Body",
+    "rarity": "common",
+    "element": null,
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Bước chân nhẹ như gió, phản ứng nhanh hơn thường nhân gấp bội.",
+    "stat_bonuses": {
+      "spd_bonus": 5,
+      "evasion_rating": 120,
+      "cooldown_reduce": 0.05,
+      "crit_rating": 40
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 1,
+      "ArchPhongDangTinh": 2
+    }
+  },
+  {
+    "key": "ConstitutionVanTuong",
+    "vi": "Vạn Tượng Thể",
+    "en": "Ten-Thousand Forms Body",
+    "rarity": "common",
+    "element": null,
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Thân thể cân bằng vạn tượng, mọi thuộc tính đều được tăng cường đều đặn. Phù hợp với tu sĩ toàn năng.",
+    "stat_bonuses": {
+      "hp_pct": 0.06,
+      "mp_pct": 0.06,
+      "crit_rating": 60,
+      "res_all": 15
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2
+    }
+  },
+  {
+    "key": "ConstitutionHacLongThe",
+    "vi": "Hắc Long Thể",
+    "en": "Black Dragon Body",
+    "rarity": "uncommon",
+    "element": null,
+    "roll_weight": 15,
+    "cost_merit": 5000,
+    "passive_description_vi": "Long khí ẩn trong thân, lục phủ ngũ tạng đều được long uy bồi đắp — mọi thuộc tính đều mạnh hơn thường.",
+    "stat_bonuses": {
+      "hp_pct": 0.1,
+      "mp_pct": 0.08,
+      "crit_rating": 100,
+      "res_all": 30,
+      "spd_bonus": 2
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ArchHoTheTinh": 1
+    }
+  },
+  {
+    "key": "ConstitutionKimLongThe",
+    "vi": "Kim Long Sát Thể",
+    "en": "Golden Dragon Slayer Body",
+    "rarity": "uncommon",
+    "element": null,
+    "roll_weight": 15,
+    "cost_merit": 5000,
+    "passive_description_vi": "Móng vuốt kim long sắc bén, mỗi đòn bạo kích đều xé toang phòng ngự đối phương.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.09,
+      "crit_rating": 160,
+      "crit_dmg_rating": 100,
+      "true_dmg_pct": 0.02
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ArchSatYTinh": 2
+    }
+  },
+  {
+    "key": "ConstitutionThietGiapThe",
+    "vi": "Thiết Giáp Thể",
+    "en": "Iron-Plate Body",
+    "rarity": "uncommon",
+    "element": null,
+    "roll_weight": 15,
+    "cost_merit": 5000,
+    "passive_description_vi": "Da thịt cứng như giáp sắt, đòn đánh chí mạng cũng khó khoét được vết thương sâu.",
+    "stat_bonuses": {
+      "hp_pct": 0.16,
+      "res_all": 50,
+      "final_dmg_reduce": 0.06,
+      "hp_regen_pct": 0.015,
+      "crit_res_rating": 80
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ArchHoTheTinh": 2
+    }
+  },
+  {
+    "key": "ConstitutionTuyetAnhThe",
+    "vi": "Tuyệt Ảnh Thể",
+    "en": "Vanishing Shadow Body",
+    "rarity": "uncommon",
+    "element": null,
+    "roll_weight": 15,
+    "cost_merit": 5000,
+    "passive_description_vi": "Bước chân tựa gió cuốn, né tránh và phản đòn nhanh hơn thường nhân nhiều bậc.",
+    "stat_bonuses": {
+      "spd_bonus": 8,
+      "evasion_rating": 180,
+      "cooldown_reduce": 0.07,
+      "crit_rating": 80,
+      "mp_regen_pct": 0.02
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ArchPhongDangTinh": 2
+    }
+  },
+  {
+    "key": "ConstitutionDaoCoThe",
+    "vi": "Đạo Cổ Linh Thể",
+    "en": "Ancient Dao Spirit Body",
+    "rarity": "rare",
+    "element": null,
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Dung hòa đạo vận cổ xưa, thể chất toàn diện trên mọi mặt trận.",
+    "stat_bonuses": {
+      "hp_pct": 0.12,
+      "mp_pct": 0.12,
+      "crit_rating": 120,
+      "cooldown_reduce": 0.08,
+      "final_dmg_bonus": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ArchThongHueTinh": 3
+    }
+  },
+  {
+    "key": "ConstitutionHuyenThienKien",
+    "vi": "Huyền Thiên Kiên Thể",
+    "en": "Abyssal Heaven Iron Body",
+    "rarity": "rare",
+    "element": null,
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân kiên cố như thiên thiết huyền ngọc, chịu đựng mọi đòn công phá.",
+    "stat_bonuses": {
+      "hp_pct": 0.22,
+      "res_all": 75,
+      "final_dmg_reduce": 0.1,
+      "hp_regen_pct": 0.02,
+      "crit_res_rating": 150
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ArchHoTheTinh": 3
+    }
+  },
+  {
+    "key": "ConstitutionLinhLung",
+    "vi": "Linh Lung Thần Thể",
+    "en": "Spirit Luminous Divine Body",
+    "rarity": "rare",
+    "element": null,
+    "roll_weight": 3,
+    "cost_merit": 30000,
+    "passive_description_vi": "Linh lung thông suốt, vận may và ngộ tính đều xuất sắc. Nhận được nhiều công đức và ngộ đạo nhanh hơn người thường.",
+    "stat_bonuses": {
+      "luck": 150,
+      "comprehension": 150,
+      "merit_bonus": 0.15,
+      "cooldown_reduce": 0.05,
+      "crit_rating": 80
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 2,
+      "ArchThongHueTinh": 4
+    }
+  },
+  {
+    "key": "ConstitutionTuKiemThe",
+    "vi": "Tử Kiếm Thần Thể",
+    "en": "Purple Sword Divine Body",
+    "rarity": "rare",
+    "element": null,
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa tử kiếm, mỗi đòn đánh đều mang kiếm ý xuyên phá phòng ngự.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.12,
+      "crit_rating": 200,
+      "crit_dmg_rating": 150,
+      "true_dmg_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ArchSatYTinh": 3
+    }
+  },
+  {
+    "key": "ConstitutionBatHoaiThe",
+    "vi": "Bất Hoại Thần Thể",
+    "en": "Indestructible Divine Body",
+    "rarity": "epic",
+    "element": null,
+    "roll_weight": 2,
+    "cost_merit": 50000,
+    "passive_description_vi": "Thân tựa kim thạch ngàn năm bất hoại, mọi đòn công kích đều khó để lại dấu tích.",
+    "stat_bonuses": {
+      "hp_pct": 0.3,
+      "res_all": 100,
+      "final_dmg_reduce": 0.14,
+      "hp_regen_pct": 0.03,
+      "crit_res_rating": 200,
+      "shield_cap_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ArchHoTheTinh": 3
+    }
+  },
+  {
+    "key": "ConstitutionHonNguyenThe",
+    "vi": "Hỗn Nguyên Thể",
+    "en": "Primordial Chaos Body",
+    "rarity": "epic",
+    "element": null,
+    "roll_weight": 2,
+    "cost_merit": 50000,
+    "passive_description_vi": "Lĩnh ngộ một phần khí của Hỗn Nguyên — vạn pháp cùng dung nạp, vạn thuộc tính đều thăng tiến.",
+    "stat_bonuses": {
+      "hp_pct": 0.18,
+      "mp_pct": 0.18,
+      "final_dmg_bonus": 0.08,
+      "final_dmg_reduce": 0.05,
+      "crit_rating": 180,
+      "res_all": 80,
+      "spd_bonus": 4
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ArchHoTheTinh": 2
+    }
+  },
+  {
+    "key": "ConstitutionLoiTocThe",
+    "vi": "Lôi Tốc Thần Thể",
+    "en": "Lightning-Swift Divine Body",
+    "rarity": "epic",
+    "element": null,
+    "roll_weight": 2,
+    "cost_merit": 50000,
+    "passive_description_vi": "Tốc độ đạt mức lôi điện, mỗi nhịp tim đập là một bước xuyên không gian.",
+    "stat_bonuses": {
+      "spd_bonus": 14,
+      "evasion_rating": 260,
+      "cooldown_reduce": 0.12,
+      "crit_rating": 160,
+      "mp_regen_pct": 0.04,
+      "first_strike_chance": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ArchPhongDangTinh": 3
+    }
+  },
+  {
+    "key": "ConstitutionThienSatThe",
+    "vi": "Thiên Sát Thần Thể",
+    "en": "Heaven-Slaying Divine Body",
+    "rarity": "epic",
+    "element": null,
+    "roll_weight": 2,
+    "cost_merit": 50000,
+    "passive_description_vi": "Sát ý vô biên, mỗi đòn ra như thiên kiếm rạch trời — không gì có thể chắn đường.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.18,
+      "crit_rating": 260,
+      "crit_dmg_rating": 200,
+      "true_dmg_pct": 0.08,
+      "armor_pen_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ArchSatYTinh": 3
+    }
+  },
+  {
+    "key": "ConstitutionBatDiet",
+    "vi": "Bất Diệt Thần Thể",
+    "en": "Undying Divine Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 100000,
+    "passive_description_vi": "Bất diệt bất hoại, thân thể tự hồi phục không ngừng. Trị liệu có thể bạo kích, hồi máu mạnh hơn cả thần tiên.",
+    "stat_bonuses": {
+      "hp_pct": 0.4,
+      "hp_regen_pct": 0.05,
+      "hp_regen_flat": 50,
+      "heal_pct": 0.3,
+      "heal_can_crit": true,
+      "final_dmg_reduce": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchTrungSinhTinh": 5
+    }
+  },
+  {
+    "key": "ConstitutionHauTo",
+    "vi": "Hậu Thổ Thần Thể",
+    "en": "Primal Earth Divine Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 100000,
+    "passive_description_vi": "Hậu thổ kiên cố như đại địa, thân thể như núi Thái Sơn không thể lay chuyển. Mỗi đòn trúng đều phản chấn, mọi đòn đánh đều bị triệt tiêu.",
+    "stat_bonuses": {
+      "hp_pct": 0.5,
+      "res_all": 150,
+      "final_dmg_reduce": 0.15,
+      "thorn_pct": 0.15,
+      "stun_on_hit_pct": 0.08,
+      "shield_regen_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchHoTheTinh": 5
+    }
+  },
+  {
+    "key": "ConstitutionHonDon",
+    "vi": "Hỗn Độn Đạo Thể",
+    "en": "Primordial Chaos Dao Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 0,
+    "passive_description_vi": "Hỗn độn chi thể, hội tụ đạo lý nguyên thủy của thiên địa. Passive nền của các thần thể khác được khuếch đại 1.25 lần (không áp dụng cho hệ số sát thương/hồi chiêu đã nhân kép), kèm chỉ số nền áp chế vạn đạo. Yêu cầu giác ngộ toàn bộ đạo ti.",
+    "stat_bonuses": {
+      "all_passives_multiplier": 1.25,
+      "hp_pct": 0.3,
+      "mp_pct": 0.3,
+      "final_dmg_bonus": 0.15,
+      "crit_rating": 300,
+      "res_all": 60,
+      "cooldown_reduce": 0.08
+    },
+    "special_requirements": [
+      "requires_the_tu",
+      "requires_all_dao_ti",
+      "requires_all_legendary_equipped"
+    ],
+    "materials": {
+      "MatDaoCotTinh": 15,
+      "MatThienDaoTuy": 10,
+      "MatHonNguyenCot": 5,
+      "SupremeDuongTinh": 2,
+      "SupremeAmTinh": 2,
+      "SupremeHonDonTinh": 1
+    },
+    "activation_chance": 0.2
+  },
+  {
+    "key": "ConstitutionKhiHai",
+    "vi": "Khí Hải Thần Thể",
+    "en": "Qi Ocean Divine Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 100000,
+    "passive_description_vi": "Khí hải vô tận, linh khí như đại dương không bao giờ cạn. Linh khí càng dồi dào thì sát thương pháp chiêu càng kinh hoàng.",
+    "stat_bonuses": {
+      "mp_pct": 0.6,
+      "cooldown_reduce": 0.3,
+      "mp_regen_pct": 0.05,
+      "damage_bonus_from_mp_pct": 0.15,
+      "mana_stack_per_attack": 1,
+      "mana_stack_dmg_bonus": 0.03
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchThongHueTinh": 5
+    }
+  },
+  {
+    "key": "ConstitutionNgheDinh",
+    "vi": "Nghê Đình Thần Thể",
+    "en": "Thunder Peak Divine Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 100000,
+    "passive_description_vi": "Nghê Đình lôi oanh, thân mang thiên lôi vô tận. Tốc độ hành động và sát thương bạo kích đều đạt đỉnh cao, cơ hội cướp lượt của đối thủ.",
+    "stat_bonuses": {
+      "crit_rating": 500,
+      "crit_dmg_rating": 250,
+      "final_dmg_bonus": 0.2,
+      "spd_bonus": 15,
+      "shock_on_hit_pct": 0.2,
+      "turn_steal_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchLoiNguyenTinh": 5
+    }
+  },
+  {
+    "key": "ConstitutionPhaTien",
+    "vi": "Phá Thiên Thần Thể",
+    "en": "Heaven Shattering Divine Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 100000,
+    "passive_description_vi": "Thần thể phá thiên, mỗi đòn tấn công đều mang sức mạnh hủy diệt. Bạo kích đẩy lên đỉnh cao và phá nát mọi phòng ngự.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.25,
+      "crit_rating": 400,
+      "crit_dmg_rating": 400,
+      "true_dmg_pct": 0.04,
+      "paralysis_on_crit": true
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchSatYTinh": 5
+    }
+  },
+  {
+    "key": "ConstitutionThaiAm",
+    "vi": "Thái Âm Thần Thể",
+    "en": "Supreme Yin Divine Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 150000,
+    "passive_description_vi": "Thái âm thần thể, âm lực cực thịnh. Linh khí, né tránh và âm phệ đều đạt cảnh giới cực âm — hút hồn, cướp chỉ số của kẻ thù.",
+    "stat_bonuses": {
+      "mp_pct": 0.4,
+      "cooldown_reduce": 0.35,
+      "evasion_rating": 500,
+      "soul_drain_on_hit_pct": 0.25,
+      "stat_steal_on_hit_pct": 0.15,
+      "am_res_shred": 0.15,
+      "barrier_on_cleanse": true
+    },
+    "special_requirements": "requires_dao_ti_yin",
+    "materials": {
+      "MatDaoCotTinh": 8,
+      "MatThienDaoTuy": 5,
+      "MatHonNguyenCot": 2,
+      "SupremeAmTinh": 3,
+      "ElemEssThuy": 3
+    },
+    "activation_chance": 0.25
+  },
+  {
+    "key": "ConstitutionThaiDuong",
+    "vi": "Thái Dương Thần Thể",
+    "en": "Supreme Yang Divine Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 150000,
+    "passive_description_vi": "Thái dương thần thể, dương lực cực thịnh. Sát thương bạo kích đạt đỉnh cực dương, mọi đòn đánh đều như ánh mặt trời thiêu đốt.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.4,
+      "crit_rating": 300,
+      "crit_dmg_rating": 600,
+      "burn_on_hit_pct": 0.25,
+      "burn_dmg_bonus": 0.3,
+      "fire_res_shred": 0.2,
+      "dot_can_crit": true
+    },
+    "special_requirements": "requires_dao_ti_yang",
+    "materials": {
+      "MatDaoCotTinh": 8,
+      "MatThienDaoTuy": 5,
+      "MatHonNguyenCot": 2,
+      "SupremeDuongTinh": 3,
+      "ElemEssHoa": 3
+    },
+    "activation_chance": 0.25
+  },
+  {
+    "key": "ConstitutionTieuDao",
+    "vi": "Tiêu Dao Thần Thể",
+    "en": "Carefree Divine Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 100000,
+    "passive_description_vi": "Tiêu dao tự tại như gió mây, thân pháp biến ảo vô thường. Né tránh càng cao thì sát thương càng kinh khủng.",
+    "stat_bonuses": {
+      "spd_bonus": 20,
+      "evasion_rating": 500,
+      "crit_rating": 300,
+      "mark_on_hit_pct": 0.15,
+      "damage_bonus_from_evasion_pct": 0.12,
+      "cooldown_reduce": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchPhongDangTinh": 5
+    }
+  },
+  {
+    "key": "ConstitutionTranGioi",
+    "vi": "Trấn Giới Thần Thể",
+    "en": "World Suppressing Divine Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 100000,
+    "passive_description_vi": "Trấn giới chi thể, áp chế mọi kẻ thù. Miễn nhiễm phần lớn debuff và gần như không thể bị bạo kích.",
+    "stat_bonuses": {
+      "crit_res_rating": 600,
+      "res_all": 150,
+      "hp_pct": 0.3,
+      "debuff_immune_pct": 0.3,
+      "final_dmg_reduce": 0.1,
+      "poison_immunity": true
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchHoTheTinh": 4,
+      "ArchTrungSinhTinh": 2
+    }
+  }
+]

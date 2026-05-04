@@ -260,20 +260,19 @@ class StatusView(discord.ui.View):
             return
         await interaction.response.defer()
 
-        from src.game.constants.linh_can import parse_linh_can
-        async with get_session() as session:
-            repo = PlayerRepository(session)
-            player = await repo.get_by_discord_id(interaction.user.id)
-            if player is None:
-                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
-                return
-            linh_can = parse_linh_can(player.linh_can or "")
-
-        from src.bot.cogs.skills import _build_skilllist
+        from src.bot.cogs.skills import _build_skilllist, _player_skill_state
+        state = await _player_skill_state(interaction.user.id)
+        if not state["linh_can"] and not state["learned"] and not state["owned_scrolls"]:
+            async with get_session() as session:
+                repo = PlayerRepository(session)
+                if await repo.get_by_discord_id(interaction.user.id) is None:
+                    await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                    return
         embed, view = _build_skilllist(
             discord_id=self._discord_id,
             back_fn=_show_status,
-            linh_can=linh_can,
+            linh_can=state["linh_can"],
+            state=state,
         )
         await interaction.edit_original_response(embed=embed, view=view)
 

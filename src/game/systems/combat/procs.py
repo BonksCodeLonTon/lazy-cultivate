@@ -23,6 +23,11 @@ from src.game.systems.combatant import Combatant
 
 from .helpers import _ON_HIT_PROCS, _propagate_stack_build
 
+# Mirror multiplier on the explicit freeze_on_skill_chance — preserves the
+# legacy 0.15 cast → 0.25 mirror ratio (≈ 1.67×) for combatants that opt
+# into the new override field instead of the bool flag.
+_FREEZE_MIRROR_BOOST = 1.67
+
 if TYPE_CHECKING:
     from .session import CombatSession
 
@@ -87,7 +92,13 @@ def run_on_hit_procs(
         else:
             target.apply_effect(EffectKey.CC_MUTED, default_duration(EffectKey.CC_MUTED))
             session.log.append(f"    ✨ Thánh Quang Chế Ngự — câm lặng kích hoạt!")
-    if actor.freeze_on_skill and session.rng.random() < 0.15:
+    # Freeze proc — explicit ``freeze_on_skill_chance`` overrides the legacy
+    # bool flag's hardcoded 0.15. Mirror version (in apply_reflect) uses the
+    # same chance with a small boost to preserve the legacy 0.15→0.25 ratio.
+    freeze_chance = actor.freeze_on_skill_chance
+    if freeze_chance <= 0 and actor.freeze_on_skill:
+        freeze_chance = 0.15
+    if freeze_chance > 0 and session.rng.random() < freeze_chance:
         dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
         target.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
         session.log.append(f"    🧊 Đông Băng kích hoạt!")
@@ -232,7 +243,15 @@ def apply_reflect(
         return
 
     # Mirror the defender's on-hit effect flags back at the attacker.
-    if defender.freeze_on_skill and session.rng.random() < 0.25:
+    # Mirror freeze — same override field as the cast trigger, scaled by
+    # _FREEZE_MIRROR_BOOST so a defender with explicit chance has a slightly
+    # higher mirror rate (matches the legacy 0.15 cast → 0.25 mirror feel).
+    freeze_chance = defender.freeze_on_skill_chance
+    if freeze_chance <= 0 and defender.freeze_on_skill:
+        freeze_chance = 0.25  # legacy bool default for mirror
+    else:
+        freeze_chance = min(1.0, freeze_chance * _FREEZE_MIRROR_BOOST)
+    if freeze_chance > 0 and session.rng.random() < freeze_chance:
         dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
         attacker.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
         session.log.append(f"    🧊 Mirror Đóng Băng — **{attacker.name}** bị đông cứng!")

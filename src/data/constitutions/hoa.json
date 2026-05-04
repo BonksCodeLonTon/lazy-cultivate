@@ -1,0 +1,428 @@
+[
+  {
+    "key": "ConstitutionHoaDiem_Com",
+    "vi": "Liệt Diệm Thể",
+    "en": "Blazing Flame Body",
+    "rarity": "common",
+    "element": "hoa",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Hỏa sơ khởi tụ trong thân, mọi thuộc tính bạo kích đều được khơi dậy.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.05,
+      "burn_on_hit_pct": 0.1,
+      "crit_rating": 50
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssHoa": 3
+    }
+  },
+  {
+    "key": "ConstitutionHoaDiep_Com",
+    "vi": "Điệp Hỏa Thể",
+    "en": "Layered Flame Body",
+    "rarity": "common",
+    "element": "hoa",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Hỏa sơ khởi tụ trong thân, mọi thuộc tính lửa chồng lớp đều được khơi dậy.",
+    "stat_bonuses": {
+      "burn_on_hit_pct": 0.12,
+      "burn_stack_cap_bonus": 1,
+      "fire_res_shred": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssHoa": 3
+    }
+  },
+  {
+    "key": "ConstitutionHoaLinhThe",
+    "vi": "Hỏa Linh Thể",
+    "en": "Fire Spirit Body",
+    "rarity": "common",
+    "element": "hoa",
+    "roll_weight": 40,
+    "cost_merit": 0,
+    "passive_description_vi": "Máu huyết nóng như lửa, đòn đánh dễ gây Thiêu Đốt trên kẻ địch.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.04,
+      "burn_on_hit_pct": 0.08,
+      "crit_rating": 40
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssHoa": 3
+    }
+  },
+  {
+    "key": "ConstitutionHoaPhung_Com",
+    "vi": "Phượng Hỏa Thể",
+    "en": "Phoenix Flame Body",
+    "rarity": "common",
+    "element": "hoa",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Hỏa sơ khởi tụ trong thân, mọi thuộc tính lửa đều được khơi dậy.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.04,
+      "burn_dmg_bonus": 0.08,
+      "burn_on_hit_pct": 0.07
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssHoa": 3
+    }
+  },
+  {
+    "key": "ConstitutionHoaDiem_Unc",
+    "vi": "Hậu Liệt Diệm Thể",
+    "en": "Greater Blazing Flame Body",
+    "rarity": "uncommon",
+    "element": "hoa",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Hỏa đã hậu nhập huyết mạch — sức mạnh bạo kích vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.08,
+      "burn_on_hit_pct": 0.16,
+      "crit_rating": 80
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssHoa": 4
+    }
+  },
+  {
+    "key": "ConstitutionHoaDiep_Unc",
+    "vi": "Hậu Điệp Hỏa Thể",
+    "en": "Greater Layered Flame Body",
+    "rarity": "uncommon",
+    "element": "hoa",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Hỏa đã hậu nhập huyết mạch — sức mạnh lửa chồng lớp vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "burn_on_hit_pct": 0.192,
+      "burn_stack_cap_bonus": 1,
+      "fire_res_shred": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssHoa": 4
+    }
+  },
+  {
+    "key": "ConstitutionHoaPhung_Unc",
+    "vi": "Hậu Phượng Hỏa Thể",
+    "en": "Greater Phoenix Flame Body",
+    "rarity": "uncommon",
+    "element": "hoa",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Hỏa đã hậu nhập huyết mạch — sức mạnh lửa vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.064,
+      "burn_dmg_bonus": 0.128,
+      "burn_on_hit_pct": 0.112
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssHoa": 4
+    }
+  },
+  {
+    "key": "ConstitutionViemLongThe",
+    "vi": "Viêm Long Thể",
+    "en": "Flame Dragon Body",
+    "rarity": "uncommon",
+    "element": "hoa",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Long khí hỏa diễm thiêu đốt mọi đòn đánh, để lại vết thương nóng rát khó hồi.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.06,
+      "burn_on_hit_pct": 0.12,
+      "crit_rating": 60,
+      "burn_dmg_bonus": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssHoa": 4
+    }
+  },
+  {
+    "key": "ConstitutionHoaDiem_Rar",
+    "vi": "Linh Liệt Diệm Thể",
+    "en": "Spirit Blazing Flame Body",
+    "rarity": "rare",
+    "element": "hoa",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Hỏa, bạo kích mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.12,
+      "burn_on_hit_pct": 0.24,
+      "crit_rating": 120
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssHoa": 4
+    }
+  },
+  {
+    "key": "ConstitutionHoaDiep_Rar",
+    "vi": "Linh Điệp Hỏa Thể",
+    "en": "Spirit Layered Flame Body",
+    "rarity": "rare",
+    "element": "hoa",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Hỏa, lửa chồng lớp mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "burn_on_hit_pct": 0.288,
+      "burn_stack_cap_bonus": 2,
+      "fire_res_shred": 0.12
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssHoa": 4
+    }
+  },
+  {
+    "key": "ConstitutionHoaPhung_Rar",
+    "vi": "Linh Phượng Hỏa Thể",
+    "en": "Spirit Phoenix Flame Body",
+    "rarity": "rare",
+    "element": "hoa",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Hỏa, lửa mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.096,
+      "burn_dmg_bonus": 0.192,
+      "burn_on_hit_pct": 0.168
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssHoa": 4
+    }
+  },
+  {
+    "key": "ConstitutionLietHoaThe",
+    "vi": "Liệt Hỏa Viêm Thân",
+    "en": "Blazing Flame Body",
+    "rarity": "rare",
+    "element": "hoa",
+    "roll_weight": 6,
+    "cost_merit": 15000,
+    "passive_description_vi": "Toàn thân bùng cháy, phá kháng Hỏa kẻ địch và tăng sát thương trên mục tiêu đang bỏng.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.08,
+      "burn_on_hit_pct": 0.18,
+      "fire_res_shred": 0.12,
+      "bonus_dmg_vs_burn": 0.15,
+      "burn_dmg_bonus": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssHoa": 4
+    }
+  },
+  {
+    "key": "ConstitutionHoaDiem_Epi",
+    "vi": "Thần Liệt Diệm Thể",
+    "en": "Divine Blazing Flame Body",
+    "rarity": "epic",
+    "element": "hoa",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Hỏa cộng hưởng với đại đạo, bạo kích bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.175,
+      "burn_on_hit_pct": 0.35,
+      "crit_rating": 175
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssHoa": 5
+    }
+  },
+  {
+    "key": "ConstitutionHoaDiep_Epi",
+    "vi": "Thần Điệp Hỏa Thể",
+    "en": "Divine Layered Flame Body",
+    "rarity": "epic",
+    "element": "hoa",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Hỏa cộng hưởng với đại đạo, lửa chồng lớp bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "burn_on_hit_pct": 0.42,
+      "burn_stack_cap_bonus": 3,
+      "fire_res_shred": 0.175
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssHoa": 5
+    }
+  },
+  {
+    "key": "ConstitutionHoaPhung_Epi",
+    "vi": "Thần Phượng Hỏa Thể",
+    "en": "Divine Phoenix Flame Body",
+    "rarity": "epic",
+    "element": "hoa",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Hỏa cộng hưởng với đại đạo, lửa bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.14,
+      "burn_dmg_bonus": 0.28,
+      "burn_on_hit_pct": 0.245
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssHoa": 5
+    }
+  },
+  {
+    "key": "ConstitutionPhuongNietHoaThe",
+    "vi": "Phượng Niết Hỏa Thể",
+    "en": "Phoenix Nirvana Flame Body",
+    "rarity": "epic",
+    "element": "hoa",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Phượng hoàng tái sinh trong lửa — mỗi đòn đều bùng cháy thiêu rụi cả linh hồn.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.12,
+      "burn_on_hit_pct": 0.25,
+      "burn_stack_cap_bonus": 1,
+      "fire_res_shred": 0.18,
+      "burn_dmg_bonus": 0.2
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssHoa": 5
+    }
+  },
+  {
+    "key": "ConstitutionDeHoaPhanThien",
+    "vi": "Đế Hỏa Phần Thiên Thể",
+    "en": "Emperor Flame Sky-Burner Body",
+    "rarity": "legendary",
+    "element": "hoa",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Kế thừa ngọn lửa có thể đốt rụi cửu thiên — mọi DoT đều có thể bạo kích, đốt cháy chồng chất.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.15,
+      "burn_on_hit_pct": 0.35,
+      "burn_stack_cap_bonus": 3,
+      "burn_per_stack_pct_bonus": 0.01,
+      "burn_dmg_bonus": 0.3,
+      "bonus_dmg_vs_burn": 0.25,
+      "fire_res_shred": 0.2,
+      "dot_can_crit": true
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssHoa": 6
+    }
+  },
+  {
+    "key": "ConstitutionHoaDiem_Leg",
+    "vi": "Đế Liệt Diệm Thể",
+    "en": "Imperial Blazing Flame Body",
+    "rarity": "legendary",
+    "element": "hoa",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Hỏa — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.25,
+      "burn_on_hit_pct": 0.5,
+      "crit_rating": 250
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssHoa": 6
+    }
+  },
+  {
+    "key": "ConstitutionHoaDiep_Leg",
+    "vi": "Đế Điệp Hỏa Thể",
+    "en": "Imperial Layered Flame Body",
+    "rarity": "legendary",
+    "element": "hoa",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Hỏa — đỉnh cao của lộ trình lửa chồng lớp, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "burn_on_hit_pct": 0.6,
+      "burn_stack_cap_bonus": 5,
+      "fire_res_shred": 0.25
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssHoa": 6
+    }
+  },
+  {
+    "key": "ConstitutionHoaPhung_Leg",
+    "vi": "Đế Phượng Hỏa Thể",
+    "en": "Imperial Phoenix Flame Body",
+    "rarity": "legendary",
+    "element": "hoa",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Hỏa — đỉnh cao của lộ trình lửa, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.2,
+      "burn_dmg_bonus": 0.4,
+      "burn_on_hit_pct": 0.35
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssHoa": 6
+    }
+  }
+]

@@ -40,11 +40,23 @@ class Combatant:
     heal_pct: float = 0.0
     # Cooldown reduction multiplier (e.g. 0.15 → CD * 0.85)
     cooldown_reduce: float = 0.0
+    # Fractional CDR carry. Each ``set_cooldown`` accumulates the fractional
+    # turn savings (``turns * cooldown_reduce``) here and only refunds whole
+    # turns when the accumulator crosses 1.0. Keeps savings linear over time
+    # — a 12% CDR truly saves ~12% of total cooldown turns instead of being
+    # gated by integer-truncation step thresholds. Persists for the fight.
+    cdr_credit: float = 0.0
     # On-hit proc chances (from threshold bonuses)
     burn_on_hit_pct: float = 0.0
     slow_on_hit_pct: float = 0.0
     paralysis_on_crit: bool = False
     freeze_on_skill: bool = False
+    # Explicit chance override for the freeze proc (cast-trigger). When > 0
+    # this takes precedence over the legacy ``freeze_on_skill: True`` flag's
+    # hardcoded 15%. Mirror proc on reflect uses the same value scaled by
+    # ``_FREEZE_MIRROR_BOOST`` (in procs.py) to preserve the legacy 0.15→0.25
+    # relationship for legacy bool-flag combatants.
+    freeze_on_skill_chance: float = 0.0
     poison_immunity: bool = False
     # Flat chance (0.0–1.0) to resist any incoming debuff or CC proc.
     # e.g. 0.20 → 20% of debuffs that would land are blocked.
@@ -397,7 +409,22 @@ class Combatant:
         return self.cooldowns.get(skill_key, 0) > 0
 
     def set_cooldown(self, skill_key: str, turns: int) -> None:
-        effective = max(1, int(turns * (1.0 - self.cooldown_reduce)))
+        """Set ``skill_key``'s cooldown, applying CDR via fractional accumulator.
+
+        Each call adds ``turns * cooldown_reduce`` to ``cdr_credit`` and
+        refunds whole turns once accumulated. So 12% CDR on 8-CD skills
+        saves ~0.96 turn each cast — accumulating to a full +1 turn refund
+        on the 2nd cast (then +1 every cast thereafter), vs. the old
+        truncation behavior that arbitrarily refunded 1 turn for any
+        non-zero CDR.
+        """
+        if self.cooldown_reduce > 0:
+            self.cdr_credit += turns * self.cooldown_reduce
+            refund = int(self.cdr_credit)
+            self.cdr_credit -= refund
+            effective = max(1, turns - refund)
+        else:
+            effective = turns
         self.cooldowns[skill_key] = effective
 
 

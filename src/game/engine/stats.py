@@ -30,6 +30,11 @@ class AttackStats:
     final_dmg_bonus: float = 0.0
     atk: int = 0    # physical attack power (scales physical skills)
     matk: int = 0   # magic attack power   (scales magical skills)
+    # Skip the crit roll and force a guaranteed crit. Set when the target
+    # has a debuff that makes them helpless — currently only Đông Băng
+    # (freeze): the next skill landing on a frozen enemy auto-crits and
+    # the freeze is consumed by the hit.
+    force_crit: bool = False
 
 
 @dataclass(frozen=True)

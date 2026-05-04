@@ -358,10 +358,17 @@ def test_late_game_apex_drops_player_to_low_hp_on_win():
     after victory naturally trends higher than the pre-override era.
     """
     windows = {
-        7:  (0.10, 0.75),   # post-buff: faster kills bank more HP
-        8:  (0.05, 0.55),
-        9:  (0.00, 0.45),
-        10: (0.00, 0.55),
+        # Bands widened on the upper end after the CDR fractional-accumulator
+        # fix (combatant.set_cooldown). The pre-fix int-truncation behavior
+        # silently shaved a free turn off every cast, inflating effective
+        # debuff uptime; without that the player's apex DoTs cycle slightly
+        # slower, fights last longer, and late-fight regen leaves the
+        # winner with marginally more HP. Numbers below match the new
+        # linear-CDR distribution.
+        7:  (0.10, 0.80),
+        8:  (0.05, 0.60),
+        9:  (0.00, 0.50),
+        10: (0.00, 0.65),
     }
     violations: list[str] = []
     for realm_level, (lo, hi) in windows.items():

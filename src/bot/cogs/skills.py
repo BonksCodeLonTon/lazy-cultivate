@@ -56,6 +56,67 @@ _SKILL_TYPE_BUTTONS = [
 _NUMBER_EMOJI = ["①", "②", "③", "④", "⑤", "⑥"]
 
 
+async def _player_skill_state(discord_id: int) -> dict:
+    """Snapshot what the browser needs to highlight rows + paint Học buttons.
+
+    Returns ``{owned_scrolls, learned, max_realm_idx, linh_can}`` so the same
+    data carries through page/filter changes without re-querying every render.
+    """
+    async with get_session() as session:
+        prepo = PlayerRepository(session)
+        player = await prepo.get_by_discord_id(discord_id)
+        if player is None:
+            return {
+                "owned_scrolls": set(), "learned": set(),
+                "max_realm_idx": 0, "linh_can": [],
+            }
+        learned = {s.skill_key for s in (player.skills or [])}
+        max_realm_idx = max(
+            player.body_realm or 0,
+            player.qi_realm or 0,
+            player.formation_realm or 0,
+        )
+        linh_can = parse_linh_can(player.linh_can or "")
+        irepo = InventoryRepository(session)
+        all_inv = await irepo.get_all(player.id)
+    owned: set[str] = set()
+    prefix = "Scroll_"
+    for inv in all_inv:
+        if inv.item_key.startswith(prefix) and inv.quantity > 0:
+            owned.add(inv.item_key[len(prefix):])
+    return {
+        "owned_scrolls": owned,
+        "learned": learned,
+        "max_realm_idx": max_realm_idx,
+        "linh_can": linh_can,
+    }
+
+
+def _learn_status(skill: dict, state: dict) -> str:
+    """One-letter status for the row prefix.
+
+    ``✨`` ready (scroll + realm + element fits) | ``📜`` scroll only (gated)
+    | ``✓`` learned | ``""`` no scroll.
+    """
+    key = skill["key"]
+    if key in state["learned"]:
+        return "✓"
+    if key not in state["owned_scrolls"]:
+        return ""
+    # Has scroll — check if realm + Linh Căn make it learnable right now.
+    skill_realm = skill.get("realm", 1)
+    if state["max_realm_idx"] + 1 < skill_realm:
+        return "📜"
+    skill_elem = skill.get("element")
+    if (
+        skill_elem is not None
+        and skill.get("category") != "formation"
+        and skill_elem not in (state["linh_can"] or [])
+    ):
+        return "📜"
+    return "✨"
+
+
 # ── Human labels for the stat_bonus fields used by EffectMeta ────────────────
 # Percent-style stats (signed %) vs. flat-rating stats (signed integer).
 _PCT_STATS: frozenset[str] = frozenset({
@@ -183,6 +244,7 @@ def _build_skilllist(
     page: int = 0,
     back_fn=None,
     linh_can: list[str] | None = None,
+    state: dict | None = None,
 ) -> tuple[discord.Embed, "SkillListView"]:
     skills = filtered_skills(skill_type, element, linh_can)
     total = len(skills)
@@ -197,6 +259,10 @@ def _build_skilllist(
     if element:
         title += f" [{_ELEM_EMOJI.get(element, element)}]"
 
+    # Owned-scroll / learned snapshot for row badges + Học button styling.
+    # Falls back to an empty state so the cog still renders if state load fails.
+    state = state or {"owned_scrolls": set(), "learned": set(), "max_realm_idx": 0, "linh_can": linh_can or []}
+
     if not page_skills:
         embed = base_embed(title, "Không tìm thấy kỹ năng phù hợp với Linh Căn của bạn.", color=0x9B59B6)
     else:
@@ -209,15 +275,18 @@ def _build_skilllist(
             cd = s.get("cooldown", 1)
             effects = _format_skill_effects(s.get("effects", []))
             realm = s.get("realm", 1)
+            badge = _learn_status(s, state)
+            badge_tag = f"{badge} " if badge else ""
             lines.append(
-                f"{num} {t_e}{el_tag} **{s['vi']}** `{s['key']}`\n"
+                f"{num} {badge_tag}{t_e}{el_tag} **{s['vi']}** `{s['key']}`\n"
                 f"  Cảnh Giới: **{realm}** | MP: **{s.get('mp_cost', 0)}** | DMG: **{s.get('base_dmg', 0)}** | "
                 f"CD: **{cd}t**\n"
                 f"  {effects}"
             )
         embed = base_embed(title, "\n\n".join(lines), color=0x9B59B6)
 
-    embed.set_footer(text=f"Trang {page + 1}/{total_pages} • {total} kỹ năng • Nhấn ① ② … để học")
+    legend = "✨ sẵn sàng • 📜 có ngọc giản (chưa đủ điều kiện) • ✓ đã học"
+    embed.set_footer(text=f"Trang {page + 1}/{total_pages} • {total} kỹ năng • {legend}")
     view = SkillListView(
         discord_id=discord_id,
         skill_type=skill_type,
@@ -227,6 +296,7 @@ def _build_skilllist(
         page_skills=page_skills,
         back_fn=back_fn,
         linh_can=linh_can,
+        state=state,
     )
     return embed, view
 
@@ -257,6 +327,7 @@ class SkillListView(discord.ui.View):
         page_skills: list[dict] | None = None,
         back_fn=None,
         linh_can: list[str] | None = None,
+        state: dict | None = None,
     ) -> None:
         super().__init__(timeout=180)
         self._discord_id = discord_id
@@ -266,6 +337,10 @@ class SkillListView(discord.ui.View):
         self._total_pages = total_pages
         self._back_fn = back_fn
         self._linh_can = linh_can
+        self._state = state or {
+            "owned_scrolls": set(), "learned": set(),
+            "max_realm_idx": 0, "linh_can": linh_can or [],
+        }
 
         for typ, label, style in _SKILL_TYPE_BUTTONS:
             active_style = discord.ButtonStyle.primary if typ == skill_type else style
@@ -315,10 +390,29 @@ class SkillListView(discord.ui.View):
             back_btn.callback = self._back_cb
             self.add_item(back_btn)
 
+        # Paint each Học button by readiness — green for ready, blue for
+        # scroll-but-gated, gray for already-learned (also disabled), and
+        # default secondary when the player has no scroll yet.
         for i, s in enumerate(page_skills or []):
+            badge = _learn_status(s, self._state)
+            if badge == "✓":
+                style = discord.ButtonStyle.secondary
+                label = f"{_NUMBER_EMOJI[i]} ✓ Đã học"
+                disabled = True
+            elif badge == "✨":
+                style = discord.ButtonStyle.success
+                label = f"{_NUMBER_EMOJI[i]} ✨ Học"
+                disabled = False
+            elif badge == "📜":
+                style = discord.ButtonStyle.primary
+                label = f"{_NUMBER_EMOJI[i]} 📜 Học"
+                disabled = False
+            else:
+                style = discord.ButtonStyle.secondary
+                label = f"{_NUMBER_EMOJI[i]} Học"
+                disabled = False
             btn = discord.ui.Button(
-                label=f"{_NUMBER_EMOJI[i]} Học",
-                style=discord.ButtonStyle.success,
+                label=label, style=style, disabled=disabled,
                 row=3 + (i // 3),
             )
             btn.callback = self._make_learn_cb(s)
@@ -419,10 +513,14 @@ class SkillListView(discord.ui.View):
             snap_lc = self._linh_can
 
             async def back_to_list(ia: discord.Interaction) -> None:
+                # Refresh state so the row badges + Học button styling reflect
+                # the just-completed learn (scroll consumed, skill now "✓").
+                refreshed = await _player_skill_state(did)
                 emb, v = _build_skilllist(
                     discord_id=did, skill_type=snap_type,
                     element=snap_elem, page=snap_page,
                     back_fn=outer_back_fn, linh_can=snap_lc,
+                    state=refreshed,
                 )
                 await ia.edit_original_response(embed=emb, view=v)
 
@@ -529,6 +627,7 @@ class SkillListView(discord.ui.View):
                 page=0,
                 back_fn=self._back_fn,
                 linh_can=self._linh_can,
+                state=self._state,
             )
             await interaction.response.edit_message(embed=embed, view=view)
         return _cb
@@ -546,6 +645,7 @@ class SkillListView(discord.ui.View):
             page=0,
             back_fn=self._back_fn,
             linh_can=self._linh_can,
+            state=self._state,
         )
         await interaction.response.edit_message(embed=embed, view=view)
 
@@ -560,6 +660,7 @@ class SkillListView(discord.ui.View):
             page=self._page - 1,
             back_fn=self._back_fn,
             linh_can=self._linh_can,
+            state=self._state,
         )
         await interaction.response.edit_message(embed=embed, view=view)
 
@@ -574,6 +675,7 @@ class SkillListView(discord.ui.View):
             page=self._page + 1,
             back_fn=self._back_fn,
             linh_can=self._linh_can,
+            state=self._state,
         )
         await interaction.response.edit_message(embed=embed, view=view)
 
@@ -845,14 +947,19 @@ class SkillsCog(commands.Cog, name="Skills"):
 
     @app_commands.command(name="skilllist", description="Xem danh sách kỹ năng có thể học (Tàng Kinh Các)")
     async def skilllist(self, interaction: discord.Interaction) -> None:
-        async with get_session() as session:
-            prepo = PlayerRepository(session)
-            player = await prepo.get_by_discord_id(interaction.user.id)
-            if player is None:
-                await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
-                return
-            linh_can = parse_linh_can(player.linh_can or "")
-        embed, view = _build_skilllist(discord_id=interaction.user.id, linh_can=linh_can)
+        state = await _player_skill_state(interaction.user.id)
+        if not state["linh_can"] and not state["learned"] and not state["owned_scrolls"]:
+            # Empty state on every field → no character (snapshot guard).
+            async with get_session() as session:
+                prepo = PlayerRepository(session)
+                if await prepo.get_by_discord_id(interaction.user.id) is None:
+                    await interaction.response.send_message(
+                        embed=error_embed("Chưa có nhân vật."), ephemeral=True,
+                    )
+                    return
+        embed, view = _build_skilllist(
+            discord_id=interaction.user.id, linh_can=state["linh_can"], state=state,
+        )
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
     @app_commands.command(name="forget", description="Xoá kỹ năng khỏi slot trang bị")

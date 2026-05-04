@@ -50,7 +50,8 @@ def calculate_damage(
         atk=attacker.atk, matk=attacker.matk, dmg_scale=skill.dmg_scale,
     )
     dmg, is_crit = apply_critical(
-        raw, attacker.crit_rating, defender.crit_res_rating, attacker.crit_dmg_rating, rng
+        raw, attacker.crit_rating, defender.crit_res_rating, attacker.crit_dmg_rating, rng,
+        force_crit=attacker.force_crit,
     )
     # Physical defense — diminishing returns formula, capped at 75%, bypassed by magical/true
     dmg = apply_physical_defense(dmg, str(skill.attack_type), defender.def_stat, pen_pct)

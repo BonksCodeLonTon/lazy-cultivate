@@ -1,0 +1,437 @@
+[
+  {
+    "key": "ConstitutionThoCuong_Com",
+    "vi": "Cương Sơn Thể",
+    "en": "Iron Mountain Body",
+    "rarity": "common",
+    "element": "tho",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Thổ sơ khởi tụ trong thân, mọi thuộc tính phòng ngự đều được khơi dậy.",
+    "stat_bonuses": {
+      "hp_pct": 0.08,
+      "res_all": 30,
+      "final_dmg_reduce": 0.04
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssTho": 3
+    }
+  },
+  {
+    "key": "ConstitutionThoGiapThe",
+    "vi": "Thổ Giáp Thể",
+    "en": "Earth Armor Body",
+    "rarity": "common",
+    "element": "tho",
+    "roll_weight": 40,
+    "cost_merit": 0,
+    "passive_description_vi": "Thân thể kiên cố như đất dày, tự sinh hộ thuẫn qua mỗi lượt chiến đấu.",
+    "stat_bonuses": {
+      "hp_pct": 0.08,
+      "shield_regen_pct": 0.02,
+      "res_all": 20
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssTho": 3
+    }
+  },
+  {
+    "key": "ConstitutionThoHoang_Com",
+    "vi": "Hoàng Sa Thể",
+    "en": "Yellow Sand Body",
+    "rarity": "common",
+    "element": "tho",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Thổ sơ khởi tụ trong thân, mọi thuộc tính né tránh đều được khơi dậy.",
+    "stat_bonuses": {
+      "hp_pct": 0.06,
+      "shield_regen_pct": 0.018,
+      "evasion_rating": 50
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssTho": 3
+    }
+  },
+  {
+    "key": "ConstitutionThoTrach_Com",
+    "vi": "Trạch Thổ Thể",
+    "en": "Marshland Earth Body",
+    "rarity": "common",
+    "element": "tho",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Thổ sơ khởi tụ trong thân, mọi thuộc tính sinh lực đều được khơi dậy.",
+    "stat_bonuses": {
+      "hp_pct": 0.1,
+      "shield_regen_pct": 0.025,
+      "thorn_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssTho": 3
+    }
+  },
+  {
+    "key": "ConstitutionHauThoThe",
+    "vi": "Hậu Thổ Thể",
+    "en": "Earth-Mother Body",
+    "rarity": "uncommon",
+    "element": "tho",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Da thịt như đại địa hậu trầm, gánh chịu mọi sức nặng mà không hề lay chuyển.",
+    "stat_bonuses": {
+      "hp_pct": 0.12,
+      "shield_regen_pct": 0.03,
+      "res_all": 35,
+      "thorn_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssTho": 4
+    }
+  },
+  {
+    "key": "ConstitutionThoCuong_Unc",
+    "vi": "Hậu Cương Sơn Thể",
+    "en": "Greater Iron Mountain Body",
+    "rarity": "uncommon",
+    "element": "tho",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Thổ đã hậu nhập huyết mạch — sức mạnh phòng ngự vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "hp_pct": 0.128,
+      "res_all": 48,
+      "final_dmg_reduce": 0.064
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssTho": 4
+    }
+  },
+  {
+    "key": "ConstitutionThoHoang_Unc",
+    "vi": "Hậu Hoàng Sa Thể",
+    "en": "Greater Yellow Sand Body",
+    "rarity": "uncommon",
+    "element": "tho",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Thổ đã hậu nhập huyết mạch — sức mạnh né tránh vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "hp_pct": 0.096,
+      "shield_regen_pct": 0.029,
+      "evasion_rating": 80
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssTho": 4
+    }
+  },
+  {
+    "key": "ConstitutionThoTrach_Unc",
+    "vi": "Hậu Trạch Thổ Thể",
+    "en": "Greater Marshland Earth Body",
+    "rarity": "uncommon",
+    "element": "tho",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Thổ đã hậu nhập huyết mạch — sức mạnh sinh lực vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "hp_pct": 0.16,
+      "shield_regen_pct": 0.04,
+      "thorn_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssTho": 4
+    }
+  },
+  {
+    "key": "ConstitutionCuongThoThe",
+    "vi": "Cương Thổ Trọng Thân",
+    "en": "Iron Earth Heavy Body",
+    "rarity": "rare",
+    "element": "tho",
+    "roll_weight": 6,
+    "cost_merit": 15000,
+    "passive_description_vi": "Thân nặng như núi, đòn phản kích khiến kẻ địch tự gánh chịu sát thương.",
+    "stat_bonuses": {
+      "hp_pct": 0.15,
+      "shield_regen_pct": 0.04,
+      "thorn_pct": 0.1,
+      "res_all": 40,
+      "stun_on_hit_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssTho": 4
+    }
+  },
+  {
+    "key": "ConstitutionThoCuong_Rar",
+    "vi": "Linh Cương Sơn Thể",
+    "en": "Spirit Iron Mountain Body",
+    "rarity": "rare",
+    "element": "tho",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Thổ, phòng ngự mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "hp_pct": 0.192,
+      "res_all": 72,
+      "final_dmg_reduce": 0.096
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssTho": 4
+    }
+  },
+  {
+    "key": "ConstitutionThoHoang_Rar",
+    "vi": "Linh Hoàng Sa Thể",
+    "en": "Spirit Yellow Sand Body",
+    "rarity": "rare",
+    "element": "tho",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Thổ, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "hp_pct": 0.144,
+      "shield_regen_pct": 0.043,
+      "evasion_rating": 120
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssTho": 4
+    }
+  },
+  {
+    "key": "ConstitutionThoTrach_Rar",
+    "vi": "Linh Trạch Thổ Thể",
+    "en": "Spirit Marshland Earth Body",
+    "rarity": "rare",
+    "element": "tho",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Thổ, sinh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "hp_pct": 0.24,
+      "shield_regen_pct": 0.06,
+      "thorn_pct": 0.12
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssTho": 4
+    }
+  },
+  {
+    "key": "ConstitutionBanThachTranSonThe",
+    "vi": "Bàn Thạch Trấn Sơn Thể",
+    "en": "Mountain-Anchoring Stone Body",
+    "rarity": "epic",
+    "element": "tho",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thân tựa Bàn Thạch trấn núi non, mọi đòn dội ngược lại như va vào vách đá.",
+    "stat_bonuses": {
+      "hp_pct": 0.22,
+      "shield_regen_pct": 0.06,
+      "res_all": 80,
+      "thorn_pct": 0.15,
+      "shield_cap_pct_bonus": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssTho": 5
+    }
+  },
+  {
+    "key": "ConstitutionThoCuong_Epi",
+    "vi": "Thần Cương Sơn Thể",
+    "en": "Divine Iron Mountain Body",
+    "rarity": "epic",
+    "element": "tho",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Thổ cộng hưởng với đại đạo, phòng ngự bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "hp_pct": 0.28,
+      "res_all": 105,
+      "final_dmg_reduce": 0.14
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssTho": 5
+    }
+  },
+  {
+    "key": "ConstitutionThoHoang_Epi",
+    "vi": "Thần Hoàng Sa Thể",
+    "en": "Divine Yellow Sand Body",
+    "rarity": "epic",
+    "element": "tho",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Thổ cộng hưởng với đại đạo, né tránh bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "hp_pct": 0.21,
+      "shield_regen_pct": 0.063,
+      "evasion_rating": 175
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssTho": 5
+    }
+  },
+  {
+    "key": "ConstitutionThoTrach_Epi",
+    "vi": "Thần Trạch Thổ Thể",
+    "en": "Divine Marshland Earth Body",
+    "rarity": "epic",
+    "element": "tho",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Thổ cộng hưởng với đại đạo, sinh lực bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "hp_pct": 0.35,
+      "shield_regen_pct": 0.088,
+      "thorn_pct": 0.175
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssTho": 5
+    }
+  },
+  {
+    "key": "ConstitutionThienDiaCuong",
+    "vi": "Thiên Địa Trấn Cương Thể",
+    "en": "Heaven-Earth Suppressing Body",
+    "rarity": "legendary",
+    "element": "tho",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Thân như thiên địa trụ, hộ thuẫn càng dày đòn đánh càng mạnh; gai phản xuất phát từ khiên chứ không chỉ thân.",
+    "stat_bonuses": {
+      "hp_pct": 0.3,
+      "shield_regen_pct": 0.08,
+      "shield_cap_pct_bonus": 0.1,
+      "damage_bonus_from_shield_pct": 0.18,
+      "thorn_pct": 0.2,
+      "thorn_from_shield": true,
+      "stun_on_hit_pct": 0.1,
+      "res_all": 60
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssTho": 6
+    }
+  },
+  {
+    "key": "ConstitutionThoCuong_Leg",
+    "vi": "Đế Cương Sơn Thể",
+    "en": "Imperial Iron Mountain Body",
+    "rarity": "legendary",
+    "element": "tho",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Sơn nhạc trấn cương, máu thịt là vũ khí — sinh lực càng dồi dào, đòn đánh càng đè bẹp đối thủ; va chạm với khiên đá khiến chúng choáng váng.",
+    "stat_bonuses": {
+      "hp_pct": 0.4,
+      "res_all": 150,
+      "final_dmg_reduce": 0.2,
+      "damage_bonus_from_hp_pct": 0.12,
+      "thorn_from_shield": true,
+      "stun_on_hit_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssTho": 6
+    }
+  },
+  {
+    "key": "ConstitutionThoHoang_Leg",
+    "vi": "Đế Hoàng Sa Thể",
+    "en": "Imperial Yellow Sand Body",
+    "rarity": "legendary",
+    "element": "tho",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Hoàng sa trấn ngàn dặm, khiên cát dâng cao gấp bội — gai phản bật ngược từ tường cát, mỗi đòn vào khiên đều biến thành sát thương dội ra.",
+    "stat_bonuses": {
+      "hp_pct": 0.3,
+      "shield_regen_pct": 0.09,
+      "evasion_rating": 250,
+      "shield_cap_pct_bonus": 0.08,
+      "damage_bonus_from_shield_pct": 0.12,
+      "thorn_from_shield": true
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssTho": 6
+    }
+  },
+  {
+    "key": "ConstitutionThoTrach_Leg",
+    "vi": "Đế Trạch Thổ Thể",
+    "en": "Imperial Marshland Earth Body",
+    "rarity": "legendary",
+    "element": "tho",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Trạch địa nuốt vạn vật, đầm lầy ngầm rút lực kẻ địch — máu thịt và khiên cùng hóa gai phản, đối thủ bị choáng ngã trong bùn đất.",
+    "stat_bonuses": {
+      "hp_pct": 0.5,
+      "shield_regen_pct": 0.125,
+      "thorn_pct": 0.25,
+      "damage_bonus_from_hp_pct": 0.1,
+      "stun_on_hit_pct": 0.08,
+      "damage_bonus_from_shield_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssTho": 6
+    }
+  }
+]

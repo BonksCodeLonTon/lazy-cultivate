@@ -59,6 +59,8 @@ def build_attack_stats(
         for Lôi-element hits (lightning payload resonates with the shock)
       - ``crit_rating_vs_bleed`` / ``crit_dmg_vs_bleed`` vs bleeding targets
       - ``crit_rating_vs_marked`` / ``crit_dmg_vs_marked`` vs Phong-Ấn targets
+      - frozen target (DEBUFF_DONG_BANG): force_crit = True. The pipeline
+        skips the crit roll and the freeze is consumed by the hit's caller.
       - ``dmg_bonus_<elem>`` from effects only counts when the outgoing skill
         matches that element (e.g. BuffHoaThan boosts Hỏa skills only).
     """
@@ -85,12 +87,15 @@ def build_attack_stats(
     if target.hp_max_drained > 0:
         crit_rating += actor.crit_rating_vs_drained
 
+    force_crit = target.has_effect(EffectKey.DEBUFF_DONG_BANG)
+
     return AttackStats(
         crit_rating=crit_rating,
         crit_dmg_rating=crit_dmg_rating,
         final_dmg_bonus=final_dmg_bonus,
         atk=actor.atk,
         matk=actor.matk,
+        force_crit=force_crit,
     )
 
 

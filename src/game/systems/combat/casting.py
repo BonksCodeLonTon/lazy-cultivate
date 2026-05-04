@@ -123,6 +123,15 @@ def cast_skill(
             # On-hit: Linh Căn procs (consolidated in effects.py)
             lc_effects.on_hit(actor, target, dmg, result.is_crit, session.rng, session.log)
 
+            # Consume Đông Băng — a frozen target's first non-evaded hit
+            # auto-crits (force_crit set in build_attack_stats), then the
+            # freeze breaks. After all on-hit procs so any "vs frozen"
+            # readers still see the debuff during this hit.
+            if attack_stats.force_crit and target.has_effect(EffectKey.DEBUFF_DONG_BANG):
+                target.effects.pop(EffectKey.DEBUFF_DONG_BANG, None)
+                target.effect_overrides.pop(EffectKey.DEBUFF_DONG_BANG, None)
+                session.log.append(f"    🧊 Đông Băng vỡ tan trong đòn bạo kích!")
+
         # Apply skill debuff/CC effects to target
         apply_skill_effects(session, skill_data, actor, target, hit=not result.is_evaded)
 

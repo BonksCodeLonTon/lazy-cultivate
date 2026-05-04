@@ -96,6 +96,7 @@ class CombatStats:
     slow_on_hit_pct: float
     paralysis_on_crit: bool
     freeze_on_skill: bool
+    freeze_on_skill_chance: float
     poison_immunity: bool
     debuff_immune_pct: float
     # ── Fire-DoT build ────────────────────────────────────────────────────
@@ -380,6 +381,7 @@ def compute_combat_stats(
     slow_on_hit_pct   = bonuses.get("slow_on_hit_pct", 0.0)
     paralysis_on_crit = bonuses.get("paralysis_on_crit", False)
     freeze_on_skill   = bonuses.get("freeze_on_skill", False)
+    freeze_on_skill_chance = float(bonuses.get("freeze_on_skill_chance", 0.0))
     poison_immunity   = bonuses.get("poison_immunity", False)
     debuff_immune_pct = bonuses.get("debuff_immune_pct", 0.0)
 
@@ -502,6 +504,7 @@ def compute_combat_stats(
         slow_on_hit_pct   += equip_stats.get("slow_on_hit_pct", 0.0)
         paralysis_on_crit  = paralysis_on_crit or bool(equip_stats.get("paralysis_on_crit", False))
         freeze_on_skill    = freeze_on_skill   or bool(equip_stats.get("freeze_on_skill", False))
+        freeze_on_skill_chance += float(equip_stats.get("freeze_on_skill_chance", 0.0))
         poison_immunity    = poison_immunity   or bool(equip_stats.get("poison_immunity", False))
         debuff_immune_pct += equip_stats.get("debuff_immune_pct", 0.0)
         heal_pct          += equip_stats.get("heal_pct", 0.0)
@@ -546,6 +549,7 @@ def compute_combat_stats(
         slow_on_hit_pct=slow_on_hit_pct,
         paralysis_on_crit=paralysis_on_crit,
         freeze_on_skill=freeze_on_skill,
+        freeze_on_skill_chance=freeze_on_skill_chance,
         poison_immunity=poison_immunity,
         debuff_immune_pct=debuff_immune_pct,
         burn_stack_cap=DEFAULT_BURN_STACK_CAP + burn_stack_cap_bonus,

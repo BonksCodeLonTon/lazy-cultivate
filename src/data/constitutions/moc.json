@@ -1,0 +1,425 @@
+[
+  {
+    "key": "ConstitutionMocDiep_Com",
+    "vi": "Diệp Mộc Thể",
+    "en": "Leaf Wood Body",
+    "rarity": "common",
+    "element": "moc",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Mộc sơ khởi tụ trong thân, mọi thuộc tính linh lực đều được khơi dậy.",
+    "stat_bonuses": {
+      "mp_pct": 0.08,
+      "hp_regen_pct": 0.008,
+      "dot_leech_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssMoc": 3
+    }
+  },
+  {
+    "key": "ConstitutionMocLinhThe",
+    "vi": "Mộc Linh Tinh Thể",
+    "en": "Wood Spirit Body",
+    "rarity": "common",
+    "element": "moc",
+    "roll_weight": 40,
+    "cost_merit": 0,
+    "passive_description_vi": "Sinh cơ như cây đại thụ, máu huyết dồi dào và hồi phục không ngừng.",
+    "stat_bonuses": {
+      "hp_pct": 0.08,
+      "hp_regen_pct": 0.01,
+      "heal_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssMoc": 3
+    }
+  },
+  {
+    "key": "ConstitutionMocSinh_Com",
+    "vi": "Sinh Mộc Thể",
+    "en": "Living Wood Body",
+    "rarity": "common",
+    "element": "moc",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Mộc sơ khởi tụ trong thân, mọi thuộc tính sinh lực đều được khơi dậy.",
+    "stat_bonuses": {
+      "hp_pct": 0.1,
+      "hp_regen_pct": 0.012,
+      "heal_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssMoc": 3
+    }
+  },
+  {
+    "key": "ConstitutionMocTung_Com",
+    "vi": "Cổ Tùng Thể",
+    "en": "Ancient Pine Body",
+    "rarity": "common",
+    "element": "moc",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Mộc sơ khởi tụ trong thân, mọi thuộc tính phòng ngự đều được khơi dậy.",
+    "stat_bonuses": {
+      "hp_pct": 0.12,
+      "res_all": 25,
+      "hp_regen_pct": 0.008
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssMoc": 3
+    }
+  },
+  {
+    "key": "ConstitutionMocDiep_Unc",
+    "vi": "Hậu Diệp Mộc Thể",
+    "en": "Greater Leaf Wood Body",
+    "rarity": "uncommon",
+    "element": "moc",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Mộc đã hậu nhập huyết mạch — sức mạnh linh lực vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "mp_pct": 0.128,
+      "hp_regen_pct": 0.013,
+      "dot_leech_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssMoc": 4
+    }
+  },
+  {
+    "key": "ConstitutionMocSinh_Unc",
+    "vi": "Hậu Sinh Mộc Thể",
+    "en": "Greater Living Wood Body",
+    "rarity": "uncommon",
+    "element": "moc",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Mộc đã hậu nhập huyết mạch — sức mạnh sinh lực vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "hp_pct": 0.16,
+      "hp_regen_pct": 0.019,
+      "heal_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssMoc": 4
+    }
+  },
+  {
+    "key": "ConstitutionMocTung_Unc",
+    "vi": "Hậu Cổ Tùng Thể",
+    "en": "Greater Ancient Pine Body",
+    "rarity": "uncommon",
+    "element": "moc",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Mộc đã hậu nhập huyết mạch — sức mạnh phòng ngự vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "hp_pct": 0.192,
+      "res_all": 40,
+      "hp_regen_pct": 0.013
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssMoc": 4
+    }
+  },
+  {
+    "key": "ConstitutionThanhDangThe",
+    "vi": "Thanh Đằng Thể",
+    "en": "Verdant Vine Body",
+    "rarity": "uncommon",
+    "element": "moc",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Cây leo xanh quấn quanh kinh mạch, sinh khí dồi dào không ngừng tự hồi phục.",
+    "stat_bonuses": {
+      "hp_pct": 0.12,
+      "hp_regen_pct": 0.015,
+      "heal_pct": 0.07,
+      "dot_leech_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssMoc": 4
+    }
+  },
+  {
+    "key": "ConstitutionMocDiep_Rar",
+    "vi": "Linh Diệp Mộc Thể",
+    "en": "Spirit Leaf Wood Body",
+    "rarity": "rare",
+    "element": "moc",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Mộc, linh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "mp_pct": 0.192,
+      "hp_regen_pct": 0.019,
+      "dot_leech_pct": 0.12
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssMoc": 4
+    }
+  },
+  {
+    "key": "ConstitutionMocSinh_Rar",
+    "vi": "Linh Sinh Mộc Thể",
+    "en": "Spirit Living Wood Body",
+    "rarity": "rare",
+    "element": "moc",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Mộc, sinh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "hp_pct": 0.24,
+      "hp_regen_pct": 0.029,
+      "heal_pct": 0.12
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssMoc": 4
+    }
+  },
+  {
+    "key": "ConstitutionMocTung_Rar",
+    "vi": "Linh Cổ Tùng Thể",
+    "en": "Spirit Ancient Pine Body",
+    "rarity": "rare",
+    "element": "moc",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Mộc, phòng ngự mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "hp_pct": 0.288,
+      "res_all": 60,
+      "hp_regen_pct": 0.019
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssMoc": 4
+    }
+  },
+  {
+    "key": "ConstitutionThanhMocThe",
+    "vi": "Thanh Mộc Trường Xuân Thể",
+    "en": "Evergreen Wood Body",
+    "rarity": "rare",
+    "element": "moc",
+    "roll_weight": 6,
+    "cost_merit": 15000,
+    "passive_description_vi": "Thân mang xuân ý bất lão, hút sức sống từ độc tố và tự hồi phục mãnh liệt.",
+    "stat_bonuses": {
+      "hp_pct": 0.15,
+      "hp_regen_pct": 0.02,
+      "dot_leech_pct": 0.1,
+      "heal_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssMoc": 4
+    }
+  },
+  {
+    "key": "ConstitutionCoMocSinhLinhThe",
+    "vi": "Cổ Mộc Sinh Linh Thể",
+    "en": "Ancient Tree Spirit Body",
+    "rarity": "epic",
+    "element": "moc",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Cổ mộc ngàn năm chứa linh khí, máu thịt như nước nguồn không bao giờ cạn.",
+    "stat_bonuses": {
+      "hp_pct": 0.22,
+      "hp_regen_pct": 0.025,
+      "heal_pct": 0.15,
+      "dot_leech_pct": 0.12,
+      "damage_bonus_from_hp_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssMoc": 5
+    }
+  },
+  {
+    "key": "ConstitutionMocDiep_Epi",
+    "vi": "Thần Diệp Mộc Thể",
+    "en": "Divine Leaf Wood Body",
+    "rarity": "epic",
+    "element": "moc",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Mộc cộng hưởng với đại đạo, linh lực bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "mp_pct": 0.28,
+      "hp_regen_pct": 0.028,
+      "dot_leech_pct": 0.175
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssMoc": 5
+    }
+  },
+  {
+    "key": "ConstitutionMocSinh_Epi",
+    "vi": "Thần Sinh Mộc Thể",
+    "en": "Divine Living Wood Body",
+    "rarity": "epic",
+    "element": "moc",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Mộc cộng hưởng với đại đạo, sinh lực bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "hp_pct": 0.35,
+      "hp_regen_pct": 0.042,
+      "heal_pct": 0.175
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssMoc": 5
+    }
+  },
+  {
+    "key": "ConstitutionMocTung_Epi",
+    "vi": "Thần Cổ Tùng Thể",
+    "en": "Divine Ancient Pine Body",
+    "rarity": "epic",
+    "element": "moc",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Mộc cộng hưởng với đại đạo, phòng ngự bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "hp_pct": 0.42,
+      "res_all": 88,
+      "hp_regen_pct": 0.028
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssMoc": 5
+    }
+  },
+  {
+    "key": "ConstitutionHongMongMoc",
+    "vi": "Hồng Hoang Mộc Đế Thể",
+    "en": "Primordial Wood Emperor Body",
+    "rarity": "legendary",
+    "element": "moc",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Kế thừa huyết mạch Mộc Đế thượng cổ, sinh lực càng dày thì sát thương càng mãnh liệt.",
+    "stat_bonuses": {
+      "hp_pct": 0.3,
+      "hp_regen_pct": 0.03,
+      "damage_bonus_from_hp_pct": 0.15,
+      "dot_leech_pct": 0.2,
+      "moc_res_shred": 0.15,
+      "heal_can_crit": true
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssMoc": 6
+    }
+  },
+  {
+    "key": "ConstitutionMocDiep_Leg",
+    "vi": "Đế Diệp Mộc Thể",
+    "en": "Imperial Leaf Wood Body",
+    "rarity": "legendary",
+    "element": "moc",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Mộc — đỉnh cao của lộ trình linh lực, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "mp_pct": 0.4,
+      "hp_regen_pct": 0.04,
+      "dot_leech_pct": 0.25
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssMoc": 6
+    }
+  },
+  {
+    "key": "ConstitutionMocSinh_Leg",
+    "vi": "Đế Sinh Mộc Thể",
+    "en": "Imperial Living Wood Body",
+    "rarity": "legendary",
+    "element": "moc",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Mộc — đỉnh cao của lộ trình sinh lực, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "hp_pct": 0.5,
+      "hp_regen_pct": 0.06,
+      "heal_pct": 0.25
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssMoc": 6
+    }
+  },
+  {
+    "key": "ConstitutionMocTung_Leg",
+    "vi": "Đế Cổ Tùng Thể",
+    "en": "Imperial Ancient Pine Body",
+    "rarity": "legendary",
+    "element": "moc",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Mộc — đỉnh cao của lộ trình phòng ngự, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "hp_pct": 0.6,
+      "res_all": 125,
+      "hp_regen_pct": 0.04
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssMoc": 6
+    }
+  }
+]

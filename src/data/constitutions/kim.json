@@ -1,0 +1,431 @@
+[
+  {
+    "key": "ConstitutionKimCotThe",
+    "vi": "Kim Cốt Thể",
+    "en": "Metal Bone Body",
+    "rarity": "common",
+    "element": "kim",
+    "roll_weight": 40,
+    "cost_merit": 0,
+    "passive_description_vi": "Xương cốt rắn như kim loại, ra đòn bén như đao khắc, dễ gây chảy máu trên mục tiêu.",
+    "stat_bonuses": {
+      "hp_pct": 0.03,
+      "crit_rating": 60,
+      "bleed_on_hit_pct": 0.04
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssKim": 3
+    }
+  },
+  {
+    "key": "ConstitutionKimCuong_Com",
+    "vi": "Cương Kim Thể",
+    "en": "Hardened Gold Body",
+    "rarity": "common",
+    "element": "kim",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Kim sơ khởi tụ trong thân, mọi thuộc tính phòng ngự đều được khơi dậy.",
+    "stat_bonuses": {
+      "hp_pct": 0.06,
+      "res_all": 20,
+      "thorn_pct": 0.04,
+      "bleed_on_hit_pct": 0.04
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssKim": 3
+    }
+  },
+  {
+    "key": "ConstitutionKimSat_Com",
+    "vi": "Sát Kim Thể",
+    "en": "Slaying Gold Body",
+    "rarity": "common",
+    "element": "kim",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Kim sơ khởi tụ trong thân, mọi thuộc tính bạo kích đều được khơi dậy.",
+    "stat_bonuses": {
+      "crit_rating": 80,
+      "bleed_on_hit_pct": 0.05,
+      "armor_pen_pct": 0.02
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssKim": 3
+    }
+  },
+  {
+    "key": "ConstitutionKimTinh_Com",
+    "vi": "Tinh Kim Thể",
+    "en": "Essence Gold Body",
+    "rarity": "common",
+    "element": "kim",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Kim sơ khởi tụ trong thân, mọi thuộc tính bạo kích đều được khơi dậy.",
+    "stat_bonuses": {
+      "crit_rating": 60,
+      "crit_dmg_rating": 60,
+      "true_dmg_pct": 0.02
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssKim": 3
+    }
+  },
+  {
+    "key": "ConstitutionCuongKimThe",
+    "vi": "Cương Kim Thể",
+    "en": "Hardened Gold Body",
+    "rarity": "uncommon",
+    "element": "kim",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Cốt như cương kim, mỗi vết thương đều khó lành mau — kẻ địch chảy máu liên hồi.",
+    "stat_bonuses": {
+      "hp_pct": 0.06,
+      "crit_rating": 90,
+      "bleed_on_hit_pct": 0.06,
+      "true_dmg_pct": 0.02
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssKim": 4
+    }
+  },
+  {
+    "key": "ConstitutionKimCuong_Unc",
+    "vi": "Hậu Cương Kim Thể",
+    "en": "Greater Hardened Gold Body",
+    "rarity": "uncommon",
+    "element": "kim",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Kim đã hậu nhập huyết mạch — sức mạnh phòng ngự vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "hp_pct": 0.096,
+      "res_all": 32,
+      "thorn_pct": 0.064,
+      "bleed_on_hit_pct": 0.064
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssKim": 4
+    }
+  },
+  {
+    "key": "ConstitutionKimSat_Unc",
+    "vi": "Hậu Sát Kim Thể",
+    "en": "Greater Slaying Gold Body",
+    "rarity": "uncommon",
+    "element": "kim",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Kim đã hậu nhập huyết mạch — sức mạnh bạo kích vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "crit_rating": 128,
+      "bleed_on_hit_pct": 0.08,
+      "armor_pen_pct": 0.032
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssKim": 4
+    }
+  },
+  {
+    "key": "ConstitutionKimTinh_Unc",
+    "vi": "Hậu Tinh Kim Thể",
+    "en": "Greater Essence Gold Body",
+    "rarity": "uncommon",
+    "element": "kim",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Kim đã hậu nhập huyết mạch — sức mạnh bạo kích vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "crit_rating": 96,
+      "crit_dmg_rating": 96,
+      "true_dmg_pct": 0.032
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssKim": 4
+    }
+  },
+  {
+    "key": "ConstitutionBachLuyenKim",
+    "vi": "Bách Luyện Kim Thân",
+    "en": "Hundred-Forge Metal Body",
+    "rarity": "rare",
+    "element": "kim",
+    "roll_weight": 6,
+    "cost_merit": 15000,
+    "passive_description_vi": "Qua trăm lần tôi luyện, thân như thần binh, đòn đánh xuyên phá mọi phòng ngự.",
+    "stat_bonuses": {
+      "crit_rating": 150,
+      "bleed_on_hit_pct": 0.1,
+      "true_dmg_pct": 0.04,
+      "bleed_dmg_bonus": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssKim": 4
+    }
+  },
+  {
+    "key": "ConstitutionKimCuong_Rar",
+    "vi": "Linh Cương Kim Thể",
+    "en": "Spirit Hardened Gold Body",
+    "rarity": "rare",
+    "element": "kim",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Kim, phòng ngự mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "hp_pct": 0.144,
+      "res_all": 48,
+      "thorn_pct": 0.096,
+      "bleed_on_hit_pct": 0.096
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssKim": 4
+    }
+  },
+  {
+    "key": "ConstitutionKimSat_Rar",
+    "vi": "Linh Sát Kim Thể",
+    "en": "Spirit Slaying Gold Body",
+    "rarity": "rare",
+    "element": "kim",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Kim, bạo kích mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "crit_rating": 192,
+      "bleed_on_hit_pct": 0.12,
+      "armor_pen_pct": 0.048
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssKim": 4
+    }
+  },
+  {
+    "key": "ConstitutionKimTinh_Rar",
+    "vi": "Linh Tinh Kim Thể",
+    "en": "Spirit Essence Gold Body",
+    "rarity": "rare",
+    "element": "kim",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Kim, bạo kích mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "crit_rating": 144,
+      "crit_dmg_rating": 144,
+      "true_dmg_pct": 0.048
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssKim": 4
+    }
+  },
+  {
+    "key": "ConstitutionKimCuong_Epi",
+    "vi": "Thần Cương Kim Thể",
+    "en": "Divine Hardened Gold Body",
+    "rarity": "epic",
+    "element": "kim",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Kim cộng hưởng với đại đạo, phòng ngự bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "hp_pct": 0.21,
+      "res_all": 70,
+      "thorn_pct": 0.14,
+      "bleed_on_hit_pct": 0.14
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssKim": 5
+    }
+  },
+  {
+    "key": "ConstitutionKimSat_Epi",
+    "vi": "Thần Sát Kim Thể",
+    "en": "Divine Slaying Gold Body",
+    "rarity": "epic",
+    "element": "kim",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Kim cộng hưởng với đại đạo, bạo kích bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "crit_rating": 280,
+      "bleed_on_hit_pct": 0.175,
+      "armor_pen_pct": 0.07
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssKim": 5
+    }
+  },
+  {
+    "key": "ConstitutionKimTinh_Epi",
+    "vi": "Thần Tinh Kim Thể",
+    "en": "Divine Essence Gold Body",
+    "rarity": "epic",
+    "element": "kim",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Kim cộng hưởng với đại đạo, bạo kích bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "crit_rating": 210,
+      "crit_dmg_rating": 210,
+      "true_dmg_pct": 0.07
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssKim": 5
+    }
+  },
+  {
+    "key": "ConstitutionTinhKimSatThe",
+    "vi": "Tinh Kim Sát Thể",
+    "en": "Spirit-Gold Slayer Body",
+    "rarity": "epic",
+    "element": "kim",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Tinh kim chiết tinh, lưỡi sắc xuyên qua giáp dày — đòn bạo kích như xé thịt rách xương.",
+    "stat_bonuses": {
+      "crit_rating": 220,
+      "crit_dmg_rating": 200,
+      "bleed_on_hit_pct": 0.15,
+      "true_dmg_pct": 0.08,
+      "armor_pen_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssKim": 5
+    }
+  },
+  {
+    "key": "ConstitutionKimCuong_Leg",
+    "vi": "Đế Cương Kim Thể",
+    "en": "Imperial Hardened Gold Body",
+    "rarity": "legendary",
+    "element": "kim",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Kim — đỉnh cao của lộ trình phòng ngự, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "hp_pct": 0.3,
+      "res_all": 100,
+      "thorn_pct": 0.2,
+      "bleed_on_hit_pct": 0.2
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssKim": 6
+    }
+  },
+  {
+    "key": "ConstitutionKimSat_Leg",
+    "vi": "Đế Sát Kim Thể",
+    "en": "Imperial Slaying Gold Body",
+    "rarity": "legendary",
+    "element": "kim",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Kim — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "crit_rating": 400,
+      "bleed_on_hit_pct": 0.25,
+      "armor_pen_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssKim": 6
+    }
+  },
+  {
+    "key": "ConstitutionKimTinh_Leg",
+    "vi": "Đế Tinh Kim Thể",
+    "en": "Imperial Essence Gold Body",
+    "rarity": "legendary",
+    "element": "kim",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Kim — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "crit_rating": 300,
+      "crit_dmg_rating": 300,
+      "true_dmg_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssKim": 6
+    }
+  },
+  {
+    "key": "ConstitutionThaiCucKim",
+    "vi": "Thái Cực Kim Cang Thể",
+    "en": "Supreme Diamond Body",
+    "rarity": "legendary",
+    "element": "kim",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Thân hóa kim cang bất hoại, mỗi đòn bạo kích đều xé rách linh hồn kẻ địch đang chảy máu.",
+    "stat_bonuses": {
+      "crit_rating": 300,
+      "crit_dmg_rating": 150,
+      "bleed_on_hit_pct": 0.2,
+      "crit_rating_vs_bleed": 200,
+      "crit_dmg_vs_bleed": 200,
+      "true_dmg_pct": 0.12,
+      "bleed_dmg_bonus": 0.25
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssKim": 6
+    }
+  }
+]

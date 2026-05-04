@@ -1,0 +1,428 @@
+[
+  {
+    "key": "ConstitutionLoiBach_Com",
+    "vi": "Bạch Lôi Thể",
+    "en": "White Thunder Body",
+    "rarity": "common",
+    "element": "loi",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Lôi sơ khởi tụ trong thân, mọi thuộc tính né tránh đều được khơi dậy.",
+    "stat_bonuses": {
+      "spd_bonus": 6,
+      "evasion_rating": 80,
+      "shock_on_hit_pct": 0.07
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssLoi": 3
+    }
+  },
+  {
+    "key": "ConstitutionLoiCuong_Com",
+    "vi": "Cuồng Lôi Thể",
+    "en": "Frenzy Thunder Body",
+    "rarity": "common",
+    "element": "loi",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Lôi sơ khởi tụ trong thân, mọi thuộc tính bạo kích đều được khơi dậy.",
+    "stat_bonuses": {
+      "spd_bonus": 5,
+      "crit_rating": 80,
+      "shock_on_hit_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssLoi": 3
+    }
+  },
+  {
+    "key": "ConstitutionLoiLinhThe",
+    "vi": "Lôi Linh Thể",
+    "en": "Thunder Spirit Body",
+    "rarity": "common",
+    "element": "loi",
+    "roll_weight": 40,
+    "cost_merit": 0,
+    "passive_description_vi": "Thân mang thiên lôi, hành động mau và tích điện mỗi đòn đánh.",
+    "stat_bonuses": {
+      "spd_bonus": 4,
+      "crit_rating": 60,
+      "shock_on_hit_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssLoi": 3
+    }
+  },
+  {
+    "key": "ConstitutionLoiTu_Com",
+    "vi": "Tử Lôi Thể",
+    "en": "Purple Thunder Body",
+    "rarity": "common",
+    "element": "loi",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Lôi sơ khởi tụ trong thân, mọi thuộc tính sát thương bạo kích đều được khơi dậy.",
+    "stat_bonuses": {
+      "spd_bonus": 3,
+      "crit_dmg_rating": 80,
+      "shock_dmg_bonus": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssLoi": 3
+    }
+  },
+  {
+    "key": "ConstitutionHacLoiThe",
+    "vi": "Hắc Lôi Thể",
+    "en": "Black Lightning Body",
+    "rarity": "uncommon",
+    "element": "loi",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Hắc lôi ẩn dưới da, tốc độ tấn công và tê liệt kẻ địch đồng thời.",
+    "stat_bonuses": {
+      "spd_bonus": 6,
+      "crit_rating": 100,
+      "shock_on_hit_pct": 0.12,
+      "shock_dmg_bonus": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssLoi": 4
+    }
+  },
+  {
+    "key": "ConstitutionLoiBach_Unc",
+    "vi": "Hậu Bạch Lôi Thể",
+    "en": "Greater White Thunder Body",
+    "rarity": "uncommon",
+    "element": "loi",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Lôi đã hậu nhập huyết mạch — sức mạnh né tránh vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "spd_bonus": 10,
+      "evasion_rating": 128,
+      "shock_on_hit_pct": 0.112
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssLoi": 4
+    }
+  },
+  {
+    "key": "ConstitutionLoiCuong_Unc",
+    "vi": "Hậu Cuồng Lôi Thể",
+    "en": "Greater Frenzy Thunder Body",
+    "rarity": "uncommon",
+    "element": "loi",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Lôi đã hậu nhập huyết mạch — sức mạnh bạo kích vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "spd_bonus": 8,
+      "crit_rating": 128,
+      "shock_on_hit_pct": 0.16
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssLoi": 4
+    }
+  },
+  {
+    "key": "ConstitutionLoiTu_Unc",
+    "vi": "Hậu Tử Lôi Thể",
+    "en": "Greater Purple Thunder Body",
+    "rarity": "uncommon",
+    "element": "loi",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Lôi đã hậu nhập huyết mạch — sức mạnh sát thương bạo kích vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "spd_bonus": 5,
+      "crit_dmg_rating": 128,
+      "shock_dmg_bonus": 0.16
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssLoi": 4
+    }
+  },
+  {
+    "key": "ConstitutionLoiBach_Rar",
+    "vi": "Linh Bạch Lôi Thể",
+    "en": "Spirit White Thunder Body",
+    "rarity": "rare",
+    "element": "loi",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Lôi, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "spd_bonus": 14,
+      "evasion_rating": 192,
+      "shock_on_hit_pct": 0.168
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssLoi": 4
+    }
+  },
+  {
+    "key": "ConstitutionLoiCuong_Rar",
+    "vi": "Linh Cuồng Lôi Thể",
+    "en": "Spirit Frenzy Thunder Body",
+    "rarity": "rare",
+    "element": "loi",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Lôi, bạo kích mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "spd_bonus": 12,
+      "crit_rating": 192,
+      "shock_on_hit_pct": 0.24
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssLoi": 4
+    }
+  },
+  {
+    "key": "ConstitutionLoiTu_Rar",
+    "vi": "Linh Tử Lôi Thể",
+    "en": "Spirit Purple Thunder Body",
+    "rarity": "rare",
+    "element": "loi",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Lôi, sát thương bạo kích mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "spd_bonus": 7,
+      "crit_dmg_rating": 192,
+      "shock_dmg_bonus": 0.24
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssLoi": 4
+    }
+  },
+  {
+    "key": "ConstitutionTuLoiThe",
+    "vi": "Tử Lôi Cuồng Thân",
+    "en": "Purple Thunder Body",
+    "rarity": "rare",
+    "element": "loi",
+    "roll_weight": 6,
+    "cost_merit": 15000,
+    "passive_description_vi": "Tử lôi bạo phát, tốc độ thần tốc và cơn giông sét đánh liên hồi vào kẻ địch.",
+    "stat_bonuses": {
+      "spd_bonus": 8,
+      "crit_rating": 150,
+      "shock_on_hit_pct": 0.18,
+      "loi_res_shred": 0.1,
+      "final_dmg_bonus": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssLoi": 4
+    }
+  },
+  {
+    "key": "ConstitutionCuuTieuLoiDinhThe",
+    "vi": "Cửu Tiêu Lôi Đình Thể",
+    "en": "Nine-Heaven Thunderbolt Body",
+    "rarity": "epic",
+    "element": "loi",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Lôi đình từ Cửu Tiêu giáng xuống — tốc độ vượt âm thanh, sấm sét xé thịt kẻ thù.",
+    "stat_bonuses": {
+      "spd_bonus": 11,
+      "crit_rating": 200,
+      "shock_on_hit_pct": 0.26,
+      "shock_dmg_bonus": 0.22,
+      "first_strike_chance": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssLoi": 5
+    }
+  },
+  {
+    "key": "ConstitutionLoiBach_Epi",
+    "vi": "Thần Bạch Lôi Thể",
+    "en": "Divine White Thunder Body",
+    "rarity": "epic",
+    "element": "loi",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Lôi cộng hưởng với đại đạo, né tránh bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "spd_bonus": 21,
+      "evasion_rating": 280,
+      "shock_on_hit_pct": 0.245
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssLoi": 5
+    }
+  },
+  {
+    "key": "ConstitutionLoiCuong_Epi",
+    "vi": "Thần Cuồng Lôi Thể",
+    "en": "Divine Frenzy Thunder Body",
+    "rarity": "epic",
+    "element": "loi",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Lôi cộng hưởng với đại đạo, bạo kích bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "spd_bonus": 18,
+      "crit_rating": 280,
+      "shock_on_hit_pct": 0.35
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssLoi": 5
+    }
+  },
+  {
+    "key": "ConstitutionLoiTu_Epi",
+    "vi": "Thần Tử Lôi Thể",
+    "en": "Divine Purple Thunder Body",
+    "rarity": "epic",
+    "element": "loi",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Lôi cộng hưởng với đại đạo, sát thương bạo kích bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "spd_bonus": 10,
+      "crit_dmg_rating": 280,
+      "shock_dmg_bonus": 0.35
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssLoi": 5
+    }
+  },
+  {
+    "key": "ConstitutionLoiBach_Leg",
+    "vi": "Đế Bạch Lôi Thể",
+    "en": "Imperial White Thunder Body",
+    "rarity": "legendary",
+    "element": "loi",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình né tránh, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "spd_bonus": 30,
+      "evasion_rating": 400,
+      "shock_on_hit_pct": 0.35
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssLoi": 6
+    }
+  },
+  {
+    "key": "ConstitutionLoiCuong_Leg",
+    "vi": "Đế Cuồng Lôi Thể",
+    "en": "Imperial Frenzy Thunder Body",
+    "rarity": "legendary",
+    "element": "loi",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "spd_bonus": 25,
+      "crit_rating": 400,
+      "shock_on_hit_pct": 0.5
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssLoi": 6
+    }
+  },
+  {
+    "key": "ConstitutionLoiTu_Leg",
+    "vi": "Đế Tử Lôi Thể",
+    "en": "Imperial Purple Thunder Body",
+    "rarity": "legendary",
+    "element": "loi",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình sát thương bạo kích, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "spd_bonus": 15,
+      "crit_dmg_rating": 400,
+      "shock_dmg_bonus": 0.5
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssLoi": 6
+    }
+  },
+  {
+    "key": "ConstitutionThienLoiThan",
+    "vi": "Thiên Lôi Thần Thể",
+    "en": "Heavenly Thunder Divine Body",
+    "rarity": "legendary",
+    "element": "loi",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Thân là lôi, lôi là thân — mỗi đòn gây chồng Sốc Điện và có cơ hội cướp lượt hành động.",
+    "stat_bonuses": {
+      "spd_bonus": 15,
+      "crit_rating": 250,
+      "shock_on_hit_pct": 0.35,
+      "shock_stack_cap_bonus": 3,
+      "shock_per_stack_pct_bonus": 0.01,
+      "loi_res_shred": 0.2,
+      "turn_steal_pct": 0.12,
+      "final_dmg_bonus": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssLoi": 6
+    }
+  }
+]

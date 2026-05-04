@@ -1,0 +1,438 @@
+[
+  {
+    "key": "ConstitutionPhongLinhThe",
+    "vi": "Phong Linh Thể",
+    "en": "Wind Spirit Body",
+    "rarity": "common",
+    "element": "phong",
+    "roll_weight": 40,
+    "cost_merit": 0,
+    "passive_description_vi": "Thân pháp nhẹ như gió, né tránh linh hoạt và tấn công cực nhanh.",
+    "stat_bonuses": {
+      "evasion_rating": 80,
+      "spd_bonus": 3,
+      "mark_on_hit_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssPhong": 3
+    }
+  },
+  {
+    "key": "ConstitutionPhongLoc_Com",
+    "vi": "Lốc Xoáy Thể",
+    "en": "Cyclone Wind Body",
+    "rarity": "common",
+    "element": "phong",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Phong sơ khởi tụ trong thân, mọi thuộc tính né tránh đều được khơi dậy.",
+    "stat_bonuses": {
+      "evasion_rating": 70,
+      "spd_bonus": 5,
+      "shock_on_hit_pct": 0.06
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssPhong": 3
+    }
+  },
+  {
+    "key": "ConstitutionPhongPhieu_Com",
+    "vi": "Phiêu Phong Thể",
+    "en": "Drifting Wind Body",
+    "rarity": "common",
+    "element": "phong",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Phong sơ khởi tụ trong thân, mọi thuộc tính né tránh đều được khơi dậy.",
+    "stat_bonuses": {
+      "evasion_rating": 100,
+      "spd_bonus": 4,
+      "mark_on_hit_pct": 0.06
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssPhong": 3
+    }
+  },
+  {
+    "key": "ConstitutionPhongTinh_Com",
+    "vi": "Tinh Phong Thể",
+    "en": "Spirit Wind Body",
+    "rarity": "common",
+    "element": "phong",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Phong sơ khởi tụ trong thân, mọi thuộc tính né tránh đều được khơi dậy.",
+    "stat_bonuses": {
+      "evasion_rating": 80,
+      "cooldown_reduce": 0.05,
+      "mp_regen_pct": 0.012
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssPhong": 3
+    }
+  },
+  {
+    "key": "ConstitutionPhieuPhongThe",
+    "vi": "Phiêu Phong Thể",
+    "en": "Drifting Wind Body",
+    "rarity": "uncommon",
+    "element": "phong",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Thân pháp phiêu hốt như gió cuốn, đối thủ khó đoán hướng di chuyển.",
+    "stat_bonuses": {
+      "evasion_rating": 120,
+      "spd_bonus": 5,
+      "mark_on_hit_pct": 0.09,
+      "cooldown_reduce": 0.04
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssPhong": 4
+    }
+  },
+  {
+    "key": "ConstitutionPhongLoc_Unc",
+    "vi": "Hậu Lốc Xoáy Thể",
+    "en": "Greater Cyclone Wind Body",
+    "rarity": "uncommon",
+    "element": "phong",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Phong đã hậu nhập huyết mạch — sức mạnh né tránh vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "evasion_rating": 112,
+      "spd_bonus": 8,
+      "shock_on_hit_pct": 0.096
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssPhong": 4
+    }
+  },
+  {
+    "key": "ConstitutionPhongPhieu_Unc",
+    "vi": "Hậu Phiêu Phong Thể",
+    "en": "Greater Drifting Wind Body",
+    "rarity": "uncommon",
+    "element": "phong",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Phong đã hậu nhập huyết mạch — sức mạnh né tránh vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "evasion_rating": 160,
+      "spd_bonus": 6,
+      "mark_on_hit_pct": 0.096
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssPhong": 4
+    }
+  },
+  {
+    "key": "ConstitutionPhongTinh_Unc",
+    "vi": "Hậu Tinh Phong Thể",
+    "en": "Greater Spirit Wind Body",
+    "rarity": "uncommon",
+    "element": "phong",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Phong đã hậu nhập huyết mạch — sức mạnh né tránh vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "evasion_rating": 128,
+      "cooldown_reduce": 0.08,
+      "mp_regen_pct": 0.019
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssPhong": 4
+    }
+  },
+  {
+    "key": "ConstitutionPhongLoc_Rar",
+    "vi": "Linh Lốc Xoáy Thể",
+    "en": "Spirit Cyclone Wind Body",
+    "rarity": "rare",
+    "element": "phong",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Phong, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "evasion_rating": 168,
+      "spd_bonus": 12,
+      "shock_on_hit_pct": 0.144
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssPhong": 4
+    }
+  },
+  {
+    "key": "ConstitutionPhongPhieu_Rar",
+    "vi": "Linh Phiêu Phong Thể",
+    "en": "Spirit Drifting Wind Body",
+    "rarity": "rare",
+    "element": "phong",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Phong, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "evasion_rating": 240,
+      "spd_bonus": 10,
+      "mark_on_hit_pct": 0.144
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssPhong": 4
+    }
+  },
+  {
+    "key": "ConstitutionPhongTinh_Rar",
+    "vi": "Linh Tinh Phong Thể",
+    "en": "Spirit Spirit Wind Body",
+    "rarity": "rare",
+    "element": "phong",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Phong, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "evasion_rating": 192,
+      "cooldown_reduce": 0.12,
+      "mp_regen_pct": 0.029
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssPhong": 4
+    }
+  },
+  {
+    "key": "ConstitutionTieuPhongThe",
+    "vi": "Tiêu Phong Phù Dao Thể",
+    "en": "Soaring Wind Body",
+    "rarity": "rare",
+    "element": "phong",
+    "roll_weight": 6,
+    "cost_merit": 15000,
+    "passive_description_vi": "Thân tựa cánh diều giữa bão, né đánh và đóng Phong Ấn lên kẻ địch liên tục.",
+    "stat_bonuses": {
+      "evasion_rating": 180,
+      "spd_bonus": 7,
+      "mark_on_hit_pct": 0.15,
+      "crit_rating_vs_marked": 120,
+      "phong_res_shred": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssPhong": 4
+    }
+  },
+  {
+    "key": "ConstitutionLangTieuPhongVuThe",
+    "vi": "Lăng Tiêu Phong Vũ Thể",
+    "en": "Sky-Soaring Wind-Dance Body",
+    "rarity": "epic",
+    "element": "phong",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Phiêu vũ giữa mây trời, mỗi đòn đánh đều mang phong vũ áp đảo đối thủ.",
+    "stat_bonuses": {
+      "evasion_rating": 260,
+      "spd_bonus": 10,
+      "mark_on_hit_pct": 0.22,
+      "cooldown_reduce": 0.08,
+      "crit_rating": 120
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssPhong": 5
+    }
+  },
+  {
+    "key": "ConstitutionPhongLoc_Epi",
+    "vi": "Thần Lốc Xoáy Thể",
+    "en": "Divine Cyclone Wind Body",
+    "rarity": "epic",
+    "element": "phong",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Phong cộng hưởng với đại đạo, né tránh bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "evasion_rating": 245,
+      "spd_bonus": 18,
+      "shock_on_hit_pct": 0.21
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssPhong": 5
+    }
+  },
+  {
+    "key": "ConstitutionPhongPhieu_Epi",
+    "vi": "Thần Phiêu Phong Thể",
+    "en": "Divine Drifting Wind Body",
+    "rarity": "epic",
+    "element": "phong",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Phong cộng hưởng với đại đạo, né tránh bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "evasion_rating": 350,
+      "spd_bonus": 14,
+      "mark_on_hit_pct": 0.21
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssPhong": 5
+    }
+  },
+  {
+    "key": "ConstitutionPhongTinh_Epi",
+    "vi": "Thần Tinh Phong Thể",
+    "en": "Divine Spirit Wind Body",
+    "rarity": "epic",
+    "element": "phong",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Phong cộng hưởng với đại đạo, né tránh bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "evasion_rating": 280,
+      "cooldown_reduce": 0.175,
+      "mp_regen_pct": 0.042
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssPhong": 5
+    }
+  },
+  {
+    "key": "ConstitutionCuongPhongThan",
+    "vi": "Cuồng Phong Thiên Nhẫn Thể",
+    "en": "Storm Heaven-Blade Body",
+    "rarity": "legendary",
+    "element": "phong",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Cuồng phong hóa kiếm, né tránh càng cao thì sát thương càng tăng vượt trội, đánh chết đối thủ bị Phong Ấn.",
+    "stat_bonuses": {
+      "evasion_rating": 350,
+      "spd_bonus": 12,
+      "mark_on_hit_pct": 0.3,
+      "crit_rating_vs_marked": 300,
+      "crit_dmg_vs_marked": 300,
+      "damage_bonus_from_evasion_pct": 0.18,
+      "phong_res_shred": 0.18,
+      "final_dmg_bonus": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssPhong": 6
+    }
+  },
+  {
+    "key": "ConstitutionPhongLoc_Leg",
+    "vi": "Đế Lốc Xoáy Thể",
+    "en": "Imperial Cyclone Wind Body",
+    "rarity": "legendary",
+    "element": "phong",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Cuồng phong cuốn theo lôi điện, mỗi đòn đánh đều mang sấm sét — đối thủ tê liệt sâu hơn và phòng phong kháng tan rã.",
+    "stat_bonuses": {
+      "evasion_rating": 350,
+      "spd_bonus": 25,
+      "shock_on_hit_pct": 0.3,
+      "shock_stack_cap_bonus": 1,
+      "phong_res_shred": 0.12,
+      "damage_bonus_from_evasion_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssPhong": 6
+    }
+  },
+  {
+    "key": "ConstitutionPhongPhieu_Leg",
+    "vi": "Đế Phiêu Phong Thể",
+    "en": "Imperial Drifting Wind Body",
+    "rarity": "legendary",
+    "element": "phong",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Phiêu hốt vô hình, kẻ địch bị Phong-Ấn không thể chạy trốn — bạo kích lao đến từ mọi hướng, né càng cao thì sát thương càng kinh hoàng.",
+    "stat_bonuses": {
+      "evasion_rating": 500,
+      "spd_bonus": 20,
+      "mark_on_hit_pct": 0.3,
+      "crit_rating_vs_marked": 200,
+      "crit_dmg_vs_marked": 150,
+      "damage_bonus_from_evasion_pct": 0.15,
+      "phong_res_shred": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssPhong": 6
+    }
+  },
+  {
+    "key": "ConstitutionPhongTinh_Leg",
+    "vi": "Đế Tinh Phong Thể",
+    "en": "Imperial Spirit Wind Body",
+    "rarity": "legendary",
+    "element": "phong",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Linh phong dung hợp linh khí, mỗi nhịp né tránh lại tích tụ Linh Khí — cuồng phong càng dày, đòn cuối càng dữ dội.",
+    "stat_bonuses": {
+      "evasion_rating": 400,
+      "cooldown_reduce": 0.25,
+      "mp_regen_pct": 0.06,
+      "damage_bonus_from_evasion_pct": 0.12,
+      "phong_res_shred": 0.1,
+      "mana_stack_per_attack": 1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssPhong": 6
+    }
+  }
+]

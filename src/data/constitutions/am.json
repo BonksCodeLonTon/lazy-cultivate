@@ -1,0 +1,427 @@
+[
+  {
+    "key": "ConstitutionAmLinhThe",
+    "vi": "Ám Linh Thể",
+    "en": "Shadow Spirit Body",
+    "rarity": "common",
+    "element": "am",
+    "roll_weight": 40,
+    "cost_merit": 0,
+    "passive_description_vi": "Âm khí nhập thân, đòn đánh hút chút linh hồn kẻ địch.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.04,
+      "soul_drain_on_hit_pct": 0.08,
+      "debuff_immune_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssAm": 3
+    }
+  },
+  {
+    "key": "ConstitutionAmSuong_Com",
+    "vi": "Hắc Sương Thể",
+    "en": "Black Mist Body",
+    "rarity": "common",
+    "element": "am",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Âm sơ khởi tụ trong thân, mọi thuộc tính né tránh đều được khơi dậy.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.04,
+      "evasion_rating": 60,
+      "stat_steal_on_hit_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssAm": 3
+    }
+  },
+  {
+    "key": "ConstitutionAmTu_Com",
+    "vi": "Tử Vong Thể",
+    "en": "Death Wraith Body",
+    "rarity": "common",
+    "element": "am",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Âm sơ khởi tụ trong thân, mọi thuộc tính hồn phệ đều được khơi dậy.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.06,
+      "soul_drain_on_hit_pct": 0.08,
+      "true_dmg_pct": 0.02
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssAm": 3
+    }
+  },
+  {
+    "key": "ConstitutionAmU_Com",
+    "vi": "U Ám Thể",
+    "en": "Gloom Dark Body",
+    "rarity": "common",
+    "element": "am",
+    "roll_weight": 30,
+    "cost_merit": 0,
+    "passive_description_vi": "Linh khí Âm sơ khởi tụ trong thân, mọi thuộc tính hồn phệ đều được khơi dậy.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.05,
+      "soul_drain_on_hit_pct": 0.1,
+      "debuff_immune_pct": 0.06
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssAm": 3
+    }
+  },
+  {
+    "key": "ConstitutionAmSuong_Unc",
+    "vi": "Hậu Hắc Sương Thể",
+    "en": "Greater Black Mist Body",
+    "rarity": "uncommon",
+    "element": "am",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Âm đã hậu nhập huyết mạch — sức mạnh né tránh vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.064,
+      "evasion_rating": 96,
+      "stat_steal_on_hit_pct": 0.08
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssAm": 4
+    }
+  },
+  {
+    "key": "ConstitutionAmTu_Unc",
+    "vi": "Hậu Tử Vong Thể",
+    "en": "Greater Death Wraith Body",
+    "rarity": "uncommon",
+    "element": "am",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Âm đã hậu nhập huyết mạch — sức mạnh hồn phệ vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.096,
+      "soul_drain_on_hit_pct": 0.128,
+      "true_dmg_pct": 0.032
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssAm": 4
+    }
+  },
+  {
+    "key": "ConstitutionAmU_Unc",
+    "vi": "Hậu U Ám Thể",
+    "en": "Greater Gloom Dark Body",
+    "rarity": "uncommon",
+    "element": "am",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Linh khí Âm đã hậu nhập huyết mạch — sức mạnh hồn phệ vượt trội hơn thường nhân.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.08,
+      "soul_drain_on_hit_pct": 0.16,
+      "debuff_immune_pct": 0.096
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssAm": 4
+    }
+  },
+  {
+    "key": "ConstitutionHacAmThe",
+    "vi": "Hắc Ám Thể",
+    "en": "Black Dark Body",
+    "rarity": "uncommon",
+    "element": "am",
+    "roll_weight": 12,
+    "cost_merit": 7000,
+    "passive_description_vi": "Ám khí ẩn trong huyết mạch, mỗi đòn đánh đều rút linh khí đối thủ.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.06,
+      "soul_drain_on_hit_pct": 0.12,
+      "debuff_immune_pct": 0.08,
+      "stat_steal_on_hit_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "ElemEssAm": 4
+    }
+  },
+  {
+    "key": "ConstitutionAmSuong_Rar",
+    "vi": "Linh Hắc Sương Thể",
+    "en": "Spirit Black Mist Body",
+    "rarity": "rare",
+    "element": "am",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Âm, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.096,
+      "evasion_rating": 144,
+      "stat_steal_on_hit_pct": 0.12
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssAm": 4
+    }
+  },
+  {
+    "key": "ConstitutionAmTu_Rar",
+    "vi": "Linh Tử Vong Thể",
+    "en": "Spirit Death Wraith Body",
+    "rarity": "rare",
+    "element": "am",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Âm, hồn phệ mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.144,
+      "soul_drain_on_hit_pct": 0.192,
+      "true_dmg_pct": 0.048
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssAm": 4
+    }
+  },
+  {
+    "key": "ConstitutionAmU_Rar",
+    "vi": "Linh U Ám Thể",
+    "en": "Spirit Gloom Dark Body",
+    "rarity": "rare",
+    "element": "am",
+    "roll_weight": 5,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thân hóa linh thể Âm, hồn phệ mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.12,
+      "soul_drain_on_hit_pct": 0.24,
+      "debuff_immune_pct": 0.144
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 1,
+      "ElemEssAm": 4
+    }
+  },
+  {
+    "key": "ConstitutionHuyenAmThe",
+    "vi": "Huyền Âm Thi Thể",
+    "en": "Abyss Dark Corpse Body",
+    "rarity": "rare",
+    "element": "am",
+    "roll_weight": 6,
+    "cost_merit": 15000,
+    "passive_description_vi": "Thân hóa tử linh huyền âm, hút chỉ số và linh hồn mục tiêu mỗi đòn đánh.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.08,
+      "soul_drain_on_hit_pct": 0.18,
+      "stat_steal_on_hit_pct": 0.1,
+      "am_res_shred": 0.1,
+      "debuff_immune_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 1,
+      "ElemEssAm": 4
+    }
+  },
+  {
+    "key": "ConstitutionAmSuong_Epi",
+    "vi": "Thần Hắc Sương Thể",
+    "en": "Divine Black Mist Body",
+    "rarity": "epic",
+    "element": "am",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Âm cộng hưởng với đại đạo, né tránh bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.14,
+      "evasion_rating": 210,
+      "stat_steal_on_hit_pct": 0.175
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssAm": 5
+    }
+  },
+  {
+    "key": "ConstitutionAmTu_Epi",
+    "vi": "Thần Tử Vong Thể",
+    "en": "Divine Death Wraith Body",
+    "rarity": "epic",
+    "element": "am",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Âm cộng hưởng với đại đạo, hồn phệ bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.21,
+      "soul_drain_on_hit_pct": 0.28,
+      "true_dmg_pct": 0.07
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssAm": 5
+    }
+  },
+  {
+    "key": "ConstitutionAmU_Epi",
+    "vi": "Thần U Ám Thể",
+    "en": "Divine Gloom Dark Body",
+    "rarity": "epic",
+    "element": "am",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "Thần thể Âm cộng hưởng với đại đạo, hồn phệ bùng nổ đến cực hạn.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.175,
+      "soul_drain_on_hit_pct": 0.35,
+      "debuff_immune_pct": 0.21
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssAm": 5
+    }
+  },
+  {
+    "key": "ConstitutionCuuUPheHonThe",
+    "vi": "Cửu U Phệ Hồn Thể",
+    "en": "Nine-Abyss Soul-Devouring Body",
+    "rarity": "epic",
+    "element": "am",
+    "roll_weight": 1,
+    "cost_merit": 55000,
+    "passive_description_vi": "U minh khí từ chín tầng địa ngục, hấp thụ linh hồn và cướp đoạt sức mạnh kẻ thù.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.12,
+      "soul_drain_on_hit_pct": 0.25,
+      "stat_steal_on_hit_pct": 0.18,
+      "debuff_immune_pct": 0.15,
+      "true_dmg_pct": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "ElemEssAm": 5
+    }
+  },
+  {
+    "key": "ConstitutionAmSuong_Leg",
+    "vi": "Đế Hắc Sương Thể",
+    "en": "Imperial Black Mist Body",
+    "rarity": "legendary",
+    "element": "am",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Âm — đỉnh cao của lộ trình né tránh, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.2,
+      "evasion_rating": 300,
+      "stat_steal_on_hit_pct": 0.25
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssAm": 6
+    }
+  },
+  {
+    "key": "ConstitutionAmTu_Leg",
+    "vi": "Đế Tử Vong Thể",
+    "en": "Imperial Death Wraith Body",
+    "rarity": "legendary",
+    "element": "am",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Âm — đỉnh cao của lộ trình hồn phệ, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.3,
+      "soul_drain_on_hit_pct": 0.4,
+      "true_dmg_pct": 0.1
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssAm": 6
+    }
+  },
+  {
+    "key": "ConstitutionAmU_Leg",
+    "vi": "Đế U Ám Thể",
+    "en": "Imperial Gloom Dark Body",
+    "rarity": "legendary",
+    "element": "am",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Đế thể Âm — đỉnh cao của lộ trình hồn phệ, vạn cổ truyền tụng.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.25,
+      "soul_drain_on_hit_pct": 0.5,
+      "debuff_immune_pct": 0.3
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssAm": 6
+    }
+  },
+  {
+    "key": "ConstitutionUMinhAm",
+    "vi": "U Minh Phệ Hồn Thể",
+    "en": "Underworld Soul-Devouring Body",
+    "rarity": "legendary",
+    "element": "am",
+    "roll_weight": 0,
+    "cost_merit": 80000,
+    "passive_description_vi": "Thân thuộc u minh, mỗi lần chạm vào kẻ địch đều cướp đi chút sức mạnh vĩnh viễn.",
+    "stat_bonuses": {
+      "final_dmg_bonus": 0.15,
+      "soul_drain_on_hit_pct": 0.35,
+      "stat_steal_on_hit_pct": 0.25,
+      "am_res_shred": 0.2,
+      "crit_rating_vs_drained": 300,
+      "debuff_immune_pct": 0.2,
+      "poison_dmg_bonus": 0.2
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "ElemEssAm": 6
+    }
+  }
+]

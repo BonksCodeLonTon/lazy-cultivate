@@ -480,10 +480,10 @@
       ]
     },
     "passive_bonus": {
-      "paralysis_on_crit": true,
-      "freeze_on_skill": true,
-      "burn_on_hit_pct": 0.25
+      "burn_on_hit_pct": 0.25,
+      "burn_dmg_bonus": 0.20,
+      "burn_stack_cap_bonus": 5
     },
-    "description_vi": "Kiếm Thái Thượng, kích hoạt mọi proc."
+    "description_vi": "Kiếm Thái Thượng — đỉnh cao Hỏa đạo: lưỡi kiếm thiêu đốt vạn vật, mỗi tầng Thiêu Đốt nặng hơn và kéo dài hơn, kẻ địch bốc cháy chịu sát thương cực hạn."
   }
 ]

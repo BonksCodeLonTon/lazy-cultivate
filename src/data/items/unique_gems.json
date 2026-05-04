@@ -282,9 +282,9 @@
     "unique": true,
     "element": "thuy",
     "shop_price_merit": 0,
-    "description_vi": "Ngọc thủy lạnh thấu xương, chiêu thức mang hàn khí đóng băng vạn vật. Kẻ địch bị làm chậm và ngày càng run sợ.",
+    "description_vi": "Ngọc thủy lạnh thấu xương, chiêu thức mang hàn khí có 15% cơ hội đóng băng đối thủ — kẻ địch bị làm chậm và ngày càng run sợ.",
     "unique_bonus": {
-      "freeze_on_skill": true,
+      "freeze_on_skill_chance": 0.15,
       "slow_on_hit_pct": 0.2,
       "crit_rating_vs_marked": 60,
       "thuy_res_shred": 0.06
@@ -368,10 +368,10 @@
     "unique": true,
     "element": "thuy",
     "shop_price_merit": 0,
-    "description_vi": "Ngọc ngưng từ hơi thở của tuyết long cổ đại. Chiêu thức đóng băng địch nhân, đồng thời cắt đứt nguồn hồi phục.",
+    "description_vi": "Ngọc ngưng từ hơi thở của tuyết long cổ đại. Chiêu thức có 18% cơ hội đóng băng địch nhân, đồng thời cắt đứt nguồn hồi phục.",
     "unique_bonus": {
       "heal_reduce_on_hit_pct": 0.25,
-      "freeze_on_skill": true,
+      "freeze_on_skill_chance": 0.18,
       "slow_on_hit_pct": 0.15,
       "final_dmg_bonus": 0.05
     }

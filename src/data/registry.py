@@ -56,7 +56,7 @@ class GameRegistry:
         self.enemies = self._load_enemy_dir()
         self.tribulations = self._load_tribulation_dir()
         self.formations = self._load_keyed("formations.json")
-        self.constitutions = self._load_keyed("constitutions.json")
+        self.constitutions = self._load_constitution_dir()
         self.dungeons = self._load_keyed("dungeons.json")
         self.loot_tables = self._load_loot_table_dir()
         self.bases, self.affixes, self.uniques = self._load_equipment_defs()
@@ -199,6 +199,30 @@ class GameRegistry:
             log.error("GameRegistry: Missing enemies/ directory")
             return {}
         for path in sorted(base.rglob("*.json")):
+            data = json.loads(path.read_text(encoding="utf-8"))
+            for entry in data:
+                merged[entry["key"]] = entry
+        return merged
+
+    def _load_constitution_dir(self) -> dict[str, dict]:
+        """Merge all JSON files under src/data/constitutions/ into one dict.
+
+        Files are keyed by the entry's ``key`` field. Drop a new
+        ``<element>.json`` to add constitutions without touching the registry.
+        Falls back to the legacy single ``constitutions.json`` file if the
+        directory doesn't exist (lets external forks migrate at their pace).
+        """
+        merged: dict[str, dict] = {}
+        base = DATA_DIR / "constitutions"
+        if not base.exists():
+            legacy = DATA_DIR / "constitutions.json"
+            if legacy.exists():
+                for entry in json.loads(legacy.read_text(encoding="utf-8")):
+                    merged[entry["key"]] = entry
+            else:
+                log.error("GameRegistry: Missing constitutions/ directory")
+            return merged
+        for path in sorted(base.glob("*.json")):
             data = json.loads(path.read_text(encoding="utf-8"))
             for entry in data:
                 merged[entry["key"]] = entry
