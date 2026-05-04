@@ -4,6 +4,7 @@
     "vi": "Thiên Kim Kiếm Khí",
     "en": "Heaven Metal Sword Qi",
     "realm": 1,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -22,6 +23,7 @@
     "vi": "Địa Hộ Thân Kim Cương",
     "en": "Earth Metal Diamond Guard",
     "realm": 1,
+    "scroll_grade": 1,
     "category": "defense",
     "element": "kim",
     "attack_type": "physical",
@@ -42,6 +44,7 @@
     "vi": "Kim Nguyên Đoạn Kiếm",
     "en": "Metal Essence Severing Blade",
     "realm": 2,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -62,6 +65,7 @@
     "vi": "Thiên Kim Phá Vạn",
     "en": "Heaven Metal Myriad Breaker",
     "realm": 3,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -80,6 +84,7 @@
     "vi": "Huyền Kim Vạn Kiếm",
     "en": "Mystery Metal Myriad Swords",
     "realm": 4,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -107,6 +112,7 @@
     "vi": "Huyết Nhận",
     "en": "Blood Blade",
     "realm": 4,
+    "scroll_grade": 2,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -137,6 +143,7 @@
     "vi": "Huyền Kim Hoàng Thân",
     "en": "Mystery Gold Body",
     "realm": 4,
+    "scroll_grade": 2,
     "category": "defense",
     "element": "kim",
     "attack_type": "physical",
@@ -171,6 +178,7 @@
     "vi": "Thiên Kim Tuyệt Sát",
     "en": "Heaven Metal Absolute Slay",
     "realm": 5,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -185,10 +193,52 @@
     "formation_key": null
   },
   {
+    "key": "SkillKimDragonSlayer_R5",
+    "vi": "Trảm Long Kiếm Quyết",
+    "en": "Dragon-Slayer Sword Art",
+    "realm": 5,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 65,
+    "cooldown": 4,
+    "base_dmg": 200,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau",
+      "DebuffXeRach"
+    ],
+    "formation_key": null,
+    "description_vi": "Kiếm khí trảm long — phá giáp 22%, áp Chảy Máu và Xé Rách cùng lúc.",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.22
+        },
+        "duration": 4
+      },
+      "DebuffChayMau": {
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.12
+        },
+        "duration": 3
+      }
+    }
+  },
+  {
     "key": "SkillKimPierce_R5",
     "vi": "Vô Phòng Nhận",
     "en": "Defenseless Edge",
     "realm": 5,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -226,6 +276,7 @@
     "vi": "Chân Kim Phá Hồn Kiếm",
     "en": "True Metal Soul Cleave",
     "realm": 6,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -265,6 +316,7 @@
     "vi": "Kiếm Ý Tập Trung",
     "en": "Sword Intent Focus",
     "realm": 6,
+    "scroll_grade": 2,
     "category": "defense",
     "element": "kim",
     "attack_type": "physical",
@@ -300,6 +352,7 @@
     "vi": "Chân Kim Ý Cảnh",
     "en": "True Metal Intent Realm",
     "realm": 6,
+    "scroll_grade": 2,
     "category": "passive",
     "element": "kim",
     "attack_type": "physical",
@@ -334,6 +387,7 @@
     "vi": "Thần Kim Tuyệt Đạo",
     "en": "Divine Metal Absolute Dao",
     "realm": 7,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -377,10 +431,48 @@
     }
   },
   {
+    "key": "SkillKimVoidEdge_R7",
+    "vi": "Hư Không Kiếm Phong",
+    "en": "Void Sword Edge",
+    "realm": 7,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.2
+    },
+    "mp_cost": 85,
+    "cooldown": 4,
+    "base_dmg": 360,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffXeRach"
+    ],
+    "formation_key": null,
+    "description_vi": "Kiếm phong xé hư không — phá giáp sâu, gây Xé Rách lan rộng.",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.22
+        },
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.13
+        },
+        "duration": 3
+      }
+    }
+  },
+  {
     "key": "SkillKimExecute_R7",
     "vi": "Xuất Huyết Vô Ảnh",
     "en": "Bloodless Execution",
     "realm": 7,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -429,6 +521,7 @@
     "vi": "Thần Kim Vô Ngã Kiếm Tâm",
     "en": "Divine Metal Selfless Sword Heart",
     "realm": 7,
+    "scroll_grade": 2,
     "category": "defense",
     "element": "kim",
     "attack_type": "physical",
@@ -464,6 +557,7 @@
     "vi": "Thánh Kim Vô Thượng Kiếm",
     "en": "Saint Metal Supreme Sword",
     "realm": 8,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -511,6 +605,7 @@
     "vi": "Tiên Kim Vô Cực Kiếm Đạo",
     "en": "Immortal Metal Infinite Sword Dao",
     "realm": 9,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -565,6 +660,7 @@
     "vi": "Huyết Đạo Vô Song",
     "en": "Peerless Blood Dao",
     "realm": 9,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -604,6 +700,55 @@
       "DebuffCatDut": {
         "stat_bonus": {
           "hp_regen_pct": -0.51
+        },
+        "duration": 4
+      }
+    }
+  },
+  {
+    "key": "SkillKimEternal_R9",
+    "vi": "Vĩnh Hằng Kim Quang",
+    "en": "Eternal Golden Light",
+    "realm": 9,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.4
+    },
+    "mp_cost": 150,
+    "cooldown": 7,
+    "base_dmg": 700,
+    "true_dmg_pct": 0.07,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau",
+      "DebuffXeRach",
+      "DebuffBaoMon"
+    ],
+    "formation_key": null,
+    "description_vi": "Vĩnh hằng kim quang — chân thương 7% HP, kết hợp 4 debuff Kim đỉnh cao.",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.26
+        },
+        "duration": 4
+      },
+      "DebuffChayMau": {
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.135
+        },
+        "duration": 3
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
         },
         "duration": 4
       }

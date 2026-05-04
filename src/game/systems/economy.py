@@ -21,9 +21,6 @@ FIXED_SHOP_ITEMS: list[dict] = [
     {"item_key": "DanCureBleeds",   "grade": 1, "price": 400,    "currency": "merit", "stock": -1},
     {"item_key": "ChestHoang",      "grade": 1, "price": 2000,   "currency": "merit", "stock": -1},
     {"item_key": "ChestHuyen",      "grade": 2, "price": 8000,   "currency": "merit", "stock": -1},
-    {"item_key": "ScrollAtkHoang",  "grade": 1, "price": 1000,   "currency": "merit", "stock": -1},
-    {"item_key": "ScrollDefHoang",  "grade": 1, "price": 1000,   "currency": "merit", "stock": -1},
-    {"item_key": "ScrollSupHoang",  "grade": 1, "price": 1000,   "currency": "merit", "stock": -1},
     {"item_key": "ItemTayNghiep",   "grade": 3, "price": 80000,  "currency": "merit", "stock": -1},
     # Normal Đan Lô — gateway tool for Luyện Đan. Bought once per grade.
     {"item_key": "DanLoThuong_G1",  "grade": 1, "price": 3000,   "currency": "merit", "stock": -1},
@@ -52,9 +49,6 @@ ROTATING_POOL: list[dict] = [
     {"item_key": "DanBuffFDmg",    "grade": 3, "price": 5000,  "currency": "merit"},
     {"item_key": "DanBuffShield",  "grade": 3, "price": 6000,  "currency": "merit"},
     {"item_key": "ChestDia",       "grade": 3, "price": 30000, "currency": "merit"},
-    {"item_key": "ScrollAtkHuyen", "grade": 2, "price": 3000,  "currency": "merit"},
-    {"item_key": "ScrollDefHuyen", "grade": 2, "price": 3000,  "currency": "merit"},
-    {"item_key": "ScrollSupHuyen", "grade": 2, "price": 3000,  "currency": "merit"},
     {"item_key": "ItemPhaCanh",    "grade": 3, "price": 50000, "currency": "merit"},
     # Higher-tier Đan Lô — rotate in the shop; rarer sightings.
     {"item_key": "DanLoThuong_G3", "grade": 3, "price": 120000, "currency": "merit"},
@@ -105,6 +99,39 @@ def get_dark_market(seed: int | None = None) -> tuple[ShopSlot, list[ShopSlot]]:
     count = rng.randint(5, min(8, len(DARK_POOL)))
     rotating = [ShopSlot(**s) for s in rng.sample(DARK_POOL, count)]
     return fixed, rotating
+
+
+# ── Tàng Kinh Các — per-skill scroll shop (grade 1-2 only) ─────────────────
+# Built dynamically from synthesized scrolls in registry.items so the catalog
+# stays in lock-step with the player skill JSONs. Grade 3-4 scrolls never
+# appear here — those drop only from Bí Cảnh loot.
+
+def get_skill_scroll_shop() -> list[ShopSlot]:
+    from src.data.registry import registry
+    slots: list[ShopSlot] = []
+    for item in registry.items.values():
+        if item.get("type") != "scroll":
+            continue
+        if not item.get("taught_skill"):
+            continue
+        grade = int(item.get("grade", 0))
+        if grade not in (1, 2):
+            continue
+        slots.append(ShopSlot(
+            item_key=item["key"],
+            grade=grade,
+            price=int(item.get("shop_price_merit", 0)),
+            currency="merit",
+            stock=-1,
+        ))
+    # Stable sort: grade asc, then by skill realm asc, then key alphabetical.
+    def sort_key(s: ShopSlot) -> tuple:
+        skill_key = s.item_key.removeprefix("Scroll_")
+        skill = registry.get_skill(skill_key)
+        realm = skill.get("realm", 0) if skill else 0
+        return (s.grade, realm, s.item_key)
+    slots.sort(key=sort_key)
+    return slots
 
 
 @dataclass

@@ -9,13 +9,12 @@ from discord.ext import commands
 
 from src.db.connection import get_session
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
-from src.game.constants.realms import BODY_REALMS, QI_REALMS, FORMATION_REALMS, realm_label
 from src.game.systems.cultivation import can_breakthrough
-from src.game.systems.character_stats import compute_combat_stats
-from src.game.engine.equipment import compute_equipment_stats
+from src.game.systems.cultivation_service import apply_offline_ticks
+from src.game.systems.dungeon import best_axis_realm, compute_realm_total
+from src.game.systems.status import build_status_snapshot
 from src.utils.embed_builder import character_embed, error_embed
 from src.bot.cogs.cultivation import (
-    _apply_ticks_to_player,
     _cultivate_embed,
     _breakthrough_overview_embed,
     CultivateView,
@@ -26,85 +25,9 @@ log = logging.getLogger(__name__)
 
 
 def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
-    from src.game.constants.linh_can import LINH_CAN_DATA, parse_linh_can
+    from src.game.constants.linh_can import LINH_CAN_DATA
 
-    char = _player_to_model(player)
-    from src.game.systems.character_stats import active_formation_gem_keys, active_formation_gem_map
-    gem_keys = active_formation_gem_keys(player)
-    gem_map = active_formation_gem_map(player)
-    gem_count = len(gem_keys)
-
-    linh_can_list = parse_linh_can(player.linh_can or "")
-
-    equipped_instances = [i for i in (player.item_instances or []) if i.location == "equipped"]
-    equip_stats = compute_equipment_stats(equipped_instances)
-
-    cs = compute_combat_stats(
-        char, gem_count=gem_count, equip_stats=equip_stats,
-        gem_keys=gem_keys, gem_keys_by_formation=gem_map,
-    )
-
-    from src.data.registry import registry as gr
-    from src.game.systems.the_chat import get_constitutions as _get_consts
-    from src.game.systems.cultivation import get_active_formations
-    equipped_const_keys = _get_consts(player.constitution_type)
-    const_names = [
-        (gr.get_constitution(k) or {}).get("vi", k) for k in equipped_const_keys
-    ]
-    active_formation_keys = get_active_formations(player.active_formation)
-    active_formation_names = [
-        (gr.get_formation(k) or {}).get("vi", k) for k in active_formation_keys
-    ]
-    form_data = gr.get_formation(active_formation_keys[0]) if active_formation_keys else None
-
-    # Equipped items: slot → display_name
-    equipped_by_slot: dict[str, str] = {
-        inst.slot: inst.display_name
-        for inst in equipped_instances
-    }
-
-    stats = {
-        "hp_current": player.hp_current,
-        "hp_max":     cs.hp_max,
-        "mp_current": player.mp_current,
-        "mp_max":     cs.mp_max,
-        "spd":        cs.spd,
-        "body_realm":      player.body_realm,
-        "body_level":      player.body_level,
-        "body_xp":         player.body_xp,
-        "qi_realm":        player.qi_realm,
-        "qi_level":        player.qi_level,
-        "qi_xp":           player.qi_xp,
-        "formation_realm": player.formation_realm,
-        "formation_level": player.formation_level,
-        "formation_xp":    player.formation_xp,
-        "active_axis":     player.active_axis,
-        "body_realm_label":      realm_label("body",      player.body_realm,      player.body_xp),
-        "qi_realm_label":        realm_label("qi",        player.qi_realm,        player.qi_xp),
-        "formation_realm_label": realm_label("formation", player.formation_realm, player.formation_xp),
-        "merit":             player.merit,
-        "karma_accum":       player.karma_accum,
-        "primordial_stones": player.primordial_stones,
-        "constitution":      " · ".join(const_names) if const_names else player.constitution_type,
-        "active_formation":  " · ".join(active_formation_names) if active_formation_names else None,
-        "gem_count":         gem_count,
-        "mp_reserved":       cs.mp_reserved,
-        "mp_reserve_pct":    cs.mp_reserve_pct,
-        # Combat stats (already merged with equipment)
-        "atk":             cs.atk,
-        "matk":            cs.matk,
-        "def_stat":        cs.def_stat,
-        "crit_rating":     cs.crit_rating,
-        "crit_dmg_rating": cs.crit_dmg_rating,
-        "evasion_rating":  cs.evasion_rating,
-        "crit_res_rating": cs.crit_res_rating,
-        "final_dmg_bonus": cs.final_dmg_bonus,
-        # Elemental resistances (only pass non-zero entries)
-        "resistances": {k: v for k, v in cs.resistances.items() if v > 0.0},
-        # Equipped gear by slot
-        "equipped_by_slot": equipped_by_slot,
-    }
-
+    stats, linh_can_list = build_status_snapshot(player)
     embed = character_embed(player.name, stats, avatar_url=avatar_url)
 
     if linh_can_list:
@@ -176,7 +99,7 @@ class StatusView(discord.ui.View):
                 await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                 return
             active = player.active_axis or "qi"
-            result = await _apply_ticks_to_player(player, repo, active)
+            result = await apply_offline_ticks(player, repo, active)
 
         embed = _cultivate_embed(active, result)
         view = CultivateView(self._discord_id, active, back_fn=_show_status)
@@ -246,14 +169,8 @@ class StatusView(discord.ui.View):
                 return
             # Dungeons gate by the player's STRONGEST axis — Thể/Khí/Trận
             # Tu alike qualify once any one axis reaches the dungeon's realm.
-            player_best_realm = max(
-                player.body_realm, player.qi_realm, player.formation_realm,
-            )
-            player_realm_total = (
-                player.body_realm * 9 + player.body_level
-                + player.qi_realm * 9 + player.qi_level
-                + player.formation_realm * 9 + player.formation_level
-            ) // 3
+            player_best_realm = best_axis_realm(player)
+            player_realm_total = compute_realm_total(player)
 
         from src.bot.cogs.dungeon import DungeonTypeSelectView, _dungeon_type_embed
         embed = _dungeon_type_embed()

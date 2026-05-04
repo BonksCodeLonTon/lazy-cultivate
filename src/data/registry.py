@@ -52,6 +52,7 @@ class GameRegistry:
     def load(self) -> None:
         self.items = self._load_items()
         self.skills = self._load_skills()
+        self._synthesize_skill_scrolls()
         self.enemies = self._load_enemy_dir()
         self.tribulations = self._load_tribulation_dir()
         self.formations = self._load_keyed("formations.json")
@@ -63,6 +64,57 @@ class GameRegistry:
         self.world_bosses = self._load_keyed("world_bosses.json")
         self.pill_recipes = self._load_pill_recipes()
         self._loaded = True
+
+    # ── Per-skill scroll synthesis ───────────────────────────────────────────
+    # One Scroll_<SkillKey> item per learnable player skill, generated at load
+    # time so /shop, /inventory, and the learn flow can treat them like any
+    # other registry item. Skips Enemy* and TheChat_* skills (NPC / constitution
+    # only — never learnable by scroll). Existing entries in scrolls.json win
+    # so designers can override pricing or copy on a per-skill basis.
+    #
+    # ``scroll_grade`` reflects skill *power tier*, not realm. A realm-1 skill
+    # may be grade 4 (rare, drop-only) and a realm-9 skill may be grade 1
+    # (basic, market-buyable). Grade gates *availability* (1-2 in shop, 3-4 in
+    # loot drops) and price; realm gates *usability* (player must reach the
+    # skill's realm to learn it).
+
+    _SCROLL_PRICE_BY_GRADE: dict[int, int] = {1: 1000, 2: 3000}
+
+    def _synthesize_skill_scrolls(self) -> None:
+        for skill_key, skill in self.skills.items():
+            if skill_key.startswith("Enemy") or skill_key.startswith("TheChat_"):
+                continue
+            scroll_key = f"Scroll_{skill_key}"
+            if scroll_key in self.items:
+                continue  # explicit override wins
+            grade = self._scroll_grade_for_skill(skill)
+            self.items[scroll_key] = {
+                "key": scroll_key,
+                "vi": f"Ngọc Giản: {skill.get('vi', skill_key)}",
+                "en": f"Scroll: {skill.get('en', skill_key)}",
+                "type": "scroll",
+                "grade": grade,
+                "taught_skill": skill_key,
+                "shop_price_merit": self._SCROLL_PRICE_BY_GRADE.get(grade, 0),
+                "description_vi": f"Ngọc giản ghi chép kỹ năng {skill.get('vi', skill_key)}.",
+            }
+
+    @staticmethod
+    def _scroll_grade_for_skill(skill: dict) -> int:
+        """Read explicit ``scroll_grade`` from skill JSON.
+
+        Defaults to grade 1 when missing — grade is power-tier, not realm-
+        derived, so there's no meaningful auto-mapping. Authors must set
+        ``scroll_grade`` explicitly when adding a skill.
+        """
+        explicit = skill.get("scroll_grade")
+        if explicit is not None:
+            return int(explicit)
+        log.warning(
+            "Skill %s missing scroll_grade; defaulting to grade 1.",
+            skill.get("key", "<unknown>"),
+        )
+        return 1
 
     def _load_pill_recipes(self) -> dict[str, dict]:
         """Load Luyện Đan recipes from src/data/recipes/pill_recipes.json."""
@@ -253,7 +305,51 @@ class GameRegistry:
         return self.dungeons.get(key)
 
     def get_loot_table(self, key: str) -> list[dict]:
-        return self.loot_tables.get(key, [])
+        """Return the loot table for ``key``, merging dynamic scroll drops.
+
+        ``LootZone_<N>`` tables are the realm-N farming zones. Grade 3-4
+        skill scrolls are injected dynamically here so adding a new skill or
+        re-grading an existing one is reflected in drops without touching the
+        zone JSON files. A scroll appears in zone N iff its underlying skill
+        has ``realm ≤ N`` (player has reached that realm by then) and its
+        grade is 3 or 4 (drop-only tier).
+        """
+        static = self.loot_tables.get(key, [])
+        if not key.startswith("LootZone_"):
+            return static
+        try:
+            zone_realm = int(key.removeprefix("LootZone_"))
+        except ValueError:
+            return static
+        return list(static) + self._skill_scroll_drops_for_zone(zone_realm)
+
+    _SCROLL_DROP_WEIGHT_BY_GRADE: dict[int, int] = {3: 200_000, 4: 60_000}
+
+    def _skill_scroll_drops_for_zone(self, zone_realm: int) -> list[dict]:
+        """Compute grade 3-4 scroll drops for a realm-N farming zone."""
+        out: list[dict] = []
+        for item in self.items.values():
+            if item.get("type") != "scroll":
+                continue
+            skill_key = item.get("taught_skill")
+            if not skill_key:
+                continue
+            grade = int(item.get("grade", 0))
+            weight = self._SCROLL_DROP_WEIGHT_BY_GRADE.get(grade)
+            if weight is None:
+                continue
+            skill = self.skills.get(skill_key)
+            if skill is None:
+                continue
+            if skill.get("realm", 99) > zone_realm:
+                continue
+            out.append({
+                "item_key": item["key"],
+                "weight": weight,
+                "qty_min": 1,
+                "qty_max": 1,
+            })
+        return out
 
     def get_base(self, key: str) -> dict | None:
         return self.bases.get(key)

@@ -194,3 +194,93 @@ def format_leaderboard(participations: Iterable, max_rows: int = 10) -> str:
         icon = medals[i] if i < len(medals) else f"`#{i+1}`"
         lines.append(f"{icon} Player #{p.player_id} — {p.damage_dealt:,} sát thương ({p.attack_count} đòn)")
     return "\n".join(lines)
+
+
+# ── Loot / scheduler service helpers ──────────────────────────────────────────
+# These wrap repository calls + game logic (loot rolling, scheduler tick)
+# behind Discord-free entry points so the cog stays presentation-only.
+
+import logging as _logging
+import random as _random_mod
+
+from src.game.constants.grades import Grade
+from src.game.engine.drop import roll_drops
+from src.game.systems.dungeon import merge_loot
+
+_log = _logging.getLogger(__name__)
+
+
+async def grant_loot_from_tables(
+    irepo,
+    player_id: int,
+    table_keys: list[str],
+    bonus_items: list[tuple[str, int]],
+    rng: _random_mod.Random,
+) -> list[dict]:
+    """Roll all loot tables + add bonus items, merge duplicates, and grant.
+
+    Returns the merged drop list so the caller can render it. Items are
+    added at their registry-declared grade (default Hoàng = 1 if missing).
+    """
+    all_drops: list[dict] = []
+    for table_key in table_keys:
+        table = registry.get_loot_table(table_key)
+        if not table:
+            continue
+        all_drops.extend(roll_drops(table, rng).merge())
+    for item_key, qty in bonus_items:
+        all_drops.append({"item_key": item_key, "quantity": qty})
+
+    final = [{"item_key": k, "quantity": v} for k, v in merge_loot(all_drops).items()]
+    for drop in final:
+        data = registry.get_item(drop["item_key"])
+        grade_val = data.get("grade", 1) if data else 1
+        await irepo.add_item(player_id, drop["item_key"], Grade(grade_val), drop["quantity"])
+    return final
+
+
+async def flag_rewards_distributed(wb_repo, instance_id: int, boss_key: str) -> bool:
+    """Atomically mark the boss instance's rewards as ready for claiming.
+
+    Returns ``True`` if this call won the flip, ``False`` if a concurrent
+    finisher already flagged it. Actual loot grants happen on /rewards.
+    """
+    won = await wb_repo.flag_rewards_distributed(instance_id)
+    if won:
+        _log.info(
+            "World boss %s (instance=%s) rewards flagged ready.",
+            boss_key, instance_id,
+        )
+    return won
+
+
+async def scheduler_tick(wb_repo) -> None:
+    """Single iteration of the world-boss spawn/expire scheduler.
+
+    Expires any active instance past its deadline, then spawns any boss
+    whose scheduled window is currently live and lacks an instance for
+    that *specific* window — using ``has_instance_for_window`` so a boss
+    killed mid-window does NOT respawn until the next scheduled time.
+    """
+    now = datetime.now(timezone.utc)
+
+    active = await wb_repo.list_active()
+    for inst in active:
+        if inst.expires_at <= now and inst.hp_current > 0:
+            await wb_repo.expire_instance(inst)
+
+    for boss_data in registry.world_bosses.values():
+        window = is_boss_live_now(boss_data, now)
+        if window is None:
+            continue
+        if await wb_repo.has_instance_for_window(boss_data["key"], window.spawned_at):
+            continue
+        hp_max = int(boss_data["base_hp"] * boss_data.get("hp_scale", 1.0))
+        await wb_repo.create_instance(
+            boss_key=boss_data["key"],
+            realm=boss_data.get("realm", 1),
+            hp_max=hp_max,
+            spawned_at=window.spawned_at,
+            expires_at=window.expires_at,
+        )
+        _log.info("Spawned world boss %s (hp_max=%d)", boss_data["key"], hp_max)

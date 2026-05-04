@@ -16,17 +16,17 @@ from src.db.models.world_boss import WorldBossInstance
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.db.repositories.world_boss_repo import WorldBossRepository
-from src.game.constants.grades import Grade
 from src.game.constants.realms import QI_REALMS
-from src.game.engine.drop import roll_drops
 from src.game.engine.equipment import compute_equipment_stats
 from src.game.systems.combat import (
     CombatEndReason, CombatSession,
     build_player_combatant, build_world_boss_combatant,
 )
+from src.game.systems.dungeon import compute_realm_total
 from src.game.systems.world_boss import (
     ATTACK_ROUND_LIMIT, PER_ATTACK_DMG_CAP_PCT,
-    compute_rewards, format_leaderboard, is_boss_live_now,
+    compute_rewards, flag_rewards_distributed, format_leaderboard,
+    grant_loot_from_tables, scheduler_tick,
 )
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
 
@@ -101,37 +101,6 @@ def _boss_list_embed(
     )
 
 
-async def _grant_loot_from_tables(
-    irepo: InventoryRepository,
-    player_id: int,
-    table_keys: list[str],
-    bonus_items: list[tuple[str, int]],
-    rng: _rng_mod.Random,
-) -> list[dict]:
-    """Roll all loot tables + add bonus items. Returns the merged drop list."""
-    all_drops: list[dict] = []
-    for table_key in table_keys:
-        table = registry.get_loot_table(table_key)
-        if not table:
-            continue
-        result = roll_drops(table, rng).merge()
-        all_drops.extend(result)
-    for item_key, qty in bonus_items:
-        all_drops.append({"item_key": item_key, "quantity": qty})
-
-    # Merge duplicates
-    merged: dict[str, int] = {}
-    for d in all_drops:
-        merged[d["item_key"]] = merged.get(d["item_key"], 0) + d["quantity"]
-
-    final = [{"item_key": k, "quantity": v} for k, v in merged.items()]
-    for drop in final:
-        data = registry.get_item(drop["item_key"])
-        grade_val = data.get("grade", 1) if data else 1
-        await irepo.add_item(player_id, drop["item_key"], Grade(grade_val), drop["quantity"])
-    return final
-
-
 # ── Attack session ────────────────────────────────────────────────────────────
 
 async def _execute_boss_attack(
@@ -192,6 +161,7 @@ async def _execute_boss_attack(
         cs = compute_combat_stats(
             char, gem_count=len(gem_keys), equip_stats=equip_stats,
             gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+            learned_skill_keys=[s.skill_key for s in (player.skills or [])],
         )
         if player.hp_current <= 0:
             player.hp_current = cs.hp_max
@@ -199,11 +169,7 @@ async def _execute_boss_attack(
 
         skill_keys = [s.skill_key for s in player.skills] if player.skills else ["SkillAtkKim1"]
 
-        realm_total = (
-            char.body_realm * 9 + char.body_level
-            + char.qi_realm * 9 + char.qi_level
-            + char.formation_realm * 9 + char.formation_level
-        ) // 3
+        realm_total = compute_realm_total(char)
 
         player_c = build_player_combatant(
             char, skill_keys, len(gem_keys), equip_stats=equip_stats,
@@ -358,25 +324,9 @@ async def _execute_boss_attack(
     )
 
     if killed_by_us:
-        await _distribute_rewards(boss_key, instance_id)
-
-
-async def _distribute_rewards(boss_key: str, instance_id: int) -> None:
-    """Flag the boss's rewards as ready for claiming. Actual item grants happen on /rewards."""
-    from sqlalchemy import update as _update
-    async with get_session() as session:
-        result = await session.execute(
-            _update(WorldBossInstance)
-            .where(
-                WorldBossInstance.id == instance_id,
-                WorldBossInstance.rewards_distributed.is_(False),
-            )
-            .values(rewards_distributed=True)
-        )
-        if (result.rowcount or 0) == 1:
-            log.info(
-                "World boss %s (instance=%s) rewards flagged ready.",
-                boss_key, instance_id,
+        async with get_session() as session:
+            await flag_rewards_distributed(
+                WorldBossRepository(session), instance_id, boss_key,
             )
 
 
@@ -433,7 +383,7 @@ async def _claim_rewards(interaction: discord.Interaction) -> None:
             if my_reward is None or my_reward.tier == "none":
                 continue
 
-            drops = await _grant_loot_from_tables(
+            drops = await grant_loot_from_tables(
                 irepo, player.id,
                 my_reward.loot_table_keys, my_reward.bonus_items, rng,
             )
@@ -600,44 +550,6 @@ class PostAttackView(discord.ui.View):
 BossAttackView = WorldBossHubView
 
 
-# ── Background scheduler ──────────────────────────────────────────────────────
-
-async def _scheduler_tick() -> None:
-    """Spawn bosses whose scheduled window is live, expire any past their time."""
-    async with get_session() as session:
-        wrepo = WorldBossRepository(session)
-        now = datetime.now(timezone.utc)
-
-        # Expire anything past its deadline
-        active = await wrepo.list_active()
-        for inst in active:
-            if inst.expires_at <= now and inst.hp_current > 0:
-                await wrepo.expire_instance(inst)
-
-        # Spawn any boss currently in a live window without an existing
-        # instance for that *specific* window. Using has_instance_for_window
-        # (not just get_active) ensures a boss killed mid-window is NOT
-        # respawned until the next scheduled spawn_time.
-        for boss_data in registry.world_bosses.values():
-            window = is_boss_live_now(boss_data, now)
-            if window is None:
-                continue
-            already_spawned = await wrepo.has_instance_for_window(
-                boss_data["key"], window.spawned_at,
-            )
-            if already_spawned:
-                continue
-            hp_max = int(boss_data["base_hp"] * boss_data.get("hp_scale", 1.0))
-            await wrepo.create_instance(
-                boss_key=boss_data["key"],
-                realm=boss_data.get("realm", 1),
-                hp_max=hp_max,
-                spawned_at=window.spawned_at,
-                expires_at=window.expires_at,
-            )
-            log.info("Spawned world boss %s (hp_max=%d)", boss_data["key"], hp_max)
-
-
 # ── Cog ───────────────────────────────────────────────────────────────────────
 
 class WorldBossCog(commands.Cog, name="WorldBoss"):
@@ -651,7 +563,8 @@ class WorldBossCog(commands.Cog, name="WorldBoss"):
     @tasks.loop(minutes=1)
     async def scheduler(self) -> None:
         try:
-            await _scheduler_tick()
+            async with get_session() as session:
+                await scheduler_tick(WorldBossRepository(session))
         except Exception as e:
             log.exception("World boss scheduler error: %s", e)
 

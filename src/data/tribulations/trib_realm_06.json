@@ -1,0 +1,26 @@
+[
+  {
+    "key": "trib_qi_6",
+    "vi": "Luyện Hư Thiên Kiếp",
+    "en": "Void Refinement Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 6,
+    "element": "loi",
+    "base_hp": 5500,
+    "base_spd": 16,
+    "hp_scale": 2.2,
+    "skill_keys": ["EnemyTribLoi_T2", "EnemyTribLoi_T3"]
+  },
+  {
+    "key": "trib_body_6",
+    "vi": "Kim Thân Thiên Kiếp",
+    "en": "Golden Body Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 6,
+    "element": "loi",
+    "base_hp": 6500,
+    "base_spd": 15,
+    "hp_scale": 2.2,
+    "skill_keys": ["EnemyTribLoi_T2", "EnemyTribLoi_T3"]
+  }
+]

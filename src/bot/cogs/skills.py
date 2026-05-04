@@ -10,7 +10,19 @@ from src.db.connection import get_session
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository
 from src.game.constants.grades import Grade, GRADE_LABELS
+from src.game.constants.linh_can import parse_linh_can
+from src.game.constants.realms import QI_REALMS
 from src.game.engine.effects import EFFECTS
+from src.game.systems.skills import (
+    LearnError,
+    filtered_skills,
+    find_skill_scroll,
+    formation_reservation_would_exceed_cap,
+    is_formation_skill,
+    next_formation_slot,
+    scroll_key_for_skill,
+    validate_learn_eligibility,
+)
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
 _TYPE_EMOJI = {
@@ -40,14 +52,6 @@ _SKILL_TYPE_BUTTONS = [
     ("movement",  "🏃 Thân",     discord.ButtonStyle.success),
     ("formation", "🌀 Trận",     discord.ButtonStyle.secondary),
 ]
-
-_SKILL_TYPE_TO_SCROLL_PREFIX: dict[str, str] = {
-    "attack":    "ScrollAtk",
-    "defense":   "ScrollDef",
-    "movement":  "ScrollSup",
-    "passive":   "ScrollSup",
-    "formation": "ScrollFrm",
-}
 
 _NUMBER_EMOJI = ["①", "②", "③", "④", "⑤", "⑥"]
 
@@ -172,44 +176,6 @@ def _format_skill_effects(effect_keys: list[str]) -> str:
     return " • ".join(parts) if parts else "—"
 
 
-def _skill_grade_value(skill_data: dict) -> int:
-    mp = skill_data.get("mp_cost", 0)
-    if mp <= 15:
-        return 1
-    if mp <= 30:
-        return 2
-    if mp <= 60:
-        return 3
-    return 4
-
-
-def _find_usable_scroll(inv_items: list, skill_data: dict) -> tuple[str, int] | None:
-    prefix = _SKILL_TYPE_TO_SCROLL_PREFIX.get(skill_data.get("category", ""))
-    if not prefix:
-        return None
-    min_grade = _skill_grade_value(skill_data)
-    for inv in inv_items:
-        if inv.item_key.startswith(prefix) and inv.grade >= min_grade and inv.quantity > 0:
-            return (inv.item_key, inv.grade)
-    return None
-
-
-def _filtered_skills(
-    category: str | None,
-    element: str | None,
-    linh_can: list[str] | None = None,
-) -> list[dict]:
-    # Hide enemy skills from player-facing browser
-    skills = [s for s in registry.skills.values() if not s.get("key", "").startswith("Enemy")]
-    if category:
-        skills = [s for s in skills if s.get("category") == category]
-    if element:
-        skills = [s for s in skills if s.get("element") == element]
-    if linh_can is not None:
-        skills = [s for s in skills if s.get("element") is None or s.get("element") in linh_can]
-    return sorted(skills, key=lambda s: (s.get("realm", 1), s.get("category", ""), s.get("mp_cost", 0)))
-
-
 def _build_skilllist(
     discord_id: int,
     skill_type: str | None = None,
@@ -218,7 +184,7 @@ def _build_skilllist(
     back_fn=None,
     linh_can: list[str] | None = None,
 ) -> tuple[discord.Embed, "SkillListView"]:
-    skills = _filtered_skills(skill_type, element, linh_can)
+    skills = filtered_skills(skill_type, element, linh_can)
     total = len(skills)
     total_pages = max(1, (total + _SKILL_LIST_PAGE_SIZE - 1) // _SKILL_LIST_PAGE_SIZE)
     page = max(0, min(page, total_pages - 1))
@@ -377,18 +343,45 @@ class SkillListView(discord.ui.View):
                     await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                     return
 
+                gate = validate_learn_eligibility(player, skill_data)
+                if not gate.ok:
+                    if gate.error is LearnError.REALM_TOO_LOW:
+                        idx = min(gate.needed_realm_index, len(QI_REALMS) - 1)
+                        needed_name = QI_REALMS[idx].vi
+                        msg = (
+                            f"Cần đạt cảnh giới **{needed_name}** trở lên để học "
+                            f"**{skill_data['vi']}**."
+                        )
+                    else:  # WRONG_LINH_CAN
+                        elem = gate.missing_element or ""
+                        elem_emoji = _ELEM_EMOJI.get(elem, "")
+                        msg = (
+                            f"Linh Căn của bạn không có {elem_emoji} **{elem.capitalize()}** — "
+                            f"không thể học **{skill_data['vi']}**."
+                        )
+                    await interaction.response.send_message(
+                        embed=error_embed(msg), ephemeral=True,
+                    )
+                    return
+
                 irepo = InventoryRepository(session)
                 all_inv = await irepo.get_all(player.id)
-                scroll_info = _find_usable_scroll(all_inv, skill_data)
+                scroll_row = find_skill_scroll(all_inv, skill_data["key"])
 
-                if not scroll_info:
-                    prefix = _SKILL_TYPE_TO_SCROLL_PREFIX.get(skill_data.get("category", ""), "Ngọc Giản")
-                    min_grade = _skill_grade_value(skill_data)
-                    grade_name = GRADE_LABELS.get(Grade(min_grade), (str(min_grade),))[0]
+                if scroll_row is None:
+                    scroll_key = scroll_key_for_skill(skill_data["key"])
+                    scroll_item = registry.get_item(scroll_key)
+                    scroll_name = scroll_item["vi"] if scroll_item else scroll_key
+                    scroll_grade = scroll_item.get("grade", 1) if scroll_item else 1
+                    # Grade 1-2: buyable in shop. Grade 3-4: drop-only from Bí Cảnh.
+                    where = (
+                        "Mua tại `/shop` (Tàng Kinh Các)"
+                        if scroll_grade <= 2
+                        else "Tìm trong Bí Cảnh (rơi ngẫu nhiên)"
+                    )
                     await interaction.response.send_message(
                         embed=error_embed(
-                            f"Cần **{prefix}** phẩm **{grade_name}** trở lên để học **{skill_data['vi']}**.\n"
-                            "Mua tại `/shop` hoặc tìm trong Bí Cảnh."
+                            f"Cần **{scroll_name}** để học **{skill_data['vi']}**.\n{where}."
                         ),
                         ephemeral=True,
                     )
@@ -414,9 +407,10 @@ class SkillListView(discord.ui.View):
                     r.slot_index: r.skill_key for r in slots_result.scalars().all()
                 }
 
-            scroll_key, scroll_grade = scroll_info
-            scroll_data = registry.get_item(scroll_key)
-            scroll_name = scroll_data["vi"] if scroll_data else scroll_key
+            scroll_key = scroll_row.item_key
+            scroll_grade = scroll_row.grade
+            scroll_item = registry.get_item(scroll_key)
+            scroll_name = scroll_item["vi"] if scroll_item else scroll_key
             grade_name = GRADE_LABELS.get(Grade(scroll_grade), (str(scroll_grade),))[0]
 
             snap_type, snap_elem, snap_page = self._skill_type, self._element, self._page
@@ -431,6 +425,62 @@ class SkillListView(discord.ui.View):
                     back_fn=outer_back_fn, linh_can=snap_lc,
                 )
                 await ia.edit_original_response(embed=emb, view=v)
+
+            # Formation skills bypass the slot picker — they live in an
+            # open-ended bar past MAX_SKILL_SLOTS, capped only by total MP
+            # reservation. Pre-check the cap so the player learns *why* we
+            # block instead of silently failing on equip.
+            if is_formation_skill(skill_data):
+                exceeds, projected = formation_reservation_would_exceed_cap(
+                    player, skill_data["key"]
+                )
+                if exceeds:
+                    from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
+                    await interaction.response.send_message(
+                        embed=error_embed(
+                            f"Không đủ Linh Khí để Trấn Trận **{skill_data['vi']}**.\n"
+                            f"Sau khi trang bị: **{projected * 100:.1f}%** MP bị trấn — "
+                            f"vượt mức tối đa **{FORMATION_MAX_RESERVE_PCT * 100:.0f}%**.\n"
+                            f"Tu luyện Trận Đạo để giảm chi phí, hoặc xoá một trận pháp khác."
+                        ),
+                        ephemeral=True,
+                    )
+                    return
+                target_slot = next_formation_slot(player)
+                async with get_session() as session:
+                    prepo = PlayerRepository(session)
+                    player2 = await prepo.get_by_discord_id(interaction.user.id)
+                    irepo = InventoryRepository(session)
+                    if not await irepo.has_item(player2.id, scroll_key, Grade(scroll_grade)):
+                        await interaction.response.send_message(
+                            embed=error_embed("Cuộn sách đã hết trong túi đồ."),
+                            ephemeral=True,
+                        )
+                        return
+                    session.add(CharacterSkill(
+                        player_id=player2.id,
+                        skill_key=skill_data["key"],
+                        slot_index=target_slot,
+                    ))
+                    await irepo.remove_item(player2.id, scroll_key, Grade(scroll_grade))
+                    rem = await session.execute(
+                        sa_select(CharacterSkill).where(CharacterSkill.player_id == player2.id)
+                    )
+                    remaining = [
+                        type("S", (), {"slot_index": r.slot_index, "skill_key": r.skill_key})()
+                        for r in sorted(rem.scalars().all(), key=lambda x: x.slot_index)
+                    ]
+                emb_after, v_after = _build_skills_embed_view(
+                    remaining, interaction.user.id, back_fn=back_to_list,
+                )
+                emb_after.color = 0x2ECC71
+                emb_after.description = (
+                    (emb_after.description or "")
+                    + f"\n✅ Trấn Trận **{skill_data['vi']}** thành công!"
+                    + f" (MP trấn: **{projected * 100:.1f}%**)"
+                )
+                await interaction.response.edit_message(embed=emb_after, view=v_after)
+                return
 
             t_e = _TYPE_EMOJI.get(skill_data.get("category", ""), "❓")
             el = skill_data.get("element")
@@ -795,7 +845,6 @@ class SkillsCog(commands.Cog, name="Skills"):
 
     @app_commands.command(name="skilllist", description="Xem danh sách kỹ năng có thể học (Tàng Kinh Các)")
     async def skilllist(self, interaction: discord.Interaction) -> None:
-        from src.game.constants.linh_can import parse_linh_can
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
@@ -807,14 +856,14 @@ class SkillsCog(commands.Cog, name="Skills"):
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
     @app_commands.command(name="forget", description="Xoá kỹ năng khỏi slot trang bị")
-    @app_commands.describe(slot="Slot cần xoá (0–5)")
+    @app_commands.describe(slot="Slot cần xoá (0–5 cho thường, 6+ cho trận pháp)")
     async def forget(self, interaction: discord.Interaction, slot: int) -> None:
-        from src.db.models.skill import MAX_SKILL_SLOTS, CharacterSkill
+        from src.db.models.skill import CharacterSkill
         from sqlalchemy import select as sa_select
 
-        if not (0 <= slot < MAX_SKILL_SLOTS):
+        if slot < 0:
             await interaction.response.send_message(
-                embed=error_embed(f"Slot phải từ 0–{MAX_SKILL_SLOTS - 1}."), ephemeral=True
+                embed=error_embed("Slot không hợp lệ."), ephemeral=True
             )
             return
 

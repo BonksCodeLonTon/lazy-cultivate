@@ -22,9 +22,11 @@ class TribulationResult:
 
 
 class TribulationManager:
+    # Tribulation triggers every breakthrough from realm 4 onward (target realm 5..8)
+    # for both qi and body axes. Formation has no tribulation by design.
     MAJOR_BREAKTHROUGHS = {
-        "qi": [1, 2, 3],
-        "body": [2, 4, 6]
+        "qi":   [4, 5, 6, 7],
+        "body": [4, 5, 6, 7],
     }
 
     @staticmethod
@@ -61,8 +63,12 @@ class TribulationManager:
         trib_c = build_enemy_combatant(trib_key, player_realm_total)
         if not trib_c:
             trib_c = build_enemy_combatant("default_heavenly_trib", player_realm_total)
-            realm_name = QI_REALMS[target_realm_idx].vi if axis == "qi" else BODY_REALMS[target_realm_idx].vi
-            trib_c.name = f"Thiên Kiếp {realm_name}"
+            if trib_c is not None:
+                realm_name = (
+                    QI_REALMS[target_realm_idx].vi if axis == "qi"
+                    else BODY_REALMS[target_realm_idx].vi
+                )
+                trib_c.name = f"Thiên Kiếp {realm_name}"
 
         session = CombatSession(
             player=player_c,

@@ -15,7 +15,6 @@ from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.currencies import CURRENCY_CAP
 from src.game.constants.grades import Grade
-from src.game.constants.linh_can import compute_linh_can_bonuses
 from src.game.engine.equipment import compute_equipment_stats
 from src.game.systems.combat import (
     CombatEndReason,
@@ -23,13 +22,8 @@ from src.game.systems.combat import (
     build_enemy_combatant,
     build_player_combatant,
 )
-from src.game.systems.cultivation import (
-    compute_constitution_bonuses,
-    compute_formation_bonuses,
-    compute_hp_max,
-    compute_mp_max,
-    merge_bonuses,
-)
+from src.game.systems.combat.encounter import pick_random_enemy, roll_elite_upgrade
+from src.game.systems.dungeon import compute_realm_total
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
@@ -45,27 +39,6 @@ RANK_EMOJIS = {
     "chi_ton":   "💀",
 }
 
-_RANK_ZONE: dict[str, int] = {
-    "pho_thong": 1,
-    "tinh_anh":  3,
-    "cuong_gia": 4,
-    "hung_manh": 6,
-    "dai_nang":  7,
-    "than_thu":  8,
-    "tien_thu":  9,
-    "chi_ton":   10,
-}
-
-_RANK_NEXT: dict[str, str] = {
-    "pho_thong": "tinh_anh",
-    "tinh_anh":  "cuong_gia",
-    "cuong_gia": "hung_manh",
-    "hung_manh": "dai_nang",
-    "dai_nang":  "than_thu",
-    "than_thu":  "tien_thu",
-    "tien_thu":  "chi_ton",
-}
-
 _RANK_CONFIGS = [
     ("pho_thong", "🐾 Phổ Thông"),
     ("cuong_gia", "⚔️ Cường Giả"),
@@ -73,39 +46,6 @@ _RANK_CONFIGS = [
     ("chi_ton",   "💀 Chí Tôn"),
     (None,        "🎲 Ngẫu Nhiên"),
 ]
-
-
-def _pick_random_enemy(rank: str | None, rng: random.Random) -> str | None:
-    if rank:
-        pool = registry.enemies_by_rank(rank)
-    else:
-        weights = [("pho_thong", 60), ("cuong_gia", 30), ("dai_nang", 9), ("chi_ton", 1)]
-        choices, wts = zip(*weights)
-        chosen_rank = rng.choices(list(choices), weights=list(wts), k=1)[0]
-        pool = registry.enemies_by_rank(chosen_rank)
-    return rng.choice(pool)["key"] if pool else None
-
-
-def _realm_total(char) -> int:
-    """Average cultivation level across all 3 paths (0–90 range)."""
-    return (
-        char.body_realm * 9 + char.body_level
-        + char.qi_realm * 9 + char.qi_level
-        + char.formation_realm * 9 + char.formation_level
-    ) // 3
-
-
-def _upgrade_chance(base_rank: str, char) -> float:
-    """Probability (0.0–0.30) of encountering a higher-rank elite.
-
-    Scales with how far the player has progressed within the rank's zone.
-    """
-    zone = _RANK_ZONE.get(base_rank, 1)
-    rt = _realm_total(char)
-    zone_floor = (zone - 1) * 9
-    level_in_zone = max(0, min(9, rt - zone_floor))
-    return level_in_zone / 9 * 0.30
-
 
 
 def _split_log_embeds(session_log: list[str], result_line: str, color: int) -> list[discord.Embed]:
@@ -174,6 +114,7 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
         cs_preview = compute_combat_stats(
             char, gem_count=gem_count, equip_stats=equip_stats,
             gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+            learned_skill_keys=[s.skill_key for s in (player.skills or [])],
         )
         hp_max_val = cs_preview.hp_max
         mp_max_val = cs_preview.mp_max
@@ -186,24 +127,14 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
 
     rng = random.Random()
 
-    actual_rank = internal_rank
-    loot_multiplier = 1.0
-    is_elite = False
-    if internal_rank is not None and char is not None:
-        chance = _upgrade_chance(internal_rank, char)
-        if chance > 0 and rng.random() < chance:
-            next_rank = _RANK_NEXT.get(internal_rank)
-            if next_rank and registry.enemies_by_rank(next_rank):
-                actual_rank = next_rank
-                loot_multiplier = 1.5
-                is_elite = True
+    actual_rank, loot_multiplier, is_elite = roll_elite_upgrade(internal_rank, char, rng)
 
-    enemy_key = _pick_random_enemy(actual_rank, rng)
+    enemy_key = pick_random_enemy(actual_rank, rng)
     if not enemy_key:
         await interaction.edit_original_response(embed=error_embed("Không tìm thấy quái vật."), view=None)
         return
 
-    realm_total = _realm_total(char)
+    realm_total = compute_realm_total(char)
 
     player_c = build_player_combatant(
         char, skill_keys, gem_count=gem_count, equip_stats=equip_stats,
@@ -406,7 +337,7 @@ class CombatCog(commands.Cog, name="Combat"):
 
     @app_commands.command(name="healup", description="Hồi phục HP/MP về tối đa (nghỉ ngơi)")
     async def healup(self, interaction: discord.Interaction) -> None:
-        from src.bot.cogs.cultivation import _apply_ticks_to_player
+        from src.game.systems.cultivation_service import apply_offline_ticks
 
         async with get_session() as session:
             prepo = PlayerRepository(session)
@@ -418,7 +349,7 @@ class CombatCog(commands.Cog, name="Combat"):
             # Materialize pending offline XP first — otherwise hp_max below is
             # computed from stale levels and a later /cultivate tick can bump
             # levels past it, leaving hp_current < hp_max.
-            await _apply_ticks_to_player(player, prepo, player.active_axis or "qi")
+            await apply_offline_ticks(player, prepo, player.active_axis or "qi")
 
             char = _player_to_model(player)
             from src.game.systems.character_stats import (
@@ -438,6 +369,7 @@ class CombatCog(commands.Cog, name="Combat"):
                 equip_stats=equip_stats,
                 gem_keys=gem_keys,
                 gem_keys_by_formation=gem_map,
+                learned_skill_keys=[s.skill_key for s in (player.skills or [])],
             )
             player.hp_current = cs.hp_max
             player.mp_current = cs.mp_max

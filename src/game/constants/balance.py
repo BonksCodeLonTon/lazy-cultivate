@@ -116,10 +116,14 @@ HEAL_CRIT_CHANCE: float = 0.25          # 25% flat chance per heal pulse
 HEAL_CRIT_MULT:   float = 1.5           # multiplier on the pre-reduction amount
 
 # ── Formation mana reservation ────────────────────────────────────────────────
-# Activating a formation reserves a portion of max MP; each socketed gem adds
-# more reserve (and additional elemental effect). Formula:
-#   reserve_pct = min(MAX, BASE + gems * PER_GEM)
-FORMATION_BASE_RESERVE_PCT: float = 0.08   # 8 % just for activating
+# Two stacking sources of MP reservation, both capped at MAX:
+#   1. Per-formation-skill ``reserved_mp_pct`` field (the channeling cost of
+#      each formation skill in the player's bar) — replaces the old flat 8 %
+#      activation base, so bigger formations cost more MP and smaller ones
+#      less. Summed across all learned formation skills.
+#   2. Per-gem reservation: gems × FORMATION_GEM_RESERVE_PCT, applied per
+#      active formation slot (gem-slot system, separate from the skill bar).
+# Both sources are scaled down by Trận Đạo reduction before merging.
 FORMATION_GEM_RESERVE_PCT: float = 0.004   # +0.4 % per inlaid gem
 FORMATION_MAX_RESERVE_PCT: float = 0.50    # hard cap — never lock more than half
 # Trận Đạo cultivation path scales formation bonuses:

@@ -4,6 +4,7 @@
     "vi": "Nhất Nguyên Ám Thức",
     "en": "One Origin Shadow Form",
     "realm": 2,
+    "scroll_grade": 1,
     "category": "formation",
     "element": "am",
     "attack_type": "magical",
@@ -13,19 +14,21 @@
     },
     "mp_cost": 22,
     "cooldown": 3,
-    "base_dmg": 75,
+    "base_dmg": 90,
     "effects": [
       "DebuffXeRach",
       "ApplySoulDrain",
       "ApplyStatSteal"
     ],
-    "formation_key": "NhatNguyenAm"
+    "formation_key": "NhatNguyenAm",
+    "reserved_mp_pct": 0.05
   },
   {
     "key": "SkillFrmKim",
     "vi": "Nhất Nguyên Kim Thức",
     "en": "One Origin Metal Form",
     "realm": 3,
+    "scroll_grade": 2,
     "category": "formation",
     "element": "kim",
     "attack_type": "physical",
@@ -35,15 +38,26 @@
     },
     "mp_cost": 30,
     "cooldown": 3,
-    "base_dmg": 100,
-    "effects": [],
-    "formation_key": "NhatNguyenKim"
+    "base_dmg": 115,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "formation_key": "NhatNguyenKim",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.15
+        }
+      }
+    },
+    "reserved_mp_pct": 0.06
   },
   {
     "key": "SkillFrmMoc",
     "vi": "Nhất Nguyên Mộc Thức",
     "en": "One Origin Wood Form",
     "realm": 3,
+    "scroll_grade": 2,
     "category": "formation",
     "element": "moc",
     "attack_type": "magical",
@@ -53,15 +67,19 @@
     },
     "mp_cost": 30,
     "cooldown": 3,
-    "base_dmg": 90,
-    "effects": [],
-    "formation_key": "NhatNguyenMoc"
+    "base_dmg": 105,
+    "effects": [
+      "DebuffMocXuyenThau"
+    ],
+    "formation_key": "NhatNguyenMoc",
+    "reserved_mp_pct": 0.06
   },
   {
     "key": "SkillFrmPhong",
     "vi": "Nhất Nguyên Phong Thức",
     "en": "One Origin Wind Form",
     "realm": 3,
+    "scroll_grade": 2,
     "category": "formation",
     "element": "phong",
     "attack_type": "physical",
@@ -71,7 +89,7 @@
     },
     "mp_cost": 25,
     "cooldown": 3,
-    "base_dmg": 80,
+    "base_dmg": 95,
     "effects": [
       "DebuffPhongAn",
       "DebuffLamCham"
@@ -80,21 +98,23 @@
     "effect_overrides": {
       "DebuffPhongAn": {
         "stat_bonus": {
-          "evasion_rating": -165
+          "evasion_rating": -180
         }
       },
       "DebuffLamCham": {
         "stat_bonus": {
-          "spd_pct": -0.275
+          "spd_pct": -0.3
         }
       }
-    }
+    },
+    "reserved_mp_pct": 0.06
   },
   {
     "key": "SkillFrmTo",
     "vi": "Nhất Nguyên Thổ Thức",
     "en": "One Origin Earth Form",
     "realm": 3,
+    "scroll_grade": 2,
     "category": "formation",
     "element": "tho",
     "attack_type": "physical",
@@ -104,15 +124,19 @@
     },
     "mp_cost": 28,
     "cooldown": 3,
-    "base_dmg": 85,
-    "effects": [],
-    "formation_key": "NhatNguyenTho"
+    "base_dmg": 100,
+    "effects": [
+      "DebuffLunDat"
+    ],
+    "formation_key": "NhatNguyenTho",
+    "reserved_mp_pct": 0.06
   },
   {
     "key": "SkillFrmBang",
     "vi": "Nhất Nguyên Băng Thức",
     "en": "One Origin Ice Form",
     "realm": 3,
+    "scroll_grade": 2,
     "category": "formation",
     "element": "thuy",
     "attack_type": "magical",
@@ -122,15 +146,19 @@
     },
     "mp_cost": 30,
     "cooldown": 3,
-    "base_dmg": 95,
-    "effects": [],
-    "formation_key": "NhatNguyenBang"
+    "base_dmg": 110,
+    "effects": [
+      "DebuffDongBang"
+    ],
+    "formation_key": "NhatNguyenBang",
+    "reserved_mp_pct": 0.06
   },
   {
     "key": "SkillFrmThuy",
     "vi": "Nhất Nguyên Thủy Thức",
     "en": "One Origin Water Form",
     "realm": 3,
+    "scroll_grade": 2,
     "category": "formation",
     "element": "thuy",
     "attack_type": "magical",
@@ -140,25 +168,29 @@
     },
     "mp_cost": 30,
     "cooldown": 3,
-    "base_dmg": 95,
-    "effects": [],
-    "formation_key": "NhatNguyenThuy"
+    "base_dmg": 110,
+    "effects": [
+      "DebuffThuyXuyenThau"
+    ],
+    "formation_key": "NhatNguyenThuy",
+    "reserved_mp_pct": 0.06
   },
   {
     "key": "SkillFrmQuang_R4",
     "vi": "Nhất Nguyên Quang Thức",
     "en": "One Origin Light Form",
     "realm": 4,
+    "scroll_grade": 2,
     "category": "formation",
     "element": "quang",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.1
+      "matk": 1.15
     },
     "mp_cost": 38,
     "cooldown": 4,
-    "base_dmg": 125,
+    "base_dmg": 145,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -166,18 +198,93 @@
     "effect_overrides": {
       "DebuffPhaGiap": {
         "stat_bonus": {
-          "final_dmg_reduce": -0.18
+          "final_dmg_reduce": -0.2
         }
       }
-    }
+    },
+    "reserved_mp_pct": 0.07
   },
   {
     "key": "SkillFrmTamTai_R4",
     "vi": "Tam Tài Trận",
     "en": "Three Talents Formation",
     "realm": 4,
+    "scroll_grade": 2,
     "category": "formation",
     "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.2,
+      "matk": 1.1
+    },
+    "mp_cost": 45,
+    "cooldown": 4,
+    "base_dmg": 170,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon"
+    ],
+    "formation_key": "TamTaiTran",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.2
+        },
+        "duration": 3
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.06
+        },
+        "duration": 3
+      }
+    },
+    "reserved_mp_pct": 0.08
+  },
+  {
+    "key": "SkillFrmDuongCong_R4",
+    "vi": "Dương Công Quy Nguyên Trận",
+    "en": "Yang Origin Convergence Formation",
+    "realm": 4,
+    "scroll_grade": 2,
+    "category": "formation",
+    "element": null,
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.05,
+      "matk": 0.2
+    },
+    "mp_cost": 42,
+    "cooldown": 4,
+    "base_dmg": 165,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "formation_key": "TamTaiTran",
+    "description_vi": "Trận pháp dương cương — phá giáp và gây Chảy Máu sâu.",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.18
+        },
+        "duration": 3
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0396,
+        "duration": 3
+      }
+    },
+    "reserved_mp_pct": 0.08
+  },
+  {
+    "key": "SkillFrmHoa",
+    "vi": "Nhất Nguyên Hỏa Thức",
+    "en": "One Origin Fire Form",
+    "realm": 5,
+    "scroll_grade": 3,
+    "category": "formation",
+    "element": "hoa",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
@@ -185,64 +292,60 @@
     },
     "mp_cost": 45,
     "cooldown": 4,
-    "base_dmg": 140,
-    "effects": [],
-    "formation_key": "TamTaiTran"
-  },
-  {
-    "key": "SkillFrmHoa",
-    "vi": "Nhất Nguyên Hỏa Thức",
-    "en": "One Origin Fire Form",
-    "realm": 5,
-    "category": "formation",
-    "element": "hoa",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
+    "base_dmg": 175,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "formation_key": "NhatNguyenHoa",
+    "effect_overrides": {
+      "DebuffDotChay": {
+        "dot_pct": 0.05,
+        "duration": 3
+      }
     },
-    "mp_cost": 35,
-    "cooldown": 3,
-    "base_dmg": 110,
-    "effects": [],
-    "formation_key": "NhatNguyenHoa"
+    "reserved_mp_pct": 0.09
   },
   {
     "key": "SkillFrmLoi",
     "vi": "Nhất Nguyên Lôi Thức",
     "en": "One Origin Thunder Form",
     "realm": 5,
+    "scroll_grade": 3,
     "category": "formation",
     "element": "loi",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.0
+      "matk": 1.1
     },
-    "mp_cost": 35,
-    "cooldown": 3,
-    "base_dmg": 115,
+    "mp_cost": 48,
+    "cooldown": 4,
+    "base_dmg": 180,
     "effects": [
       "DebuffSocDien",
-      "DebuffSocDien"
+      "DebuffSocDien",
+      "DebuffTeLiet"
     ],
-    "formation_key": "NhatNguyenLoi"
+    "formation_key": "NhatNguyenLoi",
+    "reserved_mp_pct": 0.09
   },
   {
     "key": "SkillFrmQuang",
     "vi": "Nhất Nguyên Quang Thức",
     "en": "One Origin Light Form",
     "realm": 4,
+    "scroll_grade": 2,
     "category": "formation",
     "element": "quang",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.0
+      "matk": 1.05
     },
-    "mp_cost": 30,
+    "mp_cost": 32,
     "cooldown": 3,
-    "base_dmg": 100,
+    "base_dmg": 125,
     "effects": [
       "DebuffPhaGiap",
       "DebuffCatDut"
@@ -251,117 +354,148 @@
     "effect_overrides": {
       "DebuffPhaGiap": {
         "stat_bonus": {
-          "final_dmg_reduce": -0.18
+          "final_dmg_reduce": -0.2
         }
       },
       "DebuffCatDut": {
         "stat_bonus": {
-          "hp_regen_pct": -0.36
+          "hp_regen_pct": -0.4
         }
       }
-    }
+    },
+    "reserved_mp_pct": 0.07
   },
   {
     "key": "SkillFrmCuuCung",
     "vi": "Cửu Cung Bát Quái Thức",
     "en": "Nine Palace Bagua Form",
     "realm": 5,
+    "scroll_grade": 3,
     "category": "formation",
     "element": null,
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.0,
+      "atk": 0.3,
       "matk": 1.0
     },
-    "mp_cost": 45,
+    "mp_cost": 55,
     "cooldown": 4,
-    "base_dmg": 140,
-    "effects": [],
-    "formation_key": "CuuCungBatQua"
+    "base_dmg": 205,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon"
+    ],
+    "formation_key": "CuuCungBatQua",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.2
+        },
+        "duration": 3
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.065
+        },
+        "duration": 3
+      }
+    },
+    "reserved_mp_pct": 0.1
   },
   {
     "key": "SkillFrmKiem",
     "vi": "Kiếm Trận Nhất Thức",
     "en": "Sword Formation First Form",
     "realm": 5,
+    "scroll_grade": 3,
     "category": "formation",
     "element": null,
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.0,
+      "atk": 1.15,
       "matk": 0.0
     },
-    "mp_cost": 40,
+    "mp_cost": 50,
     "cooldown": 4,
-    "base_dmg": 130,
-    "effects": [],
-    "formation_key": "KiemTran"
+    "base_dmg": 195,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "formation_key": "KiemTran",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.21
+        },
+        "duration": 4
+      },
+      "DebuffChayMau": {
+        "dot_pct": 0.0429,
+        "duration": 4
+      }
+    },
+    "reserved_mp_pct": 0.1
   },
   {
     "key": "SkillFrmLuongNghi_R6",
     "vi": "Lưỡng Nghi Trận",
     "en": "Two Polarities Formation",
     "realm": 6,
+    "scroll_grade": 3,
     "category": "formation",
     "element": null,
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.3,
-      "matk": 0.9
+      "atk": 0.4,
+      "matk": 1.0
     },
-    "mp_cost": 65,
+    "mp_cost": 70,
     "cooldown": 5,
-    "base_dmg": 240,
+    "base_dmg": 280,
     "effects": [
-      "DebuffPhaGiap"
+      "DebuffPhaGiap",
+      "DebuffBaoMon"
     ],
     "formation_key": "LuongNghi",
     "effect_overrides": {
       "DebuffPhaGiap": {
         "stat_bonus": {
-          "final_dmg_reduce": -0.21
-        }
+          "final_dmg_reduce": -0.235
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.07
+        },
+        "duration": 4
       }
-    }
+    },
+    "reserved_mp_pct": 0.12
   },
   {
     "key": "SkillFrmTuTuong_R6",
     "vi": "Tứ Tượng Trận",
     "en": "Four Symbols Formation",
     "realm": 6,
+    "scroll_grade": 3,
     "category": "formation",
     "element": null,
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 0.9,
-      "matk": 0.3
+      "atk": 1.0,
+      "matk": 0.4
     },
-    "mp_cost": 62,
+    "mp_cost": 68,
     "cooldown": 5,
-    "base_dmg": 230,
-    "effects": [],
-    "formation_key": "TuTuong"
-  },
-  {
-    "key": "SkillFrmBatQuai_R7",
-    "vi": "Bát Quái Thiên Địa Trận",
-    "en": "Eight Trigrams Heaven-Earth Formation",
-    "realm": 7,
-    "category": "formation",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.5,
-      "matk": 0.9
-    },
-    "mp_cost": 90,
-    "cooldown": 6,
-    "base_dmg": 350,
+    "base_dmg": 270,
     "effects": [
       "DebuffPhaGiap",
-      "DebuffBaoMon"
+      "DebuffBaoMon",
+      "DebuffCatDut"
     ],
-    "formation_key": "BatQuaiThienDia",
+    "formation_key": "TuTuong",
     "effect_overrides": {
       "DebuffPhaGiap": {
         "stat_bonus": {
@@ -371,60 +505,162 @@
       },
       "DebuffBaoMon": {
         "stat_bonus": {
-          "res_all": -0.075
+          "res_all": -0.07
+        },
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.42
         },
         "duration": 4
       }
-    }
+    },
+    "reserved_mp_pct": 0.12
+  },
+  {
+    "key": "SkillFrmAmDuong_R6",
+    "vi": "Âm Dương Hoán Chuyển Trận",
+    "en": "Yin-Yang Transmutation Formation",
+    "realm": 6,
+    "scroll_grade": 3,
+    "category": "formation",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.5,
+      "matk": 0.85
+    },
+    "mp_cost": 72,
+    "cooldown": 5,
+    "base_dmg": 275,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "DebuffSetDanh"
+    ],
+    "formation_key": "LuongNghi",
+    "description_vi": "Hai cực âm dương đảo chuyển — phá giáp, hủy kháng, đốt sét lên mục tiêu.",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.22
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.07
+        },
+        "duration": 4
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.06,
+        "duration": 3
+      }
+    },
+    "reserved_mp_pct": 0.12
+  },
+  {
+    "key": "SkillFrmBatQuai_R7",
+    "vi": "Bát Quái Thiên Địa Trận",
+    "en": "Eight Trigrams Heaven-Earth Formation",
+    "realm": 7,
+    "scroll_grade": 4,
+    "category": "formation",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 1.0
+    },
+    "mp_cost": 95,
+    "cooldown": 6,
+    "base_dmg": 380,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "DebuffSetDanh"
+    ],
+    "formation_key": "BatQuaiThienDia",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.245
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.08
+        },
+        "duration": 4
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.07,
+        "duration": 3
+      }
+    },
+    "reserved_mp_pct": 0.14
   },
   {
     "key": "SkillFrmNguHanh_R7",
     "vi": "Ngũ Hành Tương Khắc Trận",
     "en": "Five Elements Mutual Restraint",
     "realm": 7,
+    "scroll_grade": 4,
     "category": "formation",
     "element": null,
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.9,
-      "matk": 0.5
+      "atk": 1.0,
+      "matk": 0.6
     },
-    "mp_cost": 85,
+    "mp_cost": 90,
     "cooldown": 6,
-    "base_dmg": 340,
+    "base_dmg": 370,
     "effects": [
       "DebuffBaoMon",
-      "DebuffSetDanh"
+      "DebuffSetDanh",
+      "DebuffPhaGiap"
     ],
     "formation_key": "NguHanhTuongKhac",
     "effect_overrides": {
       "DebuffBaoMon": {
         "stat_bonus": {
-          "res_all": -0.075
+          "res_all": -0.08
         },
         "duration": 4
       },
       "DebuffSetDanh": {
-        "dot_pct": 0.075,
+        "dot_pct": 0.08,
         "duration": 3
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.235
+        },
+        "duration": 4
       }
-    }
+    },
+    "reserved_mp_pct": 0.14
   },
   {
     "key": "SkillFrmThienMa_R8",
     "vi": "Thiên Ma Diệt Thế Trận",
     "en": "Sky-Demon World-Ending Formation",
     "realm": 8,
+    "scroll_grade": 4,
     "category": "formation",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.6,
-      "matk": 1.0
+      "atk": 0.7,
+      "matk": 1.05
     },
-    "mp_cost": 120,
+    "mp_cost": 122,
     "cooldown": 7,
-    "base_dmg": 480,
+    "base_dmg": 510,
     "effects": [
       "DebuffDocTo",
       "DebuffBaoMon",
@@ -433,70 +669,79 @@
     "formation_key": "ThienMaDietThe",
     "effect_overrides": {
       "DebuffDocTo": {
-        "dot_pct": 0.064,
+        "dot_pct": 0.07,
         "duration": 4
       },
       "DebuffBaoMon": {
         "stat_bonus": {
-          "res_all": -0.08
+          "res_all": -0.085
         },
         "duration": 4
       },
       "CCMuted": {
         "duration": 3
       }
-    }
+    },
+    "reserved_mp_pct": 0.16
   },
   {
     "key": "SkillFrmCuuChuyen_R8",
     "vi": "Cửu Chuyển Thiên Tâm Trận",
     "en": "Nine-Turn Heaven-Heart Formation",
     "realm": 8,
+    "scroll_grade": 4,
     "category": "formation",
     "element": null,
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.8,
-      "matk": 0.8
+      "atk": 0.85,
+      "matk": 0.85
     },
-    "mp_cost": 115,
+    "mp_cost": 118,
     "cooldown": 7,
-    "base_dmg": 460,
+    "base_dmg": 490,
     "effects": [
       "DebuffPhaGiap",
-      "DebuffBaoMon"
+      "DebuffBaoMon",
+      "DebuffSetDanh"
     ],
     "formation_key": "CuuChuyenThienTam",
     "effect_overrides": {
       "DebuffPhaGiap": {
         "stat_bonus": {
-          "final_dmg_reduce": -0.24
+          "final_dmg_reduce": -0.255
         },
         "duration": 4
       },
       "DebuffBaoMon": {
         "stat_bonus": {
-          "res_all": -0.08
+          "res_all": -0.085
         },
         "duration": 4
+      },
+      "DebuffSetDanh": {
+        "dot_pct": 0.075,
+        "duration": 3
       }
-    }
+    },
+    "reserved_mp_pct": 0.16
   },
   {
     "key": "SkillFrmChuThien_R9",
     "vi": "Chư Thiên Vạn Giới Trận",
     "en": "All-Heavens Myriad-Worlds Formation",
     "realm": 9,
+    "scroll_grade": 4,
     "category": "formation",
     "element": null,
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 1.0,
-      "matk": 1.0
+      "atk": 1.05,
+      "matk": 1.05
     },
-    "mp_cost": 170,
+    "mp_cost": 175,
     "cooldown": 8,
-    "base_dmg": 700,
+    "base_dmg": 740,
     "effects": [
       "DebuffPhaGiap",
       "DebuffBaoMon",
@@ -507,62 +752,69 @@
     "effect_overrides": {
       "DebuffPhaGiap": {
         "stat_bonus": {
-          "final_dmg_reduce": -0.255
+          "final_dmg_reduce": -0.27
         },
         "duration": 4
       },
       "DebuffBaoMon": {
         "stat_bonus": {
-          "res_all": -0.085
+          "res_all": -0.09
         },
         "duration": 4
       },
       "DebuffSetDanh": {
-        "dot_pct": 0.085,
+        "dot_pct": 0.09,
         "duration": 3
       },
       "CCStun": {
         "duration": 2
       }
-    }
+    },
+    "reserved_mp_pct": 0.18
   },
   {
     "key": "SkillFrmHonNguyen_R9",
     "vi": "Hỗn Nguyên Nhất Khí Trận",
     "en": "Primordial One-Qi Formation",
     "realm": 9,
+    "scroll_grade": 4,
     "category": "formation",
     "element": null,
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 1.0,
-      "matk": 1.0
+      "atk": 1.05,
+      "matk": 1.05
     },
-    "mp_cost": 165,
+    "mp_cost": 170,
     "cooldown": 8,
-    "base_dmg": 680,
+    "base_dmg": 720,
     "effects": [
       "DebuffPhaGiap",
       "DebuffBaoMon",
-      "CCMuted"
+      "CCMuted",
+      "CCInterrupt"
     ],
     "formation_key": "HonNguyenNhatKhi",
     "effect_overrides": {
       "DebuffPhaGiap": {
         "stat_bonus": {
-          "final_dmg_reduce": -0.255
+          "final_dmg_reduce": -0.27
         },
         "duration": 4
       },
       "DebuffBaoMon": {
         "stat_bonus": {
-          "res_all": -0.085
+          "res_all": -0.09
         },
         "duration": 4
       },
       "CCMuted": {
         "duration": 3
+      },
+      "CCInterrupt": {
+        "duration": 2
       }
-    }
+    },
+    "reserved_mp_pct": 0.18
   }
 ]

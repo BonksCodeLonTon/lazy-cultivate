@@ -4,6 +4,7 @@
     "vi": "Quang Minh Phán Quyết",
     "en": "Radiant Judgment",
     "realm": 1,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -24,6 +25,7 @@
     "vi": "Quang Nguyên Thần Trảm",
     "en": "Light Essence Divine Slash",
     "realm": 2,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -44,6 +46,7 @@
     "vi": "Thánh Quang Xung Kích",
     "en": "Holy Light Surge",
     "realm": 3,
+    "scroll_grade": 2,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -71,6 +74,7 @@
     "vi": "Thánh Quang Bất Diệt",
     "en": "Holy Light Immortality",
     "realm": 3,
+    "scroll_grade": 1,
     "category": "defense",
     "element": "quang",
     "attack_type": "magical",
@@ -91,6 +95,7 @@
     "vi": "Quang Huy Trị Liệu",
     "en": "Radiant Healing",
     "realm": 3,
+    "scroll_grade": 2,
     "category": "defense",
     "element": "quang",
     "attack_type": "magical",
@@ -115,10 +120,51 @@
     }
   },
   {
+    "key": "SkillQuangHolyShield_R3",
+    "vi": "Thánh Quang Hộ Thuẫn",
+    "en": "Holy Light Shield",
+    "realm": 3,
+    "scroll_grade": 4,
+    "category": "defense",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 32,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "BuffHoangKim",
+      "BuffHoPhap",
+      "HpRegen"
+    ],
+    "formation_key": null,
+    "description_vi": "Thánh quang hộ thuẫn — Hoàng Kim Hộ + Hộ Pháp + hồi 10% HP.",
+    "effect_overrides": {
+      "BuffHoangKim": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.16,
+          "res_all": 0.1
+        },
+        "duration": 4
+      },
+      "BuffHoPhap": {
+        "stat_bonus": {
+          "final_dmg_reduce": 0.22,
+          "crit_res_rating": 90
+        },
+        "duration": 4
+      }
+    }
+  },
+  {
     "key": "SkillAtkQuang_R4",
     "vi": "Huyền Quang Phán Thế",
     "en": "Mystery Light World Judgment",
     "realm": 4,
+    "scroll_grade": 2,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -150,6 +196,7 @@
     "vi": "Vạn Đạo Thần Quang",
     "en": "Ten Thousand Divine Rays",
     "realm": 5,
+    "scroll_grade": 2,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -183,6 +230,7 @@
     "vi": "Chân Quang Thần Phán",
     "en": "True Light Divine Judgment",
     "realm": 6,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -216,10 +264,49 @@
     }
   },
   {
+    "key": "SkillQuangAngelHand_R6",
+    "vi": "Thiên Sứ Thần Thủ",
+    "en": "Angel's Divine Hand",
+    "realm": 6,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.25
+    },
+    "mp_cost": 80,
+    "cooldown": 5,
+    "base_dmg": 320,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "HpRegen"
+    ],
+    "formation_key": null,
+    "description_vi": "Thiên sứ thần thủ — phá giáp địch và hồi 10% HP cho mình mỗi lần đánh.",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.22
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      }
+    }
+  },
+  {
     "key": "SkillAtkQuang_R7",
     "vi": "Thần Quang Tịnh Thế",
     "en": "Divine Light World Purge",
     "realm": 7,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -267,6 +354,7 @@
     "vi": "Thần Quang Bất Hoại Thân",
     "en": "Divine Light Indestructible Body",
     "realm": 7,
+    "scroll_grade": 3,
     "category": "defense",
     "element": "quang",
     "attack_type": "magical",
@@ -307,6 +395,7 @@
     "vi": "Thánh Quang Vạn Đạo Giáng Lâm",
     "en": "Saint Light Myriad Dao Descent",
     "realm": 8,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -354,10 +443,60 @@
     }
   },
   {
+    "key": "SkillQuangSunGod_R8",
+    "vi": "Thái Dương Thần Quang",
+    "en": "Sun God's Radiance",
+    "realm": 8,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 1.25
+    },
+    "mp_cost": 122,
+    "cooldown": 6,
+    "base_dmg": 530,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffBaoMon",
+      "DebuffXeRach",
+      "CCMuted",
+      "HpRegen"
+    ],
+    "formation_key": null,
+    "description_vi": "Thái Dương Thần Quang — đỉnh Quang R8, phá giáp triệt để + câm lặng.",
+    "effect_overrides": {
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.26
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.135
+        },
+        "duration": 3
+      },
+      "CCMuted": {
+        "duration": 2
+      }
+    }
+  },
+  {
     "key": "SkillPasQuang_R8",
     "vi": "Thánh Quang Thiên Nhãn",
     "en": "Saint Light Celestial Eye",
     "realm": 8,
+    "scroll_grade": 2,
     "category": "passive",
     "element": "quang",
     "attack_type": "magical",
@@ -394,6 +533,7 @@
     "vi": "Tiên Quang Đại Đạo Chân Lý",
     "en": "Immortal Light Great-Dao Truth",
     "realm": 9,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",

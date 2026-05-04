@@ -287,22 +287,47 @@ def compute_formation_reserve_pct(
     gem_count: int,
     formation_stages: int = 0,
 ) -> float:
-    """How much of max MP the active formation locks.
+    """How much of max MP an active formation slot locks via its inlaid gems.
 
-    0 if no formation active; else (BASE + PER_GEM × gem_count) × reduction_mult,
-    capped at MAX. Trận Đạo cultivation (``formation_stages``) reduces the cost
-    down to a floor — late-game formation cultivators pay far less MP to sustain
-    the same formation.
+    0 if no formation active; else (PER_GEM × gem_count) × reduction_mult,
+    capped at MAX. The formation's *base* reservation now comes from the
+    matching formation skill's ``reserved_mp_pct`` (see
+    ``compute_formation_skill_reserve_pct``) — this function only accounts for
+    the per-gem cost layered on top.
     """
     if not formation_key:
         return 0.0
     from src.game.constants.balance import (
-        FORMATION_BASE_RESERVE_PCT,
         FORMATION_GEM_RESERVE_PCT,
         FORMATION_MAX_RESERVE_PCT,
     )
-    raw = FORMATION_BASE_RESERVE_PCT + max(0, gem_count) * FORMATION_GEM_RESERVE_PCT
+    raw = max(0, gem_count) * FORMATION_GEM_RESERVE_PCT
     reduced = raw * formation_reserve_reduction(formation_stages)
+    return min(FORMATION_MAX_RESERVE_PCT, reduced)
+
+
+def compute_formation_skill_reserve_pct(
+    learned_skill_keys: list[str] | None,
+    formation_stages: int = 0,
+) -> float:
+    """How much of max MP is locked by formation skills in the player's bar.
+
+    Sums ``reserved_mp_pct`` across every formation-category skill currently
+    equipped in a slot, scaled by Trận Đạo reduction and capped at MAX. This
+    replaces the old flat ``FORMATION_BASE_RESERVE_PCT`` — bigger formations
+    cost more MP to channel; smaller ones cost less.
+    """
+    if not learned_skill_keys:
+        return 0.0
+    from src.data.registry import registry
+    from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
+    total = 0.0
+    for skill_key in learned_skill_keys:
+        skill = registry.get_skill(skill_key)
+        if not skill or skill.get("category") != "formation":
+            continue
+        total += float(skill.get("reserved_mp_pct", 0.0))
+    reduced = total * formation_reserve_reduction(formation_stages)
     return min(FORMATION_MAX_RESERVE_PCT, reduced)
 
 

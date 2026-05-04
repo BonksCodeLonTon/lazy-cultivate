@@ -36,6 +36,92 @@ class DungeonResult:
     hp_remaining: int = 0
 
 
+def compute_realm_total(actor) -> int:
+    """Average realm-stage count across the three axes — used for enemy scaling.
+
+    Accepts either a ``Character`` or an ORM player (both expose
+    ``body_realm/body_level`` etc.). Returns ``(total_stages_across_axes) // 3``
+    so a balanced cultivator and a one-axis prodigy at the same total power
+    receive comparable enemy levels.
+    """
+    return (
+        actor.body_realm * 9 + actor.body_level
+        + actor.qi_realm * 9 + actor.qi_level
+        + actor.formation_realm * 9 + actor.formation_level
+    ) // 3
+
+
+def merge_loot(loot: list[dict]) -> dict[str, int]:
+    """Collapse duplicate item drops into a ``{item_key: total_qty}`` mapping."""
+    merged: dict[str, int] = {}
+    for drop in loot:
+        merged[drop["item_key"]] = merged.get(drop["item_key"], 0) + drop["quantity"]
+    return merged
+
+
+# ── Healing elixir effects ──────────────────────────────────────────────────
+# Map the inventory-item-key suffix → (effect description, mutator).
+# Mutator receives the Combatant and returns a description string with the
+# realised heal/regen values filled in (since they depend on the combatant's
+# max HP/MP at use-time).
+
+def apply_healing_elixir(player_c, item_key: str) -> str:
+    """Apply one elixir use to ``player_c`` in place. Returns user-facing effect text.
+
+    Recognises substring-based keys (``HoiHPSmall``, ``HoiMPLarge``,
+    ``HoiHPMiss`` etc.) so any grade variant of the same elixir family
+    routes to the right effect. Unknown keys fall through to a generic
+    "applied" message — they're typically buffs handled elsewhere or
+    no-ops in dungeon prep.
+    """
+    hp_max = player_c.hp_max
+    mp_max = player_c.mp_max
+
+    if "HoiHPFull" in item_key:
+        player_c.hp = hp_max
+        return f"❤️ HP hồi đầy: {hp_max:,}"
+    if "HoiFull" in item_key:
+        player_c.hp = hp_max
+        player_c.mp = mp_max
+        return "❤️💙 Hồi đầy cả HP và MP"
+    if "HoiHPLarge" in item_key:
+        heal = int(hp_max * 0.5)
+        player_c.hp = min(hp_max, player_c.hp + heal)
+        return f"❤️ +{heal:,} HP"
+    if "HoiHPMid" in item_key:
+        heal = int(hp_max * 0.25)
+        player_c.hp = min(hp_max, player_c.hp + heal)
+        return f"❤️ +{heal:,} HP"
+    if "HoiHPSmall" in item_key:
+        heal = int(hp_max * 0.10)
+        player_c.hp = min(hp_max, player_c.hp + heal)
+        return f"❤️ +{heal:,} HP"
+    if "HoiHPMiss" in item_key:
+        missing = hp_max - player_c.hp
+        heal = int(missing * 0.5)
+        player_c.hp = min(hp_max, player_c.hp + heal)
+        return f"❤️ +{heal:,} HP (50% thiếu)"
+    if "HoiHPMP" in item_key:
+        heal = int(hp_max * 0.15)
+        regen = int(mp_max * 0.15)
+        player_c.hp = min(hp_max, player_c.hp + heal)
+        player_c.mp = min(mp_max, player_c.mp + regen)
+        return f"❤️ +{heal:,} HP | 💙 +{regen:,} MP"
+    if "HoiMPLarge" in item_key:
+        regen = int(mp_max * 0.5)
+        player_c.mp = min(mp_max, player_c.mp + regen)
+        return f"💙 +{regen:,} MP"
+    if "HoiMPMid" in item_key:
+        regen = int(mp_max * 0.25)
+        player_c.mp = min(mp_max, player_c.mp + regen)
+        return f"💙 +{regen:,} MP"
+    if "HoiMPSmall" in item_key:
+        regen = int(mp_max * 0.10)
+        player_c.mp = min(mp_max, player_c.mp + regen)
+        return f"💙 +{regen:,} MP"
+    return "✨ Hiệu ứng đã áp dụng."
+
+
 def best_axis_realm(char: Character) -> int:
     """Return the highest realm index across the three cultivation axes.
 
@@ -205,11 +291,7 @@ def run_dungeon(
     player_c = build_player_combatant(
         char, skill_keys, gem_count, equip_stats=equip_stats, gem_keys=gem_keys,
     )
-    player_realm_total = (
-        char.body_realm * 9 + char.body_level
-        + char.qi_realm * 9 + char.qi_level
-        + char.formation_realm * 9 + char.formation_level
-    ) // 3
+    player_realm_total = compute_realm_total(char)
 
     req_realm = dungeon.get("required_qi_realm", 0)
     qual_realm, qual_level = qualifying_axis(char, req_realm)

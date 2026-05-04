@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone, timedelta
 
 import discord
 from discord import app_commands
@@ -10,22 +9,18 @@ from discord.ext import commands
 
 from src.db.connection import get_session
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
-from src.game.constants.currencies import SECONDS_PER_TURN
-from src.game.constants.realms import BODY_REALMS, QI_REALMS, FORMATION_REALMS, realm_label
+from src.game.constants.realms import realm_label
 from src.game.systems.cultivation import (
     can_breakthrough,
     apply_breakthrough,
     get_breakthrough_requirements,
-    compute_hp_max,
-    compute_mp_max,
-    compute_formation_bonuses,
-    compute_constitution_bonuses,
-    merge_bonuses,
-    advance_cultivation_xp,
     study_formation_with_merit,
 )
+from src.game.systems.cultivation_service import (
+    apply_offline_ticks,
+    pre_breakthrough_realm,
+)
 from src.game.constants.grades import Grade
-from src.game.engine.tick import compute_offline_ticks
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.assets import AXIS_LABELS, AXIS_ICONS
 
@@ -36,60 +31,6 @@ _AXIS_CONFIGS = [
     ("qi",        "🔮 Luyện Khí"),
     ("formation", "🔯 Trận Đạo"),
 ]
-
-def _pre_breakthrough_realm(player, axis: str) -> int:
-    if axis == "body":
-        return player.body_realm
-    if axis == "qi":
-        return player.qi_realm
-    return player.formation_realm
-
-
-async def _apply_ticks_to_player(player, repo, axis: str) -> dict:
-    player.active_axis = axis
-    tracker = player.turn_tracker
-    result: dict = {}
-
-    if not tracker:
-        await repo.save(player)
-        return result
-
-    now = datetime.now(timezone.utc)
-
-    if not tracker.last_tick_at:
-        tracker.last_tick_at = now
-        await repo.save(player)
-        return result
-
-    char = _player_to_model(player)
-
-    result = compute_offline_ticks(char, tracker.last_tick_at)
-
-    player.merit        = char.merit
-    player.karma_accum  = char.karma_accum
-    player.karma_usable = char.karma_usable
-
-    if char.evil_title:
-        player.evil_title = char.evil_title
-
-    player.body_xp      = char.body_xp
-    player.qi_xp        = char.qi_xp
-    player.formation_xp = char.formation_xp
-
-    player.body_level      = char.body_level
-    player.qi_level        = char.qi_level
-    player.formation_level = char.formation_level
-
-    tracker.turns_today           = char.turns_today
-    tracker.bonus_turns_remaining = char.bonus_turns_remaining
-
-    elapsed_seconds = (now - tracker.last_tick_at).total_seconds()
-    consumed_seconds = int(elapsed_seconds // SECONDS_PER_TURN) * SECONDS_PER_TURN
-    tracker.last_tick_at = tracker.last_tick_at + timedelta(seconds=consumed_seconds)
-
-    await repo.save(player)
-    return result
-
 
 # ── Embed builders ────────────────────────────────────────────────────────────
 
@@ -192,7 +133,7 @@ class CultivateView(discord.ui.View):
                     )
                     return
 
-                result = await _apply_ticks_to_player(player, repo, axis)
+                result = await apply_offline_ticks(player, repo, axis)
                 
                 await session.commit()
 
@@ -314,7 +255,7 @@ class BreakthroughView(discord.ui.View):
                 from src.db.repositories.inventory_repo import InventoryRepository
                 inv_repo = InventoryRepository(session)
 
-                old_realm_idx = _pre_breakthrough_realm(player, axis)
+                old_realm_idx = pre_breakthrough_realm(player, axis)
                 reqs = get_breakthrough_requirements(axis, old_realm_idx)
 
                 apply_breakthrough(char, axis, inventory=inventory_map)
@@ -344,6 +285,7 @@ class BreakthroughView(discord.ui.View):
                 post_cs = compute_combat_stats(
                     char, gem_count=len(post_gem_keys),
                     gem_keys=post_gem_keys, gem_keys_by_formation=post_gem_map,
+                    learned_skill_keys=[s.skill_key for s in (player.skills or [])],
                 )
 
                 player.hp_current = post_cs.hp_max
@@ -440,7 +382,7 @@ class CultivationCog(commands.Cog, name="Cultivation"):
                 return
 
             active = player.active_axis or "qi"
-            result = await _apply_ticks_to_player(player, repo, active)
+            result = await apply_offline_ticks(player, repo, active)
 
         embed = _cultivate_embed(active, result)
         view = CultivateView(interaction.user.id, active)

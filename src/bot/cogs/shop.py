@@ -13,7 +13,8 @@ from src.db.repositories.player_repo import PlayerRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.game.constants.grades import Grade
 from src.game.systems.economy import (
-    get_fixed_shop, get_rotating_shop, get_dark_market, purchase, ShopSlot,
+    get_fixed_shop, get_rotating_shop, get_dark_market, get_skill_scroll_shop,
+    purchase, ShopSlot,
 )
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
@@ -52,6 +53,8 @@ def _get_slots(section: str) -> list[ShopSlot]:
         return get_fixed_shop()
     if section == "rotating":
         return get_rotating_shop(_rotating_seed())
+    if section == "tang_kinh_cac":
+        return get_skill_scroll_shop()
     fixed_slot, rotating = get_dark_market(_dark_seed())
     return [fixed_slot] + rotating
 
@@ -77,6 +80,295 @@ def _shop_embed(section: str) -> discord.Embed:
     if footer:
         embed.set_footer(text=footer)
     return embed
+
+
+# ── Tàng Kinh Các tab — paginated, filterable scroll catalog ─────────────────
+# The scroll catalog can hit 80+ entries (one per learnable grade-1/2 skill),
+# so we can't render it with the flat ShopItemSelect (Discord's 25-option cap).
+# Instead, this section uses the same filter+pagination pattern as /skilllist.
+
+_TKC_PAGE_SIZE = 25  # matches Discord SelectMenu cap
+
+_TKC_TYPE_BUTTONS = [
+    (None,        "🌐 Tất Cả",   discord.ButtonStyle.secondary),
+    ("attack",    "⚔️ Công",     discord.ButtonStyle.danger),
+    ("defense",   "🛡️ Thủ",      discord.ButtonStyle.primary),
+    ("movement",  "🏃 Thân",     discord.ButtonStyle.success),
+    ("formation", "🌀 Trận",     discord.ButtonStyle.secondary),
+]
+
+_TKC_ELEM_OPTIONS = [
+    ("",      "— Tất Cả Nguyên Tố —"),
+    ("kim",   "🪙 Kim"),
+    ("moc",   "🌿 Mộc"),
+    ("thuy",  "💧 Thủy"),
+    ("hoa",   "🔥 Hỏa"),
+    ("tho",   "🪨 Thổ"),
+    ("loi",   "⚡ Lôi"),
+    ("phong", "🌬️ Phong"),
+    ("am",    "🌑 Âm"),
+    ("quang", "☀️ Quang"),
+]
+
+_TKC_TYPE_LABELS = {
+    "attack": "Công", "defense": "Thủ", "movement": "Thân",
+    "passive": "Bị Động", "formation": "Trận",
+}
+
+
+def _filtered_skill_scrolls(category: str | None, element: str | None) -> list[ShopSlot]:
+    out: list[ShopSlot] = []
+    for slot in get_skill_scroll_shop():
+        skill_key = slot.item_key.removeprefix("Scroll_")
+        skill = registry.get_skill(skill_key)
+        if skill is None:
+            continue
+        if category and skill.get("category") != category:
+            continue
+        if element and skill.get("element") != element:
+            continue
+        out.append(slot)
+    return out
+
+
+def _build_tkc_embed_view(
+    discord_id: int,
+    category: str | None = None,
+    element: str | None = None,
+    page: int = 0,
+    back_fn=None,
+) -> tuple[discord.Embed, "TangKinhCacView"]:
+    slots = _filtered_skill_scrolls(category, element)
+    total = len(slots)
+    total_pages = max(1, (total + _TKC_PAGE_SIZE - 1) // _TKC_PAGE_SIZE)
+    page = max(0, min(page, total_pages - 1))
+    page_slots = slots[page * _TKC_PAGE_SIZE: (page + 1) * _TKC_PAGE_SIZE]
+
+    title = "🌌 Đạo Thương — Tàng Kinh Các"
+    parts = []
+    if category:
+        parts.append(_TKC_TYPE_LABELS.get(category, category))
+    if element:
+        parts.append(next((l for v, l in _TKC_ELEM_OPTIONS[1:] if v == element), element))
+    if parts:
+        title += f" [{' · '.join(parts)}]"
+
+    if not page_slots:
+        embed = base_embed(title, "Không có ngọc giản phù hợp với bộ lọc.", color=0xFFD700)
+    else:
+        lines: list[str] = []
+        for slot in page_slots:
+            skill_key = slot.item_key.removeprefix("Scroll_")
+            skill = registry.get_skill(skill_key) or {}
+            scroll_item = registry.get_item(slot.item_key) or {}
+            name = scroll_item.get("vi", slot.item_key)
+            realm = skill.get("realm", "?")
+            mp = skill.get("mp_cost", 0)
+            dmg = skill.get("base_dmg", 0)
+            cd = skill.get("cooldown", 1)
+            lines.append(
+                f"{_grade_emoji(slot.grade)} **{name}**\n"
+                f"  Cảnh giới **{realm}** · MP **{mp}** · DMG **{dmg}** · CD **{cd}t** · ✨ **{slot.price:,}**"
+            )
+        embed = base_embed(title, "\n".join(lines), color=0xFFD700)
+
+    embed.set_footer(text=f"Trang {page + 1}/{total_pages} • {total} ngọc giản • Chọn từ menu để mua")
+
+    view = TangKinhCacView(
+        discord_id=discord_id,
+        category=category,
+        element=element,
+        page=page,
+        total_pages=total_pages,
+        page_slots=page_slots,
+        back_fn=back_fn,
+    )
+    return embed, view
+
+
+class TangKinhCacView(discord.ui.View):
+    """Filterable, paginated scroll shop. Tabs match ShopView so users can move between sections."""
+
+    def __init__(
+        self,
+        discord_id: int,
+        category: str | None,
+        element: str | None,
+        page: int,
+        total_pages: int,
+        page_slots: list[ShopSlot],
+        back_fn=None,
+    ) -> None:
+        super().__init__(timeout=180)
+        self._discord_id = discord_id
+        self._category = category
+        self._element = element
+        self._page = page
+        self._total_pages = total_pages
+        self._page_slots = page_slots
+        self._back_fn = back_fn
+
+        # Row 0: shop section tabs
+        for tab_id, tab_label in [
+            ("fixed",         "📚 Cố Định"),
+            ("rotating",      "🔄 Luân Chuyển"),
+            ("dark",          "☯️ Quỷ Thị"),
+            ("tang_kinh_cac", "🌌 Tàng Kinh"),
+        ]:
+            style = discord.ButtonStyle.primary if tab_id == "tang_kinh_cac" else discord.ButtonStyle.secondary
+            btn = discord.ui.Button(label=tab_label, style=style, row=0)
+            btn.callback = self._make_tab_cb(tab_id)
+            self.add_item(btn)
+
+        # Row 1: type filter buttons (5 of them — fits one row)
+        for cat, label, style in _TKC_TYPE_BUTTONS:
+            active = discord.ButtonStyle.primary if cat == category else style
+            btn = discord.ui.Button(label=label, style=active, row=1)
+            btn.callback = self._make_type_cb(cat)
+            self.add_item(btn)
+
+        # Row 2: element filter Select (its own row — Selects fill the row)
+        elem_select = discord.ui.Select(
+            placeholder="🌍 Lọc nguyên tố…",
+            options=[
+                discord.SelectOption(
+                    label=label,
+                    value=val or "__all__",
+                    default=(val == (element or "")),
+                )
+                for val, label in _TKC_ELEM_OPTIONS
+            ],
+            row=2,
+        )
+        elem_select.callback = self._element_cb
+        self.add_item(elem_select)
+
+        # Row 3: scroll picker Select (purchase entry)
+        if page_slots:
+            options = []
+            for i, slot in enumerate(page_slots):
+                skill_key = slot.item_key.removeprefix("Scroll_")
+                skill = registry.get_skill(skill_key) or {}
+                scroll_item = registry.get_item(slot.item_key) or {}
+                name = scroll_item.get("vi", slot.item_key)[:100]
+                desc = f"✨ {slot.price:,} • Cảnh giới {skill.get('realm', '?')}"[:100]
+                options.append(discord.SelectOption(
+                    label=name,
+                    description=desc,
+                    value=str(i),
+                    emoji=_grade_emoji(slot.grade),
+                ))
+            buy_select = discord.ui.Select(
+                placeholder="🛒 Chọn ngọc giản để mua…",
+                options=options,
+                row=3,
+            )
+            buy_select.callback = self._buy_cb
+            self.add_item(buy_select)
+
+        # Row 4: pagination + back
+        prev_btn = discord.ui.Button(
+            label="◀ Trước", style=discord.ButtonStyle.secondary,
+            disabled=(page == 0), row=4,
+        )
+        prev_btn.callback = self._prev_cb
+        self.add_item(prev_btn)
+
+        next_btn = discord.ui.Button(
+            label="Sau ▶", style=discord.ButtonStyle.secondary,
+            disabled=(page >= total_pages - 1), row=4,
+        )
+        next_btn.callback = self._next_cb
+        self.add_item(next_btn)
+
+        if back_fn:
+            back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=4)
+            back_btn.callback = self._back_cb
+            self.add_item(back_btn)
+
+    def _guard(self, interaction: discord.Interaction) -> bool:
+        return interaction.user.id == self._discord_id
+
+    def _make_tab_cb(self, tab_id: str):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if not self._guard(interaction):
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
+            if tab_id == "tang_kinh_cac":
+                embed, view = _build_tkc_embed_view(self._discord_id, back_fn=self._back_fn)
+            else:
+                embed = _shop_embed(tab_id)
+                view = ShopView(tab_id, self._discord_id, self._back_fn)
+            await interaction.response.edit_message(embed=embed, view=view)
+        return _cb
+
+    def _make_type_cb(self, cat: str | None):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if not self._guard(interaction):
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
+            embed, view = _build_tkc_embed_view(
+                self._discord_id, category=cat, element=self._element,
+                page=0, back_fn=self._back_fn,
+            )
+            await interaction.response.edit_message(embed=embed, view=view)
+        return _cb
+
+    async def _element_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        raw = interaction.data["values"][0]
+        new_elem = None if raw == "__all__" else raw
+        embed, view = _build_tkc_embed_view(
+            self._discord_id, category=self._category, element=new_elem,
+            page=0, back_fn=self._back_fn,
+        )
+        await interaction.response.edit_message(embed=embed, view=view)
+
+    async def _prev_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        embed, view = _build_tkc_embed_view(
+            self._discord_id, category=self._category, element=self._element,
+            page=self._page - 1, back_fn=self._back_fn,
+        )
+        await interaction.response.edit_message(embed=embed, view=view)
+
+    async def _next_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        embed, view = _build_tkc_embed_view(
+            self._discord_id, category=self._category, element=self._element,
+            page=self._page + 1, back_fn=self._back_fn,
+        )
+        await interaction.response.edit_message(embed=embed, view=view)
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await self._back_fn(interaction)
+
+    async def _buy_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        idx = int(interaction.data["values"][0])
+        slot = self._page_slots[idx]
+        embed = base_embed(
+            f"🛒 {_grade_emoji(slot.grade)} {_item_name(slot.item_key)}",
+            f"Giá: {_currency_emoji(slot.currency)} **{slot.price:,}** / vật phẩm\n"
+            f"Chọn số lượng muốn mua:",
+            color=0x57F287,
+        )
+        await interaction.response.edit_message(
+            embed=embed,
+            view=ShopBuyView("tang_kinh_cac", slot, self._discord_id),
+        )
 
 
 # ── UI components ─────────────────────────────────────────────────────────────
@@ -123,9 +415,10 @@ class ShopView(discord.ui.View):
         self._back_fn = back_fn
 
         for tab_id, tab_label in [
-            ("fixed",    "📚 Cố Định"),
-            ("rotating", "🔄 Luân Chuyển"),
-            ("dark",     "☯️ Quỷ Thị"),
+            ("fixed",         "📚 Cố Định"),
+            ("rotating",      "🔄 Luân Chuyển"),
+            ("dark",          "☯️ Quỷ Thị"),
+            ("tang_kinh_cac", "🌌 Tàng Kinh"),
         ]:
             style = discord.ButtonStyle.primary if tab_id == section else discord.ButtonStyle.secondary
             btn = discord.ui.Button(label=tab_label, style=style, row=0)
@@ -144,10 +437,12 @@ class ShopView(discord.ui.View):
             if interaction.user.id != self._discord_id:
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.edit_message(
-                embed=_shop_embed(tab_id),
-                view=ShopView(tab_id, self._discord_id, self._back_fn),
-            )
+            if tab_id == "tang_kinh_cac":
+                embed, view = _build_tkc_embed_view(self._discord_id, back_fn=self._back_fn)
+            else:
+                embed = _shop_embed(tab_id)
+                view = ShopView(tab_id, self._discord_id, self._back_fn)
+            await interaction.response.edit_message(embed=embed, view=view)
         return _cb
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
@@ -209,7 +504,8 @@ class ShopBuyView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.edit_message(embed=_shop_embed(self._section), view=ShopView(self._section, self._discord_id))
+        embed, view = _section_landing(self._section, self._discord_id)
+        await interaction.response.edit_message(embed=embed, view=view)
 
 
 class _ShopBackView(discord.ui.View):
@@ -225,7 +521,15 @@ class _ShopBackView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.edit_message(embed=_shop_embed(self._section), view=ShopView(self._section, self._discord_id))
+        embed, view = _section_landing(self._section, self._discord_id)
+        await interaction.response.edit_message(embed=embed, view=view)
+
+
+def _section_landing(section: str, discord_id: int) -> tuple[discord.Embed, discord.ui.View]:
+    """Return the (embed, view) pair for a section's landing page."""
+    if section == "tang_kinh_cac":
+        return _build_tkc_embed_view(discord_id)
+    return _shop_embed(section), ShopView(section, discord_id)
 
 
 # ── Cog ───────────────────────────────────────────────────────────────────────

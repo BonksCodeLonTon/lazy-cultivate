@@ -15,14 +15,17 @@ from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository
 from src.game.constants.grades import Grade
 from src.game.constants.realms import FORMATION_REALMS, realm_label
+from src.game.systems.character_stats import active_formation_gem_map
 from src.game.systems.cultivation import (
-    compute_formation_bonuses,
-    compute_formations_bonuses,
     formation_path_multiplier,
     formation_reserve_reduction,
     get_active_formations,
     max_formation_slots,
     set_active_formations,
+)
+from src.game.systems.formation import (
+    compute_active_formation_bonuses,
+    gem_element,
 )
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
@@ -41,19 +44,11 @@ _GEM_EMOJI = {
 }
 
 
-def _gem_element(gem_key: str) -> str | None:
-    """Extract element from gem key like 'GemHoa_2' → 'hoa'."""
-    if not gem_key.startswith("Gem"):
-        return None
-    rest = gem_key[3:].split("_", 1)[0]
-    return rest.lower()
-
-
 def _gem_display(gem_key: str | None) -> str:
     if not gem_key:
         return "⬜ *(trống)*"
     item = registry.get_item(gem_key) or {}
-    elem = _gem_element(gem_key) or ""
+    elem = gem_element(gem_key) or ""
     emoji = _GEM_EMOJI.get(elem, "💠")
     return f"{emoji} {item.get('vi', gem_key)}"
 
@@ -279,12 +274,9 @@ def _formation_detail_embed(player, form_data: dict, form_bonuses: dict) -> disc
 async def _load_formation_view_state(discord_id: int):
     """Return (player, active_form_data_list, aggregated_form_bonuses, gem_map).
 
-    ``active_form_data_list`` is a list of registry-dict entries for every
-    currently-active slot (empty when no formation is active). Aggregated
-    bonuses are summed across all slots (``compute_formations_bonuses``)
-    with MP reservation totaling and capping at the 50 % ceiling.
-    ``gem_map`` is ``{formation_key: [gem_keys]}`` covering all active slots
-    — callers use it to route socket operations to the right formation.
+    The bonus aggregation (per-slot merge + skill-reservation fold-in + cap)
+    lives in ``compute_active_formation_bonuses``; this helper only handles
+    the DB load and registry lookup for active form data.
     """
     async with get_session() as session:
         prepo = PlayerRepository(session)
@@ -296,34 +288,9 @@ async def _load_formation_view_state(discord_id: int):
         active_form_data = [
             fd for fd in (registry.get_formation(k) for k in active_keys) if fd
         ]
-        gem_map = _active_formation_gem_map(player)
-        stages = player.formation_realm * 9 + player.formation_level
-        form_bonuses = compute_formations_bonuses(
-            active_keys,
-            gem_keys_by_formation=gem_map,
-            formation_stages=stages,
-        ) if active_keys else {}
+        gem_map = active_formation_gem_map(player)
+        form_bonuses = compute_active_formation_bonuses(player)
     return player, active_form_data, form_bonuses, gem_map
-
-
-def _active_formation_gem_map(player) -> dict[str, list[str]]:
-    """Per-formation gem lists for every currently-active slot."""
-    active = set(get_active_formations(player.active_formation))
-    return {
-        f.formation_key: list((f.gem_slots or {}).values())
-        for f in (player.formations or [])
-        if f.formation_key in active
-    }
-
-
-def _active_formation_gem_keys(player) -> list[str]:
-    """Flat concatenation of all active formations' gems — kept for any
-    caller that wants a single gem list (e.g. totals + thresholds summary)."""
-    gm = _active_formation_gem_map(player)
-    flat: list[str] = []
-    for keys in gm.values():
-        flat.extend(keys)
-    return flat
 
 
 async def _player_gem_inventory(player_db_id: int) -> list[dict]:
@@ -340,7 +307,7 @@ async def _player_gem_inventory(player_db_id: int) -> list[dict]:
                 "grade": inv.grade,
                 "qty": inv.quantity,
                 "name": data.get("vi", inv.item_key),
-                "element": _gem_element(inv.item_key),
+                "element": gem_element(inv.item_key),
             })
     return gems
 

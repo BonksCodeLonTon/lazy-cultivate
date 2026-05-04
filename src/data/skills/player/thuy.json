@@ -1,9 +1,29 @@
 [
   {
+    "key": "SkillAtkThuy1",
+    "vi": "Thiên Thủy Xuyên Tâm",
+    "en": "Heaven Water Heart Pierce",
+    "realm": 1,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 12,
+    "cooldown": 1,
+    "base_dmg": 40,
+    "effects": [],
+    "formation_key": null
+  },
+  {
     "key": "SkillAtkBang1",
     "vi": "Thiên Băng Phong Lưỡng",
     "en": "Heaven Ice Frost Blade",
     "realm": 1,
+    "scroll_grade": 2,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -20,28 +40,11 @@
     "formation_key": null
   },
   {
-    "key": "SkillAtkThuy1",
-    "vi": "Thiên Thủy Xuyên Tâm",
-    "en": "Heaven Water Heart Pierce",
-    "realm": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 12,
-    "cooldown": 1,
-    "base_dmg": 40,
-    "effects": [],
-    "formation_key": null
-  },
-  {
     "key": "SkillSupThuy",
     "vi": "Nhân Băng Giải Phong",
     "en": "Human Ice CC Cleanse",
     "realm": 1,
+    "scroll_grade": 1,
     "category": "defense",
     "element": "thuy",
     "attack_type": "magical",
@@ -60,6 +63,7 @@
     "vi": "Thủy Nguyên Thác Đổ",
     "en": "Water Essence Cascade",
     "realm": 2,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -76,30 +80,11 @@
     "formation_key": null
   },
   {
-    "key": "SkillAtkBang2",
-    "vi": "Thiên Băng Phong Ấn",
-    "en": "Heaven Ice Frost Seal",
-    "realm": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 30,
-    "cooldown": 3,
-    "base_dmg": 85,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "formation_key": null
-  },
-  {
     "key": "SkillAtkThuy2",
     "vi": "Thiên Thủy Băng Tâm",
     "en": "Heaven Water Ice Heart",
     "realm": 3,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -123,10 +108,32 @@
     }
   },
   {
+    "key": "SkillAtkBang2",
+    "vi": "Thiên Băng Phong Ấn",
+    "en": "Heaven Ice Frost Seal",
+    "realm": 3,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 30,
+    "cooldown": 3,
+    "base_dmg": 85,
+    "effects": [
+      "DebuffDongBang"
+    ],
+    "formation_key": null
+  },
+  {
     "key": "SkillDefBang",
     "vi": "Địa Băng Giáp Hộ Thể",
     "en": "Earth Ice Armor Guard",
     "realm": 3,
+    "scroll_grade": 1,
     "category": "defense",
     "element": "thuy",
     "attack_type": "magical",
@@ -154,6 +161,7 @@
     "vi": "Địa Thủy Kính Phản",
     "en": "Earth Water Mirror Reflect",
     "realm": 3,
+    "scroll_grade": 2,
     "category": "defense",
     "element": "thuy",
     "attack_type": "magical",
@@ -177,38 +185,11 @@
     }
   },
   {
-    "key": "SkillAtkThuy_R4",
-    "vi": "Huyền Thủy Hải Triều",
-    "en": "Mystery Water Sea Tide",
-    "realm": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.1
-    },
-    "mp_cost": 40,
-    "cooldown": 3,
-    "base_dmg": 150,
-    "effects": [
-      "DebuffLamCham",
-      "DebuffDongBang"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.3
-        }
-      }
-    }
-  },
-  {
     "key": "SkillThuyManaStack",
     "vi": "Thủy Hư Tích Lũy",
     "en": "Void Water Accumulation",
     "realm": 4,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -243,30 +224,81 @@
     }
   },
   {
-    "key": "SkillAtkBang3",
-    "vi": "Thiên Băng Vĩnh Hằng",
-    "en": "Heaven Ice Eternal Freeze",
-    "realm": 5,
+    "key": "SkillAtkThuy_R4",
+    "vi": "Huyền Thủy Hải Triều",
+    "en": "Mystery Water Sea Tide",
+    "realm": 4,
+    "scroll_grade": 2,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.0
+      "matk": 1.1
     },
-    "mp_cost": 60,
-    "cooldown": 5,
-    "base_dmg": 210,
+    "mp_cost": 40,
+    "cooldown": 3,
+    "base_dmg": 150,
     "effects": [
+      "DebuffLamCham",
       "DebuffDongBang"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.3
+        }
+      }
+    }
+  },
+  {
+    "key": "SkillThuyTidalGrasp_R4",
+    "vi": "Triều Thủy Khóa Hồn",
+    "en": "Tidal Soul Grasp",
+    "realm": 4,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 50,
+    "cooldown": 4,
+    "base_dmg": 175,
+    "effects": [
+      "DebuffDongBang",
+      "DebuffThuyXuyenThau",
+      "DebuffLamCham"
+    ],
+    "formation_key": null,
+    "description_vi": "Triều thủy khóa hồn — đóng băng tạm thời, xuyên Kháng Thủy, làm chậm.",
+    "effect_overrides": {
+      "DebuffDongBang": {
+        "duration": 1
+      },
+      "DebuffThuyXuyenThau": {
+        "stat_bonus": {
+          "res_thuy": -0.2
+        },
+        "duration": 4
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.3
+        },
+        "duration": 3
+      }
+    }
   },
   {
     "key": "SkillAtkThuy3",
     "vi": "Thiên Thủy Huyết Hải",
     "en": "Heaven Water Blood Sea",
     "realm": 5,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -288,10 +320,32 @@
     }
   },
   {
+    "key": "SkillAtkBang3",
+    "vi": "Thiên Băng Vĩnh Hằng",
+    "en": "Heaven Ice Eternal Freeze",
+    "realm": 5,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 60,
+    "cooldown": 5,
+    "base_dmg": 210,
+    "effects": [
+      "DebuffDongBang"
+    ],
+    "formation_key": null
+  },
+  {
     "key": "SkillThuyMirror_R5",
     "vi": "Băng Cảnh Phản Chiếu",
     "en": "Ice Mirror Reflect",
     "realm": 5,
+    "scroll_grade": 2,
     "category": "defense",
     "element": "thuy",
     "attack_type": "magical",
@@ -328,6 +382,7 @@
     "vi": "Chân Thủy Huyền Băng Hải",
     "en": "True Water Profound Ice Sea",
     "realm": 6,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -360,6 +415,7 @@
     "vi": "Hàn Tuyết Đóng Băng",
     "en": "Cold Snow Freeze",
     "realm": 6,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -396,10 +452,59 @@
     }
   },
   {
+    "key": "SkillThuyDeepFreeze_R6",
+    "vi": "Vực Sâu Hàn Băng",
+    "en": "Abyssal Deep Freeze",
+    "realm": 6,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.25
+    },
+    "mp_cost": 78,
+    "cooldown": 5,
+    "base_dmg": 310,
+    "effects": [
+      "DebuffDongBang",
+      "DebuffThuyXuyenThau",
+      "DebuffBaoMon",
+      "DebuffLamCham"
+    ],
+    "formation_key": null,
+    "description_vi": "Vực sâu hàn băng — đóng băng 2 lượt, xuyên kháng, bào mòn chỉ số tổng.",
+    "effect_overrides": {
+      "DebuffDongBang": {
+        "duration": 2
+      },
+      "DebuffThuyXuyenThau": {
+        "stat_bonus": {
+          "res_thuy": -0.22
+        },
+        "duration": 4
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.4
+        },
+        "duration": 3
+      }
+    }
+  },
+  {
     "key": "SkillAtkThuy_R7",
     "vi": "Thần Thủy Thương Hải Nộ",
     "en": "Divine Water Vast Sea Wrath",
     "realm": 7,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -441,6 +546,7 @@
     "vi": "Thần Thủy Hàn Khí Vực",
     "en": "Divine Water Frost Domain",
     "realm": 7,
+    "scroll_grade": 2,
     "category": "passive",
     "element": "thuy",
     "attack_type": "magical",
@@ -472,10 +578,51 @@
     }
   },
   {
+    "key": "SkillThuyManaBurst_R8",
+    "vi": "Linh Khí Bùng Nổ",
+    "en": "Mana Eruption",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 1.3
+    },
+    "mp_cost": 110,
+    "cooldown": 5,
+    "base_dmg": 480,
+    "effects": [
+      "DebuffThuyXuyenThau",
+      "DebuffDongBang",
+      "ConsumeManaBurst"
+    ],
+    "effect_chances": {
+      "DebuffThuyXuyenThau": 1.0,
+      "DebuffDongBang": 0.5
+    },
+    "burst_per_mana_stack_mult": 0.15,
+    "formation_key": null,
+    "description_vi": "Nổ toàn bộ tầng Linh Khí Tích Lũy — mỗi tầng thêm 15% MP tối đa làm ST, xuyên Kháng Thủy, 50% đóng băng.",
+    "effect_overrides": {
+      "DebuffThuyXuyenThau": {
+        "stat_bonus": {
+          "res_thuy": -0.24
+        },
+        "duration": 4
+      },
+      "DebuffDongBang": {
+        "duration": 3
+      }
+    }
+  },
+  {
     "key": "SkillAtkThuy_R8",
     "vi": "Thánh Thủy Bắc Minh Thôn Thiên",
     "en": "Saint Water Northern Abyss Sky-Devour",
     "realm": 8,
+    "scroll_grade": 2,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -520,41 +667,54 @@
     }
   },
   {
-    "key": "SkillThuyManaBurst_R8",
-    "vi": "Linh Khí Bùng Nổ",
-    "en": "Mana Eruption",
+    "key": "SkillThuyOceanKing_R8",
+    "vi": "Hải Vương Thủy Triều",
+    "en": "Ocean King's Tide",
     "realm": 8,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.3,
-      "matk": 1.3
+      "atk": 0.4,
+      "matk": 1.25
     },
-    "mp_cost": 110,
-    "cooldown": 5,
-    "base_dmg": 480,
+    "mp_cost": 120,
+    "cooldown": 6,
+    "base_dmg": 540,
     "effects": [
-      "DebuffThuyXuyenThau",
       "DebuffDongBang",
-      "ConsumeManaBurst"
+      "DebuffThuyXuyenThau",
+      "DebuffBaoMon",
+      "DebuffLamCham",
+      "CCMuted"
     ],
-    "effect_chances": {
-      "DebuffThuyXuyenThau": 1.0,
-      "DebuffDongBang": 0.5
-    },
-    "burst_per_mana_stack_mult": 0.15,
     "formation_key": null,
-    "description_vi": "Nổ toàn bộ tầng Linh Khí Tích Lũy — mỗi tầng thêm 15% MP tối đa làm ST, xuyên Kháng Thủy, 50% đóng băng.",
+    "description_vi": "Hải Vương thủy triều — đóng băng + câm lặng, đỉnh sát thương Thủy R8.",
     "effect_overrides": {
+      "DebuffDongBang": {
+        "duration": 2
+      },
       "DebuffThuyXuyenThau": {
         "stat_bonus": {
           "res_thuy": -0.24
         },
         "duration": 4
       },
-      "DebuffDongBang": {
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.5
+        },
         "duration": 3
+      },
+      "CCMuted": {
+        "duration": 2
       }
     }
   },
@@ -563,6 +723,7 @@
     "vi": "Tiên Thủy Thiên Hà Đảo Quyển",
     "en": "Immortal Water Milky-Way Reverse-Flow",
     "realm": 9,
+    "scroll_grade": 2,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -615,6 +776,7 @@
     "vi": "Thủy Đạo Thiên Hà",
     "en": "Water Dao Milky Way Reverse",
     "realm": 9,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",

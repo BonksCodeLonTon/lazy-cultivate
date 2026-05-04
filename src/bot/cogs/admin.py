@@ -340,6 +340,7 @@ async def _apply_testbuild(session, player, cfg: dict) -> list[str]:
     cs = compute_combat_stats(
         char, gem_count=len(gem_keys), gem_keys=gem_keys,
         gem_keys_by_formation=gem_map,
+        learned_skill_keys=[s.skill_key for s in (player.skills or [])],
     )
     player.hp_current = cs.hp_max
     player.mp_current = cs.mp_max

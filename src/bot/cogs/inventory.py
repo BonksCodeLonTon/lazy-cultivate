@@ -16,35 +16,12 @@ from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository
 from src.db.repositories.formation_repo import FormationRepository
 from src.game.constants.grades import Grade
-from src.game.systems.cultivation import compute_hp_max, compute_mp_max
+from src.game.systems.inventory import (
+    apply_elixir, scroll_skill_type, skill_tier_from_mp,
+)
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
-
-# Scroll key prefix → allowed skill categories
-_SCROLL_TYPE_MAP: dict[str, list[str]] = {
-    "ScrollAtk": ["attack"],
-    "ScrollDef": ["defense"],
-    "ScrollSup": ["movement", "passive"],
-    "ScrollFrm": ["formation"],
-}
-
-def _scroll_skill_type(scroll_key: str) -> list[str]:
-    for prefix, categories in _SCROLL_TYPE_MAP.items():
-        if scroll_key.startswith(prefix):
-            return categories
-    return []
-
-def _skill_grade(skill_data: dict) -> int:
-    """Infer skill grade from mp_cost for matching against scroll grade."""
-    mp = skill_data.get("mp_cost", 0)
-    if mp <= 15:
-        return 1
-    if mp <= 30:
-        return 2
-    if mp <= 60:
-        return 3
-    return 4
 
 GRADE_EMOJI = {1: "⚪", 2: "🟢", 3: "🔵", 4: "🟡"}
 
@@ -286,7 +263,7 @@ class InventoryCog(commands.Cog, name="Inventory"):
                 )
                 return
 
-            effects = _apply_elixir(player, item_key, item_data, quantity)
+            effects = apply_elixir(player, item_key, quantity)
             await irepo.remove_item(player.id, item_key, grade, quantity)
             await prepo.save(player)
 
@@ -415,7 +392,7 @@ class InventoryCog(commands.Cog, name="Inventory"):
             return
 
         # Validate scroll type vs skill category
-        allowed_types = _scroll_skill_type(scroll_key)
+        allowed_types = scroll_skill_type(scroll_key)
         if skill_data.get("category") not in allowed_types:
             await interaction.response.send_message(
                 embed=error_embed(
@@ -428,7 +405,7 @@ class InventoryCog(commands.Cog, name="Inventory"):
 
         # Validate scroll grade vs skill tier
         scroll_grade = scroll_data.get("grade", 1)
-        skill_tier = _skill_grade(skill_data)
+        skill_tier = skill_tier_from_mp(skill_data)
         if scroll_grade < skill_tier:
             from src.game.constants.grades import GRADE_LABELS, Grade as G
             scroll_label = GRADE_LABELS.get(G(scroll_grade), (str(scroll_grade),))[0]
@@ -494,7 +471,27 @@ class InventoryCog(commands.Cog, name="Inventory"):
             )
             used_slots = set(row[0] for row in used_slots_result.fetchall())
 
-            if slot == -1:
+            # Formation skills: open-ended slot bar (≥ MAX_SKILL_SLOTS), capped
+            # only by total MP reservation. Pre-check the cap before assigning.
+            is_formation = skill_data.get("category") == "formation"
+            if is_formation:
+                from src.game.systems.skills import (
+                    formation_reservation_would_exceed_cap, next_formation_slot,
+                )
+                exceeds, projected = formation_reservation_would_exceed_cap(player, skill_key)
+                if exceeds:
+                    from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
+                    await interaction.response.send_message(
+                        embed=error_embed(
+                            f"Không đủ Linh Khí để Trấn Trận **{skill_data['vi']}**.\n"
+                            f"Sau khi trang bị: **{projected * 100:.1f}%** MP bị trấn — "
+                            f"vượt mức tối đa **{FORMATION_MAX_RESERVE_PCT * 100:.0f}%**."
+                        ),
+                        ephemeral=True,
+                    )
+                    return
+                target_slot = next_formation_slot(player)
+            elif slot == -1:
                 free = next((i for i in range(MAX_SKILL_SLOTS) if i not in used_slots), None)
                 if free is None:
                     await interaction.response.send_message(
@@ -542,72 +539,6 @@ class InventoryCog(commands.Cog, name="Inventory"):
         )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-
-
-def _apply_elixir(player, item_key: str, item_data: dict, quantity: int) -> list[str]:
-    """Apply elixir effects to player ORM object. Returns list of effect description lines."""
-    from src.game.systems.cultivation import compute_hp_max, compute_mp_max
-    from src.db.repositories.player_repo import _player_to_model
-    char = _player_to_model(player)
-    hp_max = compute_hp_max(char)
-    mp_max = compute_mp_max(char)
-
-    effects: list[str] = []
-    k = item_key
-
-    if "HoiHPFull" in k:
-        player.hp_current = hp_max
-        effects.append(f"❤️ HP hồi đầy: **{hp_max:,}**")
-    elif "HoiHPLarge" in k:
-        heal = int(hp_max * 0.5 * quantity)
-        player.hp_current = min(hp_max, player.hp_current + heal)
-        effects.append(f"❤️ +{heal:,} HP")
-    elif "HoiHPMid" in k:
-        heal = int(hp_max * 0.25 * quantity)
-        player.hp_current = min(hp_max, player.hp_current + heal)
-        effects.append(f"❤️ +{heal:,} HP")
-    elif "HoiHPSmall" in k:
-        heal = int(hp_max * 0.10 * quantity)
-        player.hp_current = min(hp_max, player.hp_current + heal)
-        effects.append(f"❤️ +{heal:,} HP")
-    elif "HoiHPMiss" in k:
-        missing = hp_max - player.hp_current
-        player.hp_current = min(hp_max, player.hp_current + int(missing * 0.5 * quantity))
-        effects.append(f"❤️ Hồi 50% HP thiếu")
-    elif "HoiMPLarge" in k:
-        regen = int(mp_max * 0.5 * quantity)
-        player.mp_current = min(mp_max, player.mp_current + regen)
-        effects.append(f"💙 +{regen:,} MP")
-    elif "HoiMPMid" in k:
-        regen = int(mp_max * 0.25 * quantity)
-        player.mp_current = min(mp_max, player.mp_current + regen)
-        effects.append(f"💙 +{regen:,} MP")
-    elif "HoiMPSmall" in k:
-        regen = int(mp_max * 0.10 * quantity)
-        player.mp_current = min(mp_max, player.mp_current + regen)
-        effects.append(f"💙 +{regen:,} MP")
-    elif "HoiHPMP" in k:
-        heal = int(hp_max * 0.15 * quantity)
-        regen = int(mp_max * 0.15 * quantity)
-        player.hp_current = min(hp_max, player.hp_current + heal)
-        player.mp_current = min(mp_max, player.mp_current + regen)
-        effects.append(f"❤️ +{heal:,} HP | 💙 +{regen:,} MP")
-    elif "HoiFull" in k:
-        player.hp_current = hp_max
-        player.mp_current = mp_max
-        effects.append(f"❤️💙 Hồi đầy cả HP và MP")
-    elif "TayNghiep" in k:
-        reduce = min(player.karma_accum, 10000 * quantity)
-        player.karma_accum = max(0, player.karma_accum - reduce)
-        effects.append(f"☯️ Nghiệp Lực Tích Lũy -{reduce:,}")
-    elif "KarmaDown" in k:
-        reduce = min(player.karma_usable, 5000 * quantity)
-        player.karma_usable = max(0, player.karma_usable - reduce)
-        effects.append(f"☯️ Nghiệp Lực Khả Dụng -{reduce:,} (đã tiêu thụ)")
-    else:
-        effects.append("✨ Hiệu ứng đã được áp dụng.")
-
-    return effects
 
 
 async def setup(bot: commands.Bot) -> None:

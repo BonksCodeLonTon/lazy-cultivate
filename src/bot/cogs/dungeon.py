@@ -21,7 +21,8 @@ from src.game.systems.combat import (
     build_enemy_combatant, build_player_combatant,
 )
 from src.game.systems.dungeon import (
-    check_can_enter, DungeonResult, qualifying_axis,
+    apply_healing_elixir, check_can_enter, compute_realm_total,
+    DungeonResult, merge_loot, qualifying_axis,
     _build_wave_list, _grade_progress, _roll_encounter_grade, _roll_boss_grade, _apply_encounter_grade,
 )
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
@@ -35,12 +36,9 @@ RANK_EMOJIS = {"pho_thong": "🐾", "cuong_gia": "⚔️", "dai_nang": "🔥", "
 
 
 def _format_loot(loot: list[dict]) -> str:
-    """Merge duplicate item drops and display using item names."""
-    merged: dict[str, int] = {}
-    for drop in loot:
-        merged[drop["item_key"]] = merged.get(drop["item_key"], 0) + drop["quantity"]
+    """Render merged loot drops using human item names."""
     parts = []
-    for key, qty in merged.items():
+    for key, qty in merge_loot(loot).items():
         item_data = registry.get_item(key)
         name = item_data["vi"] if item_data else key
         parts.append(f"{name}×{qty}")
@@ -59,56 +57,6 @@ def _dungeon_prep_embed(wave_idx: int, total_waves: int, player_c, effect_msg: s
     if effect_msg:
         desc += f"\n\n✨ {effect_msg}"
     return base_embed("⏸️ Nghỉ Ngơi Giữa Trận", desc, color=0x3498DB)
-
-
-def _heal_combatant(player_c, item_key: str) -> str:
-    """Apply one use of a healing elixir to a Combatant. Returns effect description."""
-    k = item_key
-    hp_max = player_c.hp_max
-    mp_max = player_c.mp_max
-    if "HoiHPFull" in k:
-        player_c.hp = hp_max
-        return f"❤️ HP hồi đầy: {hp_max:,}"
-    if "HoiFull" in k:
-        player_c.hp = hp_max
-        player_c.mp = mp_max
-        return "❤️💙 Hồi đầy cả HP và MP"
-    if "HoiHPLarge" in k:
-        heal = int(hp_max * 0.5)
-        player_c.hp = min(hp_max, player_c.hp + heal)
-        return f"❤️ +{heal:,} HP"
-    if "HoiHPMid" in k:
-        heal = int(hp_max * 0.25)
-        player_c.hp = min(hp_max, player_c.hp + heal)
-        return f"❤️ +{heal:,} HP"
-    if "HoiHPSmall" in k:
-        heal = int(hp_max * 0.10)
-        player_c.hp = min(hp_max, player_c.hp + heal)
-        return f"❤️ +{heal:,} HP"
-    if "HoiHPMiss" in k:
-        missing = hp_max - player_c.hp
-        heal = int(missing * 0.5)
-        player_c.hp = min(hp_max, player_c.hp + heal)
-        return f"❤️ +{heal:,} HP (50% thiếu)"
-    if "HoiHPMP" in k:
-        heal = int(hp_max * 0.15)
-        regen = int(mp_max * 0.15)
-        player_c.hp = min(hp_max, player_c.hp + heal)
-        player_c.mp = min(mp_max, player_c.mp + regen)
-        return f"❤️ +{heal:,} HP | 💙 +{regen:,} MP"
-    if "HoiMPLarge" in k:
-        regen = int(mp_max * 0.5)
-        player_c.mp = min(mp_max, player_c.mp + regen)
-        return f"💙 +{regen:,} MP"
-    if "HoiMPMid" in k:
-        regen = int(mp_max * 0.25)
-        player_c.mp = min(mp_max, player_c.mp + regen)
-        return f"💙 +{regen:,} MP"
-    if "HoiMPSmall" in k:
-        regen = int(mp_max * 0.10)
-        player_c.mp = min(mp_max, player_c.mp + regen)
-        return f"💙 +{regen:,} MP"
-    return "✨ Hiệu ứng đã áp dụng."
 
 
 _DUNGEON_TYPE_META: dict[str, dict[str, Any]] = {
@@ -340,6 +288,7 @@ async def _execute_dungeon(
         cs_preview = compute_combat_stats(
             char, gem_count=gem_count, equip_stats=equip_stats,
             gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+            learned_skill_keys=[s.skill_key for s in (player.skills or [])],
         )
         if player.hp_current <= 0:
             player.hp_current = cs_preview.hp_max
@@ -349,11 +298,7 @@ async def _execute_dungeon(
         player_name = player.name
 
     # Realm total for enemy scaling (computed from char to be always fresh)
-    _realm_total = (
-        char.body_realm * 9 + char.body_level
-        + char.qi_realm * 9 + char.qi_level
-        + char.formation_realm * 9 + char.formation_level
-    ) // 3
+    _realm_total = compute_realm_total(char)
 
     # ── Run interactive battle ────────────────────────────────────────────────
     dungeon = registry.get_dungeon(dungeon_key)
@@ -515,13 +460,13 @@ async def _execute_dungeon(
                 # pending level-up materializes before we re-cap HP/MP;
                 # otherwise player_c.hp_max (built at dungeon entry from
                 # stale levels) can undershoot the true max.
-                from src.bot.cogs.cultivation import _apply_ticks_to_player
+                from src.game.systems.cultivation_service import apply_offline_ticks
                 from src.game.systems.character_stats import (
                     active_formation_gem_keys, active_formation_gem_map, compute_combat_stats,
                 )
                 from src.game.engine.equipment import compute_equipment_stats
 
-                await _apply_ticks_to_player(player, repo, player.active_axis or "qi")
+                await apply_offline_ticks(player, repo, player.active_axis or "qi")
 
                 fresh_char = _player_to_model(player)
                 fresh_gem_keys = active_formation_gem_keys(player)
@@ -533,6 +478,7 @@ async def _execute_dungeon(
                     equip_stats=compute_equipment_stats(fresh_equipped),
                     gem_keys=fresh_gem_keys,
                     gem_keys_by_formation=fresh_gem_map,
+                    learned_skill_keys=[s.skill_key for s in (player.skills or [])],
                 )
                 player.hp_current = fresh_cs.hp_max
                 player.mp_current = fresh_cs.mp_max
@@ -654,7 +600,7 @@ class DungeonPrepView(discord.ui.View):
                 return
 
         # Apply healing to in-memory combatant
-        effect_msg = _heal_combatant(self.player_c, item_key)
+        effect_msg = apply_healing_elixir(self.player_c, item_key)
 
         # Update local elixir count
         elixir["qty"] -= 1
@@ -987,11 +933,7 @@ class DungeonCog(commands.Cog, name="Dungeon"):
             )
             return
 
-        player_realm_total = (
-            player.body_realm * 9 + player.body_level
-            + player.qi_realm * 9 + player.qi_level
-            + player.formation_realm * 9 + player.formation_level
-        ) // 3
+        player_realm_total = compute_realm_total(player)
 
         embed = _dungeon_type_embed()
         view = DungeonTypeSelectView(interaction.user.id, player.qi_realm, player_realm_total)

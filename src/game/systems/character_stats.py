@@ -177,6 +177,7 @@ def compute_combat_stats(
     equip_stats: dict | None = None,
     gem_keys: list[str] | None = None,
     gem_keys_by_formation: dict[str, list[str]] | None = None,
+    learned_skill_keys: list[str] | None = None,
 ) -> CombatStats:
     """Compute all derived combat stats for a player character.
 
@@ -207,6 +208,7 @@ def compute_combat_stats(
         compute_hp_max, compute_mp_max,
         compute_atk, compute_matk, compute_def_stat,
         compute_formations_bonuses, compute_constitution_bonuses, merge_bonuses,
+        compute_formation_skill_reserve_pct,
         get_active_formations,
     )
     from src.game.constants.linh_can import compute_linh_can_bonuses
@@ -506,7 +508,18 @@ def compute_combat_stats(
         cooldown_reduce   += equip_stats.get("cooldown_reduce", 0.0)
 
     # ── Formation MP reservation (applied last, after all bonuses) ────────────
-    reserve_pct = max(0.0, float(form_bonuses.get("_mp_reserve_pct", 0.0)))
+    # Two reservation sources stack here, both bound by the same MAX cap:
+    #   1. Per-formation gem reservation (from active formation slots' gems)
+    #   2. Per-skill reservation (from formation skills in the player's bar)
+    # The skill reservation replaces the old flat 8% base — bigger formations
+    # cost more MP to channel, smaller ones less. Trận Đạo path reduction is
+    # already applied inside each helper, so we just sum and re-cap.
+    from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
+    skill_reserve_pct = compute_formation_skill_reserve_pct(
+        learned_skill_keys, formation_stages=formation_stages,
+    )
+    raw_reserve = float(form_bonuses.get("_mp_reserve_pct", 0.0)) + skill_reserve_pct
+    reserve_pct = max(0.0, min(FORMATION_MAX_RESERVE_PCT, raw_reserve))
     mp_reserved = int(mp_max * reserve_pct)
     mp_max = max(0, mp_max - mp_reserved)
 

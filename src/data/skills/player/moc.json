@@ -4,6 +4,7 @@
     "vi": "Thiên Mộc Độc Gai",
     "en": "Heaven Wood Poison Thorn",
     "realm": 1,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -20,10 +21,44 @@
     "formation_key": null
   },
   {
+    "key": "SkillMocVineCage_R1",
+    "vi": "Mộc Lao Cấm Tù",
+    "en": "Wood Cage Imprisonment",
+    "realm": 1,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 16,
+    "cooldown": 3,
+    "base_dmg": 32,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffTroBuoc"
+    ],
+    "formation_key": null,
+    "description_vi": "Dây leo độc trói chặt địch — chồng Độc Tố và Trói Buộc cùng lúc.",
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.035
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.45
+        }
+      }
+    }
+  },
+  {
     "key": "SkillSupMoc",
     "vi": "Nhân Mộc Trị Độc",
     "en": "Human Wood Detox",
     "realm": 1,
+    "scroll_grade": 1,
     "category": "defense",
     "element": "moc",
     "attack_type": "magical",
@@ -42,6 +77,7 @@
     "vi": "Mộc Nguyên Độc Gai Xuyên",
     "en": "Wood Essence Poison Spike",
     "realm": 2,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -58,10 +94,43 @@
     "formation_key": null
   },
   {
+    "key": "SkillMocBloodLeaf_R2",
+    "vi": "Lá Mộc Đẫm Huyết",
+    "en": "Blood-Soaked Wood Leaf",
+    "realm": 2,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 3,
+    "base_dmg": 70,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffDocTo"
+    ],
+    "formation_key": null,
+    "description_vi": "Lá đao Mộc cứa thân — gây Chảy Máu và Độc Tố cùng lúc.",
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "duration": 4
+      },
+      "DebuffDocTo": {
+        "dot_pct": 0.045,
+        "duration": 3
+      }
+    }
+  },
+  {
     "key": "SkillAtkMoc2",
     "vi": "Thiên Mộc Căn Cốt",
     "en": "Heaven Wood Root Bone",
     "realm": 3,
+    "scroll_grade": 1,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -76,10 +145,51 @@
     "formation_key": null
   },
   {
+    "key": "SkillMocAncestralOak_R3",
+    "vi": "Tổ Mộc Cổ Áp",
+    "en": "Ancestral Oak Crash",
+    "realm": 3,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 1.1
+    },
+    "mp_cost": 38,
+    "cooldown": 4,
+    "base_dmg": 115,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffTroBuoc",
+      "DebuffBaoMon"
+    ],
+    "formation_key": null,
+    "description_vi": "Tổ mộc giáng thế — đè độc, trói chặt, bào mòn kháng tính.",
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.052,
+        "duration": 3
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.55
+        }
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.065
+        }
+      }
+    }
+  },
+  {
     "key": "SkillDefMoc",
     "vi": "Địa Mộc Căn Sinh Cơ",
     "en": "Earth Wood Root Vitality",
     "realm": 3,
+    "scroll_grade": 2,
     "category": "defense",
     "element": "moc",
     "attack_type": "magical",
@@ -107,6 +217,7 @@
     "vi": "Huyền Mộc Vạn Cân",
     "en": "Mystery Wood Myriad Roots",
     "realm": 4,
+    "scroll_grade": 2,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -138,6 +249,7 @@
     "vi": "Thanh Mộc Độc Nhận",
     "en": "Green Wood Poison Blade",
     "realm": 4,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -170,10 +282,53 @@
     }
   },
   {
+    "key": "SkillMocPrimalVerdance_R4",
+    "vi": "Sơ Khai Lục Đạo",
+    "en": "Primal Verdance",
+    "realm": 4,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 1.15
+    },
+    "mp_cost": 52,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffMocXuyenThau",
+      "DebuffTroBuoc",
+      "HpRegen"
+    ],
+    "formation_key": null,
+    "description_vi": "Sơ khai lục đạo — xuyên 20% Kháng Mộc, hồi 10% HP cho chính mình.",
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.055,
+        "duration": 4
+      },
+      "DebuffMocXuyenThau": {
+        "stat_bonus": {
+          "res_moc": -0.2
+        },
+        "duration": 4
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.65
+        }
+      }
+    }
+  },
+  {
     "key": "SkillAtkMoc3",
     "vi": "Thiên Mộc Vạn Độc Tán",
     "en": "Heaven Wood Ten-Thousand Poison",
     "realm": 5,
+    "scroll_grade": 2,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -201,10 +356,54 @@
     }
   },
   {
+    "key": "SkillMocLifeReap_R5",
+    "vi": "Sinh Cơ Cướp Phách",
+    "en": "Life Reap",
+    "realm": 5,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 1.2
+    },
+    "mp_cost": 68,
+    "cooldown": 4,
+    "base_dmg": 195,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffCatDut",
+      "DebuffMocXuyenThau",
+      "HpRegen"
+    ],
+    "formation_key": null,
+    "description_vi": "Sinh cơ cướp phách — chặn hồi phục địch (-42%) và hồi 10% HP cho mình.",
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.058,
+        "duration": 4
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.42
+        },
+        "duration": 3
+      },
+      "DebuffMocXuyenThau": {
+        "stat_bonus": {
+          "res_moc": -0.21
+        },
+        "duration": 4
+      }
+    }
+  },
+  {
     "key": "SkillMocHeal_R5",
     "vi": "Mộc Sinh Diệu Thuật",
     "en": "Wood Life Wondrous Art",
     "realm": 5,
+    "scroll_grade": 3,
     "category": "defense",
     "element": "moc",
     "attack_type": "magical",
@@ -235,6 +434,7 @@
     "vi": "Chân Mộc Căn Xuyên Thế",
     "en": "True Wood World-Piercing Root",
     "realm": 6,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -268,10 +468,66 @@
     }
   },
   {
+    "key": "SkillMocChthonianGrove_R6",
+    "vi": "U Mộc Cấm Khí",
+    "en": "Chthonian Grove",
+    "realm": 6,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 1.25
+    },
+    "mp_cost": 80,
+    "cooldown": 5,
+    "base_dmg": 320,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffTroBuoc",
+      "DebuffBaoMon",
+      "DebuffXeRach",
+      "DebuffCatDut"
+    ],
+    "formation_key": null,
+    "description_vi": "U mộc cấm khí — chồng 5 debuff Mộc, đỉnh sát thương cảnh giới Luyện Hư.",
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.062,
+        "duration": 4
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.72
+        }
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 3
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.13
+        },
+        "duration": 3
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.45
+        },
+        "duration": 3
+      }
+    }
+  },
+  {
     "key": "SkillAtkMoc_R7",
     "vi": "Thần Mộc Thánh Trụ",
     "en": "Divine Wood Holy Pillar",
     "realm": 7,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -312,6 +568,7 @@
     "vi": "Xâm Thực Mộc Hồn",
     "en": "Wood Soul Drain",
     "realm": 7,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -319,9 +576,9 @@
       "atk": 0.3,
       "matk": 1.2
     },
-    "mp_cost": 75,
+    "mp_cost": 80,
     "cooldown": 3,
-    "base_dmg": 290,
+    "base_dmg": 380,
     "effects": [
       "DebuffDocTo",
       "DebuffCatDut",
@@ -358,6 +615,7 @@
     "vi": "Thánh Mộc Hư Sinh Đạo",
     "en": "Saint Wood Void-Life Dao",
     "realm": 8,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -401,10 +659,66 @@
     }
   },
   {
+    "key": "SkillMocAncestralForest_R8",
+    "vi": "Tổ Mộc Vạn Diệp Trận",
+    "en": "Ancestral Forest Array",
+    "realm": 8,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.5,
+      "matk": 1.2
+    },
+    "mp_cost": 122,
+    "cooldown": 6,
+    "base_dmg": 525,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffTroBuoc",
+      "DebuffBaoMon",
+      "DebuffXeRach",
+      "DebuffCatDut"
+    ],
+    "formation_key": null,
+    "description_vi": "Tổ Mộc Vạn Diệp Trận — kế thừa Tổ Mộc, đỉnh độc tố và bào mòn cảnh giới Đại Thừa.",
+    "effect_overrides": {
+      "DebuffDocTo": {
+        "dot_pct": 0.068,
+        "duration": 4
+      },
+      "DebuffTroBuoc": {
+        "stat_bonus": {
+          "spd_pct": -0.85
+        }
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.136
+        },
+        "duration": 3
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.55
+        },
+        "duration": 4
+      }
+    }
+  },
+  {
     "key": "SkillDefMoc_R8",
     "vi": "Thánh Mộc Sinh Cơ Bất Tuyệt",
     "en": "Saint Wood Endless Vitality",
     "realm": 8,
+    "scroll_grade": 3,
     "category": "defense",
     "element": "moc",
     "attack_type": "magical",
@@ -441,6 +755,7 @@
     "vi": "Cự Mộc Thần Thể",
     "en": "Titan Wood Divine Body",
     "realm": 8,
+    "scroll_grade": 4,
     "category": "defense",
     "element": "moc",
     "attack_type": "magical",
@@ -480,6 +795,7 @@
     "vi": "Tiên Mộc Thế Giới Thụ",
     "en": "Immortal Wood World Tree",
     "realm": 9,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -534,6 +850,7 @@
     "vi": "Mộc Đạo Thế Giới Chi Thụ",
     "en": "Wood Dao World Tree",
     "realm": 9,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",

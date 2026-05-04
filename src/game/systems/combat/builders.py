@@ -39,6 +39,7 @@ def build_player_combatant(
     cs = compute_combat_stats(
         char, gem_count=gem_count, equip_stats=equip_stats,
         gem_keys=gem_keys, gem_keys_by_formation=gem_keys_by_formation,
+        learned_skill_keys=list(player_skill_keys),
     )
 
     # Formation skills — every active slot contributes its signature skill
@@ -86,7 +87,13 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
     of the existing player-realm-based scaling, letting enemies within the same rank feel
     meaningfully different in power.
     """
-    enemy_data = registry.get_enemy(enemy_key)
+    # Tribulations share the same Combatant shape as enemies (base_hp, base_spd,
+    # element, skill_keys, ...) but live in a separate registry dict so they
+    # can't be summoned through farming/dungeon paths. Fall back here so callers
+    # can build either a regular enemy or a Thiên Kiếp from a single key.
+    # Bypass get_tribulation's default_heavenly_trib auto-fallback so unrelated
+    # missing keys still return None instead of silently becoming a Thiên Kiếp.
+    enemy_data = registry.get_enemy(enemy_key) or registry.tribulations.get(enemy_key)
     if not enemy_data:
         return None
 

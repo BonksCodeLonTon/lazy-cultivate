@@ -1,14 +1,26 @@
 [
   {
-    "key": "trib_qi_3",
-    "vi": "Nguyên Anh Thiên Kiếp",
-    "en": "Nascent Soul Tribulation",
+    "key": "trib_qi_7",
+    "vi": "Hợp Đạo Thiên Kiếp",
+    "en": "Dao Integration Tribulation",
     "rank": "thien_kiep",
     "realm_level": 7,
     "element": "loi",
-    "base_hp": 1000,
-    "base_spd": 16,
-    "hp_scale": 2.0,
+    "base_hp": 8000,
+    "base_spd": 18,
+    "hp_scale": 2.5,
+    "skill_keys": ["EnemyTribLoi_T3"]
+  },
+  {
+    "key": "trib_body_7",
+    "vi": "Siêu Phàm Thiên Kiếp",
+    "en": "Transcendent Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 7,
+    "element": "loi",
+    "base_hp": 9500,
+    "base_spd": 17,
+    "hp_scale": 2.5,
     "skill_keys": ["EnemyTribLoi_T3"]
   }
 ]

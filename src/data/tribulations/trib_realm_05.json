@@ -6,21 +6,33 @@
     "rank": "thien_kiep",
     "realm_level": 5,
     "element": "loi",
-    "base_hp": 500,
-    "base_spd": 12,
-    "hp_scale": 1.5,
-    "skill_keys": ["EnemyTribLoi_T1", "EnemyTribLoi_T2"]
+    "base_hp": 3000,
+    "base_spd": 14,
+    "hp_scale": 2.0,
+    "skill_keys": ["EnemyTribLoi_T2", "EnemyTribLoi_T3"]
   },
   {
-    "key": "trib_qi_2",
-    "vi": "Kim Đan Thiên Kiếp",
-    "en": "Golden Core Tribulation",
+    "key": "trib_qi_5",
+    "vi": "Hóa Thần Thiên Kiếp",
+    "en": "Spirit Transformation Tribulation",
     "rank": "thien_kiep",
     "realm_level": 5,
     "element": "loi",
-    "base_hp": 2000,
+    "base_hp": 3500,
     "base_spd": 14,
-    "hp_scale": 1.8,
+    "hp_scale": 2.0,
+    "skill_keys": ["EnemyTribLoi_T2", "EnemyTribLoi_T3"]
+  },
+  {
+    "key": "trib_body_5",
+    "vi": "Pháp Tướng Thiên Kiếp",
+    "en": "Dharma Form Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 5,
+    "element": "loi",
+    "base_hp": 4000,
+    "base_spd": 13,
+    "hp_scale": 2.0,
     "skill_keys": ["EnemyTribLoi_T2", "EnemyTribLoi_T3"]
   }
 ]

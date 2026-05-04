@@ -208,6 +208,23 @@ class WorldBossRepository:
         )
         return result.scalar_one_or_none()
 
+    async def flag_rewards_distributed(self, instance_id: int) -> bool:
+        """Flip ``rewards_distributed`` from False→True atomically.
+
+        Returns True iff this call won the race — the ``WHERE
+        rewards_distributed IS FALSE`` guard ensures exactly one finisher
+        observes a rowcount of 1, so concurrent kills don't double-flag.
+        """
+        result = await self._session.execute(
+            update(WorldBossInstance)
+            .where(
+                WorldBossInstance.id == instance_id,
+                WorldBossInstance.rewards_distributed.is_(False),
+            )
+            .values(rewards_distributed=True)
+        )
+        return (result.rowcount or 0) == 1
+
     async def claim_reward_atomic(self, participation_id: int) -> bool:
         """Flip ``reward_claimed`` from False→True atomically. Returns True iff we won the race.
 

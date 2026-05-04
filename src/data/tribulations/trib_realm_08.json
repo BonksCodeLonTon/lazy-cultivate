@@ -1,14 +1,26 @@
 [
   {
-    "key": "trib_qi_4",
-    "vi": "Hóa Thần Thiên Kiếp",
-    "en": "Spirit Transformation Tribulation",
+    "key": "trib_qi_8",
+    "vi": "Đại Thừa Thiên Kiếp",
+    "en": "Mahayana Tribulation",
     "rank": "thien_kiep",
     "realm_level": 8,
     "element": "loi",
-    "base_hp": 5000,
-    "base_spd": 18,
-    "hp_scale": 2.0,
+    "base_hp": 12000,
+    "base_spd": 20,
+    "hp_scale": 3.0,
+    "skill_keys": ["EnemyTribLoi_T3", "EnemyLoi_T3"]
+  },
+  {
+    "key": "trib_body_8",
+    "vi": "Nhập Thánh Thiên Kiếp",
+    "en": "Saint Entry Tribulation",
+    "rank": "thien_kiep",
+    "realm_level": 8,
+    "element": "loi",
+    "base_hp": 14000,
+    "base_spd": 19,
+    "hp_scale": 3.0,
     "skill_keys": ["EnemyTribLoi_T3", "EnemyLoi_T3"]
   }
 ]
