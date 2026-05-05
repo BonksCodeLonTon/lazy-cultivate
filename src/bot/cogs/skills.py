@@ -23,19 +23,8 @@ from src.game.systems.skills import (
     scroll_key_for_skill,
     validate_learn_eligibility,
 )
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
-
-_TYPE_EMOJI = {
-    "attack":    "⚔️",
-    "defense":   "🛡️",
-    "movement":  "🏃",
-    "passive":   "✨",
-    "formation": "🌀",
-}
-_ELEM_EMOJI = {
-    "kim": "🪙", "moc": "🌿", "thuy": "💧", "hoa": "🔥",
-    "tho": "🪨", "loi": "⚡", "phong": "🌬️", "am": "🌑", "quang": "☀️",
-}
 _TYPE_LABEL = {
     "attack":    "Công Kích",
     "defense":   "Phòng Thủ",
@@ -257,7 +246,7 @@ def _build_skilllist(
     type_label = _TYPE_LABEL.get(skill_type or "", "Tất Cả") if skill_type else "Tất Cả"
     title = f"📚 Tàng Kinh Các: {type_label}"
     if element:
-        title += f" [{_ELEM_EMOJI.get(element, element)}]"
+        title += f" [{emojis.for_element(element)}]"
 
     # Owned-scroll / learned snapshot for row badges + Học button styling.
     # Falls back to an empty state so the cog still renders if state load fails.
@@ -269,9 +258,9 @@ def _build_skilllist(
         lines: list[str] = []
         for i, s in enumerate(page_skills):
             num = _NUMBER_EMOJI[i]
-            t_e = _TYPE_EMOJI.get(s.get("category", ""), "❓")
+            t_e = emojis.SKILL_CATEGORY_EMOJI.get(s.get("category", ""), "❓")
             el = s.get("element")
-            el_tag = f" {_ELEM_EMOJI.get(el, '?')}" if el else ""
+            el_tag = f" {emojis.for_element(el)}" if el else ""
             cd = s.get("cooldown", 1)
             effects = _format_skill_effects(s.get("effects", []))
             realm = s.get("realm", 1)
@@ -448,7 +437,7 @@ class SkillListView(discord.ui.View):
                         )
                     else:  # WRONG_LINH_CAN
                         elem = gate.missing_element or ""
-                        elem_emoji = _ELEM_EMOJI.get(elem, "")
+                        elem_emoji = emojis.for_element(elem) if elem else ""
                         msg = (
                             f"Linh Căn của bạn không có {elem_emoji} **{elem.capitalize()}** — "
                             f"không thể học **{skill_data['vi']}**."
@@ -580,9 +569,9 @@ class SkillListView(discord.ui.View):
                 await interaction.response.edit_message(embed=emb_after, view=v_after)
                 return
 
-            t_e = _TYPE_EMOJI.get(skill_data.get("category", ""), "❓")
+            t_e = emojis.SKILL_CATEGORY_EMOJI.get(skill_data.get("category", ""), "❓")
             el = skill_data.get("element")
-            el_tag = f" {_ELEM_EMOJI.get(el, '')}" if el else ""
+            el_tag = f" {emojis.for_element(el)}" if el else ""
             effects = _format_skill_effects(skill_data.get("effects", []))
 
             embed = base_embed(f"📖 Học: {skill_data['vi']}", color=0x9B59B6)
@@ -816,11 +805,11 @@ def _build_skills_embed_view(
             if not skill_data:
                 continue
             category = skill_data.get("category", "")
-            t_emoji   = _TYPE_EMOJI.get(category, "❓")
+            t_emoji   = emojis.SKILL_CATEGORY_EMOJI.get(category, "❓")
             t_label   = _TYPE_LABEL.get(category, category or "—")
             elem      = skill_data.get("element")
             elem_tag  = (
-                f" · {_ELEM_EMOJI.get(elem, '')} {elem.capitalize()}"
+                f" · {emojis.for_element(elem)} {elem.capitalize()}"
                 if elem else ""
             )
             effects = _format_skill_effects(skill_data.get("effects", []))

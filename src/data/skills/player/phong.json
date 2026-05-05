@@ -56,7 +56,7 @@
     "cooldown": 2,
     "base_dmg": 55,
     "effects": [
-      "DebuffPhongAn"
+      "DebuffAnPhong"
     ],
     "formation_key": null
   },
@@ -146,7 +146,7 @@
     "base_dmg": 110,
     "effects": [
       "DebuffCuonBay",
-      "DebuffPhongAn",
+      "DebuffAnPhong",
       "DebuffLamCham"
     ],
     "formation_key": null,
@@ -155,7 +155,7 @@
       "DebuffCuonBay": {
         "duration": 1
       },
-      "DebuffPhongAn": {
+      "DebuffAnPhong": {
         "stat_bonus": {
           "evasion_rating": -180
         },
@@ -276,12 +276,12 @@
     "cooldown": 3,
     "base_dmg": 165,
     "effects": [
-      "DebuffPhongAn",
+      "DebuffAnPhong",
       "DebuffLamCham"
     ],
     "formation_key": null,
     "effect_overrides": {
-      "DebuffPhongAn": {
+      "DebuffAnPhong": {
         "stat_bonus": {
           "evasion_rating": -180
         }
@@ -396,13 +396,13 @@
     "cooldown": 5,
     "base_dmg": 290,
     "effects": [
-      "DebuffPhongAn",
+      "DebuffAnPhong",
       "DebuffLamCham",
       "DebuffChayMau"
     ],
     "formation_key": null,
     "effect_overrides": {
-      "DebuffPhongAn": {
+      "DebuffAnPhong": {
         "stat_bonus": {
           "evasion_rating": -210
         }
@@ -503,13 +503,13 @@
     "cooldown": 5,
     "base_dmg": 410,
     "effects": [
-      "DebuffPhongAn",
+      "DebuffAnPhong",
       "DebuffLamCham",
       "DebuffCuonBay"
     ],
     "formation_key": null,
     "effect_overrides": {
-      "DebuffPhongAn": {
+      "DebuffAnPhong": {
         "stat_bonus": {
           "evasion_rating": -225
         },
@@ -544,7 +544,7 @@
     "base_dmg": 395,
     "effects": [
       "DebuffCuonBay",
-      "DebuffPhongAn",
+      "DebuffAnPhong",
       "DebuffLamCham",
       "DebuffBaoMon"
     ],
@@ -554,7 +554,7 @@
       "DebuffCuonBay": {
         "duration": 2
       },
-      "DebuffPhongAn": {
+      "DebuffAnPhong": {
         "stat_bonus": {
           "evasion_rating": -260
         },
@@ -688,7 +688,7 @@
     "base_dmg": 525,
     "effects": [
       "DebuffCuonBay",
-      "DebuffPhongAn",
+      "DebuffAnPhong",
       "DebuffLamCham",
       "DebuffBaoMon",
       "DebuffXeRach"
@@ -699,7 +699,7 @@
       "DebuffCuonBay": {
         "duration": 2
       },
-      "DebuffPhongAn": {
+      "DebuffAnPhong": {
         "stat_bonus": {
           "evasion_rating": -300
         },

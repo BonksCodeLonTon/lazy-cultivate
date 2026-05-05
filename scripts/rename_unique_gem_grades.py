@@ -332,8 +332,8 @@ OVERRIDES: dict[str, dict[int, dict]] = {
             "unique_bonus": {"crit_rating": 64, "crit_dmg_rating": 65, "shock_on_hit_pct": 0.08, "spd_bonus": 3},
         },
     },
-    # ── 16. PhongAnPhaGioi (neutral, resistance) ───────────────────────
-    "GemUnique_PhongAnPhaGioi": {
+    # ── 16. AnPhongPhaGioi (neutral, resistance) ───────────────────────
+    "GemUnique_AnPhongPhaGioi": {
         1: {
             "vi": "Cấm Pháp Ngọc",
             "en": "Forbidden-Law Gem",

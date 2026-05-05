@@ -113,8 +113,8 @@ _ON_HIT_PROCS: tuple[dict, ...] = (
         "log_fmt": "    ⚡ Sốc Điện kích hoạt! [×{stacks}/{cap}]",
     },
     {
-        "chance_attr": "mark_on_hit_pct", "effect_key": EffectKey.DEBUFF_PHONG_AN,
-        "log_fmt": "    🌀 Phong Ấn kích hoạt!",
+        "chance_attr": "mark_on_hit_pct", "effect_key": EffectKey.DEBUFF_AN_PHONG,
+        "log_fmt": "    🌀 Ấn Phong kích hoạt!",
     },
     {
         "chance_attr": "slow_on_hit_pct", "effect_key": EffectKey.DEBUFF_LAM_CHAM,
@@ -123,6 +123,10 @@ _ON_HIT_PROCS: tuple[dict, ...] = (
     {
         "chance_attr": "heal_reduce_on_hit_pct", "effect_key": EffectKey.DEBUFF_CAT_DUT,
         "log_fmt": "    ✂️ Cắt Đứt kích hoạt!",
+    },
+    {
+        "chance_attr": "blind_on_hit_pct", "effect_key": EffectKey.DEBUFF_LOA_MAT,
+        "log_fmt": "    🌫️ Lóa Mắt kích hoạt!",
     },
 )
 

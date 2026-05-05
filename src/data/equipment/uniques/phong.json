@@ -7,15 +7,24 @@
     "realm": 2,
     "grade": 2,
     "rolled_stats": {
-      "evasion_rating": [51, 69],
-      "mp_max": [85, 115],
-      "matk": [17, 23]
+      "evasion_rating": [
+        51,
+        69
+      ],
+      "mp_max": [
+        85,
+        115
+      ],
+      "matk": [
+        17,
+        23
+      ]
     },
     "passive_bonus": {
       "mark_on_hit_pct": 0.15,
       "spd_bonus": 1
     },
-    "description_vi": "Phù linh hóa thân làm gió — 15% Phong Ấn on-hit, nhanh nhẹn hơn."
+    "description_vi": "Phù linh hóa thân làm gió — 15% Ấn Phong on-hit, nhanh nhẹn hơn."
   },
   {
     "key": "uniq_phong_tuyet_kiem",
@@ -25,15 +34,26 @@
     "realm": 3,
     "grade": 3,
     "rolled_stats": {
-      "atk": [36, 48],
-      "evasion_rating": [68, 92],
-      "crit_rating": [60, 81]
+      "atk": [
+        36,
+        48
+      ],
+      "evasion_rating": [
+        68,
+        92
+      ],
+      "crit_rating": [
+        60,
+        81
+      ]
     },
     "passive_bonus": {
       "mark_on_hit_pct": 0.25,
-      "phong_res_shred": 0.08
+      "element_res_shred": {
+        "phong": 0.08
+      }
     },
-    "description_vi": "Kiếm tuyết phong — 25% Phong Ấn on-hit, xuyên 8% kháng Phong."
+    "description_vi": "Kiếm tuyết phong — 25% Ấn Phong on-hit, xuyên 8% kháng Phong."
   },
   {
     "key": "uniq_tieu_dao_boots",
@@ -43,9 +63,18 @@
     "realm": 4,
     "grade": 4,
     "rolled_stats": {
-      "evasion_rating": [128, 173],
-      "hp_max": [153, 207],
-      "spd_bonus": [3, 3]
+      "evasion_rating": [
+        128,
+        173
+      ],
+      "hp_max": [
+        153,
+        207
+      ],
+      "spd_bonus": [
+        3,
+        3
+      ]
     },
     "passive_bonus": {
       "damage_bonus_from_evasion_pct": 0.06,
@@ -61,15 +90,24 @@
     "realm": 5,
     "grade": 5,
     "rolled_stats": {
-      "evasion_rating": [119, 161],
-      "mp_max": [221, 299],
-      "crit_rating": [102, 138]
+      "evasion_rating": [
+        119,
+        161
+      ],
+      "mp_max": [
+        221,
+        299
+      ],
+      "crit_rating": [
+        102,
+        138
+      ]
     },
     "passive_bonus": {
       "crit_rating_vs_marked": 80,
       "crit_dmg_vs_marked": 100
     },
-    "description_vi": "Bội tâm của gió mưa — bạo kích vượt trội với mục tiêu bị Phong Ấn."
+    "description_vi": "Bội tâm của gió mưa — bạo kích vượt trội với mục tiêu bị Ấn Phong."
   },
   {
     "key": "uniq_phong_than_nhan",
@@ -79,15 +117,24 @@
     "realm": 5,
     "grade": 5,
     "rolled_stats": {
-      "matk": [41, 55],
-      "evasion_rating": [94, 127],
-      "crit_rating": [85, 115]
+      "matk": [
+        41,
+        55
+      ],
+      "evasion_rating": [
+        94,
+        127
+      ],
+      "crit_rating": [
+        85,
+        115
+      ]
     },
     "passive_bonus": {
       "mark_on_hit_pct": 0.3,
       "cooldown_reduce": 0.08
     },
-    "description_vi": "Nhẫn Phong Thần — 30% Phong Ấn on-hit, giảm CD."
+    "description_vi": "Nhẫn Phong Thần — 30% Ấn Phong on-hit, giảm CD."
   },
   {
     "key": "uniq_phong_long_giap",
@@ -97,10 +144,22 @@
     "realm": 7,
     "grade": 7,
     "rolled_stats": {
-      "def_stat": [38, 52],
-      "hp_max": [391, 529],
-      "evasion_rating": [204, 276],
-      "mp_max": [170, 230]
+      "def_stat": [
+        38,
+        52
+      ],
+      "hp_max": [
+        391,
+        529
+      ],
+      "evasion_rating": [
+        204,
+        276
+      ],
+      "mp_max": [
+        170,
+        230
+      ]
     },
     "passive_bonus": {
       "damage_bonus_from_evasion_pct": 0.12,
@@ -116,16 +175,27 @@
     "realm": 7,
     "grade": 7,
     "rolled_stats": {
-      "matk": [51, 69],
-      "evasion_rating": [170, 230],
-      "crit_rating": [119, 161]
+      "matk": [
+        51,
+        69
+      ],
+      "evasion_rating": [
+        170,
+        230
+      ],
+      "crit_rating": [
+        119,
+        161
+      ]
     },
     "passive_bonus": {
       "mark_on_hit_pct": 0.4,
-      "phong_res_shred": 0.15,
+      "element_res_shred": {
+        "phong": 0.15
+      },
       "crit_rating_vs_marked": 120
     },
-    "description_vi": "Mão Phong Long — 40% Phong Ấn on-hit, xuyên 15% kháng Phong, bạo kích vs Phong Ấn."
+    "description_vi": "Mão Phong Long — 40% Ấn Phong on-hit, xuyên 15% kháng Phong, bạo kích vs Ấn Phong."
   },
   {
     "key": "uniq_phong_van_dai",
@@ -135,9 +205,18 @@
     "realm": 8,
     "grade": 8,
     "rolled_stats": {
-      "evasion_rating": [187, 253],
-      "hp_max": [289, 391],
-      "mp_max": [170, 230]
+      "evasion_rating": [
+        187,
+        253
+      ],
+      "hp_max": [
+        289,
+        391
+      ],
+      "mp_max": [
+        170,
+        230
+      ]
     },
     "passive_bonus": {
       "spd_bonus": 6,
@@ -154,10 +233,22 @@
     "realm": 8,
     "grade": 8,
     "rolled_stats": {
-      "matk": [68, 92],
-      "evasion_rating": [221, 299],
-      "crit_rating": [170, 230],
-      "final_dmg_bonus": [0.085, 0.115]
+      "matk": [
+        68,
+        92
+      ],
+      "evasion_rating": [
+        221,
+        299
+      ],
+      "crit_rating": [
+        170,
+        230
+      ],
+      "final_dmg_bonus": [
+        0.085,
+        0.115
+      ]
     },
     "passive_bonus": {
       "crit_rating_vs_marked": 180,
@@ -173,16 +264,28 @@
     "realm": 9,
     "grade": 9,
     "rolled_stats": {
-      "atk": [136, 184],
-      "evasion_rating": [306, 414],
-      "crit_rating": [306, 414],
-      "crit_dmg_rating": [255, 345]
+      "atk": [
+        136,
+        184
+      ],
+      "evasion_rating": [
+        306,
+        414
+      ],
+      "crit_rating": [
+        306,
+        414
+      ],
+      "crit_dmg_rating": [
+        255,
+        345
+      ]
     },
     "passive_bonus": {
       "mark_on_hit_pct": 0.9,
       "damage_bonus_from_evasion_pct": 0.15
     },
-    "description_vi": "Tổ kiếm Phong Đạo — 90% Phong Ấn on-hit, né tránh hóa thần công."
+    "description_vi": "Tổ kiếm Phong Đạo — 90% Ấn Phong on-hit, né tránh hóa thần công."
   },
   {
     "key": "uniq_phong_tu_quan",
@@ -192,14 +295,25 @@
     "realm": 9,
     "grade": 9,
     "rolled_stats": {
-      "matk": [102, 138],
-      "evasion_rating": [272, 368],
-      "crit_rating": [238, 322]
+      "matk": [
+        102,
+        138
+      ],
+      "evasion_rating": [
+        272,
+        368
+      ],
+      "crit_rating": [
+        238,
+        322
+      ]
     },
     "passive_bonus": {
       "crit_rating_vs_marked": 300,
       "crit_dmg_vs_marked": 360,
-      "phong_res_shred": 0.3
+      "element_res_shred": {
+        "phong": 0.3
+      }
     },
     "description_vi": "Mão Phong Tổ — bạo kích khổng lồ vs mục tiêu đánh dấu, xuyên 30% kháng Phong."
   },
@@ -211,9 +325,18 @@
     "realm": 9,
     "grade": 9,
     "rolled_stats": {
-      "evasion_rating": [340, 460],
-      "hp_max": [357, 483],
-      "spd_bonus": [7, 9]
+      "evasion_rating": [
+        340,
+        460
+      ],
+      "hp_max": [
+        357,
+        483
+      ],
+      "spd_bonus": [
+        7,
+        9
+      ]
     },
     "passive_bonus": {
       "damage_bonus_from_evasion_pct": 0.2,

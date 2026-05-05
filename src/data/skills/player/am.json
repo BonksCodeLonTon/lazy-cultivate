@@ -712,5 +712,38 @@
         "duration": 2
       }
     }
+  },
+  {
+    "key": "SkillMaThanCong_R9",
+    "vi": "Ma Thần Công",
+    "en": "Demon God Art",
+    "realm": 9,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 1.4
+    },
+    "mp_cost": 160,
+    "cooldown": 7,
+    "base_dmg": 720,
+    "true_dmg_pct": 0.08,
+    "effects": [
+      "ApplySoulDrain",
+      "ApplyStatSteal",
+      "DebuffXeRach"
+    ],
+    "formation_key": null,
+    "description_vi": "Ma Thần Công — công pháp tà đạo nuốt thiên hấp địa. Tâm pháp cốt lõi của Thôn Thiên Ma Thể.",
+    "effect_overrides": {
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.15
+        },
+        "duration": 3
+      }
+    }
   }
 ]

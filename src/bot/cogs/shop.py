@@ -16,6 +16,7 @@ from src.game.systems.economy import (
     get_fixed_shop, get_rotating_shop, get_dark_market, get_skill_scroll_shop,
     purchase, ShopSlot,
 )
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
@@ -41,11 +42,11 @@ def _item_name(item_key: str) -> str:
 
 
 def _grade_emoji(grade: int) -> str:
-    return {1: "🟢", 2: "🟣", 3: "🟡", 4: "🔴"}.get(grade, "⚪")
+    return emojis.for_grade(grade)
 
 
 def _currency_emoji(currency: str) -> str:
-    return {"merit": "✨", "karma_usable": "☯️", "primordial_stones": "💎"}.get(currency, "💰")
+    return emojis.for_currency(currency)
 
 
 def _get_slots(section: str) -> list[ShopSlot]:

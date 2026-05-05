@@ -25,6 +25,7 @@ from src.game.systems.dungeon import (
     DungeonResult, merge_loot, qualifying_axis,
     _build_wave_list, _grade_progress, _roll_encounter_grade, _roll_boss_grade, _apply_encounter_grade,
 )
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
@@ -151,9 +152,9 @@ def _dungeon_detail_embed(
 
     merit = d.get("merit_reward", 0)
     stones = d.get("stone_reward", 0)
-    reward_lines = [f"✨ {merit:,} Công Đức"]
+    reward_lines = [f"{emojis.for_currency('merit')} {merit:,} Công Đức"]
     if stones:
-        reward_lines.append(f"💎 {stones:,} Hỗn Nguyên Thạch")
+        reward_lines.append(f"{emojis.for_currency('primordial_stones')} {stones:,} Hỗn Nguyên Thạch")
     embed.add_field(name="Phần Thưởng", value="\n".join(reward_lines), inline=True)
 
     # Pool preview
@@ -222,11 +223,11 @@ def _build_result_embeds(
 
     if result.success:
         loot_str = _format_loot(result.loot)
-        stone_line = f"\n💎 **+{result.stone_gained:,} Hỗn Nguyên Thạch**" if result.stone_gained else ""
+        stone_line = f"\n{emojis.for_currency('primordial_stones')} **+{result.stone_gained:,} Hỗn Nguyên Thạch**" if result.stone_gained else ""
         summary_embed = success_embed(
             f"✅ **{player_name}** chinh phục **{dungeon_name}**!\n"
             f"Hoàn thành {result.waves_cleared}/{result.total_waves} đợt.\n\n"
-            f"✨ **+{result.merit_gained:,} Công Đức**{stone_line}\n"
+            f"{emojis.for_currency('merit')} **+{result.merit_gained:,} Công Đức**{stone_line}\n"
             f"🎁 {loot_str}"
         )
         summary_embed.title = f"🏆 Chinh Phục {dungeon_name}"
@@ -236,7 +237,7 @@ def _build_result_embeds(
         summary_embed = error_embed(
             f"💀 **{player_name}** đã thất bại{died_line}!\n"
             f"Hoàn thành {result.waves_cleared}/{result.total_waves} đợt.\n\n"
-            f"✨ **+{result.merit_gained:,} Công Đức** (từ chiến đấu){loot_str}"
+            f"{emojis.for_currency('merit')} **+{result.merit_gained:,} Công Đức** (từ chiến đấu){loot_str}"
         )
         summary_embed.title = f"💀 Thất Bại — {dungeon_name}"
 

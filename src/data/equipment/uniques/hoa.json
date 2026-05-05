@@ -276,7 +276,9 @@
       ]
     },
     "passive_bonus": {
-      "fire_res_shred": 0.15,
+      "element_res_shred": {
+        "hoa": 0.15
+      },
       "burn_stack_cap_bonus": 3,
       "bonus_dmg_vs_burn": 0.25
     },
@@ -335,7 +337,9 @@
       ]
     },
     "passive_bonus": {
-      "fire_res_shred": 0.12,
+      "element_res_shred": {
+        "hoa": 0.12
+      },
       "bonus_dmg_vs_burn": 0.3,
       "cooldown_reduce": 0.1
     },
@@ -426,7 +430,9 @@
     },
     "passive_bonus": {
       "burn_on_hit_pct": 0.55,
-      "fire_res_shred": 0.1
+      "element_res_shred": {
+        "hoa": 0.1
+      }
     },
     "description_vi": "Găng Hỏa Tổ — 55% Thiêu Đốt on-hit, xuyên thêm 10% kháng hỏa"
   },
@@ -452,7 +458,9 @@
       ]
     },
     "passive_bonus": {
-      "fire_res_shred": 0.25,
+      "element_res_shred": {
+        "hoa": 0.25
+      },
       "burn_stack_cap_bonus": 5,
       "dot_can_crit": true
     },
@@ -481,7 +489,7 @@
     },
     "passive_bonus": {
       "burn_on_hit_pct": 0.25,
-      "burn_dmg_bonus": 0.20,
+      "burn_dmg_bonus": 0.2,
       "burn_stack_cap_bonus": 5
     },
     "description_vi": "Kiếm Thái Thượng — đỉnh cao Hỏa đạo: lưỡi kiếm thiêu đốt vạn vật, mỗi tầng Thiêu Đốt nặng hơn và kéo dài hơn, kẻ địch bốc cháy chịu sát thương cực hạn."

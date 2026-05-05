@@ -43,7 +43,7 @@
     "effect_overrides": {
       "BuffKimCuong": {"duration": 5, "stat_bonus": {"final_dmg_reduce": 0.30}},
       "BuffHoPhap": {"duration": 5, "stat_bonus": {"final_dmg_reduce": 0.35, "crit_res_rating": 200}},
-      "BuffBatTu": {"duration": 2}
+      "BuffBatTu": {"duration": 1}
     },
     "formation_key": null
   },

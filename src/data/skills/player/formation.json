@@ -91,12 +91,12 @@
     "cooldown": 3,
     "base_dmg": 95,
     "effects": [
-      "DebuffPhongAn",
+      "DebuffAnPhong",
       "DebuffLamCham"
     ],
     "formation_key": "NhatNguyenPhong",
     "effect_overrides": {
-      "DebuffPhongAn": {
+      "DebuffAnPhong": {
         "stat_bonus": {
           "evasion_rating": -180
         }

@@ -28,7 +28,7 @@ class CharacterStats:
     true_dmg: int = 0
     reflect_dmg: float = 0.0
 
-    # Elemental resistances (percentage, 0.0–0.75) — one per Element (9 total, mirrors Linh Căn)
+    # Elemental resistances (percentage, 0.0–MAX_ELEMENTAL_RES) — one per Element (9 total, mirrors Linh Căn)
     res_kim: float = 0.0
     res_moc: float = 0.0
     res_thuy: float = 0.0
@@ -63,7 +63,7 @@ class Character:
     formation_level: int = 1
 
     # Constitution
-    constitution_type: str = "ConstitutionVanTuong"  # Vạn Tượng default (free)
+    constitution_type: str = "ConstitutionPhamThe"  # Phàm Thể default (mortal baseline)
     dao_ti_unlocked: bool = False  # True once Nhập Thánh Cấp 9 breakthrough done
 
     # Currencies

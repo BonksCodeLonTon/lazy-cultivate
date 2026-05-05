@@ -30,7 +30,9 @@
       "final_dmg_bonus": 0.06,
       "burn_on_hit_pct": 0.2,
       "burn_dmg_bonus": 0.15,
-      "fire_res_shred": 0.05
+      "element_res_shred": {
+        "hoa": 0.05
+      }
     }
   },
   {
@@ -64,7 +66,9 @@
       "crit_rating": 50,
       "soul_drain_on_hit_pct": 0.08,
       "crit_rating_vs_drained": 100,
-      "am_res_shred": 0.08
+      "element_res_shred": {
+        "am": 0.08
+      }
     }
   },
   {
@@ -133,7 +137,9 @@
       "silence_on_crit_pct": 0.2,
       "cleanse_on_turn_pct": 0.1,
       "barrier_on_cleanse": true,
-      "quang_res_shred": 0.08
+      "element_res_shred": {
+        "quang": 0.08
+      }
     }
   },
   {
@@ -151,7 +157,9 @@
       "mp_leech_pct": 0.08,
       "damage_bonus_from_mp_pct": 0.04,
       "mp_regen_pct": 0.02,
-      "thuy_res_shred": 0.05
+      "element_res_shred": {
+        "thuy": 0.05
+      }
     }
   },
   {
@@ -185,7 +193,9 @@
       "final_dmg_bonus": 0.1,
       "true_dmg_pct": 0.02,
       "crit_dmg_rating": 100,
-      "kim_res_shred": 0.05
+      "element_res_shred": {
+        "kim": 0.05
+      }
     }
   },
   {
@@ -257,7 +267,7 @@
     }
   },
   {
-    "key": "GemUnique_PhongAnPhaGioi",
+    "key": "GemUnique_AnPhongPhaGioi",
     "vi": "Phong Ấn Phá Giới Ngọc",
     "en": "Seal-Break Boundary Gem",
     "type": "gem",
@@ -287,7 +297,9 @@
       "freeze_on_skill_chance": 0.15,
       "slow_on_hit_pct": 0.2,
       "crit_rating_vs_marked": 60,
-      "thuy_res_shred": 0.06
+      "element_res_shred": {
+        "thuy": 0.06
+      }
     }
   },
   {
@@ -356,7 +368,9 @@
       "dot_dmg_bonus": 0.25,
       "poison_dmg_bonus": 0.2,
       "dot_can_crit": true,
-      "moc_res_shred": 0.06
+      "element_res_shred": {
+        "moc": 0.06
+      }
     }
   },
   {
@@ -452,7 +466,9 @@
     "unique_bonus": {
       "final_dmg_bonus": 0.04,
       "burn_on_hit_pct": 0.12,
-      "fire_res_shred": 0.03
+      "element_res_shred": {
+        "hoa": 0.03
+      }
     }
   },
   {
@@ -469,7 +485,9 @@
       "final_dmg_bonus": 0.05,
       "burn_on_hit_pct": 0.16,
       "burn_dmg_bonus": 0.1,
-      "fire_res_shred": 0.04
+      "element_res_shred": {
+        "hoa": 0.04
+      }
     }
   },
   {
@@ -532,7 +550,9 @@
     "description_vi": "Ngọc nhuộm âm khí mờ nhạt, chớm hút sinh lực đối thủ.",
     "unique_bonus": {
       "crit_rating": 20,
-      "am_res_shred": 0.03
+      "element_res_shred": {
+        "am": 0.03
+      }
     }
   },
   {
@@ -548,7 +568,9 @@
     "unique_bonus": {
       "crit_rating": 30,
       "soul_drain_on_hit_pct": 0.04,
-      "am_res_shred": 0.04
+      "element_res_shred": {
+        "am": 0.04
+      }
     }
   },
   {
@@ -565,7 +587,9 @@
       "crit_rating": 40,
       "soul_drain_on_hit_pct": 0.06,
       "crit_rating_vs_drained": 60,
-      "am_res_shred": 0.06
+      "element_res_shred": {
+        "am": 0.06
+      }
     }
   },
   {
@@ -723,7 +747,9 @@
     "description_vi": "Ngọc quang chiếu sáng trái tim, trị liệu mạnh mẽ hơn người thường.",
     "unique_bonus": {
       "heal_pct": 0.08,
-      "quang_res_shred": 0.03
+      "element_res_shred": {
+        "quang": 0.03
+      }
     }
   },
   {
@@ -739,7 +765,9 @@
     "unique_bonus": {
       "heal_pct": 0.12,
       "cleanse_on_turn_pct": 0.05,
-      "quang_res_shred": 0.05
+      "element_res_shred": {
+        "quang": 0.05
+      }
     }
   },
   {
@@ -756,7 +784,9 @@
       "heal_pct": 0.16,
       "silence_on_crit_pct": 0.12,
       "cleanse_on_turn_pct": 0.08,
-      "quang_res_shred": 0.06
+      "element_res_shred": {
+        "quang": 0.06
+      }
     }
   },
   {
@@ -804,7 +834,9 @@
       "mp_pct": 0.12,
       "mp_leech_pct": 0.06,
       "damage_bonus_from_mp_pct": 0.025,
-      "thuy_res_shred": 0.04
+      "element_res_shred": {
+        "thuy": 0.04
+      }
     }
   },
   {
@@ -881,7 +913,9 @@
     "unique_bonus": {
       "final_dmg_bonus": 0.06,
       "crit_dmg_rating": 60,
-      "kim_res_shred": 0.02
+      "element_res_shred": {
+        "kim": 0.02
+      }
     }
   },
   {
@@ -898,7 +932,9 @@
       "final_dmg_bonus": 0.08,
       "crit_dmg_rating": 80,
       "true_dmg_pct": 0.015,
-      "kim_res_shred": 0.03
+      "element_res_shred": {
+        "kim": 0.03
+      }
     }
   },
   {
@@ -1094,7 +1130,7 @@
     }
   },
   {
-    "key": "GemUnique_PhongAnPhaGioi_G1",
+    "key": "GemUnique_AnPhongPhaGioi_G1",
     "vi": "Cấm Pháp Ngọc",
     "en": "Forbidden-Law Gem",
     "type": "gem",
@@ -1109,7 +1145,7 @@
     }
   },
   {
-    "key": "GemUnique_PhongAnPhaGioi_G2",
+    "key": "GemUnique_AnPhongPhaGioi_G2",
     "vi": "Phá Ấn Ngọc",
     "en": "Seal-Break Gem",
     "type": "gem",
@@ -1125,7 +1161,7 @@
     }
   },
   {
-    "key": "GemUnique_PhongAnPhaGioi_G3",
+    "key": "GemUnique_AnPhongPhaGioi_G3",
     "vi": "Phá Giới Ngọc",
     "en": "Boundary-Break Gem",
     "type": "gem",
@@ -1153,7 +1189,9 @@
     "description_vi": "Ngọc thủy lạnh thấm vào tâm, đòn đánh làm chậm đối thủ đôi chút.",
     "unique_bonus": {
       "slow_on_hit_pct": 0.08,
-      "thuy_res_shred": 0.02
+      "element_res_shred": {
+        "thuy": 0.02
+      }
     }
   },
   {
@@ -1169,7 +1207,9 @@
     "unique_bonus": {
       "slow_on_hit_pct": 0.12,
       "crit_rating_vs_marked": 30,
-      "thuy_res_shred": 0.04
+      "element_res_shred": {
+        "thuy": 0.04
+      }
     }
   },
   {
@@ -1185,7 +1225,9 @@
     "unique_bonus": {
       "slow_on_hit_pct": 0.16,
       "crit_rating_vs_marked": 50,
-      "thuy_res_shred": 0.05
+      "element_res_shred": {
+        "thuy": 0.05
+      }
     }
   },
   {
@@ -1347,7 +1389,9 @@
     "description_vi": "Ngọc mộc tỏa mùi hương lờ mờ, khuếch đại hiệu lực DoT nhẹ.",
     "unique_bonus": {
       "dot_dmg_bonus": 0.1,
-      "moc_res_shred": 0.02
+      "element_res_shred": {
+        "moc": 0.02
+      }
     }
   },
   {
@@ -1363,7 +1407,9 @@
     "unique_bonus": {
       "dot_dmg_bonus": 0.15,
       "poison_dmg_bonus": 0.1,
-      "moc_res_shred": 0.03
+      "element_res_shred": {
+        "moc": 0.03
+      }
     }
   },
   {
@@ -1379,7 +1425,9 @@
     "unique_bonus": {
       "dot_dmg_bonus": 0.2,
       "poison_dmg_bonus": 0.15,
-      "moc_res_shred": 0.05,
+      "element_res_shred": {
+        "moc": 0.05
+      },
       "burn_dmg_bonus": 0.1
     }
   },
@@ -1411,7 +1459,9 @@
     "unique_bonus": {
       "slow_on_hit_pct": 0.12,
       "heal_reduce_on_hit_pct": 0.18,
-      "thuy_res_shred": 0.03
+      "element_res_shred": {
+        "thuy": 0.03
+      }
     }
   },
   {
@@ -1427,7 +1477,9 @@
     "unique_bonus": {
       "slow_on_hit_pct": 0.14,
       "heal_reduce_on_hit_pct": 0.22,
-      "thuy_res_shred": 0.04,
+      "element_res_shred": {
+        "thuy": 0.04
+      },
       "final_dmg_bonus": 0.03
     }
   }

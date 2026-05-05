@@ -10,7 +10,9 @@
     "passive_description_vi": "Linh khí Quang sơ khởi tụ trong thân, mọi thuộc tính kháng bạo đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.06,
-      "final_dmg_bonus": 0.04,
+      "element_dmg_bonus": {
+        "quang": 0.04
+      },
       "crit_res_rating": 60
     },
     "special_requirements": null,
@@ -72,7 +74,8 @@
     "stat_bonuses": {
       "hp_pct": 0.07,
       "cleanse_on_turn_pct": 0.1,
-      "heal_pct": 0.05
+      "heal_pct": 0.05,
+      "hp_flat_per_realm": 200
     },
     "special_requirements": null,
     "materials": {
@@ -112,7 +115,9 @@
     "passive_description_vi": "Linh khí Quang đã hậu nhập huyết mạch — sức mạnh kháng bạo vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.096,
-      "final_dmg_bonus": 0.064,
+      "element_dmg_bonus": {
+        "quang": 0.064
+      },
       "crit_res_rating": 96
     },
     "special_requirements": null,
@@ -153,7 +158,8 @@
     "stat_bonuses": {
       "hp_pct": 0.112,
       "cleanse_on_turn_pct": 0.16,
-      "heal_pct": 0.08
+      "heal_pct": 0.08,
+      "hp_flat_per_realm": 350
     },
     "special_requirements": null,
     "materials": {
@@ -172,7 +178,9 @@
     "passive_description_vi": "Thân hóa linh thể Quang, kháng bạo mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.144,
-      "final_dmg_bonus": 0.096,
+      "element_dmg_bonus": {
+        "quang": 0.096
+      },
       "crit_res_rating": 144
     },
     "special_requirements": null,
@@ -215,7 +223,8 @@
     "stat_bonuses": {
       "hp_pct": 0.168,
       "cleanse_on_turn_pct": 0.24,
-      "heal_pct": 0.12
+      "heal_pct": 0.12,
+      "hp_flat_per_realm": 500
     },
     "special_requirements": null,
     "materials": {
@@ -301,7 +310,8 @@
     "stat_bonuses": {
       "hp_pct": 0.245,
       "cleanse_on_turn_pct": 0.35,
-      "heal_pct": 0.175
+      "heal_pct": 0.175,
+      "hp_flat_per_realm": 750
     },
     "special_requirements": null,
     "materials": {
@@ -340,7 +350,7 @@
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Đế thể Quang — đỉnh cao của lộ trình kháng bạo, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "hp_pct": 0.3,
@@ -353,7 +363,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssQuang": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionQuangLien_Leg",
@@ -362,7 +373,7 @@
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Đế thể Quang — đỉnh cao của lộ trình linh lực, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "mp_pct": 0.4,
@@ -375,7 +386,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssQuang": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionQuangTinh_Leg",
@@ -384,12 +396,13 @@
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Đế thể Quang — đỉnh cao của lộ trình thanh tẩy, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "hp_pct": 0.35,
       "cleanse_on_turn_pct": 0.5,
-      "heal_pct": 0.25
+      "heal_pct": 0.25,
+      "hp_flat_per_realm": 1000
     },
     "special_requirements": null,
     "materials": {
@@ -397,7 +410,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssQuang": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionVoLuongQuang",
@@ -406,7 +420,7 @@
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Hóa thân Thánh Quang bất diệt, mỗi lần thanh tẩy sinh khiên, trị liệu có thể bạo kích và áp chế toàn diện kẻ thù.",
     "stat_bonuses": {
       "hp_pct": 0.25,
@@ -417,7 +431,9 @@
       "cleanse_on_turn_pct": 0.25,
       "silence_on_crit_pct": 0.3,
       "heal_reduce_on_hit_pct": 0.25,
-      "quang_res_shred": 0.15
+      "element_res_shred": {
+        "quang": 0.15
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -425,6 +441,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssQuang": 6
-    }
+    },
+    "cost_stones": 80000
   }
 ]

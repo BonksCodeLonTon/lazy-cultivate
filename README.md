@@ -21,7 +21,7 @@ Three independent axes, each with 9 realms × 9 levels (81 stages per axis):
 
 ### Combat Engine
 - No base ATK/DEF — all damage from skills: `DMG = BaseDMG + MPCost`
-- Turn order by SPD stat; rating formula: `% = Rating / (Rating + 1300)`
+- Turn order by SPD stat; rating formula: `% = Rating / (Rating + 3000)`
 - **42 combat effects**: 23 buffs + 19 debuffs/CC — buffs actively modify stats in combat
 - 50 learnable skills in 4 types: **Thiên** (attack) / **Địa** (defense) / **Nhân** (support/CC) / **Trận Pháp**
 

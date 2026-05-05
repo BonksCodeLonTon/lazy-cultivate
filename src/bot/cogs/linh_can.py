@@ -28,12 +28,15 @@ from src.game.systems.linh_can import (
     LinhCanError, get_levels, player_max_level,
     unlock_cost, unlock_linh_can, upgrade_cost, upgrade_linh_can,
 )
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
 
+# Slash-command Choice names render as plain text (no custom-emoji parsing),
+# so we use the Vietnamese name only — the embeds and buttons handle the
+# custom emoji separately.
 _ELEMENT_CHOICES = [
-    Choice(name=f"{LINH_CAN_DATA[k]['emoji']} {LINH_CAN_DATA[k]['vi']}", value=k)
-    for k in ALL_LINH_CAN
+    Choice(name=LINH_CAN_DATA[k]["vi"], value=k) for k in ALL_LINH_CAN
 ]
 
 # Type alias for the back-callback the status page hands us.
@@ -48,7 +51,7 @@ def _format_cost(cost) -> str:
         return "(miễn phí)"
     lines: list[str] = []
     if cost.merit > 0:
-        lines.append(f"💰 Công Đức: **{cost.merit:,}**")
+        lines.append(f"{emojis.for_currency('merit')} Công Đức: **{cost.merit:,}**")
     for item_key, qty in cost.materials.items():
         item = registry.get_item(item_key)
         name = item["vi"] if item else item_key
@@ -81,10 +84,10 @@ def _format_thresholds_block(element: str, level: int) -> str:
 def build_overview_embed(
     player_name: str, levels: dict[str, int], cap: int,
 ) -> discord.Embed:
-    from src.game.constants.linh_can import (
-        LINH_CAN_BREADTH_MIN_LEVEL, LINH_CAN_BREADTH_MAX_MULT,
-        linh_can_breadth_multiplier,
+    from src.game.constants.balance import (
+        LINH_CAN_BREADTH_MAX_MULT, LINH_CAN_BREADTH_MIN_LEVEL,
     )
+    from src.game.constants.linh_can import linh_can_breadth_multiplier
 
     embed = base_embed(
         f"🌿 Linh Căn — {player_name}",
@@ -246,18 +249,22 @@ class LinhCanHubView(discord.ui.View):
         self._back_fn = back_fn
 
         # 9 element buttons spread across rows 0-2 (3 per row), then row 3
-        # is reserved for the back button.
+        # is reserved for the back button. Discord doesn't parse custom
+        # emoji syntax in button ``label`` text — pass it via ``emoji=`` as
+        # a PartialEmoji so the icon actually renders.
         for i, elem in enumerate(ALL_LINH_CAN):
             data = LINH_CAN_DATA[elem]
             owned_lv = levels.get(elem, 0)
             label = (
-                f"{data['emoji']} {data['vi']} Lv{owned_lv}"
-                if owned_lv else f"{data['emoji']} {data['vi']}"
+                f"{data['vi']} Lv{owned_lv}" if owned_lv else data['vi']
             )
             style = (
                 discord.ButtonStyle.success if owned_lv else discord.ButtonStyle.secondary
             )
-            btn = discord.ui.Button(label=label, style=style, row=i // 3)
+            btn = discord.ui.Button(
+                label=label, style=style, row=i // 3,
+                emoji=discord.PartialEmoji.from_str(data["emoji"]),
+            )
             btn.callback = self._make_element_cb(elem)
             self.add_item(btn)
 
@@ -400,7 +407,7 @@ class LinhCanDetailView(discord.ui.View):
         await interaction.followup.send(
             embed=success_embed(
                 f"{data['emoji']} Đã khai mở **{data['vi']}** Linh Căn (Lv{result['level']}).\n\n"
-                f"💰 Công Đức tiêu hao: **{result['spent_merit']:,}**\n{consumed}\n\n"
+                f"{emojis.for_currency('merit')} Công Đức tiêu hao: **{result['spent_merit']:,}**\n{consumed}\n\n"
                 f"_Hiệu ứng nền: {data['description']}_"
             ),
             ephemeral=True,
@@ -444,7 +451,7 @@ class LinhCanDetailView(discord.ui.View):
         await interaction.followup.send(
             embed=success_embed(
                 f"{data['emoji']} **{data['vi']}** Linh Căn — đã đạt **Lv{new_level}**!\n\n"
-                f"💰 Công Đức tiêu hao: **{result['spent_merit']:,}**\n{consumed}\n\n"
+                f"{emojis.for_currency('merit')} Công Đức tiêu hao: **{result['spent_merit']:,}**\n{consumed}\n\n"
                 f"{new_unlocks_block}"
             ),
             ephemeral=True,
@@ -527,7 +534,7 @@ class LinhCanCog(commands.Cog, name="LinhCan"):
         await interaction.followup.send(
             embed=success_embed(
                 f"{data['emoji']} Đã khai mở **{data['vi']}** Linh Căn (Lv{result['level']}).\n\n"
-                f"💰 Công Đức tiêu hao: **{result['spent_merit']:,}**\n{consumed}\n\n"
+                f"{emojis.for_currency('merit')} Công Đức tiêu hao: **{result['spent_merit']:,}**\n{consumed}\n\n"
                 f"_Hiệu ứng nền: {data['description']}_"
             ),
             ephemeral=True,
@@ -574,7 +581,7 @@ class LinhCanCog(commands.Cog, name="LinhCan"):
         await interaction.followup.send(
             embed=success_embed(
                 f"{data['emoji']} **{data['vi']}** Linh Căn — đã đạt **Lv{new_level}**!\n\n"
-                f"💰 Công Đức tiêu hao: **{result['spent_merit']:,}**\n{consumed}\n\n"
+                f"{emojis.for_currency('merit')} Công Đức tiêu hao: **{result['spent_merit']:,}**\n{consumed}\n\n"
                 f"{new_unlocks_block}"
             ),
             ephemeral=True,

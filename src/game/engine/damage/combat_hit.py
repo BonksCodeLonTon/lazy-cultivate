@@ -12,6 +12,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Callable
 
 from src.game.constants.balance import (
+    MAX_ELEMENTAL_RES,
     MAX_FINAL_DMG_REDUCE,
     SPD_EVASION_BASELINE,
     SPD_EVASION_CAP,
@@ -35,16 +36,8 @@ def spd_evasion_bonus(spd: int) -> int:
     return min(SPD_EVASION_CAP, raw)
 
 
-# Elemental resistance → attacker shred field on the attacker Combatant.
-_ELEM_SHRED_FIELD: dict[str, str] = {
-    "hoa":   "fire_res_shred",
-    "moc":   "moc_res_shred",
-    "thuy":  "thuy_res_shred",
-    "loi":   "loi_res_shred",
-    "phong": "phong_res_shred",
-    "quang": "quang_res_shred",
-    "am":    "am_res_shred",
-}
+# Per-element shred is now read directly from ``actor.element_res_shred``
+# (the generic dict). The legacy 7 flat fields have been removed.
 
 
 def build_attack_stats(
@@ -65,8 +58,16 @@ def build_attack_stats(
         matches that element (e.g. BuffHoaThan boosts Hỏa skills only).
     """
     final_dmg_bonus = actor.final_dmg_bonus + actor_mods.get("final_dmg_bonus", 0.0)
+    # Hào Quang Củng Cố — each accumulated fortify stack also boosts outgoing
+    # final damage (matches the symmetric DR contribution in
+    # ``effective_damage_reduction``). Stacks tick up during periodic phase.
+    if actor.fortify_per_turn_pct > 0 and actor.fortify_stacks > 0:
+        final_dmg_bonus += actor.fortify_per_turn_pct * actor.fortify_stacks
     if skill_element:
         final_dmg_bonus += actor_mods.get(f"dmg_bonus_{skill_element}", 0.0)
+        # Permanent per-element dmg bonus from constitutions / equipment
+        # (generic dict pickup — replaces per-element flat fields).
+        final_dmg_bonus += float(actor.element_dmg_bonus.get(skill_element, 0.0))
     if target.burn_stacks > 0 and actor.bonus_dmg_vs_burn > 0:
         final_dmg_bonus += actor.bonus_dmg_vs_burn
     if (
@@ -81,7 +82,7 @@ def build_attack_stats(
     if target.bleed_stacks > 0:
         crit_rating += actor.crit_rating_vs_bleed
         crit_dmg_rating += actor.crit_dmg_vs_bleed
-    if target.has_effect(EffectKey.DEBUFF_PHONG_AN):
+    if target.has_effect(EffectKey.DEBUFF_AN_PHONG):
         crit_rating += actor.crit_rating_vs_marked
         crit_dmg_rating += actor.crit_dmg_vs_marked
     if target.hp_max_drained > 0:
@@ -114,8 +115,8 @@ def build_defense_stats(
     effective_res: dict[str, float] = {}
     for elem, res in target.resistances.items():
         per_elem_mod = target_mods.get(f"res_{elem}", 0.0)
-        shred = getattr(actor, _ELEM_SHRED_FIELD[elem], 0.0) if elem in _ELEM_SHRED_FIELD else 0.0
-        effective_res[elem] = max(0.0, min(0.75, res + res_all_mod + per_elem_mod - shred))
+        shred = float(actor.element_res_shred.get(elem, 0.0))
+        effective_res[elem] = max(0.0, min(MAX_ELEMENTAL_RES, res + res_all_mod + per_elem_mod - shred))
 
     effective_spd = max(1, round(target.spd * (1.0 + target_mods.get("spd_pct", 0.0))))
     return DefenseStats(
@@ -134,11 +135,17 @@ def effective_damage_reduction(target: "Combatant", target_mods: dict) -> float:
     """Final damage reduction for the target, capped at MAX_FINAL_DMG_REDUCE.
 
     BuffBatTu and similar debuff mods stack additively with the base reduce.
+    Hào Quang Củng Cố adds two contributions on top: (a) accumulated fortify
+    stacks scale by ``fortify_per_turn_pct``, and (b) the post-hit brace adds
+    ``fortify_post_hit_dr_pct`` while ``fortify_braced_turns > 0``. Both are
+    capped along with everything else at ``MAX_FINAL_DMG_REDUCE``.
     """
-    return min(
-        MAX_FINAL_DMG_REDUCE,
-        max(0.0, target.final_dmg_reduce + target_mods.get("final_dmg_reduce", 0.0)),
-    )
+    reduce = target.final_dmg_reduce + target_mods.get("final_dmg_reduce", 0.0)
+    if target.fortify_per_turn_pct > 0 and target.fortify_stacks > 0:
+        reduce += target.fortify_per_turn_pct * target.fortify_stacks
+    if target.fortify_braced_turns > 0 and target.fortify_post_hit_dr_pct > 0:
+        reduce += target.fortify_post_hit_dr_pct
+    return min(MAX_FINAL_DMG_REDUCE, max(0.0, reduce))
 
 
 def apply_damage_scaling(dmg: int, actor: "Combatant", actor_mods: dict) -> int:

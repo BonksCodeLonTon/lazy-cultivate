@@ -13,6 +13,11 @@ All readers should use ``parse_linh_can_levels`` to get the level dict and
 """
 from __future__ import annotations
 
+from src.utils.emojis import (
+    EMOJI_AM, EMOJI_HOA, EMOJI_KIM, EMOJI_LOI, EMOJI_MOC,
+    EMOJI_PHONG, EMOJI_QUANG, EMOJI_THO, EMOJI_THUY,
+)
+
 # All possible Linh Căn keys
 ALL_LINH_CAN = ["kim", "moc", "thuy", "hoa", "tho", "phong", "loi", "quang", "am"]
 
@@ -38,7 +43,7 @@ LINH_CAN_MAX_LEVEL = 9
 LINH_CAN_DATA: dict[str, dict] = {
     "kim": {
         "vi": "Kim",
-        "emoji": "⚙️",
+        "emoji": EMOJI_KIM,
         "description": "+5% sát thương",
         "passive_bonus": {"final_dmg_bonus": 0.05},
         "combat_effect": "xuyen_thau",
@@ -61,7 +66,7 @@ LINH_CAN_DATA: dict[str, dict] = {
     },
     "moc": {
         "vi": "Mộc",
-        "emoji": "🌿",
+        "emoji": EMOJI_MOC,
         "description": "+8% Sinh Lực tối đa",
         "passive_bonus": {"hp_pct": 0.08},
         "combat_effect": "hoi_xuan",
@@ -84,7 +89,7 @@ LINH_CAN_DATA: dict[str, dict] = {
     },
     "thuy": {
         "vi": "Thủy",
-        "emoji": "💧",
+        "emoji": EMOJI_THUY,
         "description": "+5% giảm sát thương nhận vào",
         "passive_bonus": {"final_dmg_reduce": 0.05},
         "combat_effect": "ngung_dong",
@@ -107,7 +112,7 @@ LINH_CAN_DATA: dict[str, dict] = {
     },
     "hoa": {
         "vi": "Hỏa",
-        "emoji": "🔥",
+        "emoji": EMOJI_HOA,
         "description": "+5% sát thương",
         "passive_bonus": {"final_dmg_bonus": 0.05},
         "combat_effect": "bao_liet",
@@ -121,7 +126,7 @@ LINH_CAN_DATA: dict[str, dict] = {
                     "label": "Lv3 — Diễm Trảo: +10% gây Thiêu Đốt khi đánh"},
                 5: {"add_passive": {"burn_dmg_bonus": 0.15},
                     "label": "Lv5 — Liệt Hỏa: +15% sát thương Thiêu Đốt"},
-                7: {"add_passive": {"fire_res_shred": 0.15, "burn_stack_cap_bonus": 1},
+                7: {"add_passive": {"element_res_shred": {"hoa": 0.15}, "burn_stack_cap_bonus": 1},
                     "label": "Lv7 — Phần Thiên: −15% kháng Hỏa, +1 stack Thiêu Đốt"},
                 9: {"add_passive": {"final_dmg_bonus": 0.15, "dot_can_crit": True},
                     "label": "Lv9 — Thái Dương Đan Tâm: +15% sát thương cuối, DoT có thể bạo kích"},
@@ -130,7 +135,7 @@ LINH_CAN_DATA: dict[str, dict] = {
     },
     "tho": {
         "vi": "Thổ",
-        "emoji": "🪨",
+        "emoji": EMOJI_THO,
         "description": "+8% giảm sát thương nhận vào",
         "passive_bonus": {"final_dmg_reduce": 0.08},
         "combat_effect": "ho_the",
@@ -153,7 +158,7 @@ LINH_CAN_DATA: dict[str, dict] = {
     },
     "phong": {
         "vi": "Phong",
-        "emoji": "🌪️",
+        "emoji": EMOJI_PHONG,
         "description": "+8% tốc độ",
         "passive_bonus": {"spd_pct": 0.08},
         "combat_effect": "toc_bien",
@@ -169,14 +174,14 @@ LINH_CAN_DATA: dict[str, dict] = {
                     "label": "Lv5 — Truy Hồn: 12% đánh dấu mục tiêu"},
                 7: {"add_passive": {"damage_bonus_from_evasion_pct": 0.20},
                     "label": "Lv7 — Phong Thần: +20% sát thương dựa trên né"},
-                9: {"add_passive": {"spd_pct": 0.15, "crit_rating_vs_marked": 120, "phong_res_shred": 0.15},
+                9: {"add_passive": {"spd_pct": 0.15, "crit_rating_vs_marked": 120, "element_res_shred": {"phong": 0.15}},
                     "label": "Lv9 — Bàn Cổ Linh Phong: +15% tốc, +120 bạo lên mục tiêu đánh dấu, −15% kháng Phong"},
             },
         },
     },
     "loi": {
         "vi": "Lôi",
-        "emoji": "⚡",
+        "emoji": EMOJI_LOI,
         "description": "+5% tỷ lệ bạo kích",
         "passive_bonus": {"crit_rating": 65},
         "combat_effect": "te_liet",
@@ -190,7 +195,7 @@ LINH_CAN_DATA: dict[str, dict] = {
                     "label": "Lv3 — Tử Điện: +10% gây Sốc khi đánh"},
                 5: {"add_passive": {"crit_dmg_rating": 100},
                     "label": "Lv5 — Lôi Đình: +100 sát thương bạo kích"},
-                7: {"add_passive": {"loi_res_shred": 0.15, "shock_stack_cap_bonus": 1},
+                7: {"add_passive": {"element_res_shred": {"loi": 0.15}, "shock_stack_cap_bonus": 1},
                     "label": "Lv7 — Phá Vân: −15% kháng Lôi, +1 stack Sốc"},
                 9: {"add_passive": {"crit_rating": 150, "turn_steal_pct": 0.10},
                     "label": "Lv9 — Thái Sơ Lôi Tinh: +150 bạo, 10% cướp lượt"},
@@ -199,7 +204,7 @@ LINH_CAN_DATA: dict[str, dict] = {
     },
     "quang": {
         "vi": "Quang",
-        "emoji": "✨",
+        "emoji": EMOJI_QUANG,
         "description": "+10% hiệu quả trị liệu",
         "passive_bonus": {"heal_pct": 0.10},
         "combat_effect": "thanh_tay",
@@ -215,14 +220,14 @@ LINH_CAN_DATA: dict[str, dict] = {
                     "label": "Lv5 — Hộ Thuẫn: Thanh Tẩy tạo khiên dựa trên MATK"},
                 7: {"add_passive": {"silence_on_crit_pct": 0.12, "heal_reduce_on_hit_pct": 0.15},
                     "label": "Lv7 — Tịnh Thổ: 12% câm khi bạo, 15% giảm trị liệu địch"},
-                9: {"add_passive": {"heal_pct": 0.20, "heal_can_crit": True, "quang_res_shred": 0.15},
+                9: {"add_passive": {"heal_pct": 0.20, "heal_can_crit": True, "element_res_shred": {"quang": 0.15}},
                     "label": "Lv9 — Đại La Quang Đan: +20% trị liệu, hồi máu có thể bạo, −15% kháng Quang"},
             },
         },
     },
     "am": {
         "vi": "Ám",
-        "emoji": "🌑",
+        "emoji": EMOJI_AM,
         "description": "+5% né tránh",
         "passive_bonus": {"evasion_rating": 68},
         "combat_effect": "hu_the",
@@ -236,7 +241,7 @@ LINH_CAN_DATA: dict[str, dict] = {
                     "label": "Lv3 — Phệ Hồn: +10% Hút Hồn"},
                 5: {"add_passive": {"stat_steal_on_hit_pct": 0.08},
                     "label": "Lv5 — Đoạt Linh: +8% Cướp Chỉ Số"},
-                7: {"add_passive": {"crit_rating_vs_drained": 100, "am_res_shred": 0.15},
+                7: {"add_passive": {"crit_rating_vs_drained": 100, "element_res_shred": {"am": 0.15}},
                     "label": "Lv7 — U Minh: +100 bạo lên mục tiêu bị Phệ Hồn, −15% kháng Ám"},
                 9: {"add_passive": {"evasion_rating": 120, "true_dmg_pct": 0.05},
                     "label": "Lv9 — Hư Vô Âm Đỉnh: +120 né, +5% sát thương xuyên giáp"},
@@ -391,23 +396,7 @@ def scaled_proc_chance(level: int, base: float, per_level: float) -> float:
 # Thể Tu (1 element + walls of HP) and Trận Tu (formation count, not Linh
 # Căn) cannot easily replicate.
 #
-# Returns a multiplier ≥ 1.0 applied to the merged Linh Căn passive bonus
-# dict. Curve:
-#
-#   • 0 high-level Linh Căn → ×1.00 (no synergy)
-#   • Each Linh Căn at >= LINH_CAN_BREADTH_MIN_LEVEL adds + per-element step
-#   • Cap at LINH_CAN_BREADTH_MAX_MULT to keep Phá Thiên + 9-element from
-#     producing one-shot numbers (matches the rationale behind
-#     ``cultivation._AMP_EXCLUDED_STATS``).
-#
-# At Lv7+ × 9 elements → cap. At 6 elements at Lv7+ → ~×1.40. The minimum
-# threshold of Lv7 keeps the bonus inaccessible until the player has
-# legitimately invested in materials per element, not just unlocked them.
-LINH_CAN_BREADTH_MIN_LEVEL: int = 7
-LINH_CAN_BREADTH_PER_ELEMENT: float = 0.10
-LINH_CAN_BREADTH_MAX_MULT: float = 1.80
-
-
+# Tuning constants live in ``balance.py`` next to other archetype knobs.
 def linh_can_breadth_multiplier(levels: dict[str, int]) -> float:
     """Return the Khí-Tu breadth multiplier for the given linh_can map.
 
@@ -415,6 +404,11 @@ def linh_can_breadth_multiplier(levels: dict[str, int]) -> float:
     function only does the count math so it can also be used for previews
     in the status / linh_can hub embeds.
     """
+    from src.game.constants.balance import (
+        LINH_CAN_BREADTH_MAX_MULT,
+        LINH_CAN_BREADTH_MIN_LEVEL,
+        LINH_CAN_BREADTH_PER_ELEMENT,
+    )
     qualifying = sum(
         1 for lvl in levels.values()
         if int(lvl) >= LINH_CAN_BREADTH_MIN_LEVEL

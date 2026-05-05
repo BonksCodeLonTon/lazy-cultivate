@@ -130,6 +130,18 @@ def check_requirements(
     otherwise None. Does NOT check slots, merit, or materials — those are
     validated separately in the cog.
     """
+    # Implicit predecessor check: any entry with ``progresses_from`` requires
+    # that predecessor to be currently equipped (the activation flow removes
+    # the predecessor on success — see constitution cog). Without this, a
+    # player could leap-frog mid-chain stages.
+    predecessor = const_data.get("progresses_from")
+    if predecessor and predecessor not in get_constitutions(player.constitution_type):
+        pred_data = constitutions_index.get(predecessor) or {}
+        pred_name = pred_data.get("vi", predecessor)
+        return (
+            f"**{const_data['vi']}** yêu cầu đã trang bị **{pred_name}** "
+            f"trước khi tiến hóa."
+        )
     for req in requirements_as_list(const_data):
         if req in ("requires_dao_ti_yang", "requires_dao_ti_yin"):
             if not player.dao_ti_unlocked:
@@ -168,5 +180,21 @@ def check_requirements(
                 return (
                     f"**{const_data['vi']}** chỉ dành cho **Thể Tu** — "
                     f"body_realm phải cao nhất trong ba hướng."
+                )
+        elif req == "requires_thon_thien_ma_tam":
+            if "ConstitutionThonThienMaTam" not in get_constitutions(player.constitution_type):
+                return (
+                    f"**{const_data['vi']}** yêu cầu đang trang bị "
+                    f"**Thôn Thiên Ma Tâm** trước khi tiến hóa."
+                )
+        elif req == "requires_skill_ma_than_cong":
+            learned = {
+                getattr(s, "skill_key", None)
+                for s in (getattr(player, "skills", None) or [])
+            }
+            if "SkillMaThanCong_R9" not in learned:
+                return (
+                    f"**{const_data['vi']}** yêu cầu đã lĩnh ngộ kỹ năng "
+                    f"**Ma Thần Công** (R9 hệ Ám)."
                 )
     return None

@@ -60,12 +60,8 @@ ELEMENT_NAMES_VI: dict[str, str] = {
 }
 
 # ── Item grades ───────────────────────────────────────────────────────────────
-GRADE_ICONS: dict[str, str] = {
-    "hoang": "🟡",   # Hoàng — Yellow
-    "huyen": "🟣",   # Huyền — Purple
-    "dia":   "🟢",   # Địa — Green
-    "thien": "🔴",   # Thiên — Red
-}
+# Grade emoji lives in ``src/utils/emojis.py`` (GRADE_EMOJI_BY_KEY) so the
+# custom-Discord palette stays in one place.
 
 GRADE_NAMES_VI: dict[str, str] = {
     "hoang": "Hoàng",

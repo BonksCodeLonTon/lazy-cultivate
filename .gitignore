@@ -54,3 +54,4 @@ Thumbs.db
 # Alembic — keep migrations but ignore local env overrides
 # (alembic.ini is committed)
 /output_tiles
+emojis/

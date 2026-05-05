@@ -54,7 +54,8 @@ class EffectKey(StrEnum):
     DEBUFF_CAT_DUT   = "DebuffCatDut"     # sever
     DEBUFF_SET_DANH  = "DebuffSetDanh"    # mark
     DEBUFF_SOC_DIEN  = "DebuffSocDien"    # shock (Loi build) — stacks, takes extra loi damage
-    DEBUFF_PHONG_AN  = "DebuffPhongAn"    # wind mark (Phong build) — evasion debuff + crit vulnerable
+    DEBUFF_AN_PHONG  = "DebuffAnPhong"    # wind mark (Phong build) — evasion debuff + crit vulnerable
+    DEBUFF_LOA_MAT   = "DebuffLoaMat"     # blind (Âm build) — attacker rolls a chance to miss each strike
     EFFECT_NGUNG_DONG = "EffectNgungDong"  # stagnation (spd debuff)
 
     # ── Crowd control ────────────────────────────────────────────────────────

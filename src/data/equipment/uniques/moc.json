@@ -105,7 +105,9 @@
     },
     "passive_bonus": {
       "dot_leech_pct": 0.25,
-      "moc_res_shred": 0.12
+      "element_res_shred": {
+        "moc": 0.12
+      }
     },
     "description_vi": "Trượng khắc chữ Sinh — hút 25% DoT làm HP/MP, xuyên 12% Kháng Mộc."
   },
@@ -219,7 +221,9 @@
     },
     "passive_bonus": {
       "dot_leech_pct": 0.35,
-      "moc_res_shred": 0.15
+      "element_res_shred": {
+        "moc": 0.15
+      }
     },
     "description_vi": "Găng Mộc Tổ — hút 35% DoT, xuyên 15% Kháng Mộc. Bộ Mộc Tổ 3 mảnh."
   },
@@ -302,7 +306,9 @@
     },
     "passive_bonus": {
       "dot_leech_pct": 0.55,
-      "moc_res_shred": 0.22,
+      "element_res_shred": {
+        "moc": 0.22
+      },
       "damage_from_heal_pct": 0.85
     },
     "description_vi": "Trượng Thế Giới Chi Thụ — hút 55% DoT, xuyên 22% Kháng Mộc, 85% máu hồi thành ST."

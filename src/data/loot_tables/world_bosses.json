@@ -681,7 +681,7 @@
       "qty_max": 1
     },
     {
-      "item_key": "GemUnique_PhongAnPhaGioi_G1",
+      "item_key": "GemUnique_AnPhongPhaGioi_G1",
       "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
@@ -1637,7 +1637,7 @@
       "qty_max": 1
     },
     {
-      "item_key": "GemUnique_PhongAnPhaGioi_G2",
+      "item_key": "GemUnique_AnPhongPhaGioi_G2",
       "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
@@ -2023,7 +2023,7 @@
       "qty_max": 1
     },
     {
-      "item_key": "GemUnique_PhongAnPhaGioi_G3",
+      "item_key": "GemUnique_AnPhongPhaGioi_G3",
       "weight": 50000,
       "qty_min": 1,
       "qty_max": 1

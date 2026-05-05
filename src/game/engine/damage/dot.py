@@ -28,7 +28,7 @@ from __future__ import annotations
 import random
 from typing import TYPE_CHECKING
 
-from src.game.constants.balance import DOT_POWER_COEF
+from src.game.constants.balance import DOT_POWER_COEF, MAX_ELEMENTAL_RES
 from src.game.constants.effects import EffectKey
 
 if TYPE_CHECKING:
@@ -74,10 +74,10 @@ def _scale_damage(combatant: "Combatant", base_pct: float) -> int:
 
 
 def _apply_resistance(dmg: int, combatant: "Combatant", meta: "EffectMeta") -> int:
-    """Reduce by the holder's resistance to the DoT's element, capped at 75%."""
+    """Reduce by the holder's resistance to the DoT's element, capped at MAX_ELEMENTAL_RES."""
     if not meta.dot_element:
         return dmg
-    res_pct = max(0.0, min(0.75, combatant.resistances.get(meta.dot_element, 0.0)))
+    res_pct = max(0.0, min(MAX_ELEMENTAL_RES, combatant.resistances.get(meta.dot_element, 0.0)))
     return max(1, int(dmg * (1.0 - res_pct)))
 
 

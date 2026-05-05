@@ -12,18 +12,16 @@ from src.db.connection import get_session
 from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.player_repo import PlayerRepository
 from src.game.engine.equipment import SLOT_LABELS, SLOT_ORDER, STAT_LABELS, compute_equipment_stats, format_computed_stats, format_stat
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
 
 _SLOT_CHOICES = [app_commands.Choice(name=SLOT_LABELS[s], value=s) for s in SLOT_ORDER]
 
-_GRADE_EMOJI = {1: "⚪", 2: "🟢", 3: "🔵", 4: "🟡"}
-
 
 def _grade_label(grade: int) -> str:
-    emoji = _GRADE_EMOJI.get(grade, "⚫")
-    return f"{emoji} G{grade}"
+    return f"{emojis.for_grade(grade)} G{grade}"
 
 
 def _gear_embed(player_name: str, equipped: list) -> discord.Embed:

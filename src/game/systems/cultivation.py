@@ -72,6 +72,14 @@ def compute_hp_max(character: Character, bonuses: dict | None = None) -> int:
     result = max(1, int(base))
     if bonuses:
         result = int(result * (1.0 + bonuses.get("hp_pct", 0.0)))
+        flat_per_realm = int(bonuses.get("hp_flat_per_realm", 0))
+        if flat_per_realm:
+            max_realm = max(
+                character.body_realm,
+                character.qi_realm,
+                character.formation_realm,
+            )
+            result += flat_per_realm * max_realm
     return max(1, result)
 
 
@@ -214,7 +222,7 @@ def compute_gem_bonuses(gem_keys: list[str]) -> dict:
 # slot order; single-entry values (legacy "CuuCungBatQua") parse as a 1-slot
 # list unchanged.
 
-MAX_FORMATION_SLOT_CEILING: int = 3
+MAX_FORMATION_SLOT_CEILING: int = 6
 
 
 def get_active_formations(raw: str | None) -> list[str]:
@@ -549,6 +557,16 @@ def _merge_bonus_dict(target: dict, source: dict) -> None:
             continue
         if isinstance(v, bool):
             target[k] = v  # bool flags (poison_immunity etc.) — last-write wins
+        elif isinstance(v, dict):
+            # Per-element bonus dicts (``damage_taken_convert_pct``,
+            # ``element_dmg_bonus``, …): merge sub-keys additively so multiple
+            # constitutions stacking different elements compound naturally.
+            existing = target.setdefault(k, {})
+            for sub_k, sub_v in v.items():
+                if isinstance(sub_v, (int, float)) and not isinstance(sub_v, bool):
+                    existing[sub_k] = existing.get(sub_k, type(sub_v)(0)) + sub_v
+                else:
+                    existing[sub_k] = sub_v
         elif isinstance(v, (int, float)):
             target[k] = target.get(k, type(v)(0)) + v
         else:
@@ -691,7 +709,13 @@ def advance_cultivation_xp(character: Character, turns: int) -> dict:
             "is_ready_for_tribulation": False,
         }
 
-    exp_gained = turns * realm.base_exp_rate
+    raw_exp = turns * realm.base_exp_rate
+    # Constitution cultivation_speed_bonus is a multiplicative EXP modifier
+    # (e.g. 1.0 = +100% / ×2 EXP per turn). Stacks additively across multiple
+    # equipped Thể Chất via ``compute_constitution_bonuses``.
+    const_bonuses = compute_constitution_bonuses(character.constitution_type)
+    speed_mult = 1.0 + float(const_bonuses.get("cultivation_speed_bonus", 0.0))
+    exp_gained = int(raw_exp * speed_mult)
 
     xp_attr = f"{axis}_xp"
     current_xp = getattr(character, xp_attr)
@@ -720,7 +744,9 @@ def study_formation_with_merit(character: Character, merits: int) -> dict:
     if character.merit < merits:
         return {"success": False, "error": f"Không đủ Công Đức (Cần {merits}, hiện có {character.merit})"}
 
-    exp_gained = merits * MERIT_TO_FORMATION_EXP_RATIO
+    const_bonuses = compute_constitution_bonuses(character.constitution_type)
+    speed_mult = 1.0 + float(const_bonuses.get("cultivation_speed_bonus", 0.0))
+    exp_gained = int(merits * MERIT_TO_FORMATION_EXP_RATIO * speed_mult)
     character.merit -= merits
     character.formation_xp += exp_gained
 

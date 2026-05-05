@@ -25,7 +25,7 @@ class Player(Base, TimestampMixin):
     # ── Constitution — comma-separated Thể Chất keys (see the_chat.py).
     # Thể Tu can equip up to 8 standard slots + Hỗn Độn; upper bound ~300 chars.
     constitution_type: Mapped[str] = mapped_column(
-        String(512), default="ConstitutionVanTuong", nullable=False
+        String(512), default="ConstitutionPhamThe", nullable=False
     )
     dao_ti_unlocked: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 

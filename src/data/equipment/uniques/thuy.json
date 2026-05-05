@@ -53,7 +53,9 @@
     },
     "passive_bonus": {
       "mana_stack_dmg_bonus": 0.025,
-      "thuy_res_shred": 0.1
+      "element_res_shred": {
+        "thuy": 0.1
+      }
     },
     "description_vi": "Bội thủy linh — +2.5% ST mỗi tầng, xuyên 10% Kháng Thủy."
   },
@@ -166,7 +168,9 @@
       ]
     },
     "passive_bonus": {
-      "thuy_res_shred": 0.15,
+      "element_res_shred": {
+        "thuy": 0.15
+      },
       "mana_stack_cap_bonus": 5
     },
     "description_vi": "Mão Thủy Hải — xuyên 15% Kháng Thủy, trần stack +5."
@@ -278,7 +282,9 @@
     },
     "passive_bonus": {
       "mana_stack_per_attack": 4,
-      "thuy_res_shred": 0.25,
+      "element_res_shred": {
+        "thuy": 0.25
+      },
       "true_dmg_pct": 0.04
     },
     "description_vi": "Găng Thiên Hà — +4 tầng/đòn, xuyên 25% Kháng Thủy, 4% HP chân thương. Bộ Thiên Hà 3 mảnh."
@@ -307,7 +313,9 @@
     "passive_bonus": {
       "damage_bonus_from_mp_pct": 0.013,
       "mp_leech_pct": 0.32,
-      "thuy_res_shred": 0.22
+      "element_res_shred": {
+        "thuy": 0.22
+      }
     },
     "description_vi": "Mão thủy thần — 1.3% MP max→ST, hút 32% MP, xuyên 22% Kháng Thủy."
   },

@@ -28,6 +28,7 @@ COGS = [
     "src.bot.cogs.forge",
     "src.bot.cogs.alchemy",
     "src.bot.cogs.linh_can",
+    "src.bot.cogs.handbook",
     "src.bot.cogs.admin",
 ]
 

@@ -16,9 +16,8 @@
       "CommonThuyLinhCua",
       "CommonToRua"
     ],
-    "merit_reward": 100,
+    "merit_reward": 20,
     "stone_reward": 0,
-    "cooldown_hours": 4,
     "dungeon_type": "normal"
   },
   {
@@ -42,9 +41,8 @@
       "StrongPhongMoc",
       "StrongBangPhong"
     ],
-    "merit_reward": 300,
+    "merit_reward": 60,
     "stone_reward": 0,
-    "cooldown_hours": 6,
     "dungeon_type": "normal"
   },
   {
@@ -66,9 +64,8 @@
       "StrongPhongMoc",
       "StrongKimMoc"
     ],
-    "merit_reward": 800,
-    "stone_reward": 50,
-    "cooldown_hours": 8,
+    "merit_reward": 160,
+    "stone_reward": 3,
     "dungeon_type": "normal"
   },
   {
@@ -90,9 +87,8 @@
       "FierceThoLinh",
       "ElitePhongLinh"
     ],
-    "merit_reward": 2000,
-    "stone_reward": 150,
-    "cooldown_hours": 8,
+    "merit_reward": 400,
+    "stone_reward": 10,
     "dungeon_type": "normal"
   },
   {
@@ -117,9 +113,8 @@
       "HungBangKim",
       "EliteKimGiap"
     ],
-    "merit_reward": 5000,
-    "stone_reward": 300,
-    "cooldown_hours": 12,
+    "merit_reward": 1000,
+    "stone_reward": 20,
     "dungeon_type": "normal"
   },
   {
@@ -141,9 +136,8 @@
       "ElitePhongLinh",
       "EliteToNham"
     ],
-    "merit_reward": 12000,
-    "stone_reward": 600,
-    "cooldown_hours": 12,
+    "merit_reward": 2400,
+    "stone_reward": 40,
     "dungeon_type": "normal"
   },
   {
@@ -165,9 +159,8 @@
       "ThanPhongUng",
       "BossHoaLinh"
     ],
-    "merit_reward": 30000,
-    "stone_reward": 1500,
-    "cooldown_hours": 18,
+    "merit_reward": 6000,
+    "stone_reward": 100,
     "dungeon_type": "normal"
   },
   {
@@ -188,9 +181,8 @@
       "TienThoLinh",
       "BossLoiLong"
     ],
-    "merit_reward": 80000,
-    "stone_reward": 5000,
-    "cooldown_hours": 24,
+    "merit_reward": 16000,
+    "stone_reward": 180,
     "dungeon_type": "normal"
   },
   {
@@ -209,9 +201,8 @@
       "BossBangHon",
       "BossHonNguyen"
     ],
-    "merit_reward": 200000,
-    "stone_reward": 15000,
-    "cooldown_hours": 48,
+    "merit_reward": 40000,
+    "stone_reward": 500,
     "dungeon_type": "normal"
   },
   {
@@ -228,9 +219,8 @@
       "DuocVienR1_03",
       "DuocVienR1_04"
     ],
-    "merit_reward": 300,
-    "stone_reward": 0,
-    "cooldown_hours": 4
+    "merit_reward": 60,
+    "stone_reward": 0
   },
   {
     "key": "DungeonDuocVien_R2",
@@ -245,9 +235,8 @@
       "DuocVienR2_02",
       "DuocVienR2_03"
     ],
-    "merit_reward": 600,
-    "stone_reward": 0,
-    "cooldown_hours": 4
+    "merit_reward": 120,
+    "stone_reward": 0
   },
   {
     "key": "DungeonDuocVien_R3",
@@ -262,9 +251,8 @@
       "DuocVienR3_02",
       "DuocVienR3_03"
     ],
-    "merit_reward": 1500,
-    "stone_reward": 30,
-    "cooldown_hours": 6
+    "merit_reward": 300,
+    "stone_reward": 1
   },
   {
     "key": "DungeonDuocVien_R4",
@@ -279,9 +267,8 @@
       "DuocVienR4_02",
       "DuocVienR4_03"
     ],
-    "merit_reward": 3500,
-    "stone_reward": 100,
-    "cooldown_hours": 6
+    "merit_reward": 700,
+    "stone_reward": 5
   },
   {
     "key": "DungeonDuocVien_R5",
@@ -296,9 +283,8 @@
       "DuocVienR5_02",
       "DuocVienR5_03"
     ],
-    "merit_reward": 8000,
-    "stone_reward": 220,
-    "cooldown_hours": 6
+    "merit_reward": 1600,
+    "stone_reward": 15
   },
   {
     "key": "DungeonDuocVien_R6",
@@ -313,9 +299,8 @@
       "DuocVienR6_02",
       "DuocVienR6_03"
     ],
-    "merit_reward": 18000,
-    "stone_reward": 500,
-    "cooldown_hours": 8
+    "merit_reward": 3600,
+    "stone_reward": 30
   },
   {
     "key": "DungeonDuocVien_R7",
@@ -330,9 +315,8 @@
       "DuocVienR7_02",
       "DuocVienR7_03"
     ],
-    "merit_reward": 40000,
-    "stone_reward": 1200,
-    "cooldown_hours": 8
+    "merit_reward": 8000,
+    "stone_reward": 80
   },
   {
     "key": "DungeonDuocVien_R8",
@@ -347,9 +331,8 @@
       "DuocVienR8_02",
       "DuocVienR8_03"
     ],
-    "merit_reward": 90000,
-    "stone_reward": 3500,
-    "cooldown_hours": 8
+    "merit_reward": 18000,
+    "stone_reward": 120
   },
   {
     "key": "DungeonDuocVien_R9",
@@ -364,9 +347,8 @@
       "DuocVienR9_02",
       "DuocVienR9_03"
     ],
-    "merit_reward": 220000,
-    "stone_reward": 12000,
-    "cooldown_hours": 10
+    "merit_reward": 44000,
+    "stone_reward": 400
   },
   {
     "key": "DungeonThanCot_R3",
@@ -377,10 +359,11 @@
     "required_qi_realm": 2,
     "wave_count": 1,
     "boss_min_grade_idx": 3,
-    "enemy_pool": ["ApexDaoCot_R3"],
-    "merit_reward": 2000,
-    "stone_reward": 100,
-    "cooldown_hours": 12
+    "enemy_pool": [
+      "ApexDaoCot_R3"
+    ],
+    "merit_reward": 400,
+    "stone_reward": 5
   },
   {
     "key": "DungeonThanCot_R5",
@@ -391,10 +374,11 @@
     "required_qi_realm": 4,
     "wave_count": 1,
     "boss_min_grade_idx": 3,
-    "enemy_pool": ["ApexDaoCot_R5"],
-    "merit_reward": 8000,
-    "stone_reward": 400,
-    "cooldown_hours": 18
+    "enemy_pool": [
+      "ApexDaoCot_R5"
+    ],
+    "merit_reward": 1600,
+    "stone_reward": 25
   },
   {
     "key": "DungeonThanCot_R7",
@@ -405,10 +389,11 @@
     "required_qi_realm": 6,
     "wave_count": 1,
     "boss_min_grade_idx": 4,
-    "enemy_pool": ["ApexDaoCot_R7"],
-    "merit_reward": 40000,
-    "stone_reward": 2000,
-    "cooldown_hours": 24
+    "enemy_pool": [
+      "ApexDaoCot_R7"
+    ],
+    "merit_reward": 8000,
+    "stone_reward": 150
   },
   {
     "key": "DungeonThanCot_R9",
@@ -419,10 +404,11 @@
     "required_qi_realm": 8,
     "wave_count": 1,
     "boss_min_grade_idx": 4,
-    "enemy_pool": ["ApexDaoCot_R9"],
-    "merit_reward": 150000,
-    "stone_reward": 8000,
-    "cooldown_hours": 36
+    "enemy_pool": [
+      "ApexDaoCot_R9"
+    ],
+    "merit_reward": 30000,
+    "stone_reward": 300
   },
   {
     "key": "DungeonLinhCanKim",
@@ -432,14 +418,23 @@
     "dungeon_type": "linh_can",
     "linh_can_element": "kim",
     "linh_can_loot_table": "LinhCanLoot_Kim",
-    "linh_can_loot_decay_per_realm": 0.10,
-    "environmental_effect": {"key": "kim_khi_sat_phat", "vi": "Kim Khí Sát Phạt", "base_strength": 0.20, "scale_per_realm": 0.15},
+    "linh_can_loot_decay_per_realm": 0.1,
+    "environmental_effect": {
+      "key": "kim_khi_sat_phat",
+      "vi": "Kim Khí Sát Phạt",
+      "base_strength": 0.2,
+      "scale_per_realm": 0.15
+    },
     "required_qi_realm": 0,
     "wave_count": 3,
-    "enemy_pool": ["LCKim_T1_KimCuongThietSai", "LCKim_T2_BachNganLongPhach", "LCKim_T3_CuKimQuanTuong", "LCKim_Apex_HonKimDaiDe"],
-    "merit_reward": 500,
-    "stone_reward": 0,
-    "cooldown_hours": 6
+    "enemy_pool": [
+      "LCKim_T1_KimCuongThietSai",
+      "LCKim_T2_BachNganLongPhach",
+      "LCKim_T3_CuKimQuanTuong",
+      "LCKim_Apex_HonKimDaiDe"
+    ],
+    "merit_reward": 100,
+    "stone_reward": 0
   },
   {
     "key": "DungeonLinhCanMoc",
@@ -449,14 +444,23 @@
     "dungeon_type": "linh_can",
     "linh_can_element": "moc",
     "linh_can_loot_table": "LinhCanLoot_Moc",
-    "linh_can_loot_decay_per_realm": 0.10,
-    "environmental_effect": {"key": "van_moc_hoi_sinh", "vi": "Vạn Mộc Hồi Sinh", "base_strength": 0.04, "scale_per_realm": 0.15},
+    "linh_can_loot_decay_per_realm": 0.1,
+    "environmental_effect": {
+      "key": "van_moc_hoi_sinh",
+      "vi": "Vạn Mộc Hồi Sinh",
+      "base_strength": 0.04,
+      "scale_per_realm": 0.15
+    },
     "required_qi_realm": 0,
     "wave_count": 3,
-    "enemy_pool": ["LCMoc_T1_LucDiepYeuDang", "LCMoc_T2_TuDangMocLinh", "LCMoc_T3_BoDeCoTinh", "LCMoc_Apex_HonNguyenLinhMoc"],
-    "merit_reward": 500,
-    "stone_reward": 0,
-    "cooldown_hours": 6
+    "enemy_pool": [
+      "LCMoc_T1_LucDiepYeuDang",
+      "LCMoc_T2_TuDangMocLinh",
+      "LCMoc_T3_BoDeCoTinh",
+      "LCMoc_Apex_HonNguyenLinhMoc"
+    ],
+    "merit_reward": 100,
+    "stone_reward": 0
   },
   {
     "key": "DungeonLinhCanThuy",
@@ -466,14 +470,23 @@
     "dungeon_type": "linh_can",
     "linh_can_element": "thuy",
     "linh_can_loot_table": "LinhCanLoot_Thuy",
-    "linh_can_loot_decay_per_realm": 0.10,
-    "environmental_effect": {"key": "bang_phong_dai_tran", "vi": "Băng Phong Đại Trận", "base_strength": 0.15, "scale_per_realm": 0.15},
+    "linh_can_loot_decay_per_realm": 0.1,
+    "environmental_effect": {
+      "key": "bang_phong_dai_tran",
+      "vi": "Băng Phong Đại Trận",
+      "base_strength": 0.15,
+      "scale_per_realm": 0.15
+    },
     "required_qi_realm": 0,
     "wave_count": 3,
-    "enemy_pool": ["LCThuy_T1_HanBangYeuCua", "LCThuy_T2_BichHaiLinhLong", "LCThuy_T3_VanNienHaiDe", "LCThuy_Apex_CuuUHanDe"],
-    "merit_reward": 500,
-    "stone_reward": 0,
-    "cooldown_hours": 6
+    "enemy_pool": [
+      "LCThuy_T1_HanBangYeuCua",
+      "LCThuy_T2_BichHaiLinhLong",
+      "LCThuy_T3_VanNienHaiDe",
+      "LCThuy_Apex_CuuUHanDe"
+    ],
+    "merit_reward": 100,
+    "stone_reward": 0
   },
   {
     "key": "DungeonLinhCanHoa",
@@ -483,14 +496,23 @@
     "dungeon_type": "linh_can",
     "linh_can_element": "hoa",
     "linh_can_loot_table": "LinhCanLoot_Hoa",
-    "linh_can_loot_decay_per_realm": 0.10,
-    "environmental_effect": {"key": "liet_diem_thieu_thien", "vi": "Liệt Diễm Thiêu Thiên", "base_strength": 1.0, "scale_per_realm": 0.20},
+    "linh_can_loot_decay_per_realm": 0.1,
+    "environmental_effect": {
+      "key": "liet_diem_thieu_thien",
+      "vi": "Liệt Diễm Thiêu Thiên",
+      "base_strength": 1.0,
+      "scale_per_realm": 0.2
+    },
     "required_qi_realm": 0,
     "wave_count": 3,
-    "enemy_pool": ["LCHoa_T1_HongDiemTinhLinh", "LCHoa_T2_PhuongHoangHoaLinh", "LCHoa_T3_LietDuongHoaDe", "LCHoa_Apex_ThaiDuongDanTam"],
-    "merit_reward": 500,
-    "stone_reward": 0,
-    "cooldown_hours": 6
+    "enemy_pool": [
+      "LCHoa_T1_HongDiemTinhLinh",
+      "LCHoa_T2_PhuongHoangHoaLinh",
+      "LCHoa_T3_LietDuongHoaDe",
+      "LCHoa_Apex_ThaiDuongDanTam"
+    ],
+    "merit_reward": 100,
+    "stone_reward": 0
   },
   {
     "key": "DungeonLinhCanTho",
@@ -500,14 +522,23 @@
     "dungeon_type": "linh_can",
     "linh_can_element": "tho",
     "linh_can_loot_table": "LinhCanLoot_Tho",
-    "linh_can_loot_decay_per_realm": 0.10,
-    "environmental_effect": {"key": "hau_tho_tran_ap", "vi": "Hậu Thổ Trấn Áp", "base_strength": 0.20, "scale_per_realm": 0.15},
+    "linh_can_loot_decay_per_realm": 0.1,
+    "environmental_effect": {
+      "key": "hau_tho_tran_ap",
+      "vi": "Hậu Thổ Trấn Áp",
+      "base_strength": 0.2,
+      "scale_per_realm": 0.15
+    },
     "required_qi_realm": 0,
     "wave_count": 3,
-    "enemy_pool": ["LCTho_T1_CuongPhachThoLinh", "LCTho_T2_BanSonCuThach", "LCTho_T3_HauThoLinhTuong", "LCTho_Apex_BanCoThoDe"],
-    "merit_reward": 500,
-    "stone_reward": 0,
-    "cooldown_hours": 6
+    "enemy_pool": [
+      "LCTho_T1_CuongPhachThoLinh",
+      "LCTho_T2_BanSonCuThach",
+      "LCTho_T3_HauThoLinhTuong",
+      "LCTho_Apex_BanCoThoDe"
+    ],
+    "merit_reward": 100,
+    "stone_reward": 0
   },
   {
     "key": "DungeonLinhCanPhong",
@@ -517,14 +548,23 @@
     "dungeon_type": "linh_can",
     "linh_can_element": "phong",
     "linh_can_loot_table": "LinhCanLoot_Phong",
-    "linh_can_loot_decay_per_realm": 0.10,
-    "environmental_effect": {"key": "cuong_phong_loan_vu", "vi": "Cuồng Phong Loạn Vũ", "base_strength": 0.20, "scale_per_realm": 0.15},
+    "linh_can_loot_decay_per_realm": 0.1,
+    "environmental_effect": {
+      "key": "cuong_phong_loan_vu",
+      "vi": "Cuồng Phong Loạn Vũ",
+      "base_strength": 0.2,
+      "scale_per_realm": 0.15
+    },
     "required_qi_realm": 0,
     "wave_count": 3,
-    "enemy_pool": ["LCPhong_T1_TuVuLinhDieu", "LCPhong_T2_CuongPhongYeuHo", "LCPhong_T3_PhongThanLinhTuong", "LCPhong_Apex_BanCoPhongDe"],
-    "merit_reward": 500,
-    "stone_reward": 0,
-    "cooldown_hours": 6
+    "enemy_pool": [
+      "LCPhong_T1_TuVuLinhDieu",
+      "LCPhong_T2_CuongPhongYeuHo",
+      "LCPhong_T3_PhongThanLinhTuong",
+      "LCPhong_Apex_BanCoPhongDe"
+    ],
+    "merit_reward": 100,
+    "stone_reward": 0
   },
   {
     "key": "DungeonLinhCanLoi",
@@ -534,14 +574,23 @@
     "dungeon_type": "linh_can",
     "linh_can_element": "loi",
     "linh_can_loot_table": "LinhCanLoot_Loi",
-    "linh_can_loot_decay_per_realm": 0.10,
-    "environmental_effect": {"key": "tu_loi_bao_loan", "vi": "Tử Lôi Bạo Loạn", "base_strength": 80, "scale_per_realm": 0.15},
+    "linh_can_loot_decay_per_realm": 0.1,
+    "environmental_effect": {
+      "key": "tu_loi_bao_loan",
+      "vi": "Tử Lôi Bạo Loạn",
+      "base_strength": 80,
+      "scale_per_realm": 0.15
+    },
     "required_qi_realm": 0,
     "wave_count": 3,
-    "enemy_pool": ["LCLoi_T1_TuDienLoiSai", "LCLoi_T2_CuuKhucLoiLong", "LCLoi_T3_ThanLoiLinhTuong", "LCLoi_Apex_ThaiSoLoiDe"],
-    "merit_reward": 500,
-    "stone_reward": 0,
-    "cooldown_hours": 6
+    "enemy_pool": [
+      "LCLoi_T1_TuDienLoiSai",
+      "LCLoi_T2_CuuKhucLoiLong",
+      "LCLoi_T3_ThanLoiLinhTuong",
+      "LCLoi_Apex_ThaiSoLoiDe"
+    ],
+    "merit_reward": 100,
+    "stone_reward": 0
   },
   {
     "key": "DungeonLinhCanQuang",
@@ -551,14 +600,23 @@
     "dungeon_type": "linh_can",
     "linh_can_element": "quang",
     "linh_can_loot_table": "LinhCanLoot_Quang",
-    "linh_can_loot_decay_per_realm": 0.10,
-    "environmental_effect": {"key": "thanh_quang_ap_bach", "vi": "Thánh Quang Áp Bách", "base_strength": 0.30, "scale_per_realm": 0.15},
+    "linh_can_loot_decay_per_realm": 0.1,
+    "environmental_effect": {
+      "key": "thanh_quang_ap_bach",
+      "vi": "Thánh Quang Áp Bách",
+      "base_strength": 0.3,
+      "scale_per_realm": 0.15
+    },
     "required_qi_realm": 0,
     "wave_count": 3,
-    "enemy_pool": ["LCQuang_T1_HoangQuangLinhSu", "LCQuang_T2_ThanhQuangVeTuong", "LCQuang_T3_PhatTamBoTat", "LCQuang_Apex_DaiLaQuangDe"],
-    "merit_reward": 500,
-    "stone_reward": 0,
-    "cooldown_hours": 6
+    "enemy_pool": [
+      "LCQuang_T1_HoangQuangLinhSu",
+      "LCQuang_T2_ThanhQuangVeTuong",
+      "LCQuang_T3_PhatTamBoTat",
+      "LCQuang_Apex_DaiLaQuangDe"
+    ],
+    "merit_reward": 100,
+    "stone_reward": 0
   },
   {
     "key": "DungeonLinhCanAm",
@@ -568,13 +626,22 @@
     "dungeon_type": "linh_can",
     "linh_can_element": "am",
     "linh_can_loot_table": "LinhCanLoot_Am",
-    "linh_can_loot_decay_per_realm": 0.10,
-    "environmental_effect": {"key": "u_minh_thuc_hon", "vi": "U Minh Thực Hồn", "base_strength": 0.20, "scale_per_realm": 0.15},
+    "linh_can_loot_decay_per_realm": 0.1,
+    "environmental_effect": {
+      "key": "u_minh_thuc_hon",
+      "vi": "U Minh Thực Hồn",
+      "base_strength": 0.2,
+      "scale_per_realm": 0.15
+    },
     "required_qi_realm": 0,
     "wave_count": 3,
-    "enemy_pool": ["LCAm_T1_HacDieuYeuHon", "LCAm_T2_CuuAmULinh", "LCAm_T3_UMinhDaiTuong", "LCAm_Apex_DietTheHacDe"],
-    "merit_reward": 500,
-    "stone_reward": 0,
-    "cooldown_hours": 6
+    "enemy_pool": [
+      "LCAm_T1_HacDieuYeuHon",
+      "LCAm_T2_CuuAmULinh",
+      "LCAm_T3_UMinhDaiTuong",
+      "LCAm_Apex_DietTheHacDe"
+    ],
+    "merit_reward": 100,
+    "stone_reward": 0
   }
 ]

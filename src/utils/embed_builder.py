@@ -243,9 +243,10 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         ("formation", "formation_realm", "formation_level", "formation_xp", "formation_realm_label"),
     ]
 
+    from src.utils import emojis as _emojis
     cult_lines: list[str] = []
     for axis_key, realm_k, level_k, xp_k, label_k in axes:
-        icon      = AXIS_ICONS[axis_key]
+        icon      = _emojis.for_axis(axis_key)
         realm_idx = stats.get(realm_k, 0)
         level     = stats.get(level_k, 1)
         xp        = stats.get(xp_k, 0)
@@ -279,9 +280,9 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
     karma  = stats.get("karma_accum", 0)
     stones = stats.get("primordial_stones", 0)
 
-    embed.add_field(name=f"{CURRENCY_ICONS['merit']} Công Đức",            value=f"{merit:,}",  inline=True)
-    embed.add_field(name=f"{CURRENCY_ICONS['karma_accum']} Nghiệp Lực",    value=f"{karma:,}",  inline=True)
-    embed.add_field(name=f"{CURRENCY_ICONS['primordial_stones']} Hỗn Nguyên", value=f"{stones:,}", inline=True)
+    embed.add_field(name=f"{_emojis.for_currency('merit')} Công Đức",                 value=f"{merit:,}",  inline=True)
+    embed.add_field(name=f"{_emojis.for_currency('karma_accum')} Nghiệp Lực",         value=f"{karma:,}",  inline=True)
+    embed.add_field(name=f"{_emojis.for_currency('primordial_stones')} Hỗn Nguyên",   value=f"{stones:,}", inline=True)
 
     # ── Constitution & Formation (compact) ────────────────────────────────────
     constitution = stats.get("constitution") or "Vạn Tượng"
@@ -289,6 +290,7 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
     gem_count    = stats.get("gem_count", 0)
     reserve_pct  = stats.get("mp_reserve_pct", 0.0)
 
+    tran_icon = _emojis.for_axis("formation")
     if active_form:
         reserve_tag = f" · 🔒 Trấn: **{reserve_pct * 100:.1f}%** MP" if reserve_pct > 0 else ""
         from src.db.models.formation import FORMATION_GEM_SLOTS as _MAX_SLOTS
@@ -299,11 +301,11 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         total_slots = _MAX_SLOTS * slot_count
         detail = (
             f"🧬 **{constitution}**\n"
-            f"🔯 **{active_form}**  `{progress_bar(gem_count, total_slots, 8)}` {gem_count}/{total_slots} ngọc"
+            f"{tran_icon} **{active_form}**  `{progress_bar(gem_count, total_slots, 8)}` {gem_count}/{total_slots} ngọc"
             f"{reserve_tag}"
         )
     else:
-        detail = f"🧬 **{constitution}**\n🔯 *(chưa kích hoạt trận pháp)*"
+        detail = f"🧬 **{constitution}**\n{tran_icon} *(chưa kích hoạt trận pháp)*"
 
     embed.add_field(name="Thể Chất & Trận Pháp", value=detail, inline=False)
 
@@ -319,18 +321,12 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         embed.add_field(name="🗡️ Trang Bị", value="\n".join(lines), inline=False)
 
     # ── Elemental resistances ─────────────────────────────────────────────────
-    _ELEM_EMOJI_MAP = {
-        "kim":   "⚙️", "moc":   "🌿", "thuy":  "💧", "hoa":   "🔥",
-        "tho":   "🪨", "loi":   "⚡", "phong": "🌬️", "am":    "🌑", "quang": "☀️",
-    }
-    _ELEM_VI = {
-        "kim":   "Kim", "moc":   "Mộc", "thuy":  "Thủy", "hoa":  "Hỏa",
-        "tho":   "Thổ", "loi":   "Lôi", "phong": "Phong", "am":  "Âm", "quang": "Quang",
-    }
+    from src.utils import emojis
+    from src.utils.assets import ELEMENT_NAMES_VI
     resistances: dict[str, float] = stats.get("resistances", {})
     if resistances:
         res_parts = [
-            f"{_ELEM_EMOJI_MAP.get(elem, elem)} {_ELEM_VI.get(elem, elem)} **{val * 100:.1f}%**"
+            f"{emojis.for_element(elem)} {ELEMENT_NAMES_VI.get(elem, elem)} **{val * 100:.1f}%**"
             for elem, val in resistances.items()
         ]
         embed.add_field(name="🛡️ Kháng Nguyên Tố", value="  ".join(res_parts), inline=False)

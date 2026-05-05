@@ -231,13 +231,15 @@
     "element": "phong",
     "roll_weight": 6,
     "cost_merit": 15000,
-    "passive_description_vi": "Thân tựa cánh diều giữa bão, né đánh và đóng Phong Ấn lên kẻ địch liên tục.",
+    "passive_description_vi": "Thân tựa cánh diều giữa bão, né đánh và đóng Ấn Phong lên kẻ địch liên tục.",
     "stat_bonuses": {
       "evasion_rating": 180,
       "spd_bonus": 7,
       "mark_on_hit_pct": 0.15,
       "crit_rating_vs_marked": 120,
-      "phong_res_shred": 0.08
+      "element_res_shred": {
+        "phong": 0.08
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -339,8 +341,8 @@
     "rarity": "legendary",
     "element": "phong",
     "roll_weight": 0,
-    "cost_merit": 80000,
-    "passive_description_vi": "Cuồng phong hóa kiếm, né tránh càng cao thì sát thương càng tăng vượt trội, đánh chết đối thủ bị Phong Ấn.",
+    "cost_merit": 0,
+    "passive_description_vi": "Cuồng phong hóa kiếm, né tránh càng cao thì sát thương càng tăng vượt trội, đánh chết đối thủ bị Ấn Phong.",
     "stat_bonuses": {
       "evasion_rating": 350,
       "spd_bonus": 12,
@@ -348,7 +350,9 @@
       "crit_rating_vs_marked": 300,
       "crit_dmg_vs_marked": 300,
       "damage_bonus_from_evasion_pct": 0.18,
-      "phong_res_shred": 0.18,
+      "element_res_shred": {
+        "phong": 0.18
+      },
       "final_dmg_bonus": 0.08
     },
     "special_requirements": null,
@@ -357,7 +361,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssPhong": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionPhongLoc_Leg",
@@ -366,14 +371,16 @@
     "rarity": "legendary",
     "element": "phong",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Cuồng phong cuốn theo lôi điện, mỗi đòn đánh đều mang sấm sét — đối thủ tê liệt sâu hơn và phòng phong kháng tan rã.",
     "stat_bonuses": {
       "evasion_rating": 350,
       "spd_bonus": 25,
       "shock_on_hit_pct": 0.3,
       "shock_stack_cap_bonus": 1,
-      "phong_res_shred": 0.12,
+      "element_res_shred": {
+        "phong": 0.12
+      },
       "damage_bonus_from_evasion_pct": 0.1
     },
     "special_requirements": null,
@@ -382,7 +389,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssPhong": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionPhongPhieu_Leg",
@@ -391,7 +399,7 @@
     "rarity": "legendary",
     "element": "phong",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Phiêu hốt vô hình, kẻ địch bị Phong-Ấn không thể chạy trốn — bạo kích lao đến từ mọi hướng, né càng cao thì sát thương càng kinh hoàng.",
     "stat_bonuses": {
       "evasion_rating": 500,
@@ -400,7 +408,9 @@
       "crit_rating_vs_marked": 200,
       "crit_dmg_vs_marked": 150,
       "damage_bonus_from_evasion_pct": 0.15,
-      "phong_res_shred": 0.1
+      "element_res_shred": {
+        "phong": 0.1
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -408,7 +418,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssPhong": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionPhongTinh_Leg",
@@ -417,14 +428,16 @@
     "rarity": "legendary",
     "element": "phong",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Linh phong dung hợp linh khí, mỗi nhịp né tránh lại tích tụ Linh Khí — cuồng phong càng dày, đòn cuối càng dữ dội.",
     "stat_bonuses": {
       "evasion_rating": 400,
       "cooldown_reduce": 0.25,
       "mp_regen_pct": 0.06,
       "damage_bonus_from_evasion_pct": 0.12,
-      "phong_res_shred": 0.1,
+      "element_res_shred": {
+        "phong": 0.1
+      },
       "mana_stack_per_attack": 1
     },
     "special_requirements": null,
@@ -433,6 +446,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssPhong": 6
-    }
+    },
+    "cost_stones": 80000
   }
 ]

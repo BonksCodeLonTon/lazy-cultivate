@@ -20,7 +20,7 @@ from src.game.engine.damage import (
     spd_evasion_bonus,
 )
 from src.game.engine.effects import (
-    EFFECTS, EffectMeta, default_duration, get_combat_modifiers,
+    EFFECTS, EffectMeta, check_attack_miss, default_duration, get_combat_modifiers,
 )
 from src.game.systems.combatant import Combatant
 
@@ -46,6 +46,17 @@ def cast_skill(
     target_mods = get_combat_modifiers(target)
 
     if base_dmg > 0:
+        # Blind miss check (Âm DebuffLoaMat) — happens before evasion roll
+        # so a blinded attacker can whiff regardless of target's evasion.
+        # MP is already spent above; matches DebuffTeLiet's "wasted swing" feel.
+        if check_attack_miss(actor, session.rng):
+            session.log.append(
+                f"  🌫️ **{actor.name}** dùng *{skill_data['vi']}* → đánh trượt do **Lóa Mắt**!"
+            )
+            apply_skill_effects(session, skill_data, actor, target, hit=False)
+            actor.set_cooldown(skill_key, skill_data.get("cooldown", 1))
+            return
+
         skill_obj = _build_skill_obj(skill_key, skill_data, mp_cost)
         attack_stats = build_attack_stats(actor, target, actor_mods, skill_obj.element)
         defense_stats = build_defense_stats(target, target_mods, actor, spd_evasion_bonus)
@@ -88,7 +99,7 @@ def cast_skill(
                 target.effects.pop(EffectKey.BUFF_BAT_TU, None)
                 session.log.append(f"    💫 **{target.name}** kích hoạt **Bất Tử** — sống sót!")
 
-            target.hp = max(0, target.hp - dmg)
+            target.take_damage(dmg)
             skill_elem = skill_data.get("element")
             dmg_tag = colorize_damage(f"-{dmg:,} HP", skill_elem)
             session.log.append(
@@ -109,7 +120,7 @@ def cast_skill(
                 true_dmg = max(1, int(target.hp_max * total_true_pct))
                 if result.is_crit:
                     true_dmg = int(true_dmg * 1.5)
-                target.hp = max(0, target.hp - true_dmg)
+                target.take_damage(true_dmg)
                 true_tag = colorize_damage(f"-{true_dmg:,} HP", None, true_dmg=True)
                 session.log.append(
                     f"    🗡️ **Chân Thương** xuyên mọi phòng ngự → {true_tag}"
@@ -358,12 +369,14 @@ def auto_attack(
 ) -> None:
     """Physical auto-attack using ATK stat, reduced by target physical defense."""
     from src.game.engine.damage.physical import apply_physical_defense
+    from src.game.engine.damage.combat_hit import effective_damage_reduction
     raw = max(1, int(actor.atk * session.rng.uniform(0.85, 1.15) + 5))
     dmg = apply_physical_defense(raw, "physical", target.def_stat)
-    if target.final_dmg_reduce > 0:
-        dmg = int(dmg * (1.0 - target.final_dmg_reduce))
+    fdr = effective_damage_reduction(target, {})
+    if fdr > 0:
+        dmg = int(dmg * (1.0 - fdr))
     dmg = max(1, dmg)
-    target.hp = max(0, target.hp - dmg)
+    target.take_damage(dmg)
     session.log.append(
         f"  👊 **{actor.name}** tấn công cơ bản → "
         f"{colorize_damage(f'-{dmg} HP', None)}"

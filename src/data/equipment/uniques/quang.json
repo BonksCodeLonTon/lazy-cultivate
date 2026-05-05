@@ -7,9 +7,18 @@
     "realm": 2,
     "grade": 2,
     "rolled_stats": {
-      "matk": [17, 23],
-      "mp_max": [102, 138],
-      "heal_pct": [0.04, 0.06]
+      "matk": [
+        17,
+        23
+      ],
+      "mp_max": [
+        102,
+        138
+      ],
+      "heal_pct": [
+        0.04,
+        0.06
+      ]
     },
     "passive_bonus": {
       "cleanse_on_turn_pct": 0.1,
@@ -25,13 +34,24 @@
     "realm": 3,
     "grade": 3,
     "rolled_stats": {
-      "matk": [40, 54],
-      "crit_rating": [76, 103],
-      "mp_max": [153, 207]
+      "matk": [
+        40,
+        54
+      ],
+      "crit_rating": [
+        76,
+        103
+      ],
+      "mp_max": [
+        153,
+        207
+      ]
     },
     "passive_bonus": {
       "silence_on_crit_pct": 0.15,
-      "quang_res_shred": 0.08
+      "element_res_shred": {
+        "quang": 0.08
+      }
     },
     "description_vi": "Trượng khắc Quang Tinh — bạo kích có 15% khả năng câm lặng, xuyên 8% kháng Quang."
   },
@@ -43,9 +63,18 @@
     "realm": 4,
     "grade": 4,
     "rolled_stats": {
-      "def_stat": [36, 48],
-      "hp_max": [357, 483],
-      "matk": [25, 34]
+      "def_stat": [
+        36,
+        48
+      ],
+      "hp_max": [
+        357,
+        483
+      ],
+      "matk": [
+        25,
+        34
+      ]
     },
     "passive_bonus": {
       "heal_reduce_on_hit_pct": 0.18,
@@ -61,9 +90,18 @@
     "realm": 5,
     "grade": 5,
     "rolled_stats": {
-      "matk": [41, 55],
-      "mp_max": [187, 253],
-      "crit_rating": [85, 115]
+      "matk": [
+        41,
+        55
+      ],
+      "mp_max": [
+        187,
+        253
+      ],
+      "crit_rating": [
+        85,
+        115
+      ]
     },
     "passive_bonus": {
       "silence_on_crit_pct": 0.2,
@@ -79,9 +117,18 @@
     "realm": 5,
     "grade": 5,
     "rolled_stats": {
-      "matk": [47, 63],
-      "crit_rating": [136, 184],
-      "mp_max": [255, 345]
+      "matk": [
+        47,
+        63
+      ],
+      "crit_rating": [
+        136,
+        184
+      ],
+      "mp_max": [
+        255,
+        345
+      ]
     },
     "passive_bonus": {
       "silence_on_crit_pct": 0.22,
@@ -97,9 +144,18 @@
     "realm": 6,
     "grade": 6,
     "rolled_stats": {
-      "matk": [55, 75],
-      "hp_max": [442, 598],
-      "heal_pct": [0.08, 0.12]
+      "matk": [
+        55,
+        75
+      ],
+      "hp_max": [
+        442,
+        598
+      ],
+      "heal_pct": [
+        0.08,
+        0.12
+      ]
     },
     "passive_bonus": {
       "cleanse_on_turn_pct": 0.15,
@@ -116,9 +172,18 @@
     "realm": 7,
     "grade": 7,
     "rolled_stats": {
-      "matk": [68, 92],
-      "mp_max": [272, 368],
-      "crit_rating": [153, 207]
+      "matk": [
+        68,
+        92
+      ],
+      "mp_max": [
+        272,
+        368
+      ],
+      "crit_rating": [
+        153,
+        207
+      ]
     },
     "passive_bonus": {
       "cooldown_reduce": 0.1,
@@ -135,9 +200,18 @@
     "realm": 7,
     "grade": 7,
     "rolled_stats": {
-      "def_stat": [47, 63],
-      "hp_max": [527, 713],
-      "matk": [42, 57]
+      "def_stat": [
+        47,
+        63
+      ],
+      "hp_max": [
+        527,
+        713
+      ],
+      "matk": [
+        42,
+        57
+      ]
     },
     "passive_bonus": {
       "silence_on_crit_pct": 0.25,
@@ -154,13 +228,24 @@
     "realm": 8,
     "grade": 8,
     "rolled_stats": {
-      "matk": [132, 178],
-      "crit_rating": [255, 345],
-      "mp_max": [425, 575]
+      "matk": [
+        132,
+        178
+      ],
+      "crit_rating": [
+        255,
+        345
+      ],
+      "mp_max": [
+        425,
+        575
+      ]
     },
     "passive_bonus": {
       "silence_on_crit_pct": 0.35,
-      "quang_res_shred": 0.15,
+      "element_res_shred": {
+        "quang": 0.15
+      },
       "final_dmg_bonus": 0.08
     },
     "description_vi": "Tịnh Thế Pháp Trượng — 35% câm lặng khi bạo, xuyên 15% kháng Quang, +8% sát thương cuối."
@@ -173,9 +258,18 @@
     "realm": 8,
     "grade": 8,
     "rolled_stats": {
-      "matk": [55, 75],
-      "crit_rating": [238, 322],
-      "heal_pct": [0.1, 0.14]
+      "matk": [
+        55,
+        75
+      ],
+      "crit_rating": [
+        238,
+        322
+      ],
+      "heal_pct": [
+        0.1,
+        0.14
+      ]
     },
     "passive_bonus": {
       "heal_pct": 0.15,
@@ -192,13 +286,24 @@
     "realm": 9,
     "grade": 9,
     "rolled_stats": {
-      "matk": [170, 230],
-      "crit_rating": [357, 483],
-      "crit_dmg_rating": [425, 575]
+      "matk": [
+        170,
+        230
+      ],
+      "crit_rating": [
+        357,
+        483
+      ],
+      "crit_dmg_rating": [
+        425,
+        575
+      ]
     },
     "passive_bonus": {
       "silence_on_crit_pct": 0.45,
-      "quang_res_shred": 0.22,
+      "element_res_shred": {
+        "quang": 0.22
+      },
       "heal_reduce_on_hit_pct": 0.25,
       "final_dmg_bonus": 0.12
     },
@@ -212,14 +317,25 @@
     "realm": 9,
     "grade": 9,
     "rolled_stats": {
-      "matk": [81, 109],
-      "hp_max": [663, 897],
-      "heal_pct": [0.14, 0.18]
+      "matk": [
+        81,
+        109
+      ],
+      "hp_max": [
+        663,
+        897
+      ],
+      "heal_pct": [
+        0.14,
+        0.18
+      ]
     },
     "passive_bonus": {
       "heal_pct": 0.2,
       "heal_reduce_on_hit_pct": 0.3,
-      "quang_res_shred": 0.15,
+      "element_res_shred": {
+        "quang": 0.15
+      },
       "barrier_on_cleanse": true,
       "heal_can_crit": true
     },
@@ -233,10 +349,22 @@
     "realm": 9,
     "grade": 9,
     "rolled_stats": {
-      "matk": [102, 138],
-      "crit_rating": [272, 368],
-      "crit_dmg_rating": [323, 437],
-      "res_all": [0.068, 0.092]
+      "matk": [
+        102,
+        138
+      ],
+      "crit_rating": [
+        272,
+        368
+      ],
+      "crit_dmg_rating": [
+        323,
+        437
+      ],
+      "res_all": [
+        0.068,
+        0.092
+      ]
     },
     "passive_bonus": {
       "silence_on_crit_pct": 0.35,

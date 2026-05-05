@@ -14,7 +14,10 @@ from src.game.systems.cultivation import (
 
 
 def make_char() -> Character:
-    return Character(player_id=1, discord_id=123, name="Test")
+    # Pin to the empty constitution so cultivation-rate tests measure the
+    # baseline EXP math with no ``cultivation_speed_bonus`` from the new
+    # Phàm Thể default.
+    return Character(player_id=1, discord_id=123, name="Test", constitution_type="")
 
 
 def test_cannot_breakthrough_below_realm_max_xp():
@@ -59,6 +62,50 @@ def test_hp_increases_with_body_level():
     char.body_level = 9
     hp2 = compute_hp_max(char)
     assert hp2 > hp1
+
+
+def test_hp_flat_per_realm_scales_with_max_realm():
+    char = make_char()
+    char.body_realm = 0
+    char.qi_realm = 0
+    char.formation_realm = 0
+    base = compute_hp_max(char, {"hp_flat_per_realm": 500})
+
+    char.body_realm = 4  # max_realm = 4
+    with_realm = compute_hp_max(char, {"hp_flat_per_realm": 500})
+    assert with_realm - compute_hp_max(char, {}) == pytest.approx(500 * 4)
+    assert with_realm > base
+
+
+def test_hp_flat_per_realm_uses_max_axis():
+    """Bonus follows the highest realm across body/qi/formation, not just body."""
+    char = make_char()
+    char.body_realm = 0
+    char.qi_realm = 6
+    char.formation_realm = 2
+    bare = compute_hp_max(char, {})
+    with_flat = compute_hp_max(char, {"hp_flat_per_realm": 1000})
+    assert with_flat - bare == 1000 * 6
+
+
+def test_hp_flat_per_realm_zero_at_realm_zero():
+    char = make_char()  # all realms = 0
+    bare = compute_hp_max(char, {})
+    with_flat = compute_hp_max(char, {"hp_flat_per_realm": 1000})
+    assert with_flat == bare
+
+
+def test_hp_flat_per_realm_stacks_after_pct_multiplier():
+    """Flat bonus is additive *after* the hp_pct multiplier — same field treated
+    independently per the design (pct scales the cultivation base, flat adds
+    a fixed chunk per realm)."""
+    char = make_char()
+    char.body_realm = 5
+    bare = compute_hp_max(char, {})
+    pct_only = compute_hp_max(char, {"hp_pct": 0.20})
+    both = compute_hp_max(char, {"hp_pct": 0.20, "hp_flat_per_realm": 500})
+    assert both - pct_only == 500 * 5
+    assert pct_only > bare
 
 
 def test_mp_increases_with_formation_level():

@@ -14,6 +14,7 @@ from src.game.constants.balance import (
     ENEMY_BASE_ELEM_RES, ENEMY_DMG_BONUS_SCALE, ENEMY_HP_SCALE_FACTOR,
     ENEMY_RANK_BASE_ATK, ENEMY_RANK_BASE_DEF, ENEMY_RANK_BASE_EVASION,
     ENEMY_RANK_BASE_MATK, ENEMY_REALM_LEVEL_STAT_MULT, ENEMY_SCALE_MAX,
+    MAX_ELEMENTAL_RES, MAX_FINAL_DMG_REDUCE,
 )
 from src.game.models.character import Character
 from src.game.systems.combatant import Combatant
@@ -120,8 +121,8 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
     # in the enemy JSON layers on top of the default own-element res so
     # late-dungeon and themed bosses can carry meaningfully heavier
     # resistance profiles. Each entry is clamped to ``res_cap_pct`` (also
-    # JSON-tunable; defaults to 0.75 to leave a 25% damage floor).
-    res_cap = float(enemy_data.get("res_cap_pct", 0.75))
+    # JSON-tunable; defaults to ``MAX_ELEMENTAL_RES`` to leave a damage floor).
+    res_cap = float(enemy_data.get("res_cap_pct", MAX_ELEMENTAL_RES))
     if elem:
         # Default own-element res scales with player realm, capped at 35%.
         res[elem] = min(0.35, ENEMY_BASE_ELEM_RES * realm_scale)
@@ -151,6 +152,9 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
     # enemy_dmg_bonus. Keep it small — realm scaling already contributes
     # +150-470 % before this field is added.
     extra_fdb = float(enemy_data.get("final_dmg_bonus", 0.0))
+    # Damage-reduction cap: enemies share the player cap so a stray JSON
+    # ``final_dmg_reduce: 0.95`` can't make a mob untouchable.
+    enemy_fdr = max(0.0, min(MAX_FINAL_DMG_REDUCE, float(enemy_data.get("final_dmg_reduce", 0.0))))
 
     return Combatant(
         key=enemy_key,
@@ -170,6 +174,7 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
         resistances=res,
         skill_keys=enemy_data.get("skill_keys", []),
         final_dmg_bonus=enemy_dmg_bonus + extra_fdb,
+        final_dmg_reduce=enemy_fdr,
         mp_regen_pct=enemy_mp_regen_pct,
         hp_regen_pct=enemy_hp_regen_pct,
         immune_hard_cc=bool(enemy_data.get("immune_hard_cc", False)),
@@ -206,6 +211,13 @@ def build_world_boss_combatant(
 
     mp_max = max(800, hp_max // 4)
 
+    # World bosses default to 15% damage reduce, JSON can override but stays
+    # under the player cap (MAX_FINAL_DMG_REDUCE) just like every other source.
+    boss_fdr = max(
+        0.0,
+        min(MAX_FINAL_DMG_REDUCE, float(boss_data.get("final_dmg_reduce", 0.15))),
+    )
+
     return Combatant(
         key=boss_data["key"],
         name=boss_data["vi"],
@@ -225,5 +237,5 @@ def build_world_boss_combatant(
         mp_regen_pct=0.08,
         immune_hard_cc=True,
         is_world_boss=True,      # blocks hp_max mutations (Âm soul-drain, etc.)
-        final_dmg_reduce=0.15,   # World bosses shrug off 15% of damage by default
+        final_dmg_reduce=boss_fdr,
     )

@@ -7,13 +7,24 @@
     "realm": 2,
     "grade": 2,
     "rolled_stats": {
-      "matk": [17, 23],
-      "mp_max": [85, 115],
-      "crit_rating": [60, 81]
+      "matk": [
+        17,
+        23
+      ],
+      "mp_max": [
+        85,
+        115
+      ],
+      "crit_rating": [
+        60,
+        81
+      ]
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.15,
-      "am_res_shred": 0.05
+      "element_res_shred": {
+        "am": 0.05
+      }
     },
     "description_vi": "Phù chú khởi nguồn Hồn Phệ — 15% hút Sinh Mệnh Tối Đa khi đánh trúng, xuyên 5% kháng Ám."
   },
@@ -25,13 +36,24 @@
     "realm": 3,
     "grade": 3,
     "rolled_stats": {
-      "atk": [30, 40],
-      "matk": [30, 40],
-      "crit_rating": [68, 92]
+      "atk": [
+        30,
+        40
+      ],
+      "matk": [
+        30,
+        40
+      ],
+      "crit_rating": [
+        68,
+        92
+      ]
     },
     "passive_bonus": {
       "stat_steal_on_hit_pct": 0.12,
-      "am_res_shred": 0.06
+      "element_res_shred": {
+        "am": 0.06
+      }
     },
     "description_vi": "Tâm kiếm nuốt linh hồn — 12% cướp chỉ số kẻ địch khi đánh trúng, xuyên 6% kháng Ám."
   },
@@ -43,9 +65,18 @@
     "realm": 4,
     "grade": 4,
     "rolled_stats": {
-      "def_stat": [32, 43],
-      "hp_max": [357, 483],
-      "matk": [25, 34]
+      "def_stat": [
+        32,
+        43
+      ],
+      "hp_max": [
+        357,
+        483
+      ],
+      "matk": [
+        25,
+        34
+      ]
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.22,
@@ -61,9 +92,18 @@
     "realm": 5,
     "grade": 5,
     "rolled_stats": {
-      "matk": [47, 63],
-      "hp_max": [306, 414],
-      "crit_rating": [119, 161]
+      "matk": [
+        47,
+        63
+      ],
+      "hp_max": [
+        306,
+        414
+      ],
+      "crit_rating": [
+        119,
+        161
+      ]
     },
     "passive_bonus": {
       "stat_steal_on_hit_pct": 0.2,
@@ -79,9 +119,18 @@
     "realm": 5,
     "grade": 5,
     "rolled_stats": {
-      "matk": [41, 55],
-      "mp_max": [221, 299],
-      "crit_dmg_rating": [102, 138]
+      "matk": [
+        41,
+        55
+      ],
+      "mp_max": [
+        221,
+        299
+      ],
+      "crit_dmg_rating": [
+        102,
+        138
+      ]
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.28,
@@ -97,9 +146,18 @@
     "realm": 6,
     "grade": 6,
     "rolled_stats": {
-      "def_stat": [40, 54],
-      "hp_max": [442, 598],
-      "matk": [47, 63]
+      "def_stat": [
+        40,
+        54
+      ],
+      "hp_max": [
+        442,
+        598
+      ],
+      "matk": [
+        47,
+        63
+      ]
     },
     "passive_bonus": {
       "stat_steal_on_hit_pct": 0.25,
@@ -116,13 +174,24 @@
     "realm": 7,
     "grade": 7,
     "rolled_stats": {
-      "matk": [68, 92],
-      "crit_rating": [170, 230],
-      "mp_max": [272, 368]
+      "matk": [
+        68,
+        92
+      ],
+      "crit_rating": [
+        170,
+        230
+      ],
+      "mp_max": [
+        272,
+        368
+      ]
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.4,
-      "am_res_shred": 0.12,
+      "element_res_shred": {
+        "am": 0.12
+      },
       "crit_rating_vs_drained": 150
     },
     "description_vi": "U Minh Quan — 40% Hồn Phệ on-hit, xuyên 12% kháng Ám, bạo kích vs kẻ bị rút hồn."
@@ -135,9 +204,18 @@
     "realm": 7,
     "grade": 7,
     "rolled_stats": {
-      "def_stat": [47, 63],
-      "hp_max": [527, 713],
-      "atk": [42, 57]
+      "def_stat": [
+        47,
+        63
+      ],
+      "hp_max": [
+        527,
+        713
+      ],
+      "atk": [
+        42,
+        57
+      ]
     },
     "passive_bonus": {
       "stat_steal_on_hit_pct": 0.35,
@@ -154,14 +232,25 @@
     "realm": 8,
     "grade": 8,
     "rolled_stats": {
-      "matk": [132, 178],
-      "crit_rating": [221, 299],
-      "mp_max": [425, 575]
+      "matk": [
+        132,
+        178
+      ],
+      "crit_rating": [
+        221,
+        299
+      ],
+      "mp_max": [
+        425,
+        575
+      ]
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.5,
       "stat_steal_on_hit_pct": 0.35,
-      "am_res_shred": 0.15
+      "element_res_shred": {
+        "am": 0.15
+      }
     },
     "description_vi": "Trượng Tử Thần U Minh — 50% Hồn Phệ, 35% cướp chỉ số, xuyên 15% kháng Ám."
   },
@@ -173,10 +262,22 @@
     "realm": 8,
     "grade": 8,
     "rolled_stats": {
-      "atk": [68, 92],
-      "matk": [68, 92],
-      "crit_dmg_rating": [221, 299],
-      "final_dmg_bonus": [0.068, 0.092]
+      "atk": [
+        68,
+        92
+      ],
+      "matk": [
+        68,
+        92
+      ],
+      "crit_dmg_rating": [
+        221,
+        299
+      ],
+      "final_dmg_bonus": [
+        0.068,
+        0.092
+      ]
     },
     "passive_bonus": {
       "crit_rating_vs_drained": 220,
@@ -192,13 +293,24 @@
     "realm": 9,
     "grade": 9,
     "rolled_stats": {
-      "matk": [170, 230],
-      "crit_rating": [306, 414],
-      "crit_dmg_rating": [357, 483]
+      "matk": [
+        170,
+        230
+      ],
+      "crit_rating": [
+        306,
+        414
+      ],
+      "crit_dmg_rating": [
+        357,
+        483
+      ]
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.75,
-      "am_res_shred": 0.25,
+      "element_res_shred": {
+        "am": 0.25
+      },
       "crit_rating_vs_drained": 320
     },
     "description_vi": "Trượng Ám Tổ — 75% Hồn Phệ on-hit, xuyên 25% kháng Ám, bạo kích hủy diệt vs linh hồn đã rút."
@@ -211,10 +323,22 @@
     "realm": 9,
     "grade": 9,
     "rolled_stats": {
-      "matk": [102, 138],
-      "hp_max": [663, 897],
-      "crit_rating": [255, 345],
-      "mp_max": [425, 575]
+      "matk": [
+        102,
+        138
+      ],
+      "hp_max": [
+        663,
+        897
+      ],
+      "crit_rating": [
+        255,
+        345
+      ],
+      "mp_max": [
+        425,
+        575
+      ]
     },
     "passive_bonus": {
       "stat_steal_on_hit_pct": 0.55,

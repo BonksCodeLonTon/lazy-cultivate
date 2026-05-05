@@ -77,6 +77,7 @@ class StatusView(discord.ui.View):
             ("⚗️ Luyện Đan",         discord.ButtonStyle.secondary, self._alchemy_cb,       2),
             ("🏪 Phường Thị",        discord.ButtonStyle.secondary, self._shop_cb,          3),
             ("🏮 Đấu Thương Các",    discord.ButtonStyle.secondary, self._market_cb,        3),
+            ("📖 Cẩm Nang",          discord.ButtonStyle.primary,   self._handbook_cb,      3),
         ]
         for label, style, cb, row in configs:
             btn = discord.ui.Button(label=label, style=style, row=row)
@@ -308,6 +309,15 @@ class StatusView(discord.ui.View):
         embed = _hub_embed()
         view = MarketHubView(self._discord_id, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _handbook_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+
+        from src.bot.cogs.handbook import render_handbook_hub
+        await render_handbook_hub(interaction, self._discord_id, back_fn=_show_status)
 
 
 class StatusCog(commands.Cog, name="Status"):

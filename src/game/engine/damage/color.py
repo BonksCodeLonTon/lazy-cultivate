@@ -21,24 +21,28 @@ from __future__ import annotations
 
 import re
 
+from src.game.constants.elements import Element
+
 # ── ANSI palette (Discord-supported 30-37 foreground codes) ──────────────
 _ESC = "\x1b"
 _RESET = f"{_ESC}[0m"
 _BOLD = f"{_ESC}[1m"
 
 # Element → ANSI foreground code. Colors picked to be readable on Discord's
-# dark/light themes and evocative of each element.
-ELEMENT_ANSI: dict[str, str] = {
-    "hoa":   f"{_ESC}[31m",   # red — fire
-    "moc":   f"{_ESC}[32m",   # green — wood
-    "thuy":  f"{_ESC}[34m",   # blue — water
-    "kim":   f"{_ESC}[33m",   # yellow — gold/metal
-    "tho":   f"{_ESC}[33m",   # yellow — earth (shares with kim, adequate)
-    "loi":   f"{_ESC}[35m",   # pink — lightning
-    "phong": f"{_ESC}[36m",   # cyan — wind
-    "am":    f"{_ESC}[30m",   # gray — shadow
-    "quang": f"{_ESC}[37m",   # white — light
+# dark/light themes and evocative of each element. Keyed by ``Element`` so
+# adding a 10th element forces every entry to be filled in here.
+ELEMENT_ANSI: dict[Element, str] = {
+    Element.HOA:   f"{_ESC}[31m",   # red — fire
+    Element.MOC:   f"{_ESC}[32m",   # green — wood
+    Element.THUY:  f"{_ESC}[34m",   # blue — water
+    Element.KIM:   f"{_ESC}[33m",   # yellow — gold/metal
+    Element.THO:   f"{_ESC}[33m",   # yellow — earth (shares with kim, adequate)
+    Element.LOI:   f"{_ESC}[35m",   # pink — lightning
+    Element.PHONG: f"{_ESC}[36m",   # cyan — wind
+    Element.AM:    f"{_ESC}[30m",   # gray — shadow
+    Element.QUANG: f"{_ESC}[37m",   # white — light
 }
+assert set(ELEMENT_ANSI) == set(Element), "ELEMENT_ANSI missing element entries"
 # "physical" (non-elemental) and "true" (Chân Thương) damage lanes.
 PHYSICAL_ANSI = f"{_ESC}[37m"     # plain white — generic
 TRUE_DMG_ANSI = f"{_ESC}[1;33m"   # bold yellow — unblockable marker

@@ -233,7 +233,7 @@ def apply_reflect(
     if not attacker.is_alive() or dmg <= 0:
         return
     reflected = max(1, int(dmg * defender.reflect_pct))
-    attacker.hp = max(0, attacker.hp - reflected)
+    attacker.take_damage(reflected)
     # Reflect paints in the defender's element (mirror = their flavor).
     reflect_tag = colorize_damage(f"-{reflected:,} HP", defender.element)
     session.log.append(

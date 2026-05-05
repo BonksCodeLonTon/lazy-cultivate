@@ -95,7 +95,8 @@ ENEMY_REALM_LEVEL_STAT_MULT: dict[int, float] = {
 
 # ── Player defaults ───────────────────────────────────────────────────────────
 BASE_MP_REGEN_PCT: float = 0.03   # 1 % MP per turn baseline (before bonuses)
-MAX_FINAL_DMG_REDUCE: float = 0.75  # damage-reduction hard cap (buffs + debuffs)
+MAX_FINAL_DMG_REDUCE: float = 0.90  # damage-reduction hard cap (buffs + debuffs)
+MAX_ELEMENTAL_RES: float = 0.75     # per-element resistance hard cap (post-shred, post-stack)
 
 # ── SPD → combat impact ───────────────────────────────────────────────────────
 # Every SPD point above baseline adds evasion rating (always-on defensive edge).
@@ -214,6 +215,23 @@ GEM_ELEMENT_BASE_BONUS: dict[str, dict[str, float]] = {
     "quang": {"heal_pct":         0.016},
     "am":    {"debuff_immune_pct":0.012, "poison_dmg_bonus": 0.016},
 }
+
+# ── Linh Căn breadth (Khí Tu archetype synergy) ──────────────────────────────
+# Khí Tu archetype gets a multiplier on most Linh Căn passive bonuses based on
+# how many Linh Căn are at or above LINH_CAN_BREADTH_MIN_LEVEL. Curve:
+#
+#   • 0 high-level Linh Căn → ×1.00 (no synergy)
+#   • Each Linh Căn at >= LINH_CAN_BREADTH_MIN_LEVEL adds + per-element step
+#   • Cap at LINH_CAN_BREADTH_MAX_MULT to keep Phá Thiên + 9-element from
+#     producing one-shot numbers (matches the rationale behind
+#     ``cultivation._AMP_EXCLUDED_STATS``).
+#
+# At Lv7+ × 9 elements → cap. At 6 elements at Lv7+ → ~×1.40. The minimum
+# threshold of Lv7 keeps the bonus inaccessible until the player has
+# legitimately invested in materials per element, not just unlocked them.
+LINH_CAN_BREADTH_MIN_LEVEL: int = 7
+LINH_CAN_BREADTH_PER_ELEMENT: float = 0.10
+LINH_CAN_BREADTH_MAX_MULT: float = 1.80
 
 # ── Encounter grades (dungeon spawn-time rank) ────────────────────────────────
 # Randomly rolled per wave; separate from the enemy's base "rank" JSON field.

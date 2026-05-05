@@ -21,6 +21,7 @@ from src.game.systems.cultivation_service import (
     pre_breakthrough_realm,
 )
 from src.game.constants.grades import Grade
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.assets import AXIS_LABELS, AXIS_ICONS
 
@@ -49,8 +50,8 @@ def _cultivate_embed(axis: str, result: dict) -> discord.Embed:
     lines = [
         f"Hướng: {axis_icon} **{axis_label}**",
         f"Lượt xử lý: **{turns:,}** lượt",
-        f"Công Đức nhận: **+{merit:,}**",
-        f"Nghiệp Lực tích lũy: **+{karma:,}**",
+        f"{emojis.for_currency('merit')} Công Đức nhận: **+{merit:,}**",
+        f"{emojis.for_currency('karma_accum')} Nghiệp Lực tích lũy: **+{karma:,}**",
     ]
     if exp_gained:
         lines.append(f"📘 EXP tu luyện: **+{exp_gained:,}**")
@@ -361,7 +362,7 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             f"**{name}** đã bước vào con đường tu tiên!\n"
             f"🌿 Linh Căn: **{rolled_linh_can or '(không)'}**\n"
             f"🧬 Thể Chất sơ khởi: **{const_data.get('vi', rolled_const)}** "
-            f"(*{rarity_vi}*)\n"
+            f"({emojis.for_rarity(rarity)} *{rarity_vi}*)\n"
             f"Dùng `/status` để xem chi tiết."
         )
         await interaction.response.send_message(embed=embed)
@@ -406,7 +407,7 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             player_orm.formation_level = char.formation_level
             await session.commit()
             
-            await interaction.followup.send(embed=success_embed(f"Tiêu {merits:,} Công Đức -> +{res['exp_gained']:,} EXP Trận Đạo."))
+            await interaction.followup.send(embed=success_embed(f"Tiêu {emojis.for_currency('merit')} {merits:,} Công Đức -> +{res['exp_gained']:,} EXP Trận Đạo."))
 
     @app_commands.command(name="breakthrough", description="Độ Kiếp")
     async def breakthrough(self, interaction: discord.Interaction) -> None:

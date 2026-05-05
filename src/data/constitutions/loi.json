@@ -236,8 +236,12 @@
       "spd_bonus": 8,
       "crit_rating": 150,
       "shock_on_hit_pct": 0.18,
-      "loi_res_shred": 0.1,
-      "final_dmg_bonus": 0.05
+      "element_res_shred": {
+        "loi": 0.1
+      },
+      "element_dmg_bonus": {
+        "loi": 0.05
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -339,7 +343,7 @@
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình né tránh, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "spd_bonus": 30,
@@ -352,7 +356,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssLoi": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionLoiCuong_Leg",
@@ -361,7 +366,7 @@
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "spd_bonus": 25,
@@ -374,7 +379,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssLoi": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionLoiTu_Leg",
@@ -383,7 +389,7 @@
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình sát thương bạo kích, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "spd_bonus": 15,
@@ -396,7 +402,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssLoi": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionThienLoiThan",
@@ -405,7 +412,7 @@
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Thân là lôi, lôi là thân — mỗi đòn gây chồng Sốc Điện và có cơ hội cướp lượt hành động.",
     "stat_bonuses": {
       "spd_bonus": 15,
@@ -413,7 +420,9 @@
       "shock_on_hit_pct": 0.35,
       "shock_stack_cap_bonus": 3,
       "shock_per_stack_pct_bonus": 0.01,
-      "loi_res_shred": 0.2,
+      "element_res_shred": {
+        "loi": 0.2
+      },
       "turn_steal_pct": 0.12,
       "final_dmg_bonus": 0.1
     },
@@ -423,6 +432,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssLoi": 6
-    }
+    },
+    "cost_stones": 80000
   }
 ]

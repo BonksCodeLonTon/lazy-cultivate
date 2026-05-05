@@ -39,11 +39,11 @@
     "base_dmg": 34,
     "effects": [
       "BuffTangToc",
-      "DebuffPhongAn"
+      "DebuffAnPhong"
     ],
     "effect_chances": {
       "BuffTangToc": 1.0,
-      "DebuffPhongAn": 0.3
+      "DebuffAnPhong": 0.3
     },
     "formation_key": null
   },
@@ -63,16 +63,16 @@
     "cooldown": 3,
     "base_dmg": 76,
     "effects": [
-      "DebuffPhongAn",
+      "DebuffAnPhong",
       "DebuffSetDanh"
     ],
     "effect_chances": {
-      "DebuffPhongAn": 0.45,
+      "DebuffAnPhong": 0.45,
       "DebuffSetDanh": 0.4
     },
     "formation_key": null,
     "effect_overrides": {
-      "DebuffPhongAn": {
+      "DebuffAnPhong": {
         "duration": 4,
         "stat_bonus": {
           "evasion_rating": -200

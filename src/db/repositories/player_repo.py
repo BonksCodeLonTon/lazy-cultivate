@@ -130,6 +130,9 @@ class PlayerRepository:
         await self._session.flush()
 
 
+LEGENDARY_STARTER_RATE = 0.005
+
+
 def _roll_starter_constitution(linh_can_list: list[str]) -> str:
     """Weighted random roll among constitutions matching the player's Linh Căn.
 
@@ -137,16 +140,33 @@ def _roll_starter_constitution(linh_can_list: list[str]) -> str:
     plus **matching-element** ones — newcomers can never roll a body whose
     element clashes with their rolled roots. Falls back to the default Vạn
     Tượng body if the filtered pool is ever empty.
+
+    Legendary bodies are gated behind a flat ``LEGENDARY_STARTER_RATE`` (0.5%)
+    pre-roll. On a hit, one is chosen uniformly from the matching legendary
+    pool; otherwise the standard weighted pick runs as before. Legendary
+    entries keep ``roll_weight=0`` and stay out of the weighted pool — the
+    rate is independent of weight rebalancing.
     """
     from src.data.registry import registry
 
     player_elems = set(linh_can_list)
+
+    if random.random() < LEGENDARY_STARTER_RATE:
+        leg_pool = [
+            c for c in registry.constitutions.values()
+            if c.get("rarity") == "legendary"
+            and not c.get("special_requirements")
+            and (c.get("element") is None or c.get("element") in player_elems)
+        ]
+        if leg_pool:
+            return random.choice(leg_pool)["key"]
+
     pool = [
         c for c in registry.rollable_constitutions()
         if c.get("element") is None or c.get("element") in player_elems
     ]
     if not pool:
-        return "ConstitutionVanTuong"
+        return "ConstitutionPhamThe"
 
     weights = [float(c.get("roll_weight", 0)) for c in pool]
     chosen = random.choices(pool, weights=weights, k=1)[0]

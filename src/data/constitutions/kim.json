@@ -31,7 +31,6 @@
     "stat_bonuses": {
       "hp_pct": 0.06,
       "res_all": 20,
-      "thorn_pct": 0.04,
       "bleed_on_hit_pct": 0.04
     },
     "special_requirements": null,
@@ -342,7 +341,7 @@
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Đế thể Kim — đỉnh cao của lộ trình phòng ngự, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "hp_pct": 0.3,
@@ -356,7 +355,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssKim": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionKimSat_Leg",
@@ -365,7 +365,7 @@
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Đế thể Kim — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "crit_rating": 400,
@@ -378,7 +378,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssKim": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionKimTinh_Leg",
@@ -387,7 +388,7 @@
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Đế thể Kim — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "crit_rating": 300,
@@ -400,7 +401,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssKim": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionThaiCucKim",
@@ -409,7 +411,7 @@
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Thân hóa kim cang bất hoại, mỗi đòn bạo kích đều xé rách linh hồn kẻ địch đang chảy máu.",
     "stat_bonuses": {
       "crit_rating": 300,
@@ -426,6 +428,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssKim": 6
-    }
+    },
+    "cost_stones": 80000
   }
 ]

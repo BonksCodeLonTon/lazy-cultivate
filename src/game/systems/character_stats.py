@@ -13,6 +13,7 @@ from src.game.constants.balance import (
     REALM_POWER_BONUS_PER_STAGE,
     BASE_MP_REGEN_PCT,
     MAX_FINAL_DMG_REDUCE,
+    MAX_ELEMENTAL_RES,
     DEFAULT_BURN_STACK_CAP,
     DEFAULT_BURN_PER_STACK_PCT,
     DEFAULT_BLEED_STACK_CAP,
@@ -22,6 +23,7 @@ from src.game.constants.balance import (
     DEFAULT_MANA_STACK_CAP,
     DEFAULT_SHIELD_CAP_PCT,
 )
+from src.game.constants.elements import ALL_ELEMENTS, RESISTANCE_KEYS
 from src.game.engine import linh_can_effects as lc_effects
 
 
@@ -103,7 +105,6 @@ class CombatStats:
     burn_stack_cap: int = DEFAULT_BURN_STACK_CAP
     burn_per_stack_pct: float = DEFAULT_BURN_PER_STACK_PCT
     bonus_dmg_vs_burn: float = 0.0
-    fire_res_shred: float = 0.0
     dot_can_crit: bool = False
     # ── Kim (bleed) build ─────────────────────────────────────────────────
     bleed_stack_cap: int = DEFAULT_BLEED_STACK_CAP
@@ -115,7 +116,6 @@ class CombatStats:
     true_dmg_pct: float = 0.0
     # ── Moc (wood/poison-leech/heal) build ────────────────────────────────
     dot_leech_pct: float = 0.0
-    moc_res_shred: float = 0.0
     damage_from_heal_pct: float = 0.0
     damage_bonus_from_hp_pct: float = 0.0
     # ── Thủy (water/mana/mirror) build ────────────────────────────────────
@@ -126,7 +126,6 @@ class CombatStats:
     mana_stack_cap: int = DEFAULT_MANA_STACK_CAP
     mana_stack_per_attack: int = 0
     mana_stack_dmg_bonus: float = 0.0
-    thuy_res_shred: float = 0.0
     # ── Thổ (earth/shield/thorn) build ────────────────────────────────────
     shield_regen_pct: float = 0.0
     shield_regen_flat: int = 0
@@ -139,25 +138,23 @@ class CombatStats:
     shock_stack_cap: int = DEFAULT_SHOCK_STACK_CAP
     shock_per_stack_pct: float = DEFAULT_SHOCK_PER_STACK_PCT
     shock_on_hit_pct: float = 0.0
-    loi_res_shred: float = 0.0
     turn_steal_pct: float = 0.0
     # ── Phong (wind/evasion/mark) build ───────────────────────────────────
     mark_on_hit_pct: float = 0.0
     damage_bonus_from_evasion_pct: float = 0.0
     crit_rating_vs_marked: int = 0
     crit_dmg_vs_marked: int = 0
-    phong_res_shred: float = 0.0
     # ── Quang (light/silence/anti-heal) build ─────────────────────────────
     silence_on_crit_pct: float = 0.0
     heal_reduce_on_hit_pct: float = 0.0
     cleanse_on_turn_pct: float = 0.0
-    quang_res_shred: float = 0.0
     barrier_on_cleanse: bool = False
     # ── Âm (shadow/soul-devour) build ─────────────────────────────────────
     soul_drain_on_hit_pct: float = 0.0
     stat_steal_on_hit_pct: float = 0.0
-    am_res_shred: float = 0.0
     crit_rating_vs_drained: int = 0
+    # ── Cross-element resistance shred — single dict source of truth ──────
+    element_res_shred: dict[str, float] = field(default_factory=dict)
     # ── Mộc + Quang shared: heals may crit (×1.5) ─────────────────────────
     heal_can_crit: bool = False
     # ── DoT damage amplifiers (cross-build) ───────────────────────────────
@@ -167,6 +164,38 @@ class CombatStats:
     poison_dmg_bonus: float = 0.0
     # Rare late-game flag: reverts DoTs to the legacy %HP model.
     dot_scales_hp_pct: bool = False
+    # Per-turn fire aura — deals hp_max × pct to opponent each turn.
+    solar_aura_pct: float = 0.0
+    # Per-turn moc-leech aura — damages opponent + heals holder for same amount.
+    wither_aura_pct: float = 0.0
+    # Niết Bàn Trùng Sinh — once-per-combat revive (HP-restore fraction +
+    # post-revive stat buff fraction). 0.0 = no revive.
+    phoenix_revive_pct: float = 0.0
+    phoenix_revive_buff_pct: float = 0.0
+    # Thôn Thiên Ma Khí — once-per-fight stat drain at combat start.
+    stat_drain_aura_pct: float = 0.0
+    # Thánh Tuyền Thể — fraction of incoming damage spread across N turns.
+    damage_defer_turns: int = 0
+    damage_defer_pct: float = 0.0
+    # Hào Quang Củng Cố (Fortify Aura) — endgame Hoang Cổ Thánh Thể payoff.
+    # Each turn adds one ``fortify_stack`` (capped at ``fortify_stack_cap``);
+    # each stack contributes ``fortify_per_turn_pct`` to BOTH final_dmg_bonus
+    # and final_dmg_reduce. After taking non-DoT damage, the holder gains an
+    # extra ``fortify_post_hit_dr_pct`` damage reduction for 1 follow-up turn.
+    # Combat code: stacks tick in CombatSession._process_periodic; brace flag
+    # is set inside ``Combatant.take_damage(is_dot=False)``; both bonuses are
+    # folded into ``effective_damage_reduction`` / ``build_attack_stats``.
+    fortify_per_turn_pct: float = 0.0
+    fortify_stack_cap: int = 0
+    fortify_post_hit_dr_pct: float = 0.0
+    # Loot economy passives (constitutions / equipment) applied inside
+    # CombatSession._roll_loot — additive on top of the session's baseline
+    # loot_qty_multiplier (elite roll, dungeon grade) and loot_luck_pct.
+    loot_qty_bonus: float = 0.0
+    loot_luck_bonus: float = 0.0
+    # Generic per-element bonus dicts (constitutions / equipment).
+    damage_taken_convert_pct: dict[str, float] = field(default_factory=dict)
+    element_dmg_bonus: dict[str, float] = field(default_factory=dict)
     mp_reserved: int = 0          # MP locked by active formation
     mp_reserve_pct: float = 0.0   # fraction of raw mp_max that's reserved
     resistances: dict[str, float] = field(default_factory=dict)
@@ -250,9 +279,8 @@ def compute_combat_stats(
     # same reason they're excluded from Hỗn Độn — preventing one-shot
     # damage against world bosses.
     from src.game.systems.cultivation import is_khi_tu
-    from src.game.constants.linh_can import (
-        linh_can_breadth_multiplier, LINH_CAN_BREADTH_MAX_MULT,
-    )
+    from src.game.constants.balance import LINH_CAN_BREADTH_MAX_MULT
+    from src.game.constants.linh_can import linh_can_breadth_multiplier
     _BREADTH_EXCLUDED_STATS: frozenset[str] = frozenset({
         "final_dmg_bonus", "true_dmg_pct", "cooldown_reduce", "final_dmg_reduce",
     })
@@ -316,8 +344,13 @@ def compute_combat_stats(
     burn_stack_cap_bonus = int(bonuses.get("burn_stack_cap_bonus", 0))
     burn_per_stack_pct_bonus = float(bonuses.get("burn_per_stack_pct_bonus", 0.0))
     bonus_dmg_vs_burn = float(bonuses.get("bonus_dmg_vs_burn", 0.0))
-    fire_res_shred   = float(bonuses.get("fire_res_shred", 0.0))
     dot_can_crit      = bool(bonuses.get("dot_can_crit", False))
+    # Per-element resistance shred — single dict-of-dicts pulled from bonuses.
+    # Constitutions / Linh Căn / formations all emit ``element_res_shred``;
+    # equip-side merge happens further below.
+    element_res_shred: dict[str, float] = {
+        e: float(v) for e, v in (bonuses.get("element_res_shred") or {}).items()
+    }
     # Kim-build fields
     bleed_on_hit_pct        = float(bonuses.get("bleed_on_hit_pct", 0.0))
     bleed_stack_cap_bonus   = int(bonuses.get("bleed_stack_cap_bonus", 0))
@@ -328,7 +361,6 @@ def compute_combat_stats(
     true_dmg_pct            = float(bonuses.get("true_dmg_pct", 0.0))
     # Moc-build fields
     dot_leech_pct            = float(bonuses.get("dot_leech_pct", 0.0))
-    moc_res_shred            = float(bonuses.get("moc_res_shred", 0.0))
     damage_from_heal_pct     = float(bonuses.get("damage_from_heal_pct", 0.0))
     damage_bonus_from_hp_pct = float(bonuses.get("damage_bonus_from_hp_pct", 0.0))
     # Thủy-build fields
@@ -339,7 +371,6 @@ def compute_combat_stats(
     mana_stack_cap_bonus     = int(bonuses.get("mana_stack_cap_bonus", 0))
     mana_stack_per_attack    = int(bonuses.get("mana_stack_per_attack", 0))
     mana_stack_dmg_bonus     = float(bonuses.get("mana_stack_dmg_bonus", 0.0))
-    thuy_res_shred           = float(bonuses.get("thuy_res_shred", 0.0))
     # Thổ-build fields
     shield_regen_pct             = float(bonuses.get("shield_regen_pct", 0.0))
     shield_regen_flat            = int(bonuses.get("shield_regen_flat", 0))
@@ -352,25 +383,21 @@ def compute_combat_stats(
     shock_stack_cap_bonus        = int(bonuses.get("shock_stack_cap_bonus", 0))
     shock_per_stack_pct_bonus    = float(bonuses.get("shock_per_stack_pct_bonus", 0.0))
     shock_on_hit_pct             = float(bonuses.get("shock_on_hit_pct", 0.0))
-    loi_res_shred                = float(bonuses.get("loi_res_shred", 0.0))
     turn_steal_pct               = float(bonuses.get("turn_steal_pct", 0.0))
     # Phong-build fields
     mark_on_hit_pct              = float(bonuses.get("mark_on_hit_pct", 0.0))
     damage_bonus_from_evasion_pct= float(bonuses.get("damage_bonus_from_evasion_pct", 0.0))
     crit_rating_vs_marked        = int(bonuses.get("crit_rating_vs_marked", 0))
     crit_dmg_vs_marked           = int(bonuses.get("crit_dmg_vs_marked", 0))
-    phong_res_shred              = float(bonuses.get("phong_res_shred", 0.0))
     # Quang-build fields
     silence_on_crit_pct          = float(bonuses.get("silence_on_crit_pct", 0.0))
     heal_reduce_on_hit_pct       = float(bonuses.get("heal_reduce_on_hit_pct", 0.0))
     cleanse_on_turn_pct          = float(bonuses.get("cleanse_on_turn_pct", 0.0))
-    quang_res_shred              = float(bonuses.get("quang_res_shred", 0.0))
     barrier_on_cleanse           = bool(bonuses.get("barrier_on_cleanse", False))
     heal_can_crit                = bool(bonuses.get("heal_can_crit", False))
     # Âm-build fields
     soul_drain_on_hit_pct        = float(bonuses.get("soul_drain_on_hit_pct", 0.0))
     stat_steal_on_hit_pct        = float(bonuses.get("stat_steal_on_hit_pct", 0.0))
-    am_res_shred                 = float(bonuses.get("am_res_shred", 0.0))
     crit_rating_vs_drained       = int(bonuses.get("crit_rating_vs_drained", 0))
     # DoT-amplifier fields (cross-build)
     dot_dmg_bonus                = float(bonuses.get("dot_dmg_bonus", 0.0))
@@ -378,6 +405,20 @@ def compute_combat_stats(
     bleed_dmg_bonus              = float(bonuses.get("bleed_dmg_bonus", 0.0))
     poison_dmg_bonus             = float(bonuses.get("poison_dmg_bonus", 0.0))
     dot_scales_hp_pct            = bool(bonuses.get("dot_scales_hp_pct", False))
+    solar_aura_pct               = float(bonuses.get("solar_aura_pct", 0.0))
+    wither_aura_pct              = float(bonuses.get("wither_aura_pct", 0.0))
+    phoenix_revive_pct           = float(bonuses.get("phoenix_revive_pct", 0.0))
+    phoenix_revive_buff_pct      = float(bonuses.get("phoenix_revive_buff_pct", 0.0))
+    stat_drain_aura_pct          = float(bonuses.get("stat_drain_aura_pct", 0.0))
+    damage_defer_turns           = int(bonuses.get("damage_defer_turns", 0))
+    damage_defer_pct             = float(bonuses.get("damage_defer_pct", 0.0))
+    fortify_per_turn_pct         = float(bonuses.get("fortify_per_turn_pct", 0.0))
+    fortify_stack_cap            = int(bonuses.get("fortify_stack_cap", 0))
+    fortify_post_hit_dr_pct      = float(bonuses.get("fortify_post_hit_dr_pct", 0.0))
+    loot_qty_bonus               = float(bonuses.get("loot_qty_bonus", 0.0))
+    loot_luck_bonus              = float(bonuses.get("loot_luck_bonus", 0.0))
+    damage_taken_convert_pct: dict[str, float] = dict(bonuses.get("damage_taken_convert_pct", {}) or {})
+    element_dmg_bonus: dict[str, float] = dict(bonuses.get("element_dmg_bonus", {}) or {})
     slow_on_hit_pct   = bonuses.get("slow_on_hit_pct", 0.0)
     paralysis_on_crit = bonuses.get("paralysis_on_crit", False)
     freeze_on_skill   = bonuses.get("freeze_on_skill", False)
@@ -387,26 +428,25 @@ def compute_combat_stats(
 
     # ── Resistances ───────────────────────────────────────────────────────────
     resistances: dict[str, float] = {
-        "kim":   char.stats.res_kim,
-        "moc":   char.stats.res_moc,
-        "thuy":  char.stats.res_thuy,
-        "hoa":   char.stats.res_hoa,
-        "tho":   char.stats.res_tho,
-        "loi":   char.stats.res_loi,
-        "phong": char.stats.res_phong,
-        "quang": char.stats.res_quang,
-        "am":    char.stats.res_am,
+        e.value: getattr(char.stats, RESISTANCE_KEYS[e]) for e in ALL_ELEMENTS
     }
 
     res_all = bonuses.get("res_all", 0.0)
     if res_all:
         for elem in resistances:
-            resistances[elem] = min(0.75, max(0.0, resistances[elem] + res_all))
+            resistances[elem] = min(MAX_ELEMENTAL_RES, max(0.0, resistances[elem] + res_all))
+
+    # Per-element resistance pickups (constitutions and equipment can raise
+    # individual element resistances via ``res_hoa``, ``res_kim``, etc.).
+    for elem in resistances:
+        bump = float(bonuses.get(f"res_{elem}", 0.0))
+        if bump:
+            resistances[elem] = min(MAX_ELEMENTAL_RES, max(0.0, resistances[elem] + bump))
 
     form_elem = form_bonuses.get("_formation_element")
     res_elem  = form_bonuses.get("res_element", 0.0)
     if form_elem and res_elem:
-        resistances[form_elem] = min(0.75, max(0.0, resistances.get(form_elem, 0.0) + res_elem))
+        resistances[form_elem] = min(MAX_ELEMENTAL_RES, max(0.0, resistances.get(form_elem, 0.0) + res_elem))
 
     # ── Equipment bonuses (applied last) ──────────────────────────────────────
     if equip_stats:
@@ -432,15 +472,21 @@ def compute_combat_stats(
         eq_res_all = equip_stats.get("res_all", 0.0)
         if eq_res_all:
             for elem in resistances:
-                resistances[elem] = min(0.75, resistances[elem] + eq_res_all)
+                resistances[elem] = min(MAX_ELEMENTAL_RES, resistances[elem] + eq_res_all)
+        for elem in resistances:
+            eq_bump = float(equip_stats.get(f"res_{elem}", 0.0))
+            if eq_bump:
+                resistances[elem] = min(MAX_ELEMENTAL_RES, max(0.0, resistances[elem] + eq_bump))
 
         # Passive bonuses from unique items (on-hit procs, immunities, etc.)
         burn_on_hit_pct   += equip_stats.get("burn_on_hit_pct", 0.0)
         burn_stack_cap_bonus    += int(equip_stats.get("burn_stack_cap_bonus", 0))
         burn_per_stack_pct_bonus+= float(equip_stats.get("burn_per_stack_pct_bonus", 0.0))
         bonus_dmg_vs_burn += float(equip_stats.get("bonus_dmg_vs_burn", 0.0))
-        fire_res_shred    += float(equip_stats.get("fire_res_shred", 0.0))
         dot_can_crit       = dot_can_crit or bool(equip_stats.get("dot_can_crit", False))
+        # Per-element resistance shred dict from equip — additive merge.
+        for _e, _v in (equip_stats.get("element_res_shred") or {}).items():
+            element_res_shred[_e] = element_res_shred.get(_e, 0.0) + float(_v)
         # Kim-build fields
         bleed_on_hit_pct        += float(equip_stats.get("bleed_on_hit_pct", 0.0))
         bleed_stack_cap_bonus   += int(equip_stats.get("bleed_stack_cap_bonus", 0))
@@ -451,7 +497,6 @@ def compute_combat_stats(
         true_dmg_pct            += float(equip_stats.get("true_dmg_pct", 0.0))
         # Moc-build fields
         dot_leech_pct            += float(equip_stats.get("dot_leech_pct", 0.0))
-        moc_res_shred            += float(equip_stats.get("moc_res_shred", 0.0))
         damage_from_heal_pct     += float(equip_stats.get("damage_from_heal_pct", 0.0))
         damage_bonus_from_hp_pct += float(equip_stats.get("damage_bonus_from_hp_pct", 0.0))
         # Thủy-build fields
@@ -462,7 +507,6 @@ def compute_combat_stats(
         mana_stack_cap_bonus     += int(equip_stats.get("mana_stack_cap_bonus", 0))
         mana_stack_per_attack    += int(equip_stats.get("mana_stack_per_attack", 0))
         mana_stack_dmg_bonus     += float(equip_stats.get("mana_stack_dmg_bonus", 0.0))
-        thuy_res_shred           += float(equip_stats.get("thuy_res_shred", 0.0))
         # Thổ-build fields
         shield_regen_pct             += float(equip_stats.get("shield_regen_pct", 0.0))
         shield_regen_flat            += int(equip_stats.get("shield_regen_flat", 0))
@@ -475,25 +519,21 @@ def compute_combat_stats(
         shock_stack_cap_bonus        += int(equip_stats.get("shock_stack_cap_bonus", 0))
         shock_per_stack_pct_bonus    += float(equip_stats.get("shock_per_stack_pct_bonus", 0.0))
         shock_on_hit_pct             += float(equip_stats.get("shock_on_hit_pct", 0.0))
-        loi_res_shred                += float(equip_stats.get("loi_res_shred", 0.0))
         turn_steal_pct               += float(equip_stats.get("turn_steal_pct", 0.0))
         # Phong-build fields
         mark_on_hit_pct              += float(equip_stats.get("mark_on_hit_pct", 0.0))
         damage_bonus_from_evasion_pct+= float(equip_stats.get("damage_bonus_from_evasion_pct", 0.0))
         crit_rating_vs_marked        += int(equip_stats.get("crit_rating_vs_marked", 0))
         crit_dmg_vs_marked           += int(equip_stats.get("crit_dmg_vs_marked", 0))
-        phong_res_shred              += float(equip_stats.get("phong_res_shred", 0.0))
         # Quang-build fields
         silence_on_crit_pct          += float(equip_stats.get("silence_on_crit_pct", 0.0))
         heal_reduce_on_hit_pct       += float(equip_stats.get("heal_reduce_on_hit_pct", 0.0))
         cleanse_on_turn_pct          += float(equip_stats.get("cleanse_on_turn_pct", 0.0))
-        quang_res_shred              += float(equip_stats.get("quang_res_shred", 0.0))
         barrier_on_cleanse            = barrier_on_cleanse or bool(equip_stats.get("barrier_on_cleanse", False))
         heal_can_crit                 = heal_can_crit or bool(equip_stats.get("heal_can_crit", False))
         # Âm-build fields
         soul_drain_on_hit_pct        += float(equip_stats.get("soul_drain_on_hit_pct", 0.0))
         stat_steal_on_hit_pct        += float(equip_stats.get("stat_steal_on_hit_pct", 0.0))
-        am_res_shred                 += float(equip_stats.get("am_res_shred", 0.0))
         crit_rating_vs_drained       += int(equip_stats.get("crit_rating_vs_drained", 0))
         # DoT-amplifier fields
         dot_dmg_bonus                += float(equip_stats.get("dot_dmg_bonus", 0.0))
@@ -501,6 +541,22 @@ def compute_combat_stats(
         bleed_dmg_bonus              += float(equip_stats.get("bleed_dmg_bonus", 0.0))
         poison_dmg_bonus             += float(equip_stats.get("poison_dmg_bonus", 0.0))
         dot_scales_hp_pct             = dot_scales_hp_pct or bool(equip_stats.get("dot_scales_hp_pct", False))
+        solar_aura_pct               += float(equip_stats.get("solar_aura_pct", 0.0))
+        wither_aura_pct              += float(equip_stats.get("wither_aura_pct", 0.0))
+        phoenix_revive_pct           = max(phoenix_revive_pct, float(equip_stats.get("phoenix_revive_pct", 0.0)))
+        phoenix_revive_buff_pct      = max(phoenix_revive_buff_pct, float(equip_stats.get("phoenix_revive_buff_pct", 0.0)))
+        stat_drain_aura_pct          = max(stat_drain_aura_pct, float(equip_stats.get("stat_drain_aura_pct", 0.0)))
+        damage_defer_turns           = max(damage_defer_turns, int(equip_stats.get("damage_defer_turns", 0)))
+        damage_defer_pct             = max(damage_defer_pct, float(equip_stats.get("damage_defer_pct", 0.0)))
+        fortify_per_turn_pct         = max(fortify_per_turn_pct, float(equip_stats.get("fortify_per_turn_pct", 0.0)))
+        fortify_stack_cap            = max(fortify_stack_cap, int(equip_stats.get("fortify_stack_cap", 0)))
+        fortify_post_hit_dr_pct      = max(fortify_post_hit_dr_pct, float(equip_stats.get("fortify_post_hit_dr_pct", 0.0)))
+        loot_qty_bonus              += float(equip_stats.get("loot_qty_bonus", 0.0))
+        loot_luck_bonus             += float(equip_stats.get("loot_luck_bonus", 0.0))
+        for elem, val in (equip_stats.get("damage_taken_convert_pct") or {}).items():
+            damage_taken_convert_pct[elem] = damage_taken_convert_pct.get(elem, 0.0) + float(val)
+        for elem, val in (equip_stats.get("element_dmg_bonus") or {}).items():
+            element_dmg_bonus[elem] = element_dmg_bonus.get(elem, 0.0) + float(val)
         slow_on_hit_pct   += equip_stats.get("slow_on_hit_pct", 0.0)
         paralysis_on_crit  = paralysis_on_crit or bool(equip_stats.get("paralysis_on_crit", False))
         freeze_on_skill    = freeze_on_skill   or bool(equip_stats.get("freeze_on_skill", False))
@@ -555,7 +611,6 @@ def compute_combat_stats(
         burn_stack_cap=DEFAULT_BURN_STACK_CAP + burn_stack_cap_bonus,
         burn_per_stack_pct=DEFAULT_BURN_PER_STACK_PCT + burn_per_stack_pct_bonus,
         bonus_dmg_vs_burn=bonus_dmg_vs_burn,
-        fire_res_shred=fire_res_shred,
         dot_can_crit=dot_can_crit,
         bleed_stack_cap=DEFAULT_BLEED_STACK_CAP + bleed_stack_cap_bonus,
         bleed_per_stack_pct=DEFAULT_BLEED_PER_STACK_PCT + bleed_per_stack_pct_bonus,
@@ -565,7 +620,6 @@ def compute_combat_stats(
         crit_dmg_vs_bleed=crit_dmg_vs_bleed,
         true_dmg_pct=true_dmg_pct,
         dot_leech_pct=dot_leech_pct,
-        moc_res_shred=moc_res_shred,
         damage_from_heal_pct=damage_from_heal_pct,
         damage_bonus_from_hp_pct=damage_bonus_from_hp_pct,
         reflect_pct=reflect_pct,
@@ -575,7 +629,6 @@ def compute_combat_stats(
         mana_stack_cap=DEFAULT_MANA_STACK_CAP + mana_stack_cap_bonus,
         mana_stack_per_attack=mana_stack_per_attack,
         mana_stack_dmg_bonus=mana_stack_dmg_bonus,
-        thuy_res_shred=thuy_res_shred,
         shield_regen_pct=shield_regen_pct,
         shield_regen_flat=shield_regen_flat,
         shield_cap_pct=DEFAULT_SHIELD_CAP_PCT + shield_cap_pct_bonus,
@@ -586,28 +639,39 @@ def compute_combat_stats(
         shock_stack_cap=DEFAULT_SHOCK_STACK_CAP + shock_stack_cap_bonus,
         shock_per_stack_pct=DEFAULT_SHOCK_PER_STACK_PCT + shock_per_stack_pct_bonus,
         shock_on_hit_pct=shock_on_hit_pct,
-        loi_res_shred=loi_res_shred,
         turn_steal_pct=turn_steal_pct,
         mark_on_hit_pct=mark_on_hit_pct,
         damage_bonus_from_evasion_pct=damage_bonus_from_evasion_pct,
         crit_rating_vs_marked=crit_rating_vs_marked,
         crit_dmg_vs_marked=crit_dmg_vs_marked,
-        phong_res_shred=phong_res_shred,
         silence_on_crit_pct=silence_on_crit_pct,
         heal_reduce_on_hit_pct=heal_reduce_on_hit_pct,
         cleanse_on_turn_pct=cleanse_on_turn_pct,
-        quang_res_shred=quang_res_shred,
         barrier_on_cleanse=barrier_on_cleanse,
         heal_can_crit=heal_can_crit,
         soul_drain_on_hit_pct=soul_drain_on_hit_pct,
         stat_steal_on_hit_pct=stat_steal_on_hit_pct,
-        am_res_shred=am_res_shred,
         crit_rating_vs_drained=crit_rating_vs_drained,
         dot_dmg_bonus=dot_dmg_bonus,
         burn_dmg_bonus=burn_dmg_bonus,
         bleed_dmg_bonus=bleed_dmg_bonus,
         poison_dmg_bonus=poison_dmg_bonus,
         dot_scales_hp_pct=dot_scales_hp_pct,
+        solar_aura_pct=solar_aura_pct,
+        wither_aura_pct=wither_aura_pct,
+        phoenix_revive_pct=phoenix_revive_pct,
+        phoenix_revive_buff_pct=phoenix_revive_buff_pct,
+        stat_drain_aura_pct=stat_drain_aura_pct,
+        damage_defer_turns=damage_defer_turns,
+        damage_defer_pct=damage_defer_pct,
+        fortify_per_turn_pct=fortify_per_turn_pct,
+        fortify_stack_cap=fortify_stack_cap,
+        fortify_post_hit_dr_pct=fortify_post_hit_dr_pct,
+        loot_qty_bonus=loot_qty_bonus,
+        loot_luck_bonus=loot_luck_bonus,
+        damage_taken_convert_pct=damage_taken_convert_pct,
+        element_dmg_bonus=element_dmg_bonus,
+        element_res_shred=element_res_shred,
         mp_reserved=mp_reserved,
         mp_reserve_pct=reserve_pct,
         resistances=resistances,

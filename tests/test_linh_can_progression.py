@@ -219,9 +219,8 @@ def test_breadth_multiplier_returns_one_when_no_qualifying_elements():
 
 
 def test_breadth_multiplier_scales_per_qualifying_element():
-    from src.game.constants.linh_can import (
-        LINH_CAN_BREADTH_PER_ELEMENT, linh_can_breadth_multiplier,
-    )
+    from src.game.constants.balance import LINH_CAN_BREADTH_PER_ELEMENT
+    from src.game.constants.linh_can import linh_can_breadth_multiplier
     # 3 elements at Lv7+ → 1.0 + 3 × per_element
     levels = {"kim": 7, "hoa": 8, "loi": 9, "moc": 4}
     expected = 1.0 + 3 * LINH_CAN_BREADTH_PER_ELEMENT
@@ -229,18 +228,16 @@ def test_breadth_multiplier_scales_per_qualifying_element():
 
 
 def test_breadth_multiplier_caps_at_max():
-    from src.game.constants.linh_can import (
-        LINH_CAN_BREADTH_MAX_MULT, linh_can_breadth_multiplier,
-    )
+    from src.game.constants.balance import LINH_CAN_BREADTH_MAX_MULT
+    from src.game.constants.linh_can import linh_can_breadth_multiplier
     # All 9 at Lv9 → would exceed cap; clamped.
     levels = {elem: 9 for elem in ALL_LINH_CAN}
     assert linh_can_breadth_multiplier(levels) == LINH_CAN_BREADTH_MAX_MULT
 
 
 def test_breadth_multiplier_only_counts_threshold_or_above():
-    from src.game.constants.linh_can import (
-        LINH_CAN_BREADTH_MIN_LEVEL, linh_can_breadth_multiplier,
-    )
+    from src.game.constants.balance import LINH_CAN_BREADTH_MIN_LEVEL
+    from src.game.constants.linh_can import linh_can_breadth_multiplier
     # Exactly at the threshold counts, one below does not.
     above = {elem: LINH_CAN_BREADTH_MIN_LEVEL for elem in ALL_LINH_CAN}
     below = {elem: LINH_CAN_BREADTH_MIN_LEVEL - 1 for elem in ALL_LINH_CAN}

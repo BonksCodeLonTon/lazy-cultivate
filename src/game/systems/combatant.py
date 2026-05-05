@@ -110,14 +110,82 @@ class Combatant:
     # Bonus damage multiplier vs targets that currently have burn stacks.
     # e.g. 0.25 → +25% final damage if target has any burn stack.
     bonus_dmg_vs_burn: float = 0.0
-    # Flat fire-resistance shred applied by this actor when landing a hit
-    # on a target. Stacks additively with debuffs in the same hit.
-    fire_res_shred: float = 0.0
     # Whether DoTs ticking on the opposing combatant can roll crits.
     # Set on the attacker; combat engine reads the attacker's flag each tick.
     dot_can_crit: bool = False
     # Per-stack burn damage fraction of hp_max (applied by get_periodic_damage).
     burn_per_stack_pct: float = 0.005
+    # Solar aura — every turn, deal hp_max × pct as fire damage to opponent.
+    # Independent of skill actions and DoTs; benefits from final_dmg_bonus,
+    # burn_dmg_bonus, bonus_dmg_vs_burn, and shreds opponent's hoa resist.
+    solar_aura_pct: float = 0.0
+    # Wither aura — every turn, deal hp_max × pct as moc damage to opponent
+    # and leech the dealt amount back as healing on the holder. Benefits from
+    # final_dmg_bonus + dot_dmg_bonus, shreds moc resistance.
+    wither_aura_pct: float = 0.0
+    # Niết Bàn Trùng Sinh — once-per-combat revive. When the holder would die
+    # the first time, restore HP to ``phoenix_revive_pct × hp_max`` (e.g. 0.70
+    # = 70%) and grant a permanent (rest-of-combat) buff:
+    #   atk/matk/def_stat × (1 + phoenix_revive_buff_pct)
+    #   final_dmg_bonus  += phoenix_revive_buff_pct
+    #   final_dmg_reduce += phoenix_revive_buff_pct (capped at MAX_FINAL_DMG_REDUCE)
+    # The flag ``phoenix_revive_used`` is flipped on trigger and prevents
+    # second revives from any other source within the same fight.
+    phoenix_revive_pct: float = 0.0
+    phoenix_revive_buff_pct: float = 0.0
+    phoenix_revive_used: bool = False
+    # Thôn Thiên Ma Khí — at combat start, drain ``pct`` of the opponent's
+    # core combat stats (atk/matk/def/spd) and add the same amount to the
+    # holder. Applied once per fight; flag below tracks consumption so the
+    # transfer doesn't compound on every step() call.
+    stat_drain_aura_pct: float = 0.0
+    stat_drain_aura_applied: bool = False
+    # Thánh Tuyền Thể — only ``damage_defer_pct`` of incoming damage is
+    # deferred; the rest (``1 - damage_defer_pct``) is taken immediately.
+    # The deferred portion is split into ``damage_defer_turns`` chunks queued
+    # in ``deferred_damage_queue`` and paid out one per turn-end (FIFO).
+    # Both fields must be > 0 for the mechanic to engage. Total damage is
+    # preserved — only its timing changes. Multiple hits append to the queue.
+    damage_defer_turns: int = 0
+    damage_defer_pct: float = 0.0
+    deferred_damage_queue: list[int] = field(default_factory=list)
+    # Hào Quang Củng Cố (Fortify Aura) — Hoang Cổ Thánh Thể Chain 9 payoff.
+    # ``fortify_per_turn_pct`` × ``fortify_stacks`` is added to BOTH
+    # ``final_dmg_bonus`` and ``final_dmg_reduce`` while in combat.
+    # ``fortify_stacks`` ticks up by 1 each periodic-phase, capped at
+    # ``fortify_stack_cap``. After non-DoT damage lands, ``fortify_braced_turns``
+    # is set so the holder gets an extra ``fortify_post_hit_dr_pct`` of damage
+    # reduction for the next incoming hit's resolution turn.
+    fortify_per_turn_pct: float = 0.0
+    fortify_stack_cap: int = 0
+    fortify_post_hit_dr_pct: float = 0.0
+    fortify_stacks: int = 0
+    fortify_braced_turns: int = 0
+    # Loot economy passives — additive on top of the session's baseline
+    # ``loot_qty_multiplier`` / ``loot_luck_pct`` (elite roll, dungeon grade).
+    # Both fields are read by ``CombatSession._roll_loot``.
+    loot_qty_bonus: float = 0.0
+    loot_luck_bonus: float = 0.0
+    # Generic per-element bonus dicts. Replaces the ad-hoc
+    # ``damage_to_fire_convert_pct`` / ``burn_dmg_bonus`` style fields with
+    # element-keyed dicts that any constitution / equipment can target:
+    #
+    #   damage_taken_convert_pct["hoa"] = 0.40
+    #     → 40% of damage taken is reclassified as hoa damage and mitigated
+    #       by the holder's own hoa resistance (Đế Liệt Diệm pattern).
+    #
+    #   element_dmg_bonus["hoa"] = 0.20
+    #     → +20% final damage on outgoing hits whose skill element is hoa.
+    #
+    # Multiple equipped sources merge additively per element via the dict
+    # merge in ``_merge_bonus_dict``.
+    damage_taken_convert_pct: dict[str, float] = field(default_factory=dict)
+    element_dmg_bonus: dict[str, float] = field(default_factory=dict)
+    # Per-element resistance shred — single source of truth.
+    # Read by build_defense_stats and by the Linh Căn / formation / burst paths
+    # via element_res_shred.get(elem, 0.0). Multiple sources merge additively
+    # via _merge_bonus_dict, so multi-element shred composes naturally.
+    element_res_shred: dict[str, float] = field(default_factory=dict)
 
     # ── Kim (Bleed) build support ─────────────────────────────────────────────
     # Bleed stacks: like burn, but physical (kim element) and slows healing.
@@ -142,8 +210,6 @@ class Combatant:
     # When any DoT ticks on the opposing combatant, this combatant leeches
     # this fraction of the tick damage as HP + MP.
     dot_leech_pct: float = 0.0
-    # Flat shred on target's moc resistance (mirror of fire_res_shred).
-    moc_res_shred: float = 0.0
     # Damage-from-heal: every heal this combatant receives queues
     # heal × damage_from_heal_pct bonus damage on their next hit.
     damage_from_heal_pct: float = 0.0
@@ -168,8 +234,6 @@ class Combatant:
     mana_stack_cap: int = 10
     mana_stack_per_attack: int = 0      # passive: stacks gained each turn
     mana_stack_dmg_bonus: float = 0.0   # per-stack final-damage bonus
-    # Flat shred on target's thủy resistance (mirror of fire_res_shred).
-    thuy_res_shred: float = 0.0
 
     # ── Thổ (Earth / Shield) build ──────────────────────────────────────────
     # Per-turn shield regen as a fraction of hp_max (e.g. 0.05 = +5% hp_max/turn).
@@ -191,7 +255,7 @@ class Combatant:
     stun_on_hit_pct: float = 0.0
 
     # ── Phong (Wind / Evasion / Mark) build ──────────────────────────────────
-    # On-hit: chance actor applies Phong Ấn on the target. Once marked the
+    # On-hit: chance actor applies Ấn Phong on the target. Once marked the
     # target loses evasion (via the debuff's stat_bonus) and the attacker gains
     # crit + crit-dmg advantage vs them until the mark drops off.
     mark_on_hit_pct: float = 0.0
@@ -199,11 +263,9 @@ class Combatant:
     # damage_bonus_from_hp_pct / damage_bonus_from_mp_pct). Converts a
     # defensive stat into offensive power — core Phong playstyle.
     damage_bonus_from_evasion_pct: float = 0.0
-    # Bonus crit rating and crit-dmg rating vs targets carrying Phong Ấn.
+    # Bonus crit rating and crit-dmg rating vs targets carrying Ấn Phong.
     crit_rating_vs_marked: int = 0
     crit_dmg_vs_marked: int = 0
-    # Flat shred on target's phong resistance (mirror of fire_res_shred).
-    phong_res_shred: float = 0.0
 
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
@@ -215,8 +277,6 @@ class Combatant:
     # Pre-turn: extra cleanse roll added on top of the base 15% Quang Linh Căn
     # chance. Sourced from formation gem thresholds and unique equipment.
     cleanse_on_turn_pct: float = 0.0
-    # Flat shred on target's quang resistance (mirror of fire_res_shred).
-    quang_res_shred: float = 0.0
     # When True, a successful cleanse grants a small MATK-scaled barrier
     # (delta from Thổ Hộ Thể, which is one-shot at low HP — this repeats).
     barrier_on_cleanse: bool = False
@@ -249,11 +309,13 @@ class Combatant:
     atk_original: int = 0
     matk_original: int = 0
     def_stat_original: int = 0
-    # Flat shred on target's am resistance (mirror of fire_res_shred).
-    am_res_shred: float = 0.0
     # Bonus crit rating vs targets already marked for soul-drain (i.e.
     # hp_max_drained > 0). Rewards stacking drains before the finisher.
     crit_rating_vs_drained: int = 0
+    # On-hit: chance actor applies DebuffLoaMat (Lóa Mắt). The blinded target
+    # then has BLIND_MISS_CHANCE per swing to whiff. Goes through the generic
+    # on-hit proc table.
+    blind_on_hit_pct: float = 0.0
 
     # ── Lôi (Lightning / Shock) build ────────────────────────────────────────
     # Shock stacks — applied by on-hit procs or loi skills. Each stack makes
@@ -268,8 +330,6 @@ class Combatant:
     shock_per_stack_pct: float = 0.03
     # On-hit: chance the actor lands a Sốc Điện stack on the target.
     shock_on_hit_pct: float = 0.0
-    # Flat shred on target's loi resistance (mirror of fire_res_shred).
-    loi_res_shred: float = 0.0
     # After a normal turn, flat chance to immediately steal an extra turn
     # (independent of the SPD-based extra-turn roll — stacks additively).
     turn_steal_pct: float = 0.0
@@ -297,6 +357,82 @@ class Combatant:
 
     def is_alive(self) -> bool:
         return self.hp > 0
+
+    def take_damage(self, amount: int, is_dot: bool = False) -> int:
+        """Apply ``amount`` HP loss, with optional fire-conversion + defer.
+
+        Steps in order:
+          1. Fire conversion — ``damage_to_fire_convert_pct`` of the amount
+             is reclassified as fire damage to the holder and mitigated by
+             the holder's own hoa resistance. The post-mitigation chunk
+             rejoins the unconverted remainder; total damage is reduced
+             only by the saved-by-resistance fraction.
+          2. Defer — when both ``damage_defer_turns`` and
+             ``damage_defer_pct`` are > 0, ``damage_defer_pct`` of the
+             post-conversion amount is split into N installments queued
+             onto ``deferred_damage_queue`` (FIFO). The rest lands on
+             ``hp`` immediately.
+
+        ``is_dot=True`` marks the call as DoT-tick damage so the Fortify Aura
+        post-hit brace doesn't trigger off periodic ticks (only direct hits).
+
+        Returns the amount applied to HP this call (queued chunks excluded).
+        """
+        if amount <= 0:
+            return 0
+        # Fortify Aura: any non-DoT incoming damage primes the post-hit brace
+        # for the next combat resolution. Set BEFORE conversion/defer so even
+        # a fully-deferred installment still arms the brace this turn.
+        if not is_dot and self.fortify_post_hit_dr_pct > 0:
+            self.fortify_braced_turns = max(self.fortify_braced_turns, 1)
+
+        # Step 1 — element conversion (self-mitigation through holder's res
+        # for the named element). Loops over ``damage_taken_convert_pct`` so
+        # any element (and any combination) routes through this generic path.
+        if self.damage_taken_convert_pct:
+            from src.game.constants.balance import MAX_ELEMENTAL_RES
+            total_pct = sum(
+                p for p in self.damage_taken_convert_pct.values() if p > 0
+            )
+            # Cap aggregate conversion at 100% so the holder always takes at
+            # least the unconverted remainder.
+            total_pct = min(1.0, total_pct)
+            unconverted = int(amount * (1.0 - total_pct))
+            new_amount = unconverted
+            for elem, pct in self.damage_taken_convert_pct.items():
+                if pct <= 0:
+                    continue
+                # Each element's slice scales proportionally if total_pct was
+                # capped (so {hoa: 0.7, thuy: 0.6} effectively becomes
+                # {hoa: 7/13, thuy: 6/13} of the converted total).
+                share = pct / sum(self.damage_taken_convert_pct.values()) \
+                    if sum(self.damage_taken_convert_pct.values()) > 0 else 0
+                converted = int(amount * total_pct * share)
+                if converted <= 0:
+                    continue
+                elem_res = max(
+                    0.0,
+                    min(MAX_ELEMENTAL_RES, self.resistances.get(elem, 0.0)),
+                )
+                new_amount += max(1, int(converted * (1.0 - elem_res)))
+            amount = new_amount
+
+        # Step 2 — deferred-damage split
+        n = self.damage_defer_turns
+        pct = self.damage_defer_pct
+        if n > 0 and pct > 0:
+            deferred_total = int(amount * pct)
+            immediate = amount - deferred_total
+            if deferred_total > 0:
+                chunk = deferred_total // n
+                remainder = deferred_total - chunk * n
+                for i in range(n):
+                    self.deferred_damage_queue.append(chunk + (1 if i < remainder else 0))
+            self.hp = max(0, self.hp - immediate)
+            return immediate
+
+        self.hp = max(0, self.hp - amount)
+        return amount
 
     def add_burn_stack(self, count: int = 1) -> int:
         """Add burn stacks, clamped by ``burn_stack_cap``. Returns stacks gained."""

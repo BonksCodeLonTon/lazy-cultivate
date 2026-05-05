@@ -24,6 +24,7 @@ from src.game.systems.combat import (
 )
 from src.game.systems.combat.encounter import pick_random_enemy, roll_elite_upgrade
 from src.game.systems.dungeon import compute_realm_total
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
@@ -224,7 +225,7 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
         elite_bonus = " ⚡ **+50% loot**" if is_elite else ""
         result_line = (
             f"✅ Chiến thắng sau **{result.turns}** lượt{elite_bonus}\n"
-            f"✨ +{result.merit_gained:,} Công Đức | 🎁 {loot_str}"
+            f"{emojis.for_currency('merit')} +{result.merit_gained:,} Công Đức | 🎁 {loot_str}"
         )
     elif result.reason == CombatEndReason.PLAYER_DEAD:
         color = 0xFF0000

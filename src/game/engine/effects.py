@@ -448,12 +448,19 @@ _DEBUFFS_CC: list[EffectMeta] = [
         emoji="⚡",
     ),
     EffectMeta(
-        key="DebuffPhongAn",
-        vi="Phong Ấn", en="Wind Mark",
+        key="DebuffAnPhong",
+        vi="Ấn Phong", en="Wind Mark",
         kind=EffectKind.DEBUFF,
         description_vi="Ấn ký gió bám lên mục tiêu — né tránh suy giảm, dễ bị bạo kích và chịu sát thương bạo khổng lồ từ người đánh dấu.",
         stat_bonus={"evasion_rating": -150},
         emoji="🌀",
+    ),
+    EffectMeta(
+        key="DebuffLoaMat",
+        vi="Lóa Mắt", en="Blinded",
+        kind=EffectKind.DEBUFF,
+        description_vi="Tầm nhìn bị Âm khí che mờ — mỗi đòn đánh đều có khả năng đánh trượt.",
+        emoji="🌫️",
     ),
 ]
 
@@ -485,8 +492,13 @@ _DEFAULT_DURATIONS: dict[str, int] = {
     EffectKey.CC_MUTED: 2, EffectKey.CC_STUN: 1, EffectKey.CC_INTERRUPT: 1,
     EffectKey.CC_LOCK_BREAK: 3, EffectKey.DEBUFF_SET_DANH: 2,
     EffectKey.DEBUFF_SOC_DIEN: 3,
-    EffectKey.DEBUFF_PHONG_AN: 3,
+    EffectKey.DEBUFF_AN_PHONG: 3,
+    EffectKey.DEBUFF_LOA_MAT: 2,
 }
+
+# Default per-attack miss chance for DebuffLoaMat (Blind). Mirrors the
+# DebuffTeLiet 50% skip pattern — attacker is checked, not the target.
+BLIND_MISS_CHANCE: float = 0.50
 
 
 def default_duration(effect_key: str) -> int:
@@ -602,6 +614,18 @@ def check_prevents_skills(combatant: "Combatant") -> str | None:
         if meta and meta.prevents_skills:
             return effect_key
     return None
+
+
+def check_attack_miss(combatant: "Combatant", rng: random.Random) -> bool:
+    """Return True if the attacker's strike misses due to DebuffLoaMat.
+
+    Mirrors the DebuffTeLiet pattern (probabilistic skip), but applied to
+    the attack swing instead of the turn — the attacker still pays MP/CD,
+    the swing simply fails to land. Single roll per swing.
+    """
+    if EffectKey.DEBUFF_LOA_MAT in combatant.effects:
+        return rng.random() < BLIND_MISS_CHANCE
+    return False
 
 
 def format_active_effects(combatant: "Combatant") -> str:

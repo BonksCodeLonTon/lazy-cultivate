@@ -1,5 +1,24 @@
 [
   {
+    "key": "ConstitutionPhamThe",
+    "vi": "Phàm Thể",
+    "en": "Mortal Body",
+    "rarity": "common",
+    "element": null,
+    "roll_weight": 40,
+    "cost_merit": 0,
+    "passive_description_vi": "Thân phàm thường — không có thiên phú đặc biệt, nhưng nhờ chăm chỉ rèn luyện không ngừng, tốc độ tu luyện được tăng nhẹ. Thể chất phổ biến nhất trong vạn tu sĩ phàm trần.",
+    "stat_bonuses": {
+      "hp_pct": 0.02,
+      "mp_pct": 0.02,
+      "cultivation_speed_bonus": 0.03
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 1
+    }
+  },
+  {
     "key": "ConstitutionBachHoThe",
     "vi": "Bạch Hổ Sát Thể",
     "en": "White Tiger Slayer Body",
@@ -89,13 +108,14 @@
     "element": null,
     "roll_weight": 15,
     "cost_merit": 5000,
-    "passive_description_vi": "Long khí ẩn trong thân, lục phủ ngũ tạng đều được long uy bồi đắp — mọi thuộc tính đều mạnh hơn thường.",
+    "passive_description_vi": "Long khí ẩn trong thân, lục phủ ngũ tạng đều được long uy bồi đắp — mọi thuộc tính đều mạnh hơn thường, và long uy thúc đẩy tu luyện nhanh hơn.",
     "stat_bonuses": {
       "hp_pct": 0.1,
       "mp_pct": 0.08,
       "crit_rating": 100,
       "res_all": 30,
-      "spd_bonus": 2
+      "spd_bonus": 2,
+      "cultivation_speed_bonus": 0.05
     },
     "special_requirements": null,
     "materials": {
@@ -176,13 +196,14 @@
     "element": null,
     "roll_weight": 5,
     "cost_merit": 20000,
-    "passive_description_vi": "Dung hòa đạo vận cổ xưa, thể chất toàn diện trên mọi mặt trận.",
+    "passive_description_vi": "Dung hòa đạo vận cổ xưa, thể chất toàn diện trên mọi mặt trận. Đạo vận thâm hậu giúp tu luyện nhanh hơn.",
     "stat_bonuses": {
       "hp_pct": 0.12,
       "mp_pct": 0.12,
       "crit_rating": 120,
       "cooldown_reduce": 0.08,
-      "final_dmg_bonus": 0.05
+      "final_dmg_bonus": 0.05,
+      "cultivation_speed_bonus": 0.1
     },
     "special_requirements": null,
     "materials": {
@@ -205,7 +226,8 @@
       "res_all": 75,
       "final_dmg_reduce": 0.1,
       "hp_regen_pct": 0.02,
-      "crit_res_rating": 150
+      "crit_res_rating": 150,
+      "hp_flat_per_realm": 300
     },
     "special_requirements": null,
     "materials": {
@@ -222,13 +244,16 @@
     "element": null,
     "roll_weight": 3,
     "cost_merit": 30000,
-    "passive_description_vi": "Linh lung thông suốt, vận may và ngộ tính đều xuất sắc. Nhận được nhiều công đức và ngộ đạo nhanh hơn người thường.",
+    "passive_description_vi": "Linh lung thông suốt, vận may và ngộ tính đều xuất sắc. Nhận được nhiều công đức, ngộ đạo nhanh hơn người thường, vận may dẫn lối đến nhiều chiến lợi phẩm hơn.",
     "stat_bonuses": {
       "luck": 150,
       "comprehension": 150,
       "merit_bonus": 0.15,
       "cooldown_reduce": 0.05,
-      "crit_rating": 80
+      "crit_rating": 80,
+      "cultivation_speed_bonus": 0.15,
+      "loot_qty_bonus": 0.15,
+      "loot_luck_bonus": 0.1
     },
     "special_requirements": null,
     "materials": {
@@ -291,7 +316,7 @@
     "element": null,
     "roll_weight": 2,
     "cost_merit": 50000,
-    "passive_description_vi": "Lĩnh ngộ một phần khí của Hỗn Nguyên — vạn pháp cùng dung nạp, vạn thuộc tính đều thăng tiến.",
+    "passive_description_vi": "Lĩnh ngộ một phần khí của Hỗn Nguyên — vạn pháp cùng dung nạp, vạn thuộc tính đều thăng tiến. Khí Hỗn Nguyên giúp tu luyện vạn pháp đều nhanh hơn.",
     "stat_bonuses": {
       "hp_pct": 0.18,
       "mp_pct": 0.18,
@@ -299,7 +324,8 @@
       "final_dmg_reduce": 0.05,
       "crit_rating": 180,
       "res_all": 80,
-      "spd_bonus": 4
+      "spd_bonus": 4,
+      "cultivation_speed_bonus": 0.2
     },
     "special_requirements": null,
     "materials": {
@@ -362,7 +388,7 @@
     "rarity": "legendary",
     "element": null,
     "roll_weight": 0,
-    "cost_merit": 100000,
+    "cost_merit": 0,
     "passive_description_vi": "Bất diệt bất hoại, thân thể tự hồi phục không ngừng. Trị liệu có thể bạo kích, hồi máu mạnh hơn cả thần tiên.",
     "stat_bonuses": {
       "hp_pct": 0.4,
@@ -378,7 +404,8 @@
       "MatThienDaoTuy": 4,
       "MatHonNguyenCot": 1,
       "ArchTrungSinhTinh": 5
-    }
+    },
+    "cost_stones": 100000
   },
   {
     "key": "ConstitutionHauTo",
@@ -387,7 +414,7 @@
     "rarity": "legendary",
     "element": null,
     "roll_weight": 0,
-    "cost_merit": 100000,
+    "cost_merit": 0,
     "passive_description_vi": "Hậu thổ kiên cố như đại địa, thân thể như núi Thái Sơn không thể lay chuyển. Mỗi đòn trúng đều phản chấn, mọi đòn đánh đều bị triệt tiêu.",
     "stat_bonuses": {
       "hp_pct": 0.5,
@@ -403,7 +430,8 @@
       "MatThienDaoTuy": 4,
       "MatHonNguyenCot": 1,
       "ArchHoTheTinh": 5
-    }
+    },
+    "cost_stones": 100000
   },
   {
     "key": "ConstitutionHonDon",
@@ -445,7 +473,7 @@
     "rarity": "legendary",
     "element": null,
     "roll_weight": 0,
-    "cost_merit": 100000,
+    "cost_merit": 0,
     "passive_description_vi": "Khí hải vô tận, linh khí như đại dương không bao giờ cạn. Linh khí càng dồi dào thì sát thương pháp chiêu càng kinh hoàng.",
     "stat_bonuses": {
       "mp_pct": 0.6,
@@ -461,7 +489,8 @@
       "MatThienDaoTuy": 4,
       "MatHonNguyenCot": 1,
       "ArchThongHueTinh": 5
-    }
+    },
+    "cost_stones": 100000
   },
   {
     "key": "ConstitutionNgheDinh",
@@ -470,7 +499,7 @@
     "rarity": "legendary",
     "element": null,
     "roll_weight": 0,
-    "cost_merit": 100000,
+    "cost_merit": 0,
     "passive_description_vi": "Nghê Đình lôi oanh, thân mang thiên lôi vô tận. Tốc độ hành động và sát thương bạo kích đều đạt đỉnh cao, cơ hội cướp lượt của đối thủ.",
     "stat_bonuses": {
       "crit_rating": 500,
@@ -486,7 +515,8 @@
       "MatThienDaoTuy": 4,
       "MatHonNguyenCot": 1,
       "ArchLoiNguyenTinh": 5
-    }
+    },
+    "cost_stones": 100000
   },
   {
     "key": "ConstitutionPhaTien",
@@ -495,7 +525,7 @@
     "rarity": "legendary",
     "element": null,
     "roll_weight": 0,
-    "cost_merit": 100000,
+    "cost_merit": 0,
     "passive_description_vi": "Thần thể phá thiên, mỗi đòn tấn công đều mang sức mạnh hủy diệt. Bạo kích đẩy lên đỉnh cao và phá nát mọi phòng ngự.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.25,
@@ -510,7 +540,8 @@
       "MatThienDaoTuy": 4,
       "MatHonNguyenCot": 1,
       "ArchSatYTinh": 5
-    }
+    },
+    "cost_stones": 100000
   },
   {
     "key": "ConstitutionThaiAm",
@@ -519,7 +550,7 @@
     "rarity": "legendary",
     "element": null,
     "roll_weight": 0,
-    "cost_merit": 150000,
+    "cost_merit": 0,
     "passive_description_vi": "Thái âm thần thể, âm lực cực thịnh. Linh khí, né tránh và âm phệ đều đạt cảnh giới cực âm — hút hồn, cướp chỉ số của kẻ thù.",
     "stat_bonuses": {
       "mp_pct": 0.4,
@@ -527,7 +558,9 @@
       "evasion_rating": 500,
       "soul_drain_on_hit_pct": 0.25,
       "stat_steal_on_hit_pct": 0.15,
-      "am_res_shred": 0.15,
+      "element_res_shred": {
+        "am": 0.15
+      },
       "barrier_on_cleanse": true
     },
     "special_requirements": "requires_dao_ti_yin",
@@ -538,7 +571,8 @@
       "SupremeAmTinh": 3,
       "ElemEssThuy": 3
     },
-    "activation_chance": 0.25
+    "activation_chance": 0.25,
+    "cost_stones": 150000
   },
   {
     "key": "ConstitutionThaiDuong",
@@ -547,7 +581,7 @@
     "rarity": "legendary",
     "element": null,
     "roll_weight": 0,
-    "cost_merit": 150000,
+    "cost_merit": 0,
     "passive_description_vi": "Thái dương thần thể, dương lực cực thịnh. Sát thương bạo kích đạt đỉnh cực dương, mọi đòn đánh đều như ánh mặt trời thiêu đốt.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.4,
@@ -555,7 +589,9 @@
       "crit_dmg_rating": 600,
       "burn_on_hit_pct": 0.25,
       "burn_dmg_bonus": 0.3,
-      "fire_res_shred": 0.2,
+      "element_res_shred": {
+        "hoa": 0.2
+      },
       "dot_can_crit": true
     },
     "special_requirements": "requires_dao_ti_yang",
@@ -566,7 +602,8 @@
       "SupremeDuongTinh": 3,
       "ElemEssHoa": 3
     },
-    "activation_chance": 0.25
+    "activation_chance": 0.25,
+    "cost_stones": 150000
   },
   {
     "key": "ConstitutionTieuDao",
@@ -575,7 +612,7 @@
     "rarity": "legendary",
     "element": null,
     "roll_weight": 0,
-    "cost_merit": 100000,
+    "cost_merit": 0,
     "passive_description_vi": "Tiêu dao tự tại như gió mây, thân pháp biến ảo vô thường. Né tránh càng cao thì sát thương càng kinh khủng.",
     "stat_bonuses": {
       "spd_bonus": 20,
@@ -591,7 +628,8 @@
       "MatThienDaoTuy": 4,
       "MatHonNguyenCot": 1,
       "ArchPhongDangTinh": 5
-    }
+    },
+    "cost_stones": 100000
   },
   {
     "key": "ConstitutionTranGioi",
@@ -600,7 +638,7 @@
     "rarity": "legendary",
     "element": null,
     "roll_weight": 0,
-    "cost_merit": 100000,
+    "cost_merit": 0,
     "passive_description_vi": "Trấn giới chi thể, áp chế mọi kẻ thù. Miễn nhiễm phần lớn debuff và gần như không thể bị bạo kích.",
     "stat_bonuses": {
       "crit_res_rating": 600,
@@ -617,6 +655,330 @@
       "MatHonNguyenCot": 1,
       "ArchHoTheTinh": 4,
       "ArchTrungSinhTinh": 2
-    }
+    },
+    "cost_stones": 100000
+  },
+  {
+    "key": "ConstitutionHoangCoChain1",
+    "vi": "Hoang Cổ Thánh Thể - Sơ Tỉnh",
+    "en": "Primordial Holy Body - Initial Awakening",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 20000,
+    "passive_description_vi": "Thánh thể thượng cổ phong ấn bằng Cửu Đạo Thần Khóa. **Khóa Thứ Nhất** vừa rạn nứt — sinh khí cổ xưa thẩm thấu vào kinh mạch, khai mở những phần chỉ số nền tảng. Tiếp tục phá khóa để giải phóng toàn bộ thần thể.",
+    "stat_bonuses": {
+      "hp_pct": 0.05,
+      "mp_pct": 0.05,
+      "res_all": 10
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "MatThienDaoTuy": 1,
+      "HoangCoLongLan": 1
+    },
+    "activation_chance": 0.6,
+    "cost_stones": 0
+  },
+  {
+    "key": "ConstitutionHoangCoChain2",
+    "vi": "Hoang Cổ Thánh Thể - Phá Nhị Khóa",
+    "en": "Primordial Holy Body - 2nd Chain Broken",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 25000,
+    "passive_description_vi": "**Khóa Thứ Hai** vỡ vụn — phượng huyết hoang cổ bùng cháy trong huyết mạch, công kích và bạo kích đều mạnh hơn rõ rệt. Tiến hóa từ Sơ Tỉnh.",
+    "stat_bonuses": {
+      "hp_pct": 0.1,
+      "mp_pct": 0.08,
+      "final_dmg_bonus": 0.04,
+      "crit_rating": 60,
+      "res_all": 20
+    },
+    "special_requirements": null,
+    "progresses_from": "ConstitutionHoangCoChain1",
+    "materials": {
+      "MatDaoCotTinh": 2,
+      "MatThienDaoTuy": 1,
+      "HoangCoPhuongVu": 1
+    },
+    "activation_chance": 0.55,
+    "cost_stones": 0
+  },
+  {
+    "key": "ConstitutionHoangCoChain3",
+    "vi": "Hoang Cổ Thánh Thể - Phá Tam Khóa",
+    "en": "Primordial Holy Body - 3rd Chain Broken",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 35000,
+    "passive_description_vi": "**Khóa Thứ Ba** đứt đoạn — văn quy hoang cổ thức tỉnh, hộ thể tự sinh khiên hồi tự thân. **Cột Mốc 3:** mở khóa Hồi Khiên (Shield Regen) đầu tiên. Tiến hóa từ Phá Nhị Khóa.",
+    "stat_bonuses": {
+      "hp_pct": 0.13,
+      "mp_pct": 0.1,
+      "final_dmg_bonus": 0.06,
+      "crit_rating": 90,
+      "crit_dmg_rating": 50,
+      "res_all": 30,
+      "shield_regen_pct": 0.02
+    },
+    "special_requirements": null,
+    "progresses_from": "ConstitutionHoangCoChain2",
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 2,
+      "HoangCoQuyVan": 2
+    },
+    "activation_chance": 0.5,
+    "cost_stones": 0
+  },
+  {
+    "key": "ConstitutionHoangCoChain4",
+    "vi": "Hoang Cổ Thánh Thể - Phá Tứ Khóa",
+    "en": "Primordial Holy Body - 4th Chain Broken",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 45000,
+    "passive_description_vi": "**Khóa Thứ Tư** rơi rụng — tủy lân hoang cổ bồi đắp khung xương, mọi mặt trận đều thăng hoa. Tiến hóa từ Phá Tam Khóa.",
+    "stat_bonuses": {
+      "hp_pct": 0.16,
+      "mp_pct": 0.12,
+      "final_dmg_bonus": 0.08,
+      "crit_rating": 130,
+      "crit_dmg_rating": 80,
+      "crit_res_rating": 60,
+      "res_all": 40,
+      "shield_regen_pct": 0.02
+    },
+    "special_requirements": null,
+    "progresses_from": "ConstitutionHoangCoChain3",
+    "materials": {
+      "MatDaoCotTinh": 3,
+      "MatThienDaoTuy": 2,
+      "HoangCoLanTuy": 2
+    },
+    "activation_chance": 0.45,
+    "cost_stones": 0
+  },
+  {
+    "key": "ConstitutionHoangCoChain5",
+    "vi": "Hoang Cổ Thánh Thể - Phá Ngũ Khóa",
+    "en": "Primordial Holy Body - 5th Chain Broken",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 0,
+    "passive_description_vi": "**Khóa Thứ Năm** tan biến — tinh quang cửu thiên hộ thân, sát thương ngoại lai bị triệt tiêu một phần. **Cột Mốc 5:** mở khóa Giảm Sát Thương (Final DMG Reduce) thực sự. Tiến hóa từ Phá Tứ Khóa.",
+    "stat_bonuses": {
+      "hp_pct": 0.2,
+      "mp_pct": 0.15,
+      "final_dmg_bonus": 0.1,
+      "final_dmg_reduce": 0.05,
+      "crit_rating": 170,
+      "crit_dmg_rating": 110,
+      "crit_res_rating": 100,
+      "res_all": 60,
+      "shield_regen_pct": 0.03,
+      "spd_bonus": 4
+    },
+    "special_requirements": null,
+    "progresses_from": "ConstitutionHoangCoChain4",
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 2,
+      "HoangCoThienTinh": 2
+    },
+    "activation_chance": 0.4,
+    "cost_stones": 15000
+  },
+  {
+    "key": "ConstitutionHoangCoChain6",
+    "vi": "Hoang Cổ Thánh Thể - Phá Lục Khóa",
+    "en": "Primordial Holy Body - 6th Chain Broken",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 0,
+    "passive_description_vi": "**Khóa Thứ Sáu** vỡ tan — địa phách hoang cổ trầm trọng, sức bền và tốc độ vận chuyển nguyên khí đều bứt phá. Tiến hóa từ Phá Ngũ Khóa.",
+    "stat_bonuses": {
+      "hp_pct": 0.25,
+      "mp_pct": 0.18,
+      "final_dmg_bonus": 0.13,
+      "final_dmg_reduce": 0.07,
+      "crit_rating": 210,
+      "crit_dmg_rating": 150,
+      "crit_res_rating": 140,
+      "res_all": 80,
+      "shield_regen_pct": 0.03,
+      "spd_bonus": 5,
+      "cooldown_reduce": 0.04
+    },
+    "special_requirements": null,
+    "progresses_from": "ConstitutionHoangCoChain5",
+    "materials": {
+      "MatDaoCotTinh": 4,
+      "MatThienDaoTuy": 3,
+      "HoangCoDiaPhach": 3
+    },
+    "activation_chance": 0.35,
+    "cost_stones": 20000
+  },
+  {
+    "key": "ConstitutionHoangCoChain7",
+    "vi": "Hoang Cổ Thánh Thể - Phá Thất Khóa",
+    "en": "Primordial Holy Body - 7th Chain Broken",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 0,
+    "passive_description_vi": "**Khóa Thứ Bảy** sụp đổ — đạo văn nguyên thủy hiển hóa, miễn nhiễm phần lớn debuff và xuất hiện tia sát ý xuyên giáp. **Cột Mốc 7:** mở khóa Miễn Debuff + Sát Thương Thật. Tiến hóa từ Phá Lục Khóa.",
+    "stat_bonuses": {
+      "hp_pct": 0.3,
+      "mp_pct": 0.22,
+      "final_dmg_bonus": 0.16,
+      "final_dmg_reduce": 0.1,
+      "crit_rating": 260,
+      "crit_dmg_rating": 200,
+      "crit_res_rating": 180,
+      "res_all": 100,
+      "shield_regen_pct": 0.04,
+      "spd_bonus": 6,
+      "hp_regen_pct": 0.02,
+      "mp_regen_pct": 0.02,
+      "debuff_immune_pct": 0.2,
+      "true_dmg_pct": 0.03
+    },
+    "special_requirements": null,
+    "progresses_from": "ConstitutionHoangCoChain6",
+    "materials": {
+      "MatDaoCotTinh": 5,
+      "MatThienDaoTuy": 3,
+      "MatHonNguyenCot": 1,
+      "HoangCoDaoVan": 3
+    },
+    "activation_chance": 0.3,
+    "cost_stones": 25000
+  },
+  {
+    "key": "ConstitutionHoangCoChain8",
+    "vi": "Hoang Cổ Thánh Thể - Phá Bát Khóa",
+    "en": "Primordial Holy Body - 8th Chain Broken",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 0,
+    "passive_description_vi": "**Khóa Thứ Tám** vỡ vụn — thần tâm hoang cổ đập rền vạn cổ, sinh cơ + chiến lực đều đạt cận thánh nhân. Chỉ còn một khóa cuối cùng để khai mở viên mãn. Tiến hóa từ Phá Thất Khóa.",
+    "stat_bonuses": {
+      "hp_pct": 0.36,
+      "mp_pct": 0.28,
+      "final_dmg_bonus": 0.2,
+      "final_dmg_reduce": 0.12,
+      "crit_rating": 310,
+      "crit_dmg_rating": 250,
+      "crit_res_rating": 220,
+      "res_all": 125,
+      "shield_regen_pct": 0.04,
+      "spd_bonus": 8,
+      "hp_regen_pct": 0.03,
+      "mp_regen_pct": 0.03,
+      "debuff_immune_pct": 0.25,
+      "true_dmg_pct": 0.04,
+      "evasion_rating": 120
+    },
+    "special_requirements": null,
+    "progresses_from": "ConstitutionHoangCoChain7",
+    "materials": {
+      "MatDaoCotTinh": 8,
+      "MatThienDaoTuy": 5,
+      "MatHonNguyenCot": 4,
+      "HoangCoThanTam": 5
+    },
+    "activation_chance": 0.25,
+    "cost_stones": 80000
+  },
+  {
+    "key": "ConstitutionHoangCoChain9",
+    "vi": "Hoang Cổ Thánh Thể - Viên Mãn",
+    "en": "Primordial Holy Body - Complete",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 0,
+    "passive_description_vi": "**Khóa Cuối Cùng tan vỡ** — Hoang Cổ Thánh Thể viên mãn, thân thể trở về hình thái nguyên thủy của thượng cổ thánh nhân. **Hào Quang Củng Cố (Fortify Aura):** mỗi lượt tự động tích lũy 1 tầng Củng Cố — mỗi tầng cộng thêm ST cuối + Giảm ST (cap tối đa 10 tầng); khi nhận đòn không phải DoT, lập tức trỗi dậy lớp **Phòng Ngự Hậu-Thương** — cộng thêm Giảm ST trong 1 lượt kế tiếp. Cộng với nền Giảm ST khổng lồ — sát thương vào người gần như bị triệt tiêu. Tiến hóa cuối cùng từ Phá Bát Khóa.",
+    "stat_bonuses": {
+      "hp_pct": 0.45,
+      "mp_pct": 0.35,
+      "final_dmg_bonus": 0.25,
+      "final_dmg_reduce": 0.15,
+      "crit_rating": 380,
+      "crit_dmg_rating": 320,
+      "crit_res_rating": 280,
+      "res_all": 150,
+      "spd_bonus": 10,
+      "evasion_rating": 180,
+      "hp_regen_pct": 0.05,
+      "mp_regen_pct": 0.05,
+      "shield_regen_pct": 0.06,
+      "fortify_per_turn_pct": 0.025,
+      "fortify_stack_cap": 10,
+      "fortify_post_hit_dr_pct": 0.12,
+      "debuff_immune_pct": 0.3,
+      "true_dmg_pct": 0.05,
+      "cooldown_reduce": 0.08
+    },
+    "special_requirements": null,
+    "progresses_from": "ConstitutionHoangCoChain8",
+    "materials": {
+      "MatDaoCotTinh": 10,
+      "MatThienDaoTuy": 7,
+      "MatHonNguyenCot": 5,
+      "HoangCoThanhCot": 5
+    },
+    "activation_chance": 0.2,
+    "cost_stones": 120000
+  },
+  {
+    "key": "ConstitutionTienThienThanhTheDaoThai",
+    "vi": "Tiên Thiên Thánh Thể Đạo Thai",
+    "en": "Innate Sacred Body Dao Embryo",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 0,
+    "passive_description_vi": "Đạo Thai bẩm sinh — sinh ra đã hợp Đạo, từng tế bào đều hấp thụ Tiên Khí của thiên địa. ⚡ **Tốc độ tu luyện ×2.5**. Tiên duyên dẫn lối — số lượng và cơ hội rớt vật phẩm đều dày hơn. Toàn diện vượt trội về sinh lực, linh khí, công kích, phòng ngự, và ngộ tính.",
+    "stat_bonuses": {
+      "cultivation_speed_bonus": 1.5,
+      "hp_pct": 0.3,
+      "mp_pct": 0.3,
+      "final_dmg_bonus": 0.15,
+      "final_dmg_reduce": 0.1,
+      "crit_rating": 250,
+      "crit_dmg_rating": 150,
+      "evasion_rating": 150,
+      "crit_res_rating": 150,
+      "res_all": 100,
+      "spd_bonus": 8,
+      "comprehension": 200,
+      "luck": 200,
+      "merit_bonus": 0.2,
+      "cooldown_reduce": 0.1,
+      "hp_regen_pct": 0.02,
+      "mp_regen_pct": 0.03,
+      "loot_qty_bonus": 0.2,
+      "loot_luck_bonus": 0.15
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 10,
+      "MatThienDaoTuy": 6,
+      "MatHonNguyenCot": 2,
+      "ArchThongHueTinh": 5,
+      "ArchTrungSinhTinh": 3
+    },
+    "cost_stones": 200000
   }
 ]

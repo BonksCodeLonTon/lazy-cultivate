@@ -22,6 +22,7 @@ from src.game.systems.forge import (
     get_recipe,
     max_affix_total,
 )
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed
 
 log = logging.getLogger(__name__)
@@ -312,7 +313,7 @@ def _build_confirm_embed(
         merit_icon = "✅" if char.merit >= recipe["cost_cong_duc"] else "❌"
         embed.add_field(
             name="Chi Phí Công Đức",
-            value=f"{merit_icon} {recipe['cost_cong_duc']:,} ✨ (đang có: {char.merit:,})",
+            value=f"{merit_icon} {recipe['cost_cong_duc']:,} {emojis.for_currency('merit')} (đang có: {char.merit:,})",
             inline=False,
         )
 

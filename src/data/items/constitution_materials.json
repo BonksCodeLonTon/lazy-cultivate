@@ -190,5 +190,87 @@
     "grade": 4,
     "shop_price_merit": 0,
     "description_vi": "Đạo tinh thuần khiết nhất của thiên địa, chỉ có thể kết tinh khi cả Dương cực và Âm cực hợp nhất. Nguyên liệu duy nhất của Hỗn Độn Đạo Thể."
+  },
+
+  {
+    "key": "HoangCoLongLan",
+    "vi": "Hoang Cổ Long Lân",
+    "en": "Primordial Dragon Scale",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Vảy rồng hoang cổ rơi rụng từ thượng cổ chân long, vỏ chứa khí tức cổ xưa. Phá Khóa thứ Nhất của Hoang Cổ Thánh Thể."
+  },
+  {
+    "key": "HoangCoPhuongVu",
+    "vi": "Hoang Cổ Phượng Vũ",
+    "en": "Primordial Phoenix Feather",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Lông phượng hoàng hoang cổ thiêu cháy nghìn năm không tàn. Phá Khóa thứ Hai của Hoang Cổ Thánh Thể."
+  },
+  {
+    "key": "HoangCoQuyVan",
+    "vi": "Hoang Cổ Quy Văn",
+    "en": "Primordial Tortoise Inscription",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Văn tự hoang cổ khắc lên mai linh quy thượng cổ, chứa thiên cơ. Phá Khóa thứ Ba của Hoang Cổ Thánh Thể."
+  },
+  {
+    "key": "HoangCoLanTuy",
+    "vi": "Hoang Cổ Lân Tủy",
+    "en": "Primordial Qilin Marrow",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Tủy xương kỳ lân hoang cổ, chứa nguyên khí thuần dương. Phá Khóa thứ Tư của Hoang Cổ Thánh Thể."
+  },
+  {
+    "key": "HoangCoThienTinh",
+    "vi": "Hoang Cổ Thiên Tinh",
+    "en": "Primordial Heaven Star",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh thần kết tinh từ vạn cổ ngân hà, ánh sáng chiếu rọi cửu thiên. Phá Khóa thứ Năm của Hoang Cổ Thánh Thể."
+  },
+  {
+    "key": "HoangCoDiaPhach",
+    "vi": "Hoang Cổ Địa Phách",
+    "en": "Primordial Earth Soul",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Hồn phách của đại địa hoang cổ ngưng kết, nặng tựa Thái Sơn. Phá Khóa thứ Sáu của Hoang Cổ Thánh Thể."
+  },
+  {
+    "key": "HoangCoDaoVan",
+    "vi": "Hoang Cổ Đạo Văn",
+    "en": "Primordial Dao Inscription",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Đạo văn nguyên thủy do Thiên Đạo tự khắc, dung hợp vạn pháp. Phá Khóa thứ Bảy của Hoang Cổ Thánh Thể."
+  },
+  {
+    "key": "HoangCoThanTam",
+    "vi": "Hoang Cổ Thần Tâm",
+    "en": "Primordial Divine Heart",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Tim của thần linh hoang cổ, nhịp đập vẫn vang vọng qua vạn cổ. Phá Khóa thứ Tám của Hoang Cổ Thánh Thể."
+  },
+  {
+    "key": "HoangCoThanhCot",
+    "vi": "Hoang Cổ Thánh Cốt",
+    "en": "Primordial Holy Bone",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Mảnh xương thánh nhân hoang cổ — Khóa Cuối Cùng phong ấn Hoang Cổ Thánh Thể, phá xong tức viên mãn."
   }
 ]

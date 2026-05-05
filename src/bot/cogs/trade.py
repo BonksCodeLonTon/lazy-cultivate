@@ -18,9 +18,9 @@ from src.db.repositories.player_repo import PlayerRepository
 from src.game.constants.currencies import MARKET_LISTING_HOURS, MARKET_MAX_LISTINGS, TRADE_FEE_RATE
 from src.game.constants.grades import Grade, GRADE_LABELS
 from src.game.engine.equipment import format_computed_stats
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
-_GRADE_EMOJI = {1: "⚪", 2: "🟢", 3: "🔵", 4: "🟡"}
 _PAGE_SIZE = 5
 
 
@@ -44,7 +44,7 @@ def _hub_embed() -> discord.Embed:
     embed = base_embed("🏮 Đấu Thương Các", color=0xE74C3C)
     fee_pct = int(TRADE_FEE_RATE * 100)
     embed.description = (
-        "Chợ người chơi — mua bán vật phẩm & trang bị với ✨ Công Đức.\n"
+        f"Chợ người chơi — mua bán vật phẩm & trang bị với {emojis.for_currency('merit')} Công Đức.\n"
         f"Thuế **{fee_pct}%** trên giá tham khảo | Hạn hàng **{MARKET_LISTING_HOURS}h** | Tối đa **{MARKET_MAX_LISTINGS}** đơn/người"
     )
     return embed
@@ -64,7 +64,7 @@ def _browse_embed(listings: list[MarketListing], page: int, total: int, viewer_i
     for i, listing in enumerate(listings, 1):
         hours_left = max(0, int((listing.expires_at - now).total_seconds() / 3600))
         fee = _fee(listing)
-        grade_e = _GRADE_EMOJI.get(listing.grade, "⚪")
+        grade_e = emojis.for_grade(listing.grade)
 
         if listing.listing_type == "equipment" and listing.instance_id:
             name = listing.item_key or "Trang Bị"
@@ -97,7 +97,7 @@ def _my_listings_embed(listings: list[MarketListing]) -> discord.Embed:
     now = datetime.now(timezone.utc)
     for listing in listings:
         hours_left = max(0, int((listing.expires_at - now).total_seconds() / 3600))
-        grade_e = _GRADE_EMOJI.get(listing.grade, "⚪")
+        grade_e = emojis.for_grade(listing.grade)
         if listing.listing_type == "equipment":
             name = listing.item_key or "Trang Bị"
         else:
@@ -713,7 +713,7 @@ async def _execute_buy(discord_user_id: int, listing_id: int) -> str:
 
         total = listing.buyer_total()
         if buyer.merit < total:
-            return f"❌ Không đủ ✨ Công Đức. Cần **{total:,}**, có **{buyer.merit:,}**."
+            return f"❌ Không đủ {emojis.for_currency('merit')} Công Đức. Cần **{total:,}**, có **{buyer.merit:,}**."
 
         buyer.merit -= total
 

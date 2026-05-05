@@ -16,7 +16,9 @@ from enum import StrEnum
 from typing import Optional
 
 from src.data.registry import registry
-from src.game.constants.balance import HEAL_CRIT_CHANCE, HEAL_CRIT_MULT
+from src.game.constants.balance import (
+    HEAL_CRIT_CHANCE, HEAL_CRIT_MULT, MAX_ELEMENTAL_RES, MAX_FINAL_DMG_REDUCE,
+)
 from src.game.constants.effects import EffectKey
 from src.game.engine import linh_can_effects as lc_effects
 from src.game.engine.damage import colorize_damage
@@ -93,7 +95,7 @@ class CombatSession:
         Returns a CombatResult if the phase ends the fight, else None.
         """
         self._take_turn(actor, target)
-        if not target.is_alive():
+        if not target.is_alive() and not self._try_phoenix_revive(target):
             return self._victory() if actor_is_player else self._defeat()
 
         # Extra-turn roll: faster combatant may get a bonus action this round
@@ -103,7 +105,7 @@ class CombatSession:
                 f"  💨 **{actor.name}** vượt tốc độ — hành động thêm một lần!"
             )
             self._take_turn(actor, target)
-            if not target.is_alive():
+            if not target.is_alive() and not self._try_phoenix_revive(target):
                 return self._victory() if actor_is_player else self._defeat()
         # Lôi-build: flat turn-steal roll, independent of SPD gap. Fires at most
         # once per phase so even a maxed-out build can't lock the opponent out.
@@ -112,7 +114,7 @@ class CombatSession:
                 f"  ⚡ **{actor.name}** cướp lượt — **Lôi Tốc Hành Động!**"
             )
             self._take_turn(actor, target)
-            if not target.is_alive():
+            if not target.is_alive() and not self._try_phoenix_revive(target):
                 return self._victory() if actor_is_player else self._defeat()
         return None
 
@@ -130,6 +132,10 @@ class CombatSession:
 
         start_idx = len(self.log)
         self.turn += 1
+        if self.turn == 1:
+            # Once-per-fight start-of-combat auras (Thôn Thiên Ma Khí, …).
+            self._apply_stat_drain_aura(self.player, self.enemy)
+            self._apply_stat_drain_aura(self.enemy, self.player)
         self.log.append(f"\n**— Lượt {self.turn} —**")
 
         result = self._actor_phase(self.player, self.enemy, actor_is_player=True)
@@ -147,9 +153,9 @@ class CombatSession:
         # Periodic effects (DoTs, HP/MP regen, Linh Căn procs) once per round
         self._process_periodic(self.player)
         self._process_periodic(self.enemy)
-        if not self.player.is_alive():
+        if not self.player.is_alive() and not self._try_phoenix_revive(self.player):
             return (self.log[start_idx:], self._defeat())
-        if not self.enemy.is_alive():
+        if not self.enemy.is_alive() and not self._try_phoenix_revive(self.enemy):
             return (self.log[start_idx:], self._victory())
 
         return (self.log[start_idx:], None)
@@ -259,6 +265,83 @@ class CombatSession:
 
     # ── Shared mutation helpers (called from multiple modules) ───────────
 
+    def _apply_stat_drain_aura(self, holder: Combatant, target: Combatant) -> None:
+        """Thôn Thiên Ma Khí — at combat start the holder drains
+        ``stat_drain_aura_pct`` of the target's core stats and absorbs the
+        same amount. Idempotent via the ``stat_drain_aura_applied`` flag so
+        repeated calls (e.g. test harnesses) don't compound.
+        """
+        pct = holder.stat_drain_aura_pct
+        if pct <= 0 or holder.stat_drain_aura_applied:
+            return
+        holder.stat_drain_aura_applied = True
+
+        drained_atk = int(target.atk * pct)
+        drained_matk = int(target.matk * pct)
+        drained_def = int(target.def_stat * pct)
+        drained_spd = int(target.spd * pct)
+
+        target.atk = max(0, target.atk - drained_atk)
+        target.matk = max(0, target.matk - drained_matk)
+        target.def_stat = max(0, target.def_stat - drained_def)
+        target.spd = max(1, target.spd - drained_spd)
+
+        holder.atk += drained_atk
+        holder.matk += drained_matk
+        holder.def_stat += drained_def
+        holder.spd += drained_spd
+
+        if drained_atk + drained_matk + drained_def + drained_spd > 0:
+            self.log.append(
+                f"  🌑 **{holder.name}** Thôn Thiên Ma Khí — hấp thụ "
+                f"{int(pct * 100)}% chỉ số đối phương "
+                f"(+{drained_atk} ATK / +{drained_matk} MATK / "
+                f"+{drained_def} DEF / +{drained_spd} SPD)!"
+            )
+
+    def _try_phoenix_revive(self, combatant: Combatant) -> bool:
+        """Niết Bàn Trùng Sinh — once-per-combat revive on lethal damage.
+
+        If the combatant has ``phoenix_revive_pct > 0`` and hasn't yet used
+        the revive this fight, restore HP to ``phoenix_revive_pct × hp_max``,
+        bump offensive/defensive stats by ``phoenix_revive_buff_pct``, mark
+        used, and return True. Otherwise return False so the caller can
+        finalize the death.
+        """
+        if combatant.is_alive():
+            return False
+        if combatant.phoenix_revive_used:
+            return False
+        if combatant.phoenix_revive_pct <= 0:
+            return False
+
+        combatant.phoenix_revive_used = True
+        revived_hp = max(1, int(combatant.hp_max * combatant.phoenix_revive_pct))
+        combatant.hp = revived_hp
+
+        buff = combatant.phoenix_revive_buff_pct
+        if buff > 0:
+            combatant.atk = int(combatant.atk * (1.0 + buff))
+            combatant.matk = int(combatant.matk * (1.0 + buff))
+            combatant.def_stat = int(combatant.def_stat * (1.0 + buff))
+            combatant.final_dmg_bonus += buff
+            combatant.final_dmg_reduce = min(
+                MAX_FINAL_DMG_REDUCE, combatant.final_dmg_reduce + buff,
+            )
+
+        # Clear DoTs and adverse stacks — the rebirth purges lingering effects
+        combatant.burn_stacks = 0
+        combatant.bleed_stacks = 0
+        combatant.shock_stacks = 0
+        combatant.effects.clear()
+
+        buff_tag = f" · ST/Giáp +{buff * 100:.0f}%" if buff > 0 else ""
+        self.log.append(
+            f"  🔥🦅 **{combatant.name}** **NIẾT BÀN TRÙNG SINH!** "
+            f"Hồi sinh +{revived_hp:,}/{combatant.hp_max:,} HP{buff_tag}"
+        )
+        return True
+
     def _apply_heal(self, combatant: Combatant, amount: int) -> int:
         """Centralized heal: applies bleed heal-reduction, clamps to hp_max,
         and accumulates ``queued_heal_dmg`` for Moc's heal→damage conversion.
@@ -309,9 +392,23 @@ class CombatSession:
         # builds leech HP/MP off the poison they inflicted.
         opponent = self.enemy if combatant is self.player else self.player
 
+        # Thánh Tuyền Thể — pay out one queued installment of deferred damage.
+        # Bypasses ``take_damage`` to avoid re-deferring the already-deferred
+        # chunk (would never apply otherwise).
+        if combatant.deferred_damage_queue:
+            installment = combatant.deferred_damage_queue.pop(0)
+            if installment > 0:
+                combatant.hp = max(0, combatant.hp - installment)
+                self.log.append(
+                    f"  💧 **{combatant.name}** Thánh Tuyền hoàn trả "
+                    f"{colorize_damage(f'-{installment:,} HP', 'thuy')}"
+                )
+
         # DoT damage from all active debuffs (poison, burn, bleed, etc.)
+        # Pass is_dot=True so the Fortify Aura post-hit brace ignores DoT
+        # ticks — only direct skill/aura/reflect hits arm the brace.
         for effect_key, dot_dmg, is_crit in get_periodic_damage(combatant, self.rng):
-            combatant.hp = max(0, combatant.hp - dot_dmg)
+            combatant.take_damage(dot_dmg, is_dot=True)
 
             # Moc build: leech a fraction of DoT damage as HP + MP to the applier
             if opponent and opponent.dot_leech_pct > 0 and opponent.is_alive():
@@ -339,6 +436,60 @@ class CombatSession:
             self.log.append(
                 f"  {emoji} **{combatant.name}** bị {name}{stack_tag} {dot_tag}{crit_tag}"
             )
+
+        # Solar aura — Thái Dương Thần Thể tier passive: every turn, deal
+        # fire damage to the opponent equal to (combatant.hp_max × solar_aura_pct),
+        # boosted by final_dmg_bonus + burn_dmg_bonus, with bonus_dmg_vs_burn
+        # vs already-burning targets and element_res_shred reducing the target's
+        # hoa resistance. Independent of skill actions and DoT ticks.
+        if (
+            combatant.is_alive()
+            and combatant.solar_aura_pct > 0
+            and opponent
+            and opponent.is_alive()
+        ):
+            base = int(combatant.hp_max * combatant.solar_aura_pct)
+            if base > 0:
+                mult = 1.0 + combatant.final_dmg_bonus + combatant.burn_dmg_bonus
+                if opponent.burn_stacks > 0 and combatant.bonus_dmg_vs_burn > 0:
+                    mult += combatant.bonus_dmg_vs_burn
+                target_res = max(
+                    0.0,
+                    min(MAX_ELEMENTAL_RES, opponent.resistances.get("hoa", 0.0) - combatant.element_res_shred.get("hoa", 0.0)),
+                )
+                aura_dmg = max(1, int(base * mult * (1.0 - target_res)))
+                opponent.take_damage(aura_dmg)
+                aura_tag = colorize_damage(f"-{aura_dmg:,} HP", "hoa")
+                self.log.append(
+                    f"  ☀️ **{combatant.name}** Thái Dương Thần Quang → "
+                    f"**{opponent.name}** {aura_tag}"
+                )
+
+        # Wither aura — Khô Mộc Thần Thể tier passive: drains hp_max × pct
+        # from the opponent as moc damage, then heals the holder by the same
+        # amount (routed through ``_apply_heal`` so heal_can_crit /
+        # bleed-heal-reduction / heal-to-damage queue all behave correctly).
+        if (
+            combatant.is_alive()
+            and combatant.wither_aura_pct > 0
+            and opponent
+            and opponent.is_alive()
+        ):
+            base = int(combatant.hp_max * combatant.wither_aura_pct)
+            if base > 0:
+                mult = 1.0 + combatant.final_dmg_bonus + combatant.dot_dmg_bonus
+                target_res = max(
+                    0.0,
+                    min(MAX_ELEMENTAL_RES, opponent.resistances.get("moc", 0.0) - combatant.element_res_shred.get("moc", 0.0)),
+                )
+                drain_dmg = max(1, int(base * mult * (1.0 - target_res)))
+                opponent.take_damage(drain_dmg)
+                healed = self._apply_heal(combatant, drain_dmg)
+                drain_tag = colorize_damage(f"-{drain_dmg:,} HP", "moc")
+                self.log.append(
+                    f"  🌿 **{combatant.name}** Khô Mộc Hấp Thu → "
+                    f"**{opponent.name}** {drain_tag} (+{healed:,} HP)"
+                )
 
         # Periodic: Thổ Linh Căn — activate shield when HP is low
         lc_effects.check_shield(combatant, self.log)
@@ -372,6 +523,23 @@ class CombatSession:
                 combatant.mp = min(combatant.mp_max, combatant.mp + mp_total_regen)
                 self.log.append(f"  💙 **{combatant.name}** hồi linh lực +{mp_total_regen} MP")
 
+        # Hào Quang Củng Cố — gain one stack each periodic phase (Hoang Cổ
+        # Thánh Thể Chain 9). Capped at fortify_stack_cap; no-op when the
+        # holder doesn't carry the aura. Decrement the post-hit brace AFTER
+        # combat resolution so the brace covers the swing that arrived this
+        # turn — once the periodic phase fires, the brace expires.
+        if combatant.is_alive() and combatant.fortify_per_turn_pct > 0:
+            cap = combatant.fortify_stack_cap or 0
+            if cap > 0 and combatant.fortify_stacks < cap:
+                combatant.fortify_stacks += 1
+                bonus = combatant.fortify_per_turn_pct * combatant.fortify_stacks
+                self.log.append(
+                    f"  🛡️ **{combatant.name}** Hào Quang Củng Cố [×{combatant.fortify_stacks}/{cap}] "
+                    f"(+{bonus * 100:.1f}% ST cuối / Giảm ST)"
+                )
+        if combatant.fortify_braced_turns > 0:
+            combatant.fortify_braced_turns -= 1
+
         combatant.tick_effects()
 
     def _roll_loot(self) -> list[dict]:
@@ -388,10 +556,15 @@ class CombatSession:
         else:
             return []
         drop_table = registry.get_loot_table(loot_key)
-        drops = roll_drops(drop_table, self.rng, luck_pct=self.loot_luck_pct).merge()
-        if self.loot_qty_multiplier != 1.0:
+        # Constitution / equipment loot bonuses stack on top of the session's
+        # baseline (elite roll, dungeon grade). ``loot_luck_bonus`` is additive
+        # on luck_pct; ``loot_qty_bonus`` is additive on the qty multiplier.
+        effective_luck = self.loot_luck_pct + max(0.0, self.player.loot_luck_bonus)
+        effective_qty_mult = self.loot_qty_multiplier * (1.0 + max(0.0, self.player.loot_qty_bonus))
+        drops = roll_drops(drop_table, self.rng, luck_pct=effective_luck).merge()
+        if effective_qty_mult != 1.0:
             drops = [
-                {"item_key": d["item_key"], "quantity": max(1, round(d["quantity"] * self.loot_qty_multiplier))}
+                {"item_key": d["item_key"], "quantity": max(1, round(d["quantity"] * effective_qty_mult))}
                 for d in drops
             ]
         return drops

@@ -19,16 +19,11 @@ from src.game.constants.grades import Grade
 from src.game.systems.inventory import (
     apply_elixir, scroll_skill_type, skill_tier_from_mp,
 )
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
 
-GRADE_EMOJI = {1: "⚪", 2: "🟢", 3: "🔵", 4: "🟡"}
-
-TYPE_EMOJI = {
-    "forge_material": "🔨", "material": "🪨", "gem": "💠", "scroll": "📜",
-    "chest": "📦", "elixir": "⚗️", "special": "⭐", "artifact": "🗡️",
-}
 SLOT_VI: dict[str, str] = {
     "weapon":   "Vũ Khí",
     "off_hand": "Phụ Thủ",
@@ -42,23 +37,27 @@ SLOT_VI: dict[str, str] = {
 }
 QUALITY_LABEL: dict[int, str] = {1: "Hoàng", 2: "Huyền", 3: "Địa", 4: "Thiên"}
 
-_CATEGORIES: list[tuple[str, str, str]] = [
-    ("🔨", "forge_material",  "Nguyên Liệu Rèn"),
-    ("🪨", "material",  "Nguyên Liệu"),
-    ("💠", "gem",       "Ngọc"),
-    ("📜", "scroll",    "Ngọc Giản"),
-    ("⚗️", "elixir",   "Đan Dược"),
-    ("📦", "chest",     "Rương"),
-    ("⭐", "special",   "Đặc Biệt"),
-    ("🗡️", "equipment", "Trang Bị"),
+_CATEGORIES: list[tuple[str, str]] = [
+    ("forge_material", "Nguyên Liệu Rèn"),
+    ("material",       "Nguyên Liệu"),
+    ("gem",            "Ngọc"),
+    ("scroll",         "Ngọc Giản"),
+    ("elixir",         "Đan Dược"),
+    ("chest",          "Rương"),
+    ("special",        "Đặc Biệt"),
+    ("equipment",      "Trang Bị"),
 ]
+
+
+def _category_emoji(cat: str) -> str:
+    return emojis.ITEM_TYPE_EMOJI.get(cat, "❓")
 
 
 def _item_display(item_key: str, grade: int, quantity: int) -> str:
     item = registry.get_item(item_key)
     name = item["vi"] if item else item_key
-    t_emoji = TYPE_EMOJI.get(item.get("type", ""), "❓") if item else "❓"
-    g_emoji = GRADE_EMOJI.get(grade, "⚪")
+    t_emoji = emojis.for_item(item) if item else "❓"
+    g_emoji = emojis.for_grade(grade)
     return f"{t_emoji}{g_emoji} **{name}** × {quantity}"
 
 
@@ -70,7 +69,8 @@ def _build_hub_embed(inv_items: list, equip_bag: list) -> discord.Embed:
         cat = item_data.get("type", "?") if item_data else "?"
         counts[cat] = counts.get(cat, 0) + 1
     lines = []
-    for emoji, cat, label in _CATEGORIES:
+    for cat, label in _CATEGORIES:
+        emoji = _category_emoji(cat)
         if cat == "equipment":
             lines.append(f"{emoji} **{label}**: {len(equip_bag)} món")
         else:
@@ -129,11 +129,15 @@ class InventoryView(discord.ui.View):
         self._player_name = player_name
         self._back_fn     = back_fn
 
-        for i, (emoji, cat, label) in enumerate(_CATEGORIES):
+        for i, (cat, label) in enumerate(_CATEGORIES):
+            emoji = _category_emoji(cat)
+            # Discord parses custom emoji (``<:name:id>``) only inside the
+            # ``emoji=`` arg of UI components, never inside the label string.
             btn = discord.ui.Button(
-                label=f"{emoji} {label}",
+                label=label,
                 style=discord.ButtonStyle.secondary,
                 row=i // 4,
+                emoji=discord.PartialEmoji.from_str(emoji) if emoji else None,
             )
             btn.callback = self._make_equipment_cb() if cat == "equipment" else self._make_cb(cat, label, emoji)
             self.add_item(btn)

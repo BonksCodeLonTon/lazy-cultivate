@@ -415,7 +415,9 @@
     "effects": [],
     "passive_bonus": {
       "shock_on_hit_pct": 0.2,
-      "loi_res_shred": 0.1,
+      "element_res_shred": {
+        "loi": 0.1
+      },
       "spd_bonus": 4
     },
     "formation_key": null

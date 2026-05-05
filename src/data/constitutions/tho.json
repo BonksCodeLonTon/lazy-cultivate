@@ -11,7 +11,8 @@
     "stat_bonuses": {
       "hp_pct": 0.08,
       "res_all": 30,
-      "final_dmg_reduce": 0.04
+      "final_dmg_reduce": 0.04,
+      "hp_flat_per_realm": 200
     },
     "special_requirements": null,
     "materials": {
@@ -112,7 +113,8 @@
     "stat_bonuses": {
       "hp_pct": 0.128,
       "res_all": 48,
-      "final_dmg_reduce": 0.064
+      "final_dmg_reduce": 0.064,
+      "hp_flat_per_realm": 350
     },
     "special_requirements": null,
     "materials": {
@@ -195,7 +197,8 @@
     "stat_bonuses": {
       "hp_pct": 0.192,
       "res_all": 72,
-      "final_dmg_reduce": 0.096
+      "final_dmg_reduce": 0.096,
+      "hp_flat_per_realm": 500
     },
     "special_requirements": null,
     "materials": {
@@ -281,7 +284,8 @@
     "stat_bonuses": {
       "hp_pct": 0.28,
       "res_all": 105,
-      "final_dmg_reduce": 0.14
+      "final_dmg_reduce": 0.14,
+      "hp_flat_per_realm": 750
     },
     "special_requirements": null,
     "materials": {
@@ -339,7 +343,7 @@
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Thân như thiên địa trụ, hộ thuẫn càng dày đòn đánh càng mạnh; gai phản xuất phát từ khiên chứ không chỉ thân.",
     "stat_bonuses": {
       "hp_pct": 0.3,
@@ -357,7 +361,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssTho": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionThoCuong_Leg",
@@ -366,7 +371,7 @@
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Sơn nhạc trấn cương, máu thịt là vũ khí — sinh lực càng dồi dào, đòn đánh càng đè bẹp đối thủ; va chạm với khiên đá khiến chúng choáng váng.",
     "stat_bonuses": {
       "hp_pct": 0.4,
@@ -374,7 +379,8 @@
       "final_dmg_reduce": 0.2,
       "damage_bonus_from_hp_pct": 0.12,
       "thorn_from_shield": true,
-      "stun_on_hit_pct": 0.08
+      "stun_on_hit_pct": 0.08,
+      "hp_flat_per_realm": 1000
     },
     "special_requirements": null,
     "materials": {
@@ -382,7 +388,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssTho": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionThoHoang_Leg",
@@ -391,7 +398,7 @@
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Hoàng sa trấn ngàn dặm, khiên cát dâng cao gấp bội — gai phản bật ngược từ tường cát, mỗi đòn vào khiên đều biến thành sát thương dội ra.",
     "stat_bonuses": {
       "hp_pct": 0.3,
@@ -407,7 +414,8 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssTho": 6
-    }
+    },
+    "cost_stones": 80000
   },
   {
     "key": "ConstitutionThoTrach_Leg",
@@ -416,7 +424,7 @@
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
-    "cost_merit": 80000,
+    "cost_merit": 0,
     "passive_description_vi": "Trạch địa nuốt vạn vật, đầm lầy ngầm rút lực kẻ địch — máu thịt và khiên cùng hóa gai phản, đối thủ bị choáng ngã trong bùn đất.",
     "stat_bonuses": {
       "hp_pct": 0.5,
@@ -432,6 +440,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssTho": 6
-    }
+    },
+    "cost_stones": 80000
   }
 ]

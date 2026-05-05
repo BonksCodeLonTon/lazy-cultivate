@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from src.game.constants.balance import MAX_ELEMENTAL_RES
 from src.game.constants.effects import EffectKey
 from src.game.engine.damage import colorize_damage
 from src.game.systems.combatant import Combatant
@@ -19,7 +20,7 @@ if TYPE_CHECKING:
 def apply_elem_res(raw: int, target: Combatant, element: str, shred: float = 0.0) -> int:
     """Apply target's (shredded) elemental resistance to a raw burst amount."""
     res = max(0.0, target.resistances.get(element, 0.0) - shred)
-    return max(1, int(raw * (1.0 - min(0.75, res))))
+    return max(1, int(raw * (1.0 - min(MAX_ELEMENTAL_RES, res))))
 
 
 def burst_shield(
@@ -31,7 +32,7 @@ def burst_shield(
         return
     mult = float(skill_data.get("burst_shield_mult", 1.5))
     dmg = apply_elem_res(max(1, int(shield_amt * mult)), target, "tho")
-    target.hp = max(0, target.hp - dmg)
+    target.take_damage(dmg)
     session.log.append(
         f"    🪨💥 **Thổ Tường Bùng Nổ!** tiêu {shield_amt:,} khiên → "
         f"{colorize_damage(f'-{dmg:,} HP', 'tho')} ({target.hp:,}/{target.hp_max:,})"
@@ -48,7 +49,7 @@ def burst_mana_stacks(
     per_stack_mult = float(skill_data.get("burst_per_mana_stack_mult", 0.12))
     raw = max(1, int(actor.mp_max * per_stack_mult * stacks))
     dmg = apply_elem_res(raw, target, "thuy")
-    target.hp = max(0, target.hp - dmg)
+    target.take_damage(dmg)
     session.log.append(
         f"    💧💥 **Linh Khí Bùng Nổ!** nổ {stacks} tầng → "
         f"{colorize_damage(f'-{dmg:,} HP', 'thuy')} ({target.hp:,}/{target.hp_max:,})"
@@ -65,8 +66,8 @@ def burst_burn(
     per_stack_mult = float(skill_data.get("burst_per_stack_mult", 0.35))
     base = skill_data.get("base_dmg", 0) + int(actor.matk * 0.5)
     raw = max(1, int(base * per_stack_mult * stacks))
-    dmg = apply_elem_res(raw, target, "hoa", shred=actor.fire_res_shred)
-    target.hp = max(0, target.hp - dmg)
+    dmg = apply_elem_res(raw, target, "hoa", shred=actor.element_res_shred.get("hoa", 0.0))
+    target.take_damage(dmg)
     # Stacks are gone, clear the burn debuff marker too
     target.effects.pop(EffectKey.DEBUFF_THIEU_DOT, None)
     session.log.append(

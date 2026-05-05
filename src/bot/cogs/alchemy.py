@@ -23,6 +23,7 @@ from src.game.systems.alchemy import (
     craft_pill,
     get_recipe,
 )
+from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed
 
 log = logging.getLogger(__name__)
@@ -123,7 +124,7 @@ async def _alchemy_hub_embed(player: Player) -> discord.Embed:
         "Luyện chế linh đan từ thảo dược và nguyên liệu yêu thú.",
         color=0x2E7D32,
     )
-    embed.add_field(name="Công Đức",     value=f"✨ {player.merit:,}", inline=True)
+    embed.add_field(name="Công Đức",     value=f"{emojis.for_currency('merit')} {player.merit:,}", inline=True)
     embed.add_field(name="Đan Độc",      value=f"☠️ {player.dan_doc:,}", inline=True)
     embed.add_field(name="Đan Phương",   value=f"📜 {unlocked}/{total_recipes} mở khoá", inline=True)
     embed.add_field(name="Thảo Dược",    value=f"🌿 {herbs} loại", inline=True)
@@ -400,7 +401,7 @@ async def _recipe_detail_embed(interaction: discord.Interaction, recipe_key: str
         ing_lines.append(f"**{role}**: " + " / ".join(option_lines))
     embed.add_field(name="🌿 Nguyên Liệu", value="\n".join(ing_lines) or "*(không có)*", inline=False)
 
-    embed.add_field(name="Chi Phí", value=f"✨ {recipe.get('cost_cong_duc', 0):,} Công Đức", inline=True)
+    embed.add_field(name="Chi Phí", value=f"{emojis.for_currency('merit')} {recipe.get('cost_cong_duc', 0):,} Công Đức", inline=True)
 
     required_tier = int(recipe.get("furnace_tier", 1))
     chosen_furnace = _pick_best_furnace(furnace_keys, required_tier)

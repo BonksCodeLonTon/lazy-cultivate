@@ -17,6 +17,7 @@ from src.game.constants.linh_can import (
     max_linh_can_level,
 )
 from src.game.systems.the_chat import set_constitutions
+from src.utils import emojis
 from src.utils.embed_builder import error_embed, success_embed
 
 
@@ -179,7 +180,7 @@ def _preset_config(preset: str) -> dict:
             "merit": 0, "karma_accum": 0, "karma_usable": 0,
             "primordial_stones": 0,
             "linh_can": ["hoa"],
-            "constitutions": ["ConstitutionVanTuong"],
+            "constitutions": ["ConstitutionPhamThe"],
             "skills": ["SkillAtkHoa1"],
             "active_formation": None,
         }
@@ -242,8 +243,9 @@ async def _apply_testbuild(session, player, cfg: dict) -> list[str]:
             setattr(player, k, int(cfg[k]))
     if any(k in cfg for k in ("merit", "karma_accum", "karma_usable", "primordial_stones")):
         lines.append(
-            f"💰 Công Đức: {player.merit:,} · Nghiệp (usable): {player.karma_usable:,} · "
-            f"Hỗn Nguyên: {player.primordial_stones:,}"
+            f"{emojis.for_currency('merit')} Công Đức: {player.merit:,} · "
+            f"{emojis.for_currency('karma_usable')} Nghiệp (usable): {player.karma_usable:,} · "
+            f"{emojis.for_currency('primordial_stones')} Hỗn Nguyên: {player.primordial_stones:,}"
         )
 
     # ── Linh Căn ────────────────────────────────────────────────────────────
@@ -271,7 +273,7 @@ async def _apply_testbuild(session, player, cfg: dict) -> list[str]:
         # write garbage into constitution_type.
         keys = [k for k in cfg["constitutions"] if registry.get_constitution(k)]
         if not keys:
-            keys = ["ConstitutionVanTuong"]
+            keys = ["ConstitutionPhamThe"]
         player.constitution_type = set_constitutions(keys)
         names = ", ".join(registry.get_constitution(k)["vi"] for k in keys)
         lines.append(f"🧬 Thể Chất ({len(keys)}): {names}")

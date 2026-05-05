@@ -24,9 +24,11 @@ import random
 import discord
 
 from src.data.registry import registry
+from src.utils import emojis
 from src.db.connection import get_session
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository
+from src.game.constants.elements import ELEMENT_LABELS_VI
 from src.game.constants.grades import Grade
 from src.game.systems.the_chat import (
     HON_DON_KEY,
@@ -90,16 +92,18 @@ def _format_materials(
     return "\n".join(lines) if lines else "*(không có)*"
 
 _RARITY_META: dict[str, dict] = {
-    "common":     {"vi": "Phổ Thông",    "emoji": "⚪", "order": 0, "color": 0x95A5A6},
-    "uncommon":   {"vi": "Khá",          "emoji": "🟢", "order": 1, "color": 0x2ECC71},
-    "rare":       {"vi": "Quý",          "emoji": "🔵", "order": 2, "color": 0x3498DB},
-    "epic":       {"vi": "Sử Thi",       "emoji": "🟣", "order": 3, "color": 0x9B59B6},
-    "legendary":  {"vi": "Truyền Thuyết", "emoji": "🟡", "order": 4, "color": 0xF1C40F},
+    "common":     {"vi": "Phổ Thông",     "emoji": emojis.for_rarity("common"),    "order": 0, "color": 0x95A5A6},
+    "uncommon":   {"vi": "Khá",           "emoji": emojis.for_rarity("uncommon"),  "order": 1, "color": 0x2ECC71},
+    "rare":       {"vi": "Hiếm",          "emoji": emojis.for_rarity("rare"),      "order": 2, "color": 0x3498DB},
+    "epic":       {"vi": "Sử Thi",        "emoji": emojis.for_rarity("epic"),      "order": 3, "color": 0x9B59B6},
+    "legendary":  {"vi": "Truyền Thuyết", "emoji": emojis.for_rarity("legendary"), "order": 4, "color": 0xF1C40F},
 }
 
 _BONUS_FORMATTERS: list[tuple[str, str]] = [
     ("hp_pct",                        "❤️ HP +{pct:.0f}%"),
+    ("hp_flat_per_realm",             "❤️ HP +{flat}/Cảnh Giới"),
     ("mp_pct",                        "💙 MP +{pct:.0f}%"),
+    ("cultivation_speed_bonus",       "⚡ Tốc độ tu luyện +{pct:.0f}%"),
     ("final_dmg_bonus",               "⚔️ ST cuối +{pct:.0f}%"),
     ("final_dmg_reduce",              "🛡️ Giảm ST +{pct:.0f}%"),
     ("crit_rating",                   "💥 Bạo Kích Rating +{flat}"),
@@ -110,12 +114,15 @@ _BONUS_FORMATTERS: list[tuple[str, str]] = [
     ("spd_bonus",                     "⚡ Tốc độ +{flat}"),
     ("cooldown_reduce",               "⏱️ Giảm Hồi Chiêu {pct:.0f}%"),
     ("hp_regen_pct",                  "💚 Hồi HP {pct2:.1f}%/lượt"),
+    ("hp_regen_flat",                 "💚 Hồi HP +{flat}/lượt"),
     ("mp_regen_pct",                  "💧 Hồi MP {pct2:.1f}%/lượt"),
+    ("mp_regen_flat",                 "💧 Hồi MP +{flat}/lượt"),
     ("heal_pct",                      "✨ Trị liệu +{pct:.0f}%"),
     ("burn_on_hit_pct",               "🔥 Thiêu Đốt +{pct:.0f}%"),
     ("bleed_on_hit_pct",              "🩸 Chảy Máu +{pct:.0f}%"),
     ("shock_on_hit_pct",              "⚡ Sốc Điện +{pct:.0f}%"),
-    ("mark_on_hit_pct",               "🎯 Phong Ấn +{pct:.0f}%"),
+    ("mark_on_hit_pct",               "🎯 Ấn Phong +{pct:.0f}%"),
+    ("blind_on_hit_pct",              "🌫️ Lóa Mắt +{pct:.0f}%"),
     ("soul_drain_on_hit_pct",         "💀 Hút Hồn +{pct:.0f}%"),
     ("stat_steal_on_hit_pct",         "💠 Cướp Chỉ Số +{pct:.0f}%"),
     ("silence_on_crit_pct",           "🤐 Cấm Phép +{pct:.0f}%"),
@@ -131,14 +138,24 @@ _BONUS_FORMATTERS: list[tuple[str, str]] = [
     ("turn_steal_pct",                "⏩ Cướp Lượt +{pct:.0f}%"),
     ("reflect_pct",                   "🪞 Phản ST +{pct:.0f}%"),
     ("debuff_immune_pct",             "🪬 Miễn Debuff {pct:.0f}%"),
-    ("fire_res_shred",                "🔥 Xuyên Kháng Hỏa {pct:.0f}%"),
-    ("moc_res_shred",                 "🌿 Xuyên Kháng Mộc {pct:.0f}%"),
-    ("thuy_res_shred",                "💧 Xuyên Kháng Thủy {pct:.0f}%"),
-    ("loi_res_shred",                 "⚡ Xuyên Kháng Lôi {pct:.0f}%"),
-    ("phong_res_shred",               "🌪️ Xuyên Kháng Phong {pct:.0f}%"),
-    ("quang_res_shred",               "☀️ Xuyên Kháng Quang {pct:.0f}%"),
-    ("am_res_shred",                  "🌑 Xuyên Kháng Ám {pct:.0f}%"),
+    # NOTE: per-element shred is read from the generic ``element_res_shred``
+    # dict and rendered dynamically below — don't add unicode-emoji formatters
+    # for individual elements here.
     ("burn_dmg_bonus",                "🔥 ST Thiêu Đốt +{pct:.0f}%"),
+    ("solar_aura_pct",                "☀️ Hào Quang Lửa: {pct:.1f}% HP/lượt"),
+    ("wither_aura_pct",               "🌿 Hấp Linh Khí Tràng: {pct:.1f}% HP/lượt"),
+    ("stat_drain_aura_pct",           "🌑 Thôn Thiên Ma Khí: cướp {pct:.0f}% chỉ số đầu trận"),
+    ("damage_defer_pct",              "💧 Hoãn Trả: {pct:.0f}% sát thương trải đều"),
+    ("damage_defer_turns",            "💧 Số lượt trải đều: {flat}"),
+    ("fortify_per_turn_pct",          "🛡️ Hào Quang Củng Cố: +{pct:.1f}% ST cuối + Giảm ST mỗi tầng"),
+    ("fortify_stack_cap",             "🛡️ Cap tầng Củng Cố: {flat}"),
+    ("fortify_post_hit_dr_pct",       "🛡️ Phòng Ngự Hậu-Thương: +{pct:.0f}% Giảm ST sau khi nhận đòn (1 lượt)"),
+    ("loot_qty_bonus",                "🎁 Số lượng vật phẩm rớt +{pct:.0f}%"),
+    ("loot_luck_bonus",               "🍀 Cơ hội rớt vật phẩm +{pct:.0f}%"),
+    # NOTE: per-element ``res_<elem>`` is rendered dynamically below using
+    # the central emoji registry — don't add unicode-emoji formatters here.
+    ("phoenix_revive_pct",            "🔥🦅 Niết Bàn Trùng Sinh: hồi {pct:.0f}% HP khi tử vong"),
+    ("phoenix_revive_buff_pct",       "🔥 Buff sau Niết Bàn: +{pct:.0f}% chỉ số chiến đấu"),
     ("bleed_dmg_bonus",               "🩸 ST Chảy Máu +{pct:.0f}%"),
     ("poison_dmg_bonus",              "☠️ ST Độc +{pct:.0f}%"),
     ("all_passives_multiplier",       "🌌 Khuếch đại mọi passive ×{flat2:.1f}"),
@@ -178,9 +195,27 @@ def _format_bonus_lines(bonuses: dict) -> list[str]:
     for key, label in _BOOL_FLAGS:
         if bonuses.get(key):
             lines.append(label)
+
+    # ── Per-element bonuses (resolved against the central emoji registry) ──
+    # ``res_<elem>`` lives as a flat key; shred + damage bonus + convert all
+    # come from generic dicts (single source of truth, multi-element friendly).
+    elem_dmg   = bonuses.get("element_dmg_bonus") or {}
+    elem_shred = bonuses.get("element_res_shred") or {}
+    convert    = bonuses.get("damage_taken_convert_pct") or {}
+    for elem, vi in ELEMENT_LABELS_VI.items():
+        emoji = emojis.for_element(elem)
+        if (r := bonuses.get(f"res_{elem}", 0)):
+            lines.append(f"{emoji} Kháng {vi} +{r * 100:.0f}%")
+        if (s := elem_shred.get(elem, 0)):
+            lines.append(f"{emoji} Xuyên Kháng {vi} {s * 100:.0f}%")
+        if (d := elem_dmg.get(elem, 0)):
+            lines.append(f"{emoji} ST {vi} +{d * 100:.0f}%")
+        if (c := convert.get(elem, 0)):
+            lines.append(
+                f"{emoji} Hóa Thân {vi}: {c * 100:.0f}% ST nhận vào → ST {vi} "
+                f"(chịu Kháng {vi})"
+            )
     return lines
-
-
 
 
 # ── Embeds ────────────────────────────────────────────────────────────────────
@@ -234,7 +269,7 @@ def _hub_embed(player, key_counts: dict[str, int]) -> discord.Embed:
 
     desc = (
         f"{path_tag}   ·   {slot_line}\n"
-        f"✨ Công Đức: **{player.merit:,}**\n\n"
+        f"{emojis.for_currency('merit')} Công Đức: **{player.merit:,}**\n\n"
         f"**Đang trang bị:**\n{_render_equipped_lines(equipped)}\n\n"
         f"{mat_block}\n\n"
         f"{path_hint}"
@@ -256,7 +291,8 @@ def _detail_embed(
     if bonus_lines:
         desc_parts.append("\n**Chỉ số:**\n" + "\n".join(bonus_lines))
 
-    cost = const_data.get("cost_merit", 0)
+    cost_merit = int(const_data.get("cost_merit", 0))
+    cost_stones = int(const_data.get("cost_stones", 0))
     tags = [_rarity_label(rarity)]
     if elem:
         tags.append(f"🜁 Hệ {elem.capitalize()}")
@@ -304,9 +340,15 @@ def _detail_embed(
     desc_parts.append(
         "\n**Nguyên liệu cần:**\n" + _format_materials(materials, owned_materials)
     )
-    desc_parts.append(
-        f"\n**Công Đức:** ✨ {cost:,} (hiện có: {player.merit:,})"
-    )
+    if cost_stones > 0:
+        desc_parts.append(
+            f"\n**Hỗn Nguyên Thạch:** {emojis.for_currency('primordial_stones')} "
+            f"{cost_stones:,} (hiện có: {player.primordial_stones:,})"
+        )
+    if cost_merit > 0 or cost_stones <= 0:
+        desc_parts.append(
+            f"\n**Công Đức:** {emojis.for_currency('merit')} {cost_merit:,} (hiện có: {player.merit:,})"
+        )
 
     return base_embed(title, "\n".join(p for p in desc_parts if p), color=meta["color"])
 
@@ -343,7 +385,10 @@ class _RaritySelect(discord.ui.Select):
         if not options:
             options = [discord.SelectOption(label="(Không có)", value="__none__")]
 
-        placeholder = f"{_RARITY_META.get(rarity, {}).get('emoji', '')} {_rarity_label(rarity)} — chọn Thể Chất..."
+        # Select placeholder is plain text — custom Discord emojis don't render
+        # there, so use the Vietnamese label only.
+        rarity_vi = _RARITY_META.get(rarity, {}).get("vi", rarity)
+        placeholder = f"{rarity_vi} — chọn Thể Chất..."
         super().__init__(placeholder=placeholder, options=options, row=1)
 
     async def callback(self, interaction: discord.Interaction) -> None:
@@ -418,7 +463,7 @@ class _RemoveSelect(discord.ui.Select):
                 return
             equipped.remove(key)
             if not equipped:
-                equipped = ["ConstitutionVanTuong"]
+                equipped = ["ConstitutionPhamThe"]
             player.constitution_type = set_constitutions(equipped)
             await prepo.save(player)
 
@@ -441,10 +486,10 @@ class TheChatHubView(discord.ui.View):
         self._rarity = rarity
         self._back_fn = back_fn
 
-        for r in ("common", "rare", "legendary"):
+        for r in ("common", "uncommon", "rare", "epic", "legendary"):
             meta = _RARITY_META[r]
             style = discord.ButtonStyle.primary if r == rarity else discord.ButtonStyle.secondary
-            btn = discord.ui.Button(label=f"{meta['emoji']} {meta['vi']}", style=style, row=0)
+            btn = discord.ui.Button(label=meta["vi"], emoji=meta["emoji"], style=style, row=0)
             btn.callback = self._make_tab_cb(r)
             self.add_item(btn)
 
@@ -552,11 +597,22 @@ class ConstitutionDetailView(discord.ui.View):
                 await interaction.edit_original_response(embed=error_embed(err))
                 return
 
-            cost = int(const_data.get("cost_merit", 0))
-            if cost > player.merit:
+            cost_merit = int(const_data.get("cost_merit", 0))
+            cost_stones = int(const_data.get("cost_stones", 0))
+            if cost_merit > player.merit:
                 await interaction.edit_original_response(
                     embed=error_embed(
-                        f"Không đủ Công Đức. Cần ✨ **{cost:,}**, có **{player.merit:,}**."
+                        f"Không đủ Công Đức. Cần {emojis.for_currency('merit')} **{cost_merit:,}**, có **{player.merit:,}**."
+                    ),
+                )
+                return
+            if cost_stones > player.primordial_stones:
+                await interaction.edit_original_response(
+                    embed=error_embed(
+                        f"Không đủ Hỗn Nguyên Thạch. Cần "
+                        f"{emojis.for_currency('primordial_stones')} **{cost_stones:,}**, "
+                        f"có **{player.primordial_stones:,}**.\n"
+                        f"💡 Hỗn Nguyên Thạch rớt từ Bí Cảnh thường (R3+), Dược Viên (R3+), và Thần Cốt Địa (R3+)."
                     ),
                 )
                 return
@@ -585,8 +641,10 @@ class ConstitutionDetailView(discord.ui.View):
             # ── Deduct cost first (attempt economy — pay even on failure) ──
             for k, need in materials.items():
                 await irepo.remove_item(player.id, k, _item_grade(k), need)
-            if cost > 0:
-                player.merit -= cost
+            if cost_merit > 0:
+                player.merit -= cost_merit
+            if cost_stones > 0:
+                player.primordial_stones -= cost_stones
 
             # ── Roll the activation chance ────────────────────────────────
             chance = activation_chance(
@@ -597,16 +655,25 @@ class ConstitutionDetailView(discord.ui.View):
             )
 
             if succeeded:
+                # Progression chain: a Thể Chất can declare ``progresses_from``
+                # so activation consumes the predecessor (e.g. Thôn Thiên Ma
+                # Tâm → Thôn Thiên Ma Thể). The predecessor is unequipped so
+                # the upgrade doesn't simultaneously occupy two slots.
+                progress_from = const_data.get("progresses_from")
+                base_equipped = (
+                    [k for k in equipped if k != progress_from]
+                    if progress_from else list(equipped)
+                )
                 if the_tu and not is_hon_don:
                     # Append to equipped list (slot already validated above)
-                    new_equipped = list(equipped) + [self._const_key]
+                    new_equipped = base_equipped + [self._const_key]
                 else:
                     # Non-Thể Tu: replace standard slot. Hỗn Độn: append.
                     if is_hon_don:
-                        new_equipped = list(equipped) + [HON_DON_KEY]
+                        new_equipped = base_equipped + [HON_DON_KEY]
                     else:
                         new_equipped = [
-                            k for k in equipped if k == HON_DON_KEY
+                            k for k in base_equipped if k == HON_DON_KEY
                         ] + [self._const_key]
                 player.constitution_type = set_constitutions(new_equipped)
             await prepo.save(player)
@@ -616,8 +683,10 @@ class ConstitutionDetailView(discord.ui.View):
             item = registry.get_item(k)
             name = item["vi"] if item else k
             mat_summary_lines.append(f"🦴 -{need} {name}")
-        if cost > 0:
-            mat_summary_lines.append(f"✨ -{cost:,} Công Đức")
+        if cost_merit > 0:
+            mat_summary_lines.append(f"{emojis.for_currency('merit')} -{cost_merit:,} Công Đức")
+        if cost_stones > 0:
+            mat_summary_lines.append(f"{emojis.for_currency('primordial_stones')} -{cost_stones:,} Hỗn Nguyên Thạch")
 
         if succeeded:
             bonus_lines = _format_bonus_lines(const_data.get("stat_bonuses", {}))
