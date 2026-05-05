@@ -559,7 +559,13 @@ def test_quang_cleanse_skips_when_no_debuffs():
 def test_quang_barrier_on_cleanse_grants_shield():
     from src.game.engine.linh_can_effects import quang
 
-    actor = make_combatant("a", linh_can=["quang"], matk=200, barrier_on_cleanse=True)
+    # barrier_on_cleanse fills the shield pool; the actor needs a non-zero
+    # shield_cap (legacy shield_cap_pct removed — give the actor an explicit
+    # shield_max_base so add_shield() has somewhere to land the barrier).
+    actor = make_combatant(
+        "a", linh_can=["quang"], matk=200,
+        barrier_on_cleanse=True, shield_max_base=500,
+    )
     actor.apply_effect(EffectKey.DEBUFF_PHA_GIAP, 3)
     rng = random.Random(0)
     rng.random = lambda: 0.0  # force cleanse

@@ -47,38 +47,258 @@ def _gear_embed(player_name: str, equipped: list) -> discord.Embed:
     return embed
 
 
-def _bag_embed(player_name: str, items: list, slot_filter: str | None) -> discord.Embed:
+def _bag_embed(
+    player_name: str,
+    bag_items: list,
+    equipped: list,
+    slot_filter: str | None,
+) -> discord.Embed:
+    """Render bag items grouped by slot, with the currently-equipped item in
+    that slot shown as a header line so players can compare before swapping.
+
+    ``equipped`` should be the player's currently-equipped instances (location
+    == "equipped"); ``bag_items`` should be in-bag items only. Both are passed
+    in so the caller can re-fetch once and reuse for the view buttons.
+    """
     title = f"🎒 Túi Đồ — {player_name}"
     if slot_filter:
         title += f" ({SLOT_LABELS.get(slot_filter, slot_filter)})"
     embed = base_embed(title, color=0x4488FF)
 
-    if not items:
-        embed.description = "*Túi đồ trống. Dùng `/forge` để tạo trang bị.*"
-        return embed
-
-    # Group by slot
-    by_slot: dict[str, list] = {}
-    for inst in items:
+    by_slot_bag: dict[str, list] = {}
+    for inst in bag_items:
         s = inst.slot or "unknown"
-        by_slot.setdefault(s, []).append(inst)
+        by_slot_bag.setdefault(s, []).append(inst)
+    by_slot_eq: dict[str, object] = {i.slot: i for i in equipped if i.slot}
 
+    rendered_any = False
     for slot in SLOT_ORDER:
         if slot_filter and slot != slot_filter:
             continue
-        insts = by_slot.get(slot, [])
-        if not insts:
+        insts = by_slot_bag.get(slot, [])
+        eq_inst = by_slot_eq.get(slot)
+        if not insts and not eq_inst:
             continue
-        lines = []
-        for inst in insts:
-            stats_str = format_computed_stats(inst.computed_stats)
-            lines.append(f"`ID:{inst.id}` {_grade_label(inst.grade)} **{inst.display_name}**\n　{stats_str}")
+        rendered_any = True
+
+        # Header — the currently-equipped piece in this slot, or an "empty"
+        # marker so the player can see at a glance what they'd be swapping.
+        if eq_inst:
+            eq_stats = format_computed_stats(eq_inst.computed_stats)
+            header = (
+                f"🟢 **Đang trang bị:** `ID:{eq_inst.id}` "
+                f"{_grade_label(eq_inst.grade)} **{eq_inst.display_name}**\n"
+                f"　{eq_stats}"
+            )
+        else:
+            header = "⚪ *Đang trang bị: — Trống —*"
+
+        # Bag entries below.
+        if insts:
+            bag_lines = []
+            for inst in insts:
+                stats_str = format_computed_stats(inst.computed_stats)
+                bag_lines.append(
+                    f"`ID:{inst.id}` {_grade_label(inst.grade)} "
+                    f"**{inst.display_name}**\n　{stats_str}"
+                )
+            bag_block = "\n".join(bag_lines)
+        else:
+            bag_block = "*— Không có vật phẩm trong túi —*"
+
+        body = f"{header}\n\n📦 **Trong túi:**\n{bag_block}"
         embed.add_field(
             name=SLOT_LABELS.get(slot, slot),
-            value="\n".join(lines)[:1020],
+            value=body[:1020],
             inline=False,
         )
+
+    if not rendered_any:
+        embed.description = (
+            "*Không có vật phẩm cho vị trí này.*"
+            if slot_filter
+            else "*Túi đồ trống. Dùng `/forge` để tạo trang bị.*"
+        )
     return embed
+
+
+class BagView(discord.ui.View):
+    """Interactive bag view — slot filter + Equip/Unequip dropdowns.
+
+    The view rebuilds itself after every action so the caller doesn't need to
+    refetch the embed manually. Discord's hard 25-option-per-Select cap is
+    respected by trimming long item lists; the underlying bag is still reachable
+    via `/bag` with a slot filter when overflow happens.
+    """
+
+    def __init__(
+        self,
+        discord_id: int,
+        player_name: str,
+        bag_items: list,
+        equipped: list,
+        slot_filter: str | None,
+    ) -> None:
+        super().__init__(timeout=300)
+        self._discord_id = discord_id
+        self._player_name = player_name
+        self._slot_filter = slot_filter
+
+        # ── Row 0: slot filter dropdown ──────────────────────────────────
+        slot_select = discord.ui.Select(
+            placeholder=(
+                f"📂 Lọc: {SLOT_LABELS.get(slot_filter, slot_filter)}"
+                if slot_filter
+                else "📂 Lọc theo vị trí…"
+            ),
+            options=[
+                discord.SelectOption(label="Tất cả", value="__all__", emoji="📚"),
+                *[
+                    discord.SelectOption(
+                        label=SLOT_LABELS[s].split(" ", 1)[-1],   # strip emoji prefix
+                        value=s,
+                        emoji=SLOT_LABELS[s].split(" ", 1)[0],
+                        default=(s == slot_filter),
+                    )
+                    for s in SLOT_ORDER
+                ],
+            ],
+            row=0,
+        )
+        slot_select.callback = self._make_filter_cb()
+        self.add_item(slot_select)
+
+        # ── Row 1: Equip dropdown — bag items in the current filter ─────
+        if slot_filter:
+            visible_bag = [i for i in bag_items if i.slot == slot_filter]
+        else:
+            visible_bag = list(bag_items)
+        if visible_bag:
+            options = []
+            for inst in visible_bag[:25]:
+                slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?")
+                options.append(discord.SelectOption(
+                    label=f"{inst.display_name}"[:100],
+                    value=str(inst.id),
+                    description=f"{slot_label} · {_grade_label(inst.grade)} · ID {inst.id}"[:100],
+                ))
+            equip_select = discord.ui.Select(
+                placeholder=f"⚔️ Trang bị từ túi… ({len(visible_bag)} món)",
+                options=options,
+                row=1,
+            )
+            equip_select.callback = self._make_equip_cb()
+            self.add_item(equip_select)
+
+        # ── Row 2: Unequip dropdown — currently equipped in current filter ─
+        if slot_filter:
+            visible_eq = [i for i in equipped if i.slot == slot_filter]
+        else:
+            visible_eq = list(equipped)
+        if visible_eq:
+            options = []
+            for inst in visible_eq[:25]:
+                slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?")
+                options.append(discord.SelectOption(
+                    label=f"{inst.display_name}"[:100],
+                    value=inst.slot,
+                    description=f"{slot_label} · {_grade_label(inst.grade)}"[:100],
+                ))
+            unequip_select = discord.ui.Select(
+                placeholder=f"↩️ Tháo trang bị… ({len(visible_eq)} món)",
+                options=options,
+                row=2,
+            )
+            unequip_select.callback = self._make_unequip_cb()
+            self.add_item(unequip_select)
+
+    # ── Callbacks ────────────────────────────────────────────────────────
+
+    def _guard(self, interaction: discord.Interaction) -> bool:
+        return interaction.user.id == self._discord_id
+
+    async def _refresh(self, interaction: discord.Interaction, slot_filter: str | None, *, status: str | None = None) -> None:
+        """Re-fetch bag + equipped and re-render the view inline."""
+        async with get_session() as session:
+            prepo = PlayerRepository(session)
+            player = await prepo.get_by_discord_id(self._discord_id)
+            if player is None:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            erepo = EquipmentRepository(session)
+            equipped = await erepo.get_equipped(player.id)
+            bag = await erepo.get_bag(player.id)
+        embed = _bag_embed(self._player_name, bag, equipped, slot_filter)
+        if status:
+            embed.description = status
+        view = BagView(self._discord_id, self._player_name, bag, equipped, slot_filter)
+        await interaction.edit_original_response(embed=embed, view=view)
+
+    def _make_filter_cb(self):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if not self._guard(interaction):
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
+            await interaction.response.defer()
+            value = interaction.data["values"][0]
+            new_filter: str | None = None if value == "__all__" else value
+            await self._refresh(interaction, new_filter)
+        return _cb
+
+    def _make_equip_cb(self):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if not self._guard(interaction):
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
+            await interaction.response.defer()
+            instance_id = int(interaction.data["values"][0])
+            async with get_session() as session:
+                prepo = PlayerRepository(session)
+                player = await prepo.get_by_discord_id(self._discord_id)
+                if player is None:
+                    await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                    return
+                erepo = EquipmentRepository(session)
+                try:
+                    displaced = await erepo.equip(player.id, instance_id)
+                except ValueError as e:
+                    await self._refresh(interaction, self._slot_filter, status=f"❌ {e}")
+                    return
+                inst = await erepo.get_instance(instance_id, player.id)
+            slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?") if inst else ""
+            if displaced:
+                returned = ", ".join(d.display_name for d in displaced)
+                msg = (
+                    f"✅ Đã trang bị **{inst.display_name}** vào {slot_label}. "
+                    f"↩️ {returned} trả về túi đồ."
+                )
+            else:
+                msg = f"✅ Đã trang bị **{inst.display_name}** vào {slot_label}."
+            await self._refresh(interaction, self._slot_filter, status=msg)
+        return _cb
+
+    def _make_unequip_cb(self):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if not self._guard(interaction):
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
+            await interaction.response.defer()
+            slot = interaction.data["values"][0]
+            async with get_session() as session:
+                prepo = PlayerRepository(session)
+                player = await prepo.get_by_discord_id(self._discord_id)
+                if player is None:
+                    await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                    return
+                erepo = EquipmentRepository(session)
+                inst = await erepo.unequip(player.id, slot)
+            slot_label = SLOT_LABELS.get(slot, slot)
+            msg = (
+                f"↩️ Đã tháo **{inst.display_name}** từ {slot_label} về túi đồ."
+                if inst else f"⚪ {slot_label} đang trống."
+            )
+            await self._refresh(interaction, self._slot_filter, status=msg)
+        return _cb
 
 
 
@@ -164,13 +384,14 @@ class EquipmentCog(commands.Cog):
             if player is None:
                 await interaction.followup.send(embed=error_embed("Chưa có nhân vật."))
                 return
-            bag_items = [i for i in (player.item_instances or []) if i.location == "bag"]
+            erepo = EquipmentRepository(session)
+            equipped = await erepo.get_equipped(player.id)
+            bag_items = await erepo.get_bag(player.id)
 
         slot_filter = None if slot == "all" else slot
-        if slot_filter:
-            bag_items = [i for i in bag_items if i.slot == slot_filter]
-
-        await interaction.followup.send(embed=_bag_embed(player.name, bag_items, slot_filter))
+        embed = _bag_embed(player.name, bag_items, equipped, slot_filter)
+        view = BagView(interaction.user.id, player.name, bag_items, equipped, slot_filter)
+        await interaction.followup.send(embed=embed, view=view)
 
     # ── /equip ────────────────────────────────────────────────────────────────
 
@@ -310,35 +531,80 @@ class EquipmentCog(commands.Cog):
         await interaction.followup.send(embed=success_embed(f"🗑️ Đã hủy **{name}**."))
 
 
-def _equip_bag_embed(player_name: str, bag_items: list, result_msg: str = "") -> discord.Embed:
-    """Embed showing equipment in bag, grouped by slot."""
-    embed = base_embed(f"🎒 Túi Trang Bị — {player_name}", color=0x4488FF)
+def _equip_bag_embed(
+    player_name: str,
+    bag_items: list,
+    equipped: list,
+    slot_filter: str | None = None,
+    result_msg: str = "",
+) -> discord.Embed:
+    """Embed showing bag equipment grouped by slot, with the currently-equipped
+    piece in that slot rendered as a header line so the player can compare
+    before swapping.
+
+    ``equipped`` is the player's currently-equipped instances (location ==
+    ``equipped``). When ``slot_filter`` is set, only that slot is rendered.
+    """
+    title = f"🎒 Túi Trang Bị — {player_name}"
+    if slot_filter:
+        title += f" ({SLOT_LABELS.get(slot_filter, slot_filter)})"
+    embed = base_embed(title, color=0x4488FF)
     if result_msg:
         embed.description = result_msg
 
-    by_slot: dict[str, list] = {}
+    by_slot_bag: dict[str, list] = {}
     for inst in bag_items:
-        by_slot.setdefault(inst.slot or "unknown", []).append(inst)
+        by_slot_bag.setdefault(inst.slot or "unknown", []).append(inst)
+    by_slot_eq: dict[str, object] = {i.slot: i for i in equipped if i.slot}
 
-    if not by_slot:
-        embed.description = (embed.description or "") + "\n*Túi trang bị trống. Dùng `/forge craft` để rèn trang bị.*"
-        return embed
-
+    rendered_any = False
     for slot in SLOT_ORDER:
-        insts = by_slot.get(slot, [])
-        if not insts:
+        if slot_filter and slot != slot_filter:
             continue
-        lines = []
-        for inst in insts:
-            stats_str = format_computed_stats(inst.computed_stats)
-            q_label = inst.quality.capitalize() if hasattr(inst, "quality") and inst.quality else ""
-            lines.append(f"`#{inst.id}` **{inst.display_name}**\n　{stats_str}")
+        insts = by_slot_bag.get(slot, [])
+        eq_inst = by_slot_eq.get(slot)
+        if not insts and not eq_inst:
+            continue
+        rendered_any = True
+
+        if eq_inst:
+            eq_stats = format_computed_stats(eq_inst.computed_stats)
+            header = (
+                f"🟢 **Đang trang bị:** `#{eq_inst.id}` "
+                f"{_grade_label(eq_inst.grade)} **{eq_inst.display_name}**\n"
+                f"　{eq_stats}"
+            )
+        else:
+            header = "⚪ *Đang trang bị: — Trống —*"
+
+        if insts:
+            bag_lines = []
+            for inst in insts:
+                stats_str = format_computed_stats(inst.computed_stats)
+                bag_lines.append(
+                    f"`#{inst.id}` {_grade_label(inst.grade)} "
+                    f"**{inst.display_name}**\n　{stats_str}"
+                )
+            bag_block = "\n".join(bag_lines)
+        else:
+            bag_block = "*— Không có vật phẩm trong túi —*"
+
+        body = f"{header}\n\n📦 **Trong túi:**\n{bag_block}"
         embed.add_field(
             name=SLOT_LABELS.get(slot, slot),
-            value="\n".join(lines)[:1020],
+            value=body[:1020],
             inline=False,
         )
-    embed.set_footer(text="Chọn trang bị từ danh sách bên dưới để mang vào người.")
+
+    if not rendered_any:
+        empty_note = (
+            "*Không có vật phẩm cho vị trí này.*"
+            if slot_filter
+            else "*Túi trang bị trống. Dùng `/forge craft` để rèn trang bị.*"
+        )
+        embed.description = (embed.description or "") + ("\n" if embed.description else "") + empty_note
+    else:
+        embed.set_footer(text="Dùng menu bên dưới để Trang bị / Tháo / Lọc theo vị trí.")
     return embed
 
 
@@ -360,67 +626,188 @@ def _make_equip_options(bag_items: list) -> list[discord.SelectOption]:
 
 
 class EquipBagView(discord.ui.View):
-    """Shown from the status page — lists bag equipment and lets the player equip via dropdown."""
+    """Shown from /inventory → "Trang Bị" — lists bag equipment alongside the
+    currently-equipped item per slot, and exposes Equip / Unequip dropdowns
+    plus a slot filter.
 
-    def __init__(self, discord_id: int, player_name: str, bag_items: list, back_fn, result_msg: str = "") -> None:
+    The view rebuilds itself after every action so the caller doesn't need to
+    refetch state. Discord's hard 25-options/Select cap is respected — the
+    slot filter is the player's escape valve when their bag overflows.
+    """
+
+    def __init__(
+        self,
+        discord_id: int,
+        player_name: str,
+        bag_items: list,
+        equipped: list,
+        back_fn,
+        slot_filter: str | None = None,
+        result_msg: str = "",
+    ) -> None:
         super().__init__(timeout=300)
-        self._discord_id = discord_id
+        self._discord_id  = discord_id
         self._player_name = player_name
-        self._back_fn = back_fn
+        self._bag_items   = bag_items
+        self._equipped    = equipped
+        self._back_fn     = back_fn
+        self._slot_filter = slot_filter
 
-        options = _make_equip_options(bag_items)
-        if options:
-            sel = discord.ui.Select(
-                placeholder="Chọn trang bị để mang vào người...",
-                options=options,
-                min_values=1,
-                max_values=1,
-                row=0,
+        # ── Row 0: slot filter dropdown ──────────────────────────────────
+        slot_options = [
+            discord.SelectOption(
+                label="Tất cả", value="__all__", emoji="📚",
+                default=(slot_filter is None),
+            ),
+        ]
+        for s in SLOT_ORDER:
+            full = SLOT_LABELS[s]
+            parts = full.split(" ", 1)
+            emoji_part, name_part = (parts[0], parts[1]) if len(parts) == 2 else ("", full)
+            slot_options.append(discord.SelectOption(
+                label=name_part, value=s, emoji=emoji_part or None,
+                default=(s == slot_filter),
+            ))
+        slot_select = discord.ui.Select(
+            placeholder=(
+                f"📂 Lọc: {SLOT_LABELS.get(slot_filter, slot_filter)}"
+                if slot_filter else "📂 Lọc theo vị trí…"
+            ),
+            options=slot_options,
+            row=0,
+        )
+        slot_select.callback = self._filter_cb
+        self.add_item(slot_select)
+
+        # ── Row 1: Equip dropdown — bag items in current filter ─────────
+        if slot_filter:
+            visible_bag = [i for i in bag_items if i.slot == slot_filter]
+        else:
+            visible_bag = list(bag_items)
+        if visible_bag:
+            equip_select = discord.ui.Select(
+                placeholder=f"⚔️ Trang bị từ túi… ({len(visible_bag)} món)",
+                options=_make_equip_options(visible_bag),
+                min_values=1, max_values=1,
+                row=1,
             )
-            sel.callback = self._equip_cb
-            self.add_item(sel)
+            equip_select.callback = self._equip_cb
+            self.add_item(equip_select)
 
-        back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
+        # ── Row 2: Unequip dropdown — currently equipped in current filter ─
+        if slot_filter:
+            visible_eq = [i for i in equipped if i.slot == slot_filter]
+        else:
+            visible_eq = list(equipped)
+        if visible_eq:
+            options = []
+            for inst in visible_eq[:25]:
+                slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?")
+                options.append(discord.SelectOption(
+                    label=inst.display_name[:100],
+                    value=inst.slot,
+                    description=f"{slot_label} · {_grade_label(inst.grade)}"[:100],
+                ))
+            unequip_select = discord.ui.Select(
+                placeholder=f"↩️ Tháo trang bị… ({len(visible_eq)} món)",
+                options=options,
+                min_values=1, max_values=1,
+                row=2,
+            )
+            unequip_select.callback = self._unequip_cb
+            self.add_item(unequip_select)
+
+        # ── Row 3: Back button ───────────────────────────────────────────
+        back_btn = discord.ui.Button(
+            label="◀ Trở về", style=discord.ButtonStyle.secondary, row=3,
+        )
         back_btn.callback = self._back_cb
         self.add_item(back_btn)
 
     def _guard(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self._discord_id
 
+    async def _refresh(
+        self,
+        interaction: discord.Interaction,
+        slot_filter: str | None,
+        result_msg: str = "",
+    ) -> None:
+        async with get_session() as session:
+            prepo = PlayerRepository(session)
+            player = await prepo.get_by_discord_id(self._discord_id)
+            if player is None:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            erepo = EquipmentRepository(session)
+            equipped = await erepo.get_equipped(player.id)
+            bag = await erepo.get_bag(player.id)
+        embed = _equip_bag_embed(self._player_name, bag, equipped, slot_filter, result_msg=result_msg)
+        view = EquipBagView(
+            self._discord_id, self._player_name, bag, equipped,
+            self._back_fn, slot_filter=slot_filter,
+        )
+        await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _filter_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        value = interaction.data["values"][0]
+        new_filter: str | None = None if value == "__all__" else value
+        await self._refresh(interaction, new_filter)
+
     async def _equip_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
         await interaction.response.defer()
-
         instance_id = int(interaction.data["values"][0])
 
         async with get_session() as session:
             prepo = PlayerRepository(session)
-            player = await prepo.get_by_discord_id(interaction.user.id)
+            player = await prepo.get_by_discord_id(self._discord_id)
             if not player:
                 await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                 return
-
             erepo = EquipmentRepository(session)
             try:
                 displaced = await erepo.equip(player.id, instance_id)
             except ValueError as e:
-                await interaction.edit_original_response(embed=error_embed(str(e)))
+                await self._refresh(interaction, self._slot_filter, result_msg=f"❌ {e}")
                 return
-
             inst = await erepo.get_instance(instance_id, player.id)
-            bag_items = await erepo.get_bag(player.id)
 
         slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "")
-        result_msg = f"✅ Đã trang bị **{inst.display_name}** vào {slot_label}."
+        msg = f"✅ Đã trang bị **{inst.display_name}** vào {slot_label}."
         if displaced:
             returned = ", ".join(d.display_name for d in displaced)
-            result_msg += f"\n↩️ {returned} trả về túi đồ."
+            msg += f"\n↩️ {returned} trả về túi đồ."
+        await self._refresh(interaction, self._slot_filter, result_msg=msg)
 
-        embed = _equip_bag_embed(self._player_name, bag_items, result_msg)
-        view = EquipBagView(self._discord_id, self._player_name, bag_items, self._back_fn)
-        await interaction.edit_original_response(embed=embed, view=view)
+    async def _unequip_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        slot = interaction.data["values"][0]
+
+        async with get_session() as session:
+            prepo = PlayerRepository(session)
+            player = await prepo.get_by_discord_id(self._discord_id)
+            if not player:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            erepo = EquipmentRepository(session)
+            inst = await erepo.unequip(player.id, slot)
+
+        slot_label = SLOT_LABELS.get(slot, slot)
+        msg = (
+            f"↩️ Đã tháo **{inst.display_name}** từ {slot_label} về túi đồ."
+            if inst else f"⚪ {slot_label} đang trống."
+        )
+        await self._refresh(interaction, self._slot_filter, result_msg=msg)
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

@@ -21,7 +21,7 @@ from src.game.constants.balance import (
     DEFAULT_SHOCK_STACK_CAP,
     DEFAULT_SHOCK_PER_STACK_PCT,
     DEFAULT_MANA_STACK_CAP,
-    DEFAULT_SHIELD_CAP_PCT,
+    DEFAULT_SHIELD_RECHARGE_DELAY,
 )
 from src.game.constants.elements import ALL_ELEMENTS, RESISTANCE_KEYS
 from src.game.engine import linh_can_effects as lc_effects
@@ -129,7 +129,19 @@ class CombatStats:
     # ── Thổ (earth/shield/thorn) build ────────────────────────────────────
     shield_regen_pct: float = 0.0
     shield_regen_flat: int = 0
-    shield_cap_pct: float = DEFAULT_SHIELD_CAP_PCT
+    shield_max_base: int = 0
+    shield_max_flat: int = 0
+    shield_max_pct: float = 0.0
+    # Fraction of hp_max converted into shield_max_base (cap pool grows by the
+    # same amount HP shrinks). Hard-capped at 0.95 so HP can't drop to 0.
+    hp_to_shield_pct: float = 0.0
+    # Per-attack MATK / ATK bonus = current_shield × this fraction. Scales
+    # magic / physical damage with the holder's current Energy Shield pool so
+    # depleted shield = depleted punch. Symmetric pair so mage and physical
+    # builds can both pivot a shield-tank into offense.
+    matk_from_shield_pct: float = 0.0
+    atk_from_shield_pct: float = 0.0
+    shield_recharge_delay: int = DEFAULT_SHIELD_RECHARGE_DELAY
     damage_bonus_from_shield_pct: float = 0.0
     thorn_pct: float = 0.0
     thorn_from_shield: bool = False
@@ -374,7 +386,14 @@ def compute_combat_stats(
     # Thổ-build fields
     shield_regen_pct             = float(bonuses.get("shield_regen_pct", 0.0))
     shield_regen_flat            = int(bonuses.get("shield_regen_flat", 0))
-    shield_cap_pct_bonus         = float(bonuses.get("shield_cap_pct_bonus", 0.0))
+    shield_max_base              = int(bonuses.get("shield_max_base", 0))
+    shield_max_flat              = int(bonuses.get("shield_max_flat", 0))
+    shield_max_pct               = float(bonuses.get("shield_max_pct", 0.0))
+    hp_to_shield_pct             = float(bonuses.get("hp_to_shield_pct", 0.0))
+    matk_from_shield_pct         = float(bonuses.get("matk_from_shield_pct", 0.0))
+    atk_from_shield_pct          = float(bonuses.get("atk_from_shield_pct", 0.0))
+    # Negative bonus shortens the recharge pause; clamp at 0 (instant regen).
+    shield_recharge_delay_bonus  = int(bonuses.get("shield_recharge_delay_bonus", 0))
     damage_bonus_from_shield_pct = float(bonuses.get("damage_bonus_from_shield_pct", 0.0))
     thorn_pct                    = float(bonuses.get("thorn_pct", 0.0))
     thorn_from_shield            = bool(bonuses.get("thorn_from_shield", False))
@@ -510,7 +529,12 @@ def compute_combat_stats(
         # Thổ-build fields
         shield_regen_pct             += float(equip_stats.get("shield_regen_pct", 0.0))
         shield_regen_flat            += int(equip_stats.get("shield_regen_flat", 0))
-        shield_cap_pct_bonus         += float(equip_stats.get("shield_cap_pct_bonus", 0.0))
+        shield_max_base              += int(equip_stats.get("shield_max_base", 0))
+        shield_max_flat              += int(equip_stats.get("shield_max_flat", 0))
+        shield_max_pct               += float(equip_stats.get("shield_max_pct", 0.0))
+        hp_to_shield_pct             += float(equip_stats.get("hp_to_shield_pct", 0.0))
+        matk_from_shield_pct         += float(equip_stats.get("matk_from_shield_pct", 0.0))
+        atk_from_shield_pct          += float(equip_stats.get("atk_from_shield_pct", 0.0))
         damage_bonus_from_shield_pct += float(equip_stats.get("damage_bonus_from_shield_pct", 0.0))
         thorn_pct                    += float(equip_stats.get("thorn_pct", 0.0))
         thorn_from_shield             = thorn_from_shield or bool(equip_stats.get("thorn_from_shield", False))
@@ -557,6 +581,18 @@ def compute_combat_stats(
             damage_taken_convert_pct[elem] = damage_taken_convert_pct.get(elem, 0.0) + float(val)
         for elem, val in (equip_stats.get("element_dmg_bonus") or {}).items():
             element_dmg_bonus[elem] = element_dmg_bonus.get(elem, 0.0) + float(val)
+        # Affixes contribute via flat keys: ``element_dmg_all`` adds to every
+        # element; ``element_dmg_<elem>`` adds to that one element only.
+        # Both fold into the same ``element_dmg_bonus`` dict the combat
+        # pipeline reads (see ``combat_hit.py``).
+        eq_dmg_all = float(equip_stats.get("element_dmg_all", 0.0))
+        if eq_dmg_all:
+            for _e in ALL_ELEMENTS:
+                element_dmg_bonus[_e.value] = element_dmg_bonus.get(_e.value, 0.0) + eq_dmg_all
+        for _e in ALL_ELEMENTS:
+            bump = float(equip_stats.get(f"element_dmg_{_e.value}", 0.0))
+            if bump:
+                element_dmg_bonus[_e.value] = element_dmg_bonus.get(_e.value, 0.0) + bump
         slow_on_hit_pct   += equip_stats.get("slow_on_hit_pct", 0.0)
         paralysis_on_crit  = paralysis_on_crit or bool(equip_stats.get("paralysis_on_crit", False))
         freeze_on_skill    = freeze_on_skill   or bool(equip_stats.get("freeze_on_skill", False))
@@ -581,6 +617,16 @@ def compute_combat_stats(
     reserve_pct = max(0.0, min(FORMATION_MAX_RESERVE_PCT, raw_reserve))
     mp_reserved = int(mp_max * reserve_pct)
     mp_max = max(0, mp_max - mp_reserved)
+
+    # HP → Shield conversion: a fraction of the final hp_max becomes flat
+    # shield_max_base, and hp_max shrinks by the same amount. Clamped at 0.95
+    # so HP never drops to 0. Applied last so every other hp/shield bonus has
+    # already been folded in.
+    hp_to_shield_pct = max(0.0, min(0.95, hp_to_shield_pct))
+    if hp_to_shield_pct > 0:
+        converted = int(hp_max * hp_to_shield_pct)
+        shield_max_base += converted
+        hp_max = max(1, hp_max - converted)
 
     return CombatStats(
         hp_max=hp_max,
@@ -631,7 +677,13 @@ def compute_combat_stats(
         mana_stack_dmg_bonus=mana_stack_dmg_bonus,
         shield_regen_pct=shield_regen_pct,
         shield_regen_flat=shield_regen_flat,
-        shield_cap_pct=DEFAULT_SHIELD_CAP_PCT + shield_cap_pct_bonus,
+        shield_max_base=max(0, shield_max_base),
+        shield_max_flat=max(0, shield_max_flat),
+        shield_max_pct=max(0.0, shield_max_pct),
+        hp_to_shield_pct=hp_to_shield_pct,
+        matk_from_shield_pct=max(0.0, matk_from_shield_pct),
+        atk_from_shield_pct=max(0.0, atk_from_shield_pct),
+        shield_recharge_delay=max(0, DEFAULT_SHIELD_RECHARGE_DELAY + shield_recharge_delay_bonus),
         damage_bonus_from_shield_pct=damage_bonus_from_shield_pct,
         thorn_pct=thorn_pct,
         thorn_from_shield=thorn_from_shield,

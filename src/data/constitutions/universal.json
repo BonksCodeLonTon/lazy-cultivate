@@ -51,7 +51,9 @@
       "hp_pct": 0.12,
       "res_all": 35,
       "final_dmg_reduce": 0.04,
-      "hp_regen_pct": 0.01
+      "hp_regen_pct": 0.01,
+      "shield_max_base": 50,
+      "shield_regen_pct": 0.005
     },
     "special_requirements": null,
     "materials": {
@@ -158,7 +160,10 @@
       "res_all": 50,
       "final_dmg_reduce": 0.06,
       "hp_regen_pct": 0.015,
-      "crit_res_rating": 80
+      "crit_res_rating": 80,
+      "shield_max_base": 120,
+      "shield_max_pct": 0.05,
+      "shield_regen_flat": 8
     },
     "special_requirements": null,
     "materials": {
@@ -227,7 +232,10 @@
       "final_dmg_reduce": 0.1,
       "hp_regen_pct": 0.02,
       "crit_res_rating": 150,
-      "hp_flat_per_realm": 300
+      "hp_flat_per_realm": 300,
+      "shield_max_base": 250,
+      "shield_max_pct": 0.1,
+      "shield_regen_flat": 15
     },
     "special_requirements": null,
     "materials": {
@@ -299,7 +307,10 @@
       "final_dmg_reduce": 0.14,
       "hp_regen_pct": 0.03,
       "crit_res_rating": 200,
-      "shield_cap_pct": 0.05
+      "shield_max_base": 400,
+      "shield_max_pct": 0.25,
+      "shield_regen_pct": 0.01,
+      "shield_regen_flat": 25
     },
     "special_requirements": null,
     "materials": {
@@ -422,7 +433,9 @@
       "final_dmg_reduce": 0.15,
       "thorn_pct": 0.15,
       "stun_on_hit_pct": 0.08,
-      "shield_regen_pct": 0.05
+      "shield_regen_pct": 0.05,
+      "shield_max_base": 600,
+      "shield_max_pct": 0.25
     },
     "special_requirements": null,
     "materials": {
@@ -481,7 +494,10 @@
       "mp_regen_pct": 0.05,
       "damage_bonus_from_mp_pct": 0.15,
       "mana_stack_per_attack": 1,
-      "mana_stack_dmg_bonus": 0.03
+      "mana_stack_dmg_bonus": 0.03,
+      "shield_max_base": 400,
+      "shield_max_pct": 0.3,
+      "shield_regen_flat": 40
     },
     "special_requirements": null,
     "materials": {
@@ -646,7 +662,10 @@
       "hp_pct": 0.3,
       "debuff_immune_pct": 0.3,
       "final_dmg_reduce": 0.1,
-      "poison_immunity": true
+      "poison_immunity": true,
+      "shield_max_base": 500,
+      "shield_max_pct": 0.2,
+      "shield_regen_pct": 0.02
     },
     "special_requirements": null,
     "materials": {
@@ -940,6 +959,70 @@
     },
     "activation_chance": 0.2,
     "cost_stones": 120000
+  },
+  {
+    "key": "ConstitutionNguyenLinhKhienThe",
+    "vi": "Nguyên Linh Thánh Thể",
+    "en": "Origin-Spirit Aegis Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 0,
+    "cost_stones": 100000,
+    "passive_description_vi": "Linh hồn cô đặc thành Khiên — **30% sinh lực hóa khiên năng**, đan điền trở thành kho năng lượng pháp khí. Pháp Công bùng phát theo lượng khiên hiện tại: **+25% Khiên hiện tại tính vào Pháp Công** mỗi đòn. Khi khiên cạn, sát thương pháp cũng yếu đi — quản lý khiên là quản lý sát thương.",
+    "stat_bonuses": {
+      "hp_to_shield_pct": 0.30,
+      "matk_from_shield_pct": 0.25,
+      "shield_max_base": 500,
+      "shield_max_pct": 0.30,
+      "shield_regen_pct": 0.10,
+      "shield_regen_flat": 50,
+      "mp_pct": 0.20,
+      "final_dmg_bonus": 0.10,
+      "crit_rating": 200,
+      "cooldown_reduce": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchHoTheTinh": 3,
+      "ArchThongHueTinh": 3
+    },
+    "activation_chance": 0.30
+  },
+  {
+    "key": "ConstitutionCuongKhienChienThe",
+    "vi": "Thiên Cương Chiến Thể",
+    "en": "Aegis Warrior Body",
+    "rarity": "legendary",
+    "element": null,
+    "roll_weight": 0,
+    "cost_merit": 0,
+    "cost_stones": 100000,
+    "passive_description_vi": "Khiên hóa thành vũ khí — **30% sinh lực luyện thành cương khiên**, mỗi đòn vung ra mượn khí lực của khiên: **+25% Khiên hiện tại tính vào Công** mỗi đòn. Càng giữ vững khiên, đòn đánh càng nặng — quản lý khiên là quản lý sát thương.",
+    "stat_bonuses": {
+      "hp_to_shield_pct": 0.30,
+      "atk_from_shield_pct": 0.25,
+      "shield_max_base": 500,
+      "shield_max_pct": 0.30,
+      "shield_regen_pct": 0.10,
+      "shield_regen_flat": 50,
+      "final_dmg_bonus": 0.10,
+      "crit_rating": 200,
+      "crit_dmg_rating": 100,
+      "cooldown_reduce": 0.05
+    },
+    "special_requirements": null,
+    "materials": {
+      "MatDaoCotTinh": 6,
+      "MatThienDaoTuy": 4,
+      "MatHonNguyenCot": 1,
+      "ArchHoTheTinh": 3,
+      "ArchSatYTinh": 3
+    },
+    "activation_chance": 0.30
   },
   {
     "key": "ConstitutionTienThienThanhTheDaoThai",

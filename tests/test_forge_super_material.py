@@ -175,7 +175,9 @@ def test_roll_affixes_grade7_dia_rolls_4_total():
 def test_check_forge_requirements_uses_max_affix_qty_grade1():
     """Grade 1 now needs 5 materials (max_affix_total=5), not the stale JSON qty."""
     char = _test_char()
-    bag = {"MatHuyetTinh": 5}  # grade 1 material, 5 copies
+    # Use a real grade-1 forge material (post-merge of elemental_materials.json
+    # into forge_materials.json — realm-breakthrough mats no longer count).
+    bag = {"KiemTamThach": 5}  # grade 1 forge_material, 5 copies
     ok, msg, option = check_forge_requirements(char, grade=1, materials_in_bag=bag)
     assert ok, msg
     assert option is not None
@@ -184,7 +186,7 @@ def test_check_forge_requirements_uses_max_affix_qty_grade1():
 
 def test_check_forge_requirements_fails_when_below_max_affix_qty():
     char = _test_char()
-    bag = {"MatHuyetTinh": 4}  # 1 short of max_affix_total(1)=5
+    bag = {"KiemTamThach": 4}  # 1 short of max_affix_total(1)=5
     ok, _, _ = check_forge_requirements(char, grade=1, materials_in_bag=bag)
     assert ok is False
 
@@ -192,14 +194,18 @@ def test_check_forge_requirements_fails_when_below_max_affix_qty():
 def test_check_forge_requirements_grade9_needs_6_materials():
     """Grade 9 needs 6 materials (max_affix_total=6)."""
     char = _test_char()
-    # Need some grade 6 material — find one from materials.json
+    # Bump merit past the grade-9 forge cost so the requirements check runs
+    # all the way through to the material-quantity gate this test cares about.
+    char.merit = 10_000_000
+    # Find any grade-6 forge material in the registry (the highest tier in
+    # forge_materials.json post-merge).
     grade6_mat = next(
         (k for k, item in registry.items.items()
-         if item.get("type") == "material" and item.get("grade") == 6),
+         if item.get("type") == "forge_material" and item.get("grade") == 6),
         None,
     )
     if grade6_mat is None:
-        pytest.skip("no grade 6 material in registry")
+        pytest.skip("no grade 6 forge material in registry")
     bag = {grade6_mat: 6}
     ok, msg, option = check_forge_requirements(char, grade=9, materials_in_bag=bag)
     assert ok, msg

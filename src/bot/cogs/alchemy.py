@@ -359,8 +359,27 @@ class RecipeSelect(discord.ui.Select):
             await interaction.response.defer()
             return
         await interaction.response.defer()
+
+        from src.game.systems.alchemy import _pick_best_furnace
+
+        # Load owned furnaces so the detail view can offer a picker. Default
+        # selection is the auto-picked "best" furnace — same as before — so
+        # users who don't want to fiddle just hit Luyện and go.
+        async with get_session() as session:
+            player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
+        owned_furnaces = _owned_furnaces_from_player(player) if player else []
+        recipe = get_recipe(recipe_key)
+        required_tier = int((recipe or {}).get("furnace_tier", 1))
+        best = _pick_best_furnace(owned_furnaces, required_tier)
+        default_key = best["key"] if best else None
+
         embed = await _recipe_detail_embed(interaction, recipe_key)
-        view = RecipeDetailView(self._discord_id, recipe_key, self._grade, self._qi_realm, self._back_fn)
+        view = RecipeDetailView(
+            self._discord_id, recipe_key, self._grade, self._qi_realm, self._back_fn,
+            owned_furnaces=owned_furnaces,
+            required_tier=required_tier,
+            selected_furnace_key=default_key,
+        )
         await interaction.edit_original_response(embed=embed, view=view)
 
 
@@ -436,14 +455,97 @@ async def _recipe_detail_embed(interaction: discord.Interaction, recipe_key: str
     return embed
 
 
+class _FurnaceSelect(discord.ui.Select):
+    """Furnace picker that lives inside ``RecipeDetailView``.
+
+    Lists every owned furnace with its tier and quality bonuses; updates
+    ``view_owner._selected_furnace_key`` on each pick. Furnaces below the
+    recipe's tier are still listed (marked ❌) so the player can see why
+    they don't qualify; the system layer will reject them at craft time.
+    """
+
+    def __init__(
+        self,
+        *,
+        discord_id: int,
+        view_owner: "RecipeDetailView",
+        owned_furnaces: list[str],
+        required_tier: int,
+        selected_key: str | None,
+    ) -> None:
+        self._discord_id = discord_id
+        self._view_owner = view_owner
+
+        options: list[discord.SelectOption] = []
+        for key in owned_furnaces[:25]:
+            f = registry.get_furnace(key)
+            if not f:
+                continue
+            tier = int(f.get("furnace_tier", 1))
+            qualifies = tier >= required_tier
+            tag = "✦" if f.get("is_unique") else "•"
+            bonus = f.get("quality_bonus") or {}
+            if bonus:
+                bonus_str = ", ".join(f"+{int(v*100)}% {k}" for k, v in bonus.items())
+                desc = f"Cấp {tier} · {bonus_str}"
+            else:
+                desc = f"Cấp {tier}"
+            label = f"{tag} {f['vi']}"
+            if not qualifies:
+                label = "❌ " + label
+            options.append(discord.SelectOption(
+                label=label[:100],
+                value=key,
+                description=desc[:100],
+                default=(key == selected_key),
+            ))
+        if not options:
+            options = [discord.SelectOption(label="(không có Đan Lô)", value="__none__")]
+        super().__init__(placeholder="🔥 Chọn Đan Lô…", options=options, row=1)
+
+    async def callback(self, interaction: discord.Interaction) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        picked = self.values[0]
+        self._view_owner._selected_furnace_key = None if picked == "__none__" else picked
+        # No embed change needed — just acknowledge the click.
+        await interaction.response.defer()
+
+
 class RecipeDetailView(discord.ui.View):
-    def __init__(self, discord_id: int, recipe_key: str, grade: int, qi_realm: int, back_fn) -> None:
+    def __init__(
+        self,
+        discord_id: int,
+        recipe_key: str,
+        grade: int,
+        qi_realm: int,
+        back_fn,
+        *,
+        owned_furnaces: list[str] | None = None,
+        required_tier: int = 1,
+        selected_furnace_key: str | None = None,
+    ) -> None:
         super().__init__(timeout=180)
         self._discord_id = discord_id
         self._recipe_key = recipe_key
         self._grade = grade
         self._qi_realm = qi_realm
         self._back_fn = back_fn
+        self._owned_furnaces: list[str] = list(owned_furnaces or [])
+        self._required_tier = required_tier
+        self._selected_furnace_key: str | None = selected_furnace_key
+
+        # Show a furnace picker when the player has more than one owned
+        # furnace — single furnace = no decision to make.
+        if len(self._owned_furnaces) >= 2:
+            self.add_item(_FurnaceSelect(
+                discord_id=discord_id,
+                view_owner=self,
+                owned_furnaces=self._owned_furnaces,
+                required_tier=required_tier,
+                selected_key=selected_furnace_key,
+            ))
 
     @discord.ui.button(label="⚗️ Luyện", style=discord.ButtonStyle.success, row=0)
     async def craft_btn(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
@@ -451,7 +553,10 @@ class RecipeDetailView(discord.ui.View):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
         await interaction.response.defer()
-        result = await _do_craft(interaction, self._recipe_key)
+        result = await _do_craft(
+            interaction, self._recipe_key,
+            selected_furnace_key=self._selected_furnace_key,
+        )
         if not result.success:
             await interaction.edit_original_response(embed=error_embed(result.message), view=self._done_view())
             return
@@ -497,8 +602,20 @@ class RecipeDetailView(discord.ui.View):
         return view
 
 
-async def _do_craft(interaction: discord.Interaction, recipe_key: str) -> AlchemyResult:
-    """Validate, deduct ingredients/merit, craft pill, and add to inventory."""
+async def _do_craft(
+    interaction: discord.Interaction,
+    recipe_key: str,
+    *,
+    selected_furnace_key: str | None = None,
+) -> AlchemyResult:
+    """Validate, deduct ingredients/merit, craft pill, and add to inventory.
+
+    If ``selected_furnace_key`` is provided, the craft is constrained to
+    that single furnace (system still rejects under-tier picks). When
+    ``None``, every owned furnace is considered and the system auto-picks
+    the best one — preserves the legacy behavior for callers that don't
+    expose a picker.
+    """
     async with get_session() as session:
         player_repo = PlayerRepository(session)
         inv_repo = InventoryRepository(session)
@@ -510,7 +627,7 @@ async def _do_craft(interaction: discord.Interaction, recipe_key: str) -> Alchem
         char = _player_to_model(player)
 
         bag: dict[str, int] = {}
-        furnace_keys: list[str] = []
+        owned_furnace_keys: list[str] = []
         for row in player.inventory:
             item = registry.get_item(row.item_key)
             if not item:
@@ -519,7 +636,17 @@ async def _do_craft(interaction: discord.Interaction, recipe_key: str) -> Alchem
             if t in ("herb", "yeu_thu"):
                 bag[row.item_key] = bag.get(row.item_key, 0) + row.quantity
             elif t == "furnace":
-                furnace_keys.append(row.item_key)
+                owned_furnace_keys.append(row.item_key)
+
+        # Honour the user's pick if one was supplied. Verify the player
+        # still owns it (inventory might have changed since the picker
+        # rendered) before passing through.
+        if selected_furnace_key:
+            if selected_furnace_key not in owned_furnace_keys:
+                return AlchemyResult(False, "Đan Lô đã chọn không còn trong túi.")
+            furnace_keys: list[str] = [selected_furnace_key]
+        else:
+            furnace_keys = owned_furnace_keys
 
         result = craft_pill(char, recipe_key, bag, furnace_keys)
         if not result.success:

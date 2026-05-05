@@ -235,14 +235,39 @@ class Combatant:
     mana_stack_per_attack: int = 0      # passive: stacks gained each turn
     mana_stack_dmg_bonus: float = 0.0   # per-stack final-damage bonus
 
-    # ── Thổ (Earth / Shield) build ──────────────────────────────────────────
-    # Per-turn shield regen as a fraction of hp_max (e.g. 0.05 = +5% hp_max/turn).
+    # ── Energy Shield (Thổ + new equipment/constitution paths) ─────────────
+    # PoE-style Energy Shield: ``shield`` absorbs incoming damage BEFORE HP
+    # (Combatant.take_damage handles this when ``is_dot=False``). DoT damage
+    # bypasses the shield — direct damage doesn't.
+    #
+    # Shield cap is computed by ``shield_cap()`` from three contributions:
+    #   shield_max_base   — flat baseline from equipment implicit (e.g. shield base)
+    #   shield_max_flat   — additive flat from affixes/constitutions
+    #   shield_max_pct    — multiplicative on the base+flat sum
+    #
+    # ``shield_regen_pct`` is a fraction of the holder's own ``shield_cap()``
+    # restored each periodic phase (NOT hp_max — that was the legacy model
+    # that produced over-cap regen once Energy Shield got rebuilt around its
+    # own base+flat+pct sources). ``shield_regen_flat`` adds on top.
+    # Turn-based combat regenerates every turn; ``shield_recharge_pause`` is
+    # preserved as a knob for build-specific delays but defaults to 0.
     shield_regen_pct: float = 0.0
-    # Flat shield gained per turn (stacks with shield_regen_pct).
     shield_regen_flat: int = 0
-    # Maximum shield that can be held at any time, as a fraction of hp_max.
-    # 1.0 = can stack shield up to 100% of hp_max. Default 0.30 (old Hộ Thể cap).
-    shield_cap_pct: float = 0.30
+    shield_max_base: int = 0
+    shield_max_flat: int = 0
+    shield_max_pct: float = 0.0
+    # HP→Shield conversion is resolved at compute_combat_stats time (the
+    # holder's hp_max is already shrunk and shield_max_base bumped before the
+    # Combatant is built). The field is kept on Combatant so introspection /
+    # status embeds can show "30% HP converted to Shield".
+    hp_to_shield_pct: float = 0.0
+    # Per-attack MATK / ATK bonus = current_shield × this fraction. Read in
+    # build_attack_stats so depleted shield = depleted punch. Symmetric pair
+    # so mage and physical builds can both pivot shield into offense.
+    matk_from_shield_pct: float = 0.0
+    atk_from_shield_pct: float = 0.0
+    shield_recharge_delay: int = 0
+    shield_recharge_pause: int = 0
     # Every hit adds flat damage = current shield × this fraction.
     damage_bonus_from_shield_pct: float = 0.0
     # Thorn: fraction of incoming damage reflected as physical thorn damage.
@@ -359,24 +384,35 @@ class Combatant:
         return self.hp > 0
 
     def take_damage(self, amount: int, is_dot: bool = False) -> int:
-        """Apply ``amount`` HP loss, with optional fire-conversion + defer.
+        """Apply ``amount`` damage with PoE-style Energy Shield absorption.
 
-        Steps in order:
-          1. Fire conversion — ``damage_to_fire_convert_pct`` of the amount
-             is reclassified as fire damage to the holder and mitigated by
-             the holder's own hoa resistance. The post-mitigation chunk
-             rejoins the unconverted remainder; total damage is reduced
-             only by the saved-by-resistance fraction.
-          2. Defer — when both ``damage_defer_turns`` and
+        Pipeline (in order):
+          1. Fortify brace prime — any non-DoT hit primes the next-turn
+             damage-reduction brace.
+          2. Element conversion — ``damage_taken_convert_pct`` of the amount
+             is reclassified as elemental damage and mitigated by the holder's
+             matching resistance. The post-mitigation chunk rejoins the
+             unconverted remainder.
+          3. Defer split — when both ``damage_defer_turns`` and
              ``damage_defer_pct`` are > 0, ``damage_defer_pct`` of the
-             post-conversion amount is split into N installments queued
-             onto ``deferred_damage_queue`` (FIFO). The rest lands on
-             ``hp`` immediately.
+             post-conversion amount is split into N installments queued onto
+             ``deferred_damage_queue`` (FIFO). The rest moves to step 4.
+          4. Energy Shield absorption (NON-DoT only) — ``shield`` is consumed
+             FIRST. Damage that fits inside the shield never touches HP. Any
+             leftover spills into HP. DoT damage skips this step entirely
+             (matches PoE's chaos damage bypassing ES).
+          5. HP damage — the leftover (or full DoT amount) hits ``hp``.
 
-        ``is_dot=True`` marks the call as DoT-tick damage so the Fortify Aura
-        post-hit brace doesn't trigger off periodic ticks (only direct hits).
+        Any non-DoT damage that landed (whether absorbed by shield or hit HP)
+        triggers the recharge delay: ``shield_recharge_pause`` is set to
+        ``shield_recharge_delay``. The periodic phase decrements it; while
+        > 0, ``shield_regen_pct/flat`` are skipped.
 
-        Returns the amount applied to HP this call (queued chunks excluded).
+        ``is_dot=True`` marks the call as DoT-tick damage — bypasses the
+        Fortify brace prime AND the shield, going straight to HP.
+
+        Returns the amount applied to HP this call (queued chunks + shield
+        absorption are excluded).
         """
         if amount <= 0:
             return 0
@@ -420,7 +456,7 @@ class Combatant:
         # Step 2 — deferred-damage split
         n = self.damage_defer_turns
         pct = self.damage_defer_pct
-        if n > 0 and pct > 0:
+        if n > 0 and pct > 0 and not is_dot:
             deferred_total = int(amount * pct)
             immediate = amount - deferred_total
             if deferred_total > 0:
@@ -428,9 +464,23 @@ class Combatant:
                 remainder = deferred_total - chunk * n
                 for i in range(n):
                     self.deferred_damage_queue.append(chunk + (1 if i < remainder else 0))
-            self.hp = max(0, self.hp - immediate)
-            return immediate
+            amount = immediate
 
+        # Step 3 — Energy Shield absorption (PoE-style, non-DoT only). The
+        # shield acts as a first-defense pool; damage that fits inside the
+        # shield never touches HP. Any non-zero non-DoT damage primes the
+        # recharge delay regardless of whether shield was 0 before — taking a
+        # hit always pauses regen for the pre-configured window.
+        if not is_dot and amount > 0:
+            if self.shield > 0:
+                absorbed = min(self.shield, amount)
+                self.shield -= absorbed
+                amount -= absorbed
+            self.shield_recharge_pause = max(
+                self.shield_recharge_pause, self.shield_recharge_delay,
+            )
+
+        # Step 4 — HP damage (leftover spill or full DoT amount).
         self.hp = max(0, self.hp - amount)
         return amount
 
@@ -480,8 +530,17 @@ class Combatant:
         return stacks
 
     def shield_cap(self) -> int:
-        """Maximum shield value this combatant can hold."""
-        return int(self.hp_max * self.shield_cap_pct)
+        """Maximum shield value this combatant can hold.
+
+        Aggregates three sources:
+          * ``shield_max_base``  — flat baseline (equipment implicit)
+          * ``shield_max_flat``  — additive flat (affixes / constitutions)
+          * ``shield_max_pct``   — multiplicative on the base+flat sum
+
+        Formula: ``(base + flat) * (1 + max_pct)``.
+        """
+        flat_total = self.shield_max_base + self.shield_max_flat
+        return max(0, int(flat_total * (1.0 + self.shield_max_pct)))
 
     def add_shield(self, amount: int) -> int:
         """Add shield capped at shield_cap. Returns actual gained."""

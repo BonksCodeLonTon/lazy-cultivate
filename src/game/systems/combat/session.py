@@ -494,13 +494,27 @@ class CombatSession:
         # Periodic: Thổ Linh Căn — activate shield when HP is low
         lc_effects.check_shield(combatant, self.log)
 
-        # Thổ build: shield regen (pct of hp_max + flat), capped at shield_cap
-        if combatant.is_alive() and (combatant.shield_regen_pct > 0 or combatant.shield_regen_flat > 0):
-            regen = int(combatant.hp_max * combatant.shield_regen_pct) + combatant.shield_regen_flat
+        # Energy Shield recharge (PoE-style): the pause counter is decremented
+        # each periodic phase; while > 0, ``shield_regen_pct/flat`` are skipped
+        # so a recently-hit defender doesn't get free shield instantly. After
+        # the pause elapses, regen ticks normally up to ``shield_cap``.
+        if combatant.shield_recharge_pause > 0:
+            combatant.shield_recharge_pause -= 1
+
+        if (
+            combatant.is_alive()
+            and combatant.shield_recharge_pause == 0
+            and (combatant.shield_regen_pct > 0 or combatant.shield_regen_flat > 0)
+        ):
+            # ``shield_regen_pct`` scales off the holder's own shield_cap (not
+            # hp_max), so high-shield builds regenerate proportionally to their
+            # investment and modest builds don't trivially over-cap from a few
+            # legacy "hp_max%" passives. ``shield_regen_flat`` adds on top.
+            regen = int(combatant.shield_cap() * combatant.shield_regen_pct) + combatant.shield_regen_flat
             gained = combatant.add_shield(regen)
             if gained > 0:
                 self.log.append(
-                    f"  🪨 **{combatant.name}** Thổ Tường hồi +{gained:,} khiên "
+                    f"  🪨 **{combatant.name}** Hộ Thuẫn hồi +{gained:,} khiên "
                     f"({combatant.shield:,}/{combatant.shield_cap():,})"
                 )
 

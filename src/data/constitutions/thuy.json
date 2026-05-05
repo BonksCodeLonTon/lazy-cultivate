@@ -385,7 +385,9 @@
       "element_res_shred": {
         "thuy": 0.12
       },
-      "damage_bonus_from_evasion_pct": 0.1
+      "damage_bonus_from_evasion_pct": 0.1,
+      "shield_max_pct": 0.1,
+      "shield_regen_flat": 20
     },
     "special_requirements": null,
     "materials": {
@@ -470,7 +472,9 @@
       "mp_regen_pct": 0.04,
       "heal_pct": 0.2,
       "heal_can_crit": true,
-      "res_all": 80
+      "res_all": 80,
+      "shield_max_pct": 0.15,
+      "shield_regen_pct": 0.03
     },
     "special_requirements": null,
     "materials": {

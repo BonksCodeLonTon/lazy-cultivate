@@ -148,7 +148,12 @@ DEFAULT_BLEED_PER_STACK_PCT: float = 0.008
 DEFAULT_SHOCK_STACK_CAP: int = 5
 DEFAULT_SHOCK_PER_STACK_PCT: float = 0.04
 DEFAULT_MANA_STACK_CAP: int = 10
-DEFAULT_SHIELD_CAP_PCT: float = 0.70
+# Turn-based combat regenerates shield every turn — ``DEFAULT_SHIELD_RECHARGE_DELAY``
+# of 0 means there is no "no-regen" pause after a hit (the PoE-style recharge
+# window does not fit a discrete turn loop). Set above 0 if a future tweak
+# wants to slow down recovery for specific builds; the runtime ``Combatant``
+# countdown logic still works.
+DEFAULT_SHIELD_RECHARGE_DELAY: int = 0
 
 # ── DoT scaling (default: attacker-stat based) ────────────────────────────────
 # Tick damage in the default model = max_source_power × meta.dot_pct × COEF.

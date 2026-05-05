@@ -22,6 +22,7 @@ __all__ = [
     "QUALITY_AFFIX_COUNT",
     "get_affix_count",
     "max_affix_total",
+    "distribute_qty",
     "ForgeResult",
     "forge_equipment",
 ]
@@ -81,9 +82,16 @@ def get_recipe(grade: int) -> dict | None:
 
 
 def get_material_grade(material_key: str) -> int | None:
-    """Return the grade of a forge material, or None if not a forge material."""
+    """Return the grade of a forge material, or None if not a forge material.
+
+    Forge eligibility is gated on ``type == "forge_material"`` — that's the
+    single source of truth for the rebalance after ``elemental_materials.json``
+    was merged into ``forge_materials.json``. Realm-breakthrough materials
+    (which use the generic ``type == "material"`` tag) are deliberately
+    excluded so they can't be burned for forging.
+    """
     item = registry.get_item(material_key)
-    if item and item.get("type") == "material":
+    if item and item.get("type") == "forge_material":
         return int(item.get("grade", 0))
     return None
 
@@ -153,6 +161,51 @@ def check_forge_requirements(
     )
 
 
+def distribute_qty(picks: list[tuple[str, int]], required: int) -> dict[str, int] | None:
+    """Allocate ``required`` units across picked materials.
+
+    ``picks`` is ``[(material_key, owned_qty), ...]`` in user-pick order.
+    Returns ``{key: take_qty}`` summing to ``required``, or ``None`` if the
+    combined owned quantity falls short.
+
+    Allocation rule — keep it simple and predictable:
+      1. Each pick gets at least 1 unit (it was picked deliberately).
+      2. Distribute the remainder, preferring picks with more owned first
+         so a deficit on a low-stock pick doesn't block the forge.
+
+    The bag-aware fallback exists because a pure ceil-split would error
+    when, say, the user picks A (owned=1) + B (owned=4) for required=5.
+    """
+    if not picks:
+        return None
+    n = len(picks)
+    if sum(owned for _, owned in picks) < required:
+        return None
+
+    take: dict[str, int] = {key: 0 for key, _ in picks}
+    owned_map: dict[str, int] = {key: q for key, q in picks}
+    remaining = required
+
+    # Phase 1: 1 unit each
+    for key, _ in picks:
+        if remaining <= 0:
+            break
+        take[key] += 1
+        remaining -= 1
+
+    # Phase 2: distribute the rest, taking from highest-owned first
+    by_owned = sorted(picks, key=lambda x: -x[1])
+    for key, _ in by_owned:
+        if remaining <= 0:
+            break
+        slack = owned_map[key] - take[key]
+        bump = min(slack, remaining)
+        take[key] += bump
+        remaining -= bump
+
+    return take if remaining == 0 else None
+
+
 def _normalize_option(option: dict, required_qty: int) -> dict:
     """Return a copy of ``option`` with every material qty set to ``required_qty``."""
     return {
@@ -188,26 +241,38 @@ def _eligible_affixes(slot: str, affix_type: str) -> list[dict]:
     ]
 
 
-def _get_affix_bias(material_key: str | None) -> set[str]:
-    """Return the set of biased affix keys for a forge material, or empty set."""
-    if not material_key:
+def _get_affix_bias(material_keys: list[str] | str | None) -> set[str]:
+    """Return the union of biased affix keys across one or more materials.
+
+    Accepts a single key (legacy) or a list of keys. Mixed-material forges
+    combine biases — every consumed material contributes its full bias set
+    so any one of them is enough to boost a given affix.
+    """
+    if not material_keys:
         return set()
-    item = registry.get_item(material_key)
-    if item and item.get("type") == "material":
-        return set(item.get("affix_bias", []))
-    return set()
+    keys = [material_keys] if isinstance(material_keys, str) else material_keys
+    bias: set[str] = set()
+    for key in keys:
+        if not key:
+            continue
+        item = registry.get_item(key)
+        if item and item.get("type") == "forge_material":
+            bias.update(item.get("affix_bias", []))
+    return bias
 
 
 def roll_affixes(
     slot: str,
     grade: int,
     quality: str,
-    material_key: str | None = None,
+    material_keys: list[str] | str | None = None,
     two_handed: bool = False,
 ) -> list[dict]:
     """Roll affixes, applying quality floor and guaranteed-max special effects.
 
-    Biased affixes (from the consumed material) receive 3× selection weight.
+    Biased affixes (the union of every consumed material's ``affix_bias``)
+    receive 3× selection weight. Pass a single key for a single-material
+    forge or a list for mixed-material forges.
 
     When ``two_handed`` is True, both prefix and suffix counts are doubled —
     this is how 2H weapons earn their slot lockout: twice the customizable
@@ -221,7 +286,7 @@ def roll_affixes(
     floor_frac: float = spec["affix_floor"]
     guaranteed_max: bool = spec["guaranteed_max"]
     idx = grade - 1
-    bias: set[str] = _get_affix_bias(material_key)
+    bias: set[str] = _get_affix_bias(material_keys)
     rolled: list[dict] = []
 
     def _roll_one(a: dict, force_max: bool = False) -> dict:
@@ -346,15 +411,16 @@ def forge_equipment(
     # Deduct Công Đức
     char.merit -= recipe["cost_cong_duc"]
 
-    # Use the first consumed material's key to bias affix selection
-    primary_material = consumed_materials[0][0] if consumed_materials else None
+    # Mixed-material forges union every consumed material's affix_bias so
+    # each one contributes its biased keys to the 3× roll weighting.
+    consumed_keys = [k for k, _ in consumed_materials] if consumed_materials else []
 
     quality = _roll_quality(recipe, char.stats.comprehension)
     spec = QUALITY_SPECIAL[quality]
     implicit = roll_implicit_stats(base, grade, quality)
     affixes = roll_affixes(
         base["slot"], grade, quality,
-        material_key=primary_material,
+        material_keys=consumed_keys,
         two_handed=bool(base.get("two_handed", False)),
     )
     computed = compute_stats(implicit, affixes)

@@ -49,7 +49,7 @@
     "passive_bonus": {
       "shield_regen_pct": 0.03,
       "shield_regen_flat": 30,
-      "shield_cap_pct_bonus": 0.1
+      "shield_max_pct": 0.1
     },
     "description_vi": "Giáp khắc phù thổ linh — hồi 3% HP max thành khiên + 30 flat mỗi lượt, trần khiên +10% HP max."
   },
@@ -159,7 +159,7 @@
     },
     "passive_bonus": {
       "shield_regen_flat": 80,
-      "shield_cap_pct_bonus": 0.15
+      "shield_max_pct": 0.15
     },
     "description_vi": "Đai địa huyệt — +80 khiên/lượt, trần khiên +15% HP max."
   },
@@ -186,8 +186,8 @@
     },
     "passive_bonus": {
       "damage_bonus_from_shield_pct": 0.45,
-      "shield_cap_pct_bonus": 0.2,
-      "thorn_from_shield": true
+      "thorn_from_shield": true,
+      "shield_max_pct": 0.2
     },
     "description_vi": "Bội Sơn Hải — mỗi đòn +45% khiên làm ST, trần khiên +20% HP max, gai trừ trước từ khiên."
   },
@@ -241,8 +241,8 @@
     },
     "passive_bonus": {
       "shield_regen_flat": 200,
-      "shield_cap_pct_bonus": 0.25,
-      "damage_bonus_from_shield_pct": 0.5
+      "damage_bonus_from_shield_pct": 0.5,
+      "shield_max_pct": 0.25
     },
     "description_vi": "Bội Thổ Tổ — +200 khiên/lượt, trần khiên +25% HP max, +50% khiên làm ST. Bộ Thổ Tổ 3 mảnh hoàn chỉnh."
   },
@@ -297,8 +297,8 @@
     },
     "passive_bonus": {
       "shield_regen_pct": 0.08,
-      "shield_cap_pct_bonus": 0.3,
-      "damage_bonus_from_shield_pct": 0.6
+      "damage_bonus_from_shield_pct": 0.6,
+      "shield_max_pct": 0.3
     },
     "description_vi": "Mão tiên Thổ Tổ — hồi 8% khiên/lượt, trần khiên +30% HP max (tối đa 60%), đòn +60% khiên làm ST."
   }

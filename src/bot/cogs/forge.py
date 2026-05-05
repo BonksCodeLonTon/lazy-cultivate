@@ -13,10 +13,12 @@ from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.grades import Grade
+from src.game.engine.equipment import format_stat
 from src.game.systems.forge import (
     QUALITY_LABELS,
     check_forge_requirements,
     describe_recipe,
+    distribute_qty,
     forge_equipment,
     get_material_grade,
     get_recipe,
@@ -168,26 +170,32 @@ async def _nav_material(
     required_qty = max_affix_total(grade)
     required_grades = sorted({r["mat_grade"] for opt in (recipe or {}).get("options", []) for r in opt["materials"]})
 
-    # Materials in bag with qty >= required_qty, whose grade is one of the
-    # recipe's accepted grades. Each entry is a valid forge pick.
-    eligible: list[tuple[str, int]] = [
-        (key, qty) for key, qty in mats_in_bag.items()
-        if qty >= required_qty and get_material_grade(key) in required_grades
-    ]
+    # Any owned material whose grade matches the recipe is a valid pick.
+    # Mix-and-match is allowed — total qty is checked at confirm time.
+    eligible: list[tuple[str, int]] = sorted(
+        (
+            (key, qty) for key, qty in mats_in_bag.items()
+            if qty >= 1 and get_material_grade(key) in required_grades
+        ),
+        key=lambda kv: -kv[1],
+    )
+    total_owned = sum(qty for _, qty in eligible)
 
     embed = discord.Embed(
         title=f"⚒️ Chọn Nguyên Liệu Rèn — Cấp {grade}",
         description=(
-            f"Cần **{required_qty}x** nguyên liệu cùng loại "
-            f"(phẩm {', '.join(str(g) for g in required_grades)}).\n"
-            "Chọn đúng loại nguyên liệu bạn muốn dùng."
+            f"Cần tổng cộng **{required_qty}** nguyên liệu "
+            f"(phẩm {', '.join(str(g) for g in required_grades)}). "
+            "Có thể trộn nhiều loại — affix bias của mọi loại đã chọn đều được "
+            "cộng dồn (ưu tiên 3× lúc roll).\n"
+            f"Đang có: **{total_owned}** nguyên liệu hợp lệ trong kho."
         ),
         color=0xB8860B,
     )
-    if not eligible:
+    if total_owned < required_qty:
         embed.add_field(
             name="⚠️ Thiếu Nguyên Liệu",
-            value="Không có loại nguyên liệu nào đạt yêu cầu. Hãy tích trữ thêm.",
+            value=f"Tổng nguyên liệu hợp lệ chưa đủ {required_qty}. Hãy tích trữ thêm.",
             inline=False,
         )
 
@@ -202,7 +210,7 @@ async def _nav_super(
     slot: str,
     base_key: str,
     grade: int,
-    selected_mat_key: str,
+    selected_mat_keys: list[str],
     hub_back_fn,
 ) -> None:
     loaded = await _load_forge_bag(discord_id)
@@ -225,11 +233,17 @@ async def _nav_super(
         if min_grade <= grade:
             eligible.append((key, spec))
 
-    mat_name = (registry.get_item(selected_mat_key) or {}).get("vi", selected_mat_key)
+    mat_names = [
+        (registry.get_item(k) or {}).get("vi", k) for k in selected_mat_keys
+    ]
+    if len(mat_names) == 1:
+        primary_line = f"Nguyên liệu chính: **{mat_names[0]}**."
+    else:
+        primary_line = "Nguyên liệu đã chọn: " + ", ".join(f"**{n}**" for n in mat_names) + "."
     embed = discord.Embed(
         title="✨ Chọn Vật Liệu Siêu Hiếm (Tùy Chọn)",
         description=(
-            f"Nguyên liệu chính: **{mat_name}**.\n"
+            f"{primary_line}\n"
             "Có thể đính kèm **1** vật liệu siêu hiếm để ban hiệu ứng đặc biệt, "
             "hoặc bỏ qua để rèn thường."
         ),
@@ -244,7 +258,7 @@ async def _nav_super(
 
     view = _SuperMaterialView(
         discord_id, slot, base_key, grade, hub_back_fn,
-        selected_mat_key=selected_mat_key,
+        selected_mat_keys=selected_mat_keys,
         eligible=eligible,
     )
     await interaction.edit_original_response(embed=embed, view=view)
@@ -256,7 +270,7 @@ async def _nav_confirm(
     slot: str,
     base_key: str,
     grade: int,
-    selected_mat_key: str,
+    selected_mat_keys: list[str],
     selected_super_key: str | None,
     hub_back_fn,
 ) -> None:
@@ -272,12 +286,12 @@ async def _nav_confirm(
         discord_id, slot, base_key, grade, hub_back_fn,
         char=char,
         mats_in_bag=mats_in_bag,
-        selected_mat_key=selected_mat_key,
+        selected_mat_keys=selected_mat_keys,
         selected_super_key=selected_super_key,
     )
     embed = _build_confirm_embed(
         base_key, grade, char, mats_in_bag,
-        selected_mat_key=selected_mat_key,
+        selected_mat_keys=selected_mat_keys,
         selected_super_key=selected_super_key,
     )
     await interaction.edit_original_response(embed=embed, view=view)
@@ -290,7 +304,7 @@ def _build_confirm_embed(
     grade: int,
     char,
     mats_in_bag: dict[str, int],
-    selected_mat_key: str | None = None,
+    selected_mat_keys: list[str] | None = None,
     selected_super_key: str | None = None,
 ) -> discord.Embed:
     base_data = registry.get_base(base_key)
@@ -318,17 +332,33 @@ def _build_confirm_embed(
         )
 
         required_qty = max_affix_total(grade)
-        if selected_mat_key:
-            mat_item = registry.get_item(selected_mat_key) or {}
-            owned = mats_in_bag.get(selected_mat_key, 0)
-            icon  = "✅" if owned >= required_qty else "❌"
+        if selected_mat_keys:
+            picks = [(k, mats_in_bag.get(k, 0)) for k in selected_mat_keys]
+            split = distribute_qty(picks, required_qty)
+            mat_lines: list[str] = []
+            if split is None:
+                total_owned = sum(q for _, q in picks)
+                mat_lines.append(
+                    f"❌ Tổng chỉ có **{total_owned}** — cần **{required_qty}**."
+                )
+                for k, owned in picks:
+                    item = registry.get_item(k) or {}
+                    mat_lines.append(f"  • **{item.get('vi', k)}** (có: {owned})")
+            else:
+                for k, owned in picks:
+                    take = split[k]
+                    item = registry.get_item(k) or {}
+                    icon = "✅" if owned >= take else "❌"
+                    mat_lines.append(
+                        f"{icon} {take}x **{item.get('vi', k)}** (có: {owned})"
+                    )
             embed.add_field(
-                name="Nguyên Liệu Đã Chọn",
-                value=f"{icon} {required_qty}x **{mat_item.get('vi', selected_mat_key)}** (có: {owned})",
+                name=f"Nguyên Liệu Đã Chọn (tổng {required_qty})",
+                value="\n".join(mat_lines),
                 inline=False,
             )
         else:
-            mat_lines: list[str] = []
+            mat_lines = []
             for i, opt in enumerate(recipe["options"], 1):
                 opt_label = f"[PA {i}] " if len(recipe["options"]) > 1 else ""
                 for req in opt["materials"]:
@@ -559,10 +589,13 @@ class _GradeView(discord.ui.View):
 
 
 class _MaterialView(discord.ui.View):
-    """Step 4 — pick a specific normal material from the bag.
+    """Step 4 — pick one or more normal materials from the bag.
 
-    The select menu lists every inventory material whose grade matches one of
-    the recipe's accepted grades AND has enough copies for the required qty.
+    Multi-select: choose 1 to ``required_qty`` distinct materials. Each
+    material's ``affix_bias`` is unioned at forge time, so any biased key
+    from any pick gets the 3× roll weight. Total quantity is split across
+    picks at confirm time (each pick gets at least 1, remainder fills the
+    most-owned picks first).
     """
 
     def __init__(
@@ -592,11 +625,14 @@ class _MaterialView(discord.ui.View):
                 options.append(discord.SelectOption(
                     label=label[:100],
                     value=key,
-                    description=f"Phẩm {mat_g} · có {qty} · cần {required_qty}"[:100],
+                    description=f"Phẩm {mat_g} · có {qty}"[:100],
                 ))
+            max_picks = min(required_qty, len(options), 25)
             select = discord.ui.Select(
-                placeholder="🔨 Chọn nguyên liệu…",
+                placeholder=f"🔨 Chọn 1–{max_picks} loại nguyên liệu…",
                 options=options,
+                min_values=1,
+                max_values=max_picks,
                 row=0,
             )
             select.callback = self._make_pick_cb(select)
@@ -612,10 +648,10 @@ class _MaterialView(discord.ui.View):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
             await interaction.response.defer()
-            picked = select.values[0]
+            picked: list[str] = list(select.values)
             await _nav_super(
                 interaction, self._discord_id, self._slot, self._base_key, self._grade,
-                selected_mat_key=picked, hub_back_fn=self._hub_back_fn,
+                selected_mat_keys=picked, hub_back_fn=self._hub_back_fn,
             )
         return _cb
 
@@ -642,16 +678,16 @@ class _SuperMaterialView(discord.ui.View):
         grade: int,
         hub_back_fn,
         *,
-        selected_mat_key: str,
+        selected_mat_keys: list[str],
         eligible: list[tuple[str, dict]],
     ) -> None:
         super().__init__(timeout=180)
-        self._discord_id      = discord_id
-        self._slot            = slot
-        self._base_key        = base_key
-        self._grade           = grade
-        self._hub_back_fn     = hub_back_fn
-        self._selected_mat_key = selected_mat_key
+        self._discord_id       = discord_id
+        self._slot             = slot
+        self._base_key         = base_key
+        self._grade            = grade
+        self._hub_back_fn      = hub_back_fn
+        self._selected_mat_keys = selected_mat_keys
 
         if eligible:
             options: list[discord.SelectOption] = []
@@ -688,7 +724,7 @@ class _SuperMaterialView(discord.ui.View):
             picked = select.values[0]
             await _nav_confirm(
                 interaction, self._discord_id, self._slot, self._base_key, self._grade,
-                selected_mat_key=self._selected_mat_key,
+                selected_mat_keys=self._selected_mat_keys,
                 selected_super_key=picked,
                 hub_back_fn=self._hub_back_fn,
             )
@@ -701,7 +737,7 @@ class _SuperMaterialView(discord.ui.View):
         await interaction.response.defer()
         await _nav_confirm(
             interaction, self._discord_id, self._slot, self._base_key, self._grade,
-            selected_mat_key=self._selected_mat_key,
+            selected_mat_keys=self._selected_mat_keys,
             selected_super_key=None,
             hub_back_fn=self._hub_back_fn,
         )
@@ -727,20 +763,21 @@ class _ConfirmView(discord.ui.View):
         *,
         char,
         mats_in_bag: dict[str, int],
-        selected_mat_key: str,
+        selected_mat_keys: list[str],
         selected_super_key: str | None,
     ) -> None:
         super().__init__(timeout=120)
-        self._discord_id        = discord_id
-        self._slot              = slot
-        self._base_key          = base_key
-        self._grade             = grade
-        self._hub_back_fn       = hub_back_fn
-        self._selected_mat_key  = selected_mat_key
+        self._discord_id         = discord_id
+        self._slot               = slot
+        self._base_key           = base_key
+        self._grade              = grade
+        self._hub_back_fn        = hub_back_fn
+        self._selected_mat_keys  = selected_mat_keys
         self._selected_super_key = selected_super_key
 
         required_qty = max_affix_total(grade)
-        mat_ok = mats_in_bag.get(selected_mat_key, 0) >= required_qty
+        picks = [(k, mats_in_bag.get(k, 0)) for k in selected_mat_keys]
+        mat_ok = distribute_qty(picks, required_qty) is not None
         recipe = get_recipe(grade)
         merit_ok = bool(recipe) and char.merit >= recipe["cost_cong_duc"]
         ok = mat_ok and merit_ok
@@ -778,32 +815,36 @@ class _ConfirmView(discord.ui.View):
 
             char = _player_to_model(player)
 
-            # Re-verify the user still has the selected material at required qty
+            # Re-verify each picked material still has its allocated share.
             all_items = await inv_repo.get_all(player.id)
-            owned_mat = next(
-                (it for it in all_items if it.item_key == self._selected_mat_key),
-                None,
-            )
-            if not owned_mat or owned_mat.quantity < required_qty:
+            owned_lookup: dict[str, int] = {}
+            for k in self._selected_mat_keys:
+                it = next((x for x in all_items if x.item_key == k), None)
+                owned_lookup[k] = it.quantity if it else 0
+
+            picks = [(k, owned_lookup[k]) for k in self._selected_mat_keys]
+            split = distribute_qty(picks, required_qty)
+            if split is None:
                 await interaction.edit_original_response(
-                    embed=error_embed("Không đủ nguyên liệu đã chọn — kho đã thay đổi."), view=None
+                    embed=error_embed("Không đủ nguyên liệu — kho đã thay đổi."), view=None
                 )
                 return
 
-            mat_grade = get_material_grade(self._selected_mat_key)
             recipe = get_recipe(self._grade)
-            if not recipe or mat_grade is None:
+            if not recipe:
                 await interaction.edit_original_response(embed=error_embed("Không tìm thấy công thức rèn."), view=None)
                 return
-            # Require the recipe to have an option whose mat_grade matches the pick
-            if not any(
-                any(req["mat_grade"] == mat_grade for req in opt["materials"])
-                for opt in recipe["options"]
-            ):
-                await interaction.edit_original_response(
-                    embed=error_embed("Nguyên liệu đã chọn không khớp công thức."), view=None
-                )
-                return
+
+            # Every pick's grade must be allowed by some recipe option
+            recipe_grades = {req["mat_grade"] for opt in recipe["options"] for req in opt["materials"]}
+            for k in self._selected_mat_keys:
+                mg = get_material_grade(k)
+                if mg is None or mg not in recipe_grades:
+                    await interaction.edit_original_response(
+                        embed=error_embed("Có nguyên liệu không khớp công thức rèn."), view=None
+                    )
+                    return
+
             if char.merit < recipe["cost_cong_duc"]:
                 await interaction.edit_original_response(
                     embed=error_embed("Không đủ Công Đức."), view=None
@@ -822,16 +863,26 @@ class _ConfirmView(discord.ui.View):
                     )
                     return
 
-            # Consume the chosen normal material
-            removed = await inv_repo.remove_item(
-                player.id, self._selected_mat_key, Grade(mat_grade), required_qty,
-            )
-            if not removed:
-                await interaction.edit_original_response(
-                    embed=error_embed("Không thể tiêu hao nguyên liệu."), view=None
+            # Consume each picked material by its allocated share
+            consumed: list[tuple[str, int]] = []
+            for k, take in split.items():
+                if take <= 0:
+                    continue
+                mat_grade = get_material_grade(k)
+                if mat_grade is None:
+                    await interaction.edit_original_response(
+                        embed=error_embed("Nguyên liệu không hợp lệ."), view=None
+                    )
+                    return
+                ok_remove = await inv_repo.remove_item(
+                    player.id, k, Grade(mat_grade), take,
                 )
-                return
-            consumed = [(self._selected_mat_key, required_qty)]
+                if not ok_remove:
+                    await interaction.edit_original_response(
+                        embed=error_embed("Không thể tiêu hao nguyên liệu."), view=None
+                    )
+                    return
+                consumed.append((k, take))
 
             # Consume the super material (at most one, singular arg)
             if self._selected_super_key:
@@ -860,23 +911,32 @@ class _ConfirmView(discord.ui.View):
             description=result.message,
             color=QUALITY_COLORS[quality],
         )
+        # Render implicit base stats through format_stat so labels and pct
+        # formatting stay consistent with /equipment and /inventory.
+        implicit_lines = [
+            f"• {format_stat(k, v)}"
+            for k, v in result.item_data["implicit_stats"].items()
+        ]
         embed.add_field(
             name="Chỉ Số Cơ Bản",
-            value="\n".join(
-                f"• {k}: **{v:.3f}**" if isinstance(v, float) and v < 1 else f"• {k}: **{int(v)}**"
-                for k, v in result.item_data["implicit_stats"].items()
-            ),
+            value="\n".join(implicit_lines) or "—",
             inline=True,
         )
         if result.item_data["affixes"]:
+            # Each affix carries (key, stat, value, type). Display the underlying
+            # stat with format_stat (gives "+0.7% Tăng ST") and append the affix
+            # vi name from the registry as flavor (e.g. "Siêu Việt").
+            affix_lines: list[str] = []
+            for a in result.item_data["affixes"]:
+                stat_str = format_stat(a["stat"], a["value"])
+                aff_def = registry.get_affix(a["key"]) or {}
+                vi_name = aff_def.get("vi")
+                affix_lines.append(
+                    f"• {stat_str} *({vi_name})*" if vi_name else f"• {stat_str}"
+                )
             embed.add_field(
                 name="Thuộc Tính",
-                value="\n".join(
-                    f"• {a['key']} → {a['value']:.3f}"
-                    if isinstance(a["value"], float) and a["value"] < 1
-                    else f"• {a['key']} → {int(a['value'])}"
-                    for a in result.item_data["affixes"]
-                ),
+                value="\n".join(affix_lines),
                 inline=True,
             )
         embed.set_footer(
@@ -900,7 +960,7 @@ class _ConfirmView(discord.ui.View):
         await interaction.response.defer()
         await _nav_super(
             interaction, self._discord_id, self._slot, self._base_key, self._grade,
-            selected_mat_key=self._selected_mat_key,
+            selected_mat_keys=self._selected_mat_keys,
             hub_back_fn=self._hub_back_fn,
         )
 

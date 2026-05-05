@@ -85,21 +85,20 @@ def cast_skill(
                 )
                 actor.queued_heal_dmg = 0
 
-            # Apply Thổ shield (absorbs before HP loss)
-            if target.shield > 0:
-                absorbed = min(target.shield, dmg)
-                target.shield -= absorbed
-                dmg -= absorbed
-                if absorbed > 0:
-                    session.log.append(f"    🛡️ Khiên [Thổ] hấp thụ {absorbed:,} sát thương!")
-
-            # BuffBatTu — prevent killing blow once
-            if dmg >= target.hp and target.has_effect(EffectKey.BUFF_BAT_TU):
-                dmg = target.hp - 1
+            # BuffBatTu — prevent killing blow once. Computed against post-shield
+            # HP loss because the shield absorbs first inside ``take_damage``;
+            # only damage that would actually leak to HP can trigger Bất Tử.
+            hp_dmg_preview = max(0, dmg - target.shield)
+            if hp_dmg_preview >= target.hp and target.has_effect(EffectKey.BUFF_BAT_TU):
+                dmg = target.hp - 1 + target.shield  # leave HP at 1 after shield drains
                 target.effects.pop(EffectKey.BUFF_BAT_TU, None)
                 session.log.append(f"    💫 **{target.name}** kích hoạt **Bất Tử** — sống sót!")
 
+            shield_before = target.shield
             target.take_damage(dmg)
+            absorbed = shield_before - target.shield
+            if absorbed > 0:
+                session.log.append(f"    🛡️ Hộ Thuẫn hấp thụ {absorbed:,} sát thương!")
             skill_elem = skill_data.get("element")
             dmg_tag = colorize_damage(f"-{dmg:,} HP", skill_elem)
             session.log.append(

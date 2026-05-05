@@ -24,6 +24,31 @@ STAT_LABELS: dict[str, str] = {
     "mp_regen_pct":    "Hồi MP %",
     "mp_regen_flat":   "Hồi MP",
     "res_all":         "Kháng TN",
+    "element_dmg_all":   "ST Nguyên Tố",
+    "element_dmg_kim":   "ST Kim",
+    "element_dmg_moc":   "ST Mộc",
+    "element_dmg_thuy":  "ST Thủy",
+    "element_dmg_hoa":   "ST Hỏa",
+    "element_dmg_tho":   "ST Thổ",
+    "element_dmg_loi":   "ST Lôi",
+    "element_dmg_phong": "ST Phong",
+    "element_dmg_quang": "ST Quang",
+    "element_dmg_am":    "ST Ám",
+    "res_kim":   "Kháng Kim",
+    "res_moc":   "Kháng Mộc",
+    "res_thuy":  "Kháng Thủy",
+    "res_hoa":   "Kháng Hỏa",
+    "res_tho":   "Kháng Thổ",
+    "res_loi":   "Kháng Lôi",
+    "res_phong": "Kháng Phong",
+    "res_quang": "Kháng Quang",
+    "res_am":    "Kháng Ám",
+    # Energy Shield stats — see Combatant.shield_cap() for the formula.
+    "shield_max_base":   "Khiên Nền",
+    "shield_max_flat":   "Khiên Tối Đa",
+    "shield_max_pct":    "Khiên Tối Đa %",
+    "shield_regen_flat": "Hồi Khiên",
+    "shield_regen_pct":  "Hồi Khiên %",
 }
 
 SLOT_LABELS: dict[str, str] = {
@@ -44,6 +69,13 @@ _PCT_STATS = frozenset({
     "final_dmg_bonus", "final_dmg_reduce",
     "hp_regen_pct", "mp_regen_pct",
     "res_all",
+    "element_dmg_all",
+    "element_dmg_kim", "element_dmg_moc", "element_dmg_thuy", "element_dmg_hoa",
+    "element_dmg_tho", "element_dmg_loi", "element_dmg_phong",
+    "element_dmg_quang", "element_dmg_am",
+    "res_kim", "res_moc", "res_thuy", "res_hoa", "res_tho",
+    "res_loi", "res_phong", "res_quang", "res_am",
+    "shield_max_pct", "shield_regen_pct",
 })
 
 

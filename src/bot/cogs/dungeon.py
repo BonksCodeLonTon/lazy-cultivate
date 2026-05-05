@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from dataclasses import dataclass, field
 from typing import Any
 
 import discord
@@ -244,6 +245,166 @@ def _build_result_embeds(
     return summary_embed, log_embeds
 
 
+# ── Auto-repeat support ───────────────────────────────────────────────────────
+
+AUTO_REPEAT_MAX_RUNS = 50          # hard ceiling so a forgotten loop self-terminates
+AUTO_REPEAT_INTERSTITIAL_SEC = 3.0  # window between runs for the player to click Stop
+
+
+@dataclass
+class AutoRepeatTotals:
+    """Running totals across an auto-repeat session — accumulates merit, stones,
+    loot, and a success/fail tally. Rendered in the inter-run status embed and
+    the final aggregated summary."""
+    runs_completed: int = 0
+    runs_succeeded: int = 0
+    merit: int = 0
+    stones: int = 0
+    loot: list[dict] = field(default_factory=list)
+    last_died_on: str | None = None
+
+    def add(self, result: DungeonResult) -> None:
+        self.runs_completed += 1
+        if result.success:
+            self.runs_succeeded += 1
+        else:
+            self.last_died_on = result.died_on
+        self.merit += int(result.merit_gained)
+        self.stones += int(result.stone_gained)
+        self.loot.extend(result.loot)
+
+
+def _auto_repeat_status_embed(
+    dungeon_key: str, totals: AutoRepeatTotals, last_result: DungeonResult,
+) -> discord.Embed:
+    """Inter-run status: shown for ``AUTO_REPEAT_INTERSTITIAL_SEC`` between runs
+    so the player can read the running totals and click Stop."""
+    d = registry.get_dungeon(dungeon_key)
+    name = d["vi"] if d else dungeon_key
+    last_status = "✅ thắng" if last_result.success else f"💀 thua (bởi {last_result.died_on or '???'})"
+    desc = (
+        f"🔁 **Tự Động Lặp Lại — {name}**\n\n"
+        f"Run vừa qua: **{last_status}**\n"
+        f"Đã hoàn thành: **{totals.runs_completed}** lần "
+        f"(thắng {totals.runs_succeeded} / thua {totals.runs_completed - totals.runs_succeeded})\n\n"
+        f"📈 **Tích luỹ:**\n"
+        f"{emojis.for_currency('merit')} **+{totals.merit:,} Công Đức**\n"
+    )
+    if totals.stones > 0:
+        desc += f"{emojis.for_currency('primordial_stones')} **+{totals.stones:,} Hỗn Nguyên Thạch**\n"
+    desc += f"\n⏳ Tự khởi động lại sau {int(AUTO_REPEAT_INTERSTITIAL_SEC)}s — bấm **Dừng** để kết thúc."
+    return base_embed(f"🔁 Auto Repeat ({totals.runs_completed} runs)", desc, color=0x9B59B6)
+
+
+def _auto_repeat_final_embed(
+    dungeon_key: str, totals: AutoRepeatTotals, reason: str, player_name: str,
+) -> discord.Embed:
+    """Aggregated summary at the end of an auto-repeat session."""
+    d = registry.get_dungeon(dungeon_key)
+    name = d["vi"] if d else dungeon_key
+    loot_str = _format_loot(totals.loot) if totals.loot else "*(không có)*"
+    color = 0x00C851 if totals.runs_succeeded > 0 else 0xFF4444
+    desc = (
+        f"🔁 **{player_name}** đã hoàn thành **{totals.runs_completed}** lần "
+        f"chinh phục **{name}** — thắng {totals.runs_succeeded} / "
+        f"thua {totals.runs_completed - totals.runs_succeeded}.\n\n"
+        f"🛑 Lý do dừng: **{reason}**\n\n"
+        f"📈 **Tổng thu hoạch:**\n"
+        f"{emojis.for_currency('merit')} **+{totals.merit:,} Công Đức**\n"
+    )
+    if totals.stones > 0:
+        desc += f"{emojis.for_currency('primordial_stones')} **+{totals.stones:,} Hỗn Nguyên Thạch**\n"
+    desc += f"\n🎁 {loot_str}"
+    embed = base_embed(f"🔁 Tổng kết Auto Repeat — {name}", desc, color=color)
+    return embed
+
+
+class AutoRepeatStopView(discord.ui.View):
+    """Single-button view shown between auto-repeat runs — Stop ends the loop
+    cleanly (current run already saved)."""
+
+    def __init__(self, discord_id: int, stop_event: asyncio.Event) -> None:
+        super().__init__(timeout=120)
+        self.discord_id = discord_id
+        self.stop_event = stop_event
+
+    @discord.ui.button(label="🛑 Dừng Lặp Lại", style=discord.ButtonStyle.danger, row=0)
+    async def stop_btn(
+        self, interaction: discord.Interaction, button: discord.ui.Button,
+    ) -> None:
+        if interaction.user.id != self.discord_id:
+            await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        self.stop_event.set()
+
+    async def on_timeout(self) -> None:
+        # Timeout out → stop the loop so we don't leave a runaway repeat.
+        self.stop_event.set()
+
+
+async def _run_dungeon_with_repeat(
+    interaction: discord.Interaction,
+    dungeon_key: str,
+    player_best_realm: int,
+    player_realm_total: int,
+    back_fn,
+    dungeon_type: str,
+) -> None:
+    """Auto-repeat loop: run the same dungeon until defeat, Stop, the run cap,
+    or currency cap is reached. Renders aggregate totals at the end."""
+    totals = AutoRepeatTotals()
+    stop_event = asyncio.Event()
+    final_reason = "Hết số lần tối đa"
+
+    for run_idx in range(AUTO_REPEAT_MAX_RUNS):
+        result = await _execute_dungeon(
+            interaction, dungeon_key, player_best_realm, player_realm_total,
+            back_fn=back_fn, dungeon_type=dungeon_type,
+            auto_mode=True, stop_event=stop_event,
+        )
+        if result is None:
+            final_reason = "Lỗi hệ thống"
+            break
+
+        totals.add(result)
+
+        if not result.success:
+            final_reason = f"Thất bại bởi **{result.died_on or '???'}**"
+            break
+        if stop_event.is_set():
+            final_reason = "Người chơi yêu cầu dừng"
+            break
+        if run_idx >= AUTO_REPEAT_MAX_RUNS - 1:
+            break
+
+        # Inter-run window: show running totals + Stop button. Wait up to
+        # AUTO_REPEAT_INTERSTITIAL_SEC for a Stop click before continuing.
+        status_embed = _auto_repeat_status_embed(dungeon_key, totals, result)
+        stop_view = AutoRepeatStopView(interaction.user.id, stop_event)
+        await interaction.edit_original_response(embed=status_embed, view=stop_view)
+        try:
+            await asyncio.wait_for(stop_event.wait(), timeout=AUTO_REPEAT_INTERSTITIAL_SEC)
+            final_reason = "Người chơi yêu cầu dừng"
+            break
+        except asyncio.TimeoutError:
+            pass  # window elapsed, continue to next run
+
+    # Player name lookup for the final summary.
+    async with get_session() as session:
+        repo = PlayerRepository(session)
+        player = await repo.get_by_discord_id(interaction.user.id)
+        player_name = player.name if player else "Vô Danh"
+
+    final_embed = _auto_repeat_final_embed(dungeon_key, totals, final_reason, player_name)
+    view = DungeonResultView(
+        dungeon_key, interaction.user.id, player_best_realm, player_realm_total,
+        log_embeds=[],   # auto-repeat skips per-run logs to avoid spam
+        back_fn=back_fn, dungeon_type=dungeon_type,
+    )
+    await interaction.edit_original_response(embed=final_embed, view=view)
+
+
 async def _execute_dungeon(
     interaction: discord.Interaction,
     dungeon_key: str,
@@ -251,8 +412,19 @@ async def _execute_dungeon(
     player_realm_total: int = 0,
     back_fn=None,
     dungeon_type: str = "normal",
-) -> None:
-    """Run dungeon with real-time turn-by-turn battle display."""
+    auto_mode: bool = False,
+    stop_event: asyncio.Event | None = None,
+) -> DungeonResult | None:
+    """Run dungeon with real-time turn-by-turn battle display.
+
+    auto_mode: when True, skip the inter-wave prep view (auto-continue) and
+    suppress the final DungeonResultView render so a calling loop wrapper
+    (``_run_dungeon_with_repeat``) can render its own aggregated summary.
+
+    stop_event: when set between waves, treats the run like an abandon —
+    saves any progress earned so far and returns. Used by auto-repeat to
+    break out of a long sequence cleanly.
+    """
 
     # ── Load player data ──────────────────────────────────────────────────────
     char: CharModel | None = None
@@ -335,8 +507,14 @@ async def _execute_dungeon(
     player_db_id: int = char.player_id
 
     for wave_idx, enemy_key in enumerate(wave_enemies):
+        # Auto-repeat early-exit between waves: clean break, save partial progress.
+        if stop_event is not None and stop_event.is_set():
+            break
+
         # ── Inter-wave prepare phase (not before first wave) ──────────────────
-        if wave_idx > 0:
+        # In auto_mode, skip the prep view entirely — the auto-repeat loop owns
+        # pacing and players don't expect to manually elixir between waves.
+        if wave_idx > 0 and not auto_mode:
             elixirs = await _load_elixirs(player_db_id)
             prep_view = DungeonPrepView(
                 interaction.user.id, player_db_id, player_c,
@@ -497,12 +675,17 @@ async def _execute_dungeon(
 
             await repo.save(player)
 
-    summary_embed, log_embeds = _build_result_embeds(dungeon_key, result_obj, player_name)
-    view = DungeonResultView(
-        dungeon_key, interaction.user.id, player_best_realm, player_realm_total,
-        log_embeds, back_fn=back_fn, dungeon_type=dungeon_type,
-    )
-    await interaction.edit_original_response(embed=summary_embed, view=view)
+    # In auto-mode the loop wrapper renders its own aggregated summary;
+    # skip the per-run result view so the next iteration can take over.
+    if not auto_mode:
+        summary_embed, log_embeds = _build_result_embeds(dungeon_key, result_obj, player_name)
+        view = DungeonResultView(
+            dungeon_key, interaction.user.id, player_best_realm, player_realm_total,
+            log_embeds, back_fn=back_fn, dungeon_type=dungeon_type,
+        )
+        await interaction.edit_original_response(embed=summary_embed, view=view)
+
+    return result_obj
 
 
 # ── Helpers for prep phase ────────────────────────────────────────────────────
@@ -840,7 +1023,20 @@ class DungeonDetailView(discord.ui.View):
             back_fn=self._back_fn, dungeon_type=self._dungeon_type,
         )
 
-    @discord.ui.button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=1)
+    @discord.ui.button(label="🔁 Tự Động Lặp Lại", style=discord.ButtonStyle.blurple, row=1)
+    async def auto_repeat_btn(
+        self, interaction: discord.Interaction, button: discord.ui.Button,
+    ) -> None:
+        if interaction.user.id != self.discord_id:
+            await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await _run_dungeon_with_repeat(
+            interaction, self.dungeon_key, self.player_best_realm, self.player_realm_total,
+            back_fn=self._back_fn, dungeon_type=self._dungeon_type,
+        )
+
+    @discord.ui.button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=2)
     async def back_btn(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)

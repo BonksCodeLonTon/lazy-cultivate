@@ -263,7 +263,7 @@
       "shield_regen_pct": 0.06,
       "res_all": 80,
       "thorn_pct": 0.15,
-      "shield_cap_pct_bonus": 0.05
+      "shield_max_pct": 0.05
     },
     "special_requirements": null,
     "materials": {
@@ -348,12 +348,12 @@
     "stat_bonuses": {
       "hp_pct": 0.3,
       "shield_regen_pct": 0.08,
-      "shield_cap_pct_bonus": 0.1,
       "damage_bonus_from_shield_pct": 0.18,
       "thorn_pct": 0.2,
       "thorn_from_shield": true,
       "stun_on_hit_pct": 0.1,
-      "res_all": 60
+      "res_all": 60,
+      "shield_max_pct": 0.1
     },
     "special_requirements": null,
     "materials": {
@@ -404,9 +404,9 @@
       "hp_pct": 0.3,
       "shield_regen_pct": 0.09,
       "evasion_rating": 250,
-      "shield_cap_pct_bonus": 0.08,
       "damage_bonus_from_shield_pct": 0.12,
-      "thorn_from_shield": true
+      "thorn_from_shield": true,
+      "shield_max_pct": 0.08
     },
     "special_requirements": null,
     "materials": {

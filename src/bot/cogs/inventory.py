@@ -171,11 +171,15 @@ class InventoryView(discord.ui.View):
 
             from src.bot.cogs.equipment import EquipBagView, _equip_bag_embed
 
-            # Reload fresh bag data so we always show current state
+            # Reload fresh bag + equipped data so we always show current state.
+            # The equip view now renders the currently-equipped piece per slot
+            # alongside bag items, so both lists need to come from the DB.
             async with get_session() as session:
                 from src.db.repositories.player_repo import PlayerRepository as PR
                 player = await PR(session).get_by_discord_id(interaction.user.id)
-                equip_bag = await EquipmentRepository(session).get_bag(player.id)
+                erepo = EquipmentRepository(session)
+                equip_bag = await erepo.get_bag(player.id)
+                equipped = await erepo.get_equipped(player.id)
                 player_name = player.name if player else self._player_name
 
             async def back_to_inventory(inter: discord.Interaction) -> None:
@@ -191,8 +195,11 @@ class InventoryView(discord.ui.View):
                 )
                 await inter.edit_original_response(embed=embed, view=view)
 
-            embed = _equip_bag_embed(player_name, equip_bag)
-            view = EquipBagView(self._discord_id, player_name, equip_bag, back_fn=back_to_inventory)
+            embed = _equip_bag_embed(player_name, equip_bag, equipped)
+            view = EquipBagView(
+                self._discord_id, player_name, equip_bag, equipped,
+                back_fn=back_to_inventory,
+            )
             await interaction.edit_original_response(embed=embed, view=view)
         return _cb
 

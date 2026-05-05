@@ -267,3 +267,159 @@ def test_consume_unknown_pill_returns_not_applied():
     char = _make_char()
     effect = consume_pill(char, "DoesNotExist_123", 1)
     assert not effect.applied
+
+
+# ── AlchemyResult.consumed shape ───────────────────────────────────────────
+
+
+def test_craft_pill_consumed_matches_recipe_slots():
+    """``AlchemyResult.consumed`` must list one IngredientPick per recipe slot,
+    each with the correct (key, qty) and slot_role tag — the cog uses this
+    list verbatim to deduct inventory rows."""
+    random.seed(11)
+    recipe = get_recipe("DanPhuongKimLuyenHuyetDan")
+    expected = [(slot["role"], slot["options"][0]["key"], slot["options"][0]["qty"])
+                for slot in recipe["ingredients"]]
+
+    char = _make_char(merit=5_000)
+    result = craft_pill(
+        char, "DanPhuongKimLuyenHuyetDan", _default_inv(), _default_furnaces(),
+    )
+    assert result.success
+    assert len(result.consumed) == len(expected)
+    actual = [(p.slot_role, p.key, p.qty) for p in result.consumed]
+    assert actual == expected
+
+
+def test_craft_pill_returns_chosen_furnace_key():
+    random.seed(11)
+    char = _make_char(merit=5_000)
+    result = craft_pill(
+        char, "DanPhuongKimLuyenHuyetDan", _default_inv(),
+        ["DanLoThuong_G1", "DanLoBachLuyen_G1"],
+    )
+    assert result.success
+    # Best furnace is the unique one
+    assert result.furnace_key == "DanLoBachLuyen_G1"
+
+
+# ── apply_furnace_bonus ────────────────────────────────────────────────────
+
+
+def test_apply_furnace_bonus_shifts_weights_and_compensates_hoan():
+    from src.game.systems.alchemy import apply_furnace_bonus
+    base = {"hoan": 0.70, "huyen": 0.20, "dia": 0.08, "thien": 0.02}
+    furnace = {"quality_bonus": {"thien": 0.05, "dia": 0.05}}
+    out = apply_furnace_bonus(base, furnace)
+    # Bonuses added to their tiers
+    assert out["thien"] == pytest.approx(0.07)
+    assert out["dia"] == pytest.approx(0.13)
+    # Hoàng pays for the added weight (0.10 reduction)
+    assert out["hoan"] == pytest.approx(0.60)
+    # Total approximately preserved
+    assert sum(out.values()) == pytest.approx(sum(base.values()), abs=1e-9)
+
+
+def test_apply_furnace_bonus_no_furnace_returns_copy_of_chances():
+    from src.game.systems.alchemy import apply_furnace_bonus
+    base = {"hoan": 0.7, "huyen": 0.3}
+    out = apply_furnace_bonus(base, None)
+    assert out == base
+    assert out is not base   # must be a copy, not the same dict
+
+
+# ── Comprehension stat boosts thien rate ───────────────────────────────────
+
+
+def test_high_comprehension_shifts_quality_toward_thien():
+    """Comprehension caps at +10% thien weight before renormalisation, so a
+    high-comprehension character should hit Thiên measurably more often than
+    a zero-comprehension one across many rolls (seeded for stability)."""
+    def roll_n(comp: int, n: int = 1500) -> dict:
+        random.seed(99)
+        char = _make_char(merit=10 ** 7, comprehension=comp)
+        counts = {"hoan": 0, "huyen": 0, "dia": 0, "thien": 0}
+        for _ in range(n):
+            char.merit = 10 ** 7
+            r = craft_pill(char, "DanPhuongKimLuyenHuyetDan", _default_inv(), _default_furnaces())
+            if r.success:
+                counts[r.quality] += 1
+        return counts
+
+    low = roll_n(comp=0)
+    high = roll_n(comp=200)   # well past the cap
+    assert high["thien"] > low["thien"]
+
+
+# ── consume_pill — additional effect pathways ──────────────────────────────
+
+
+def _find_pill_by_effect(effect_key: str) -> str | None:
+    for p in registry.items.values():
+        if p.get("type") == "pill" and p.get("effect_key") == effect_key:
+            return p["key"]
+    return None
+
+
+def test_consume_restore_hp_pill_returns_heal_delta():
+    target = _find_pill_by_effect("restore_hp")
+    if not target:
+        pytest.skip("no restore_hp pill in data")
+    char = _make_char()
+    effect = consume_pill(char, target, 4)   # Thiên = max heal
+    assert effect.applied
+    assert effect.heal_delta > 0
+    assert effect.body_xp_delta == 0
+    assert effect.qi_xp_delta == 0
+
+
+def test_consume_breakthrough_pill_grants_qi_xp_scaled_by_quality():
+    """Breakthrough-tier pills push qi_xp; Thiên-quality should grant strictly
+    more than Hoàng-quality due to the implicit multiplier."""
+    target = _find_pill_by_effect("breakthrough_kim_dan")
+    if not target:
+        pytest.skip("no breakthrough_kim_dan pill in data")
+
+    char_lo = _make_char()
+    eff_lo = consume_pill(char_lo, target, 1)  # Hoàng
+    char_hi = _make_char()
+    eff_hi = consume_pill(char_hi, target, 4)  # Thiên
+
+    assert eff_lo.applied and eff_hi.applied
+    assert eff_hi.qi_xp_delta > eff_lo.qi_xp_delta > 0
+    # Breakthrough pills don't grant body_xp
+    assert eff_hi.body_xp_delta == 0
+    # And Thiên reduces toxicity accrual
+    assert eff_hi.dan_doc_delta < eff_lo.dan_doc_delta
+
+
+# ── Best-furnace selection on craft ────────────────────────────────────────
+
+
+def test_craft_picks_best_furnace_when_multiple_owned():
+    """Owning a stronger unique furnace alongside a weaker one should yield
+    the unique's quality bonus — verified via the AlchemyResult footprint."""
+    random.seed(13)
+    char = _make_char(merit=5_000)
+    result = craft_pill(
+        char, "DanPhuongKimLuyenHuyetDan", _default_inv(),
+        ["DanLoThuong_G1", "DanLoBachLuyen_G1"],
+    )
+    assert result.success
+    assert result.furnace_key == "DanLoBachLuyen_G1"
+
+
+def test_craft_uses_only_the_furnace_passed():
+    """The cog's furnace-picker passes ``[chosen_key]`` to the system; verify
+    that constraint actually constrains the craft. Owning a stronger unique
+    furnace should NOT override the user's pick of a weaker normal one."""
+    random.seed(19)
+    char = _make_char(merit=5_000)
+    # Pretend the player picked the normal furnace even though they own
+    # the better unique — only the chosen one gets passed through.
+    result = craft_pill(
+        char, "DanPhuongKimLuyenHuyetDan", _default_inv(),
+        ["DanLoThuong_G1"],
+    )
+    assert result.success
+    assert result.furnace_key == "DanLoThuong_G1"

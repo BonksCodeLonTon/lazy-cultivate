@@ -102,7 +102,7 @@
       "final_dmg_reduce": 0.08,
       "shield_regen_pct": 0.02,
       "thorn_pct": 0.1,
-      "shield_cap_pct_bonus": 0.1
+      "shield_max_pct": 0.1
     }
   },
   {
@@ -176,7 +176,7 @@
       "hp_pct": 0.1,
       "stun_on_hit_pct": 0.08,
       "damage_bonus_from_hp_pct": 0.02,
-      "shield_cap_pct_bonus": 0.05
+      "shield_max_pct": 0.05
     }
   },
   {
@@ -651,7 +651,7 @@
     "description_vi": "Ngọc thổ tạo da cứng như đá, giảm sát thương đòn đánh trực tiếp.",
     "unique_bonus": {
       "final_dmg_reduce": 0.03,
-      "shield_cap_pct_bonus": 0.03
+      "shield_max_pct": 0.03
     }
   },
   {
@@ -667,7 +667,7 @@
     "unique_bonus": {
       "final_dmg_reduce": 0.05,
       "thorn_pct": 0.05,
-      "shield_cap_pct_bonus": 0.06
+      "shield_max_pct": 0.06
     }
   },
   {
@@ -684,7 +684,7 @@
       "final_dmg_reduce": 0.06,
       "thorn_pct": 0.08,
       "shield_regen_pct": 0.015,
-      "shield_cap_pct_bonus": 0.08
+      "shield_max_pct": 0.08
     }
   },
   {
@@ -882,7 +882,7 @@
       "hp_pct": 0.08,
       "stun_on_hit_pct": 0.06,
       "damage_bonus_from_hp_pct": 0.015,
-      "shield_cap_pct_bonus": 0.04
+      "shield_max_pct": 0.04
     }
   },
   {
@@ -1275,7 +1275,7 @@
       "thorn_pct": 0.16,
       "shield_regen_flat": 40,
       "final_dmg_reduce": 0.05,
-      "shield_cap_pct_bonus": 0.06
+      "shield_max_pct": 0.06
     }
   },
   {

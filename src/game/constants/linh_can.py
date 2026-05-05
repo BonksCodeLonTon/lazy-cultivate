@@ -149,7 +149,7 @@ LINH_CAN_DATA: dict[str, dict] = {
                     "label": "Lv3 — Cương Phách: hồi 5% khiên/lượt"},
                 5: {"add_passive": {"thorn_pct": 0.08},
                     "label": "Lv5 — Phản Phệ Thuẫn: 8% phản sát thương"},
-                7: {"add_passive": {"damage_bonus_from_shield_pct": 0.20, "shield_cap_pct_bonus": 0.20},
+                7: {"add_passive": {"damage_bonus_from_shield_pct": 0.20, "shield_max_pct": 0.20},
                     "label": "Lv7 — Hậu Thổ: +20% sát thương dựa trên khiên, +20% trần khiên"},
                 9: {"add_passive": {"final_dmg_reduce": 0.10, "thorn_from_shield": True, "stun_on_hit_pct": 0.05},
                     "label": "Lv9 — Bàn Cổ Thổ Cốt: +10% giảm sát thương, phản từ khiên, 5% choáng"},

@@ -90,12 +90,23 @@ def build_attack_stats(
 
     force_crit = target.has_effect(EffectKey.DEBUFF_DONG_BANG)
 
+    # ATK / MATK scale with current Energy Shield: depleted shield = depleted
+    # punch. Constitutions like Nguyên Linh Khiên Thể (mage) and Cương Khiên
+    # Chiến Thể (physical) turn shield into a live offensive resource that
+    # drains as it absorbs hits.
+    effective_atk = actor.atk
+    if actor.atk_from_shield_pct > 0 and actor.shield > 0:
+        effective_atk += int(actor.shield * actor.atk_from_shield_pct)
+    effective_matk = actor.matk
+    if actor.matk_from_shield_pct > 0 and actor.shield > 0:
+        effective_matk += int(actor.shield * actor.matk_from_shield_pct)
+
     return AttackStats(
         crit_rating=crit_rating,
         crit_dmg_rating=crit_dmg_rating,
         final_dmg_bonus=final_dmg_bonus,
-        atk=actor.atk,
-        matk=actor.matk,
+        atk=effective_atk,
+        matk=effective_matk,
         force_crit=force_crit,
     )
 
