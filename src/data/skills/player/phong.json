@@ -1,5 +1,29 @@
 [
   {
+    "key": "SkillPhongStorm_R1",
+    "vi": "Cuồng Phong Kích",
+    "en": "Gale Strike",
+    "realm": 1,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 50,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.3
+    },
+    "formation_key": null
+  },
+  {
     "key": "SkillAtkPhong1",
     "vi": "Thiên Phong Liệt Kiếm",
     "en": "Heaven Wind Fierce Sword",
@@ -892,7 +916,7 @@
     "vi": "Cuồng Phong Bão Loạn",
     "en": "Hurricane Maelstrom",
     "realm": 9,
-    "scroll_grade": 1,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
@@ -918,5 +942,437 @@
     },
     "formation_key": null,
     "description_vi": "Đỉnh cấp Phong — gió lốc 5 đòn liên tục; mỗi 2 lần niệm bùng nổ thêm 1200 ST tích lũy."
+  },
+  {
+    "key": "SkillFillerPhongR1G1",
+    "vi": "Phong Hoàng Đoạn Thuật",
+    "en": "Phong Hoàng Severing Art",
+    "realm": 1,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 17,
+    "cooldown": 1,
+    "base_dmg": 25,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR1G3",
+    "vi": "Phong Địa Đoạn Thuật",
+    "en": "Phong Địa Severing Art",
+    "realm": 1,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 27,
+    "cooldown": 2,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR2G2",
+    "vi": "Phong Huyền Đoạn Thuật",
+    "en": "Phong Huyền Severing Art",
+    "realm": 2,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 55,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR3G4",
+    "vi": "Phong Thiên Đoạn Thuật",
+    "en": "Phong Thiên Severing Art",
+    "realm": 3,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 48,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR4G1",
+    "vi": "Phong Hoàng Đoạn Thuật",
+    "en": "Phong Hoàng Severing Art",
+    "realm": 4,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 45,
+    "cooldown": 3,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR4G2",
+    "vi": "Phong Huyền Đoạn Thuật",
+    "en": "Phong Huyền Severing Art",
+    "realm": 4,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 50,
+    "cooldown": 3,
+    "base_dmg": 135,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR5G1",
+    "vi": "Phong Hoàng Đoạn Thuật",
+    "en": "Phong Hoàng Severing Art",
+    "realm": 5,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 60,
+    "cooldown": 3,
+    "base_dmg": 160,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR5G2",
+    "vi": "Phong Huyền Đoạn Thuật",
+    "en": "Phong Huyền Severing Art",
+    "realm": 5,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 65,
+    "cooldown": 3,
+    "base_dmg": 195,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR5G3",
+    "vi": "Phong Địa Đoạn Thuật",
+    "en": "Phong Địa Severing Art",
+    "realm": 5,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 70,
+    "cooldown": 4,
+    "base_dmg": 230,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR5G4",
+    "vi": "Phong Thiên Đoạn Thuật",
+    "en": "Phong Thiên Severing Art",
+    "realm": 5,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 270,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR6G2",
+    "vi": "Phong Huyền Đoạn Thuật",
+    "en": "Phong Huyền Severing Art",
+    "realm": 6,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 80,
+    "cooldown": 4,
+    "base_dmg": 220,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR7G1",
+    "vi": "Phong Hoàng Đoạn Thuật",
+    "en": "Phong Hoàng Severing Art",
+    "realm": 7,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 240,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR7G2",
+    "vi": "Phong Huyền Đoạn Thuật",
+    "en": "Phong Huyền Severing Art",
+    "realm": 7,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 100,
+    "cooldown": 4,
+    "base_dmg": 290,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR7G3",
+    "vi": "Phong Địa Đoạn Thuật",
+    "en": "Phong Địa Severing Art",
+    "realm": 7,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 105,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR7G4",
+    "vi": "Phong Thiên Đoạn Thuật",
+    "en": "Phong Thiên Severing Art",
+    "realm": 7,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 110,
+    "cooldown": 5,
+    "base_dmg": 385,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR8G3",
+    "vi": "Phong Địa Đoạn Thuật",
+    "en": "Phong Địa Severing Art",
+    "realm": 8,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 130,
+    "cooldown": 6,
+    "base_dmg": 460,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR8G4",
+    "vi": "Phong Thiên Đoạn Thuật",
+    "en": "Phong Thiên Severing Art",
+    "realm": 8,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 135,
+    "cooldown": 6,
+    "base_dmg": 520,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR9G4",
+    "vi": "Phong Thiên Đoạn Thuật",
+    "en": "Phong Thiên Severing Art",
+    "realm": 9,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 165,
+    "cooldown": 6,
+    "base_dmg": 660,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.45
+    },
+    "formation_key": null
   }
 ]

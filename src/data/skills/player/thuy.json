@@ -59,6 +59,42 @@
     "formation_key": null
   },
   {
+    "key": "SkillThuyAbyssalDeep_R2",
+    "vi": "Thâm Hải Hàn Lưu",
+    "en": "Abyssal Frost Current",
+    "realm": 2,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.25
+    },
+    "mp_cost": 30,
+    "cooldown": 3,
+    "base_dmg": 95,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffThuyXuyenThau",
+      "CCInterrupt"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.6,
+      "DebuffThuyXuyenThau": 0.45,
+      "CCInterrupt": 0.25
+    },
+    "formation_key": null,
+    "description_vi": "Hàn lưu thâm hải — Thiên cấp R2: làm chậm + xuyên kháng Thủy + 25% cắt niệm chiêu.",
+    "effect_overrides": {
+      "DebuffThuyXuyenThau": {
+        "stat_bonus": {
+          "res_thuy": -0.13
+        }
+      }
+    }
+  },
+  {
     "key": "SkillAtkThuy_R2",
     "vi": "Thủy Nguyên Thác Đổ",
     "en": "Water Essence Cascade",
@@ -830,7 +866,7 @@
     "vi": "Hàn Băng Liên Hoàn",
     "en": "Frost Linked Strike",
     "realm": 3,
-    "scroll_grade": 2,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -856,7 +892,7 @@
     "vi": "Cuộn Triều Tích Lực",
     "en": "Tidal Charging Surge",
     "realm": 9,
-    "scroll_grade": 1,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -879,5 +915,461 @@
     },
     "formation_key": null,
     "description_vi": "Tiên cấp Thủy — niệm liên tiếp 4 lần để tích triều, lần thứ 4 vỡ òa thêm 1500 ST."
+  },
+  {
+    "key": "SkillFillerThuyR1G2",
+    "vi": "Thủy Huyền Đoạn Thuật",
+    "en": "Thủy Huyền Severing Art",
+    "realm": 1,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 1,
+    "base_dmg": 35,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR2G1",
+    "vi": "Thủy Hoàng Đoạn Thuật",
+    "en": "Thủy Hoàng Severing Art",
+    "realm": 2,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 23,
+    "cooldown": 2,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR2G4",
+    "vi": "Thủy Thiên Đoạn Thuật",
+    "en": "Thủy Thiên Severing Art",
+    "realm": 2,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 38,
+    "cooldown": 3,
+    "base_dmg": 80,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR3G3",
+    "vi": "Thủy Địa Đoạn Thuật",
+    "en": "Thủy Địa Severing Art",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 43,
+    "cooldown": 3,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR4G1",
+    "vi": "Thủy Hoàng Đoạn Thuật",
+    "en": "Thủy Hoàng Severing Art",
+    "realm": 4,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 45,
+    "cooldown": 3,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR4G2",
+    "vi": "Thủy Huyền Đoạn Thuật",
+    "en": "Thủy Huyền Severing Art",
+    "realm": 4,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 50,
+    "cooldown": 3,
+    "base_dmg": 135,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR4G4",
+    "vi": "Thủy Thiên Đoạn Thuật",
+    "en": "Thủy Thiên Severing Art",
+    "realm": 4,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 190,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR5G1",
+    "vi": "Thủy Hoàng Đoạn Thuật",
+    "en": "Thủy Hoàng Severing Art",
+    "realm": 5,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 60,
+    "cooldown": 3,
+    "base_dmg": 160,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR6G1",
+    "vi": "Thủy Hoàng Đoạn Thuật",
+    "en": "Thủy Hoàng Severing Art",
+    "realm": 6,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR6G3",
+    "vi": "Thủy Địa Đoạn Thuật",
+    "en": "Thủy Địa Severing Art",
+    "realm": 6,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 85,
+    "cooldown": 5,
+    "base_dmg": 260,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR6G4",
+    "vi": "Thủy Thiên Đoạn Thuật",
+    "en": "Thủy Thiên Severing Art",
+    "realm": 6,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 90,
+    "cooldown": 5,
+    "base_dmg": 295,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR7G2",
+    "vi": "Thủy Huyền Đoạn Thuật",
+    "en": "Thủy Huyền Severing Art",
+    "realm": 7,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 100,
+    "cooldown": 4,
+    "base_dmg": 290,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR7G3",
+    "vi": "Thủy Địa Đoạn Thuật",
+    "en": "Thủy Địa Severing Art",
+    "realm": 7,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 105,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR8G1",
+    "vi": "Thủy Hoàng Đoạn Thuật",
+    "en": "Thủy Hoàng Severing Art",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 120,
+    "cooldown": 5,
+    "base_dmg": 320,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR8G2",
+    "vi": "Thủy Huyền Đoạn Thuật",
+    "en": "Thủy Huyền Severing Art",
+    "realm": 8,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 125,
+    "cooldown": 5,
+    "base_dmg": 390,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR8G4",
+    "vi": "Thủy Thiên Đoạn Thuật",
+    "en": "Thủy Thiên Severing Art",
+    "realm": 8,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 135,
+    "cooldown": 6,
+    "base_dmg": 520,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR9G2",
+    "vi": "Thủy Huyền Đoạn Thuật",
+    "en": "Thủy Huyền Severing Art",
+    "realm": 9,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 155,
+    "cooldown": 5,
+    "base_dmg": 510,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR9G3",
+    "vi": "Thủy Địa Đoạn Thuật",
+    "en": "Thủy Địa Severing Art",
+    "realm": 9,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 160,
+    "cooldown": 6,
+    "base_dmg": 590,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerThuyR9G4",
+    "vi": "Thủy Thiên Đoạn Thuật",
+    "en": "Thủy Thiên Severing Art",
+    "realm": 9,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 165,
+    "cooldown": 6,
+    "base_dmg": 660,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.45
+    },
+    "formation_key": null
   }
 ]

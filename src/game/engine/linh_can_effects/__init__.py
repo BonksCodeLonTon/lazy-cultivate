@@ -30,6 +30,9 @@ __all__ = [
     "am", "hoa", "kim", "loi", "moc", "phong", "quang", "tho", "thuy",
     "try_dodge", "try_cleanse", "get_pen_pct", "on_hit", "check_shield",
     "get_regen_bonus",
+    # Thổ shield-buff toolkit (re-exported so callers can grant shields
+    # without importing the submodule directly).
+    "grant_shield", "tick_shield_regen", "shield_dmg_bonus",
 ]
 
 
@@ -76,6 +79,21 @@ def on_hit(
 def check_shield(combatant: "Combatant", log: list[str]) -> None:
     """Periodic: Thổ may activate a one-time HP shield when low."""
     tho.check_shield(combatant, log)
+
+
+def grant_shield(combatant: "Combatant", **kwargs) -> int:
+    """Re-export of ``tho.grant_shield`` — grant a composed shield buff."""
+    return tho.grant_shield(combatant, **kwargs)
+
+
+def tick_shield_regen(combatant: "Combatant", log: list[str] | None = None, **kwargs) -> int:
+    """Re-export of ``tho.tick_shield_regen`` — one regen pulse, no pause."""
+    return tho.tick_shield_regen(combatant, log, **kwargs)
+
+
+def shield_dmg_bonus(combatant: "Combatant") -> int:
+    """Re-export of ``tho.shield_dmg_bonus`` — current shield × dmg-from-shield."""
+    return tho.shield_dmg_bonus(combatant)
 
 
 def get_regen_bonus(linh_can: Iterable[str], level: int = 1) -> float:

@@ -1,5 +1,32 @@
 [
   {
+    "key": "SkillKimAncestralBlade_R1",
+    "vi": "Tổ Sư Truyền Kiếm",
+    "en": "Ancestral Sword Inheritance",
+    "realm": 1,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 16,
+    "cooldown": 2,
+    "base_dmg": 60,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.45,
+      "DebuffXeRach": 0.3
+    },
+    "formation_key": null,
+    "description_vi": "Cổ kiếm tâm pháp truyền lại — Hoàng đạo cấp 1 vẫn có thể thi triển tinh hoa Thiên cấp."
+  },
+  {
     "key": "SkillAtkKim1",
     "vi": "Thiên Kim Kiếm Khí",
     "en": "Heaven Metal Sword Qi",
@@ -58,6 +85,30 @@
     "effects": [
       "DebuffCatDut"
     ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillKimEdgeStorm_R3",
+    "vi": "Kim Đao Phong Bão",
+    "en": "Metal-Blade Storm",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 30,
+    "cooldown": 3,
+    "base_dmg": 90,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.45
+    },
     "formation_key": null
   },
   {
@@ -812,7 +863,7 @@
     "vi": "Kim Cương Thất Tinh Trảm",
     "en": "Diamond Seven-Star Cleave",
     "realm": 9,
-    "scroll_grade": 1,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -834,5 +885,389 @@
     "hit_count": 7,
     "formation_key": null,
     "description_vi": "Đỉnh cấp Kim — niệm 1 chiêu, kiếm khí thất tinh chém 7 đòn liên tiếp, mỗi đòn riêng có thể bạo + áp Chảy Máu / Xé Rách."
+  },
+  {
+    "key": "SkillAtkKim_R8Basic",
+    "vi": "Vạn Kim Trảm Phong",
+    "en": "Myriad-Metal Wind-Cleaver",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 300,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR1G4",
+    "vi": "Kim Thiên Đoạn Thuật",
+    "en": "Kim Thiên Severing Art",
+    "realm": 1,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 32,
+    "cooldown": 2,
+    "base_dmg": 55,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR2G1",
+    "vi": "Kim Hoàng Đoạn Thuật",
+    "en": "Kim Hoàng Severing Art",
+    "realm": 2,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 23,
+    "cooldown": 2,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR3G1",
+    "vi": "Kim Hoàng Đoạn Thuật",
+    "en": "Kim Hoàng Severing Art",
+    "realm": 3,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 33,
+    "cooldown": 2,
+    "base_dmg": 70,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR3G3",
+    "vi": "Kim Địa Đoạn Thuật",
+    "en": "Kim Địa Severing Art",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 43,
+    "cooldown": 3,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR4G1",
+    "vi": "Kim Hoàng Đoạn Thuật",
+    "en": "Kim Hoàng Severing Art",
+    "realm": 4,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 45,
+    "cooldown": 3,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR4G3",
+    "vi": "Kim Địa Đoạn Thuật",
+    "en": "Kim Địa Severing Art",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 160,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR5G1",
+    "vi": "Kim Hoàng Đoạn Thuật",
+    "en": "Kim Hoàng Severing Art",
+    "realm": 5,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 60,
+    "cooldown": 3,
+    "base_dmg": 160,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR5G2",
+    "vi": "Kim Huyền Đoạn Thuật",
+    "en": "Kim Huyền Severing Art",
+    "realm": 5,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 65,
+    "cooldown": 3,
+    "base_dmg": 195,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR5G4",
+    "vi": "Kim Thiên Đoạn Thuật",
+    "en": "Kim Thiên Severing Art",
+    "realm": 5,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 270,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR6G3",
+    "vi": "Kim Địa Đoạn Thuật",
+    "en": "Kim Địa Severing Art",
+    "realm": 6,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 85,
+    "cooldown": 5,
+    "base_dmg": 260,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR7G1",
+    "vi": "Kim Hoàng Đoạn Thuật",
+    "en": "Kim Hoàng Severing Art",
+    "realm": 7,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 240,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR7G4",
+    "vi": "Kim Thiên Đoạn Thuật",
+    "en": "Kim Thiên Severing Art",
+    "realm": 7,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 110,
+    "cooldown": 5,
+    "base_dmg": 385,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR8G1",
+    "vi": "Kim Hoàng Đoạn Thuật",
+    "en": "Kim Hoàng Severing Art",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 120,
+    "cooldown": 5,
+    "base_dmg": 320,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR8G3",
+    "vi": "Kim Địa Đoạn Thuật",
+    "en": "Kim Địa Severing Art",
+    "realm": 8,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 130,
+    "cooldown": 6,
+    "base_dmg": 460,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerKimR9G1",
+    "vi": "Kim Hoàng Đoạn Thuật",
+    "en": "Kim Hoàng Severing Art",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 150,
+    "cooldown": 5,
+    "base_dmg": 420,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
   }
 ]

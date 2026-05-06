@@ -51,7 +51,7 @@
       "shield_regen_flat": 30,
       "shield_max_pct": 0.1
     },
-    "description_vi": "Giáp khắc phù thổ linh — hồi 3% HP max thành khiên + 30 flat mỗi lượt, trần khiên +10% HP max."
+    "description_vi": "Giáp khắc phù thổ linh — hồi 3% HP max thành khiên + 30 flat mỗi lượt, khiên tối đa +10% HP max."
   },
   {
     "key": "uniq_thach_gai_thuan",
@@ -161,7 +161,7 @@
       "shield_regen_flat": 80,
       "shield_max_pct": 0.15
     },
-    "description_vi": "Đai địa huyệt — +80 khiên/lượt, trần khiên +15% HP max."
+    "description_vi": "Đai địa huyệt — +80 khiên/lượt, khiên tối đa +15% HP max."
   },
   {
     "key": "uniq_son_hai_boi",
@@ -189,7 +189,7 @@
       "thorn_from_shield": true,
       "shield_max_pct": 0.2
     },
-    "description_vi": "Bội Sơn Hải — mỗi đòn +45% khiên làm ST, trần khiên +20% HP max, gai trừ trước từ khiên."
+    "description_vi": "Bội Sơn Hải — mỗi đòn +45% khiên làm ST, khiên tối đa +20% HP max, gai trừ trước từ khiên."
   },
   {
     "key": "uniq_thach_vuong_nhan",
@@ -244,7 +244,7 @@
       "damage_bonus_from_shield_pct": 0.5,
       "shield_max_pct": 0.25
     },
-    "description_vi": "Bội Thổ Tổ — +200 khiên/lượt, trần khiên +25% HP max, +50% khiên làm ST. Bộ Thổ Tổ 3 mảnh hoàn chỉnh."
+    "description_vi": "Bội Thổ Tổ — +200 khiên/lượt, khiên tối đa +25% HP max, +50% khiên làm ST. Bộ Thổ Tổ 3 mảnh hoàn chỉnh."
   },
   {
     "key": "uniq_tho_tu_giap",
@@ -300,6 +300,6 @@
       "damage_bonus_from_shield_pct": 0.6,
       "shield_max_pct": 0.3
     },
-    "description_vi": "Mão tiên Thổ Tổ — hồi 8% khiên/lượt, trần khiên +30% HP max (tối đa 60%), đòn +60% khiên làm ST."
+    "description_vi": "Mão tiên Thổ Tổ — hồi 8% khiên/lượt, khiên tối đa +30% HP max (tối đa 60%), đòn +60% khiên làm ST."
   }
 ]

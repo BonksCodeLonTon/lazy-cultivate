@@ -21,6 +21,58 @@
     "formation_key": null
   },
   {
+    "key": "SkillLoiHeavenLord_R2",
+    "vi": "Lôi Bá Thần Pháp",
+    "en": "Heavenly Thunder Lord Art",
+    "realm": 2,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.25
+    },
+    "mp_cost": 30,
+    "cooldown": 3,
+    "base_dmg": 95,
+    "effects": [
+      "DebuffSocDien",
+      "DebuffSocDien",
+      "DebuffTeLiet"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.7,
+      "DebuffTeLiet": 0.35
+    },
+    "formation_key": null,
+    "description_vi": "Lôi bá thần pháp — Thiên cấp R2: chồng 2 tầng Sốc Điện và 35% gây Tê Liệt."
+  },
+  {
+    "key": "SkillLoiHeavenBolt_R2",
+    "vi": "Tiểu Lôi Thiên Đả",
+    "en": "Lesser Heaven-Bolt",
+    "realm": 2,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.05
+    },
+    "mp_cost": 26,
+    "cooldown": 2,
+    "base_dmg": 75,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null
+  },
+  {
     "key": "SkillAtkLoiSocR2",
     "vi": "Lôi Giáng Sốc Điện",
     "en": "Thunder Shock Strike",
@@ -309,7 +361,7 @@
     "vi": "Bát Cực Sốc Nổ",
     "en": "Eight-Poles Shock Burst",
     "realm": 5,
-    "scroll_grade": 2,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -466,7 +518,7 @@
     "vi": "Lôi Chú Bùng Nổ",
     "en": "Thunder Curse Detonation",
     "realm": 7,
-    "scroll_grade": 2,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -813,7 +865,7 @@
     "vi": "Lôi Đình Chấn Thiên Sát",
     "en": "Thunder Heaven-Shock Finisher",
     "realm": 9,
-    "scroll_grade": 1,
+    "scroll_grade": 3,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -839,5 +891,413 @@
     },
     "formation_key": null,
     "description_vi": "Đỉnh cấp Lôi — tự động phát động khi địch đạt 5 tầng Sốc Điện, gây ST khủng + 50% choáng và tiêu hết stack Sốc."
+  },
+  {
+    "key": "SkillFillerLoiR1G1",
+    "vi": "Lôi Hoàng Đoạn Thuật",
+    "en": "Lôi Hoàng Severing Art",
+    "realm": 1,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 17,
+    "cooldown": 1,
+    "base_dmg": 25,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR2G1",
+    "vi": "Lôi Hoàng Đoạn Thuật",
+    "en": "Lôi Hoàng Severing Art",
+    "realm": 2,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 23,
+    "cooldown": 2,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR2G2",
+    "vi": "Lôi Huyền Đoạn Thuật",
+    "en": "Lôi Huyền Severing Art",
+    "realm": 2,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 55,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR2G3",
+    "vi": "Lôi Địa Đoạn Thuật",
+    "en": "Lôi Địa Severing Art",
+    "realm": 2,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 33,
+    "cooldown": 3,
+    "base_dmg": 65,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR2G4",
+    "vi": "Lôi Thiên Đoạn Thuật",
+    "en": "Lôi Thiên Severing Art",
+    "realm": 2,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 38,
+    "cooldown": 3,
+    "base_dmg": 80,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR3G4",
+    "vi": "Lôi Thiên Đoạn Thuật",
+    "en": "Lôi Thiên Severing Art",
+    "realm": 3,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 48,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR4G1",
+    "vi": "Lôi Hoàng Đoạn Thuật",
+    "en": "Lôi Hoàng Severing Art",
+    "realm": 4,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 45,
+    "cooldown": 3,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR5G1",
+    "vi": "Lôi Hoàng Đoạn Thuật",
+    "en": "Lôi Hoàng Severing Art",
+    "realm": 5,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 60,
+    "cooldown": 3,
+    "base_dmg": 160,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR6G1",
+    "vi": "Lôi Hoàng Đoạn Thuật",
+    "en": "Lôi Hoàng Severing Art",
+    "realm": 6,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR6G3",
+    "vi": "Lôi Địa Đoạn Thuật",
+    "en": "Lôi Địa Severing Art",
+    "realm": 6,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 85,
+    "cooldown": 5,
+    "base_dmg": 260,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR7G1",
+    "vi": "Lôi Hoàng Đoạn Thuật",
+    "en": "Lôi Hoàng Severing Art",
+    "realm": 7,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 240,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR7G3",
+    "vi": "Lôi Địa Đoạn Thuật",
+    "en": "Lôi Địa Severing Art",
+    "realm": 7,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 105,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR7G4",
+    "vi": "Lôi Thiên Đoạn Thuật",
+    "en": "Lôi Thiên Severing Art",
+    "realm": 7,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 110,
+    "cooldown": 5,
+    "base_dmg": 385,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR8G1",
+    "vi": "Lôi Hoàng Đoạn Thuật",
+    "en": "Lôi Hoàng Severing Art",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 120,
+    "cooldown": 5,
+    "base_dmg": 320,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR8G2",
+    "vi": "Lôi Huyền Đoạn Thuật",
+    "en": "Lôi Huyền Severing Art",
+    "realm": 8,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 125,
+    "cooldown": 5,
+    "base_dmg": 390,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR8G3",
+    "vi": "Lôi Địa Đoạn Thuật",
+    "en": "Lôi Địa Severing Art",
+    "realm": 8,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 130,
+    "cooldown": 6,
+    "base_dmg": 460,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR9G4",
+    "vi": "Lôi Thiên Đoạn Thuật",
+    "en": "Lôi Thiên Severing Art",
+    "realm": 9,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 165,
+    "cooldown": 6,
+    "base_dmg": 660,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null
   }
 ]
