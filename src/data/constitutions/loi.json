@@ -6,7 +6,10 @@
     "rarity": "common",
     "element": "loi",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Lôi sơ khởi tụ trong thân, mọi thuộc tính né tránh đều được khơi dậy.",
     "stat_bonuses": {
       "spd_bonus": 6,
@@ -26,7 +29,10 @@
     "rarity": "common",
     "element": "loi",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Lôi sơ khởi tụ trong thân, mọi thuộc tính bạo kích đều được khơi dậy.",
     "stat_bonuses": {
       "spd_bonus": 5,
@@ -46,7 +52,10 @@
     "rarity": "common",
     "element": "loi",
     "roll_weight": 40,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Thân mang thiên lôi, hành động mau và tích điện mỗi đòn đánh.",
     "stat_bonuses": {
       "spd_bonus": 4,
@@ -66,7 +75,10 @@
     "rarity": "common",
     "element": "loi",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Lôi sơ khởi tụ trong thân, mọi thuộc tính sát thương bạo kích đều được khơi dậy.",
     "stat_bonuses": {
       "spd_bonus": 3,
@@ -88,7 +100,10 @@
     "rarity": "uncommon",
     "element": "loi",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Hắc lôi ẩn dưới da, tốc độ tấn công và tê liệt kẻ địch đồng thời.",
     "stat_bonuses": {
       "spd_bonus": 6,
@@ -111,7 +126,10 @@
     "rarity": "uncommon",
     "element": "loi",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Lôi đã hậu nhập huyết mạch — sức mạnh né tránh vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "spd_bonus": 10,
@@ -131,7 +149,10 @@
     "rarity": "uncommon",
     "element": "loi",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Lôi đã hậu nhập huyết mạch — sức mạnh bạo kích vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "spd_bonus": 8,
@@ -151,7 +172,10 @@
     "rarity": "uncommon",
     "element": "loi",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Lôi đã hậu nhập huyết mạch — sức mạnh sát thương bạo kích vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "spd_bonus": 5,
@@ -173,7 +197,10 @@
     "rarity": "rare",
     "element": "loi",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Lôi, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "spd_bonus": 14,
@@ -194,7 +221,10 @@
     "rarity": "rare",
     "element": "loi",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Lôi, bạo kích mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "spd_bonus": 12,
@@ -215,7 +245,10 @@
     "rarity": "rare",
     "element": "loi",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Lôi, sát thương bạo kích mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "spd_bonus": 7,
@@ -238,13 +271,16 @@
     "rarity": "rare",
     "element": "loi",
     "roll_weight": 6,
-    "cost_merit": 15000,
+    "cost": {
+      "merit": 15000,
+      "stones": 0
+    },
     "passive_description_vi": "Tử lôi bạo phát, tốc độ thần tốc và cơn giông sét đánh liên hồi vào kẻ địch.",
     "stat_bonuses": {
       "spd_bonus": 8,
       "crit_rating": 150,
       "shock_on_hit_pct": 0.18,
-      "element_res_shred": {
+      "element_pen": {
         "loi": 0.1
       },
       "element_dmg_bonus": {
@@ -265,7 +301,10 @@
     "rarity": "epic",
     "element": "loi",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Lôi đình từ Cửu Tiêu giáng xuống — tốc độ vượt âm thanh, sấm sét xé thịt kẻ thù.",
     "stat_bonuses": {
       "spd_bonus": 11,
@@ -292,7 +331,10 @@
     "rarity": "epic",
     "element": "loi",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Lôi cộng hưởng với đại đạo, né tránh bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "spd_bonus": 21,
@@ -315,7 +357,10 @@
     "rarity": "epic",
     "element": "loi",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Lôi cộng hưởng với đại đạo, bạo kích bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "spd_bonus": 18,
@@ -339,7 +384,10 @@
     "rarity": "epic",
     "element": "loi",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Lôi cộng hưởng với đại đạo, sát thương bạo kích bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "spd_bonus": 10,
@@ -365,7 +413,10 @@
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình né tránh, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "multi_strike_pct": 0.15,
@@ -384,8 +435,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssLoi": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionLoiCuong_Leg",
@@ -394,7 +444,10 @@
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "multi_strike_pct": 0.18,
@@ -413,8 +466,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssLoi": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionLoiTu_Leg",
@@ -423,7 +475,10 @@
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế Tử Lôi Thể — **Lôi Đế Phán Quyết**: thiên lôi giáng phạt, mỗi đòn chí mạng đều có thể tê liệt đối thủ, tốc độ kinh thiên cướp lượt liên tiếp.",
     "stat_bonuses": {
       "spd_bonus": 22,
@@ -446,8 +501,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssLoi": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionThienLoiThan",
@@ -456,7 +510,10 @@
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Thân là lôi, lôi là thân — mỗi đòn gây chồng Sốc Điện và có cơ hội cướp lượt hành động.",
     "stat_bonuses": {
       "spd_bonus": 15,
@@ -464,7 +521,7 @@
       "shock_on_hit_pct": 0.35,
       "shock_stack_cap_bonus": 3,
       "shock_per_stack_pct_bonus": 0.01,
-      "element_res_shred": {
+      "element_pen": {
         "loi": 0.2
       },
       "turn_steal_pct": 0.12,
@@ -476,7 +533,6 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssLoi": 6
-    },
-    "cost_stones": 80000
+    }
   }
 ]

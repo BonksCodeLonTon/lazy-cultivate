@@ -525,7 +525,7 @@ def test_han_khi_aura_respects_hard_cc_immunity():
 
 def test_am_res_shred_applied_in_defense_stats():
     from src.game.engine.damage import build_defense_stats, spd_evasion_bonus
-    actor = make_combatant("a", element_res_shred={"am": 0.2})
+    actor = make_combatant("a", element_pen={"am": 0.2})
     target = make_combatant("t")
     target.resistances = {"am": 0.3}
     defs = build_defense_stats(target, {}, actor, spd_evasion_bonus)
@@ -612,10 +612,10 @@ def test_heal_crit_respects_bleed_heal_reduce():
 
 
 def test_quang_res_shred_reduces_target_resistance():
-    """element_res_shred[quang] on attacker is picked up by build_defense_stats."""
+    """element_pen[quang] on attacker is picked up by build_defense_stats."""
     from src.game.engine.damage.combat_hit import build_defense_stats, spd_evasion_bonus
 
-    attacker = make_combatant("a", element_res_shred={"quang": 0.2})
+    attacker = make_combatant("a", element_pen={"quang": 0.2})
     defender = make_combatant("t", resistances={"quang": 0.5})
     stats = build_defense_stats(defender, target_mods={}, actor=attacker,
                                 spd_evasion_bonus=spd_evasion_bonus)

@@ -271,13 +271,13 @@ ENCOUNTER_GRADES: list[dict] = [
     {
         "key": "vuong_gia", "vi": "Vương Giả", "emoji": "👑",
         "w_min": 4, "w_max": 14,
-        "stat_mult": 2.50, "loot_mult": 2.5, "luck_pct": 1.00, "merit_mult": 4.0,
+        "stat_mult": 2.80, "loot_mult": 3.0, "luck_pct": 1.20, "merit_mult": 4.0,
         "secondary_count": 2, "secondary_lo": 0.20, "secondary_hi": 0.40,
     },
     {
         "key": "truyen_thuyet", "vi": "Truyền Thuyết", "emoji": "🔱",
         "w_min": 1, "w_max": 6,
-        "stat_mult": 3.50, "loot_mult": 4.0, "luck_pct": 2.00, "merit_mult": 8.0,
+        "stat_mult": 4.20, "loot_mult": 5.0, "luck_pct": 2.50, "merit_mult": 8.0,
         "secondary_count": 3, "secondary_lo": 0.30, "secondary_hi": 0.50,
     },
 ]

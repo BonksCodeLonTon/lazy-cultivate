@@ -13,6 +13,7 @@ from src.game.systems.cultivation import can_breakthrough
 from src.game.systems.cultivation_service import apply_offline_ticks
 from src.game.systems.dungeon import best_axis_realm, compute_realm_total
 from src.game.systems.status import build_status_snapshot
+from src.utils import emojis
 from src.utils.embed_builder import character_embed, error_embed
 from src.bot.cogs.cultivation import (
     _cultivate_embed,
@@ -26,6 +27,9 @@ log = logging.getLogger(__name__)
 
 def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
     from src.game.constants.linh_can import LINH_CAN_DATA
+    from src.game.systems.the_chat import get_constitutions
+    from src.data.registry import registry
+    from src.bot.cogs.constitution import _format_bonus_lines
 
     stats, linh_can_list = build_status_snapshot(player)
     embed = character_embed(player.name, stats, avatar_url=avatar_url)
@@ -37,6 +41,25 @@ def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
             if lc:
                 lc_parts.append(f"{lc['emoji']} **{lc['vi']}** — {lc['description']}")
         embed.add_field(name="⭐ Linh Căn", value="\n".join(lc_parts), inline=False)
+
+    equipped = get_constitutions(player.constitution_type)
+    for key in equipped:
+        const_data = registry.get_constitution(key)
+        if not const_data:
+            continue
+        rarity = const_data.get("rarity", "common")
+        bonus_lines = _format_bonus_lines(const_data.get("stat_bonuses", {}))
+        value_parts: list[str] = []
+        desc = const_data.get("passive_description_vi")
+        if desc:
+            value_parts.append(f"_{desc}_")
+        if bonus_lines:
+            value_parts.append("\n".join(bonus_lines))
+        embed.add_field(
+            name=f"🧬 {emojis.for_rarity(rarity)} {const_data['vi']}",
+            value="\n".join(value_parts) if value_parts else "*(không có hiệu ứng)*",
+            inline=False,
+        )
 
     return embed
 

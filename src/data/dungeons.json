@@ -428,10 +428,16 @@
     "required_qi_realm": 0,
     "wave_count": 3,
     "enemy_pool": [
+      "LCKim_T0_KimSaTieuTot",
       "LCKim_T1_KimCuongThietSai",
+      "LCKim_T1b_BachKimDaoVe",
       "LCKim_T2_BachNganLongPhach",
+      "LCKim_T2b_HacKimCuPhach",
       "LCKim_T3_CuKimQuanTuong",
-      "LCKim_Apex_HonKimDaiDe"
+      "LCKim_T3b_ThienKimChienVuong",
+      "LCKim_Apex_HonKimDaiDe",
+      "LCKim_Apex2_VanKimTinhQuan",
+      "LCKim_Sovereign_ThaiCoKimHoang"
     ],
     "merit_reward": 100,
     "stone_reward": 0
@@ -454,10 +460,16 @@
     "required_qi_realm": 0,
     "wave_count": 3,
     "enemy_pool": [
+      "LCMoc_T0_MocTieuYeu",
       "LCMoc_T1_LucDiepYeuDang",
+      "LCMoc_T1b_LucDiepHoLinh",
       "LCMoc_T2_TuDangMocLinh",
+      "LCMoc_T2b_NganNamDangQuai",
       "LCMoc_T3_BoDeCoTinh",
-      "LCMoc_Apex_HonNguyenLinhMoc"
+      "LCMoc_T3b_CoMocTienVuong",
+      "LCMoc_Apex_HonNguyenLinhMoc",
+      "LCMoc_Apex2_VanDiepSinhQuan",
+      "LCMoc_Sovereign_ThaiCoMocTo"
     ],
     "merit_reward": 100,
     "stone_reward": 0
@@ -480,10 +492,16 @@
     "required_qi_realm": 0,
     "wave_count": 3,
     "enemy_pool": [
+      "LCThuy_T0_ThuyTinhTieuQuai",
       "LCThuy_T1_HanBangYeuCua",
+      "LCThuy_T1b_HanBangLangVe",
       "LCThuy_T2_BichHaiLinhLong",
+      "LCThuy_T2b_LongViTrieuLinh",
       "LCThuy_T3_VanNienHaiDe",
-      "LCThuy_Apex_CuuUHanDe"
+      "LCThuy_T3b_ThamUyenHaiTuong",
+      "LCThuy_Apex_CuuUHanDe",
+      "LCThuy_Apex2_BacMinhThanQuan",
+      "LCThuy_Sovereign_ThaiSoHaiDe"
     ],
     "merit_reward": 100,
     "stone_reward": 0
@@ -506,10 +524,16 @@
     "required_qi_realm": 0,
     "wave_count": 3,
     "enemy_pool": [
+      "LCHoa_T0_TieuDiemHoaTinh",
       "LCHoa_T1_HongDiemTinhLinh",
+      "LCHoa_T1b_LuuLyHoaKhoi",
       "LCHoa_T2_PhuongHoangHoaLinh",
+      "LCHoa_T2b_DiemHoTinhQuan",
       "LCHoa_T3_LietDuongHoaDe",
-      "LCHoa_Apex_ThaiDuongDanTam"
+      "LCHoa_T3b_PhuongHoangLietTuong",
+      "LCHoa_Apex_ThaiDuongDanTam",
+      "LCHoa_Apex2_CuuDuongHoaDe",
+      "LCHoa_Sovereign_HongHoangHoaTo"
     ],
     "merit_reward": 100,
     "stone_reward": 0
@@ -532,10 +556,16 @@
     "required_qi_realm": 0,
     "wave_count": 3,
     "enemy_pool": [
+      "LCTho_T0_DatLinhTieuQuai",
       "LCTho_T1_CuongPhachThoLinh",
+      "LCTho_T1b_ThachGiapVeSi",
       "LCTho_T2_BanSonCuThach",
+      "LCTho_T2b_HauThoCuLinh",
       "LCTho_T3_HauThoLinhTuong",
-      "LCTho_Apex_BanCoThoDe"
+      "LCTho_T3b_KimCuongThoTuong",
+      "LCTho_Apex_BanCoThoDe",
+      "LCTho_Apex2_HauThoThanQuan",
+      "LCTho_Sovereign_ThaiCoDiaHoang"
     ],
     "merit_reward": 100,
     "stone_reward": 0
@@ -558,10 +588,16 @@
     "required_qi_realm": 0,
     "wave_count": 3,
     "enemy_pool": [
+      "LCPhong_T0_PhongTieuLinh",
       "LCPhong_T1_TuVuLinhDieu",
+      "LCPhong_T1b_LuuPhongSuGia",
       "LCPhong_T2_CuongPhongYeuHo",
+      "LCPhong_T2b_CuongPhongLinhHo",
       "LCPhong_T3_PhongThanLinhTuong",
-      "LCPhong_Apex_BanCoPhongDe"
+      "LCPhong_T3b_VanLyPhongVuTuong",
+      "LCPhong_Apex_BanCoPhongDe",
+      "LCPhong_Apex2_CuuTieuPhongQuan",
+      "LCPhong_Sovereign_ThaiSoPhongHoang"
     ],
     "merit_reward": 100,
     "stone_reward": 0
@@ -584,10 +620,16 @@
     "required_qi_realm": 0,
     "wave_count": 3,
     "enemy_pool": [
+      "LCLoi_T0_LoiTinhTieuQuai",
       "LCLoi_T1_TuDienLoiSai",
+      "LCLoi_T1b_TuDienLinhVu",
       "LCLoi_T2_CuuKhucLoiLong",
+      "LCLoi_T2b_CuongLoiCuTuong",
       "LCLoi_T3_ThanLoiLinhTuong",
-      "LCLoi_Apex_ThaiSoLoiDe"
+      "LCLoi_T3b_TuLoiLongVuong",
+      "LCLoi_Apex_ThaiSoLoiDe",
+      "LCLoi_Apex2_CuuTrungLoiTuong",
+      "LCLoi_Sovereign_ThaiCoLoiDe"
     ],
     "merit_reward": 100,
     "stone_reward": 0
@@ -610,10 +652,16 @@
     "required_qi_realm": 0,
     "wave_count": 3,
     "enemy_pool": [
+      "LCQuang_T0_QuangTieuTinh",
       "LCQuang_T1_HoangQuangLinhSu",
+      "LCQuang_T1b_TinhQuangHoVe",
       "LCQuang_T2_ThanhQuangVeTuong",
+      "LCQuang_T2b_DaiNhatQuangLinh",
       "LCQuang_T3_PhatTamBoTat",
-      "LCQuang_Apex_DaiLaQuangDe"
+      "LCQuang_T3b_PhatQuangBoTat",
+      "LCQuang_Apex_DaiLaQuangDe",
+      "LCQuang_Apex2_DaiLaTienTuong",
+      "LCQuang_Sovereign_ThaiSoQuangDe"
     ],
     "merit_reward": 100,
     "stone_reward": 0
@@ -636,10 +684,16 @@
     "required_qi_realm": 0,
     "wave_count": 3,
     "enemy_pool": [
+      "LCAm_T0_AmHonTieuQuai",
       "LCAm_T1_HacDieuYeuHon",
+      "LCAm_T1b_ULinhQuyVe",
       "LCAm_T2_CuuAmULinh",
+      "LCAm_T2b_HacVuMaLinh",
       "LCAm_T3_UMinhDaiTuong",
-      "LCAm_Apex_DietTheHacDe"
+      "LCAm_T3b_UMinhTuTuong",
+      "LCAm_Apex_DietTheHacDe",
+      "LCAm_Apex2_CuuUDietHonQuan",
+      "LCAm_Sovereign_HonDonAmDe"
     ],
     "merit_reward": 100,
     "stone_reward": 0

@@ -6,7 +6,10 @@
     "rarity": "common",
     "element": "quang",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Quang sơ khởi tụ trong thân, mọi thuộc tính kháng bạo đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.06,
@@ -28,7 +31,10 @@
     "rarity": "common",
     "element": "quang",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Quang sơ khởi tụ trong thân, mọi thuộc tính linh lực đều được khơi dậy.",
     "stat_bonuses": {
       "mp_pct": 0.08,
@@ -48,7 +54,10 @@
     "rarity": "common",
     "element": "quang",
     "roll_weight": 40,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Thần quang nhẹ tỏa, tự thanh lọc debuff và hồi phục nhẹ mỗi lượt.",
     "stat_bonuses": {
       "hp_pct": 0.06,
@@ -69,7 +78,10 @@
     "rarity": "common",
     "element": "quang",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Quang sơ khởi tụ trong thân, mọi thuộc tính thanh tẩy đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.07,
@@ -90,7 +102,10 @@
     "rarity": "uncommon",
     "element": "quang",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Hào quang trắng tinh khiết bao quanh thân, gột rửa độc tố và hồi phục thường xuyên.",
     "stat_bonuses": {
       "hp_pct": 0.1,
@@ -111,7 +126,10 @@
     "rarity": "uncommon",
     "element": "quang",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Quang đã hậu nhập huyết mạch — sức mạnh kháng bạo vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.096,
@@ -133,7 +151,10 @@
     "rarity": "uncommon",
     "element": "quang",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Quang đã hậu nhập huyết mạch — sức mạnh linh lực vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "mp_pct": 0.128,
@@ -153,7 +174,10 @@
     "rarity": "uncommon",
     "element": "quang",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Quang đã hậu nhập huyết mạch — sức mạnh thanh tẩy vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.112,
@@ -174,7 +198,10 @@
     "rarity": "rare",
     "element": "quang",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Quang, kháng bạo mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.144,
@@ -197,7 +224,10 @@
     "rarity": "rare",
     "element": "quang",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Quang, linh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "mp_pct": 0.192,
@@ -218,7 +248,10 @@
     "rarity": "rare",
     "element": "quang",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Quang, thanh tẩy mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.168,
@@ -240,7 +273,10 @@
     "rarity": "rare",
     "element": "quang",
     "roll_weight": 6,
-    "cost_merit": 15000,
+    "cost": {
+      "merit": 15000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân mang thánh quang áp chế tà khí, cấm phép và khóa hồi máu đối thủ.",
     "stat_bonuses": {
       "hp_pct": 0.15,
@@ -263,7 +299,10 @@
     "rarity": "epic",
     "element": "quang",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Quang cộng hưởng với đại đạo, kháng bạo bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.21,
@@ -288,7 +327,10 @@
     "rarity": "epic",
     "element": "quang",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Quang cộng hưởng với đại đạo, linh lực bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "mp_pct": 0.28,
@@ -313,7 +355,10 @@
     "rarity": "epic",
     "element": "quang",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Quang cộng hưởng với đại đạo, thanh tẩy bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.245,
@@ -339,7 +384,10 @@
     "rarity": "epic",
     "element": "quang",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thiên quang bao phủ toàn thân, mọi tà khí đều bị thanh tẩy, mọi vết thương đều mau lành.",
     "stat_bonuses": {
       "hp_pct": 0.2,
@@ -365,7 +413,10 @@
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế Kim Quang Thể — **Thánh Quang Hộ Thuẫn**: Thanh Tẩy tự sinh khiên, khí lực khiên cộng vào sát thương. Hộ pháp sáng — vừa che chở vừa trừng trị.",
     "stat_bonuses": {
       "hp_pct": 0.3,
@@ -388,8 +439,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssQuang": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionQuangLien_Leg",
@@ -398,7 +448,10 @@
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế Bạch Liên Thể — Liên Hoa Tịnh Hóa: mỗi lần Thanh Tẩy, hoa sen nở giải trừ ô uế và rưới HP cho thân chủ.",
     "stat_bonuses": {
       "mp_pct": 0.4,
@@ -416,8 +469,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssQuang": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionQuangTinh_Leg",
@@ -426,7 +478,10 @@
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế Tịnh Quang Thể — **Tịnh Hóa Phản Đòn**: mỗi lần Thanh Tẩy đều phóng quang trảm phản công về kẻ địch. Thân thể thanh khiết miễn nhiễm phần lớn debuff.",
     "stat_bonuses": {
       "hp_pct": 0.35,
@@ -445,8 +500,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssQuang": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionVoLuongQuang",
@@ -455,7 +509,10 @@
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Hóa thân Thánh Quang bất diệt, mỗi lần thanh tẩy sinh khiên, trị liệu có thể bạo kích và áp chế toàn diện kẻ thù.",
     "stat_bonuses": {
       "hp_pct": 0.25,
@@ -466,7 +523,7 @@
       "cleanse_on_turn_pct": 0.25,
       "silence_on_crit_pct": 0.3,
       "heal_reduce_on_hit_pct": 0.25,
-      "element_res_shred": {
+      "element_pen": {
         "quang": 0.15
       }
     },
@@ -476,7 +533,6 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssQuang": 6
-    },
-    "cost_stones": 80000
+    }
   }
 ]

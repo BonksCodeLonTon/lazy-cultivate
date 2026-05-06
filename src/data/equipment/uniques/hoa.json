@@ -276,7 +276,7 @@
       ]
     },
     "passive_bonus": {
-      "element_res_shred": {
+      "element_pen": {
         "hoa": 0.15
       },
       "burn_stack_cap_bonus": 3,
@@ -337,7 +337,7 @@
       ]
     },
     "passive_bonus": {
-      "element_res_shred": {
+      "element_pen": {
         "hoa": 0.12
       },
       "bonus_dmg_vs_burn": 0.3,
@@ -430,7 +430,7 @@
     },
     "passive_bonus": {
       "burn_on_hit_pct": 0.55,
-      "element_res_shred": {
+      "element_pen": {
         "hoa": 0.1
       }
     },
@@ -458,7 +458,7 @@
       ]
     },
     "passive_bonus": {
-      "element_res_shred": {
+      "element_pen": {
         "hoa": 0.25
       },
       "burn_stack_cap_bonus": 5,

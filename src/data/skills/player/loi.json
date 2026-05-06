@@ -415,7 +415,7 @@
     "effects": [],
     "passive_bonus": {
       "shock_on_hit_pct": 0.2,
-      "element_res_shred": {
+      "element_pen": {
         "loi": 0.1
       },
       "spd_bonus": 4

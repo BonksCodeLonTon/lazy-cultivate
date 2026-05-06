@@ -21,7 +21,15 @@
     "base_crit_dmg_rating": 25,
     "final_dmg_bonus": 0.0,
     "base_res": {
-      "kim": 0.15
+      "kim": 0.28,
+      "moc": 0.03,
+      "thuy": 0.03,
+      "hoa": 0.03,
+      "tho": 0.03,
+      "phong": 0.03,
+      "loi": 0.03,
+      "quang": 0.03,
+      "am": 0.03
     }
   },
   {
@@ -46,7 +54,15 @@
     "base_crit_dmg_rating": 25,
     "final_dmg_bonus": 0.0,
     "base_res": {
-      "moc": 0.15
+      "moc": 0.28,
+      "kim": 0.03,
+      "thuy": 0.03,
+      "hoa": 0.03,
+      "tho": 0.03,
+      "phong": 0.03,
+      "loi": 0.03,
+      "quang": 0.03,
+      "am": 0.03
     }
   },
   {
@@ -71,7 +87,15 @@
     "base_crit_dmg_rating": 25,
     "final_dmg_bonus": 0.0,
     "base_res": {
-      "thuy": 0.15
+      "thuy": 0.28,
+      "kim": 0.03,
+      "moc": 0.03,
+      "hoa": 0.03,
+      "tho": 0.03,
+      "phong": 0.03,
+      "loi": 0.03,
+      "quang": 0.03,
+      "am": 0.03
     }
   },
   {
@@ -96,7 +120,15 @@
     "base_crit_dmg_rating": 30,
     "final_dmg_bonus": 0.02,
     "base_res": {
-      "phong": 0.15
+      "phong": 0.28,
+      "kim": 0.03,
+      "moc": 0.03,
+      "thuy": 0.03,
+      "hoa": 0.03,
+      "tho": 0.03,
+      "loi": 0.03,
+      "quang": 0.03,
+      "am": 0.03
     }
   },
   {
@@ -121,7 +153,15 @@
     "base_crit_dmg_rating": 25,
     "final_dmg_bonus": 0.0,
     "base_res": {
-      "tho": 0.15
+      "tho": 0.28,
+      "kim": 0.03,
+      "moc": 0.03,
+      "thuy": 0.03,
+      "hoa": 0.03,
+      "phong": 0.03,
+      "loi": 0.03,
+      "quang": 0.03,
+      "am": 0.03
     }
   }
 ]

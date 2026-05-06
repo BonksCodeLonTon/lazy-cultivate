@@ -36,8 +36,9 @@ def spd_evasion_bonus(spd: int) -> int:
     return min(SPD_EVASION_CAP, raw)
 
 
-# Per-element shred is now read directly from ``actor.element_res_shred``
-# (the generic dict). The legacy 7 flat fields have been removed.
+# Per-element penetration is read directly from ``actor.element_pen`` (the
+# generic dict). Stacks additively with target-side res debuffs (XuyenThau
+# per-element + XeRach res_all).
 
 
 def build_attack_stats(
@@ -131,8 +132,8 @@ def build_defense_stats(
     effective_res: dict[str, float] = {}
     for elem, res in target.resistances.items():
         per_elem_mod = target_mods.get(f"res_{elem}", 0.0)
-        shred = float(actor.element_res_shred.get(elem, 0.0))
-        effective_res[elem] = max(0.0, min(MAX_ELEMENTAL_RES, res + res_all_mod + per_elem_mod - shred))
+        pen = float(actor.element_pen.get(elem, 0.0))
+        effective_res[elem] = max(0.0, min(MAX_ELEMENTAL_RES, res + res_all_mod + per_elem_mod - pen))
 
     effective_spd = max(1, round(target.spd * (1.0 + target_mods.get("spd_pct", 0.0))))
     return DefenseStats(

@@ -6,7 +6,10 @@
     "rarity": "common",
     "element": "kim",
     "roll_weight": 40,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Xương cốt rắn như kim loại, ra đòn bén như đao khắc, dễ gây chảy máu trên mục tiêu.",
     "stat_bonuses": {
       "hp_pct": 0.03,
@@ -26,7 +29,10 @@
     "rarity": "common",
     "element": "kim",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Kim sơ khởi tụ trong thân, mọi thuộc tính phòng ngự đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.06,
@@ -46,7 +52,10 @@
     "rarity": "common",
     "element": "kim",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Kim sơ khởi tụ trong thân, mọi thuộc tính bạo kích đều được khơi dậy.",
     "stat_bonuses": {
       "crit_rating": 80,
@@ -66,7 +75,10 @@
     "rarity": "common",
     "element": "kim",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Kim sơ khởi tụ trong thân, mọi thuộc tính bạo kích đều được khơi dậy.",
     "stat_bonuses": {
       "crit_rating": 60,
@@ -86,7 +98,10 @@
     "rarity": "uncommon",
     "element": "kim",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Cốt như cương kim, mỗi vết thương đều khó lành mau — kẻ địch chảy máu liên hồi.",
     "stat_bonuses": {
       "hp_pct": 0.06,
@@ -107,7 +122,10 @@
     "rarity": "uncommon",
     "element": "kim",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Kim đã hậu nhập huyết mạch — sức mạnh phòng ngự vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.096,
@@ -128,7 +146,10 @@
     "rarity": "uncommon",
     "element": "kim",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Kim đã hậu nhập huyết mạch — sức mạnh bạo kích vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "crit_rating": 128,
@@ -148,7 +169,10 @@
     "rarity": "uncommon",
     "element": "kim",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Kim đã hậu nhập huyết mạch — sức mạnh bạo kích vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "crit_rating": 96,
@@ -168,7 +192,10 @@
     "rarity": "rare",
     "element": "kim",
     "roll_weight": 6,
-    "cost_merit": 15000,
+    "cost": {
+      "merit": 15000,
+      "stones": 0
+    },
     "passive_description_vi": "Qua trăm lần tôi luyện, thân như thần binh, đòn đánh xuyên phá mọi phòng ngự.",
     "stat_bonuses": {
       "crit_rating": 150,
@@ -190,7 +217,10 @@
     "rarity": "rare",
     "element": "kim",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Kim, phòng ngự mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.144,
@@ -212,7 +242,10 @@
     "rarity": "rare",
     "element": "kim",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Kim, bạo kích mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "crit_rating": 192,
@@ -233,7 +266,10 @@
     "rarity": "rare",
     "element": "kim",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Kim, bạo kích mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "crit_rating": 144,
@@ -254,7 +290,10 @@
     "rarity": "epic",
     "element": "kim",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Kim cộng hưởng với đại đạo, phòng ngự bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.21,
@@ -281,7 +320,10 @@
     "rarity": "epic",
     "element": "kim",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Kim cộng hưởng với đại đạo, bạo kích bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "crit_rating": 280,
@@ -306,7 +348,10 @@
     "rarity": "epic",
     "element": "kim",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Kim cộng hưởng với đại đạo, bạo kích bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "crit_rating": 210,
@@ -330,7 +375,10 @@
     "rarity": "epic",
     "element": "kim",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Tinh kim chiết tinh, lưỡi sắc xuyên qua giáp dày — đòn bạo kích như xé thịt rách xương.",
     "stat_bonuses": {
       "crit_rating": 220,
@@ -356,7 +404,10 @@
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế Cương Kim Thể — **Kim Cương Phản Quang**: thân thể như kim cương phản chiếu — phản đòn (kèm hiệu ứng) lên kẻ tấn công, đồng thời khí lực của khiên hỗ trợ sát thương.",
     "stat_bonuses": {
       "hp_pct": 0.3,
@@ -379,8 +430,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssKim": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionKimSat_Leg",
@@ -389,7 +439,10 @@
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế Sát Kim Thể — **Sát Khí Đại Thành**: mỗi mạng giết được tích tụ thành sát ý, vĩnh viễn cộng dồn ST cuối trong dungeon. Càng giết, càng mạnh.",
     "stat_bonuses": {
       "crit_rating": 400,
@@ -409,8 +462,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssKim": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionKimTinh_Leg",
@@ -419,7 +471,10 @@
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế Tinh Kim Thể — **Tinh Quang Thuấn Bộ**: bước chân tinh quang lẹ làng, bạo kích là cơ hội cướp lượt. Tinh hoa Kim ngưng kết — bạo thương cộng dồn cùng tê liệt khi bạo.",
     "stat_bonuses": {
       "crit_rating": 350,
@@ -438,8 +493,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssKim": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionThaiCucKim",
@@ -448,7 +502,10 @@
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Thân hóa kim cang bất hoại, mỗi đòn bạo kích đều xé rách linh hồn kẻ địch đang chảy máu.",
     "stat_bonuses": {
       "multi_strike_pct": 0.15,
@@ -466,7 +523,6 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssKim": 6
-    },
-    "cost_stones": 80000
+    }
   }
 ]

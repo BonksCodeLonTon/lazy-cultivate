@@ -181,11 +181,15 @@ class Combatant:
     # merge in ``_merge_bonus_dict``.
     damage_taken_convert_pct: dict[str, float] = field(default_factory=dict)
     element_dmg_bonus: dict[str, float] = field(default_factory=dict)
-    # Per-element resistance shred — single source of truth.
-    # Read by build_defense_stats and by the Linh Căn / formation / burst paths
-    # via element_res_shred.get(elem, 0.0). Multiple sources merge additively
-    # via _merge_bonus_dict, so multi-element shred composes naturally.
-    element_res_shred: dict[str, float] = field(default_factory=dict)
+    # Per-element penetration — passive attacker-side stat that lowers the
+    # target's effective res when this combatant attacks. Read by
+    # build_defense_stats and by the Linh Căn / formation / burst paths via
+    # element_pen.get(elem, 0.0). Multiple sources merge additively via
+    # _merge_bonus_dict, so multi-element pen composes naturally.
+    # NOTE: the *debuff* counterpart is ``DebuffXuyenThau<Elem>`` (turn-duration
+    # shred applied to the target via apply_effect), which stacks additively
+    # with this passive pen and with DebuffXeRach (res_all).
+    element_pen: dict[str, float] = field(default_factory=dict)
 
     # ── Kim (Bleed) build support ─────────────────────────────────────────────
     # Bleed stacks: like burn, but physical (kim element) and slows healing.

@@ -23,7 +23,15 @@
     "final_dmg_bonus": 0.06,
     "immune_hard_cc": true,
     "base_res": {
-      "hoa": 0.3
+      "hoa": 0.42,
+      "kim": 0.15,
+      "moc": 0.15,
+      "thuy": 0.15,
+      "tho": 0.15,
+      "phong": 0.15,
+      "loi": 0.15,
+      "quang": 0.15,
+      "am": 0.15
     }
   },
   {
@@ -50,7 +58,15 @@
     "final_dmg_bonus": 0.08,
     "immune_hard_cc": true,
     "base_res": {
-      "loi": 0.3
+      "loi": 0.42,
+      "kim": 0.15,
+      "moc": 0.15,
+      "thuy": 0.15,
+      "hoa": 0.15,
+      "tho": 0.15,
+      "phong": 0.15,
+      "quang": 0.15,
+      "am": 0.15
     }
   },
   {
@@ -77,7 +93,15 @@
     "final_dmg_bonus": 0.06,
     "immune_hard_cc": true,
     "base_res": {
-      "thuy": 0.3
+      "thuy": 0.42,
+      "kim": 0.15,
+      "moc": 0.15,
+      "hoa": 0.15,
+      "tho": 0.15,
+      "phong": 0.15,
+      "loi": 0.15,
+      "quang": 0.15,
+      "am": 0.15
     }
   },
   {

@@ -53,7 +53,7 @@
     },
     "passive_bonus": {
       "mana_stack_dmg_bonus": 0.025,
-      "element_res_shred": {
+      "element_pen": {
         "thuy": 0.1
       }
     },
@@ -168,7 +168,7 @@
       ]
     },
     "passive_bonus": {
-      "element_res_shred": {
+      "element_pen": {
         "thuy": 0.15
       },
       "mana_stack_cap_bonus": 5
@@ -282,7 +282,7 @@
     },
     "passive_bonus": {
       "mana_stack_per_attack": 4,
-      "element_res_shred": {
+      "element_pen": {
         "thuy": 0.25
       },
       "true_dmg_pct": 0.04
@@ -313,7 +313,7 @@
     "passive_bonus": {
       "damage_bonus_from_mp_pct": 0.013,
       "mp_leech_pct": 0.32,
-      "element_res_shred": {
+      "element_pen": {
         "thuy": 0.22
       }
     },

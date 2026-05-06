@@ -53,7 +53,7 @@
     },
     "passive_bonus": {
       "shock_on_hit_pct": 0.3,
-      "element_res_shred": {
+      "element_pen": {
         "loi": 0.08
       }
     },
@@ -114,7 +114,7 @@
     "passive_bonus": {
       "shock_on_hit_pct": 0.4,
       "shock_stack_cap_bonus": 2,
-      "element_res_shred": {
+      "element_pen": {
         "loi": 0.1
       }
     },
@@ -170,7 +170,7 @@
     },
     "passive_bonus": {
       "shock_on_hit_pct": 0.55,
-      "element_res_shred": {
+      "element_pen": {
         "loi": 0.18
       },
       "shock_stack_cap_bonus": 2
@@ -289,7 +289,7 @@
     },
     "passive_bonus": {
       "shock_per_stack_pct_bonus": 0.025,
-      "element_res_shred": {
+      "element_pen": {
         "loi": 0.15
       }
     },
@@ -349,7 +349,7 @@
     },
     "passive_bonus": {
       "shock_on_hit_pct": 0.85,
-      "element_res_shred": {
+      "element_pen": {
         "loi": 0.2
       }
     },
@@ -406,7 +406,7 @@
     },
     "passive_bonus": {
       "shock_per_stack_pct_bonus": 0.04,
-      "element_res_shred": {
+      "element_pen": {
         "loi": 0.3
       },
       "turn_steal_pct": 0.15

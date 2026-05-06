@@ -1,5 +1,31 @@
 [
   {
+    "key": "LCAm_T0_AmHonTieuQuai",
+    "vi": "Âm Hồn Tiểu Quái",
+    "en": "Lesser Shadow Imp",
+    "rank": "tinh_anh",
+    "realm_level": 1,
+    "element": "am",
+    "base_hp": 1100,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "EnemyLCAm_T1",
+      "EnemyAm_T1"
+    ],
+    "base_atk": 38,
+    "base_matk": 65,
+    "base_def": 47,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Am",
+    "final_dmg_bonus": 0.03,
+    "base_res": {
+      "am": 0.2
+    },
+    "res_cap_pct": 0.8,
+    "loot_luck_bonus": 0.0
+  },
+  {
     "key": "LCAm_T1_HacDieuYeuHon",
     "vi": "Hắc Diệu Yêu Hồn",
     "en": "Black Obsidian Demon Soul",
@@ -11,7 +37,7 @@
     "hp_scale": 1.6,
     "skill_keys": [
       "EnemyLCAm_T1",
-      "EnemyBang_T1"
+      "EnemyAm_T1"
     ],
     "base_atk": 82,
     "base_matk": 90,
@@ -22,7 +48,34 @@
     "base_res": {
       "am": 0.25
     },
-    "res_cap_pct": 0.85
+    "res_cap_pct": 0.85,
+    "loot_luck_bonus": 0.0
+  },
+  {
+    "key": "LCAm_T1b_ULinhQuyVe",
+    "vi": "U Linh Quỷ Vệ",
+    "en": "Wraith Demon Guard",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "am",
+    "base_hp": 2900,
+    "base_spd": 12,
+    "hp_scale": 1.65,
+    "skill_keys": [
+      "EnemyLCAm_T1",
+      "EnemyLCAm_T2"
+    ],
+    "base_atk": 92,
+    "base_matk": 165,
+    "base_def": 105,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Am",
+    "final_dmg_bonus": 0.06,
+    "base_res": {
+      "am": 0.28
+    },
+    "res_cap_pct": 0.85,
+    "loot_luck_bonus": 0.2
   },
   {
     "key": "LCAm_T2_CuuAmULinh",
@@ -47,7 +100,37 @@
     "base_res": {
       "am": 0.35
     },
-    "res_cap_pct": 0.85
+    "res_cap_pct": 0.85,
+    "loot_luck_bonus": 0.5
+  },
+  {
+    "key": "LCAm_T2b_HacVuMaLinh",
+    "vi": "Hắc Vụ Ma Linh",
+    "en": "Dark Mist Demon Spirit",
+    "rank": "cuong_gia",
+    "realm_level": 5,
+    "element": "am",
+    "base_hp": 7800,
+    "base_spd": 14,
+    "hp_scale": 1.8,
+    "skill_keys": [
+      "EnemyLCAm_T2",
+      "EnemyLCAm_T3"
+    ],
+    "base_atk": 200,
+    "base_matk": 360,
+    "base_def": 190,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Am",
+    "final_dmg_bonus": 0.1,
+    "base_res": {
+      "am": 0.4,
+      "thuy": 0.05
+    },
+    "res_cap_pct": 0.88,
+    "loot_luck_bonus": 0.8,
+    "base_crit_rating": 24,
+    "base_crit_dmg_rating": 36
   },
   {
     "key": "LCAm_T3_UMinhDaiTuong",
@@ -74,7 +157,38 @@
       "am": 0.5,
       "thuy": 0.1
     },
-    "res_cap_pct": 0.9
+    "res_cap_pct": 0.9,
+    "loot_luck_bonus": 1.2
+  },
+  {
+    "key": "LCAm_T3b_UMinhTuTuong",
+    "vi": "U Minh Tử Tướng",
+    "en": "Underworld Death General",
+    "rank": "hung_manh",
+    "realm_level": 7,
+    "element": "am",
+    "base_hp": 21000,
+    "base_spd": 16,
+    "hp_scale": 1.95,
+    "skill_keys": [
+      "EnemyLCAm_T3",
+      "EnemyLCAm_Apex",
+      "EnemyLCAm_T2"
+    ],
+    "base_atk": 410,
+    "base_matk": 730,
+    "base_def": 380,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Am",
+    "final_dmg_bonus": 0.18,
+    "base_res": {
+      "am": 0.55,
+      "thuy": 0.13
+    },
+    "res_cap_pct": 0.9,
+    "loot_luck_bonus": 1.5,
+    "base_crit_rating": 72,
+    "base_crit_dmg_rating": 96
   },
   {
     "key": "LCAm_Apex_DietTheHacDe",
@@ -102,6 +216,68 @@
       "am": 0.65,
       "thuy": 0.2
     },
-    "res_cap_pct": 0.9
+    "res_cap_pct": 0.9,
+    "loot_luck_bonus": 2.0
+  },
+  {
+    "key": "LCAm_Apex2_CuuUDietHonQuan",
+    "vi": "Cửu U Diệt Hồn Quân",
+    "en": "Nine-Hells Soul-Eater Lord",
+    "rank": "dai_nang",
+    "realm_level": 9,
+    "element": "am",
+    "base_hp": 56000,
+    "base_spd": 17,
+    "hp_scale": 2.05,
+    "skill_keys": [
+      "EnemyLCAm_Apex",
+      "EnemyLCAm_T3",
+      "EnemyLCAm_T2"
+    ],
+    "base_atk": 850,
+    "base_matk": 1480,
+    "base_def": 720,
+    "mp_regen_pct": 0.08,
+    "loot_table_key": "LinhCanLoot_Am",
+    "final_dmg_bonus": 0.4,
+    "base_res": {
+      "am": 0.7,
+      "thuy": 0.25
+    },
+    "res_cap_pct": 0.92,
+    "loot_luck_bonus": 2.6,
+    "base_crit_rating": 192,
+    "base_crit_dmg_rating": 220
+  },
+  {
+    "key": "LCAm_Sovereign_HonDonAmDe",
+    "vi": "Hỗn Độn Âm Đế",
+    "en": "Primordial Dark Sovereign",
+    "rank": "chi_ton",
+    "realm_level": 10,
+    "element": "am",
+    "base_hp": 92000,
+    "base_spd": 18,
+    "hp_scale": 2.2,
+    "skill_keys": [
+      "EnemyLCAm_Apex",
+      "EnemyLCAm_T3",
+      "EnemyLCAm_T2"
+    ],
+    "base_atk": 1200,
+    "base_matk": 2050,
+    "base_def": 1000,
+    "mp_regen_pct": 0.1,
+    "loot_table_key": "LinhCanLoot_Am",
+    "final_dmg_bonus": 0.55,
+    "base_res": {
+      "am": 0.75,
+      "thuy": 0.3
+    },
+    "res_cap_pct": 0.92,
+    "loot_luck_bonus": 3.5,
+    "base_crit_rating": 260,
+    "base_crit_dmg_rating": 300,
+    "immune_hard_cc": true
   }
 ]

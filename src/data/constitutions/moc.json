@@ -6,7 +6,10 @@
     "rarity": "common",
     "element": "moc",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Mộc sơ khởi tụ trong thân, mọi thuộc tính linh lực đều được khơi dậy.",
     "stat_bonuses": {
       "mp_pct": 0.08,
@@ -26,7 +29,10 @@
     "rarity": "common",
     "element": "moc",
     "roll_weight": 40,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Sinh cơ như cây đại thụ, máu huyết dồi dào và hồi phục không ngừng.",
     "stat_bonuses": {
       "hp_pct": 0.08,
@@ -46,7 +52,10 @@
     "rarity": "common",
     "element": "moc",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Mộc sơ khởi tụ trong thân, mọi thuộc tính sinh lực đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.1,
@@ -67,7 +76,10 @@
     "rarity": "common",
     "element": "moc",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Mộc sơ khởi tụ trong thân, mọi thuộc tính phòng ngự đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.12,
@@ -87,7 +99,10 @@
     "rarity": "uncommon",
     "element": "moc",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Mộc đã hậu nhập huyết mạch — sức mạnh linh lực vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "mp_pct": 0.128,
@@ -107,7 +122,10 @@
     "rarity": "uncommon",
     "element": "moc",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Mộc đã hậu nhập huyết mạch — sức mạnh sinh lực vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.16,
@@ -128,7 +146,10 @@
     "rarity": "uncommon",
     "element": "moc",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Mộc đã hậu nhập huyết mạch — sức mạnh phòng ngự vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.192,
@@ -148,7 +169,10 @@
     "rarity": "uncommon",
     "element": "moc",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Cây leo xanh quấn quanh kinh mạch, sinh khí dồi dào không ngừng tự hồi phục.",
     "stat_bonuses": {
       "hp_pct": 0.12,
@@ -169,7 +193,10 @@
     "rarity": "rare",
     "element": "moc",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Mộc, linh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "mp_pct": 0.192,
@@ -190,7 +217,10 @@
     "rarity": "rare",
     "element": "moc",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Mộc, sinh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.24,
@@ -212,7 +242,10 @@
     "rarity": "rare",
     "element": "moc",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Mộc, phòng ngự mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.288,
@@ -233,7 +266,10 @@
     "rarity": "rare",
     "element": "moc",
     "roll_weight": 6,
-    "cost_merit": 15000,
+    "cost": {
+      "merit": 15000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân mang xuân ý bất lão, hút sức sống từ độc tố và tự hồi phục mãnh liệt.",
     "stat_bonuses": {
       "hp_pct": 0.15,
@@ -255,7 +291,10 @@
     "rarity": "epic",
     "element": "moc",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Cổ mộc ngàn năm chứa linh khí, máu thịt như nước nguồn không bao giờ cạn.",
     "stat_bonuses": {
       "hp_pct": 0.22,
@@ -278,7 +317,10 @@
     "rarity": "epic",
     "element": "moc",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Mộc cộng hưởng với đại đạo, linh lực bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "mp_pct": 0.28,
@@ -303,7 +345,10 @@
     "rarity": "epic",
     "element": "moc",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Mộc cộng hưởng với đại đạo, sinh lực bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.35,
@@ -329,7 +374,10 @@
     "rarity": "epic",
     "element": "moc",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Mộc cộng hưởng với đại đạo, phòng ngự bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.42,
@@ -353,14 +401,17 @@
     "rarity": "legendary",
     "element": "moc",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Kế thừa huyết mạch Mộc Đế thượng cổ, sinh lực càng dày thì sát thương càng mãnh liệt.",
     "stat_bonuses": {
       "hp_pct": 0.35,
       "hp_regen_pct": 0.05,
       "damage_bonus_from_hp_pct": 0.15,
       "dot_leech_pct": 0.2,
-      "element_res_shred": {
+      "element_pen": {
         "moc": 0.15
       },
       "heal_can_crit": true,
@@ -376,8 +427,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssMoc": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionMocDiep_Leg",
@@ -386,7 +436,10 @@
     "rarity": "legendary",
     "element": "moc",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế Diệp Mộc Thể — **Vạn Lá Hấp Khí**: mỗi lượt rút linh khí nhỏ từ kẻ địch, đồng thời trị liệu của lá có thể bạo kích. DoT làm địch nuôi sống thân chủ.",
     "stat_bonuses": {
       "mp_pct": 0.4,
@@ -406,8 +459,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssMoc": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionMocSinh_Leg",
@@ -416,7 +468,10 @@
     "rarity": "legendary",
     "element": "moc",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế Sinh Mộc Thể — Cội Nguồn Bất Tận: cây sự sống vĩnh viễn không tàn — khi đòn đánh quyết định ập đến, thân thể bám rễ vào sinh cơ, sống sót ở 30% HP rồi hồi chiêu 6 lượt.",
     "stat_bonuses": {
       "hp_pct": 0.5,
@@ -436,8 +491,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssMoc": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionMocTung_Leg",
@@ -446,7 +500,10 @@
     "rarity": "legendary",
     "element": "moc",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế thể Mộc — đỉnh cao của lộ trình phòng ngự, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "hp_pct": 0.7,
@@ -464,8 +521,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssMoc": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionKhoMocThanThe",
@@ -474,14 +530,17 @@
     "rarity": "legendary",
     "element": "moc",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 100000
+    },
     "passive_description_vi": "Thân hóa Khô Mộc, tỏa ra Hấp Linh Khí Tràng — mỗi lượt rút 4% HP tối đa của bản thân thành sát thương Mộc lên đối thủ và lập tức chuyển hóa thành sinh mệnh hồi lại cho bản thân. Hào quang này không phải đòn đánh, không phải DoT, được khuếch đại bởi mọi chỉ số tăng sát thương cuối và sát thương DoT.",
     "stat_bonuses": {
       "wither_aura_pct": 0.04,
       "hp_pct": 0.25,
       "final_dmg_bonus": 0.12,
       "dot_dmg_bonus": 0.2,
-      "element_res_shred": {
+      "element_pen": {
         "moc": 0.15
       },
       "hp_regen_pct": 0.02,
@@ -493,7 +552,6 @@
       "MatThienDaoTuy": 4,
       "MatHonNguyenCot": 1,
       "ElemEssMoc": 8
-    },
-    "cost_stones": 100000
+    }
   }
 ]

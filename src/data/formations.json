@@ -211,7 +211,7 @@
       "3": {
         "mp_pct": 0.08,
         "shock_on_hit_pct": 0.18,
-        "element_res_shred": {
+        "element_pen": {
           "loi": 0.05
         },
         "note": "Kiên Cố Lôi Trận"
@@ -220,7 +220,7 @@
         "mp_pct": 0.15,
         "crit_rating": 50,
         "shock_on_hit_pct": 0.3,
-        "element_res_shred": {
+        "element_pen": {
           "loi": 0.1
         },
         "spd_bonus": 3,
@@ -233,7 +233,7 @@
         "shock_on_hit_pct": 0.45,
         "shock_stack_cap_bonus": 2,
         "shock_per_stack_pct_bonus": 0.015,
-        "element_res_shred": {
+        "element_pen": {
           "loi": 0.15
         },
         "spd_bonus": 5,
@@ -247,7 +247,7 @@
         "shock_on_hit_pct": 0.7,
         "shock_stack_cap_bonus": 5,
         "shock_per_stack_pct_bonus": 0.03,
-        "element_res_shred": {
+        "element_pen": {
           "loi": 0.25
         },
         "spd_bonus": 8,
@@ -324,7 +324,7 @@
         "evasion_rating": 80,
         "mark_on_hit_pct": 0.3,
         "damage_bonus_from_evasion_pct": 0.05,
-        "element_res_shred": {
+        "element_pen": {
           "phong": 0.08
         },
         "note": "Thịnh Vượng Phong Trận"
@@ -337,7 +337,7 @@
         "damage_bonus_from_evasion_pct": 0.1,
         "crit_rating_vs_marked": 120,
         "crit_dmg_vs_marked": 150,
-        "element_res_shred": {
+        "element_pen": {
           "phong": 0.15
         },
         "note": "Vô Song Phong Trận"
@@ -350,7 +350,7 @@
         "damage_bonus_from_evasion_pct": 0.18,
         "crit_rating_vs_marked": 280,
         "crit_dmg_vs_marked": 350,
-        "element_res_shred": {
+        "element_pen": {
           "phong": 0.25
         },
         "slow_on_hit_pct": 0.2,
@@ -382,7 +382,7 @@
       "5": {
         "heal_pct": 0.2,
         "silence_on_crit_pct": 0.1,
-        "element_res_shred": {
+        "element_pen": {
           "quang": 0.05
         },
         "note": "Thịnh Vượng Quang Trận"
@@ -390,7 +390,7 @@
       "7": {
         "heal_pct": 0.3,
         "silence_on_crit_pct": 0.2,
-        "element_res_shred": {
+        "element_pen": {
           "quang": 0.1
         },
         "heal_reduce_on_hit_pct": 0.15,
@@ -401,7 +401,7 @@
       "10": {
         "heal_pct": 0.5,
         "silence_on_crit_pct": 0.3,
-        "element_res_shred": {
+        "element_pen": {
           "quang": 0.2
         },
         "heal_reduce_on_hit_pct": 0.3,
@@ -439,7 +439,7 @@
         "mp_pct": 0.15,
         "soul_drain_on_hit_pct": 0.22,
         "stat_steal_on_hit_pct": 0.12,
-        "element_res_shred": {
+        "element_pen": {
           "am": 0.05
         },
         "poison_dmg_bonus": 0.1,
@@ -449,7 +449,7 @@
         "mp_pct": 0.25,
         "soul_drain_on_hit_pct": 0.35,
         "stat_steal_on_hit_pct": 0.22,
-        "element_res_shred": {
+        "element_pen": {
           "am": 0.1
         },
         "crit_rating_vs_drained": 120,
@@ -460,7 +460,7 @@
         "mp_pct": 0.5,
         "soul_drain_on_hit_pct": 0.55,
         "stat_steal_on_hit_pct": 0.4,
-        "element_res_shred": {
+        "element_pen": {
           "am": 0.2
         },
         "crit_rating_vs_drained": 280,

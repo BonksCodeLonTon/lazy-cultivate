@@ -17,9 +17,9 @@ if TYPE_CHECKING:
     from .session import CombatSession
 
 
-def apply_elem_res(raw: int, target: Combatant, element: str, shred: float = 0.0) -> int:
-    """Apply target's (shredded) elemental resistance to a raw burst amount."""
-    res = max(0.0, target.resistances.get(element, 0.0) - shred)
+def apply_elem_res(raw: int, target: Combatant, element: str, pen: float = 0.0) -> int:
+    """Apply target's (penetrated) elemental resistance to a raw burst amount."""
+    res = max(0.0, target.resistances.get(element, 0.0) - pen)
     return max(1, int(raw * (1.0 - min(MAX_ELEMENTAL_RES, res))))
 
 
@@ -66,7 +66,7 @@ def burst_burn(
     per_stack_mult = float(skill_data.get("burst_per_stack_mult", 0.35))
     base = skill_data.get("base_dmg", 0) + int(actor.matk * 0.5)
     raw = max(1, int(base * per_stack_mult * stacks))
-    dmg = apply_elem_res(raw, target, "hoa", shred=actor.element_res_shred.get("hoa", 0.0))
+    dmg = apply_elem_res(raw, target, "hoa", pen=actor.element_pen.get("hoa", 0.0))
     target.take_damage(dmg)
     # Stacks are gone, clear the burn debuff marker too
     target.effects.pop(EffectKey.DEBUFF_THIEU_DOT, None)

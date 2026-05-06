@@ -454,7 +454,7 @@ class CombatSession:
         # Solar aura — Thái Dương Thần Thể tier passive: every turn, deal
         # fire damage to the opponent equal to (combatant.hp_max × solar_aura_pct),
         # boosted by final_dmg_bonus + burn_dmg_bonus, with bonus_dmg_vs_burn
-        # vs already-burning targets and element_res_shred reducing the target's
+        # vs already-burning targets and element_pen reducing the target's
         # hoa resistance. Independent of skill actions and DoT ticks.
         if (
             combatant.is_alive()
@@ -469,7 +469,7 @@ class CombatSession:
                     mult += combatant.bonus_dmg_vs_burn
                 target_res = max(
                     0.0,
-                    min(MAX_ELEMENTAL_RES, opponent.resistances.get("hoa", 0.0) - combatant.element_res_shred.get("hoa", 0.0)),
+                    min(MAX_ELEMENTAL_RES, opponent.resistances.get("hoa", 0.0) - combatant.element_pen.get("hoa", 0.0)),
                 )
                 aura_dmg = max(1, int(base * mult * (1.0 - target_res)))
                 opponent.take_damage(aura_dmg)
@@ -494,7 +494,7 @@ class CombatSession:
                 mult = 1.0 + combatant.final_dmg_bonus + combatant.dot_dmg_bonus
                 target_res = max(
                     0.0,
-                    min(MAX_ELEMENTAL_RES, opponent.resistances.get("moc", 0.0) - combatant.element_res_shred.get("moc", 0.0)),
+                    min(MAX_ELEMENTAL_RES, opponent.resistances.get("moc", 0.0) - combatant.element_pen.get("moc", 0.0)),
                 )
                 drain_dmg = max(1, int(base * mult * (1.0 - target_res)))
                 opponent.take_damage(drain_dmg)
@@ -594,7 +594,15 @@ class CombatSession:
         # Constitution / equipment loot bonuses stack on top of the session's
         # baseline (elite roll, dungeon grade). ``loot_luck_bonus`` is additive
         # on luck_pct; ``loot_qty_bonus`` is additive on the qty multiplier.
-        effective_luck = self.loot_luck_pct + max(0.0, self.player.loot_luck_bonus)
+        # Per-enemy ``loot_luck_bonus`` (e.g. linh_can apex) lets high-tier
+        # mobs sharing a single table reward better drops than their low-tier
+        # counterparts in the same dungeon.
+        enemy_luck = float((enemy_data or {}).get("loot_luck_bonus", 0.0))
+        effective_luck = (
+            self.loot_luck_pct
+            + max(0.0, self.player.loot_luck_bonus)
+            + enemy_luck
+        )
         effective_qty_mult = self.loot_qty_multiplier * (1.0 + max(0.0, self.player.loot_qty_bonus))
         drops = roll_drops(drop_table, self.rng, luck_pct=effective_luck).merge()
         if effective_qty_mult != 1.0:

@@ -252,8 +252,16 @@ def _apply_encounter_grade(enemy_c: Combatant, grade: dict, rng: random.Random) 
             enemy_c.evasion_rating = int(enemy_c.evasion_rating * (1 + bonus)) + int(bonus * 100)
 
 
-def _build_wave_list(dungeon: dict, rng: random.Random) -> list[str]:
-    """Return enemy_keys for all waves; all picks are random from enemy_pool."""
+def _build_wave_list(
+    dungeon: dict, rng: random.Random, max_realm_level: int | None = None,
+) -> list[str]:
+    """Return enemy_keys for all waves; all picks are random from enemy_pool.
+
+    ``max_realm_level`` (linh_can dungeons only) caps the eligible enemies to
+    those at most one realm above the player so a Luyện Khí player can't
+    randomly draw the R10 sovereign. The cap is ignored for non-linh_can
+    dungeons since their pools are already realm-scoped.
+    """
     enemy_pool = dungeon.get("enemy_pool", [])
     wave_count = dungeon.get("wave_count", 3)
 
@@ -263,6 +271,15 @@ def _build_wave_list(dungeon: dict, rng: random.Random) -> list[str]:
 
     if not enemy_pool:
         return []
+
+    if max_realm_level is not None:
+        filtered = [
+            k for k in enemy_pool
+            if (e := registry.get_enemy(k))
+            and int(e.get("realm_level", 0)) <= max_realm_level
+        ]
+        if filtered:
+            enemy_pool = filtered
     return rng.choices(enemy_pool, k=wave_count)
 
 
@@ -296,7 +313,14 @@ def run_dungeon(
     req_realm = dungeon.get("required_qi_realm", 0)
     qual_realm, qual_level = qualifying_axis(char, req_realm)
     progress = _grade_progress(qual_realm, qual_level, req_realm)
-    wave_enemies = _build_wave_list(dungeon, rng)
+    # Linh Căn dungeons cover R1..R10; cap the wave roll to enemies at most
+    # one realm above the player so newbies can't get one-shot by the R10
+    # sovereign. Player ``qi_realm`` is 0-indexed (0=Luyện Khí, 8=Đăng Tiên),
+    # enemy ``realm_level`` is 1-indexed → ``qi_realm + 2`` is the cap.
+    max_realm_level = (
+        char.qi_realm + 2 if dungeon.get("dungeon_type") == "linh_can" else None
+    )
+    wave_enemies = _build_wave_list(dungeon, rng, max_realm_level=max_realm_level)
     total_waves = len(wave_enemies)
 
     all_loot: list[dict] = []

@@ -22,7 +22,7 @@
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.15,
-      "element_res_shred": {
+      "element_pen": {
         "am": 0.05
       }
     },
@@ -51,7 +51,7 @@
     },
     "passive_bonus": {
       "stat_steal_on_hit_pct": 0.12,
-      "element_res_shred": {
+      "element_pen": {
         "am": 0.06
       }
     },
@@ -189,7 +189,7 @@
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.4,
-      "element_res_shred": {
+      "element_pen": {
         "am": 0.12
       },
       "crit_rating_vs_drained": 150
@@ -248,7 +248,7 @@
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.5,
       "stat_steal_on_hit_pct": 0.35,
-      "element_res_shred": {
+      "element_pen": {
         "am": 0.15
       }
     },
@@ -308,7 +308,7 @@
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.75,
-      "element_res_shred": {
+      "element_pen": {
         "am": 0.25
       },
       "crit_rating_vs_drained": 320

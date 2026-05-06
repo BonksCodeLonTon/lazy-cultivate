@@ -216,6 +216,38 @@
     }
   },
   {
+    "key": "EnemyQuang_T2",
+    "vi": "Cường Quang Tịnh Hỏa",
+    "en": "Strong Light Cleansing Flame",
+    "realm": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 0.6},
+    "mp_cost": 22,
+    "cooldown": 2,
+    "base_dmg": 35,
+    "effects": ["DebuffPhaGiap"],
+    "effect_chances": {"DebuffPhaGiap": 0.30},
+    "formation_key": null
+  },
+  {
+    "key": "EnemyAm_T2",
+    "vi": "Cường Âm U Tịch",
+    "en": "Strong Shadow Silence",
+    "realm": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 0.6},
+    "mp_cost": 22,
+    "cooldown": 2,
+    "base_dmg": 35,
+    "effects": ["DebuffLoaMat"],
+    "effect_chances": {"DebuffLoaMat": 0.28},
+    "formation_key": null
+  },
+  {
     "key": "EnemyTribLoi_T2",
     "vi": "Thiên Kiếp Lôi Trung",
     "en": "Tribulation Thunder — Mid",

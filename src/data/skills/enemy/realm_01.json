@@ -128,6 +128,38 @@
     "formation_key": null
   },
   {
+    "key": "EnemyQuang_T1",
+    "vi": "Yêu Quang Linh Tịnh",
+    "en": "Demon Light Cleanse",
+    "realm": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 0.3},
+    "mp_cost": 8,
+    "cooldown": 1,
+    "base_dmg": 8,
+    "effects": ["DebuffPhaGiap"],
+    "effect_chances": {"DebuffPhaGiap": 0.15},
+    "formation_key": null
+  },
+  {
+    "key": "EnemyAm_T1",
+    "vi": "Yêu Âm Hồn Phách",
+    "en": "Demon Shadow Soul Strike",
+    "realm": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {"atk": 0.0, "matk": 0.3},
+    "mp_cost": 8,
+    "cooldown": 1,
+    "base_dmg": 8,
+    "effects": ["DebuffLoaMat"],
+    "effect_chances": {"DebuffLoaMat": 0.15},
+    "formation_key": null
+  },
+  {
     "key": "EnemyTribLoi_T1",
     "vi": "Thiên Kiếp Lôi Sơ",
     "en": "Tribulation Thunder — Early",

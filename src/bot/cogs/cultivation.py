@@ -347,6 +347,8 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             rolled_linh_can = player.linh_can
 
         from src.data.registry import registry
+        from src.game.constants.linh_can import LINH_CAN_DATA, parse_linh_can_levels
+        from src.bot.cogs.constitution import _format_bonus_lines
         const_data = registry.get_constitution(rolled_const) or {}
         rarity_labels = {
             "common": "Phổ Thông",
@@ -358,13 +360,41 @@ class CultivationCog(commands.Cog, name="Cultivation"):
         rarity = const_data.get("rarity", "common")
         rarity_vi = rarity_labels.get(rarity, rarity)
 
-        embed = success_embed(
-            f"**{name}** đã bước vào con đường tu tiên!\n"
-            f"🌿 Linh Căn: **{rolled_linh_can or '(không)'}**\n"
-            f"🧬 Thể Chất sơ khởi: **{const_data.get('vi', rolled_const)}** "
-            f"({emojis.for_rarity(rarity)} *{rarity_vi}*)\n"
-            f"Dùng `/status` để xem chi tiết."
+        levels = parse_linh_can_levels(rolled_linh_can or "")
+        if levels:
+            linh_can_line = " · ".join(
+                f"{LINH_CAN_DATA[elem]['emoji']} **{LINH_CAN_DATA[elem]['vi']}** Lv{lvl}"
+                for elem, lvl in levels.items()
+            )
+        else:
+            linh_can_line = "*(chưa khai mở)*"
+
+        const_vi = const_data.get("vi", rolled_const)
+        const_desc = const_data.get("passive_description_vi", "")
+        bonus_lines = _format_bonus_lines(const_data.get("stat_bonuses", {}))
+
+        const_value_parts = [f"**{const_vi}** {emojis.for_rarity(rarity)} *{rarity_vi}*"]
+        if const_desc:
+            const_value_parts.append(f"_{const_desc}_")
+        if bonus_lines:
+            const_value_parts.append("**Chỉ số:**\n" + "\n".join(bonus_lines))
+
+        embed = base_embed(
+            title=f"🎉 {name} đã bước vào con đường tu tiên!",
+            description=(
+                "Đạo hữu khởi đầu hành trình với thiên phú riêng. "
+                "Hãy dùng `/status` để xem chi tiết."
+            ),
+            color=0xD4A017,
         )
+        embed.add_field(name="🌿 Linh Căn", value=linh_can_line, inline=False)
+        embed.add_field(
+            name="🧬 Thể Chất Sơ Khởi",
+            value="\n".join(const_value_parts),
+            inline=False,
+        )
+        embed.set_footer(text="Dùng /cultivate để bắt đầu tu luyện · /status xem trạng thái")
+
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="cultivate", description="Tu luyện — áp dụng AFK ticks")

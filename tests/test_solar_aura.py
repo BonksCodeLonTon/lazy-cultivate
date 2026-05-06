@@ -4,7 +4,7 @@ The aura is a passive periodic effect: every turn end, the holder deals
 ``hp_max × solar_aura_pct`` fire damage to the opponent. Damage is amplified
 by ``final_dmg_bonus``, ``burn_dmg_bonus``, and ``bonus_dmg_vs_burn`` (when
 the target has burn stacks); reduced by the target's hoa resistance after
-``element_res_shred["hoa"]``.
+``element_pen["hoa"]``.
 """
 from __future__ import annotations
 
@@ -162,7 +162,7 @@ def test_aura_reduced_by_hoa_resistance():
 
 
 def test_aura_fire_res_shred_recovers_damage():
-    player = make_combatant("p", solar_aura_pct=0.04, element_res_shred={"hoa": 0.30})
+    player = make_combatant("p", solar_aura_pct=0.04, element_pen={"hoa": 0.30})
     enemy = make_combatant("e", hp=20_000, hp_max=20_000, resistances={"hoa": 0.50})
     make_session(player, enemy)._process_periodic(player)
 
@@ -189,7 +189,7 @@ def test_thai_duong_kit_all_stack():
         final_dmg_bonus=0.15,
         burn_dmg_bonus=0.30,
         bonus_dmg_vs_burn=0.20,
-        element_res_shred={"hoa": 0.15},
+        element_pen={"hoa": 0.15},
     )
     enemy = make_combatant("e", hp=20_000, hp_max=20_000, burn_stacks=2, resistances={"hoa": 0.10})
     make_session(player, enemy)._process_periodic(player)

@@ -16,7 +16,10 @@
     "base_atk": 45,
     "base_matk": 90,
     "base_def": 40,
-    "mp_regen_pct": 0.06
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "hoa": 0.06
+    }
   },
   {
     "key": "StrongBangPhong",
@@ -35,7 +38,10 @@
     "base_atk": 45,
     "base_matk": 90,
     "base_def": 40,
-    "mp_regen_pct": 0.06
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "thuy": 0.06
+    }
   },
   {
     "key": "StrongKimMoc",
@@ -54,7 +60,10 @@
     "base_atk": 90,
     "base_matk": 45,
     "base_def": 50,
-    "mp_regen_pct": 0.06
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "kim": 0.06
+    }
   },
   {
     "key": "StrongThuyHoa",
@@ -73,7 +82,10 @@
     "skill_keys": [
       "EnemyThuy_T3",
       "EnemyHoa_T3"
-    ]
+    ],
+    "base_res": {
+      "thuy": 0.06
+    }
   },
   {
     "key": "StrongLoiTo",
@@ -92,7 +104,10 @@
     "base_atk": 45,
     "base_matk": 90,
     "base_def": 40,
-    "mp_regen_pct": 0.06
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "loi": 0.06
+    }
   },
   {
     "key": "StrongPhongMoc",
@@ -111,6 +126,9 @@
     "base_atk": 90,
     "base_matk": 45,
     "base_def": 50,
-    "mp_regen_pct": 0.06
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "phong": 0.06
+    }
   }
 ]

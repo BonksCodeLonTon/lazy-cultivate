@@ -1,5 +1,31 @@
 [
   {
+    "key": "LCPhong_T0_PhongTieuLinh",
+    "vi": "Phong Tiểu Linh",
+    "en": "Wind Sprite",
+    "rank": "tinh_anh",
+    "realm_level": 1,
+    "element": "phong",
+    "base_hp": 1100,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "skill_keys": [
+      "EnemyLCPhong_T1",
+      "EnemyPhong_T1"
+    ],
+    "base_atk": 38,
+    "base_matk": 65,
+    "base_def": 47,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Phong",
+    "final_dmg_bonus": 0.03,
+    "base_res": {
+      "phong": 0.2
+    },
+    "res_cap_pct": 0.8,
+    "loot_luck_bonus": 0.0
+  },
+  {
     "key": "LCPhong_T1_TuVuLinhDieu",
     "vi": "Tử Vũ Linh Điểu",
     "en": "Purple-Feather Spirit Bird",
@@ -23,7 +49,34 @@
     "base_res": {
       "phong": 0.25
     },
-    "res_cap_pct": 0.85
+    "res_cap_pct": 0.85,
+    "loot_luck_bonus": 0.0
+  },
+  {
+    "key": "LCPhong_T1b_LuuPhongSuGia",
+    "vi": "Lưu Phong Sứ Giả",
+    "en": "Streaming Wind Envoy",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "phong",
+    "base_hp": 2900,
+    "base_spd": 12,
+    "hp_scale": 1.65,
+    "skill_keys": [
+      "EnemyLCPhong_T1",
+      "EnemyLCPhong_T2"
+    ],
+    "base_atk": 92,
+    "base_matk": 165,
+    "base_def": 105,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Phong",
+    "final_dmg_bonus": 0.06,
+    "base_res": {
+      "phong": 0.28
+    },
+    "res_cap_pct": 0.85,
+    "loot_luck_bonus": 0.2
   },
   {
     "key": "LCPhong_T2_CuongPhongYeuHo",
@@ -49,7 +102,37 @@
     "base_res": {
       "phong": 0.35
     },
-    "res_cap_pct": 0.85
+    "res_cap_pct": 0.85,
+    "loot_luck_bonus": 0.5
+  },
+  {
+    "key": "LCPhong_T2b_CuongPhongLinhHo",
+    "vi": "Cuồng Phong Linh Hồ",
+    "en": "Hurricane Spirit Fox",
+    "rank": "cuong_gia",
+    "realm_level": 5,
+    "element": "phong",
+    "base_hp": 7800,
+    "base_spd": 14,
+    "hp_scale": 1.8,
+    "skill_keys": [
+      "EnemyLCPhong_T2",
+      "EnemyLCPhong_T3"
+    ],
+    "base_atk": 200,
+    "base_matk": 360,
+    "base_def": 190,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Phong",
+    "final_dmg_bonus": 0.1,
+    "base_res": {
+      "phong": 0.4,
+      "moc": 0.05
+    },
+    "res_cap_pct": 0.88,
+    "loot_luck_bonus": 0.8,
+    "base_crit_rating": 24,
+    "base_crit_dmg_rating": 36
   },
   {
     "key": "LCPhong_T3_PhongThanLinhTuong",
@@ -77,7 +160,38 @@
       "phong": 0.5,
       "moc": 0.1
     },
-    "res_cap_pct": 0.9
+    "res_cap_pct": 0.9,
+    "loot_luck_bonus": 1.2
+  },
+  {
+    "key": "LCPhong_T3b_VanLyPhongVuTuong",
+    "vi": "Vạn Lý Phong Vũ Tướng",
+    "en": "Ten-Thousand-Mile Wind General",
+    "rank": "hung_manh",
+    "realm_level": 7,
+    "element": "phong",
+    "base_hp": 21000,
+    "base_spd": 16,
+    "hp_scale": 1.95,
+    "skill_keys": [
+      "EnemyLCPhong_T3",
+      "EnemyLCPhong_Apex",
+      "EnemyLCPhong_T2"
+    ],
+    "base_atk": 410,
+    "base_matk": 730,
+    "base_def": 380,
+    "mp_regen_pct": 0.07,
+    "loot_table_key": "LinhCanLoot_Phong",
+    "final_dmg_bonus": 0.18,
+    "base_res": {
+      "phong": 0.55,
+      "moc": 0.13
+    },
+    "res_cap_pct": 0.9,
+    "loot_luck_bonus": 1.5,
+    "base_crit_rating": 72,
+    "base_crit_dmg_rating": 96
   },
   {
     "key": "LCPhong_Apex_BanCoPhongDe",
@@ -105,6 +219,68 @@
       "phong": 0.65,
       "moc": 0.2
     },
-    "res_cap_pct": 0.9
+    "res_cap_pct": 0.9,
+    "loot_luck_bonus": 2.0
+  },
+  {
+    "key": "LCPhong_Apex2_CuuTieuPhongQuan",
+    "vi": "Cửu Tiêu Phong Quân",
+    "en": "Nine-Sky Wind Lord",
+    "rank": "dai_nang",
+    "realm_level": 9,
+    "element": "phong",
+    "base_hp": 56000,
+    "base_spd": 17,
+    "hp_scale": 2.05,
+    "skill_keys": [
+      "EnemyLCPhong_Apex",
+      "EnemyLCPhong_T3",
+      "EnemyLCPhong_T2"
+    ],
+    "base_atk": 850,
+    "base_matk": 1480,
+    "base_def": 720,
+    "mp_regen_pct": 0.08,
+    "loot_table_key": "LinhCanLoot_Phong",
+    "final_dmg_bonus": 0.4,
+    "base_res": {
+      "phong": 0.7,
+      "moc": 0.25
+    },
+    "res_cap_pct": 0.92,
+    "loot_luck_bonus": 2.6,
+    "base_crit_rating": 192,
+    "base_crit_dmg_rating": 220
+  },
+  {
+    "key": "LCPhong_Sovereign_ThaiSoPhongHoang",
+    "vi": "Thái Sơ Phong Hoàng",
+    "en": "Primordial Wind Sovereign",
+    "rank": "chi_ton",
+    "realm_level": 10,
+    "element": "phong",
+    "base_hp": 92000,
+    "base_spd": 18,
+    "hp_scale": 2.2,
+    "skill_keys": [
+      "EnemyLCPhong_Apex",
+      "EnemyLCPhong_T3",
+      "EnemyLCPhong_T2"
+    ],
+    "base_atk": 1200,
+    "base_matk": 2050,
+    "base_def": 1000,
+    "mp_regen_pct": 0.1,
+    "loot_table_key": "LinhCanLoot_Phong",
+    "final_dmg_bonus": 0.55,
+    "base_res": {
+      "phong": 0.75,
+      "moc": 0.3
+    },
+    "res_cap_pct": 0.92,
+    "loot_luck_bonus": 3.5,
+    "base_crit_rating": 260,
+    "base_crit_dmg_rating": 300,
+    "immune_hard_cc": true
   }
 ]

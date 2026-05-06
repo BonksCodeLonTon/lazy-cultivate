@@ -49,7 +49,7 @@
     },
     "passive_bonus": {
       "silence_on_crit_pct": 0.15,
-      "element_res_shred": {
+      "element_pen": {
         "quang": 0.08
       }
     },
@@ -243,7 +243,7 @@
     },
     "passive_bonus": {
       "silence_on_crit_pct": 0.35,
-      "element_res_shred": {
+      "element_pen": {
         "quang": 0.15
       },
       "final_dmg_bonus": 0.08
@@ -301,7 +301,7 @@
     },
     "passive_bonus": {
       "silence_on_crit_pct": 0.45,
-      "element_res_shred": {
+      "element_pen": {
         "quang": 0.22
       },
       "heal_reduce_on_hit_pct": 0.25,
@@ -333,7 +333,7 @@
     "passive_bonus": {
       "heal_pct": 0.2,
       "heal_reduce_on_hit_pct": 0.3,
-      "element_res_shred": {
+      "element_pen": {
         "quang": 0.15
       },
       "barrier_on_cleanse": true,

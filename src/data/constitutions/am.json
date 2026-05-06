@@ -6,7 +6,10 @@
     "rarity": "common",
     "element": "am",
     "roll_weight": 40,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Âm khí nhập thân, nuôi dưỡng tâm hồn — linh khí dư dả, miễn nhiễm tà thuật.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -28,7 +31,10 @@
     "rarity": "common",
     "element": "am",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Âm sơ khởi tụ trong thân, sương đen che mắt kẻ địch khiến chúng đánh trượt.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -50,7 +56,10 @@
     "rarity": "common",
     "element": "am",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Âm sơ khởi tụ trong thân, tử khí dồn vào đòn đánh xuyên giáp và liên tục hồi sinh sinh khí.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -72,7 +81,10 @@
     "rarity": "common",
     "element": "am",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Âm sơ khởi tụ trong thân, u ám đặc quánh nâng đỡ thân thể và miễn nhiễm tà thuật.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -94,7 +106,10 @@
     "rarity": "uncommon",
     "element": "am",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Âm đã hậu nhập huyết mạch — sương đen mịt mù, kẻ địch dễ đánh trượt vào hư không.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -116,7 +131,10 @@
     "rarity": "uncommon",
     "element": "am",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Âm đã hậu nhập huyết mạch — tử khí xuyên giáp, sinh khí tự đầy lại không ngừng.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -138,7 +156,10 @@
     "rarity": "uncommon",
     "element": "am",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Âm đã hậu nhập huyết mạch — u ám phủ thân nâng đỡ huyết khí, miễn nhiễm tà pháp.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -160,7 +181,10 @@
     "rarity": "uncommon",
     "element": "am",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Ám khí ẩn trong huyết mạch — linh khí dư dả nuôi dưỡng tà thuật, sương đen che mắt kẻ địch.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -183,7 +207,10 @@
     "rarity": "rare",
     "element": "am",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Âm, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -206,7 +233,10 @@
     "rarity": "rare",
     "element": "am",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Âm, hồn phệ mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -229,7 +259,10 @@
     "rarity": "rare",
     "element": "am",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Âm, hồn phệ mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -252,7 +285,10 @@
     "rarity": "rare",
     "element": "am",
     "roll_weight": 6,
-    "cost_merit": 15000,
+    "cost": {
+      "merit": 15000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa tử linh huyền âm, hút chỉ số và linh hồn mục tiêu mỗi đòn đánh.",
     "stat_bonuses": {
       "element_dmg_bonus": {
@@ -260,7 +296,7 @@
       },
       "soul_drain_on_hit_pct": 0.18,
       "stat_steal_on_hit_pct": 0.1,
-      "element_res_shred": {
+      "element_pen": {
         "am": 0.1
       },
       "debuff_immune_pct": 0.1
@@ -279,7 +315,10 @@
     "rarity": "epic",
     "element": "am",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Âm cộng hưởng với đại đạo, né tránh bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.14,
@@ -300,7 +339,10 @@
     "rarity": "epic",
     "element": "am",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Âm cộng hưởng với đại đạo, hồn phệ bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.12,
@@ -321,7 +363,10 @@
     "rarity": "epic",
     "element": "am",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Âm cộng hưởng với đại đạo, hồn phệ bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.1,
@@ -342,7 +387,10 @@
     "rarity": "epic",
     "element": "am",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "U minh khí từ chín tầng địa ngục, hấp thụ linh hồn và cướp đoạt sức mạnh kẻ thù.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.08,
@@ -365,7 +413,10 @@
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế thể Âm — đỉnh cao của lộ trình né tránh, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.25,
@@ -384,8 +435,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssAm": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionAmTu_Leg",
@@ -394,7 +444,10 @@
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế thể Âm — đỉnh cao của lộ trình hồn phệ, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.3,
@@ -407,8 +460,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssAm": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionAmU_Leg",
@@ -417,7 +469,10 @@
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế thể Âm — đỉnh cao của lộ trình hồn phệ, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.25,
@@ -430,8 +485,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssAm": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionUMinhAm",
@@ -440,13 +494,16 @@
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Thân thuộc u minh, mỗi lần chạm vào kẻ địch đều cướp đi chút sức mạnh vĩnh viễn.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.15,
       "soul_drain_on_hit_pct": 0.35,
       "stat_steal_on_hit_pct": 0.25,
-      "element_res_shred": {
+      "element_pen": {
         "am": 0.2
       },
       "crit_rating_vs_drained": 300,
@@ -459,8 +516,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssAm": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionThonThienMaTam",
@@ -469,13 +525,16 @@
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 60000
+    },
     "passive_description_vi": "Hạt giống ma đạo gieo vào tim. Bản thân yếu ớt, nhưng là tiền đề tiến hóa thành **Thôn Thiên Ma Thể**. Tu luyện Ma Thần Công (R9 hệ Ám) để khai mở hình thái thật.",
     "stat_bonuses": {
       "hp_pct": 0.05,
       "mp_pct": 0.05,
       "final_dmg_bonus": 0.03,
-      "element_res_shred": {
+      "element_pen": {
         "am": 0.05
       }
     },
@@ -484,8 +543,7 @@
       "MatDaoCotTinh": 4,
       "MatThienDaoTuy": 2,
       "ElemEssAm": 5
-    },
-    "cost_stones": 60000
+    }
   },
   {
     "key": "ConstitutionThonThienMaThe",
@@ -494,7 +552,10 @@
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 150000
+    },
     "passive_description_vi": "Ma đạo viên mãn — thân hóa thiên ma, hấp thụ vạn vật. **Thôn Thiên Ma Khí:** đầu trận cướp 20% chỉ số chiến đấu (ATK / MATK / DEF / SPD) của đối thủ và hấp thu thành chỉ số bản thân. Cộng thêm chỉ số ma đạo đỉnh cao trên mọi mặt. Tiến hóa từ Thôn Thiên Ma Tâm.",
     "stat_bonuses": {
       "stat_drain_aura_pct": 0.2,
@@ -506,7 +567,7 @@
       "crit_dmg_rating": 200,
       "soul_drain_on_hit_pct": 0.2,
       "stat_steal_on_hit_pct": 0.2,
-      "element_res_shred": {
+      "element_pen": {
         "am": 0.2
       },
       "true_dmg_pct": 0.05
@@ -521,7 +582,6 @@
       "MatThienDaoTuy": 4,
       "MatHonNguyenCot": 1,
       "ElemEssAm": 8
-    },
-    "cost_stones": 150000
+    }
   }
 ]

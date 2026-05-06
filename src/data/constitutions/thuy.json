@@ -6,7 +6,10 @@
     "rarity": "common",
     "element": "thuy",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thủy sơ khởi tụ trong thân, mọi thuộc tính né tránh đều được khơi dậy.",
     "stat_bonuses": {
       "mp_pct": 0.08,
@@ -26,7 +29,10 @@
     "rarity": "common",
     "element": "thuy",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thủy sơ khởi tụ trong thân, mọi thuộc tính linh lực đều được khơi dậy.",
     "stat_bonuses": {
       "mp_pct": 0.12,
@@ -47,7 +53,10 @@
     "rarity": "common",
     "element": "thuy",
     "roll_weight": 40,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí chảy như dòng nước, hồi chiêu mau và tích mana tự nhiên.",
     "stat_bonuses": {
       "mp_pct": 0.1,
@@ -67,7 +76,10 @@
     "rarity": "common",
     "element": "thuy",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thủy sơ khởi tụ trong thân, mọi thuộc tính linh lực đều được khơi dậy.",
     "stat_bonuses": {
       "mp_pct": 0.1,
@@ -87,7 +99,10 @@
     "rarity": "uncommon",
     "element": "thuy",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí chảy như sóng biển, kỹ năng tuôn ra liên tục mà không cạn linh lực.",
     "stat_bonuses": {
       "mp_pct": 0.14,
@@ -108,7 +123,10 @@
     "rarity": "uncommon",
     "element": "thuy",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thủy đã hậu nhập huyết mạch — sức mạnh né tránh vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "mp_pct": 0.128,
@@ -128,7 +146,10 @@
     "rarity": "uncommon",
     "element": "thuy",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thủy đã hậu nhập huyết mạch — sức mạnh linh lực vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "mp_pct": 0.192,
@@ -149,7 +170,10 @@
     "rarity": "uncommon",
     "element": "thuy",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thủy đã hậu nhập huyết mạch — sức mạnh linh lực vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "mp_pct": 0.16,
@@ -169,7 +193,10 @@
     "rarity": "rare",
     "element": "thuy",
     "roll_weight": 6,
-    "cost_merit": 15000,
+    "cost": {
+      "merit": 15000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân như gương băng, đòn đánh kẻ thù phần nào sẽ quay ngược về chính chúng.",
     "stat_bonuses": {
       "mp_pct": 0.18,
@@ -192,7 +219,10 @@
     "rarity": "rare",
     "element": "thuy",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Thủy, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "mp_pct": 0.192,
@@ -213,7 +243,10 @@
     "rarity": "rare",
     "element": "thuy",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Thủy, linh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "mp_pct": 0.288,
@@ -235,7 +268,10 @@
     "rarity": "rare",
     "element": "thuy",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Thủy, linh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "mp_pct": 0.24,
@@ -256,7 +292,10 @@
     "rarity": "epic",
     "element": "thuy",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí cuộn như Thiên Hà, sóng chảy ngược dòng phản kích mọi đòn tấn công.",
     "stat_bonuses": {
       "mp_pct": 0.25,
@@ -279,7 +318,10 @@
     "rarity": "epic",
     "element": "thuy",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Hàn Băng — hàn khí thấm xương khiến kẻ địch như di chuyển trong dòng nước đặc, kèm theo phản kích băng giá.",
     "stat_bonuses": {
       "mp_pct": 0.28,
@@ -301,7 +343,10 @@
     "rarity": "epic",
     "element": "thuy",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Thủy cộng hưởng với đại đạo, linh lực bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "mp_pct": 0.42,
@@ -323,7 +368,10 @@
     "rarity": "epic",
     "element": "thuy",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Thủy cộng hưởng với đại đạo, linh lực bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "mp_pct": 0.35,
@@ -347,7 +395,10 @@
     "rarity": "legendary",
     "element": "thuy",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Dung hòa huyết mạch thủy long cửu uyên, linh khí càng tràn đầy thì sát thương càng khủng khiếp.",
     "stat_bonuses": {
       "mp_pct": 0.35,
@@ -357,7 +408,7 @@
       "damage_bonus_from_mp_pct": 0.15,
       "reflect_pct": 0.15,
       "reflect_applies_effects": true,
-      "element_res_shred": {
+      "element_pen": {
         "thuy": 0.15
       }
     },
@@ -367,8 +418,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssThuy": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionThuyBang_Leg",
@@ -377,7 +427,10 @@
     "rarity": "legendary",
     "element": "thuy",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Đế thể Hàn Băng — vạn vật chạm phải đều bị đóng băng kết tinh; mỗi kỹ năng tung ra có 20% cơ hội Đông Băng đối thủ, gương băng phản kích đòn tấn công.",
     "stat_bonuses": {
       "mp_pct": 0.3,
@@ -385,7 +438,7 @@
       "evasion_rating": 350,
       "freeze_on_skill_chance": 0.1,
       "reflect_pct": 0.12,
-      "element_res_shred": {
+      "element_pen": {
         "thuy": 0.12
       },
       "damage_bonus_from_evasion_pct": 0.1,
@@ -403,8 +456,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssThuy": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionThuyHai_Leg",
@@ -413,7 +465,10 @@
     "rarity": "legendary",
     "element": "thuy",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Linh lực sâu như Bích Hải, mỗi đòn tấn công đều tích tụ Linh Khí — biển càng đầy, sát thương càng kinh hoàng.",
     "stat_bonuses": {
       "mp_pct": 0.6,
@@ -430,8 +485,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssThuy": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionThuyLuu_Leg",
@@ -440,7 +494,10 @@
     "rarity": "legendary",
     "element": "thuy",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Thân hóa lưu thủy phù vân — đòn phản kích không chỉ trả sát thương, mà còn ép ngược mọi hiệu ứng kẻ thù vừa giáng xuống.",
     "stat_bonuses": {
       "mp_pct": 0.5,
@@ -448,7 +505,7 @@
       "cooldown_reduce": 0.2,
       "reflect_applies_effects": true,
       "damage_bonus_from_mp_pct": 0.12,
-      "element_res_shred": {
+      "element_pen": {
         "thuy": 0.1
       }
     },
@@ -458,8 +515,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssThuy": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionThanhTuyenThe",
@@ -468,7 +524,10 @@
     "rarity": "legendary",
     "element": "thuy",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 120000
+    },
     "passive_description_vi": "Thân hóa Thánh Tuyền — sinh mệnh trong vắt như nước, vô tận luân hồi. 💧 **Hoãn Trả Thiên Tuyền:** **30%** sát thương nhận vào được trải đều ra **3 lượt** (70% chịu ngay, 30% còn lại chia ba lượt kế). Tổng sát thương không đổi, nhưng thân thể có thời gian hồi máu / thoát hiểm. Cộng thêm sinh tồn áp đảo.",
     "stat_bonuses": {
       "damage_defer_turns": 3,
@@ -490,7 +549,6 @@
       "MatThienDaoTuy": 4,
       "MatHonNguyenCot": 2,
       "ElemEssThuy": 8
-    },
-    "cost_stones": 120000
+    }
   }
 ]

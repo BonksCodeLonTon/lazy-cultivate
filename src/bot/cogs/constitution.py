@@ -47,6 +47,12 @@ log = logging.getLogger(__name__)
 DAO_COT_KEY = "MatDaoCotTinh"
 DAO_COT_GRADE = Grade.THIEN
 
+
+def _activation_cost(const_data: dict) -> tuple[int, int]:
+    """Return ``(merit, stones)`` from the constitution's ``cost`` block."""
+    cost = const_data.get("cost") or {}
+    return int(cost.get("merit", 0)), int(cost.get("stones", 0))
+
 # Fallback material list when a constitution JSON entry is missing
 # ``materials`` for some reason. Always cost at least one Đạo Cốt Tinh.
 _FALLBACK_MATERIALS: dict[str, int] = {DAO_COT_KEY: 1}
@@ -153,7 +159,7 @@ _BONUS_FORMATTERS: list[tuple[str, str]] = [
     ("turn_steal_pct",                "⏩ Cướp Lượt +{pct:.0f}%"),
     ("reflect_pct",                   "🪞 Phản ST +{pct:.0f}%"),
     ("debuff_immune_pct",             "🪬 Miễn Debuff {pct:.0f}%"),
-    # NOTE: per-element shred is read from the generic ``element_res_shred``
+    # NOTE: per-element penetration is read from the generic ``element_pen``
     # dict and rendered dynamically below — don't add unicode-emoji formatters
     # for individual elements here.
     ("burn_dmg_bonus",                "🔥 ST Thiêu Đốt +{pct:.0f}%"),
@@ -212,17 +218,17 @@ def _format_bonus_lines(bonuses: dict) -> list[str]:
             lines.append(label)
 
     # ── Per-element bonuses (resolved against the central emoji registry) ──
-    # ``res_<elem>`` lives as a flat key; shred + damage bonus + convert all
+    # ``res_<elem>`` lives as a flat key; pen + damage bonus + convert all
     # come from generic dicts (single source of truth, multi-element friendly).
     elem_dmg   = bonuses.get("element_dmg_bonus") or {}
-    elem_shred = bonuses.get("element_res_shred") or {}
+    elem_pen   = bonuses.get("element_pen") or {}
     convert    = bonuses.get("damage_taken_convert_pct") or {}
     for elem, vi in ELEMENT_LABELS_VI.items():
         emoji = emojis.for_element(elem)
         if (r := bonuses.get(f"res_{elem}", 0)):
             lines.append(f"{emoji} Kháng {vi} +{r * 100:.0f}%")
-        if (s := elem_shred.get(elem, 0)):
-            lines.append(f"{emoji} Xuyên Kháng {vi} {s * 100:.0f}%")
+        if (p := elem_pen.get(elem, 0)):
+            lines.append(f"{emoji} Xuyên Kháng {vi} {p * 100:.0f}%")
         if (d := elem_dmg.get(elem, 0)):
             lines.append(f"{emoji} ST {vi} +{d * 100:.0f}%")
         if (c := convert.get(elem, 0)):
@@ -306,8 +312,7 @@ def _detail_embed(
     if bonus_lines:
         desc_parts.append("\n**Chỉ số:**\n" + "\n".join(bonus_lines))
 
-    cost_merit = int(const_data.get("cost_merit", 0))
-    cost_stones = int(const_data.get("cost_stones", 0))
+    cost_merit, cost_stones = _activation_cost(const_data)
     tags = [_rarity_label(rarity)]
     if elem:
         tags.append(f"🜁 Hệ {elem.capitalize()}")
@@ -612,8 +617,7 @@ class ConstitutionDetailView(discord.ui.View):
                 await interaction.edit_original_response(embed=error_embed(err))
                 return
 
-            cost_merit = int(const_data.get("cost_merit", 0))
-            cost_stones = int(const_data.get("cost_stones", 0))
+            cost_merit, cost_stones = _activation_cost(const_data)
             if cost_merit > player.merit:
                 await interaction.edit_original_response(
                     embed=error_embed(

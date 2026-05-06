@@ -6,7 +6,10 @@
     "rarity": "common",
     "element": "tho",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thổ sơ khởi tụ trong thân, mọi thuộc tính phòng ngự đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.08,
@@ -27,7 +30,10 @@
     "rarity": "common",
     "element": "tho",
     "roll_weight": 40,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Thân thể kiên cố như đất dày, tự sinh hộ thuẫn qua mỗi lượt chiến đấu.",
     "stat_bonuses": {
       "hp_pct": 0.08,
@@ -47,7 +53,10 @@
     "rarity": "common",
     "element": "tho",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thổ sơ khởi tụ trong thân, mọi thuộc tính né tránh đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.06,
@@ -67,7 +76,10 @@
     "rarity": "common",
     "element": "tho",
     "roll_weight": 30,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thổ sơ khởi tụ trong thân, mọi thuộc tính sinh lực đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.1,
@@ -87,7 +99,10 @@
     "rarity": "uncommon",
     "element": "tho",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Da thịt như đại địa hậu trầm, gánh chịu mọi sức nặng mà không hề lay chuyển.",
     "stat_bonuses": {
       "hp_pct": 0.12,
@@ -108,7 +123,10 @@
     "rarity": "uncommon",
     "element": "tho",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thổ đã hậu nhập huyết mạch — sức mạnh phòng ngự vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.128,
@@ -129,7 +147,10 @@
     "rarity": "uncommon",
     "element": "tho",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thổ đã hậu nhập huyết mạch — sức mạnh né tránh vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.096,
@@ -149,7 +170,10 @@
     "rarity": "uncommon",
     "element": "tho",
     "roll_weight": 12,
-    "cost_merit": 7000,
+    "cost": {
+      "merit": 7000,
+      "stones": 0
+    },
     "passive_description_vi": "Linh khí Thổ đã hậu nhập huyết mạch — sức mạnh sinh lực vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.16,
@@ -169,7 +193,10 @@
     "rarity": "rare",
     "element": "tho",
     "roll_weight": 6,
-    "cost_merit": 15000,
+    "cost": {
+      "merit": 15000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân nặng như núi, đòn phản kích khiến kẻ địch tự gánh chịu sát thương.",
     "stat_bonuses": {
       "hp_pct": 0.15,
@@ -192,7 +219,10 @@
     "rarity": "rare",
     "element": "tho",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Thổ, phòng ngự mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.192,
@@ -214,7 +244,10 @@
     "rarity": "rare",
     "element": "tho",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Thổ, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.144,
@@ -235,7 +268,10 @@
     "rarity": "rare",
     "element": "tho",
     "roll_weight": 5,
-    "cost_merit": 20000,
+    "cost": {
+      "merit": 20000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân hóa linh thể Thổ, sinh lực mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.24,
@@ -256,7 +292,10 @@
     "rarity": "epic",
     "element": "tho",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thân tựa Bàn Thạch trấn núi non, mọi đòn dội ngược lại như va vào vách đá.",
     "stat_bonuses": {
       "hp_pct": 0.22,
@@ -282,7 +321,10 @@
     "rarity": "epic",
     "element": "tho",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Thổ cộng hưởng với đại đạo, phòng ngự bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.28,
@@ -306,7 +348,10 @@
     "rarity": "epic",
     "element": "tho",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Thổ cộng hưởng với đại đạo, né tránh bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.21,
@@ -330,7 +375,10 @@
     "rarity": "epic",
     "element": "tho",
     "roll_weight": 1,
-    "cost_merit": 55000,
+    "cost": {
+      "merit": 55000,
+      "stones": 0
+    },
     "passive_description_vi": "Thần thể Thổ cộng hưởng với đại đạo, sinh lực bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.25,
@@ -353,7 +401,10 @@
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Thân như thiên địa trụ, hộ thuẫn càng dày đòn đánh càng mạnh; gai phản xuất phát từ khiên chứ không chỉ thân.",
     "stat_bonuses": {
       "hp_pct": 0.3,
@@ -371,8 +422,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssTho": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionThoCuong_Leg",
@@ -381,7 +431,10 @@
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Sơn nhạc trấn cương, máu thịt là vũ khí — sinh lực càng dồi dào, đòn đánh càng đè bẹp đối thủ; va chạm với khiên đá khiến chúng choáng váng.",
     "stat_bonuses": {
       "hp_pct": 0.4,
@@ -398,8 +451,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssTho": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionThoHoang_Leg",
@@ -408,7 +460,10 @@
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Hoàng sa trấn ngàn dặm, khiên cát dâng cao gấp bội — gai phản bật ngược từ tường cát, mỗi đòn vào khiên đều biến thành sát thương dội ra.",
     "stat_bonuses": {
       "hp_pct": 0.45,
@@ -429,8 +484,7 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssTho": 6
-    },
-    "cost_stones": 80000
+    }
   },
   {
     "key": "ConstitutionThoTrach_Leg",
@@ -439,7 +493,10 @@
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
-    "cost_merit": 0,
+    "cost": {
+      "merit": 0,
+      "stones": 80000
+    },
     "passive_description_vi": "Trạch địa nuốt vạn vật, đầm lầy ngầm rút lực kẻ địch — máu thịt và khiên cùng hóa gai phản, đối thủ bị choáng ngã trong bùn đất.",
     "stat_bonuses": {
       "hp_pct": 0.5,
@@ -455,7 +512,6 @@
       "MatThienDaoTuy": 3,
       "MatHonNguyenCot": 1,
       "ElemEssTho": 6
-    },
-    "cost_stones": 80000
+    }
   }
 ]

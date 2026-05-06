@@ -49,7 +49,7 @@
     },
     "passive_bonus": {
       "mark_on_hit_pct": 0.25,
-      "element_res_shred": {
+      "element_pen": {
         "phong": 0.08
       }
     },
@@ -190,7 +190,7 @@
     },
     "passive_bonus": {
       "mark_on_hit_pct": 0.4,
-      "element_res_shred": {
+      "element_pen": {
         "phong": 0.15
       },
       "crit_rating_vs_marked": 120
@@ -311,7 +311,7 @@
     "passive_bonus": {
       "crit_rating_vs_marked": 300,
       "crit_dmg_vs_marked": 360,
-      "element_res_shred": {
+      "element_pen": {
         "phong": 0.3
       }
     },

@@ -193,8 +193,10 @@ class CombatStats:
     soul_drain_on_hit_pct: float = 0.0
     stat_steal_on_hit_pct: float = 0.0
     crit_rating_vs_drained: int = 0
-    # ── Cross-element resistance shred — single dict source of truth ──────
-    element_res_shred: dict[str, float] = field(default_factory=dict)
+    # ── Cross-element penetration — single dict source of truth ───────────
+    # Passive attacker-side stat. Stacks additively with target debuffs
+    # (DebuffXuyenThau<Elem>, DebuffXeRach via res_all).
+    element_pen: dict[str, float] = field(default_factory=dict)
     # ── Mộc + Quang shared: heals may crit (×1.5) ─────────────────────────
     heal_can_crit: bool = False
     # ── DoT damage amplifiers (cross-build) ───────────────────────────────
@@ -385,11 +387,11 @@ def compute_combat_stats(
     burn_per_stack_pct_bonus = float(bonuses.get("burn_per_stack_pct_bonus", 0.0))
     bonus_dmg_vs_burn = float(bonuses.get("bonus_dmg_vs_burn", 0.0))
     dot_can_crit      = bool(bonuses.get("dot_can_crit", False))
-    # Per-element resistance shred — single dict-of-dicts pulled from bonuses.
-    # Constitutions / Linh Căn / formations all emit ``element_res_shred``;
+    # Per-element penetration — single dict-of-dicts pulled from bonuses.
+    # Constitutions / Linh Căn / formations all emit ``element_pen``;
     # equip-side merge happens further below.
-    element_res_shred: dict[str, float] = {
-        e: float(v) for e, v in (bonuses.get("element_res_shred") or {}).items()
+    element_pen: dict[str, float] = {
+        e: float(v) for e, v in (bonuses.get("element_pen") or {}).items()
     }
     # Kim-build fields
     bleed_on_hit_pct        = float(bonuses.get("bleed_on_hit_pct", 0.0))
@@ -539,9 +541,9 @@ def compute_combat_stats(
         burn_per_stack_pct_bonus+= float(equip_stats.get("burn_per_stack_pct_bonus", 0.0))
         bonus_dmg_vs_burn += float(equip_stats.get("bonus_dmg_vs_burn", 0.0))
         dot_can_crit       = dot_can_crit or bool(equip_stats.get("dot_can_crit", False))
-        # Per-element resistance shred dict from equip — additive merge.
-        for _e, _v in (equip_stats.get("element_res_shred") or {}).items():
-            element_res_shred[_e] = element_res_shred.get(_e, 0.0) + float(_v)
+        # Per-element penetration dict from equip — additive merge.
+        for _e, _v in (equip_stats.get("element_pen") or {}).items():
+            element_pen[_e] = element_pen.get(_e, 0.0) + float(_v)
         # Kim-build fields
         bleed_on_hit_pct        += float(equip_stats.get("bleed_on_hit_pct", 0.0))
         bleed_stack_cap_bonus   += int(equip_stats.get("bleed_stack_cap_bonus", 0))
@@ -775,7 +777,7 @@ def compute_combat_stats(
         loot_luck_bonus=loot_luck_bonus,
         damage_taken_convert_pct=damage_taken_convert_pct,
         element_dmg_bonus=element_dmg_bonus,
-        element_res_shred=element_res_shred,
+        element_pen=element_pen,
         mp_reserved=mp_reserved,
         mp_reserve_pct=reserve_pct,
         resistances=resistances,

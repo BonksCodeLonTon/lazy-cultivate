@@ -5,7 +5,7 @@ The aura is a passive periodic effect: every turn end, the holder deals
 the dealt amount (routed through the standard ``_apply_heal`` so heal-crit
 and bleed-heal-reduction stay consistent). Damage is amplified by
 ``final_dmg_bonus`` and ``dot_dmg_bonus``; reduced by the target's moc
-resistance after ``element_res_shred["moc"]``.
+resistance after ``element_pen["moc"]``.
 """
 from __future__ import annotations
 
@@ -140,7 +140,7 @@ def test_aura_reduced_by_moc_resistance():
 
 
 def test_aura_moc_res_shred_recovers_damage():
-    player = make_combatant("p", hp=5_000, wither_aura_pct=0.04, element_res_shred={"moc": 0.30})
+    player = make_combatant("p", hp=5_000, wither_aura_pct=0.04, element_pen={"moc": 0.30})
     enemy = make_combatant("e", hp=20_000, hp_max=20_000, resistances={"moc": 0.50})
     make_session(player, enemy)._process_periodic(player)
 
