@@ -284,7 +284,11 @@
     "stat_bonuses": {
       "final_dmg_bonus": 0.175,
       "burn_on_hit_pct": 0.35,
-      "crit_rating": 175
+      "crit_rating": 175,
+      "burn_stack_cap_bonus": 2,
+      "burn_per_stack_pct_bonus": 0.005,
+      "burn_dmg_bonus": 0.15,
+      "dot_can_crit": true
     },
     "special_requirements": null,
     "materials": {
@@ -327,8 +331,11 @@
     "passive_description_vi": "Thần thể Hỏa cộng hưởng với đại đạo, lửa bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.14,
-      "burn_dmg_bonus": 0.28,
-      "burn_on_hit_pct": 0.245
+      "burn_dmg_bonus": 0.1,
+      "burn_on_hit_pct": 0.245,
+      "phoenix_revive_pct": 0.1,
+      "phoenix_revive_buff_pct": 0.02,
+      "crit_rating": 150
     },
     "special_requirements": null,
     "materials": {
@@ -347,13 +354,15 @@
     "cost_merit": 55000,
     "passive_description_vi": "Phượng hoàng tái sinh trong lửa — mỗi đòn đều bùng cháy thiêu rụi cả linh hồn.",
     "stat_bonuses": {
-      "final_dmg_bonus": 0.12,
-      "burn_on_hit_pct": 0.25,
+      "final_dmg_bonus": 0.1,
+      "burn_on_hit_pct": 0.2,
       "burn_stack_cap_bonus": 1,
       "element_res_shred": {
-        "hoa": 0.18
+        "hoa": 0.1
       },
-      "burn_dmg_bonus": 0.2
+      "burn_dmg_bonus": 0.08,
+      "phoenix_revive_pct": 0.1,
+      "phoenix_revive_buff_pct": 0.02
     },
     "special_requirements": null,
     "materials": {
@@ -400,18 +409,25 @@
     "element": "hoa",
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Đế thể Hỏa — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng. 🔥 **Hỏa Vũ Hồi Thiên:** **40%** sát thương nhận vào được chuyển hóa thành sát thương Hỏa giáng lên chính mình, sau đó được giảm bởi Kháng Hỏa cực đỉnh — phần tử lửa biến thành lá chắn. Cộng kháng Hỏa vượt trội.",
+    "passive_description_vi": "Đế Liệt Diệm Thể — **Diễm Hồn Truyền Đốt**: ngọn lửa thiêu đốt nội tạng đối thủ thấm sâu hơn, nhiều tầng hơn, lại có thể bạo kích DoT. Sát thương Hỏa của bản thân thấm vào kháng Hỏa địch (xuyên kháng).",
     "stat_bonuses": {
-      "final_dmg_bonus": 0.15,
+      "final_dmg_bonus": 0.18,
       "burn_on_hit_pct": 0.5,
+      "burn_stack_cap_bonus": 3,
+      "burn_per_stack_pct_bonus": 0.008,
+      "burn_dmg_bonus": 0.3,
+      "dot_can_crit": true,
       "crit_rating": 250,
       "res_hoa": 0.3,
-      "hp_pct": 0.15,
+      "hp_pct": 0.2,
       "damage_taken_convert_pct": {
         "hoa": 0.4
       },
       "element_dmg_bonus": {
         "hoa": 0.2
+      },
+      "element_res_shred": {
+        "hoa": 0.15
       }
     },
     "special_requirements": null,
@@ -460,13 +476,15 @@
     "stat_bonuses": {
       "solar_aura_pct": 0.04,
       "hp_flat_per_realm": 500,
-      "hp_pct": 0.05,
+      "hp_pct": 0.2,
       "burn_dmg_bonus": 0.3,
       "bonus_dmg_vs_burn": 0.2,
       "element_res_shred": {
-        "hoa": 0.15
+        "hoa": 0.2
       },
-      "burn_on_hit_pct": 0.3
+      "burn_on_hit_pct": 0.3,
+      "final_dmg_bonus": 0.3,
+      "crit_dmg_rating": 400
     },
     "special_requirements": null,
     "materials": {

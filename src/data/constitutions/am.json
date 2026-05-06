@@ -274,7 +274,7 @@
   },
   {
     "key": "ConstitutionAmSuong_Epi",
-    "vi": "Thần Hắc Sương Thể",
+    "vi": "Hắc Vụ Thể",
     "en": "Divine Black Mist Body",
     "rarity": "epic",
     "element": "am",
@@ -295,7 +295,7 @@
   },
   {
     "key": "ConstitutionAmTu_Epi",
-    "vi": "Thần Tử Vong Thể",
+    "vi": "Tử Vong Thần Thể",
     "en": "Divine Death Wraith Body",
     "rarity": "epic",
     "element": "am",
@@ -303,9 +303,9 @@
     "cost_merit": 55000,
     "passive_description_vi": "Thần thể Âm cộng hưởng với đại đạo, hồn phệ bùng nổ đến cực hạn.",
     "stat_bonuses": {
-      "final_dmg_bonus": 0.21,
-      "soul_drain_on_hit_pct": 0.28,
-      "true_dmg_pct": 0.07
+      "final_dmg_bonus": 0.12,
+      "soul_drain_on_hit_pct": 0.14,
+      "true_dmg_pct": 0.04
     },
     "special_requirements": null,
     "materials": {
@@ -316,7 +316,7 @@
   },
   {
     "key": "ConstitutionAmU_Epi",
-    "vi": "Thần U Ám Thể",
+    "vi": "U Minh Thần Thể",
     "en": "Divine Gloom Dark Body",
     "rarity": "epic",
     "element": "am",
@@ -324,9 +324,9 @@
     "cost_merit": 55000,
     "passive_description_vi": "Thần thể Âm cộng hưởng với đại đạo, hồn phệ bùng nổ đến cực hạn.",
     "stat_bonuses": {
-      "final_dmg_bonus": 0.175,
-      "soul_drain_on_hit_pct": 0.35,
-      "debuff_immune_pct": 0.21
+      "final_dmg_bonus": 0.1,
+      "soul_drain_on_hit_pct": 0.18,
+      "debuff_immune_pct": 0.1
     },
     "special_requirements": null,
     "materials": {
@@ -345,11 +345,11 @@
     "cost_merit": 55000,
     "passive_description_vi": "U minh khí từ chín tầng địa ngục, hấp thụ linh hồn và cướp đoạt sức mạnh kẻ thù.",
     "stat_bonuses": {
-      "final_dmg_bonus": 0.12,
-      "soul_drain_on_hit_pct": 0.25,
-      "stat_steal_on_hit_pct": 0.18,
+      "final_dmg_bonus": 0.08,
+      "soul_drain_on_hit_pct": 0.1,
+      "stat_steal_on_hit_pct": 0.06,
       "debuff_immune_pct": 0.15,
-      "true_dmg_pct": 0.05
+      "true_dmg_pct": 0.03
     },
     "special_requirements": null,
     "materials": {
@@ -360,7 +360,7 @@
   },
   {
     "key": "ConstitutionAmSuong_Leg",
-    "vi": "Đế Hắc Sương Thể",
+    "vi": "Hắc Vụ Đế Thể",
     "en": "Imperial Black Mist Body",
     "rarity": "legendary",
     "element": "am",
@@ -368,9 +368,15 @@
     "cost_merit": 0,
     "passive_description_vi": "Đế thể Âm — đỉnh cao của lộ trình né tránh, vạn cổ truyền tụng.",
     "stat_bonuses": {
-      "final_dmg_bonus": 0.2,
-      "evasion_rating": 300,
-      "stat_steal_on_hit_pct": 0.25
+      "final_dmg_bonus": 0.25,
+      "evasion_rating": 450,
+      "stat_steal_on_hit_pct": 0.3,
+      "crit_rating": 350,
+      "crit_dmg_rating": 300,
+      "soul_drain_on_hit_pct": 0.2,
+      "true_dmg_pct": 0.06,
+      "spd_bonus": 15,
+      "multi_strike_pct": 0.1
     },
     "special_requirements": null,
     "materials": {

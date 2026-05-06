@@ -63,6 +63,11 @@ def build_attack_stats(
     # ``effective_damage_reduction``). Stacks tick up during periodic phase.
     if actor.fortify_per_turn_pct > 0 and actor.fortify_stacks > 0:
         final_dmg_bonus += actor.fortify_per_turn_pct * actor.fortify_stacks
+    # Sát Khí Đại Thành — each enemy killed earlier this dungeon stacks a
+    # permanent final_dmg_bonus on the killer. ``kill_streak_stacks`` is
+    # incremented in CombatSession._victory(). Capped via kill_buff_cap.
+    if actor.kill_buff_per_kill_pct > 0 and actor.kill_streak_stacks > 0:
+        final_dmg_bonus += actor.kill_buff_per_kill_pct * actor.kill_streak_stacks
     if skill_element:
         final_dmg_bonus += actor_mods.get(f"dmg_bonus_{skill_element}", 0.0)
         # Permanent per-element dmg bonus from constitutions / equipment

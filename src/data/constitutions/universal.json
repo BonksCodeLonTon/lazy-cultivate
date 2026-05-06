@@ -302,15 +302,17 @@
     "cost_merit": 50000,
     "passive_description_vi": "Thân tựa kim thạch ngàn năm bất hoại, mọi đòn công kích đều khó để lại dấu tích.",
     "stat_bonuses": {
-      "hp_pct": 0.3,
+      "hp_pct": 0.25,
       "res_all": 100,
-      "final_dmg_reduce": 0.14,
+      "final_dmg_reduce": 0.12,
       "hp_regen_pct": 0.03,
       "crit_res_rating": 200,
-      "shield_max_base": 400,
-      "shield_max_pct": 0.25,
+      "shield_max_base": 250,
+      "shield_max_pct": 0.1,
       "shield_regen_pct": 0.01,
-      "shield_regen_flat": 25
+      "shield_regen_flat": 25,
+      "thorn_from_shield": true,
+      "damage_bonus_from_shield_pct": 0.04
     },
     "special_requirements": null,
     "materials": {
@@ -329,14 +331,14 @@
     "cost_merit": 50000,
     "passive_description_vi": "Lĩnh ngộ một phần khí của Hỗn Nguyên — vạn pháp cùng dung nạp, vạn thuộc tính đều thăng tiến. Khí Hỗn Nguyên giúp tu luyện vạn pháp đều nhanh hơn.",
     "stat_bonuses": {
-      "hp_pct": 0.18,
-      "mp_pct": 0.18,
-      "final_dmg_bonus": 0.08,
-      "final_dmg_reduce": 0.05,
-      "crit_rating": 180,
-      "res_all": 80,
-      "spd_bonus": 4,
-      "cultivation_speed_bonus": 0.2
+      "hp_pct": 0.14,
+      "mp_pct": 0.14,
+      "final_dmg_bonus": 0.06,
+      "final_dmg_reduce": 0.04,
+      "crit_rating": 150,
+      "res_all": 60,
+      "spd_bonus": 3,
+      "cultivation_speed_bonus": 0.12
     },
     "special_requirements": null,
     "materials": {
@@ -360,7 +362,9 @@
       "cooldown_reduce": 0.12,
       "crit_rating": 160,
       "mp_regen_pct": 0.04,
-      "first_strike_chance": 0.1
+      "first_strike_chance": 0.1,
+      "turn_steal_pct": 0.05,
+      "paralysis_on_crit": true
     },
     "special_requirements": null,
     "materials": {
@@ -379,11 +383,13 @@
     "cost_merit": 50000,
     "passive_description_vi": "Sát ý vô biên, mỗi đòn ra như thiên kiếm rạch trời — không gì có thể chắn đường.",
     "stat_bonuses": {
-      "final_dmg_bonus": 0.18,
-      "crit_rating": 260,
-      "crit_dmg_rating": 200,
-      "true_dmg_pct": 0.08,
-      "armor_pen_pct": 0.1
+      "final_dmg_bonus": 0.14,
+      "crit_rating": 220,
+      "crit_dmg_rating": 160,
+      "true_dmg_pct": 0.06,
+      "armor_pen_pct": 0.08,
+      "paralysis_on_crit": true,
+      "crit_dmg_vs_bleed": 150
     },
     "special_requirements": null,
     "materials": {
@@ -426,16 +432,20 @@
     "element": null,
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Hậu thổ kiên cố như đại địa, thân thể như núi Thái Sơn không thể lay chuyển. Mỗi đòn trúng đều phản chấn, mọi đòn đánh đều bị triệt tiêu.",
+    "passive_description_vi": "Hậu Thổ Thần Thể — **Hậu Thổ Trận Phản**: hậu thổ kiên cố, mỗi đòn đánh đều mượn khí lực của khiên — vừa phòng vừa công. Phản đòn trả về một phần qua khiên thay vì máu.",
     "stat_bonuses": {
       "hp_pct": 0.5,
       "res_all": 150,
       "final_dmg_reduce": 0.15,
-      "thorn_pct": 0.15,
-      "stun_on_hit_pct": 0.08,
+      "thorn_pct": 0.2,
+      "stun_on_hit_pct": 0.1,
       "shield_regen_pct": 0.05,
       "shield_max_base": 600,
-      "shield_max_pct": 0.25
+      "shield_max_pct": 0.25,
+      "shield_regen_flat": 50,
+      "thorn_from_shield": true,
+      "damage_bonus_from_shield_pct": 0.15,
+      "crit_res_rating": 200
     },
     "special_requirements": null,
     "materials": {
@@ -518,12 +528,16 @@
     "cost_merit": 0,
     "passive_description_vi": "Nghê Đình lôi oanh, thân mang thiên lôi vô tận. Tốc độ hành động và sát thương bạo kích đều đạt đỉnh cao, cơ hội cướp lượt của đối thủ.",
     "stat_bonuses": {
-      "crit_rating": 500,
-      "crit_dmg_rating": 250,
-      "final_dmg_bonus": 0.2,
-      "spd_bonus": 15,
-      "shock_on_hit_pct": 0.2,
-      "turn_steal_pct": 0.08
+      "multi_strike_pct": 0.15,
+      "crit_rating": 600,
+      "crit_dmg_rating": 400,
+      "spd_bonus": 20,
+      "shock_on_hit_pct": 0.3,
+      "turn_steal_pct": 0.12,
+      "final_dmg_bonus": 0.28,
+      "true_dmg_pct": 0.06,
+      "paralysis_on_crit": true,
+      "mp_pct": 0.2
     },
     "special_requirements": null,
     "materials": {
@@ -544,11 +558,14 @@
     "cost_merit": 0,
     "passive_description_vi": "Thần thể phá thiên, mỗi đòn tấn công đều mang sức mạnh hủy diệt. Bạo kích đẩy lên đỉnh cao và phá nát mọi phòng ngự.",
     "stat_bonuses": {
-      "final_dmg_bonus": 0.25,
-      "crit_rating": 400,
-      "crit_dmg_rating": 400,
-      "true_dmg_pct": 0.04,
-      "paralysis_on_crit": true
+      "final_dmg_bonus": 0.3,
+      "crit_rating": 500,
+      "crit_dmg_rating": 500,
+      "true_dmg_pct": 0.08,
+      "paralysis_on_crit": true,
+      "hp_pct": 0.2,
+      "mp_pct": 0.2,
+      "armor_pen_pct": 0.12
     },
     "special_requirements": null,
     "materials": {
@@ -631,12 +648,14 @@
     "cost_merit": 0,
     "passive_description_vi": "Tiêu dao tự tại như gió mây, thân pháp biến ảo vô thường. Né tránh càng cao thì sát thương càng kinh khủng.",
     "stat_bonuses": {
-      "spd_bonus": 20,
+      "spd_bonus": 22,
       "evasion_rating": 500,
-      "crit_rating": 300,
-      "mark_on_hit_pct": 0.15,
-      "damage_bonus_from_evasion_pct": 0.12,
-      "cooldown_reduce": 0.1
+      "crit_rating": 350,
+      "mark_on_hit_pct": 0.18,
+      "damage_bonus_from_evasion_pct": 0.15,
+      "cooldown_reduce": 0.12,
+      "final_dmg_bonus": 0.15,
+      "true_dmg_pct": 0.04
     },
     "special_requirements": null,
     "materials": {
@@ -793,16 +812,9 @@
     "cost_merit": 0,
     "passive_description_vi": "**Khóa Thứ Năm** tan biến — tinh quang cửu thiên hộ thân, sát thương ngoại lai bị triệt tiêu một phần. **Cột Mốc 5:** mở khóa Giảm Sát Thương (Final DMG Reduce) thực sự. Tiến hóa từ Phá Tứ Khóa.",
     "stat_bonuses": {
-      "hp_pct": 0.2,
-      "mp_pct": 0.15,
-      "final_dmg_bonus": 0.1,
-      "final_dmg_reduce": 0.05,
-      "crit_rating": 170,
-      "crit_dmg_rating": 110,
-      "crit_res_rating": 100,
-      "res_all": 60,
-      "shield_regen_pct": 0.03,
-      "spd_bonus": 4
+      "final_dmg_bonus": 0.12,
+      "crit_rating": 200,
+      "true_dmg_pct": 0.04
     },
     "special_requirements": null,
     "progresses_from": "ConstitutionHoangCoChain4",
@@ -971,14 +983,14 @@
     "cost_stones": 100000,
     "passive_description_vi": "Linh hồn cô đặc thành Khiên — **30% sinh lực hóa khiên năng**, đan điền trở thành kho năng lượng pháp khí. Pháp Công bùng phát theo lượng khiên hiện tại: **+25% Khiên hiện tại tính vào Pháp Công** mỗi đòn. Khi khiên cạn, sát thương pháp cũng yếu đi — quản lý khiên là quản lý sát thương.",
     "stat_bonuses": {
-      "hp_to_shield_pct": 0.30,
+      "hp_to_shield_pct": 0.3,
       "matk_from_shield_pct": 0.25,
       "shield_max_base": 500,
-      "shield_max_pct": 0.30,
-      "shield_regen_pct": 0.10,
+      "shield_max_pct": 0.3,
+      "shield_regen_pct": 0.1,
       "shield_regen_flat": 50,
-      "mp_pct": 0.20,
-      "final_dmg_bonus": 0.10,
+      "mp_pct": 0.2,
+      "final_dmg_bonus": 0.1,
       "crit_rating": 200,
       "cooldown_reduce": 0.05
     },
@@ -990,7 +1002,7 @@
       "ArchHoTheTinh": 3,
       "ArchThongHueTinh": 3
     },
-    "activation_chance": 0.30
+    "activation_chance": 0.3
   },
   {
     "key": "ConstitutionCuongKhienChienThe",
@@ -1003,13 +1015,13 @@
     "cost_stones": 100000,
     "passive_description_vi": "Khiên hóa thành vũ khí — **30% sinh lực luyện thành cương khiên**, mỗi đòn vung ra mượn khí lực của khiên: **+25% Khiên hiện tại tính vào Công** mỗi đòn. Càng giữ vững khiên, đòn đánh càng nặng — quản lý khiên là quản lý sát thương.",
     "stat_bonuses": {
-      "hp_to_shield_pct": 0.30,
+      "hp_to_shield_pct": 0.3,
       "atk_from_shield_pct": 0.25,
       "shield_max_base": 500,
-      "shield_max_pct": 0.30,
-      "shield_regen_pct": 0.10,
+      "shield_max_pct": 0.3,
+      "shield_regen_pct": 0.1,
       "shield_regen_flat": 50,
-      "final_dmg_bonus": 0.10,
+      "final_dmg_bonus": 0.1,
       "crit_rating": 200,
       "crit_dmg_rating": 100,
       "cooldown_reduce": 0.05
@@ -1022,7 +1034,7 @@
       "ArchHoTheTinh": 3,
       "ArchSatYTinh": 3
     },
-    "activation_chance": 0.30
+    "activation_chance": 0.3
   },
   {
     "key": "ConstitutionTienThienThanhTheDaoThai",

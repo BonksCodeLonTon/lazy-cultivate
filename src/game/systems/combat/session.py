@@ -190,8 +190,11 @@ class CombatSession:
             auto_attack(self, actor, target)
             return
 
-        # Pre-turn: Quang Linh Căn — actor may cleanse a debuff before acting
-        lc_effects.try_cleanse(actor, self.rng, self.log)
+        # Pre-turn: Quang Linh Căn — actor may cleanse a debuff before acting.
+        # Opponent is passed so Đế Tịnh Quang Thể's Cleanse Retaliate can fire
+        # damage at the right target.
+        opponent = self.enemy if actor is self.player else self.player
+        lc_effects.try_cleanse(actor, self.rng, self.log, opponent=opponent)
 
         skill_key, reason = self._choose_skill(actor)
         if not skill_key:
@@ -392,6 +395,17 @@ class CombatSession:
         # builds leech HP/MP off the poison they inflicted.
         opponent = self.enemy if combatant is self.player else self.player
 
+        # Endure announcement — flag is set inside Combatant.take_damage when
+        # the survival-floor clamp engages. Log it here so the player sees the
+        # save in the same turn it happened, then reset.
+        if combatant.endure_just_triggered:
+            self.log.append(
+                f"  🌿 **{combatant.name}** **Cội Nguồn Bất Tận** — sống sót ở "
+                f"{combatant.hp:,}/{combatant.hp_max:,} HP "
+                f"(hồi chiêu {combatant.endure_remaining}t)"
+            )
+            combatant.endure_just_triggered = False
+
         # Thánh Tuyền Thể — pay out one queued installment of deferred damage.
         # Bypasses ``take_damage`` to avoid re-deferring the already-deferred
         # chunk (would never apply otherwise).
@@ -554,6 +568,13 @@ class CombatSession:
         if combatant.fortify_braced_turns > 0:
             combatant.fortify_braced_turns -= 1
 
+        # Endure cooldown — Đế Sinh Mộc Thể's "Cội Nguồn Bất Tận" must wait
+        # ``endure_cooldown`` turns between triggers. Counter decrements
+        # whether or not the holder is hit; expires naturally so the floor
+        # is ready by the next time the holder gets killed.
+        if combatant.endure_remaining > 0:
+            combatant.endure_remaining -= 1
+
         combatant.tick_effects()
 
     def _roll_loot(self) -> list[dict]:
@@ -595,6 +616,19 @@ class CombatSession:
         }
         merit = merit_map.get(rank, 3)
         karma = 1 if rank in ("than_thu", "tien_thu", "dai_nang", "chi_ton") else 0
+
+        # Sát Khí Đại Thành — record the kill on the player_c. Stacks persist
+        # across waves of a single dungeon entry (player_c is reused), reset
+        # when build_player_combatant rebuilds for a fresh entry.
+        if self.player.kill_buff_per_kill_pct > 0:
+            cap = self.player.kill_buff_cap or 0
+            if cap > 0 and self.player.kill_streak_stacks < cap:
+                self.player.kill_streak_stacks += 1
+                bonus = self.player.kill_buff_per_kill_pct * self.player.kill_streak_stacks
+                self.log.append(
+                    f"  🗡️ **{self.player.name}** Sát Khí Đại Thành "
+                    f"[×{self.player.kill_streak_stacks}/{cap}] (+{bonus*100:.0f}% ST)"
+                )
 
         loot_lines = [f"  🎁 {d['item_key']} × {d['quantity']}" for d in loot] or ["  (không có vật phẩm)"]
         self.log.append(f"\n🏆 **Chiến thắng!** Phần thưởng:\n" + "\n".join(loot_lines))

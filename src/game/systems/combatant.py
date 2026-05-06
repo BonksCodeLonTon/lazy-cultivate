@@ -266,6 +266,39 @@ class Combatant:
     # so mage and physical builds can both pivot shield into offense.
     matk_from_shield_pct: float = 0.0
     atk_from_shield_pct: float = 0.0
+    # Endure — Đế Sinh Mộc Thể's "Cội Nguồn Bất Tận". When a hit would drop
+    # HP to 0, the engine clamps HP to ``hp_max × endure_threshold_pct`` and
+    # engages a cooldown. ``endure_remaining`` is the runtime turn counter,
+    # decremented in CombatSession._process_periodic.
+    endure_threshold_pct: float = 0.0
+    endure_cooldown: int = 0
+    endure_remaining: int = 0
+    # Transient flag set inside ``take_damage`` when Endure clamps HP to the
+    # survival floor. CombatSession reads + logs + resets it during periodic
+    # processing so the player sees a clear "Endure triggered" line.
+    endure_just_triggered: bool = False
+    # Cleanse Heal — Đế Bạch Liên Thể's "Liên Hoa Tịnh Hóa". Each successful
+    # cleanse restores ``hp_max × cleanse_heal_pct`` HP. Hooks into the same
+    # quang.try_cleanse path as barrier_on_cleanse.
+    cleanse_heal_pct: float = 0.0
+    # Cleanse Retaliate — Đế Tịnh Quang Thể's "Tịnh Hóa Phản Đòn". Each
+    # successful cleanse fires ``matk × this_pct`` Quang-flavored damage at
+    # the cleanser's opponent. Resolved in CombatSession after try_cleanse.
+    cleanse_retaliate_dmg_pct: float = 0.0
+    # Kill Streak — Đế Sát Kim Thể's "Sát Khí Đại Thành". Each enemy killed
+    # grants permanent +``kill_buff_per_kill_pct`` final_dmg_bonus, capped at
+    # ``kill_buff_cap`` stacks. ``kill_streak_stacks`` is the runtime count
+    # incremented in CombatSession._victory(). Persists across waves of a
+    # single dungeon entry; resets when player_c is rebuilt.
+    kill_buff_per_kill_pct: float = 0.0
+    kill_buff_cap: int = 0
+    kill_streak_stacks: int = 0
+    # Multi-Strike — per-attack chance to land an additional hit at reduced
+    # damage. Resolved in casting.py after the main hit; the second strike
+    # reuses the same skill's ``take_damage`` path so DR/shield/resists all
+    # apply naturally. Theme: lightning combos, sword storm, wind cascade.
+    multi_strike_pct: float = 0.0
+    multi_strike_dmg_pct: float = 0.50
     shield_recharge_delay: int = 0
     shield_recharge_pause: int = 0
     # Every hit adds flat damage = current shield × this fraction.
@@ -482,6 +515,23 @@ class Combatant:
 
         # Step 4 — HP damage (leftover spill or full DoT amount).
         self.hp = max(0, self.hp - amount)
+
+        # Step 5 — Endure (Cội Nguồn Bất Tận). When a hit would kill the
+        # holder and the cooldown is not engaged, clamp HP to a survival
+        # floor instead and engage the cooldown. Repeats every
+        # ``endure_cooldown`` turns — different from BuffBatTu (single-use)
+        # and phoenix_revive (revive-from-death). DoTs can still kill if
+        # they tick the holder while cooldown is active; that's intentional
+        # so the build remains vulnerable to sustained pressure.
+        if (
+            self.hp == 0
+            and self.endure_threshold_pct > 0
+            and self.endure_remaining == 0
+        ):
+            self.hp = max(1, int(self.hp_max * self.endure_threshold_pct))
+            self.endure_remaining = self.endure_cooldown
+            self.endure_just_triggered = True
+
         return amount
 
     def add_burn_stack(self, count: int = 1) -> int:

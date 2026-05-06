@@ -328,7 +328,10 @@
     "stat_bonuses": {
       "mp_pct": 0.35,
       "mp_regen_pct": 0.052,
-      "cooldown_reduce": 0.14
+      "cooldown_reduce": 0.14,
+      "mana_stack_per_attack": 1,
+      "mana_stack_dmg_bonus": 0.025,
+      "damage_bonus_from_mp_pct": 0.06
     },
     "special_requirements": null,
     "materials": {
@@ -377,17 +380,22 @@
     "cost_merit": 0,
     "passive_description_vi": "Đế thể Hàn Băng — vạn vật chạm phải đều bị đóng băng kết tinh; mỗi kỹ năng tung ra có 20% cơ hội Đông Băng đối thủ, gương băng phản kích đòn tấn công.",
     "stat_bonuses": {
-      "mp_pct": 0.4,
+      "mp_pct": 0.3,
       "slow_on_hit_pct": 0.25,
-      "evasion_rating": 300,
-      "freeze_on_skill_chance": 0.2,
+      "evasion_rating": 350,
+      "freeze_on_skill_chance": 0.1,
       "reflect_pct": 0.12,
       "element_res_shred": {
         "thuy": 0.12
       },
       "damage_bonus_from_evasion_pct": 0.1,
       "shield_max_pct": 0.1,
-      "shield_regen_flat": 20
+      "shield_regen_flat": 30,
+      "hp_pct": 0.3,
+      "final_dmg_reduce": 0.1,
+      "freeze_on_skill": true,
+      "shield_max_base": 250,
+      "final_dmg_bonus": 0.15
     },
     "special_requirements": null,
     "materials": {

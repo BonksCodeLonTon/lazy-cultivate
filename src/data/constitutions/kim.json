@@ -260,7 +260,12 @@
       "hp_pct": 0.21,
       "res_all": 70,
       "thorn_pct": 0.14,
-      "bleed_on_hit_pct": 0.14
+      "bleed_on_hit_pct": 0.14,
+      "thorn_from_shield": true,
+      "shield_max_base": 200,
+      "shield_max_pct": 0.05,
+      "reflect_pct": 0.08,
+      "final_dmg_reduce": 0.06
     },
     "special_requirements": null,
     "materials": {
@@ -281,7 +286,11 @@
     "stat_bonuses": {
       "crit_rating": 280,
       "bleed_on_hit_pct": 0.175,
-      "armor_pen_pct": 0.07
+      "armor_pen_pct": 0.07,
+      "kill_buff_per_kill_pct": 0.03,
+      "kill_buff_cap": 4,
+      "crit_dmg_rating": 200,
+      "true_dmg_pct": 0.04
     },
     "special_requirements": null,
     "materials": {
@@ -302,7 +311,10 @@
     "stat_bonuses": {
       "crit_rating": 210,
       "crit_dmg_rating": 210,
-      "true_dmg_pct": 0.07
+      "true_dmg_pct": 0.07,
+      "turn_steal_pct": 0.04,
+      "armor_pen_pct": 0.06,
+      "spd_bonus": 5
     },
     "special_requirements": null,
     "materials": {
@@ -325,7 +337,10 @@
       "crit_dmg_rating": 200,
       "bleed_on_hit_pct": 0.15,
       "true_dmg_pct": 0.08,
-      "armor_pen_pct": 0.08
+      "armor_pen_pct": 0.08,
+      "kill_buff_per_kill_pct": 0.025,
+      "kill_buff_cap": 4,
+      "crit_rating_vs_bleed": 100
     },
     "special_requirements": null,
     "materials": {
@@ -342,12 +357,21 @@
     "element": "kim",
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Đế thể Kim — đỉnh cao của lộ trình phòng ngự, vạn cổ truyền tụng.",
+    "passive_description_vi": "Đế Cương Kim Thể — **Kim Cương Phản Quang**: thân thể như kim cương phản chiếu — phản đòn (kèm hiệu ứng) lên kẻ tấn công, đồng thời khí lực của khiên hỗ trợ sát thương.",
     "stat_bonuses": {
       "hp_pct": 0.3,
       "res_all": 100,
-      "thorn_pct": 0.2,
-      "bleed_on_hit_pct": 0.2
+      "thorn_pct": 0.25,
+      "thorn_from_shield": true,
+      "bleed_on_hit_pct": 0.25,
+      "final_dmg_reduce": 0.1,
+      "shield_max_base": 400,
+      "shield_max_pct": 0.15,
+      "shield_regen_flat": 25,
+      "damage_bonus_from_shield_pct": 0.12,
+      "reflect_pct": 0.12,
+      "reflect_applies_effects": true,
+      "crit_res_rating": 200
     },
     "special_requirements": null,
     "materials": {
@@ -366,11 +390,18 @@
     "element": "kim",
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Đế thể Kim — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
+    "passive_description_vi": "Đế Sát Kim Thể — **Sát Khí Đại Thành**: mỗi mạng giết được tích tụ thành sát ý, vĩnh viễn cộng dồn ST cuối trong dungeon. Càng giết, càng mạnh.",
     "stat_bonuses": {
       "crit_rating": 400,
-      "bleed_on_hit_pct": 0.25,
-      "armor_pen_pct": 0.1
+      "crit_dmg_rating": 250,
+      "bleed_on_hit_pct": 0.3,
+      "armor_pen_pct": 0.18,
+      "final_dmg_bonus": 0.2,
+      "bleed_dmg_bonus": 0.2,
+      "true_dmg_pct": 0.06,
+      "kill_buff_per_kill_pct": 0.05,
+      "kill_buff_cap": 6,
+      "crit_rating_vs_bleed": 150
     },
     "special_requirements": null,
     "materials": {
@@ -389,11 +420,17 @@
     "element": "kim",
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Đế thể Kim — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
+    "passive_description_vi": "Đế Tinh Kim Thể — **Tinh Quang Thuấn Bộ**: bước chân tinh quang lẹ làng, bạo kích là cơ hội cướp lượt. Tinh hoa Kim ngưng kết — bạo thương cộng dồn cùng tê liệt khi bạo.",
     "stat_bonuses": {
-      "crit_rating": 300,
-      "crit_dmg_rating": 300,
-      "true_dmg_pct": 0.1
+      "crit_rating": 350,
+      "crit_dmg_rating": 350,
+      "true_dmg_pct": 0.1,
+      "final_dmg_bonus": 0.22,
+      "armor_pen_pct": 0.1,
+      "mp_pct": 0.15,
+      "turn_steal_pct": 0.06,
+      "paralysis_on_crit": true,
+      "spd_bonus": 8
     },
     "special_requirements": null,
     "materials": {
@@ -414,13 +451,14 @@
     "cost_merit": 0,
     "passive_description_vi": "Thân hóa kim cang bất hoại, mỗi đòn bạo kích đều xé rách linh hồn kẻ địch đang chảy máu.",
     "stat_bonuses": {
-      "crit_rating": 300,
-      "crit_dmg_rating": 150,
-      "bleed_on_hit_pct": 0.2,
-      "crit_rating_vs_bleed": 200,
-      "crit_dmg_vs_bleed": 200,
-      "true_dmg_pct": 0.12,
-      "bleed_dmg_bonus": 0.25
+      "multi_strike_pct": 0.15,
+      "crit_rating": 450,
+      "crit_dmg_rating": 400,
+      "bleed_on_hit_pct": 0.25,
+      "true_dmg_pct": 0.08,
+      "armor_pen_pct": 0.12,
+      "final_dmg_bonus": 0.28,
+      "hp_pct": 0.2
     },
     "special_requirements": null,
     "materials": {

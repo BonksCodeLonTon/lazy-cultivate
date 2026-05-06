@@ -268,7 +268,11 @@
     "stat_bonuses": {
       "hp_pct": 0.21,
       "final_dmg_bonus": 0.14,
-      "crit_res_rating": 210
+      "crit_res_rating": 210,
+      "barrier_on_cleanse": true,
+      "shield_max_base": 200,
+      "damage_bonus_from_shield_pct": 0.06,
+      "heal_pct": 0.15
     },
     "special_requirements": null,
     "materials": {
@@ -289,7 +293,11 @@
     "stat_bonuses": {
       "mp_pct": 0.28,
       "heal_pct": 0.245,
-      "debuff_immune_pct": 0.175
+      "debuff_immune_pct": 0.175,
+      "cleanse_heal_pct": 0.05,
+      "cleanse_on_turn_pct": 0.2,
+      "barrier_on_cleanse": true,
+      "heal_can_crit": true
     },
     "special_requirements": null,
     "materials": {
@@ -310,8 +318,12 @@
     "stat_bonuses": {
       "hp_pct": 0.245,
       "cleanse_on_turn_pct": 0.35,
-      "heal_pct": 0.175,
-      "hp_flat_per_realm": 750
+      "heal_pct": 0.12,
+      "hp_flat_per_realm": 400,
+      "cleanse_retaliate_dmg_pct": 0.1,
+      "barrier_on_cleanse": true,
+      "heal_can_crit": true,
+      "debuff_immune_pct": 0.15
     },
     "special_requirements": null,
     "materials": {
@@ -334,7 +346,10 @@
       "mp_pct": 0.12,
       "cleanse_on_turn_pct": 0.2,
       "heal_pct": 0.18,
-      "heal_reduce_on_hit_pct": 0.1
+      "heal_reduce_on_hit_pct": 0.1,
+      "barrier_on_cleanse": true,
+      "heal_can_crit": true,
+      "shield_max_base": 200
     },
     "special_requirements": null,
     "materials": {
@@ -351,11 +366,21 @@
     "element": "quang",
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Đế thể Quang — đỉnh cao của lộ trình kháng bạo, vạn cổ truyền tụng.",
+    "passive_description_vi": "Đế Kim Quang Thể — **Thánh Quang Hộ Thuẫn**: Thanh Tẩy tự sinh khiên, khí lực khiên cộng vào sát thương. Hộ pháp sáng — vừa che chở vừa trừng trị.",
     "stat_bonuses": {
       "hp_pct": 0.3,
       "final_dmg_bonus": 0.2,
-      "crit_res_rating": 300
+      "crit_res_rating": 300,
+      "res_all": 100,
+      "final_dmg_reduce": 0.1,
+      "shield_max_base": 400,
+      "shield_max_pct": 0.15,
+      "shield_regen_flat": 30,
+      "silence_on_crit_pct": 0.15,
+      "heal_pct": 0.2,
+      "barrier_on_cleanse": true,
+      "damage_bonus_from_shield_pct": 0.12,
+      "heal_can_crit": true
     },
     "special_requirements": null,
     "materials": {
@@ -374,11 +399,16 @@
     "element": "quang",
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Đế thể Quang — đỉnh cao của lộ trình linh lực, vạn cổ truyền tụng.",
+    "passive_description_vi": "Đế Bạch Liên Thể — Liên Hoa Tịnh Hóa: mỗi lần Thanh Tẩy, hoa sen nở giải trừ ô uế và rưới HP cho thân chủ.",
     "stat_bonuses": {
       "mp_pct": 0.4,
-      "heal_pct": 0.35,
-      "debuff_immune_pct": 0.25
+      "heal_pct": 0.4,
+      "debuff_immune_pct": 0.3,
+      "cleanse_on_turn_pct": 0.4,
+      "cleanse_heal_pct": 0.1,
+      "heal_can_crit": true,
+      "barrier_on_cleanse": true,
+      "hp_pct": 0.2
     },
     "special_requirements": null,
     "materials": {
@@ -397,12 +427,17 @@
     "element": "quang",
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Đế thể Quang — đỉnh cao của lộ trình thanh tẩy, vạn cổ truyền tụng.",
+    "passive_description_vi": "Đế Tịnh Quang Thể — **Tịnh Hóa Phản Đòn**: mỗi lần Thanh Tẩy đều phóng quang trảm phản công về kẻ địch. Thân thể thanh khiết miễn nhiễm phần lớn debuff.",
     "stat_bonuses": {
       "hp_pct": 0.35,
       "cleanse_on_turn_pct": 0.5,
       "heal_pct": 0.25,
-      "hp_flat_per_realm": 1000
+      "hp_flat_per_realm": 1000,
+      "cleanse_retaliate_dmg_pct": 1.5,
+      "barrier_on_cleanse": true,
+      "heal_can_crit": true,
+      "debuff_immune_pct": 0.25,
+      "mp_pct": 0.15
     },
     "special_requirements": null,
     "materials": {

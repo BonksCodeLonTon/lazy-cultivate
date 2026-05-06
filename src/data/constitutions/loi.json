@@ -71,7 +71,9 @@
     "stat_bonuses": {
       "spd_bonus": 3,
       "crit_dmg_rating": 80,
-      "shock_dmg_bonus": 0.1
+      "element_dmg_bonus": {
+        "loi": 0.1
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -92,7 +94,9 @@
       "spd_bonus": 6,
       "crit_rating": 100,
       "shock_on_hit_pct": 0.12,
-      "shock_dmg_bonus": 0.1
+      "element_dmg_bonus": {
+        "loi": 0.1
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -152,7 +156,9 @@
     "stat_bonuses": {
       "spd_bonus": 5,
       "crit_dmg_rating": 128,
-      "shock_dmg_bonus": 0.16
+      "element_dmg_bonus": {
+        "loi": 0.16
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -214,7 +220,9 @@
     "stat_bonuses": {
       "spd_bonus": 7,
       "crit_dmg_rating": 192,
-      "shock_dmg_bonus": 0.24
+      "element_dmg_bonus": {
+        "loi": 0.24
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -263,8 +271,12 @@
       "spd_bonus": 11,
       "crit_rating": 200,
       "shock_on_hit_pct": 0.26,
-      "shock_dmg_bonus": 0.22,
-      "first_strike_chance": 0.08
+      "first_strike_chance": 0.08,
+      "element_dmg_bonus": {
+        "loi": 0.22
+      },
+      "paralysis_on_crit": true,
+      "crit_dmg_rating": 200
     },
     "special_requirements": null,
     "materials": {
@@ -285,7 +297,9 @@
     "stat_bonuses": {
       "spd_bonus": 21,
       "evasion_rating": 280,
-      "shock_on_hit_pct": 0.245
+      "shock_on_hit_pct": 0.245,
+      "damage_bonus_from_evasion_pct": 0.06,
+      "shock_per_stack_pct_bonus": 0.02
     },
     "special_requirements": null,
     "materials": {
@@ -306,7 +320,10 @@
     "stat_bonuses": {
       "spd_bonus": 18,
       "crit_rating": 280,
-      "shock_on_hit_pct": 0.35
+      "shock_on_hit_pct": 0.35,
+      "turn_steal_pct": 0.04,
+      "shock_per_stack_pct_bonus": 0.02,
+      "crit_dmg_rating": 200
     },
     "special_requirements": null,
     "materials": {
@@ -327,7 +344,12 @@
     "stat_bonuses": {
       "spd_bonus": 10,
       "crit_dmg_rating": 280,
-      "shock_dmg_bonus": 0.35
+      "element_dmg_bonus": {
+        "loi": 0.35
+      },
+      "paralysis_on_crit": true,
+      "shock_on_hit_pct": 0.2,
+      "crit_rating": 220
     },
     "special_requirements": null,
     "materials": {
@@ -346,9 +368,15 @@
     "cost_merit": 0,
     "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình né tránh, vạn cổ truyền tụng.",
     "stat_bonuses": {
+      "multi_strike_pct": 0.15,
       "spd_bonus": 30,
       "evasion_rating": 400,
-      "shock_on_hit_pct": 0.35
+      "shock_on_hit_pct": 0.4,
+      "final_dmg_bonus": 0.22,
+      "crit_rating": 350,
+      "crit_dmg_rating": 200,
+      "true_dmg_pct": 0.05,
+      "damage_bonus_from_evasion_pct": 0.12
     },
     "special_requirements": null,
     "materials": {
@@ -369,9 +397,15 @@
     "cost_merit": 0,
     "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình bạo kích, vạn cổ truyền tụng.",
     "stat_bonuses": {
-      "spd_bonus": 25,
+      "multi_strike_pct": 0.18,
+      "spd_bonus": 28,
       "crit_rating": 400,
-      "shock_on_hit_pct": 0.5
+      "shock_on_hit_pct": 0.5,
+      "final_dmg_bonus": 0.22,
+      "crit_dmg_rating": 300,
+      "shock_per_stack_pct_bonus": 0.05,
+      "turn_steal_pct": 0.08,
+      "paralysis_on_crit": true
     },
     "special_requirements": null,
     "materials": {
@@ -390,11 +424,21 @@
     "element": "loi",
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Đế thể Lôi — đỉnh cao của lộ trình sát thương bạo kích, vạn cổ truyền tụng.",
+    "passive_description_vi": "Đế Tử Lôi Thể — **Lôi Đế Phán Quyết**: thiên lôi giáng phạt, mỗi đòn chí mạng đều có thể tê liệt đối thủ, tốc độ kinh thiên cướp lượt liên tiếp.",
     "stat_bonuses": {
-      "spd_bonus": 15,
+      "spd_bonus": 22,
       "crit_dmg_rating": 400,
-      "shock_dmg_bonus": 0.5
+      "crit_rating": 300,
+      "final_dmg_bonus": 0.2,
+      "shock_on_hit_pct": 0.4,
+      "shock_per_stack_pct_bonus": 0.04,
+      "true_dmg_pct": 0.05,
+      "mp_pct": 0.15,
+      "turn_steal_pct": 0.1,
+      "paralysis_on_crit": true,
+      "element_dmg_bonus": {
+        "loi": 0.25
+      }
     },
     "special_requirements": null,
     "materials": {

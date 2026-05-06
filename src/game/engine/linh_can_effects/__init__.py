@@ -38,9 +38,17 @@ def try_dodge(target: "Combatant", rng: random.Random, log: list[str]) -> bool:
     return phong.try_dodge(target, rng, log)
 
 
-def try_cleanse(actor: "Combatant", rng: random.Random, log: list[str]) -> None:
-    """Pre-turn: actor may cleanse a debuff and restore MP (Quang)."""
-    quang.try_cleanse(actor, rng, log)
+def try_cleanse(
+    actor: "Combatant", rng: random.Random, log: list[str],
+    opponent: "Combatant | None" = None,
+) -> None:
+    """Pre-turn: actor may cleanse a debuff and restore MP (Quang).
+
+    ``opponent`` is the actor's combat target. When provided AND the actor
+    carries ``cleanse_retaliate_dmg_pct``, each successful cleanse fires
+    Quang-flavored retaliation damage at the opponent (Đế Tịnh Quang Thể).
+    """
+    quang.try_cleanse(actor, rng, log, opponent=opponent)
 
 
 def get_pen_pct(actor: "Combatant", rng: random.Random, log: list[str]) -> float:

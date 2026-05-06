@@ -283,7 +283,11 @@
     "stat_bonuses": {
       "mp_pct": 0.28,
       "hp_regen_pct": 0.028,
-      "dot_leech_pct": 0.175
+      "dot_leech_pct": 0.175,
+      "wither_aura_pct": 0.006,
+      "heal_can_crit": true,
+      "dot_dmg_bonus": 0.15,
+      "poison_dmg_bonus": 0.18
     },
     "special_requirements": null,
     "materials": {
@@ -304,8 +308,12 @@
     "stat_bonuses": {
       "hp_pct": 0.35,
       "hp_regen_pct": 0.042,
-      "heal_pct": 0.175,
-      "hp_flat_per_realm": 750
+      "heal_pct": 0.1,
+      "hp_flat_per_realm": 750,
+      "endure_threshold_pct": 0.1,
+      "endure_cooldown": 12,
+      "damage_bonus_from_hp_pct": 0.06,
+      "heal_can_crit": true
     },
     "special_requirements": null,
     "materials": {
@@ -326,7 +334,10 @@
     "stat_bonuses": {
       "hp_pct": 0.42,
       "res_all": 88,
-      "hp_regen_pct": 0.028
+      "hp_regen_pct": 0.028,
+      "damage_bonus_from_hp_pct": 0.08,
+      "thorn_pct": 0.1,
+      "hp_flat_per_realm": 600
     },
     "special_requirements": null,
     "materials": {
@@ -345,14 +356,19 @@
     "cost_merit": 0,
     "passive_description_vi": "Kế thừa huyết mạch Mộc Đế thượng cổ, sinh lực càng dày thì sát thương càng mãnh liệt.",
     "stat_bonuses": {
-      "hp_pct": 0.3,
-      "hp_regen_pct": 0.03,
+      "hp_pct": 0.35,
+      "hp_regen_pct": 0.05,
       "damage_bonus_from_hp_pct": 0.15,
       "dot_leech_pct": 0.2,
       "element_res_shred": {
         "moc": 0.15
       },
-      "heal_can_crit": true
+      "heal_can_crit": true,
+      "mp_pct": 0.2,
+      "dot_dmg_bonus": 0.15,
+      "poison_dmg_bonus": 0.2,
+      "final_dmg_bonus": 0.15,
+      "wither_aura_pct": 0.02
     },
     "special_requirements": null,
     "materials": {
@@ -371,11 +387,18 @@
     "element": "moc",
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Đế thể Mộc — đỉnh cao của lộ trình linh lực, vạn cổ truyền tụng.",
+    "passive_description_vi": "Đế Diệp Mộc Thể — **Vạn Lá Hấp Khí**: mỗi lượt rút linh khí nhỏ từ kẻ địch, đồng thời trị liệu của lá có thể bạo kích. DoT làm địch nuôi sống thân chủ.",
     "stat_bonuses": {
       "mp_pct": 0.4,
-      "hp_regen_pct": 0.04,
-      "dot_leech_pct": 0.25
+      "hp_regen_pct": 0.05,
+      "dot_leech_pct": 0.3,
+      "hp_pct": 0.3,
+      "dot_dmg_bonus": 0.2,
+      "poison_dmg_bonus": 0.25,
+      "mp_regen_pct": 0.04,
+      "wither_aura_pct": 0.012,
+      "heal_can_crit": true,
+      "heal_pct": 0.2
     },
     "special_requirements": null,
     "materials": {
@@ -394,12 +417,18 @@
     "element": "moc",
     "roll_weight": 0,
     "cost_merit": 0,
-    "passive_description_vi": "Đế thể Mộc — đỉnh cao của lộ trình sinh lực, vạn cổ truyền tụng.",
+    "passive_description_vi": "Đế Sinh Mộc Thể — Cội Nguồn Bất Tận: cây sự sống vĩnh viễn không tàn — khi đòn đánh quyết định ập đến, thân thể bám rễ vào sinh cơ, sống sót ở 30% HP rồi hồi chiêu 6 lượt.",
     "stat_bonuses": {
       "hp_pct": 0.5,
       "hp_regen_pct": 0.06,
-      "heal_pct": 0.25,
-      "hp_flat_per_realm": 1000
+      "hp_regen_flat": 100,
+      "heal_pct": 0.3,
+      "hp_flat_per_realm": 1200,
+      "damage_bonus_from_hp_pct": 0.18,
+      "heal_can_crit": true,
+      "endure_threshold_pct": 0.3,
+      "endure_cooldown": 6,
+      "thorn_pct": 0.1
     },
     "special_requirements": null,
     "materials": {
@@ -420,9 +449,14 @@
     "cost_merit": 0,
     "passive_description_vi": "Đế thể Mộc — đỉnh cao của lộ trình phòng ngự, vạn cổ truyền tụng.",
     "stat_bonuses": {
-      "hp_pct": 0.6,
-      "res_all": 125,
-      "hp_regen_pct": 0.04
+      "hp_pct": 0.7,
+      "res_all": 150,
+      "hp_regen_pct": 0.06,
+      "hp_regen_flat": 100,
+      "final_dmg_reduce": 0.12,
+      "thorn_pct": 0.2,
+      "damage_bonus_from_hp_pct": 0.15,
+      "crit_res_rating": 250
     },
     "special_requirements": null,
     "materials": {

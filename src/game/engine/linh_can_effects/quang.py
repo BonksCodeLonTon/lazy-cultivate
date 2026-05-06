@@ -77,7 +77,12 @@ def _try_restore_am_mutations(actor: Combatant, log: list[str]) -> bool:
     return did_restore
 
 
-def try_cleanse(actor: Combatant, rng: random.Random, log: list[str]) -> None:
+def try_cleanse(
+    actor: Combatant,
+    rng: random.Random,
+    log: list[str],
+    opponent: Combatant | None = None,
+) -> None:
     """Attempt to cleanse one debuff and restore MP. No return value.
 
     Quang cleanse is a three-step pulse:
@@ -123,3 +128,33 @@ def try_cleanse(actor: Combatant, rng: random.Random, log: list[str]) -> None:
         gained = actor.shield - before
         if gained > 0:
             log.append(f"    🛡️ Thánh Quang Hộ Thuẫn: +{gained:,} khiên")
+
+    # Cleanse Heal — Đế Bạch Liên Thể's "Liên Hoa Tịnh Hóa". Each successful
+    # cleanse pulse also restores ``hp_max × cleanse_heal_pct`` HP, modified
+    # by heal_pct. Heals can crit if the actor carries heal_can_crit (the
+    # crit roll is local — keeps this helper independent of CombatSession).
+    if actor.cleanse_heal_pct > 0 and actor.is_alive():
+        heal_amt = int(actor.hp_max * actor.cleanse_heal_pct * (1.0 + actor.heal_pct))
+        if actor.heal_can_crit and rng.random() < 0.25:
+            heal_amt = int(heal_amt * 1.5)
+        applied = min(heal_amt, actor.hp_max - actor.hp)
+        if applied > 0:
+            actor.hp += applied
+            log.append(f"    💚 Liên Hoa Tịnh Hóa: +{applied:,} HP")
+
+    # Cleanse Retaliate — Đế Tịnh Quang Thể's "Tịnh Hóa Phản Đòn". Quang-
+    # flavored damage = ``matk × pct`` lands on the cleanser's opponent.
+    # Routed through take_damage so shield + DR + element_res shred all
+    # apply naturally. Skipped when opponent is missing (e.g. preview path).
+    if (
+        actor.cleanse_retaliate_dmg_pct > 0
+        and opponent is not None
+        and opponent.is_alive()
+    ):
+        retal_dmg = max(1, int(actor.matk * actor.cleanse_retaliate_dmg_pct))
+        # Quang resistance reduces the hit (target's own res clamps it)
+        from src.game.constants.balance import MAX_ELEMENTAL_RES
+        target_res = max(0.0, min(MAX_ELEMENTAL_RES, opponent.resistances.get("quang", 0.0)))
+        retal_dmg = max(1, int(retal_dmg * (1.0 - target_res)))
+        opponent.take_damage(retal_dmg)
+        log.append(f"    ☀️ Tịnh Hóa Phản Đòn → **{opponent.name}** -{retal_dmg:,} HP")

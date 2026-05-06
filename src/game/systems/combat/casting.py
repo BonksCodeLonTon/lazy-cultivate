@@ -106,6 +106,26 @@ def cast_skill(
                 f" | {target.name}: {target.hp:,}/{target.hp_max:,} HP"
             )
 
+            # Multi-Strike — per-attack chance the actor lands a follow-up hit
+            # for ``multi_strike_dmg_pct`` of the original damage. Reuses the
+            # same shield/HP path so DR + element_res still apply. Skipped if
+            # the target is already dead; skipped on true-damage ticks below.
+            if (
+                target.is_alive()
+                and actor.multi_strike_pct > 0
+                and session.rng.random() < actor.multi_strike_pct
+            ):
+                follow = max(1, int(dmg * actor.multi_strike_dmg_pct))
+                shield_before2 = target.shield
+                target.take_damage(follow)
+                absorbed2 = shield_before2 - target.shield
+                follow_tag = colorize_damage(f"-{follow:,} HP", skill_elem)
+                session.log.append(
+                    f"    ✨ **{actor.name}** Liên Kích → {follow_tag}"
+                    + (f" 🛡️-{absorbed2:,}" if absorbed2 > 0 else "")
+                    + f" | {target.name}: {target.hp:,}/{target.hp_max:,} HP"
+                )
+
             skill_true_pct = float(skill_data.get("true_dmg_pct", 0.0))
             total_true_pct = min(
                 TRUE_DMG_PCT_CAP, skill_true_pct + actor.true_dmg_pct,

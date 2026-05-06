@@ -263,7 +263,10 @@
       "shield_regen_pct": 0.06,
       "res_all": 80,
       "thorn_pct": 0.15,
-      "shield_max_pct": 0.05
+      "shield_max_pct": 0.05,
+      "thorn_from_shield": true,
+      "damage_bonus_from_shield_pct": 0.06,
+      "stun_on_hit_pct": 0.05
     },
     "special_requirements": null,
     "materials": {
@@ -285,7 +288,9 @@
       "hp_pct": 0.28,
       "res_all": 105,
       "final_dmg_reduce": 0.14,
-      "hp_flat_per_realm": 750
+      "hp_flat_per_realm": 750,
+      "damage_bonus_from_hp_pct": 0.08,
+      "thorn_pct": 0.1
     },
     "special_requirements": null,
     "materials": {
@@ -306,7 +311,10 @@
     "stat_bonuses": {
       "hp_pct": 0.21,
       "shield_regen_pct": 0.063,
-      "evasion_rating": 175
+      "evasion_rating": 175,
+      "damage_bonus_from_shield_pct": 0.05,
+      "shield_max_base": 150,
+      "spd_bonus": 4
     },
     "special_requirements": null,
     "materials": {
@@ -325,9 +333,11 @@
     "cost_merit": 55000,
     "passive_description_vi": "Thần thể Thổ cộng hưởng với đại đạo, sinh lực bùng nổ đến cực hạn.",
     "stat_bonuses": {
-      "hp_pct": 0.35,
-      "shield_regen_pct": 0.088,
-      "thorn_pct": 0.175
+      "hp_pct": 0.25,
+      "shield_regen_pct": 0.06,
+      "thorn_pct": 0.12,
+      "thorn_from_shield": true,
+      "damage_bonus_from_shield_pct": 0.07
     },
     "special_requirements": null,
     "materials": {
@@ -401,12 +411,17 @@
     "cost_merit": 0,
     "passive_description_vi": "Hoàng sa trấn ngàn dặm, khiên cát dâng cao gấp bội — gai phản bật ngược từ tường cát, mỗi đòn vào khiên đều biến thành sát thương dội ra.",
     "stat_bonuses": {
-      "hp_pct": 0.3,
-      "shield_regen_pct": 0.09,
+      "hp_pct": 0.45,
+      "shield_regen_pct": 0.04,
       "evasion_rating": 250,
       "damage_bonus_from_shield_pct": 0.12,
       "thorn_from_shield": true,
-      "shield_max_pct": 0.08
+      "shield_max_pct": 0.2,
+      "res_all": 100,
+      "final_dmg_reduce": 0.12,
+      "thorn_pct": 0.2,
+      "shield_max_base": 400,
+      "stun_on_hit_pct": 0.1
     },
     "special_requirements": null,
     "materials": {

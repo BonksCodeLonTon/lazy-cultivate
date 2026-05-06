@@ -141,6 +141,34 @@ class CombatStats:
     # builds can both pivot a shield-tank into offense.
     matk_from_shield_pct: float = 0.0
     atk_from_shield_pct: float = 0.0
+    # ── Endure (Đế Sinh Mộc Thể "Cội Nguồn Bất Tận") ──────────────────────
+    # When a hit would kill the holder, HP is set to ``hp_max × endure_threshold_pct``
+    # instead and an internal cooldown is engaged. Different from BuffBatTu
+    # (single-use) and phoenix_revive (revive-from-death + buff): endure is a
+    # repeatable damage-floor with a turn-based cooldown.
+    endure_threshold_pct: float = 0.0
+    endure_cooldown: int = 0
+    # ── Cleanse Heal (Đế Bạch Liên Thể "Liên Hoa Tịnh Hóa") ──────────────
+    # Each successful cleanse pulse restores ``hp_max × cleanse_heal_pct`` HP
+    # on top of the existing MP-restore + barrier mechanics. Stacks with
+    # cleanse_on_turn_pct so a high-cleanse build heals every turn.
+    cleanse_heal_pct: float = 0.0
+    # ── Cleanse Retaliate (Đế Tịnh Quang Thể "Tịnh Hóa Phản Đòn") ───────
+    # Each successful cleanse fires retaliate damage = ``matk × this_pct`` at
+    # the cleanser's opponent. Treated as Quang-element on the wire.
+    cleanse_retaliate_dmg_pct: float = 0.0
+    # ── Kill Streak (Đế Sát Kim Thể "Sát Khí Đại Thành") ───────────────
+    # Each enemy killed grants a permanent (this combat) +final_dmg_bonus
+    # equal to ``kill_buff_per_kill_pct``, capped at ``kill_buff_cap`` stacks.
+    # Resets between dungeon entries (the player_c is rebuilt each dungeon).
+    kill_buff_per_kill_pct: float = 0.0
+    kill_buff_cap: int = 0
+    # ── Multi-Strike (Phong/Lôi/Kim — "Liên Phong / Vạn Kiếm / Lôi Diên Đả") ─
+    # Per-attack roll: with ``multi_strike_pct`` chance, the attack lands an
+    # extra hit at ``multi_strike_dmg_pct`` of the original damage. Default
+    # 50% damage on the second strike. Fits speed/lightning/wind/sword themes.
+    multi_strike_pct: float = 0.0
+    multi_strike_dmg_pct: float = 0.50
     shield_recharge_delay: int = DEFAULT_SHIELD_RECHARGE_DELAY
     damage_bonus_from_shield_pct: float = 0.0
     thorn_pct: float = 0.0
@@ -392,6 +420,14 @@ def compute_combat_stats(
     hp_to_shield_pct             = float(bonuses.get("hp_to_shield_pct", 0.0))
     matk_from_shield_pct         = float(bonuses.get("matk_from_shield_pct", 0.0))
     atk_from_shield_pct          = float(bonuses.get("atk_from_shield_pct", 0.0))
+    endure_threshold_pct         = float(bonuses.get("endure_threshold_pct", 0.0))
+    endure_cooldown              = int(bonuses.get("endure_cooldown", 0))
+    cleanse_heal_pct             = float(bonuses.get("cleanse_heal_pct", 0.0))
+    cleanse_retaliate_dmg_pct    = float(bonuses.get("cleanse_retaliate_dmg_pct", 0.0))
+    kill_buff_per_kill_pct       = float(bonuses.get("kill_buff_per_kill_pct", 0.0))
+    kill_buff_cap                = int(bonuses.get("kill_buff_cap", 0))
+    multi_strike_pct             = float(bonuses.get("multi_strike_pct", 0.0))
+    multi_strike_dmg_pct         = float(bonuses.get("multi_strike_dmg_pct", 0.50))
     # Negative bonus shortens the recharge pause; clamp at 0 (instant regen).
     shield_recharge_delay_bonus  = int(bonuses.get("shield_recharge_delay_bonus", 0))
     damage_bonus_from_shield_pct = float(bonuses.get("damage_bonus_from_shield_pct", 0.0))
@@ -535,6 +571,14 @@ def compute_combat_stats(
         hp_to_shield_pct             += float(equip_stats.get("hp_to_shield_pct", 0.0))
         matk_from_shield_pct         += float(equip_stats.get("matk_from_shield_pct", 0.0))
         atk_from_shield_pct          += float(equip_stats.get("atk_from_shield_pct", 0.0))
+        endure_threshold_pct         = max(endure_threshold_pct, float(equip_stats.get("endure_threshold_pct", 0.0)))
+        endure_cooldown              = max(endure_cooldown, int(equip_stats.get("endure_cooldown", 0)))
+        cleanse_heal_pct             += float(equip_stats.get("cleanse_heal_pct", 0.0))
+        cleanse_retaliate_dmg_pct    += float(equip_stats.get("cleanse_retaliate_dmg_pct", 0.0))
+        kill_buff_per_kill_pct       = max(kill_buff_per_kill_pct, float(equip_stats.get("kill_buff_per_kill_pct", 0.0)))
+        kill_buff_cap                = max(kill_buff_cap, int(equip_stats.get("kill_buff_cap", 0)))
+        multi_strike_pct             += float(equip_stats.get("multi_strike_pct", 0.0))
+        multi_strike_dmg_pct         = max(multi_strike_dmg_pct, float(equip_stats.get("multi_strike_dmg_pct", 0.0)))
         damage_bonus_from_shield_pct += float(equip_stats.get("damage_bonus_from_shield_pct", 0.0))
         thorn_pct                    += float(equip_stats.get("thorn_pct", 0.0))
         thorn_from_shield             = thorn_from_shield or bool(equip_stats.get("thorn_from_shield", False))
@@ -683,6 +727,14 @@ def compute_combat_stats(
         hp_to_shield_pct=hp_to_shield_pct,
         matk_from_shield_pct=max(0.0, matk_from_shield_pct),
         atk_from_shield_pct=max(0.0, atk_from_shield_pct),
+        endure_threshold_pct=max(0.0, min(0.95, endure_threshold_pct)),
+        endure_cooldown=max(0, endure_cooldown),
+        cleanse_heal_pct=max(0.0, cleanse_heal_pct),
+        cleanse_retaliate_dmg_pct=max(0.0, cleanse_retaliate_dmg_pct),
+        kill_buff_per_kill_pct=max(0.0, kill_buff_per_kill_pct),
+        kill_buff_cap=max(0, kill_buff_cap),
+        multi_strike_pct=max(0.0, min(1.0, multi_strike_pct)),
+        multi_strike_dmg_pct=max(0.0, min(2.0, multi_strike_dmg_pct)),
         shield_recharge_delay=max(0, DEFAULT_SHIELD_RECHARGE_DELAY + shield_recharge_delay_bonus),
         damage_bonus_from_shield_pct=damage_bonus_from_shield_pct,
         thorn_pct=thorn_pct,
