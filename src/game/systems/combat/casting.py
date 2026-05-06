@@ -24,9 +24,12 @@ from src.game.engine.effects import (
 )
 from src.game.systems.combatant import Combatant
 
-from .bursts import burst_burn, burst_mana_stacks, burst_shield
+from .bursts import burst_mana_stacks, burst_shield
 from .helpers import _build_skill_obj, _propagate_dot_bonuses, _propagate_stack_build
 from .procs import apply_reactive_damage, apply_soul_drain, apply_stat_steal, run_on_hit_procs
+from .skill_extras import (
+    apply_charge_bonus, cast_chain_skill, consume_auto_cast_stacks, maybe_spawn_summon,
+)
 
 if TYPE_CHECKING:
     from .session import CombatSession
@@ -35,12 +38,19 @@ if TYPE_CHECKING:
 def cast_skill(
     session: "CombatSession", actor: Combatant, target: Combatant,
     skill_key: str, skill_data: dict, mp_cost: int,
+    _suppress_extras: bool = False,
 ) -> None:
     """Execute one skill cast — MP spend, damage pipeline or support
     effects, on-hit procs, and cooldown. Extracted so the main rotation
-    and parallel formation firing share the same machinery."""
+    and parallel formation firing share the same machinery.
+
+    ``_suppress_extras`` is set internally for multi-hit follow-ups and
+    chained casts so per-cast hooks (cooldown, charge counter, chain skill,
+    summon spawn) only fire once per logical cast.
+    """
     actor.mp = max(0, actor.mp - mp_cost)
     base_dmg = skill_data.get("base_dmg", 0)
+    dealt_total = 0
 
     actor_mods = get_combat_modifiers(actor)
     target_mods = get_combat_modifiers(target)
@@ -96,6 +106,7 @@ def cast_skill(
 
             shield_before = target.shield
             target.take_damage(dmg)
+            dealt_total += dmg
             absorbed = shield_before - target.shield
             if absorbed > 0:
                 session.log.append(f"    🛡️ Hộ Thuẫn hấp thụ {absorbed:,} sát thương!")
@@ -170,7 +181,36 @@ def cast_skill(
         session.log.append(f"  🛡️ **{actor.name}** dùng *{skill_data['vi']}*")
         apply_support_skill(session, skill_data, actor, target)
 
+    if _suppress_extras:
+        # Chained / multi-hit follow-ups skip cooldown + per-cast hooks so
+        # they don't double-trigger charge / chain / summon / cooldown.
+        return
+
     actor.set_cooldown(skill_key, skill_data.get("cooldown", 1))
+
+    # ── Skill-extras hooks (opt-in via JSON fields) ──────────────────────
+    # 1. Multi-hit: replay damage path ``hit_count - 1`` more times. Each
+    #    follow-up rolls its own crit/evade and fires on-hit procs but pays
+    #    no MP and won't double-tick charge / chain / summon hooks.
+    hit_count = max(1, int(skill_data.get("hit_count", 1)))
+    for _ in range(hit_count - 1):
+        if not target.is_alive():
+            break
+        session.log.append(f"  🔁 **{actor.name}** liên kích bồi thêm:")
+        cast_skill(
+            session, actor, target, skill_key, skill_data,
+            mp_cost=0, _suppress_extras=True,
+        )
+
+    # 2. Charge bonus — increment cast count, detonate on every Nth cast.
+    if base_dmg > 0:
+        apply_charge_bonus(session, actor, target, skill_key, skill_data, dealt_total)
+
+    # 3. Chain skill — automatically fire a follow-up skill at scaled damage.
+    cast_chain_skill(session, actor, target, skill_data)
+
+    # 5. Summon spawn — append a new summon that ticks each round.
+    maybe_spawn_summon(session, actor, skill_data)
 
 
 def fire_formation_skills(
@@ -260,18 +300,11 @@ def apply_skill_effects(
     For debuffs/CC: checks the skill's effect_chances dict (default 1.0) multiplied
     by (1 - target.debuff_immune_pct) to get the effective proc probability.
 
-    Special keywords handled in-line (not in the EFFECTS registry):
-      - ``ConsumeBurnBurst``: detonate all burn stacks on the target for
-        burst damage proportional to stack count.
+    Special keywords handled in-line (not in the EFFECTS registry).
     """
     effect_chances: dict[str, float] = skill_data.get("effect_chances", {})
     effect_overrides: dict[str, dict] = skill_data.get("effect_overrides", {})
     for effect_key in skill_data.get("effects", []):
-        # ── Special: burn burst ───────────────────────────────────────────
-        if effect_key == "ConsumeBurnBurst":
-            if hit and target.burn_stacks > 0:
-                burst_burn(session, actor, target, skill_data)
-            continue
         # ── Special: Thủy mana-stack burst ────────────────────────────────
         if effect_key == "ConsumeManaBurst":
             if hit and actor.mana_stacks > 0:

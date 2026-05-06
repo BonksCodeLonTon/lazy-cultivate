@@ -1,15 +1,17 @@
 """Consume-and-burst skill effects.
 
-Each function consumes a resource pool on actor or target (shield, mana stacks,
-burn stacks) and deals a scaled burst as elemental damage. Log lines match the
-original inline format so replays stay stable.
+Each function consumes a resource pool on actor (shield, mana stacks) and
+deals a scaled burst as elemental damage. The legacy ``burst_burn``
+(detonating burn stacks via ``ConsumeBurnBurst``) was removed — fire
+detonates now use the generic ``auto_cast_on_stacks`` mechanic in
+``skill_extras`` instead. Shock stacks remain (separate damage-amplifier
+strategy, not a burst-on-cast).
 """
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 from src.game.constants.balance import MAX_ELEMENTAL_RES
-from src.game.constants.effects import EffectKey
 from src.game.engine.damage import colorize_damage
 from src.game.systems.combatant import Combatant
 
@@ -53,24 +55,4 @@ def burst_mana_stacks(
     session.log.append(
         f"    💧💥 **Linh Khí Bùng Nổ!** nổ {stacks} tầng → "
         f"{colorize_damage(f'-{dmg:,} HP', 'thuy')} ({target.hp:,}/{target.hp_max:,})"
-    )
-
-
-def burst_burn(
-    session: "CombatSession", actor: Combatant, target: Combatant, skill_data: dict
-) -> None:
-    """Consume all burn stacks on target → hoa burst scaled by stacks × (base + matk×0.5)."""
-    stacks = target.consume_burn_stacks()
-    if stacks <= 0:
-        return
-    per_stack_mult = float(skill_data.get("burst_per_stack_mult", 0.35))
-    base = skill_data.get("base_dmg", 0) + int(actor.matk * 0.5)
-    raw = max(1, int(base * per_stack_mult * stacks))
-    dmg = apply_elem_res(raw, target, "hoa", pen=actor.element_pen.get("hoa", 0.0))
-    target.take_damage(dmg)
-    # Stacks are gone, clear the burn debuff marker too
-    target.effects.pop(EffectKey.DEBUFF_THIEU_DOT, None)
-    session.log.append(
-        f"    🔥💥 **Hỏa Bùng Phát!** nổ {stacks} tầng Thiêu Đốt → "
-        f"{colorize_damage(f'-{dmg:,} HP', 'hoa')} ({target.hp:,}/{target.hp_max:,})"
     )

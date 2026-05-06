@@ -144,7 +144,6 @@ _STAT_LABEL: dict[str, str] = {
 _SPECIAL_EFFECT_LABELS: dict[str, str] = {
     "HpRegen":           "❤️ Hồi 10% HP",
     "MpRegen":           "💙 Hồi 10% MP",
-    "ConsumeBurnBurst":  "🔥💥 Nổ stack Thiêu Đốt",
     "ConsumeManaBurst":  "💠💥 Nổ Linh Khí tích tụ",
     "ConsumeShieldBurst":"🪨💥 Nổ khiên Thổ",
     "ApplySoulDrain":    "🌑 Hồn Phệ (giảm HP max địch)",

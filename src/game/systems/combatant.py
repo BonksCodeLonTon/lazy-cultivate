@@ -417,6 +417,17 @@ class Combatant:
     # attacker at DoT-apply time; rare late-game uniques set it True.
     dot_scales_hp_pct: bool = False
 
+    # ── Skill-extras state ───────────────────────────────────────────────────
+    # Per-skill cast counter — feeds the ``charge_bonus`` mechanic where a
+    # skill detonates extra damage on every Nth cast. Keyed by skill_key.
+    skill_cast_counts: dict[str, int] = field(default_factory=dict)
+    # Active summons spawned by ``summon_spec`` skills. Each entry:
+    #   {"name": str, "vi": str, "element": str|None,
+    #    "dmg": int, "turns": int, "emoji": str}
+    # ``_process_periodic`` ticks every entry: deals ``dmg`` to the opponent,
+    # decrements ``turns``, and removes expired entries.
+    summons: list[dict] = field(default_factory=list)
+
     def is_alive(self) -> bool:
         return self.hp > 0
 

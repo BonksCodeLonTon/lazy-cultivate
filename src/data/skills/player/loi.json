@@ -778,5 +778,66 @@
         "duration": 2
       }
     }
+  },
+  {
+    "key": "SkillLoiCharge",
+    "vi": "Tích Lôi Trảm Vân",
+    "en": "Charged Lightning Cloud-Cleaver",
+    "realm": 5,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 60,
+    "cooldown": 3,
+    "base_dmg": 160,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.6
+    },
+    "charge_bonus": {
+      "every": 3,
+      "amount": 800
+    },
+    "formation_key": null,
+    "description_vi": "Mỗi 3 lần niệm tích đủ lôi nguyên, đòn thứ 3 bùng nổ thêm 800 ST."
+  },
+  {
+    "key": "SkillLoiShockFinisher_R9",
+    "vi": "Lôi Đình Chấn Thiên Sát",
+    "en": "Thunder Heaven-Shock Finisher",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.4
+    },
+    "mp_cost": 130,
+    "cooldown": 6,
+    "base_dmg": 600,
+    "effects": [
+      "CCStun",
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "CCStun": 0.5,
+      "DebuffSocDien": 1.0
+    },
+    "auto_cast_on_stacks": {
+      "stack": "shock",
+      "threshold": 5,
+      "consume": true
+    },
+    "formation_key": null,
+    "description_vi": "Đỉnh cấp Lôi — tự động phát động khi địch đạt 5 tầng Sốc Điện, gây ST khủng + 50% choáng và tiêu hết stack Sốc."
   }
 ]

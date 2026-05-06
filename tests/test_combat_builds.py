@@ -69,16 +69,9 @@ def test_on_hit_burn_proc_applies_stack_and_debuff():
     assert target.has_effect(EffectKey.DEBUFF_THIEU_DOT)
 
 
-def test_burst_burn_consumes_stacks_and_damages():
-    actor = make_combatant("a", matk=200)
-    target = make_combatant("t", hp=500, hp_max=500)
-    target.add_burn_stack(3)
-    target.apply_effect(EffectKey.DEBUFF_THIEU_DOT, 3)
-    session = make_session(actor, target)
-    session._burst_burn(actor, target, {"base_dmg": 100, "burst_per_stack_mult": 0.5})
-    assert target.burn_stacks == 0
-    assert not target.has_effect(EffectKey.DEBUFF_THIEU_DOT)
-    assert target.hp < 500  # took damage
+# Legacy test_burst_burn_consumes_stacks_and_damages was removed when the
+# fire burst was migrated to the generic auto_cast_on_stacks mechanic; see
+# tests/test_skill_extras.py for the replacement coverage.
 
 
 # ── Kim / Bleed build ──────────────────────────────────────────────────────

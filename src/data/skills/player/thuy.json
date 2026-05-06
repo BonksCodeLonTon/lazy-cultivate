@@ -824,5 +824,60 @@
         "duration": 2
       }
     }
+  },
+  {
+    "key": "SkillThuyDoubleStrike",
+    "vi": "Hàn Băng Liên Hoàn",
+    "en": "Frost Linked Strike",
+    "realm": 3,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.55
+    },
+    "mp_cost": 38,
+    "cooldown": 3,
+    "base_dmg": 95,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "hit_count": 2,
+    "formation_key": null,
+    "description_vi": "Hai luồng băng kế tiếp — mỗi đòn áp Làm Chậm độc lập."
+  },
+  {
+    "key": "SkillThuyTidalCharge",
+    "vi": "Cuộn Triều Tích Lực",
+    "en": "Tidal Charging Surge",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 110,
+    "cooldown": 5,
+    "base_dmg": 480,
+    "effects": [
+      "DebuffThuyXuyenThau"
+    ],
+    "effect_chances": {
+      "DebuffThuyXuyenThau": 0.85
+    },
+    "charge_bonus": {
+      "every": 4,
+      "amount": 1500
+    },
+    "formation_key": null,
+    "description_vi": "Tiên cấp Thủy — niệm liên tiếp 4 lần để tích triều, lần thứ 4 vỡ òa thêm 1500 ST."
   }
 ]

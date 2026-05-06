@@ -517,6 +517,11 @@ def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
     not present in the override fall back to the meta value, so a skill
     can override one stat without nuking the rest.
 
+    Summon auras (see ``skill_extras.aura_stat_bonus``) are folded in here
+    too: each active summon contributes its own copy of its ``aura_buff``,
+    so multi-summon strategies stack additively even when every summon
+    shares the same aura key.
+
     Returns a dict with signed float values per stat key:
       final_dmg_bonus, final_dmg_reduce, crit_rating, crit_dmg_rating,
       evasion_rating, crit_res_rating, spd_pct, hp_regen_pct, res_all
@@ -535,6 +540,12 @@ def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
         for stat, val in override_stats.items():
             if stat not in meta.stat_bonus:
                 result[stat] = result.get(stat, 0.0) + val
+
+    # Lazy import to break the cycle: skill_extras → combatant → effects.
+    if combatant.summons:
+        from src.game.systems.combat.skill_extras import aura_stat_bonus
+        for stat, val in aura_stat_bonus(combatant).items():
+            result[stat] = result.get(stat, 0.0) + val
     return result
 
 

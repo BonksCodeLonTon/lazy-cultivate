@@ -745,5 +745,89 @@
         "duration": 3
       }
     }
+  },
+  {
+    "key": "SkillAmSummonWraith",
+    "vi": "Triệu Hồi Âm Linh Quỷ",
+    "en": "Summon Shadow Wraith",
+    "realm": 6,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.55
+    },
+    "mp_cost": 85,
+    "cooldown": 5,
+    "base_dmg": 220,
+    "effects": [],
+    "summon_spec": {
+      "vi": "Âm Linh Quỷ",
+      "emoji": "👻",
+      "element": "am",
+      "dmg_pct_of_matk": 0.5,
+      "turns": 4
+    },
+    "formation_key": null,
+    "description_vi": "Cú đánh chính + triệu hồi Âm Linh Quỷ tự đánh kèm 4 lượt, ST = 50% MATK chủ nhân (chịu kháng Ám)."
+  },
+  {
+    "key": "SkillAmShadowChainFollowup",
+    "vi": "U Ảnh Đoạt Hồn",
+    "en": "Shadow Soul-Snatch",
+    "realm": 9,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.9
+    },
+    "mp_cost": 0,
+    "cooldown": 1,
+    "base_dmg": 380,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.7
+    },
+    "formation_key": null,
+    "description_vi": "Đòn nối tiếp Cửu U Liên Trảm — không thể niệm độc lập (chỉ kích hoạt qua chain_skill).",
+    "internal_only": true
+  },
+  {
+    "key": "SkillAmNineHellsChain_R9",
+    "vi": "Cửu U Liên Trảm",
+    "en": "Nine-Hells Chain Strike",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 130,
+    "cooldown": 6,
+    "base_dmg": 540,
+    "effects": [
+      "DebuffXeRach",
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffXeRach": 0.8,
+      "DebuffLoaMat": 0.5
+    },
+    "chain_skill": {
+      "key": "SkillAmShadowChainFollowup",
+      "pct": 0.55
+    },
+    "formation_key": null,
+    "description_vi": "Đỉnh cấp Ám — niệm 1 chiêu phát động 2 đòn liên hoàn: chính + U Ảnh Đoạt Hồn 55% ST."
   }
 ]

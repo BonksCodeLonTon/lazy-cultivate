@@ -831,5 +831,92 @@
         "duration": 3
       }
     }
+  },
+  {
+    "key": "SkillPhongComboFollowup",
+    "vi": "Phong Truy Trảm",
+    "en": "Wind-Chase Slash",
+    "realm": 5,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.7,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 1,
+    "base_dmg": 240,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.45
+    },
+    "formation_key": null,
+    "description_vi": "Đòn nối tiếp Phong Liên Hoàn Trảm — không thể niệm độc lập (chỉ kích hoạt qua chain_skill).",
+    "internal_only": true
+  },
+  {
+    "key": "SkillPhongCombo",
+    "vi": "Phong Liên Hoàn Trảm",
+    "en": "Wind Combo Strike",
+    "realm": 5,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 55,
+    "cooldown": 3,
+    "base_dmg": 200,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.55
+    },
+    "chain_skill": {
+      "key": "SkillPhongComboFollowup",
+      "pct": 0.6
+    },
+    "formation_key": null,
+    "description_vi": "Niệm 1 chiêu nhưng phát động 2 đòn: cú chính + Phong Truy Trảm với 60% ST gốc, mỗi đòn có thể áp Ấn Phong riêng."
+  },
+  {
+    "key": "SkillPhongHurricaneStorm_R9",
+    "vi": "Cuồng Phong Bão Loạn",
+    "en": "Hurricane Maelstrom",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.7,
+      "matk": 0.0
+    },
+    "mp_cost": 130,
+    "cooldown": 6,
+    "base_dmg": 320,
+    "effects": [
+      "DebuffAnPhong",
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.7,
+      "DebuffLamCham": 0.6
+    },
+    "hit_count": 5,
+    "charge_bonus": {
+      "every": 2,
+      "amount": 1200
+    },
+    "formation_key": null,
+    "description_vi": "Đỉnh cấp Phong — gió lốc 5 đòn liên tục; mỗi 2 lần niệm bùng nổ thêm 1200 ST tích lũy."
   }
 ]

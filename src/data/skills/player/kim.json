@@ -753,5 +753,86 @@
         "duration": 4
       }
     }
+  },
+  {
+    "key": "SkillKimTripleStrike",
+    "vi": "Kim Tam Liên Trảm",
+    "en": "Triple-Cut Metal Strike",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.55,
+      "matk": 0.0
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 90,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.4
+    },
+    "hit_count": 3,
+    "formation_key": null,
+    "description_vi": "Niệm 1 chiêu — kiếm khí 3 lần trảm tiếp nhau, mỗi đòn có thể bạo và áp Chảy Máu độc lập."
+  },
+  {
+    "key": "SkillKimSummonGuardian",
+    "vi": "Triệu Hồi Kim Hồn Vệ",
+    "en": "Summon Metal Soul Guardian",
+    "realm": 6,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.4,
+      "matk": 0.0
+    },
+    "mp_cost": 90,
+    "cooldown": 6,
+    "base_dmg": 180,
+    "effects": [],
+    "summon_spec": {
+      "vi": "Kim Hồn Vệ",
+      "emoji": "🗡️",
+      "element": "kim",
+      "dmg_pct_of_atk": 0.45,
+      "turns": 3
+    },
+    "formation_key": null,
+    "description_vi": "Mỗi lần niệm còn triệu hồi một Kim Hồn Vệ tự đánh kèm 3 lượt, ST = 45% ATK chủ nhân."
+  },
+  {
+    "key": "SkillKimSevenSwords_R9",
+    "vi": "Kim Cương Thất Tinh Trảm",
+    "en": "Diamond Seven-Star Cleave",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.7,
+      "matk": 0.0
+    },
+    "mp_cost": 140,
+    "cooldown": 7,
+    "base_dmg": 360,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.6,
+      "DebuffXeRach": 0.5
+    },
+    "hit_count": 7,
+    "formation_key": null,
+    "description_vi": "Đỉnh cấp Kim — niệm 1 chiêu, kiếm khí thất tinh chém 7 đòn liên tiếp, mỗi đòn riêng có thể bạo + áp Chảy Máu / Xé Rách."
   }
 ]

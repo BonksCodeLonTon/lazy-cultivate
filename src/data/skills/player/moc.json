@@ -894,5 +894,80 @@
         "duration": 4
       }
     }
+  },
+  {
+    "key": "SkillMocVineSummon",
+    "vi": "Triệu Hồi Đằng Hộ Vệ",
+    "en": "Summon Vine Guardian",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.5
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffDocTo"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.4
+    },
+    "summon_spec": {
+      "vi": "Đằng Hộ Vệ",
+      "emoji": "🌿",
+      "element": "moc",
+      "dmg_pct_of_matk": 0.4,
+      "turns": 3
+    },
+    "formation_key": null,
+    "description_vi": "Triệu hồi Đằng Hộ Vệ tấn công kèm 3 lượt — ST = 40% MATK, mỗi đòn rỉ độc Mộc."
+  },
+  {
+    "key": "SkillMocAncientTreeSummon",
+    "vi": "Triệu Hồi Cổ Mộc Hộ Pháp",
+    "en": "Summon Ancient Tree Warden",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 130,
+    "cooldown": 7,
+    "base_dmg": 480,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffMocXuyenThau"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 1.0,
+      "DebuffMocXuyenThau": 0.7
+    },
+    "summon_spec": {
+      "vi": "Cổ Mộc Hộ Pháp",
+      "emoji": "🌳",
+      "element": "moc",
+      "dmg_pct_of_matk": 0.7,
+      "turns": 5,
+      "aura_buff": {
+        "key": "BuffSinhCo",
+        "duration": 1,
+        "overrides": {
+          "stat_bonus": {
+            "hp_regen_pct": 0.05
+          }
+        }
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Đỉnh cấp Mộc — triệu hồi Cổ Mộc Hộ Pháp 5 lượt, ST = 70% MATK, mỗi lượt tỏa Sinh Cơ +5% HP/lượt cho chủ nhân."
   }
 ]

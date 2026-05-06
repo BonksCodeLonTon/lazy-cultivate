@@ -40,7 +40,7 @@ HAND_TUNED_FILES = {
 # the casting engine (heals, mana bursts, soul drain hooks, etc.).
 SKIPPED_EFFECT_KEYS = {
     "HpRegen", "MpRegen",
-    "ConsumeBurnBurst", "ConsumeManaBurst", "ConsumeShieldBurst",
+    "ConsumeManaBurst", "ConsumeShieldBurst",
     "ApplySoulDrain", "ApplyStatSteal",
 }
 

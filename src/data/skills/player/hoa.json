@@ -286,15 +286,22 @@
     "cooldown": 4,
     "base_dmg": 120,
     "effects": [
-      "DebuffHoaXuyenThau",
-      "ConsumeBurnBurst"
+      "DebuffHoaXuyenThau"
     ],
     "effect_chances": {
       "DebuffHoaXuyenThau": 0.8
     },
-    "burst_per_stack_mult": 0.4,
+    "auto_cast_on_stacks": {
+      "stack": "burn",
+      "threshold": 4,
+      "consume": true
+    },
+    "charge_bonus": {
+      "every": 1,
+      "amount": 600
+    },
     "formation_key": null,
-    "description_vi": "Kích hoạt toàn bộ tầng Thiêu Đốt, mỗi tầng bổ sung 40% sát thương ST cơ bản + pháp công.",
+    "description_vi": "Tự động phát động khi địch đạt 4 tầng Thiêu Đốt — bùng phát ST cuối + tiêu hết stack. Mỗi lần niệm cộng thêm bonus damage.",
     "effect_overrides": {
       "DebuffHoaXuyenThau": {
         "stat_bonus": {
@@ -590,16 +597,20 @@
     "base_dmg": 520,
     "effects": [
       "DebuffHoaXuyenThau",
-      "DebuffPhaGiap",
-      "ConsumeBurnBurst"
+      "DebuffPhaGiap"
     ],
     "effect_chances": {
       "DebuffHoaXuyenThau": 1.0,
       "DebuffPhaGiap": 0.8
     },
-    "burst_per_stack_mult": 0.65,
+    "hit_count": 3,
+    "auto_cast_on_stacks": {
+      "stack": "burn",
+      "threshold": 6,
+      "consume": true
+    },
     "formation_key": null,
-    "description_vi": "Tiên cấp hỏa bùng phát — xuyên thủng kháng hỏa đối thủ, nổ tất cả tầng Thiêu Đốt với hệ số 65% mỗi tầng.",
+    "description_vi": "Tiên cấp hỏa bùng phát — tự động phát động khi địch đạt 6 tầng Thiêu Đốt, đánh 3 đòn liên tiếp xuyên kháng hỏa và phá giáp đồng thời tiêu hết stack.",
     "effect_overrides": {
       "DebuffHoaXuyenThau": {
         "stat_bonus": {

@@ -794,5 +794,65 @@
         "duration": 3
       }
     }
+  },
+  {
+    "key": "SkillThoStoneGolemSummon",
+    "vi": "Triệu Hồi Thạch Cự Linh",
+    "en": "Summon Stone Golem",
+    "realm": 7,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.45,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 5,
+    "base_dmg": 250,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.4
+    },
+    "summon_spec": {
+      "vi": "Thạch Cự Linh",
+      "emoji": "🗿",
+      "element": "tho",
+      "dmg_pct_of_atk": 0.55,
+      "turns": 4
+    },
+    "formation_key": null,
+    "description_vi": "Triệu hồi Thạch Cự Linh tấn công kèm 4 lượt, ST = 55% ATK; chiêu chính có thể trói buộc."
+  },
+  {
+    "key": "SkillThoEarthQuakeMulti",
+    "vi": "Địa Chấn Bát Xung",
+    "en": "Earthquake Octa-Strike",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 0.0
+    },
+    "mp_cost": 130,
+    "cooldown": 6,
+    "base_dmg": 200,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffTroBuoc"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.7,
+      "DebuffTroBuoc": 0.5
+    },
+    "hit_count": 4,
+    "formation_key": null,
+    "description_vi": "Đỉnh cấp Thổ — 4 cơn chấn động liên tục, mỗi đòn riêng có thể phá giáp + trói buộc."
   }
 ]

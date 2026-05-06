@@ -196,6 +196,23 @@ class CombatSession:
         opponent = self.enemy if actor is self.player else self.player
         lc_effects.try_cleanse(actor, self.rng, self.log, opponent=opponent)
 
+        # Auto-cast on stacks — if the target carries enough of a tagged stack
+        # (burn/bleed/shock), force-fire the matching finisher this turn instead
+        # of the actor's normal pick. Off-cooldown is bypassed, but MP must be
+        # available (falls back to normal flow if not).
+        from .skill_extras import find_auto_cast_skill, consume_auto_cast_stacks
+        ac_key, ac_data = find_auto_cast_skill(actor, target)
+        if ac_key and ac_data:
+            ac_mp = ac_data.get("mp_cost", 999)
+            if actor.mp >= ac_mp:
+                self.log.append(
+                    f"  ⚡ **{actor.name}** kích hoạt **{ac_data.get('vi', ac_key)}** "
+                    f"— tự động phát động!"
+                )
+                cast_skill(self, actor, target, ac_key, ac_data, ac_mp)
+                consume_auto_cast_stacks(self, actor, target, ac_data)
+                return
+
         skill_key, reason = self._choose_skill(actor)
         if not skill_key:
             # Report the ACTUAL cause (cooldown vs mana vs no-skills-known) so
@@ -451,6 +468,13 @@ class CombatSession:
                 f"  {emoji} **{combatant.name}** bị {name}{stack_tag} {dot_tag}{crit_tag}"
             )
 
+        # Summons — tick each spawned helper for its scheduled damage. Done
+        # before solar/wither auras so a summon's hit can stack with auras
+        # in the same round-end pulse.
+        if combatant.is_alive() and combatant.summons and opponent and opponent.is_alive():
+            from .skill_extras import tick_summons
+            tick_summons(self, combatant, opponent)
+
         # Solar aura — Thái Dương Thần Thể tier passive: every turn, deal
         # fire damage to the opponent equal to (combatant.hp_max × solar_aura_pct),
         # boosted by final_dmg_bonus + burn_dmg_bonus, with bonus_dmg_vs_burn
@@ -670,10 +694,6 @@ class CombatSession:
     ) -> None:
         from .casting import apply_skill_effects
         apply_skill_effects(self, skill_data, actor, target, hit)
-
-    def _burst_burn(self, actor: Combatant, target: Combatant, skill_data: dict) -> None:
-        from .bursts import burst_burn
-        burst_burn(self, actor, target, skill_data)
 
     def _burst_shield(self, actor: Combatant, target: Combatant, skill_data: dict) -> None:
         from .bursts import burst_shield

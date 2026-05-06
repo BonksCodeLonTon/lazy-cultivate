@@ -586,5 +586,72 @@
         "duration": 4
       }
     }
+  },
+  {
+    "key": "SkillQuangLightSpiritSummon",
+    "vi": "Triệu Hồi Tịnh Quang Linh",
+    "en": "Summon Pure Light Spirit",
+    "realm": 5,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 70,
+    "cooldown": 4,
+    "base_dmg": 160,
+    "effects": [],
+    "summon_spec": {
+      "vi": "Tịnh Quang Linh",
+      "emoji": "🌟",
+      "element": "quang",
+      "dmg_pct_of_matk": 0.4,
+      "turns": 3,
+      "aura_buff": {
+        "key": "BuffNhietTinh",
+        "duration": 1
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Triệu hồi Tịnh Quang Linh 3 lượt — vừa tấn công, vừa truyền **Nhiệt Tình** (+20% ST cuối, +200 sát thương bạo) cho chủ nhân mỗi lượt."
+  },
+  {
+    "key": "SkillQuangDivineLightSummon",
+    "vi": "Triệu Hồi Đại La Quang Sứ",
+    "en": "Summon Da Luo Light Envoy",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 130,
+    "cooldown": 7,
+    "base_dmg": 460,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.7
+    },
+    "summon_spec": {
+      "vi": "Đại La Quang Sứ",
+      "emoji": "🪄",
+      "element": "quang",
+      "dmg_pct_of_matk": 0.7,
+      "turns": 5,
+      "aura_buff": {
+        "key": "BuffHoPhap",
+        "duration": 1
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Đỉnh cấp Quang — triệu hồi Đại La Quang Sứ 5 lượt, ST = 70% MATK; mỗi lượt truyền **Hộ Pháp** (+25% giảm ST, +100 kháng bạo) cho chủ nhân."
   }
 ]
