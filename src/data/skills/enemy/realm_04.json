@@ -59,6 +59,9 @@
     "effect_overrides": {
       "DebuffSetDanh": {
         "dot_pct": 0.06
+      },
+      "DebuffTeLiet": {
+        "duration": 1
       }
     }
   },

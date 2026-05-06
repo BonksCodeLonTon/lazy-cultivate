@@ -33,7 +33,7 @@ MAX_PHYS_REDUCTION: float = 0.75  # hard cap at 75 %
 
 # ── Cultivation stat growth ───────────────────────────────────────────────────
 # Base value gained per cultivation level across all three axes combined.
-BASE_HP_PER_LEVEL: int = 500
+BASE_HP_PER_LEVEL: int = 800
 BASE_MP_PER_LEVEL: int = 150
 BASE_ATK_PER_LEVEL: int = 8    # Luyện Thể (body) path gives most ATK
 BASE_MATK_PER_LEVEL: int = 8   # Luyện Khí (qi) path gives most MATK

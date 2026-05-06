@@ -20,7 +20,12 @@
     "effect_chances": {
       "DebuffTeLiet": 0.2
     },
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 1
+      }
+    }
   },
   {
     "key": "EnemyLCLoi_T2",
@@ -45,7 +50,12 @@
       "DebuffSocDien": 0.4,
       "DebuffTeLiet": 0.25
     },
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 1
+      }
+    }
   },
   {
     "key": "EnemyLCLoi_T3",
@@ -73,7 +83,7 @@
     "formation_key": null,
     "effect_overrides": {
       "DebuffTeLiet": {
-        "duration": 3
+        "duration": 2
       },
       "DebuffSocDien": {
         "duration": 4

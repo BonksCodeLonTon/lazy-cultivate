@@ -85,7 +85,7 @@
     "formation_key": null,
     "effect_overrides": {
       "DebuffTeLiet": {
-        "duration": 3
+        "duration": 2
       },
       "DebuffSetDanh": {
         "dot_pct": 0.085,

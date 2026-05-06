@@ -116,7 +116,10 @@ def run_on_hit_procs(
         aura_meta = EFFECTS.get(effect_key)
         if aura_meta is None or aura_meta.aura_on_hit is None:
             continue
-        aura_effect, chance = aura_meta.aura_on_hit
+        # ``aura_on_hit`` may be a 2-tuple (effect, chance) or a 3-tuple
+        # (effect, chance, duration). Star-unpack the tail so a future 4th
+        # field can land here without rewriting the call site.
+        aura_effect, chance, *aura_rest = aura_meta.aura_on_hit
         if session.rng.random() >= chance:
             continue
         aura_dst_meta = EFFECTS.get(aura_effect)
@@ -130,7 +133,8 @@ def run_on_hit_procs(
         effective = 1.0 - target.debuff_immune_pct
         if effective < 1.0 and session.rng.random() >= effective:
             continue
-        target.apply_effect(aura_effect, default_duration(aura_effect))
+        aura_duration = int(aura_rest[0]) if aura_rest else default_duration(aura_effect)
+        target.apply_effect(aura_effect, aura_duration)
         session.log.append(
             f"    {aura_meta.emoji} Hào quang **{aura_meta.vi}** "
             f"→ {aura_dst_meta.emoji} {aura_dst_meta.vi}"

@@ -193,12 +193,14 @@ def _describe_effect(key: str) -> str:
     # Aura-on-hit: describe the chance-gated effect that's spread to enemies
     # the holder strikes (e.g. BuffHanKhi → Làm Chậm on every hit).
     if meta.aura_on_hit is not None:
-        aura_key, chance = meta.aura_on_hit
+        # 2-tuple (effect, chance) or 3-tuple (effect, chance, duration).
+        aura_key, chance, *aura_rest = meta.aura_on_hit
         aura_meta = EFFECTS.get(aura_key)
         aura_label = aura_meta.vi if aura_meta else aura_key
         pct = int(round(chance * 100))
         pct_prefix = "" if pct == 100 else f"{pct}% "
-        details.append(f"{pct_prefix}{aura_label} on-hit")
+        dur_suffix = f" {int(aura_rest[0])} lượt" if aura_rest else ""
+        details.append(f"{pct_prefix}{aura_label} on-hit{dur_suffix}")
     # CC flags without explicit stat mods
     if meta.skips_turn and not details:
         details.append("mất lượt")

@@ -18,7 +18,12 @@
     "effects": [
       "DebuffTeLiet"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 1
+      }
+    }
   },
   {
     "key": "SkillLoiHeavenLord_R2",
@@ -46,7 +51,12 @@
       "DebuffTeLiet": 0.35
     },
     "formation_key": null,
-    "description_vi": "Lôi bá thần pháp — Thiên cấp R2: chồng 2 tầng Sốc Điện và 35% gây Tê Liệt."
+    "description_vi": "Lôi bá thần pháp — Thiên cấp R2: chồng 2 tầng Sốc Điện và 35% gây Tê Liệt.",
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 1
+      }
+    }
   },
   {
     "key": "SkillLoiHeavenBolt_R2",
@@ -112,7 +122,12 @@
     "effects": [
       "DebuffTeLiet"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 1
+      }
+    }
   },
   {
     "key": "SkillAtkLoi2",
@@ -274,7 +289,12 @@
       "DebuffSocDien",
       "DebuffTeLiet"
     ],
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 1
+      }
+    }
   },
   {
     "key": "SkillAtkLoi_R4",
@@ -300,6 +320,9 @@
     "effect_overrides": {
       "DebuffSetDanh": {
         "dot_pct": 0.06
+      },
+      "DebuffTeLiet": {
+        "duration": 1
       }
     }
   },
@@ -443,6 +466,9 @@
     ],
     "formation_key": null,
     "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 2
+      },
       "DebuffSetDanh": {
         "dot_pct": 0.07
       }
@@ -499,7 +525,7 @@
     "formation_key": null,
     "effect_overrides": {
       "DebuffTeLiet": {
-        "duration": 3
+        "duration": 2
       },
       "DebuffSetDanh": {
         "dot_pct": 0.075,
@@ -622,7 +648,7 @@
     "formation_key": null,
     "effect_overrides": {
       "DebuffTeLiet": {
-        "duration": 3
+        "duration": 2
       },
       "DebuffSetDanh": {
         "dot_pct": 0.08,
@@ -762,7 +788,7 @@
     "formation_key": null,
     "effect_overrides": {
       "DebuffTeLiet": {
-        "duration": 3
+        "duration": 2
       },
       "DebuffSetDanh": {
         "dot_pct": 0.085,

@@ -327,6 +327,11 @@
       "DebuffSocDien",
       "DebuffTeLiet"
     ],
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 2
+      }
+    },
     "formation_key": "NhatNguyenLoi",
     "reserved_mp_pct": 0.09
   },

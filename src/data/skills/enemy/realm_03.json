@@ -48,7 +48,12 @@
     "effect_chances": {
       "DebuffTeLiet": 0.25
     },
-    "formation_key": null
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffTeLiet": {
+        "duration": 1
+      }
+    }
   },
   {
     "key": "EnemyBang_T2",
@@ -223,12 +228,19 @@
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.6},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
     "mp_cost": 22,
     "cooldown": 2,
     "base_dmg": 35,
-    "effects": ["DebuffPhaGiap"],
-    "effect_chances": {"DebuffPhaGiap": 0.30},
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
     "formation_key": null
   },
   {
@@ -239,12 +251,19 @@
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
-    "dmg_scale": {"atk": 0.0, "matk": 0.6},
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
     "mp_cost": 22,
     "cooldown": 2,
     "base_dmg": 35,
-    "effects": ["DebuffLoaMat"],
-    "effect_chances": {"DebuffLoaMat": 0.28},
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.28
+    },
     "formation_key": null
   },
   {
@@ -274,6 +293,9 @@
     "effect_overrides": {
       "DebuffSetDanh": {
         "dot_pct": 0.055
+      },
+      "DebuffTeLiet": {
+        "duration": 1
       }
     }
   }

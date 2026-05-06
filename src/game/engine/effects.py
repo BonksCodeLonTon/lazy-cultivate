@@ -47,11 +47,14 @@ class EffectMeta:
     skips_turn: bool = False
     # Whether this effect prevents skill usage (silence / interrupt)
     prevents_skills: bool = False
-    # Aura-on-hit: (effect_key, chance) — when the holder lands a hit, roll
-    # ``chance`` to apply ``effect_key`` to the target. Used for buffs whose
-    # flavor affects enemies (e.g. BuffHanKhi slows anyone the holder strikes).
-    # Applied in combat._run_on_hit_procs; respects hard-CC immunity.
-    aura_on_hit: tuple[str, float] | None = None
+    # Aura-on-hit: ``(effect_key, chance)`` or ``(effect_key, chance, duration)``
+    # — when the holder lands a hit, roll ``chance`` to apply ``effect_key``
+    # to the target. Used for buffs whose flavor affects enemies (e.g.
+    # BuffHanKhi slows anyone the holder strikes). The optional 3rd element
+    # overrides the default turn duration for the spread effect — without it
+    # the proc falls back to ``default_duration(effect_key)``. Applied in
+    # ``combat._run_on_hit_procs``; respects hard-CC immunity.
+    aura_on_hit: tuple[str, float] | tuple[str, float, int] | None = None
     # Display emoji
     emoji: str = "✨"
 
@@ -95,9 +98,9 @@ _BUFFS: list[EffectMeta] = [
         key="BuffHoaThan",
         vi="Hỏa Thần Giáng Lâm", en="Fire God Descent",
         kind=EffectKind.BUFF,
-        description_vi="Hỏa thần tạm hạ phàm, tăng sát thương kỹ năng Hỏa và đánh trúng có xác suất gây Thiêu Đốt.",
+        description_vi="Hỏa thần tạm hạ phàm, tăng sát thương kỹ năng Hỏa và đánh trúng có xác suất gây Thiêu Đốt 4 lượt.",
         stat_bonus={"dmg_bonus_hoa": 0.20},
-        aura_on_hit=("DebuffThieuDot", 0.35),
+        aura_on_hit=("DebuffThieuDot", 0.35, 4),
         emoji="🔥",
     ),
     EffectMeta(
@@ -128,18 +131,21 @@ _BUFFS: list[EffectMeta] = [
         key="BuffHanKhi",
         vi="Hàn Khí Tỏa Thân", en="Cold Aura",
         kind=EffectKind.BUFF,
-        description_vi="Hàn khí tỏa ra, giảm sát thương nhận và làm chậm mọi kẻ địch bị đánh trúng.",
+        description_vi="Hàn khí tỏa ra, giảm sát thương nhận và làm chậm 4 lượt mọi kẻ địch bị đánh trúng.",
         stat_bonus={"final_dmg_reduce": 0.10},
-        aura_on_hit=("DebuffLamCham", 1.0),
+        # 4-turn slow — non-heavy CC bracket (2 low / 4 high). The slow
+        # doesn't shut the target down (they still act, just slower) so the
+        # longer high-realm cap is fine.
+        aura_on_hit=("DebuffLamCham", 1.0, 4),
         emoji="❄️",
     ),
     EffectMeta(
         key="BuffLoiThan",
         vi="Lôi Thần Giáng", en="Thunder God Strike",
         kind=EffectKind.BUFF,
-        description_vi="Lôi thần gia hộ, tăng tỉ lệ bạo kích và đánh trúng có xác suất gây Tê Liệt.",
+        description_vi="Lôi thần gia hộ, tăng tỉ lệ bạo kích và đánh trúng có xác suất gây Tê Liệt 2 lượt.",
         stat_bonus={"crit_rating": 100},
-        aura_on_hit=("DebuffTeLiet", 0.20),
+        aura_on_hit=("DebuffTeLiet", 0.20, 2),
         emoji="⚡",
     ),
     EffectMeta(
