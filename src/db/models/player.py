@@ -58,6 +58,22 @@ class Player(Base, TimestampMixin):
     # ── Luyện Đan (alchemy) — accumulated pill toxicity ("Đan Độc") ──────────
     dan_doc: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
+    # ── Permanent combat-buff pill counters ──────────────────────────────────
+    # JSON-encoded ``{effect_key: count}`` — one slot per buff_* / element
+    # pill effect. Each consume increments the counter (capped per-key by
+    # ``pill_buffs.PILL_BUFF_CAP``); ``compute_combat_stats`` multiplies the
+    # per-pill stat increment by the stored count to produce a permanent
+    # bonus. Stored as a string for SQLite portability — see
+    # ``pill_buffs.parse_counts`` / ``pill_buffs.encode_counts``.
+    pill_buff_counts: Mapped[str] = mapped_column(String(512), default="{}", nullable=False)
+
+    # ── Alchemy UX state ─────────────────────────────────────────────────────
+    # Last furnace the player picked in the recipe detail view. Used as the
+    # default selection when the recipe view opens; falls back to the auto-
+    # picked "best" furnace if the stored key isn't currently owned or
+    # doesn't satisfy the recipe's required tier.
+    preferred_furnace_key: Mapped[str | None] = mapped_column(String(64), nullable=True)
+
     # ── Titles ─────────────────────────────────────────────────────────────
     main_title: Mapped[str | None] = mapped_column(String(64), nullable=True)
     sub_title: Mapped[str | None] = mapped_column(String(64), nullable=True)

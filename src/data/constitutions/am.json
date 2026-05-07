@@ -211,13 +211,14 @@
       "merit": 20000,
       "stones": 0
     },
-    "passive_description_vi": "Thân hóa linh thể Âm, né tránh mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
+    "passive_description_vi": "Thân hóa linh thể Âm, sương đen dày đặc che phủ — né tránh mạnh mẽ và làm mù kẻ địch cùng cảnh giới.",
     "stat_bonuses": {
       "element_dmg_bonus": {
         "am": 0.096
       },
-      "evasion_rating": 144,
-      "stat_steal_on_hit_pct": 0.12
+      "evasion_rating": 180,
+      "crit_res_rating": 120,
+      "blind_on_hit_pct": 0.12
     },
     "special_requirements": null,
     "materials": {
@@ -289,17 +290,17 @@
       "merit": 15000,
       "stones": 0
     },
-    "passive_description_vi": "Thân hóa tử linh huyền âm, hút chỉ số và linh hồn mục tiêu mỗi đòn đánh.",
+    "passive_description_vi": "Thân hóa tử linh huyền âm, tử khí len lỏi vào da thịt — hút linh hồn mục tiêu và xuyên giáp Âm khí cực mạnh.",
     "stat_bonuses": {
       "element_dmg_bonus": {
+        "am": 0.12
+      },
+      "soul_drain_on_hit_pct": 0.15,
+      "element_pen": {
         "am": 0.08
       },
-      "soul_drain_on_hit_pct": 0.18,
-      "stat_steal_on_hit_pct": 0.1,
-      "element_pen": {
-        "am": 0.1
-      },
-      "debuff_immune_pct": 0.1
+      "debuff_immune_pct": 0.10,
+      "true_dmg_pct": 0.03
     },
     "special_requirements": null,
     "materials": {
@@ -408,8 +409,8 @@
   },
   {
     "key": "ConstitutionAmSuong_Leg",
-    "vi": "Hắc Vụ Đế Thể",
-    "en": "Imperial Black Mist Body",
+    "vi": "Vĩnh Dạ Hắc Vụ Thể",
+    "en": "Eternal Night Black Mist Body",
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
@@ -439,8 +440,8 @@
   },
   {
     "key": "ConstitutionAmTu_Leg",
-    "vi": "Đế Tử Vong Thể",
-    "en": "Imperial Death Wraith Body",
+    "vi": "Minh Vương Tịch Diệt Thể",
+    "en": "Underworld King Annihilation Body",
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
@@ -464,8 +465,8 @@
   },
   {
     "key": "ConstitutionAmU_Leg",
-    "vi": "Đế U Ám Thể",
-    "en": "Imperial Gloom Dark Body",
+    "vi": "Cửu U Ma Đồng Thể",
+    "en": "Nine Nether Demon Pupil Body",
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
@@ -489,8 +490,8 @@
   },
   {
     "key": "ConstitutionUMinhAm",
-    "vi": "U Minh Phệ Hồn Thể",
-    "en": "Underworld Soul-Devouring Body",
+    "vi": "Phệ Hồn Ma Đế Thể",
+    "en": "Soul-Devouring Demon Emperor Body",
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
@@ -520,8 +521,8 @@
   },
   {
     "key": "ConstitutionThonThienMaTam",
-    "vi": "Thôn Thiên Ma Tâm",
-    "en": "Heaven-Devouring Demon Heart",
+    "vi": "Thôn Thiên Ma Thần Tâm",
+    "en": "Heaven-Devouring Demon God Heart",
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
@@ -529,7 +530,7 @@
       "merit": 0,
       "stones": 60000
     },
-    "passive_description_vi": "Hạt giống ma đạo gieo vào tim. Bản thân yếu ớt, nhưng là tiền đề tiến hóa thành **Thôn Thiên Ma Thể**. Tu luyện Ma Thần Công (R9 hệ Ám) để khai mở hình thái thật.",
+    "passive_description_vi": "Hạt giống ma đạo gieo vào tim. Bản thân yếu ớt, nhưng là tiền đề tiến hóa thành **Hỗn Độn Ma Thần Thể**. Tu luyện Ma Thần Công (R9 hệ Ám) để khai mở hình thái thật.",
     "stat_bonuses": {
       "hp_pct": 0.05,
       "mp_pct": 0.05,
@@ -547,8 +548,8 @@
   },
   {
     "key": "ConstitutionThonThienMaThe",
-    "vi": "Thôn Thiên Ma Thể",
-    "en": "Heaven-Devouring Demon Body",
+    "vi": "Hỗn Độn Ma Thần Thể",
+    "en": "Chaotic Demon God Body",
     "rarity": "legendary",
     "element": "am",
     "roll_weight": 0,
@@ -556,7 +557,7 @@
       "merit": 0,
       "stones": 150000
     },
-    "passive_description_vi": "Ma đạo viên mãn — thân hóa thiên ma, hấp thụ vạn vật. **Thôn Thiên Ma Khí:** đầu trận cướp 20% chỉ số chiến đấu (ATK / MATK / DEF / SPD) của đối thủ và hấp thu thành chỉ số bản thân. Cộng thêm chỉ số ma đạo đỉnh cao trên mọi mặt. Tiến hóa từ Thôn Thiên Ma Tâm.",
+    "passive_description_vi": "Ma đạo viên mãn — thân hóa thiên ma, hấp thụ vạn vật. **Thôn Thiên Ma Khí:** đầu trận cướp 20% chỉ số chiến đấu (ATK / MATK / DEF / SPD) của đối thủ và hấp thu thành chỉ số bản thân. Cộng thêm chỉ số ma đạo đỉnh cao trên mọi mặt. Tiến hóa từ Thôn Thiên Ma Thần Tâm.",
     "stat_bonuses": {
       "stat_drain_aura_pct": 0.2,
       "hp_pct": 0.3,

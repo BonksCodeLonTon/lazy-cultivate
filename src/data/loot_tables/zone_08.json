@@ -2,43 +2,37 @@
   "LootZone_8": [
     {
       "item_key": "MatHoaThanDan",
-      "weight": 400000,
+      "weight": 200000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatHuKhongTinh",
-      "weight": 250000,
+      "weight": 125000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatPhaTuongKinh",
-      "weight": 300000,
+      "weight": 150000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatKimThanDan",
-      "weight": 200000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiHPLarge",
-      "weight": 250000,
+      "weight": 125000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiFull",
-      "weight": 80000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "DanBuffFDmg",
-      "weight": 50000,
+      "weight": 40000,
       "qty_min": 1,
       "qty_max": 1
     },
@@ -135,7 +129,7 @@
     },
     {
       "item_key": "ChestDia",
-      "weight": 100000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
     },

@@ -22,6 +22,12 @@ from dataclasses import dataclass, field
 from typing import Iterable, Optional
 
 from src.data.registry import registry
+from src.game.systems.pill_buffs import (
+    PILL_BUFF_CAP,
+    PILL_BUFF_STATS,
+    increment_count,
+    is_buff_pill,
+)
 from src.game.engine.quality import (
     QUALITY_LABELS,
     implicit_multiplier,
@@ -63,16 +69,19 @@ def get_recipe(key: str) -> dict | None:
 
 # ── Furnace helpers ─────────────────────────────────────────────────────────
 
-def _furnace_score(furnace: dict) -> tuple[int, float]:
+def _furnace_score(furnace: dict) -> tuple[int, float, int]:
     """Rank furnaces so the 'best' owned furnace for a given tier wins.
 
-    Sort key is (is_unique, total_quality_bonus). Unique furnaces always beat
-    normal ones at the same tier; among unique furnaces the one with the
-    highest total quality bonus wins.
+    Sort key is (is_unique, total_quality_bonus, furnace_tier). Unique
+    furnaces always beat normal ones; among furnaces with equal uniqueness
+    and bonus total, the higher-tier one wins. Without the tier tiebreaker,
+    a player who owns G1..G4 normal furnaces (all bonus_total = 0) would
+    auto-pick whichever the iteration visits first — usually the lowest tier.
     """
     unique = 1 if furnace.get("is_unique") else 0
     bonus_total = sum(furnace.get("quality_bonus", {}).values())
-    return (unique, bonus_total)
+    tier = int(furnace.get("furnace_tier", 0))
+    return (unique, bonus_total, tier)
 
 
 def _pick_best_furnace(
@@ -84,7 +93,7 @@ def _pick_best_furnace(
     Pretty-prints to None when no owned furnace qualifies.
     """
     best: dict | None = None
-    best_score = (-1, -1.0)
+    best_score: tuple[int, float, int] = (-1, -1.0, -1)
     for key in owned_furnace_keys:
         f = registry.get_furnace(key)
         if not f:
@@ -289,14 +298,15 @@ class PillEffect:
     qi_xp_delta: int = 0
     body_xp_delta: int = 0
     heal_delta: int = 0             # HP gained (if a healing pill is consumed outside combat)
+    pill_buff_increment: Optional[str] = None  # effect_key whose counter just ticked up
 
 
-# Effect magnitudes are shaped so even a Hoàng-quality pill is useful
-# and Thiên-quality yields a notable bonus. Per-effect scaling is
-# deliberately coarse for v1 — refining the balance is follow-up work.
+# Per-effect base magnitudes for non-XP pills. ``exp_luyen_the`` and
+# ``exp_qi`` are intentionally NOT here — their base XP scales with the
+# pill's own grade via ``_pill_xp_for_grade`` so a Grade-N Hoàn pill grants
+# the same XP regardless of consumer realm. The flat 400-XP table that
+# lived here used to clear Luyện Thể 0 in three pills.
 _EFFECT_BASE_MAGNITUDE = {
-    "exp_luyen_the":     ("body_xp", 400),
-    "exp_qi":            ("qi_xp",   400),
     "restore_hp":        ("heal",    500),
     "restore_mp":        ("heal",      0),   # MP pills handled separately in combat
     "reduce_toxicity":   ("dan_doc_reduce", 40),
@@ -308,6 +318,189 @@ _EFFECT_BASE_MAGNITUDE = {
     "breakthrough_hop_dao":     ("qi_xp", 200000),
     "breakthrough_dai_thua":    ("qi_xp", 500000),
 }
+
+# Effect keys that aren't combat-buff pills but had no implementation —
+# treat them as a small dual-axis XP + merit consumable so consume isn't a
+# no-op. (lure_beast / repel_beast were "spawn manipulation" placeholders
+# we never wired up to dungeon spawn rolls; they're useful as panic XP.)
+_GENERIC_BOOST_EFFECTS: frozenset[str] = frozenset({
+    "lure_beast", "repel_beast",
+})
+
+_GENERIC_BOOST_PCT_OF_PILL: float = 0.25  # share of a dedicated XP pill
+_GENERIC_BOOST_MERIT: int = 50            # flat merit reward per consume
+_GENERIC_BOOST_DAN_DOC_REDUCE: int = 2    # tiny detox to offset accrued tox
+
+# Pills-per-realm at Hoàn quality. Quadratic growth (≈ ``10 + 15·R²``) so
+# early realms only need a handful of pills while endgame demands ≈1000 —
+# pills are a viable boost at low cultivation and an expensive supplement
+# at high cultivation, never a primary advancement source past mid-game.
+# Index = ``axis_realm`` (0..8). Higher-quality pills divide this count by
+# their implicit_mult (Thiên ×1.5 → ~660 pills at R8).
+_TARGET_PILLS_PER_REALM: tuple[int, ...] = (
+    20,    # R0  Luyện Huyết / Luyện Khí — ~1.5× early-stage cost: small
+    50,    # R1  Luyện Bì    / Trúc Cơ      enough that a fresh player can
+    130,   # R2  Luyện Cân   / Kim Đan      still reach R2 from a starter
+    220,   # R3  Luyện Cốt   / Nguyên Anh   bag, but no single-realm clears
+    350,   # R4  Luyện Phủ   / Hóa Thần     past R0. Taper back to the
+    500,   # R5  Pháp Tướng  / Luyện Hư     sanctioned ~1000 ceiling at R8
+    650,   # R6  Kim Thân    / Hợp Đạo      so endgame stays a real grind.
+    820,   # R7  Siêu Phàm   / Đại Thừa
+    1000,  # R8  Nhập Thánh  / Đăng Tiên
+)
+
+
+def _pill_xp_for_grade(axis: str, pill_grade: int) -> int:
+    """Realm-scaled base XP a Hoàn pill of the given grade grants on ``axis``.
+
+    Pill grade (1..9) maps to realm idx (0..8). Magnitude is computed so
+    ``_TARGET_PILLS_PER_REALM[grade-1]`` Hoàn pills clear that realm — XP
+    follows the pill, not the consumer. A Grade-5 pill at Luyện Khí 0
+    grants the same XP as the same pill at Hóa Thần 4, so high-grade pills
+    stay valuable to early-game players who get them via drops/trade and
+    low-grade pills don't scale up indefinitely with the consumer's realm.
+    """
+    from src.game.constants.realms import get_realm
+    realm_idx = max(0, min(pill_grade - 1, len(_TARGET_PILLS_PER_REALM) - 1))
+    realm = get_realm(axis, realm_idx)
+    if realm is None:
+        return 0
+    target_pills = _TARGET_PILLS_PER_REALM[realm_idx]
+    return max(1, realm.level_exp_table[-1] // target_pills)
+
+
+# Effect keys gated by player cultivation grade vs. pill grade. Once the
+# player's matching realm meets/exceeds the pill grade, the consume is
+# refused — the body has surpassed what this pill can offer. ``reduce_toxicity``
+# is treated separately because Đan Độc is global; it checks the highest
+# realm across body + qi (the two axes that accumulate toxicity from pills).
+_GRADE_GATED_AXIS: dict[str, str] = {
+    "exp_luyen_the": "body",
+    "exp_qi":        "qi",
+}
+
+_AXIS_LABEL_VI: dict[str, str] = {
+    "body": "Luyện Thể",
+    "qi":   "Luyện Khí",
+}
+
+
+def _player_axis_realm(char: Character, axis: str) -> int:
+    return int(getattr(char, f"{axis}_realm", 0) or 0)
+
+
+def _grade_gated_refusal(
+    char: Character,
+    pill: dict,
+    pill_grade: int,
+    effect_key: str,
+) -> Optional[PillEffect]:
+    """Refuse consume when the player has surpassed the pill grade.
+
+    Returns ``None`` when the pill is at-tier or above the player and the
+    consume should proceed. The refused ``PillEffect`` carries
+    ``applied=False`` so the cog leaves the stack untouched in inventory —
+    the player isn't burning a pill on something their body can no longer
+    absorb. ``reduce_toxicity`` checks ``max(body_realm, qi_realm)`` since
+    Đan Độc is a single global stat with no obvious axis correspondence.
+    """
+    if effect_key in _GRADE_GATED_AXIS:
+        axis = _GRADE_GATED_AXIS[effect_key]
+        player_realm = _player_axis_realm(char, axis)
+        axis_label = _AXIS_LABEL_VI[axis]
+    elif effect_key == "reduce_toxicity":
+        player_realm = max(
+            _player_axis_realm(char, "body"),
+            _player_axis_realm(char, "qi"),
+        )
+        axis_label = "tu vi"
+    else:
+        return None
+
+    if player_realm < pill_grade:
+        return None
+
+    return PillEffect(
+        applied=False,
+        message=(
+            f"❌ Cảnh giới {axis_label} (Cấp {player_realm + 1}) đã vượt qua "
+            f"phẩm cấp đan dược **{pill['vi']}** (Cấp {pill_grade}) — "
+            f"không còn hấp thu được hiệu quả."
+        ),
+    )
+
+
+def _is_combat_buff_pill(effect_key: str) -> bool:
+    """Combat-buff pills are tracked per-key with a hard consumption cap —
+    delegated to ``pill_buffs.is_buff_pill`` so the registry of buff effects
+    lives in one place."""
+    return is_buff_pill(effect_key)
+
+
+_STAT_LABEL_VI: dict[str, str] = {
+    "spd":      "Tốc Độ",
+    "def_stat": "Phòng Thủ",
+    "atk":      "Công Kích",
+}
+
+
+def _format_buff_stat(stat_name: str, total_amount: float) -> str:
+    """Render a single per-pill stat increment for the success message."""
+    if stat_name.startswith("element_dmg_bonus_"):
+        elem = stat_name.removeprefix("element_dmg_bonus_").capitalize()
+        return f"+{total_amount * 100:.1f}% sát thương Hệ {elem}"
+    label = _STAT_LABEL_VI.get(stat_name, stat_name)
+    return f"+{total_amount:g} {label}"
+
+
+def _apply_combat_buff_pill(
+    char: Character,
+    pill: dict,
+    effect_key: str,
+    quality_tier: int,
+    base_doc: int,
+    mult: float,
+) -> PillEffect:
+    """Permanent-buff path: increment ``pill_buff_counts[effect_key]`` (if
+    under cap) and surface a one-line summary of the new total bonus.
+
+    Returns a ``PillEffect`` with ``pill_buff_increment`` set so the cog
+    can persist the updated counter dict back to the player ORM. If the
+    cap is already reached, no counter mutation occurs and the result
+    reports it (no toxicity gained either — refusing the consume).
+    """
+    counts = getattr(char, "pill_buff_counts", None) or {}
+    ok, new_counts = increment_count(counts, effect_key)
+    if not ok:
+        return PillEffect(
+            applied=False,
+            message=(
+                f"❌ **{pill['vi']}** đã đạt giới hạn **{PILL_BUFF_CAP}** lần "
+                f"dùng — không thể tăng thêm hiệu ứng vĩnh viễn từ loại đan này."
+            ),
+        )
+    char.pill_buff_counts = new_counts
+    new_count = new_counts[effect_key]
+    # Render every per-pill stat bonus this effect grants (most are single-
+    # stat; element pills only have one entry too).
+    stat_lines: list[str] = []
+    for stat_name, per_pill in PILL_BUFF_STATS[effect_key].items():
+        cumulative = per_pill * new_count
+        stat_lines.append(_format_buff_stat(stat_name, cumulative))
+    quality = {1: "hoan", 2: "huyen", 3: "dia", 4: "thien"}.get(quality_tier, "hoan")
+    reduction = 1.0 - (quality_tier - 1) * 0.2
+    doc_delta = max(0, int(round(base_doc * reduction)))
+    msg = (
+        f"✨ Dùng **{pill['vi']}** ({QUALITY_LABELS.get(quality)}) — "
+        f"cộng dồn ({new_count}/{PILL_BUFF_CAP} lần): "
+        + ", ".join(stat_lines)
+    )
+    return PillEffect(
+        applied=True,
+        message=msg,
+        dan_doc_delta=doc_delta,
+        pill_buff_increment=effect_key,
+    )
 
 
 def consume_pill(
@@ -326,8 +519,16 @@ def consume_pill(
         return PillEffect(False, f"Không tìm thấy đan dược '{pill_key}'.")
 
     effect_key = pill.get("effect_key", "misc_vi_label")
+    pill_grade = int(pill.get("grade", 1))
     base_doc = int(pill.get("dan_doc", 0))
     mult = implicit_multiplier({1: "hoan", 2: "huyen", 3: "dia", 4: "thien"}.get(quality_tier, "hoan"))
+
+    # Refuse pills the player has outgrown — the stack stays in inventory
+    # rather than being burned for zero benefit. Mirrors how the buff-cap
+    # path bails out before any state mutation.
+    refusal = _grade_gated_refusal(char, pill, pill_grade, effect_key)
+    if refusal is not None:
+        return refusal
 
     reduction = 1.0 - (quality_tier - 1) * 0.2
     doc_delta = max(0, int(round(base_doc * reduction)))
@@ -337,35 +538,81 @@ def consume_pill(
     effect_heal = 0
     notes: list[str] = []
 
-    if effect_key in _EFFECT_BASE_MAGNITUDE:
+    merit_delta = 0
+
+    # Đan Độc penalty on pill EXP — full stop at saturation. A poisoned
+    # body literally can't absorb more cultivation essence; the player
+    # must detox before further pill-based progression. Healing, merit
+    # rewards, and combat-buff stat counters are NOT scaled by this.
+    from src.game.systems.toxicity import pill_exp_multiplier
+    _xp_mult = pill_exp_multiplier(int(getattr(char, "dan_doc", 0) or 0))
+
+    def _scale_xp(raw: int) -> int:
+        """Apply both quality + toxicity scalars to a raw XP magnitude."""
+        return int(round(raw * mult * _xp_mult))
+
+    if effect_key == "exp_luyen_the":
+        magnitude = _scale_xp(_pill_xp_for_grade("body", pill_grade))
+        effect_body_xp = magnitude
+        notes.append(f"+{magnitude:,} EXP Luyện Thể")
+    elif effect_key == "exp_qi":
+        magnitude = _scale_xp(_pill_xp_for_grade("qi", pill_grade))
+        effect_qi_xp = magnitude
+        notes.append(f"+{magnitude:,} EXP Luyện Khí")
+    elif effect_key in _EFFECT_BASE_MAGNITUDE:
         kind, base = _EFFECT_BASE_MAGNITUDE[effect_key]
-        magnitude = int(round(base * mult))
         if kind == "body_xp":
+            magnitude = _scale_xp(base)
             effect_body_xp = magnitude
             notes.append(f"+{magnitude:,} EXP Luyện Thể")
         elif kind == "qi_xp":
+            magnitude = _scale_xp(base)
             effect_qi_xp = magnitude
             notes.append(f"+{magnitude:,} EXP Luyện Khí")
         elif kind == "heal":
+            magnitude = int(round(base * mult))
             effect_heal = magnitude
             notes.append(f"+{magnitude:,} HP")
         elif kind == "dan_doc_reduce":
+            # Detox magnitude scales with pill grade — endgame players
+            # accumulate toxicity from 1000-pill realms, so a Grade-2
+            # purifier doesn't cut it. Grade-2 base (40) is preserved at
+            # the floor; Grade-9 reaches +180 per Hoàn pill.
+            magnitude = int(round(base * pill_grade / 2 * mult))
             doc_delta = -magnitude
             notes.append(f"Thanh lọc −{magnitude} Đan Độc")
+    elif _is_combat_buff_pill(effect_key):
+        return _apply_combat_buff_pill(char, pill, effect_key, quality_tier, base_doc, mult)
+    elif effect_key in _GENERIC_BOOST_EFFECTS:
+        body_part = max(0, _scale_xp(int(round(_pill_xp_for_grade("body", pill_grade) * _GENERIC_BOOST_PCT_OF_PILL))))
+        qi_part = max(0, _scale_xp(int(round(_pill_xp_for_grade("qi", pill_grade) * _GENERIC_BOOST_PCT_OF_PILL))))
+        effect_body_xp = body_part
+        effect_qi_xp = qi_part
+        merit_delta = int(round(_GENERIC_BOOST_MERIT * mult))
+        doc_delta -= int(round(_GENERIC_BOOST_DAN_DOC_REDUCE * mult))
+        notes.append(
+            f"+{body_part:,} EXP Luyện Thể, +{qi_part:,} EXP Luyện Khí, "
+            f"+{merit_delta:,} Công Đức"
+        )
     else:
-        # Unknown/generic effect — still consumes the pill and accrues toxicity.
         notes.append(pill.get("effect_vi", "Hiệu ứng chưa áp dụng"))
 
-    # Commit into the Character model for UI display; DB-side persistence
-    # is handled by the caller.
+    if _xp_mult <= 0.0 and (effect_body_xp == 0 and effect_qi_xp == 0):
+        # Surface why nothing came of an XP pill so a Mãn-Độc player
+        # immediately understands they must detox before consuming more.
+        notes.append("⚠️ Mãn Độc — cơ thể không thể hấp thu EXP từ đan dược.")
+
     char.body_xp = int(getattr(char, "body_xp", 0) or 0) + effect_body_xp
     char.qi_xp = int(getattr(char, "qi_xp", 0) or 0) + effect_qi_xp
+    if merit_delta:
+        char.merit = int(getattr(char, "merit", 0) or 0) + merit_delta
 
     msg = f"✨ Dùng **{pill['vi']}** ({QUALITY_LABELS.get({1:'hoan',2:'huyen',3:'dia',4:'thien'}.get(quality_tier,'hoan'))}) — " + ", ".join(notes)
     return PillEffect(
         applied=True,
         message=msg,
         dan_doc_delta=doc_delta,
+        merit_delta=merit_delta,
         qi_xp_delta=effect_qi_xp,
         body_xp_delta=effect_body_xp,
         heal_delta=effect_heal,

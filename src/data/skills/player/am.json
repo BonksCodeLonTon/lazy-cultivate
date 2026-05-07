@@ -845,7 +845,7 @@
     },
     "mp_cost": 17,
     "cooldown": 1,
-    "base_dmg": 25,
+    "base_dmg": 15,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -869,7 +869,7 @@
     },
     "mp_cost": 33,
     "cooldown": 2,
-    "base_dmg": 70,
+    "base_dmg": 42,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -893,7 +893,7 @@
     },
     "mp_cost": 50,
     "cooldown": 3,
-    "base_dmg": 135,
+    "base_dmg": 95,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -917,7 +917,7 @@
     },
     "mp_cost": 60,
     "cooldown": 4,
-    "base_dmg": 190,
+    "base_dmg": 128,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -941,7 +941,7 @@
     },
     "mp_cost": 60,
     "cooldown": 3,
-    "base_dmg": 160,
+    "base_dmg": 110,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -965,7 +965,7 @@
     },
     "mp_cost": 65,
     "cooldown": 3,
-    "base_dmg": 195,
+    "base_dmg": 140,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -989,7 +989,7 @@
     },
     "mp_cost": 80,
     "cooldown": 4,
-    "base_dmg": 220,
+    "base_dmg": 180,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -1013,7 +1013,7 @@
     },
     "mp_cost": 95,
     "cooldown": 4,
-    "base_dmg": 240,
+    "base_dmg": 210,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -1037,7 +1037,7 @@
     },
     "mp_cost": 100,
     "cooldown": 4,
-    "base_dmg": 290,
+    "base_dmg": 265,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -1061,7 +1061,7 @@
     },
     "mp_cost": 130,
     "cooldown": 6,
-    "base_dmg": 460,
+    "base_dmg": 395,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -1085,7 +1085,7 @@
     },
     "mp_cost": 135,
     "cooldown": 6,
-    "base_dmg": 520,
+    "base_dmg": 435,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -1109,7 +1109,7 @@
     },
     "mp_cost": 150,
     "cooldown": 5,
-    "base_dmg": 420,
+    "base_dmg": 380,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -1133,7 +1133,7 @@
     },
     "mp_cost": 155,
     "cooldown": 5,
-    "base_dmg": 510,
+    "base_dmg": 480,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -1157,12 +1157,876 @@
     },
     "mp_cost": 160,
     "cooldown": 6,
-    "base_dmg": 590,
+    "base_dmg": 555,
     "effects": [
       "DebuffLoaMat"
     ],
     "effect_chances": {
       "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR1G2",
+    "vi": "Ám Huyền Đoạn Thuật",
+    "en": "Ám Huyền Severing Art",
+    "realm": 1,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 1,
+    "base_dmg": 20,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR1G2B",
+    "vi": "Ám Huyền Trảm Quyết",
+    "en": "Ám Huyền Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 1,
+    "base_dmg": 20,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR1G3",
+    "vi": "Ám Địa Đoạn Thuật",
+    "en": "Ám Địa Severing Art",
+    "realm": 1,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 27,
+    "cooldown": 2,
+    "base_dmg": 24,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR1G3B",
+    "vi": "Ám Địa Trảm Quyết",
+    "en": "Ám Địa Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 27,
+    "cooldown": 2,
+    "base_dmg": 24,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR1G4",
+    "vi": "Ám Thiên Đoạn Thuật",
+    "en": "Ám Thiên Severing Art",
+    "realm": 1,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 32,
+    "cooldown": 2,
+    "base_dmg": 28,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR1G4B",
+    "vi": "Ám Thiên Trảm Quyết",
+    "en": "Ám Thiên Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 32,
+    "cooldown": 2,
+    "base_dmg": 28,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR2G2",
+    "vi": "Ám Huyền Đoạn Thuật",
+    "en": "Ám Huyền Severing Art",
+    "realm": 2,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR2G2B",
+    "vi": "Ám Huyền Trảm Quyết",
+    "en": "Ám Huyền Cleaving Edict",
+    "realm": 2,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR2G3",
+    "vi": "Ám Địa Đoạn Thuật",
+    "en": "Ám Địa Severing Art",
+    "realm": 2,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 33,
+    "cooldown": 3,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR2G3B",
+    "vi": "Ám Địa Trảm Quyết",
+    "en": "Ám Địa Cleaving Edict",
+    "realm": 2,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 33,
+    "cooldown": 3,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR2G4",
+    "vi": "Ám Thiên Đoạn Thuật",
+    "en": "Ám Thiên Severing Art",
+    "realm": 2,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 38,
+    "cooldown": 3,
+    "base_dmg": 50,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR2G4B",
+    "vi": "Ám Thiên Trảm Quyết",
+    "en": "Ám Thiên Cleaving Edict",
+    "realm": 2,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 38,
+    "cooldown": 3,
+    "base_dmg": 50,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR3G3",
+    "vi": "Ám Địa Đoạn Thuật",
+    "en": "Ám Địa Severing Art",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 43,
+    "cooldown": 3,
+    "base_dmg": 62,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR3G3B",
+    "vi": "Ám Địa Trảm Quyết",
+    "en": "Ám Địa Cleaving Edict",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 43,
+    "cooldown": 3,
+    "base_dmg": 62,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR3G4",
+    "vi": "Ám Thiên Đoạn Thuật",
+    "en": "Ám Thiên Severing Art",
+    "realm": 3,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 48,
+    "cooldown": 3,
+    "base_dmg": 70,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR3G4B",
+    "vi": "Ám Thiên Trảm Quyết",
+    "en": "Ám Thiên Cleaving Edict",
+    "realm": 3,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 48,
+    "cooldown": 3,
+    "base_dmg": 70,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR4G1",
+    "vi": "Ám Hoàng Đoạn Thuật",
+    "en": "Ám Hoàng Severing Art",
+    "realm": 4,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 45,
+    "cooldown": 3,
+    "base_dmg": 75,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR4G1B",
+    "vi": "Ám Hoàng Trảm Quyết",
+    "en": "Ám Hoàng Cleaving Edict",
+    "realm": 4,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 45,
+    "cooldown": 3,
+    "base_dmg": 75,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR4G3",
+    "vi": "Ám Địa Đoạn Thuật",
+    "en": "Ám Địa Severing Art",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR4G3B",
+    "vi": "Ám Địa Trảm Quyết",
+    "en": "Ám Địa Cleaving Edict",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR5G3",
+    "vi": "Ám Địa Đoạn Thuật",
+    "en": "Ám Địa Severing Art",
+    "realm": 5,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 70,
+    "cooldown": 4,
+    "base_dmg": 160,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR5G3B",
+    "vi": "Ám Địa Trảm Quyết",
+    "en": "Ám Địa Cleaving Edict",
+    "realm": 5,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 70,
+    "cooldown": 4,
+    "base_dmg": 160,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR5G4",
+    "vi": "Ám Thiên Đoạn Thuật",
+    "en": "Ám Thiên Severing Art",
+    "realm": 5,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR5G4B",
+    "vi": "Ám Thiên Trảm Quyết",
+    "en": "Ám Thiên Cleaving Edict",
+    "realm": 5,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR6G1",
+    "vi": "Ám Hoàng Đoạn Thuật",
+    "en": "Ám Hoàng Severing Art",
+    "realm": 6,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 145,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR6G1B",
+    "vi": "Ám Hoàng Trảm Quyết",
+    "en": "Ám Hoàng Cleaving Edict",
+    "realm": 6,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 145,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR6G4",
+    "vi": "Ám Thiên Đoạn Thuật",
+    "en": "Ám Thiên Severing Art",
+    "realm": 6,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 90,
+    "cooldown": 5,
+    "base_dmg": 235,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR6G4B",
+    "vi": "Ám Thiên Trảm Quyết",
+    "en": "Ám Thiên Cleaving Edict",
+    "realm": 6,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 90,
+    "cooldown": 5,
+    "base_dmg": 235,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR7G3",
+    "vi": "Ám Địa Đoạn Thuật",
+    "en": "Ám Địa Severing Art",
+    "realm": 7,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 105,
+    "cooldown": 5,
+    "base_dmg": 305,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR7G3B",
+    "vi": "Ám Địa Trảm Quyết",
+    "en": "Ám Địa Cleaving Edict",
+    "realm": 7,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 105,
+    "cooldown": 5,
+    "base_dmg": 305,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR7G4",
+    "vi": "Ám Thiên Đoạn Thuật",
+    "en": "Ám Thiên Severing Art",
+    "realm": 7,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 110,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR7G4B",
+    "vi": "Ám Thiên Trảm Quyết",
+    "en": "Ám Thiên Cleaving Edict",
+    "realm": 7,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 110,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR8G1",
+    "vi": "Ám Hoàng Đoạn Thuật",
+    "en": "Ám Hoàng Severing Art",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 120,
+    "cooldown": 5,
+    "base_dmg": 270,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR8G1B",
+    "vi": "Ám Hoàng Trảm Quyết",
+    "en": "Ám Hoàng Cleaving Edict",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 120,
+    "cooldown": 5,
+    "base_dmg": 270,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR8G2",
+    "vi": "Ám Huyền Đoạn Thuật",
+    "en": "Ám Huyền Severing Art",
+    "realm": 8,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 125,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerAmR8G2B",
+    "vi": "Ám Huyền Trảm Quyết",
+    "en": "Ám Huyền Cleaving Edict",
+    "realm": 8,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 125,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffBaoMon": 0.35
     },
     "formation_key": null
   }

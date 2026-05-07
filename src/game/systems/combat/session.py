@@ -17,7 +17,8 @@ from typing import Optional
 
 from src.data.registry import registry
 from src.game.constants.balance import (
-    HEAL_CRIT_CHANCE, HEAL_CRIT_MULT, MAX_ELEMENTAL_RES, MAX_FINAL_DMG_REDUCE,
+    AUTO_LOOT_DROP_RATE, HEAL_CRIT_CHANCE, HEAL_CRIT_MULT, MAX_ELEMENTAL_RES,
+    MAX_FINAL_DMG_REDUCE,
 )
 from src.game.constants.effects import EffectKey
 from src.game.engine import linh_can_effects as lc_effects
@@ -84,6 +85,10 @@ class CombatSession:
     # Used by Linh Căn dungeons so every wave drops from the element's own
     # material table regardless of which enemy was actually killed.
     loot_table_override: str | None = None
+    # When True, 90% of kills yield no loot at all (rolled before the drop
+    # table). Auto-repeat sets this so afk grinding pays out at 10% the rate
+    # of manual play.
+    auto_mode: bool = False
 
     # ── Turn orchestration ────────────────────────────────────────────────
 
@@ -602,6 +607,8 @@ class CombatSession:
         combatant.tick_effects()
 
     def _roll_loot(self) -> list[dict]:
+        if self.auto_mode and self.rng.random() >= AUTO_LOOT_DROP_RATE:
+            return []
         enemy_data = registry.get_enemy(self.enemy.key)
         # ``loot_table_override`` (set by themed dungeons) takes precedence so
         # every wave can pull from the same dungeon-specific table regardless

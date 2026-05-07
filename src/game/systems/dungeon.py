@@ -258,9 +258,10 @@ def _build_wave_list(
     """Return enemy_keys for all waves; all picks are random from enemy_pool.
 
     ``max_realm_level`` (linh_can dungeons only) caps the eligible enemies to
-    those at most one realm above the player so a Luyện Khí player can't
-    randomly draw the R10 sovereign. The cap is ignored for non-linh_can
-    dungeons since their pools are already realm-scoped.
+    those at most one realm above the player's highest cultivation axis so
+    nobody can randomly draw the R10 sovereign while still mid-game on any
+    path. The cap is ignored for non-linh_can dungeons since their pools are
+    already realm-scoped.
     """
     enemy_pool = dungeon.get("enemy_pool", [])
     wave_count = dungeon.get("wave_count", 3)
@@ -314,11 +315,13 @@ def run_dungeon(
     qual_realm, qual_level = qualifying_axis(char, req_realm)
     progress = _grade_progress(qual_realm, qual_level, req_realm)
     # Linh Căn dungeons cover R1..R10; cap the wave roll to enemies at most
-    # one realm above the player so newbies can't get one-shot by the R10
-    # sovereign. Player ``qi_realm`` is 0-indexed (0=Luyện Khí, 8=Đăng Tiên),
-    # enemy ``realm_level`` is 1-indexed → ``qi_realm + 2`` is the cap.
+    # one realm above the player's highest axis so a Thể/Trận specialist
+    # isn't blocked by the qi-only cap. Axis realms are 0-indexed
+    # (0=Luyện Khí, 8=Đăng Tiên); enemy ``realm_level`` is 1-indexed →
+    # ``best_axis_realm + 2`` yields "best realm + 1" in enemy-space.
     max_realm_level = (
-        char.qi_realm + 2 if dungeon.get("dungeon_type") == "linh_can" else None
+        best_axis_realm(char) + 2
+        if dungeon.get("dungeon_type") == "linh_can" else None
     )
     wave_enemies = _build_wave_list(dungeon, rng, max_realm_level=max_realm_level)
     total_waves = len(wave_enemies)

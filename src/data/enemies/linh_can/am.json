@@ -7,20 +7,29 @@
     "realm_level": 1,
     "element": "am",
     "base_hp": 1100,
-    "base_spd": 11,
+    "base_spd": 18,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyLCAm_T1",
-      "EnemyAm_T1"
+      "EnemyAm_T1",
+      "EnemyDungeon_Am_TinhAnh_R1"
     ],
-    "base_atk": 38,
-    "base_matk": 65,
+    "base_atk": 60,
+    "base_matk": 101,
     "base_def": 47,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Am",
     "final_dmg_bonus": 0.03,
     "base_res": {
-      "am": 0.2
+      "am": 0.3,
+      "kim": 0.15,
+      "moc": 0.15,
+      "thuy": 0.15,
+      "hoa": 0.15,
+      "tho": 0.15,
+      "loi": 0.15,
+      "phong": 0.15,
+      "quang": 0.15
     },
     "res_cap_pct": 0.8,
     "loot_luck_bonus": 0.0
@@ -33,20 +42,29 @@
     "realm_level": 2,
     "element": "am",
     "base_hp": 1890,
-    "base_spd": 12,
+    "base_spd": 21,
     "hp_scale": 1.6,
     "skill_keys": [
       "EnemyLCAm_T1",
-      "EnemyAm_T1"
+      "EnemyAm_T1",
+      "EnemyDungeon_Am_TinhAnh_R2"
     ],
-    "base_atk": 82,
-    "base_matk": 90,
+    "base_atk": 128,
+    "base_matk": 140,
     "base_def": 75,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Am",
     "final_dmg_bonus": 0.05,
     "base_res": {
-      "am": 0.25
+      "am": 0.35,
+      "kim": 0.15,
+      "moc": 0.15,
+      "thuy": 0.15,
+      "hoa": 0.15,
+      "tho": 0.15,
+      "loi": 0.15,
+      "phong": 0.15,
+      "quang": 0.15
     },
     "res_cap_pct": 0.85,
     "loot_luck_bonus": 0.0
@@ -59,20 +77,29 @@
     "realm_level": 3,
     "element": "am",
     "base_hp": 2900,
-    "base_spd": 12,
+    "base_spd": 21,
     "hp_scale": 1.65,
     "skill_keys": [
       "EnemyLCAm_T1",
-      "EnemyLCAm_T2"
+      "EnemyLCAm_T2",
+      "EnemyDungeon_Am_TinhAnh_R3"
     ],
-    "base_atk": 92,
-    "base_matk": 165,
+    "base_atk": 144,
+    "base_matk": 258,
     "base_def": 105,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Am",
     "final_dmg_bonus": 0.06,
     "base_res": {
-      "am": 0.28
+      "am": 0.38,
+      "kim": 0.15,
+      "moc": 0.15,
+      "thuy": 0.15,
+      "hoa": 0.15,
+      "tho": 0.15,
+      "loi": 0.15,
+      "phong": 0.15,
+      "quang": 0.15
     },
     "res_cap_pct": 0.85,
     "loot_luck_bonus": 0.2
@@ -85,20 +112,29 @@
     "realm_level": 4,
     "element": "am",
     "base_hp": 4600,
-    "base_spd": 14,
+    "base_spd": 23,
     "hp_scale": 1.7,
     "skill_keys": [
       "EnemyLCAm_T1",
-      "EnemyLCAm_T2"
+      "EnemyLCAm_T2",
+      "EnemyDungeon_Am_CuongGia_R4"
     ],
-    "base_atk": 170,
-    "base_matk": 221,
+    "base_atk": 265,
+    "base_matk": 345,
     "base_def": 136,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Am",
     "final_dmg_bonus": 0.08,
     "base_res": {
-      "am": 0.35
+      "am": 0.45,
+      "kim": 0.2,
+      "moc": 0.2,
+      "thuy": 0.2,
+      "hoa": 0.2,
+      "tho": 0.2,
+      "loi": 0.2,
+      "phong": 0.2,
+      "quang": 0.2
     },
     "res_cap_pct": 0.85,
     "loot_luck_bonus": 0.5
@@ -111,21 +147,29 @@
     "realm_level": 5,
     "element": "am",
     "base_hp": 7800,
-    "base_spd": 14,
+    "base_spd": 23,
     "hp_scale": 1.8,
     "skill_keys": [
       "EnemyLCAm_T2",
-      "EnemyLCAm_T3"
+      "EnemyLCAm_T3",
+      "EnemyDungeon_Am_CuongGia_R5"
     ],
-    "base_atk": 200,
-    "base_matk": 360,
+    "base_atk": 312,
+    "base_matk": 562,
     "base_def": 190,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Am",
     "final_dmg_bonus": 0.1,
     "base_res": {
-      "am": 0.4,
-      "thuy": 0.05
+      "am": 0.5,
+      "thuy": 0.15,
+      "kim": 0.2,
+      "moc": 0.2,
+      "hoa": 0.2,
+      "tho": 0.2,
+      "loi": 0.2,
+      "phong": 0.2,
+      "quang": 0.2
     },
     "res_cap_pct": 0.88,
     "loot_luck_bonus": 0.8,
@@ -140,22 +184,30 @@
     "realm_level": 6,
     "element": "am",
     "base_hp": 12960,
-    "base_spd": 15,
+    "base_spd": 26,
     "hp_scale": 1.9,
     "skill_keys": [
       "EnemyLCAm_T2",
       "EnemyLCAm_T3",
-      "EnemyLCAm_Apex"
+      "EnemyLCAm_Apex",
+      "EnemyDungeon_Am_HungManh_R6"
     ],
-    "base_atk": 342,
-    "base_matk": 475,
+    "base_atk": 535,
+    "base_matk": 742,
     "base_def": 266,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Am",
     "final_dmg_bonus": 0.12,
     "base_res": {
-      "am": 0.5,
-      "thuy": 0.1
+      "am": 0.6,
+      "thuy": 0.2,
+      "kim": 0.2,
+      "moc": 0.2,
+      "hoa": 0.2,
+      "tho": 0.2,
+      "loi": 0.2,
+      "phong": 0.2,
+      "quang": 0.2
     },
     "res_cap_pct": 0.9,
     "loot_luck_bonus": 1.2
@@ -168,22 +220,30 @@
     "realm_level": 7,
     "element": "am",
     "base_hp": 21000,
-    "base_spd": 16,
+    "base_spd": 27,
     "hp_scale": 1.95,
     "skill_keys": [
       "EnemyLCAm_T3",
       "EnemyLCAm_Apex",
-      "EnemyLCAm_T2"
+      "EnemyLCAm_T2",
+      "EnemyDungeon_Am_HungManh_R7"
     ],
-    "base_atk": 410,
-    "base_matk": 730,
+    "base_atk": 640,
+    "base_matk": 1140,
     "base_def": 380,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Am",
     "final_dmg_bonus": 0.18,
     "base_res": {
-      "am": 0.55,
-      "thuy": 0.13
+      "am": 0.65,
+      "thuy": 0.23,
+      "kim": 0.25,
+      "moc": 0.25,
+      "hoa": 0.25,
+      "tho": 0.25,
+      "loi": 0.25,
+      "phong": 0.25,
+      "quang": 0.25
     },
     "res_cap_pct": 0.9,
     "loot_luck_bonus": 1.5,
@@ -198,23 +258,31 @@
     "realm_level": 8,
     "element": "am",
     "base_hp": 35400,
-    "base_spd": 17,
+    "base_spd": 29,
     "hp_scale": 2.0,
     "skill_keys": [
       "EnemyLCAm_Apex",
       "EnemyLCAm_T3",
-      "EnemyLCAm_T2"
+      "EnemyLCAm_T2",
+      "EnemyDungeon_Am_DaiNang_R8"
     ],
-    "base_atk": 672,
-    "base_matk": 966,
+    "base_atk": 1050,
+    "base_matk": 1510,
     "base_def": 525,
     "mp_regen_pct": 0.08,
     "base_evasion": 72,
     "final_dmg_bonus": 0.3,
     "loot_table_key": "LinhCanLoot_Am",
     "base_res": {
-      "am": 0.65,
-      "thuy": 0.2
+      "am": 0.75,
+      "thuy": 0.3,
+      "kim": 0.25,
+      "moc": 0.25,
+      "hoa": 0.25,
+      "tho": 0.25,
+      "loi": 0.25,
+      "phong": 0.25,
+      "quang": 0.25
     },
     "res_cap_pct": 0.9,
     "loot_luck_bonus": 2.0
@@ -227,22 +295,30 @@
     "realm_level": 9,
     "element": "am",
     "base_hp": 56000,
-    "base_spd": 17,
+    "base_spd": 29,
     "hp_scale": 2.05,
     "skill_keys": [
       "EnemyLCAm_Apex",
       "EnemyLCAm_T3",
-      "EnemyLCAm_T2"
+      "EnemyLCAm_T2",
+      "EnemyDungeon_Am_DaiNang_R9"
     ],
-    "base_atk": 850,
-    "base_matk": 1480,
+    "base_atk": 1328,
+    "base_matk": 2312,
     "base_def": 720,
     "mp_regen_pct": 0.08,
     "loot_table_key": "LinhCanLoot_Am",
     "final_dmg_bonus": 0.4,
     "base_res": {
-      "am": 0.7,
-      "thuy": 0.25
+      "am": 0.8,
+      "thuy": 0.35,
+      "kim": 0.25,
+      "moc": 0.25,
+      "hoa": 0.25,
+      "tho": 0.25,
+      "loi": 0.25,
+      "phong": 0.25,
+      "quang": 0.25
     },
     "res_cap_pct": 0.92,
     "loot_luck_bonus": 2.6,
@@ -257,22 +333,30 @@
     "realm_level": 10,
     "element": "am",
     "base_hp": 92000,
-    "base_spd": 18,
+    "base_spd": 30,
     "hp_scale": 2.2,
     "skill_keys": [
       "EnemyLCAm_Apex",
       "EnemyLCAm_T3",
-      "EnemyLCAm_T2"
+      "EnemyLCAm_T2",
+      "EnemyDungeon_Am_ChiTon_R10"
     ],
-    "base_atk": 1200,
-    "base_matk": 2050,
+    "base_atk": 1875,
+    "base_matk": 3202,
     "base_def": 1000,
     "mp_regen_pct": 0.1,
     "loot_table_key": "LinhCanLoot_Am",
     "final_dmg_bonus": 0.55,
     "base_res": {
-      "am": 0.75,
-      "thuy": 0.3
+      "am": 0.85,
+      "thuy": 0.4,
+      "kim": 0.3,
+      "moc": 0.3,
+      "hoa": 0.3,
+      "tho": 0.3,
+      "loi": 0.3,
+      "phong": 0.3,
+      "quang": 0.3
     },
     "res_cap_pct": 0.92,
     "loot_luck_bonus": 3.5,

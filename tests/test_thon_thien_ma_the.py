@@ -1,4 +1,4 @@
-"""Tests for Thôn Thiên Ma Tâm → Thôn Thiên Ma Thể progression chain.
+"""Tests for Thôn Thiên Ma Thần Tâm → Thôn Thiên Ma Thể progression chain.
 
 Covers:
   * Stat-drain aura at combat start (drain 20% / absorb same amount).
@@ -140,7 +140,7 @@ def test_requires_ma_tam_equipped():
     player = _player(constitution_type="ConstitutionVanTuong", skill_keys=["SkillMaThanCong_R9"])
     err = check_requirements(player, _the_data(), registry.constitutions)
     assert err is not None
-    assert "Thôn Thiên Ma Tâm" in err
+    assert "Thôn Thiên Ma Thần Tâm" in err
 
 
 def test_requires_ma_than_cong_learned():

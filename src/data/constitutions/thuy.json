@@ -390,8 +390,8 @@
   },
   {
     "key": "ConstitutionCuuTuyetThuy",
-    "vi": "Cửu Tuyệt Thủy Long Thể",
-    "en": "Nine Abyss Water Dragon Body",
+    "vi": "Cửu Tiêu Long Vương Thể",
+    "en": "Nine Heavens Dragon King Body",
     "rarity": "legendary",
     "element": "thuy",
     "roll_weight": 0,
@@ -422,8 +422,8 @@
   },
   {
     "key": "ConstitutionThuyBang_Leg",
-    "vi": "Đế Hàn Băng Thể",
-    "en": "Imperial Cold Frost Body",
+    "vi": "Thái Âm Hàn Băng Đế Thể",
+    "en": "Great Yin Frost Emperor Body",
     "rarity": "legendary",
     "element": "thuy",
     "roll_weight": 0,
@@ -460,8 +460,8 @@
   },
   {
     "key": "ConstitutionThuyHai_Leg",
-    "vi": "Đế Bích Hải Thể",
-    "en": "Imperial Azure Sea Body",
+    "vi": "Hư Vô Nhược Thủy Thể",
+    "en": "Void Weak Water Body",
     "rarity": "legendary",
     "element": "thuy",
     "roll_weight": 0,
@@ -489,8 +489,8 @@
   },
   {
     "key": "ConstitutionThuyLuu_Leg",
-    "vi": "Đế Lưu Vân Thể",
-    "en": "Imperial Flowing Cloud Body",
+    "vi": "Thiên Hải Lưu Vân Thể",
+    "en": "Heavenly Sea Drifting Cloud Body",
     "rarity": "legendary",
     "element": "thuy",
     "roll_weight": 0,
@@ -520,7 +520,7 @@
   {
     "key": "ConstitutionThanhTuyenThe",
     "vi": "Thánh Tuyền Thể",
-    "en": "Sacred Spring Body",
+    "en": "Sacred Pure Spirit Spring Body",
     "rarity": "legendary",
     "element": "thuy",
     "roll_weight": 0,
@@ -539,7 +539,7 @@
       "mp_regen_pct": 0.04,
       "heal_pct": 0.2,
       "heal_can_crit": true,
-      "res_all": 80,
+      "res_all": 0.4,
       "shield_max_pct": 0.15,
       "shield_regen_pct": 0.03
     },

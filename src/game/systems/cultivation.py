@@ -7,6 +7,11 @@ from src.game.constants.balance import (
     BASE_MATK_PER_LEVEL, BASE_MP_PER_LEVEL,
     FORMATION_PATH_MULT_PER_STAGE,
 )
+from src.game.constants.currencies import FORMATION_EXP_PER_MERIT_BY_REALM
+from src.game.systems.toxicity import (
+    MIN_CULT_SPEED_MULT,
+    cult_speed_penalty,
+)
 from src.game.constants.realms import (
     BODY_REALMS,
     QI_REALMS,
@@ -17,6 +22,20 @@ from src.game.constants.realms import (
     get_realm,
 )
 from src.game.models.character import Character
+
+
+def formation_exp_per_merit(formation_realm: int) -> float:
+    """Per-realm Trận Đạo EXP gained per Công Đức spent.
+
+    Late realms cost more merit per insight. Falls back to the highest-realm
+    rate if ``formation_realm`` is out of bounds (defensive — should never
+    happen since realms are 0..8). Returns float — sub-1.0 rates from R1+
+    mean players need to spend at least ``ceil(1 / rate)`` merit to gain
+    any EXP at all.
+    """
+    table = FORMATION_EXP_PER_MERIT_BY_REALM
+    idx = max(0, min(len(table) - 1, formation_realm))
+    return table[idx]
 
 
 # ── Breakthrough material requirements ────────────────────────────────────────
@@ -609,16 +628,27 @@ def can_breakthrough(
     axis: str,
     inventory: dict[str, int] | None = None,
 ) -> tuple[bool, str]:
-    """Ready to break through once xp ≥ the current realm's bậc-9 threshold.
+    """Ready to break through once xp ≥ the current realm's bậc-9 threshold
+    AND any merit cost is affordable.
 
     ``inventory`` is accepted for call-site compatibility; material checks
-    happen in ``apply_breakthrough``.
+    happen in ``apply_breakthrough``. The merit cost gate applies only to
+    the formation axis (body/qi breakthroughs are material-only) and
+    prevents the historical "drive merit negative on Trận Đạo độ kiếp"
+    bug — see ``tests/test_merit_never_negative.py``.
     """
     del inventory
     realm_idx = getattr(character, f"{axis}_realm")
     realm = get_realm(axis, realm_idx)
     if realm is None:
         return False, "Cảnh giới không hợp lệ."
+    if axis == "formation":
+        merit_cost = FORMATION_BREAKTHROUGH_MERIT.get(realm_idx, 0)
+        if merit_cost > 0 and character.merit < merit_cost:
+            return False, (
+                f"Cần {merit_cost:,} Công Đức để Độ Kiếp Trận Đạo "
+                f"(hiện có {character.merit:,})."
+            )
 
     current_xp = getattr(character, f"{axis}_xp")
     max_xp = realm.level_exp_table[-1]
@@ -638,7 +668,13 @@ def consume_breakthrough_costs(
     reqs = get_breakthrough_requirements(axis, realm)
 
     if axis == "formation":
-        character.merit -= reqs["merit_cost"]
+        merit_cost = int(reqs.get("merit_cost", 0))
+        # Defensive guard — caller should already have validated via
+        # ``can_breakthrough``. Refuse to mutate rather than driving merit
+        # negative if a future code path bypasses the gate.
+        if merit_cost > character.merit:
+            return
+        character.merit -= merit_cost
     else:
         if inventory is not None and reqs["item_key"]:
             inventory[reqs["item_key"]] = inventory.get(reqs["item_key"], 0) - reqs["quantity"]
@@ -673,9 +709,17 @@ def apply_breakthrough(
         if inventory is not None and reqs.get("item_key"):
             item_key = reqs["item_key"]
             inventory[item_key] = inventory.get(item_key, 0) - reqs["quantity"]
-            
+
     elif axis == "formation":
-        character.merit -= reqs.get("merit_cost", 0)
+        merit_cost = int(reqs.get("merit_cost", 0))
+        # Defensive guard against negative-merit corruption — see
+        # ``can_breakthrough`` and ``tests/test_merit_never_negative.py``.
+        # Caller should have gated via ``can_breakthrough``; if they
+        # didn't, refuse to bump the realm so the player isn't stuck
+        # with both a free realm and a negative balance.
+        if merit_cost > character.merit:
+            return
+        character.merit -= merit_cost
 
     new_realm = realm_idx + 1
     setattr(character, f"{axis}_realm", new_realm)
@@ -715,6 +759,10 @@ def advance_cultivation_xp(character: Character, turns: int) -> dict:
     # equipped Thể Chất via ``compute_constitution_bonuses``.
     const_bonuses = compute_constitution_bonuses(character.constitution_type)
     speed_mult = 1.0 + float(const_bonuses.get("cultivation_speed_bonus", 0.0))
+    # Đan Độc penalty — pill toxicity drags down EXP gain. Floored at
+    # MIN_CULT_SPEED_MULT so a fully-poisoned player still earns *some*
+    # progress instead of stalling out completely.
+    speed_mult = max(MIN_CULT_SPEED_MULT, speed_mult - cult_speed_penalty(character.dan_doc))
     exp_gained = int(raw_exp * speed_mult)
 
     xp_attr = f"{axis}_xp"
@@ -737,7 +785,14 @@ def advance_cultivation_xp(character: Character, turns: int) -> dict:
 
 def study_formation_with_merit(character: Character, merits: int) -> dict:
     """Convert Công Đức into Trận Đạo EXP and re-derive bậc on the current
-    formation realm's level table."""
+    formation realm's level table.
+
+    EXP-per-merit scales with the player's current ``formation_realm`` via
+    ``formation_exp_per_merit`` — Khai Huyền insights are cheap, Đế Trận
+    codifications are heavy. The flat ``MERIT_TO_FORMATION_EXP_RATIO`` is
+    no longer used for new spends; it remains exported for tests and
+    legacy importers.
+    """
     if merits <= 0:
         return {"success": False, "error": "Số lượng Công Đức không hợp lệ."}
 
@@ -746,7 +801,23 @@ def study_formation_with_merit(character: Character, merits: int) -> dict:
 
     const_bonuses = compute_constitution_bonuses(character.constitution_type)
     speed_mult = 1.0 + float(const_bonuses.get("cultivation_speed_bonus", 0.0))
-    exp_gained = int(merits * MERIT_TO_FORMATION_EXP_RATIO * speed_mult)
+    # Same Đan Độc penalty as turn-based cultivation — keeps Trận Tu
+    # consistent with body/qi pacing under toxicity.
+    speed_mult = max(MIN_CULT_SPEED_MULT, speed_mult - cult_speed_penalty(character.dan_doc))
+    exp_per_merit = formation_exp_per_merit(character.formation_realm)
+    exp_gained = int(merits * exp_per_merit * speed_mult)
+    # Guard against fractional rates (R1+ are sub-1.0): spending too few merit
+    # rounds to 0 EXP. Refuse the spend rather than silently burning merit.
+    if exp_gained <= 0:
+        from math import ceil
+        min_spend = max(1, ceil(1.0 / max(exp_per_merit * speed_mult, 1e-9)))
+        return {
+            "success": False,
+            "error": (
+                f"Tỷ lệ tại cảnh giới này là {exp_per_merit:g} EXP/Công Đức — "
+                f"cần ít nhất {min_spend:,} Công Đức để nhận 1 EXP."
+            ),
+        }
     character.merit -= merits
     character.formation_xp += exp_gained
 
@@ -754,11 +825,12 @@ def study_formation_with_merit(character: Character, merits: int) -> dict:
     character.formation_level = (
         get_level_from_exp(character.formation_xp, realm) if realm else 1
     )
-    
+
     return {
         "success":          True,
         "merit_spent":      merits,
         "exp_gained":       exp_gained,
+        "exp_per_merit":    exp_per_merit,
         "current_total_xp": character.formation_xp,
         "current_level":    character.formation_level,
     }

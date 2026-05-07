@@ -1,12 +1,18 @@
-"""Add a complementary skill to every solo (element, realm, grade) cell.
+"""Ensure every (element, realm, grade) cell carries ≥2 skills.
 
-The grade-coverage test now requires ≥2 skills per (realm, grade) **per
-element**. Hand-writing ~150 skills is unreasonable, so this generator
-synthesises one filler attack skill for each solo cell, themed by the
-element's archetype and scaled to the realm + grade.
+The grade-coverage test requires ≥2 skills per (realm, grade) **per
+element**. Hand-writing the missing ~100 skills is unreasonable, so this
+generator synthesises filler attack skills for any cell that has fewer
+than two, themed by the element's archetype and scaled to the realm +
+grade.
 
-Generated keys follow the pattern ``SkillFiller<Elem><Realm>G<Grade>`` so
-they're identifiable and re-runnable: re-running won't duplicate fillers
+Each cell can host up to two distinct fillers:
+  * Slot A — primary archetype debuff, "Đoạn Thuật" naming.
+  * Slot B — secondary archetype debuff, "Trảm Quyết" naming.
+
+Generated keys follow the pattern ``SkillFiller<Elem>R<Realm>G<Grade>``
+(slot A) and ``SkillFiller<Elem>R<Realm>G<Grade>B`` (slot B) so they're
+identifiable and re-runnable: re-running won't duplicate fillers
 already present.
 
 Run from repo root:
@@ -23,18 +29,21 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 SKILL_DIR = Path("src/data/skills/player")
 ELEMENTS = ["kim", "moc", "thuy", "hoa", "tho", "phong", "loi", "quang", "am"]
+SLOTS = ("A", "B")
 
-# Per-element archetype: physical/magical + a default debuff to flavor.
-ARCHETYPE: dict[str, tuple[str, str]] = {
-    "kim":   ("physical", "DebuffChayMau"),
-    "moc":   ("magical",  "DebuffDocTo"),
-    "thuy":  ("magical",  "DebuffLamCham"),
-    "hoa":   ("magical",  "DebuffThieuDot"),
-    "tho":   ("physical", "DebuffTroBuoc"),
-    "phong": ("physical", "DebuffAnPhong"),
-    "loi":   ("magical",  "DebuffSocDien"),
-    "quang": ("magical",  "DebuffPhaGiap"),
-    "am":    ("magical",  "DebuffLoaMat"),
+# Per-element archetype: physical/magical + (primary, secondary) debuffs.
+# Both slots keep the same attack_type so elemental identity stays intact;
+# slot B picks a different, lore-adjacent debuff for player choice.
+ARCHETYPE: dict[str, tuple[str, str, str]] = {
+    "kim":   ("physical", "DebuffChayMau",  "DebuffXeRach"),
+    "moc":   ("magical",  "DebuffDocTo",    "DebuffTroBuoc"),
+    "thuy":  ("magical",  "DebuffLamCham",  "DebuffDongBang"),
+    "hoa":   ("magical",  "DebuffThieuDot", "DebuffLoaMat"),
+    "tho":   ("physical", "DebuffTroBuoc",  "DebuffLunDat"),
+    "phong": ("physical", "DebuffAnPhong",  "DebuffCuonBay"),
+    "loi":   ("magical",  "DebuffSocDien",  "DebuffPhaGiap"),
+    "quang": ("magical",  "DebuffPhaGiap",  "DebuffLoaMat"),
+    "am":    ("magical",  "DebuffLoaMat",   "DebuffBaoMon"),
 }
 
 # Vietnamese element name (used for skill name templates).
@@ -43,20 +52,25 @@ ELEM_VI: dict[str, str] = {
     "phong": "Phong", "loi": "Lôi", "quang": "Quang", "am": "Ám",
 }
 
-# Per-realm baseline base_dmg by grade. Tuned to stay BELOW each realm's
-# curated apex so the realm-progression test's "best skill per element"
-# picker keeps choosing curated skills (whose mechanics matter), not
-# generic fillers. Fillers exist as pool variety, not as power outliers.
+# Per-realm baseline base_dmg by grade. Tuned to stay BELOW the *weakest*
+# element's curated apex at each realm so the realm-progression test's
+# "best skill per element" picker keeps choosing curated skills (whose
+# mechanics matter), not generic fillers. Fillers exist as pool variety,
+# not as power outliers — they fill empty (realm, grade) cells without
+# upgrading any element's effective top-end skill.
+#
+# Caps per realm (G4 ≤ ~95 % of min curated apex across the 9 elements):
+#   R1≤28  R2≤52  R3≤70  R4≤128  R5≤180  R6≤237  R7≤342  R8≤437  R9≤627
 REALM_BASE: dict[int, dict[int, int]] = {
-    1: {1: 25, 2: 35, 3: 45, 4: 55},
-    2: {1: 45, 2: 55, 3: 65, 4: 80},
-    3: {1: 70, 2: 90, 3: 110, 4: 130},
-    4: {1: 110, 2: 135, 3: 160, 4: 190},
-    5: {1: 160, 2: 195, 3: 230, 4: 270},
-    6: {1: 180, 2: 220, 3: 260, 4: 295},
-    7: {1: 240, 2: 290, 3: 340, 4: 385},
-    8: {1: 320, 2: 390, 3: 460, 4: 520},
-    9: {1: 420, 2: 510, 3: 590, 4: 660},
+    1: {1: 15, 2: 20, 3: 24, 4: 28},
+    2: {1: 30, 2: 38, 3: 45, 4: 50},
+    3: {1: 42, 2: 53, 3: 62, 4: 70},
+    4: {1: 75, 2: 95, 3: 110, 4: 128},
+    5: {1: 110, 2: 140, 3: 160, 4: 180},
+    6: {1: 145, 2: 180, 3: 210, 4: 235},
+    7: {1: 210, 2: 265, 3: 305, 4: 340},
+    8: {1: 270, 2: 340, 3: 395, 4: 435},
+    9: {1: 380, 2: 480, 3: 555, 4: 625},
 }
 
 # Per-grade dmg_scale slope (atk OR matk depending on archetype).
@@ -68,17 +82,30 @@ REALM_CD: dict[int, int] = {1: 1,  2: 2,  3: 2,  4: 3,  5: 3,  6: 4,  7: 4,  8: 
 
 GRADE_LABEL: dict[int, str] = {1: "Hoàng", 2: "Huyền", 3: "Địa", 4: "Thiên"}
 
+# Per-slot naming variants — gives slot B a distinct identity in skill picker.
+SLOT_NAME_VI: dict[str, str] = {"A": "Đoạn Thuật",     "B": "Trảm Quyết"}
+SLOT_NAME_EN: dict[str, str] = {"A": "Severing Art",   "B": "Cleaving Edict"}
 
-def _build_filler(elem: str, realm: int, grade: int) -> dict:
-    atk_type, debuff = ARCHETYPE[elem]
+
+def _filler_key(elem: str, realm: int, grade: int, slot: str) -> str:
+    """Slot A keeps the legacy keyless suffix for backward compatibility;
+    slot B appends ``B`` so existing JSON entries don't get re-keyed.
+    """
+    suffix = "" if slot == "A" else "B"
+    return f"SkillFiller{elem.capitalize()}R{realm}G{grade}{suffix}"
+
+
+def _build_filler(elem: str, realm: int, grade: int, slot: str = "A") -> dict:
+    atk_type, primary, secondary = ARCHETYPE[elem]
+    debuff = primary if slot == "A" else secondary
     is_phys = atk_type == "physical"
     base = REALM_BASE[realm][grade]
     scale_val = GRADE_SCALE[grade]
     proc_chance = 0.25 + 0.05 * grade   # G1=0.30, G4=0.45 — finer tuning by tier
     return {
-        "key": f"SkillFiller{elem.capitalize()}R{realm}G{grade}",
-        "vi": f"{ELEM_VI[elem]} {GRADE_LABEL[grade]} Đoạn Thuật",
-        "en": f"{ELEM_VI[elem]} {GRADE_LABEL[grade]} Severing Art",
+        "key": _filler_key(elem, realm, grade, slot),
+        "vi": f"{ELEM_VI[elem]} {GRADE_LABEL[grade]} {SLOT_NAME_VI[slot]}",
+        "en": f"{ELEM_VI[elem]} {GRADE_LABEL[grade]} {SLOT_NAME_EN[slot]}",
         "realm": realm,
         "scroll_grade": grade,
         "category": "attack",
@@ -97,8 +124,10 @@ def _build_filler(elem: str, realm: int, grade: int) -> dict:
     }
 
 
-def _audit() -> dict[str, list[tuple[int, int]]]:
-    """Return ``{element: [(realm, grade), ...]}`` for solo cells."""
+def _audit() -> dict[str, dict[tuple[int, int], int]]:
+    """Return ``{element: {(realm, grade): current_count}}`` for cells with
+    fewer than 2 skills — the deficit per cell is ``2 - current_count``.
+    """
     counts: dict[str, dict[tuple[int, int], int]] = defaultdict(lambda: defaultdict(int))
     for path in SKILL_DIR.glob("*.json"):
         elem = path.stem
@@ -110,15 +139,16 @@ def _audit() -> dict[str, list[tuple[int, int]]]:
                 continue
             counts[elem][(int(s.get("realm", 0)), int(grade))] += 1
 
-    deficits: dict[str, list[tuple[int, int]]] = {}
+    deficits: dict[str, dict[tuple[int, int], int]] = {}
     for elem in ELEMENTS:
-        solos = [
-            (realm, grade)
-            for (realm, grade), n in counts[elem].items()
-            if n == 1 and 1 <= realm <= 9
-        ]
-        if solos:
-            deficits[elem] = sorted(solos)
+        cells: dict[tuple[int, int], int] = {}
+        for realm in range(1, 10):
+            for grade in (1, 2, 3, 4):
+                n = counts[elem].get((realm, grade), 0)
+                if n < 2:
+                    cells[(realm, grade)] = n
+        if cells:
+            deficits[elem] = dict(sorted(cells.items()))
     return deficits
 
 
@@ -131,31 +161,42 @@ def main() -> None:
         if not path.exists():
             continue
         skills = json.loads(path.read_text(encoding="utf-8"))
-        # Refresh any existing filler that's been retuned (idempotent regen).
+        # Index existing entries by key; build set of all filler keys so we
+        # know which slots are already occupied per cell.
         existing_by_key = {s["key"]: i for i, s in enumerate(skills)}
+
+        # Refresh any existing filler that's been retuned (idempotent regen).
         updated = 0
+        prefix = f"SkillFiller{elem.capitalize()}"
         for s in list(skills):
-            if not s["key"].startswith(f"SkillFiller{elem.capitalize()}"):
+            if not s["key"].startswith(prefix):
                 continue
             realm = int(s.get("realm", 0))
             grade = int(s.get("scroll_grade", 0))
-            if realm in REALM_BASE and grade in REALM_BASE[realm]:
-                rebuilt = _build_filler(elem, realm, grade)
-                idx = existing_by_key[s["key"]]
-                if skills[idx] != rebuilt:
-                    skills[idx] = rebuilt
-                    updated += 1
-
-        # Add fillers for any solo cells that still don't have a filler.
-        cells = deficits.get(elem, [])
-        added = 0
-        for realm, grade in cells:
-            new = _build_filler(elem, realm, grade)
-            if new["key"] in existing_by_key:
+            if realm not in REALM_BASE or grade not in REALM_BASE[realm]:
                 continue
-            skills.append(new)
-            existing_by_key[new["key"]] = len(skills) - 1
-            added += 1
+            slot = "B" if s["key"].endswith("B") else "A"
+            rebuilt = _build_filler(elem, realm, grade, slot)
+            idx = existing_by_key[s["key"]]
+            if skills[idx] != rebuilt:
+                skills[idx] = rebuilt
+                updated += 1
+
+        # Add fillers until each deficit cell carries 2 skills total.
+        cells = deficits.get(elem, {})
+        added = 0
+        for (realm, grade), current in cells.items():
+            need = 2 - current
+            for slot in SLOTS:
+                if need <= 0:
+                    break
+                key = _filler_key(elem, realm, grade, slot)
+                if key in existing_by_key:
+                    continue   # this slot is already filled
+                skills.append(_build_filler(elem, realm, grade, slot))
+                existing_by_key[key] = len(skills) - 1
+                added += 1
+                need -= 1
 
         if added or updated:
             path.write_text(

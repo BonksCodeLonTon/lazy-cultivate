@@ -21,6 +21,7 @@ from src.game.systems.inventory import (
 )
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
+from src.utils.pagination import add_page_controls, page_slice, total_pages
 
 log = logging.getLogger(__name__)
 
@@ -79,7 +80,26 @@ def _build_hub_embed(inv_items: list, equip_bag: list) -> discord.Embed:
     return embed
 
 
-def _build_category_embed(cat: str, label: str, emoji: str, inv_items: list, equip_bag: list) -> discord.Embed:
+# Items per page in the category view. Each rendered line contains a
+# custom emoji code (``<:name:12345>``) plus the item's display name —
+# scroll names with full emoji codes can hit ~100 chars, so a page of 15
+# stays well under Discord's 4096-char description cap and the 1024-char
+# field cap if the listing has to fall back to a field.
+CATEGORY_PAGE_SIZE = 15
+
+# Discord embed description cap — we trim the rendered list defensively
+# in case a future item spec produces unusually long names.
+_DESC_LIMIT = 4000
+
+
+def _build_category_embed(
+    cat: str,
+    label: str,
+    emoji: str,
+    inv_items: list,
+    equip_bag: list,
+    page: int = 0,
+) -> discord.Embed:
     if cat == "equipment":
         return _build_equip_embed(equip_bag)
     filtered = [it for it in inv_items if (registry.get_item(it.item_key) or {}).get("type") == cat]
@@ -87,12 +107,101 @@ def _build_category_embed(cat: str, label: str, emoji: str, inv_items: list, equ
     if not filtered:
         embed.description = "Không có vật phẩm."
         return embed
-    lines = [_item_display(it.item_key, it.grade, it.quantity)
-             for it in sorted(filtered, key=lambda x: (x.grade, x.item_key))]
-    embed.add_field(name=f"Tổng: {len(filtered)} loại", value="\n".join(lines[:20]) or "—", inline=False)
-    if len(lines) > 20:
-        embed.set_footer(text=f"... và {len(lines) - 20} loại khác")
+    sorted_items = sorted(filtered, key=lambda x: (x.grade, x.item_key))
+    pages = total_pages(len(sorted_items), per_page=CATEGORY_PAGE_SIZE)
+    page = max(0, min(page, pages - 1))
+    visible = page_slice(sorted_items, page, per_page=CATEGORY_PAGE_SIZE)
+    lines = [_item_display(it.item_key, it.grade, it.quantity) for it in visible]
+
+    header = f"**Tổng: {len(filtered)} loại**"
+    if pages > 1:
+        header += f" · Trang {page + 1}/{pages}"
+    body = "\n".join(lines) or "—"
+    description = f"{header}\n\n{body}"
+    if len(description) > _DESC_LIMIT:
+        description = description[: _DESC_LIMIT - 3] + "..."
+    embed.description = description
     return embed
+
+
+class CategoryView(discord.ui.View):
+    """Single-category bag view with prev/next pagination + return to hub.
+
+    Wraps a single category page from ``InventoryView`` so a player whose
+    Ngọc Giản (or any other category) bag overflows 20 items can still
+    page through the full list.
+    """
+
+    def __init__(
+        self,
+        discord_id: int,
+        cat: str,
+        label: str,
+        emoji: str,
+        inv_items: list,
+        equip_bag: list,
+        player_name: str,
+        back_fn,
+        page: int = 0,
+    ) -> None:
+        super().__init__(timeout=180)
+        self._discord_id = discord_id
+        self._cat = cat
+        self._label = label
+        self._emoji = emoji
+        self._inv_items = inv_items
+        self._equip_bag = equip_bag
+        self._player_name = player_name
+        self._back_fn = back_fn
+        filtered = [
+            it for it in inv_items
+            if (registry.get_item(it.item_key) or {}).get("type") == cat
+        ]
+        pages = total_pages(len(filtered), per_page=CATEGORY_PAGE_SIZE)
+        self._page = max(0, min(page, pages - 1))
+
+        hub_btn = discord.ui.Button(
+            label="📊 Tổng Quan", style=discord.ButtonStyle.primary, row=0,
+        )
+        hub_btn.callback = self._hub_cb
+        self.add_item(hub_btn)
+
+        add_page_controls(
+            self,
+            page=self._page,
+            total=len(filtered),
+            on_change=self._on_page_change,
+            per_page=CATEGORY_PAGE_SIZE,
+            row=1,
+        )
+
+    async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        embed = _build_category_embed(
+            self._cat, self._label, self._emoji,
+            self._inv_items, self._equip_bag, page=new_page,
+        )
+        view = CategoryView(
+            self._discord_id, self._cat, self._label, self._emoji,
+            self._inv_items, self._equip_bag, self._player_name,
+            self._back_fn, page=new_page,
+        )
+        await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _hub_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        embed = _build_hub_embed(self._inv_items, self._equip_bag)
+        view = InventoryView(
+            self._discord_id, self._inv_items, self._equip_bag,
+            self._player_name, back_fn=self._back_fn,
+        )
+        await interaction.edit_original_response(embed=embed, view=view)
 
 
 def _build_equip_embed(equip_bag: list) -> discord.Embed:
@@ -157,9 +266,13 @@ class InventoryView(discord.ui.View):
                 await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
                 return
             await interaction.response.defer()
-            await interaction.edit_original_response(
-                embed=_build_category_embed(cat, label, emoji, self._inv_items, self._equip_bag)
+            embed = _build_category_embed(cat, label, emoji, self._inv_items, self._equip_bag)
+            view = CategoryView(
+                self._discord_id, cat, label, emoji,
+                self._inv_items, self._equip_bag, self._player_name,
+                self._back_fn,
             )
+            await interaction.edit_original_response(embed=embed, view=view)
         return _cb
 
     def _make_equipment_cb(self):
@@ -375,7 +488,7 @@ class InventoryCog(commands.Cog, name="Inventory"):
 
     @app_commands.command(name="learn", description="Học kỹ năng từ Ngọc Giản")
     @app_commands.describe(
-        scroll_key="Key Ngọc Giản (vd: ScrollAtkHoang)",
+        scroll_key="Key Ngọc Giản (vd: Scroll_SkillAtkKim1)",
         skill_key="Key kỹ năng muốn học (vd: SkillAtkKim1)",
         slot="Slot trang bị (0–5)",
     )

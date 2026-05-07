@@ -12,7 +12,8 @@
     "hp_regen_pct": 0.01,
     "skill_keys": [
       "EnemyMoc_R2",
-      "EnemyPhong_R2"
+      "EnemyPhong_R2",
+      "EnemyDungeon_Moc_PhoThong_R2"
     ],
     "loot_table_key": "DuocVienLoot_2",
     "base_atk": 12,
@@ -33,7 +34,8 @@
     "hp_regen_pct": 0.01,
     "skill_keys": [
       "EnemyMoc_R2",
-      "EnemyPhong_R2"
+      "EnemyPhong_R2",
+      "EnemyDungeon_Moc_PhoThong_R2"
     ],
     "loot_table_key": "DuocVienLoot_2",
     "base_atk": 12,
@@ -54,7 +56,8 @@
     "hp_regen_pct": 0.01,
     "skill_keys": [
       "EnemyMoc_R2",
-      "EnemyPhong_R2"
+      "EnemyPhong_R2",
+      "EnemyDungeon_Moc_CuongGia_R2"
     ],
     "loot_table_key": "DuocVienLoot_2",
     "base_atk": 15,

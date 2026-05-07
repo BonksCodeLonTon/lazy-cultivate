@@ -72,11 +72,24 @@ class Character:
     karma_usable: int = 0    # Khả Dụng — can be spent
     primordial_stones: int = 0
 
+    # Đan Độc — accumulated pill toxicity. Past 0 it scales linearly into
+    # combat + cultivation penalties (see ``src.game.systems.toxicity``).
+    # Mirrors ``Player.dan_doc`` on the ORM.
+    dan_doc: int = 0
+
+    # Permanent combat-buff pill counters (see ``src.game.systems.pill_buffs``).
+    # Mirrors the parsed form of ``Player.pill_buff_counts``. Each consume
+    # of a buff_*/buff_element_* pill increments the matching key (capped
+    # by ``PILL_BUFF_CAP``); ``compute_combat_stats`` reads it to apply
+    # the matching permanent stat bonus.
+    pill_buff_counts: dict[str, int] = field(default_factory=dict)
+
     # Active cultivation axis
     active_axis: str = "qi"  # "body" | "qi" | "formation"
 
-    # Cultivation XP — turns accumulated toward the next level on each axis.
-    # Caps at TURNS_PER_CULT_LEVEL when level == 9 (awaiting manual breakthrough).
+    # Cultivation XP — accumulated toward the current realm's bậc table.
+    # body/qi advance via turns × realm.base_exp_rate; formation advances
+    # only via Công Đức conversion (see study_formation_with_merit).
     body_xp: int = 0
     qi_xp: int = 0
     formation_xp: int = 0

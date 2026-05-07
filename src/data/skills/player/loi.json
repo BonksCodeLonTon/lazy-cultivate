@@ -933,7 +933,7 @@
     },
     "mp_cost": 17,
     "cooldown": 1,
-    "base_dmg": 25,
+    "base_dmg": 15,
     "effects": [
       "DebuffSocDien"
     ],
@@ -957,7 +957,7 @@
     },
     "mp_cost": 23,
     "cooldown": 2,
-    "base_dmg": 45,
+    "base_dmg": 30,
     "effects": [
       "DebuffSocDien"
     ],
@@ -981,7 +981,7 @@
     },
     "mp_cost": 28,
     "cooldown": 2,
-    "base_dmg": 55,
+    "base_dmg": 38,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1005,7 +1005,7 @@
     },
     "mp_cost": 33,
     "cooldown": 3,
-    "base_dmg": 65,
+    "base_dmg": 45,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1029,7 +1029,7 @@
     },
     "mp_cost": 38,
     "cooldown": 3,
-    "base_dmg": 80,
+    "base_dmg": 50,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1053,7 +1053,7 @@
     },
     "mp_cost": 48,
     "cooldown": 3,
-    "base_dmg": 130,
+    "base_dmg": 70,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1077,7 +1077,7 @@
     },
     "mp_cost": 45,
     "cooldown": 3,
-    "base_dmg": 110,
+    "base_dmg": 75,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1101,7 +1101,7 @@
     },
     "mp_cost": 60,
     "cooldown": 3,
-    "base_dmg": 160,
+    "base_dmg": 110,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1125,7 +1125,7 @@
     },
     "mp_cost": 75,
     "cooldown": 4,
-    "base_dmg": 180,
+    "base_dmg": 145,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1149,7 +1149,7 @@
     },
     "mp_cost": 85,
     "cooldown": 5,
-    "base_dmg": 260,
+    "base_dmg": 210,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1173,7 +1173,7 @@
     },
     "mp_cost": 95,
     "cooldown": 4,
-    "base_dmg": 240,
+    "base_dmg": 210,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1197,7 +1197,7 @@
     },
     "mp_cost": 105,
     "cooldown": 5,
-    "base_dmg": 340,
+    "base_dmg": 305,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1221,7 +1221,7 @@
     },
     "mp_cost": 110,
     "cooldown": 5,
-    "base_dmg": 385,
+    "base_dmg": 340,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1245,7 +1245,7 @@
     },
     "mp_cost": 120,
     "cooldown": 5,
-    "base_dmg": 320,
+    "base_dmg": 270,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1269,7 +1269,7 @@
     },
     "mp_cost": 125,
     "cooldown": 5,
-    "base_dmg": 390,
+    "base_dmg": 340,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1293,7 +1293,7 @@
     },
     "mp_cost": 130,
     "cooldown": 6,
-    "base_dmg": 460,
+    "base_dmg": 395,
     "effects": [
       "DebuffSocDien"
     ],
@@ -1317,12 +1317,684 @@
     },
     "mp_cost": 165,
     "cooldown": 6,
-    "base_dmg": 660,
+    "base_dmg": 625,
     "effects": [
       "DebuffSocDien"
     ],
     "effect_chances": {
       "DebuffSocDien": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR1G2",
+    "vi": "Lôi Huyền Đoạn Thuật",
+    "en": "Lôi Huyền Severing Art",
+    "realm": 1,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 1,
+    "base_dmg": 20,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR1G2B",
+    "vi": "Lôi Huyền Trảm Quyết",
+    "en": "Lôi Huyền Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 1,
+    "base_dmg": 20,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR1G3",
+    "vi": "Lôi Địa Đoạn Thuật",
+    "en": "Lôi Địa Severing Art",
+    "realm": 1,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 27,
+    "cooldown": 2,
+    "base_dmg": 24,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR1G3B",
+    "vi": "Lôi Địa Trảm Quyết",
+    "en": "Lôi Địa Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 27,
+    "cooldown": 2,
+    "base_dmg": 24,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR1G4",
+    "vi": "Lôi Thiên Đoạn Thuật",
+    "en": "Lôi Thiên Severing Art",
+    "realm": 1,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 32,
+    "cooldown": 2,
+    "base_dmg": 28,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR1G4B",
+    "vi": "Lôi Thiên Trảm Quyết",
+    "en": "Lôi Thiên Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 32,
+    "cooldown": 2,
+    "base_dmg": 28,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR3G3",
+    "vi": "Lôi Địa Đoạn Thuật",
+    "en": "Lôi Địa Severing Art",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 43,
+    "cooldown": 3,
+    "base_dmg": 62,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR3G3B",
+    "vi": "Lôi Địa Trảm Quyết",
+    "en": "Lôi Địa Cleaving Edict",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 43,
+    "cooldown": 3,
+    "base_dmg": 62,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR4G3",
+    "vi": "Lôi Địa Đoạn Thuật",
+    "en": "Lôi Địa Severing Art",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR4G3B",
+    "vi": "Lôi Địa Trảm Quyết",
+    "en": "Lôi Địa Cleaving Edict",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR4G4",
+    "vi": "Lôi Thiên Đoạn Thuật",
+    "en": "Lôi Thiên Severing Art",
+    "realm": 4,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 128,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR4G4B",
+    "vi": "Lôi Thiên Trảm Quyết",
+    "en": "Lôi Thiên Cleaving Edict",
+    "realm": 4,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 128,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR5G2",
+    "vi": "Lôi Huyền Đoạn Thuật",
+    "en": "Lôi Huyền Severing Art",
+    "realm": 5,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 65,
+    "cooldown": 3,
+    "base_dmg": 140,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR5G2B",
+    "vi": "Lôi Huyền Trảm Quyết",
+    "en": "Lôi Huyền Cleaving Edict",
+    "realm": 5,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 65,
+    "cooldown": 3,
+    "base_dmg": 140,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR5G4",
+    "vi": "Lôi Thiên Đoạn Thuật",
+    "en": "Lôi Thiên Severing Art",
+    "realm": 5,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR5G4B",
+    "vi": "Lôi Thiên Trảm Quyết",
+    "en": "Lôi Thiên Cleaving Edict",
+    "realm": 5,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR6G2",
+    "vi": "Lôi Huyền Đoạn Thuật",
+    "en": "Lôi Huyền Severing Art",
+    "realm": 6,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 80,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR6G2B",
+    "vi": "Lôi Huyền Trảm Quyết",
+    "en": "Lôi Huyền Cleaving Edict",
+    "realm": 6,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 80,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR6G4",
+    "vi": "Lôi Thiên Đoạn Thuật",
+    "en": "Lôi Thiên Severing Art",
+    "realm": 6,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 90,
+    "cooldown": 5,
+    "base_dmg": 235,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR6G4B",
+    "vi": "Lôi Thiên Trảm Quyết",
+    "en": "Lôi Thiên Cleaving Edict",
+    "realm": 6,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 90,
+    "cooldown": 5,
+    "base_dmg": 235,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR7G2",
+    "vi": "Lôi Huyền Đoạn Thuật",
+    "en": "Lôi Huyền Severing Art",
+    "realm": 7,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 100,
+    "cooldown": 4,
+    "base_dmg": 265,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR7G2B",
+    "vi": "Lôi Huyền Trảm Quyết",
+    "en": "Lôi Huyền Cleaving Edict",
+    "realm": 7,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 100,
+    "cooldown": 4,
+    "base_dmg": 265,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR8G4",
+    "vi": "Lôi Thiên Đoạn Thuật",
+    "en": "Lôi Thiên Severing Art",
+    "realm": 8,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 135,
+    "cooldown": 6,
+    "base_dmg": 435,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR8G4B",
+    "vi": "Lôi Thiên Trảm Quyết",
+    "en": "Lôi Thiên Cleaving Edict",
+    "realm": 8,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 135,
+    "cooldown": 6,
+    "base_dmg": 435,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR9G1",
+    "vi": "Lôi Hoàng Đoạn Thuật",
+    "en": "Lôi Hoàng Severing Art",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 150,
+    "cooldown": 5,
+    "base_dmg": 380,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR9G1B",
+    "vi": "Lôi Hoàng Trảm Quyết",
+    "en": "Lôi Hoàng Cleaving Edict",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 150,
+    "cooldown": 5,
+    "base_dmg": 380,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR9G2",
+    "vi": "Lôi Huyền Đoạn Thuật",
+    "en": "Lôi Huyền Severing Art",
+    "realm": 9,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 155,
+    "cooldown": 5,
+    "base_dmg": 480,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerLoiR9G2B",
+    "vi": "Lôi Huyền Trảm Quyết",
+    "en": "Lôi Huyền Cleaving Edict",
+    "realm": 9,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 155,
+    "cooldown": 5,
+    "base_dmg": 480,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.35
     },
     "formation_key": null
   }

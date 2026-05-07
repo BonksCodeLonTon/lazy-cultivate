@@ -320,11 +320,14 @@ class GameRegistry:
 
         A constitution is rollable iff its ``roll_weight`` is > 0 AND it has
         no ``special_requirements`` (late-game thần thể cannot appear here).
+        Mid-chain progression entries (``progresses_from`` set) are also
+        gated out — they must be reached by activating their predecessor.
         """
         return [
             c for c in self.constitutions.values()
             if int(c.get("roll_weight", 0)) > 0
             and not c.get("special_requirements")
+            and not c.get("progresses_from")
         ]
 
     def get_dungeon(self, key: str) -> dict | None:

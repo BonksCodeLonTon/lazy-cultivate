@@ -243,6 +243,115 @@ class CombatStats:
     resistances: dict[str, float] = field(default_factory=dict)
 
 
+# ── Finalization helpers ─────────────────────────────────────────────────
+# These run at the tail of compute_combat_stats, after all bonus sources
+# (formation, constitution, linh_can, equipment) have been folded in. Each
+# mutates a small slice of the final stat block; keeping them as named
+# helpers makes the order of operations easy to reason about.
+
+def _apply_formation_mp_reserve(
+    mp_max: int,
+    form_bonuses: dict,
+    learned_skill_keys: list[str] | None,
+    formation_stages: int,
+) -> tuple[int, int, float]:
+    """Lock part of mp_max behind active formations. Two reservation
+    sources stack here, both bound by the same MAX cap:
+      1. Per-formation gem reservation (from active formation slots' gems)
+      2. Per-skill reservation (from formation skills in the player's bar)
+    The skill reservation replaces the old flat 8% base — bigger formations
+    cost more MP to channel, smaller ones less. Trận Đạo path reduction is
+    already applied inside each helper, so we just sum and re-cap.
+
+    Returns: (remaining mp_max, mp_reserved, reserve_pct).
+    """
+    from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
+    from src.game.systems.cultivation import compute_formation_skill_reserve_pct
+
+    skill_reserve_pct = compute_formation_skill_reserve_pct(
+        learned_skill_keys, formation_stages=formation_stages,
+    )
+    raw_reserve = float(form_bonuses.get("_mp_reserve_pct", 0.0)) + skill_reserve_pct
+    reserve_pct = max(0.0, min(FORMATION_MAX_RESERVE_PCT, raw_reserve))
+    mp_reserved = int(mp_max * reserve_pct)
+    return max(0, mp_max - mp_reserved), mp_reserved, reserve_pct
+
+
+def _apply_hp_to_shield(
+    hp_max: int,
+    shield_max_base: int,
+    hp_to_shield_pct: float,
+) -> tuple[int, int, float]:
+    """Convert a fraction of hp_max into flat shield_max_base. Clamped at
+    0.95 so HP never drops to 0. Applied last so every other hp/shield
+    bonus has already been folded in.
+
+    Returns: (hp_max, shield_max_base, clamped hp_to_shield_pct).
+    """
+    hp_to_shield_pct = max(0.0, min(0.95, hp_to_shield_pct))
+    if hp_to_shield_pct > 0:
+        converted = int(hp_max * hp_to_shield_pct)
+        shield_max_base += converted
+        hp_max = max(1, hp_max - converted)
+    return hp_max, shield_max_base, hp_to_shield_pct
+
+
+def _apply_pill_buffs(
+    char: Character,
+    spd_final: int,
+    def_stat: int,
+    atk: int,
+    element_dmg_bonus: dict[str, float],
+) -> tuple[int, int, int]:
+    """Apply permanent combat-buff pill bonuses. Each consume of a buff_*
+    /buff_element_* pill raises the matching counter (capped at
+    PILL_BUFF_CAP per key); we read those counters and add
+    ``count × per_pill_value`` to the relevant stat. Applied before
+    toxicity so the dan_doc penalty still stacks on top.
+
+    ``element_dmg_bonus`` is mutated in place. Returns updated scalars
+    (spd_final, def_stat, atk).
+    """
+    pill_counts = getattr(char, "pill_buff_counts", None) or {}
+    if not pill_counts:
+        return spd_final, def_stat, atk
+
+    from src.game.systems.pill_buffs import total_buff_for_stat
+
+    spd_final += int(round(total_buff_for_stat(pill_counts, "spd")))
+    def_stat += int(round(total_buff_for_stat(pill_counts, "def_stat")))
+    atk += int(round(total_buff_for_stat(pill_counts, "atk")))
+    for elem in ("kim", "moc", "thuy", "hoa", "tho", "loi", "phong", "quang", "am"):
+        bump = total_buff_for_stat(pill_counts, f"element_dmg_bonus_{elem}")
+        if bump:
+            element_dmg_bonus[elem] = element_dmg_bonus.get(elem, 0.0) + bump
+    return spd_final, def_stat, atk
+
+
+def _apply_toxicity_penalty(
+    char: Character,
+    final_dmg_bonus: float,
+    hp_regen_pct: float,
+) -> tuple[float, float]:
+    """Đan Độc penalty — pill toxicity drags down outgoing damage and
+    slows HP regen. Applied AFTER all bonuses so it's a true override that
+    equipment / constitutions can't escape. final_dmg_bonus can go
+    negative; the damage pipeline multiplies by ``(1 + final_dmg_bonus)``
+    which is fine for values down to -1.0 (toxicity caps at -0.25).
+    """
+    dan_doc = int(getattr(char, "dan_doc", 0) or 0)
+    if dan_doc <= 0:
+        return final_dmg_bonus, hp_regen_pct
+
+    from src.game.systems.toxicity import (
+        final_dmg_penalty as _tox_final_dmg_penalty,
+        hp_regen_multiplier as _tox_hp_regen_mult,
+    )
+    final_dmg_bonus -= _tox_final_dmg_penalty(dan_doc)
+    hp_regen_pct *= _tox_hp_regen_mult(dan_doc)
+    return final_dmg_bonus, hp_regen_pct
+
+
 def compute_combat_stats(
     char: Character,
     gem_count: int = 0,
@@ -280,7 +389,6 @@ def compute_combat_stats(
         compute_hp_max, compute_mp_max,
         compute_atk, compute_matk, compute_def_stat,
         compute_formations_bonuses, compute_constitution_bonuses, merge_bonuses,
-        compute_formation_skill_reserve_pct,
         get_active_formations,
     )
     from src.game.constants.linh_can import compute_linh_can_bonuses
@@ -419,6 +527,13 @@ def compute_combat_stats(
     shield_max_base              = int(bonuses.get("shield_max_base", 0))
     shield_max_flat              = int(bonuses.get("shield_max_flat", 0))
     shield_max_pct               = float(bonuses.get("shield_max_pct", 0.0))
+    # Mirrors hp_flat_per_realm: lets shield-regen constitutions scale
+    # their flat pool with cultivation so the regen has something to top
+    # up at every tier without hand-tuning per-rarity numbers.
+    shield_flat_per_realm        = int(bonuses.get("shield_flat_per_realm", 0))
+    if shield_flat_per_realm:
+        max_realm = max(char.body_realm, char.qi_realm, char.formation_realm)
+        shield_max_flat += shield_flat_per_realm * max_realm
     hp_to_shield_pct             = float(bonuses.get("hp_to_shield_pct", 0.0))
     matk_from_shield_pct         = float(bonuses.get("matk_from_shield_pct", 0.0))
     atk_from_shield_pct          = float(bonuses.get("atk_from_shield_pct", 0.0))
@@ -570,6 +685,10 @@ def compute_combat_stats(
         shield_max_base              += int(equip_stats.get("shield_max_base", 0))
         shield_max_flat              += int(equip_stats.get("shield_max_flat", 0))
         shield_max_pct               += float(equip_stats.get("shield_max_pct", 0.0))
+        eq_shield_per_realm = int(equip_stats.get("shield_flat_per_realm", 0))
+        if eq_shield_per_realm:
+            max_realm = max(char.body_realm, char.qi_realm, char.formation_realm)
+            shield_max_flat += eq_shield_per_realm * max_realm
         hp_to_shield_pct             += float(equip_stats.get("hp_to_shield_pct", 0.0))
         matk_from_shield_pct         += float(equip_stats.get("matk_from_shield_pct", 0.0))
         atk_from_shield_pct          += float(equip_stats.get("atk_from_shield_pct", 0.0))
@@ -648,31 +767,18 @@ def compute_combat_stats(
         heal_pct          += equip_stats.get("heal_pct", 0.0)
         cooldown_reduce   += equip_stats.get("cooldown_reduce", 0.0)
 
-    # ── Formation MP reservation (applied last, after all bonuses) ────────────
-    # Two reservation sources stack here, both bound by the same MAX cap:
-    #   1. Per-formation gem reservation (from active formation slots' gems)
-    #   2. Per-skill reservation (from formation skills in the player's bar)
-    # The skill reservation replaces the old flat 8% base — bigger formations
-    # cost more MP to channel, smaller ones less. Trận Đạo path reduction is
-    # already applied inside each helper, so we just sum and re-cap.
-    from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
-    skill_reserve_pct = compute_formation_skill_reserve_pct(
-        learned_skill_keys, formation_stages=formation_stages,
+    mp_max, mp_reserved, reserve_pct = _apply_formation_mp_reserve(
+        mp_max, form_bonuses, learned_skill_keys, formation_stages,
     )
-    raw_reserve = float(form_bonuses.get("_mp_reserve_pct", 0.0)) + skill_reserve_pct
-    reserve_pct = max(0.0, min(FORMATION_MAX_RESERVE_PCT, raw_reserve))
-    mp_reserved = int(mp_max * reserve_pct)
-    mp_max = max(0, mp_max - mp_reserved)
-
-    # HP → Shield conversion: a fraction of the final hp_max becomes flat
-    # shield_max_base, and hp_max shrinks by the same amount. Clamped at 0.95
-    # so HP never drops to 0. Applied last so every other hp/shield bonus has
-    # already been folded in.
-    hp_to_shield_pct = max(0.0, min(0.95, hp_to_shield_pct))
-    if hp_to_shield_pct > 0:
-        converted = int(hp_max * hp_to_shield_pct)
-        shield_max_base += converted
-        hp_max = max(1, hp_max - converted)
+    hp_max, shield_max_base, hp_to_shield_pct = _apply_hp_to_shield(
+        hp_max, shield_max_base, hp_to_shield_pct,
+    )
+    spd_final, def_stat, atk = _apply_pill_buffs(
+        char, spd_final, def_stat, atk, element_dmg_bonus,
+    )
+    final_dmg_bonus, hp_regen_pct = _apply_toxicity_penalty(
+        char, final_dmg_bonus, hp_regen_pct,
+    )
 
     return CombatStats(
         hp_max=hp_max,

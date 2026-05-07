@@ -25,6 +25,7 @@ from src.game.systems.alchemy import (
 )
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed
+from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
 
 log = logging.getLogger(__name__)
 
@@ -81,6 +82,28 @@ def _owned_furnaces_from_player(player) -> list[str]:
     return out
 
 
+def _resolve_default_furnace(
+    preferred_key: str | None,
+    owned_furnaces: list[str],
+    required_tier: int,
+) -> str | None:
+    """Pick the dropdown's default key.
+
+    Honours the player's stored preference when (a) they still own that
+    furnace and (b) it qualifies for the recipe's required tier. Falls back
+    to the auto-picked best so a stale preference can never lock the player
+    out of a recipe they're currently eligible for.
+    """
+    from src.game.systems.alchemy import _pick_best_furnace
+
+    if preferred_key and preferred_key in owned_furnaces:
+        f = registry.get_furnace(preferred_key)
+        if f and int(f.get("furnace_tier", 0)) >= required_tier:
+            return preferred_key
+    best = _pick_best_furnace(owned_furnaces, required_tier)
+    return best["key"] if best else None
+
+
 async def _pills_in_bag(player_id: int) -> list[tuple[str, int, int]]:
     """Return list of (item_key, grade_as_quality_tier, quantity) for owned pills."""
     async with get_session() as session:
@@ -124,8 +147,25 @@ async def _alchemy_hub_embed(player: Player) -> discord.Embed:
         "Luyện chế linh đan từ thảo dược và nguyên liệu yêu thú.",
         color=0x2E7D32,
     )
+    from src.game.systems.toxicity import (
+        cult_speed_penalty, final_dmg_penalty, hp_regen_multiplier,
+        tier_label, TOXICITY_FULL,
+    )
+    dd = int(player.dan_doc or 0)
+    cult_pen = cult_speed_penalty(dd)
+    dmg_pen = final_dmg_penalty(dd)
+    regen_mult = hp_regen_multiplier(dd)
+    if dd > 0:
+        tox_value = (
+            f"☠️ {dd:,} / {TOXICITY_FULL:,}  ·  **{tier_label(dd)}**\n"
+            f"−{cult_pen:.0%} EXP tu luyện  ·  −{dmg_pen:.0%} sát thương "
+            f"·  ×{regen_mult:.2f} hồi HP"
+        )
+    else:
+        tox_value = f"☠️ 0 / {TOXICITY_FULL:,}  ·  **{tier_label(dd)}**"
+
     embed.add_field(name="Công Đức",     value=f"{emojis.for_currency('merit')} {player.merit:,}", inline=True)
-    embed.add_field(name="Đan Độc",      value=f"☠️ {player.dan_doc:,}", inline=True)
+    embed.add_field(name="Đan Độc",      value=tox_value, inline=False)
     embed.add_field(name="Đan Phương",   value=f"📜 {unlocked}/{total_recipes} mở khoá", inline=True)
     embed.add_field(name="Thảo Dược",    value=f"🌿 {herbs} loại", inline=True)
     embed.add_field(name="Nguyên Liệu",  value=f"🩸 {yeu_thu} loại", inline=True)
@@ -360,18 +400,17 @@ class RecipeSelect(discord.ui.Select):
             return
         await interaction.response.defer()
 
-        from src.game.systems.alchemy import _pick_best_furnace
-
         # Load owned furnaces so the detail view can offer a picker. Default
-        # selection is the auto-picked "best" furnace — same as before — so
-        # users who don't want to fiddle just hit Luyện and go.
+        # selection is the player's stored preference when it's still valid,
+        # otherwise the auto-picked "best" furnace — so users who don't want
+        # to fiddle just hit Luyện and go.
         async with get_session() as session:
             player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
         owned_furnaces = _owned_furnaces_from_player(player) if player else []
+        preferred_key = getattr(player, "preferred_furnace_key", None) if player else None
         recipe = get_recipe(recipe_key)
         required_tier = int((recipe or {}).get("furnace_tier", 1))
-        best = _pick_best_furnace(owned_furnaces, required_tier)
-        default_key = best["key"] if best else None
+        default_key = _resolve_default_furnace(preferred_key, owned_furnaces, required_tier)
 
         embed = await _recipe_detail_embed(interaction, recipe_key)
         view = RecipeDetailView(
@@ -384,7 +423,7 @@ class RecipeSelect(discord.ui.Select):
 
 
 async def _recipe_detail_embed(interaction: discord.Interaction, recipe_key: str) -> discord.Embed:
-    from src.game.systems.alchemy import _pick_best_furnace, apply_furnace_bonus
+    from src.game.systems.alchemy import apply_furnace_bonus
 
     recipe = get_recipe(recipe_key)
     if not recipe:
@@ -395,6 +434,7 @@ async def _recipe_detail_embed(interaction: discord.Interaction, recipe_key: str
         player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
         bag = await _ingredient_map(player.id) if player else {}
         furnace_keys = _owned_furnaces_from_player(player) if player else []
+        preferred_key = getattr(player, "preferred_furnace_key", None) if player else None
 
     embed = base_embed(recipe["vi"], f"Đan phương cấp **{recipe['grade']}**", color=0x2E7D32)
 
@@ -423,7 +463,8 @@ async def _recipe_detail_embed(interaction: discord.Interaction, recipe_key: str
     embed.add_field(name="Chi Phí", value=f"{emojis.for_currency('merit')} {recipe.get('cost_cong_duc', 0):,} Công Đức", inline=True)
 
     required_tier = int(recipe.get("furnace_tier", 1))
-    chosen_furnace = _pick_best_furnace(furnace_keys, required_tier)
+    chosen_key = _resolve_default_furnace(preferred_key, furnace_keys, required_tier)
+    chosen_furnace = registry.get_furnace(chosen_key) if chosen_key else None
     if chosen_furnace is not None:
         bonus = chosen_furnace.get("quality_bonus") or {}
         badge = "✦ " if chosen_furnace.get("is_unique") else ""
@@ -508,8 +549,20 @@ class _FurnaceSelect(discord.ui.Select):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
         picked = self.values[0]
-        self._view_owner._selected_furnace_key = None if picked == "__none__" else picked
-        # No embed change needed — just acknowledge the click.
+        new_key = None if picked == "__none__" else picked
+        self._view_owner._selected_furnace_key = new_key
+
+        # Sticky preference: persist the user's choice so the next recipe
+        # detail view defaults to it. We commit on every pick (cheap — one
+        # column update) so the preference survives bot restarts.
+        if new_key is not None:
+            async with get_session() as session:
+                repo = PlayerRepository(session)
+                player = await repo.get_by_discord_id(interaction.user.id)
+                if player and player.preferred_furnace_key != new_key:
+                    player.preferred_furnace_key = new_key
+                    await repo.save(player)
+
         await interaction.response.defer()
 
 
@@ -651,13 +704,12 @@ async def _do_craft(
         result = craft_pill(char, recipe_key, bag, furnace_keys)
         if not result.success:
             return result
-
-        # Deduct ingredients
         for pick in result.consumed:
-            ok = await inv_repo.remove_item(player.id, pick.key, INGREDIENT_GRADE, pick.qty)
+            ok = await inv_repo.remove_any_grade(player.id, pick.key, pick.qty)
             if not ok:
-                # Should not happen — we validated above. Be defensive.
-                return AlchemyResult(False, f"Lỗi nội bộ: thiếu {pick.key}.")
+                ing = registry.get_item(pick.key) or {}
+                name = ing.get("vi", pick.key)
+                return AlchemyResult(False, f"Lỗi nội bộ: thiếu {name}.")
 
         # Persist merit deduction
         player.merit = char.merit
@@ -695,7 +747,7 @@ def _craft_result_embed(result: AlchemyResult) -> discord.Embed:
 
 # ── Pill bag ────────────────────────────────────────────────────────────────
 
-def _pill_bag_embed(pills: list[tuple[str, int, int]]) -> discord.Embed:
+def _pill_bag_embed(pills: list[tuple[str, int, int]], page: int = 0) -> discord.Embed:
     embed = base_embed(
         "💊 Đan Dược",
         "Chọn đan dược để sử dụng. Phẩm chất cao sẽ nâng cao hiệu quả và giảm đan độc tích lũy.",
@@ -704,28 +756,56 @@ def _pill_bag_embed(pills: list[tuple[str, int, int]]) -> discord.Embed:
     if not pills:
         embed.description += "\n\n*(Túi rỗng — hãy luyện vài viên đan trước.)*"
         return embed
+    visible = page_slice(pills, page, per_page=PAGE_SIZE)
     lines = []
-    for key, grade, qty in pills[:20]:
+    for key, grade, qty in visible:
         item = registry.get_item(key)
         name = item["vi"] if item else key
         quality = {1: "Hoàng", 2: "Huyền", 3: "Địa", 4: "Thiên"}.get(grade, "?")
         lines.append(f"• **{name}** — {quality} Phẩm ×{qty}")
     embed.description += "\n\n" + "\n".join(lines)
-    if len(pills) > 20:
-        embed.set_footer(text=f"(+{len(pills) - 20} đan dược khác — hiển thị 20 hàng đầu)")
+    pages = total_pages(len(pills), per_page=PAGE_SIZE)
+    if pages > 1:
+        embed.set_footer(text=f"Trang {page + 1}/{pages} · Tổng {len(pills)} loại đan dược")
     return embed
 
 
 class PillBagView(discord.ui.View):
-    def __init__(self, discord_id: int, pills: list[tuple[str, int, int]], back_fn) -> None:
+    def __init__(
+        self,
+        discord_id: int,
+        pills: list[tuple[str, int, int]],
+        back_fn,
+        page: int = 0,
+    ) -> None:
         super().__init__(timeout=180)
         self._discord_id = discord_id
+        self._pills = pills
         self._back_fn = back_fn
-        self.add_item(PillSelect(discord_id, pills, back_fn))
+        pages = total_pages(len(pills), per_page=PAGE_SIZE)
+        self._page = max(0, min(page, pages - 1))
+        self.add_item(PillSelect(discord_id, pills, back_fn, page=self._page))
 
         back_btn = discord.ui.Button(label="◀ Về Luyện Đan", style=discord.ButtonStyle.secondary, row=1)
         back_btn.callback = self._back_cb
         self.add_item(back_btn)
+
+        add_page_controls(
+            self,
+            page=self._page,
+            total=len(pills),
+            on_change=self._on_page_change,
+            row=2,
+        )
+
+    async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        view = PillBagView(self._discord_id, self._pills, self._back_fn, page=new_page)
+        embed = _pill_bag_embed(self._pills, page=new_page)
+        await interaction.edit_original_response(embed=embed, view=view)
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not _guard(interaction, self._discord_id):
@@ -736,12 +816,20 @@ class PillBagView(discord.ui.View):
 
 
 class PillSelect(discord.ui.Select):
-    def __init__(self, discord_id: int, pills: list[tuple[str, int, int]], back_fn) -> None:
+    def __init__(
+        self,
+        discord_id: int,
+        pills: list[tuple[str, int, int]],
+        back_fn,
+        page: int = 0,
+    ) -> None:
         self._discord_id = discord_id
         self._back_fn = back_fn
+        self._all_pills = pills
+        self._page = page
 
         options: list[discord.SelectOption] = []
-        for key, grade, qty in pills[:25]:
+        for key, grade, qty in page_slice(pills, page, per_page=PAGE_SIZE):
             item = registry.get_item(key)
             name = item["vi"] if item else key
             quality = {1: "Hoàng", 2: "Huyền", 3: "Địa", 4: "Thiên"}.get(grade, "?")
@@ -772,11 +860,13 @@ class PillSelect(discord.ui.Select):
             color=0x27AE60 if effect.applied else 0xC0392B,
         )
 
-        # Refresh pill bag for the back view
+        # Refresh pill bag for the back view, preserving the page so the
+        # user stays on whatever slice they were browsing when the picked
+        # pill ran out.
         async with get_session() as session:
             player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
             pills = await _pills_in_bag(player.id) if player else []
-        view = PillBagView(self._discord_id, pills, self._back_fn)
+        view = PillBagView(self._discord_id, pills, self._back_fn, page=self._page)
         await interaction.edit_original_response(embed=embed, view=view)
 
 
@@ -789,12 +879,17 @@ async def _do_consume(interaction: discord.Interaction, pill_key: str, grade: in
         if not player:
             return PillEffect(False, "Không tìm thấy nhân vật.")
 
+        # Predict the effect before deducting inventory — combat-buff pills
+        # can refuse mid-consume when the per-key cap is reached, and we
+        # don't want to silently eat the pill in that case.
+        char = _player_to_model(player)
+        effect = consume_pill(char, pill_key, grade)
+        if not effect.applied:
+            return effect
+
         ok = await inv_repo.remove_item(player.id, pill_key, Grade(grade), 1)
         if not ok:
             return PillEffect(False, "Không có đan dược này trong túi.")
-
-        char = _player_to_model(player)
-        effect = consume_pill(char, pill_key, grade)
 
         # Persist effects back to player row
         player.dan_doc = max(0, int(player.dan_doc or 0) + effect.dan_doc_delta)
@@ -802,8 +897,16 @@ async def _do_consume(interaction: discord.Interaction, pill_key: str, grade: in
             player.qi_xp = int(player.qi_xp or 0) + effect.qi_xp_delta
         if effect.body_xp_delta:
             player.body_xp = int(player.body_xp or 0) + effect.body_xp_delta
+        if effect.merit_delta:
+            player.merit = int(player.merit or 0) + effect.merit_delta
         if effect.heal_delta and player.hp_current > 0:
             player.hp_current = player.hp_current + effect.heal_delta
+        if effect.pill_buff_increment:
+            # Combat-buff pill ticked a per-effect counter — persist the
+            # updated dict via the JSON column so future consumes see the
+            # latest count and ``compute_combat_stats`` applies the bonus.
+            from src.game.systems.pill_buffs import encode_counts
+            player.pill_buff_counts = encode_counts(char.pill_buff_counts)
 
         await player_repo.save(player)
 

@@ -408,8 +408,8 @@
   },
   {
     "key": "ConstitutionLoiBach_Leg",
-    "vi": "Đế Bạch Lôi Thể",
-    "en": "Imperial White Thunder Body",
+    "vi": "Thái Thượng Bạch Lôi Thể",
+    "en": "Supreme White Lightning Body",
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
@@ -439,8 +439,8 @@
   },
   {
     "key": "ConstitutionLoiCuong_Leg",
-    "vi": "Đế Cuồng Lôi Thể",
-    "en": "Imperial Frenzy Thunder Body",
+    "vi": "Cửu Thiên Cuồng Lôi Thể",
+    "en": "Nine Heavens Mad Thunder Body",
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
@@ -470,8 +470,8 @@
   },
   {
     "key": "ConstitutionLoiTu_Leg",
-    "vi": "Đế Tử Lôi Thể",
-    "en": "Imperial Purple Thunder Body",
+    "vi": "Tử Tiêu Thần Lôi Đế Thể",
+    "en": "Purple Empyrean Divine Thunder Body",
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,
@@ -479,7 +479,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Đế Tử Lôi Thể — **Lôi Đế Phán Quyết**: thiên lôi giáng phạt, mỗi đòn chí mạng đều có thể tê liệt đối thủ, tốc độ kinh thiên cướp lượt liên tiếp.",
+    "passive_description_vi": "Tử Tiêu Thần Lôi Đế Thể — **Lôi Đế Phán Quyết**: thiên lôi giáng phạt, mỗi đòn chí mạng đều có thể tê liệt đối thủ, tốc độ kinh thiên cướp lượt liên tiếp.",
     "stat_bonuses": {
       "spd_bonus": 22,
       "crit_dmg_rating": 400,
@@ -505,8 +505,8 @@
   },
   {
     "key": "ConstitutionThienLoiThan",
-    "vi": "Thiên Lôi Thần Thể",
-    "en": "Heavenly Thunder Divine Body",
+    "vi": "Thiên Kiếp Vạn Lôi Thể",
+    "en": "Heavenly Tribulation Myriad Thunder Body",
     "rarity": "legendary",
     "element": "loi",
     "roll_weight": 0,

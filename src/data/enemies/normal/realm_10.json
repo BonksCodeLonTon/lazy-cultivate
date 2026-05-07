@@ -15,7 +15,8 @@
     "mp_regen_pct": 0.12,
     "skill_keys": [
       "EnemyHoa_R9",
-      "EnemyBoss_R10_Devastate"
+      "EnemyBoss_R10_Devastate",
+      "EnemyDungeon_Hoa_ChiTon_R10"
     ],
     "loot_table_key": "LootBossHoaLinh",
     "base_crit_rating": 55,
@@ -50,7 +51,8 @@
     "mp_regen_pct": 0.12,
     "skill_keys": [
       "EnemyLoi_R9",
-      "EnemyBoss_R10_Devastate"
+      "EnemyBoss_R10_Devastate",
+      "EnemyDungeon_Loi_ChiTon_R10"
     ],
     "loot_table_key": "LootBossLoiLong",
     "base_crit_rating": 60,
@@ -85,7 +87,8 @@
     "mp_regen_pct": 0.12,
     "skill_keys": [
       "EnemyBang_R9",
-      "EnemyBoss_R10_Devastate"
+      "EnemyBoss_R10_Devastate",
+      "EnemyDungeon_Thuy_ChiTon_R10"
     ],
     "loot_table_key": "LootBossBangHon",
     "base_crit_rating": 55,

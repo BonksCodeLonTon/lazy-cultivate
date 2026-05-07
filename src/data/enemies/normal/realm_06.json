@@ -11,7 +11,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyHoa_R4",
-      "EnemyKim_R4"
+      "EnemyKim_R4",
+      "EnemyDungeon_Hoa_HungManh_R6"
     ],
     "base_atk": 85,
     "base_matk": 170,
@@ -33,7 +34,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyThuy_R4",
-      "EnemyLoi_R4"
+      "EnemyLoi_R4",
+      "EnemyDungeon_Thuy_HungManh_R6"
     ],
     "base_atk": 85,
     "base_matk": 170,
@@ -55,7 +57,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyPhong_R4",
-      "EnemyMoc_R4"
+      "EnemyMoc_R4",
+      "EnemyDungeon_Phong_HungManh_R6"
     ],
     "base_atk": 170,
     "base_matk": 85,
@@ -82,7 +85,8 @@
     "skill_keys": [
       "EnemyTho_R4",
       "EnemyHoa_R4",
-      "EnemyApex_R7_Physical"
+      "EnemyApex_R7_Physical",
+      "EnemyDungeon_Tho_HungManh_R6"
     ],
     "base_res": {
       "tho": 0.18
@@ -100,7 +104,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyBang_R4",
-      "EnemyKim_R4"
+      "EnemyKim_R4",
+      "EnemyDungeon_Thuy_HungManh_R6"
     ],
     "base_atk": 85,
     "base_matk": 170,

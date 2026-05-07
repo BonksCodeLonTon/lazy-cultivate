@@ -39,12 +39,12 @@ from src.game.constants.currencies import (
     KARMA_TITLE_THRESHOLDS,
     MARKET_LISTING_HOURS,
     MARKET_MAX_LISTINGS,
+    FORMATION_EXP_PER_MERIT_BY_REALM,
     MERIT_PER_BONUS_TURN,
     MERIT_PER_NORMAL_TURN,
     MERIT_TITLE_THRESHOLDS,
     SECONDS_PER_TURN,
     TRADE_FEE_RATE,
-    TURNS_PER_CULT_LEVEL,
     TURNS_PER_DAY,
 )
 from src.game.constants.grades import GRADE_LABELS, Grade
@@ -134,13 +134,24 @@ def _chapter_cultivation() -> discord.Embed:
         value="Nhánh trận tu (Formation). MP cao, MATK mạnh, mở Trận Pháp & Ngọc Khảm.",
         inline=False,
     )
+    from math import ceil
+    rate_lo = FORMATION_EXP_PER_MERIT_BY_REALM[0]
+    rate_hi = FORMATION_EXP_PER_MERIT_BY_REALM[-1]
+
+    def _fmt_rate(rate: float) -> str:
+        if rate >= 1.0:
+            return f"1 Công Đức = {rate:g} EXP"
+        return f"{ceil(1.0 / rate):,} Công Đức = 1 EXP"
+
     embed.add_field(
         name="📊 Tốc Độ Tu Luyện",
         value=(
-            f"• Luyện Thể: **{TURNS_PER_CULT_LEVEL['body']:,}** lượt / 1 bậc.\n"
-            f"• Luyện Khí: **{TURNS_PER_CULT_LEVEL['qi']:,}** lượt / 1 bậc.\n"
-            f"• Trận Đạo: **{TURNS_PER_CULT_LEVEL['formation']:,}** lượt / 1 bậc "
-            "(thêm phí Công Đức / cấp).\n"
+            f"• Luyện Thể & Luyện Khí: tự động tăng theo lượt cày (trục có "
+            f"`base_exp_rate` riêng cho từng cảnh giới).\n"
+            f"• Trận Đạo: **không** tự tăng theo lượt — đổi Công Đức thành "
+            f"EXP qua **📘 Học Trận**. Tỷ lệ giảm dần theo cảnh giới: "
+            f"**{_fmt_rate(rate_lo)}** ở Khai Huyền, "
+            f"**{_fmt_rate(rate_hi)}** ở Đế Trận.\n"
             f"_({LEVELS_PER_REALM} bậc × {len(BODY_REALMS)} cảnh giới = "
             f"{LEVELS_PER_REALM * len(BODY_REALMS)} bậc tổng / trục)_"
         ),

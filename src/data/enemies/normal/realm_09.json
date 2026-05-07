@@ -15,7 +15,8 @@
     "mp_regen_pct": 0.1,
     "skill_keys": [
       "EnemyHoa_R9",
-      "EnemyApex_R9_Magical"
+      "EnemyApex_R9_Magical",
+      "EnemyDungeon_Hoa_TienThu_R9"
     ],
     "base_crit_rating": 20,
     "base_crit_dmg_rating": 30,
@@ -49,7 +50,8 @@
     "mp_regen_pct": 0.1,
     "skill_keys": [
       "EnemyBang_R9",
-      "EnemyApex_R9_Magical"
+      "EnemyApex_R9_Magical",
+      "EnemyDungeon_Thuy_TienThu_R9"
     ],
     "base_crit_rating": 20,
     "base_crit_dmg_rating": 30,
@@ -83,7 +85,8 @@
     "mp_regen_pct": 0.1,
     "skill_keys": [
       "EnemyLoi_R9",
-      "EnemyApex_R9_Magical"
+      "EnemyApex_R9_Magical",
+      "EnemyDungeon_Loi_TienThu_R9"
     ],
     "base_crit_rating": 20,
     "base_crit_dmg_rating": 35,
@@ -118,7 +121,8 @@
     "skill_keys": [
       "EnemyTho_R9",
       "EnemyApex_R9_Physical",
-      "EnemyApex_R9_Magical"
+      "EnemyApex_R9_Magical",
+      "EnemyDungeon_Tho_TienThu_R9"
     ],
     "base_crit_rating": 20,
     "base_crit_dmg_rating": 30,

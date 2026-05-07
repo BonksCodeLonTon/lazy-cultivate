@@ -117,27 +117,25 @@ def test_every_grade_has_at_least_two_skills_per_realm(grade_matrix):
     )
 
 
-def test_per_element_present_grade_has_at_least_two_skills(grade_matrix):
-    """Per-element rule: within a single element, every (realm, grade)
-    cell that already has at least one skill must have ≥2. Solo entries
-    inside one element mean a player committing to that element's
-    rotation has no real choice when they roll that grade — rarity
-    drops collapse to a single fixed pick.
+def test_per_element_grade_has_at_least_two_skills(grade_matrix):
+    """Per-element rule: every (element, realm, grade) cell must carry
+    ≥2 skills. Empty cells leave a player who rolls that scroll grade
+    with nothing to learn for their element; solo cells collapse the
+    rarity drop to a single fixed pick.
 
-    Empty cells (count = 0) are allowed: not every element needs the
-    full grade ladder at every realm. The check only fires once a cell
-    is *populated*.
+    Run ``python scripts/fill_per_element_grade_gaps.py`` to backfill
+    missing slots — the generator is idempotent.
     """
-    solos: list[str] = []
+    deficits: list[str] = []
     for elem in ELEMENTS:
         for realm in REALMS:
             for grade in GRADES:
                 n = grade_matrix[elem][realm].get(grade, 0)
-                if n == 1:
-                    solos.append(f"{elem} R{realm} G{grade}: 1 skill")
-    assert not solos, (
-        f"Per-element solo (element, realm, grade) cells ({len(solos)} total):"
-        "\n  " + "\n  ".join(solos)
+                if n < 2:
+                    deficits.append(f"{elem} R{realm} G{grade}: {n} skill(s)")
+    assert not deficits, (
+        f"Per-element under-populated (element, realm, grade) cells ({len(deficits)} total):"
+        "\n  " + "\n  ".join(deficits)
     )
 
 

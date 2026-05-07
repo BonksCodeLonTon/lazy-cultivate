@@ -28,6 +28,7 @@ from src.game.systems.formation import (
     gem_element,
 )
 from src.utils.embed_builder import base_embed, error_embed, success_embed
+from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
 
 log = logging.getLogger(__name__)
 
@@ -42,6 +43,62 @@ _GEM_EMOJI = {
     "tho": "🪨", "loi": "⚡", "phong": "🌬️", "quang": "☀️", "am": "🌑",
     "bang": "❄️",
 }
+
+# Stat keys whose value is a fraction (0.18 → "18.0%"). Anything not listed is
+# treated as a flat integer rating (formatted as "+1,234").
+_PCT_STAT_KEYS = frozenset({
+    "hp_pct", "mp_pct", "final_dmg_bonus", "final_dmg_reduce",
+    "hp_regen_pct", "mp_regen_pct", "cooldown_reduce",
+    "burn_on_hit_pct", "slow_on_hit_pct",
+    "mark_on_hit_pct", "damage_bonus_from_evasion_pct",
+})
+
+# Vietnamese labels used by both the per-formation detail and aggregated views.
+_STAT_NAME_VI = {
+    "hp_pct": "HP", "mp_pct": "MP",
+    "final_dmg_bonus": "Tăng ST", "final_dmg_reduce": "Giảm ST",
+    "hp_regen_pct": "Hồi HP%", "mp_regen_pct": "Hồi MP%",
+    "cooldown_reduce": "Hồi Chiêu-",
+    "crit_rating": "Bạo Kích",
+    "crit_dmg_rating": "Bạo Thương",
+    "crit_res_rating": "Kháng Bạo",
+    "evasion_rating": "Né",
+    "res_element": "Kháng Hệ",
+    "res_all": "Kháng TN",
+    "spd_bonus": "Tốc Độ",
+    "burn_on_hit_pct": "Thiêu Đốt",
+    "slow_on_hit_pct": "Làm Chậm",
+    # Phong build (mark / evasion synergy)
+    "mark_on_hit_pct":              "Tỉ Lệ Đánh Dấu",
+    "damage_bonus_from_evasion_pct": "ST Dựa Trên Né",
+    "crit_rating_vs_marked":        "Bạo Kích vs Đ.Dấu",
+    "crit_dmg_vs_marked":           "Bạo Thương vs Đ.Dấu",
+}
+
+
+def _format_bonus_lines(bonuses: dict) -> list[str]:
+    """Render a formation bonus dict as ``"• Label: **+value**"`` lines."""
+    lines: list[str] = []
+    for k, v in bonuses.items():
+        if k.startswith("_") or k == "note":
+            continue
+        if isinstance(v, bool):
+            if v:
+                lines.append(f"✨ **{_STAT_NAME_VI.get(k, k)}**")
+            continue
+        if not isinstance(v, (int, float)):
+            continue
+        # Hide entries whose displayed value would round to zero — covers
+        # both exact 0 and tiny fractions on flat-rating stats.
+        if k in _PCT_STAT_KEYS:
+            if abs(v) < 0.0005:  # less than 0.05% rounds to "+0.0%"
+                continue
+            lines.append(f"• {_STAT_NAME_VI.get(k, k)}: **+{v * 100:.1f}%**")
+        else:
+            if int(round(v)) == 0:
+                continue
+            lines.append(f"• {_STAT_NAME_VI.get(k, k)}: **+{int(round(v)):,}**")
+    return lines
 
 
 def _gem_display(gem_key: str | None) -> str:
@@ -130,40 +187,7 @@ def _formation_multi_embed(
             inline=False,
         )
 
-    # Aggregated bonus summary — re-uses the single-formation formatter logic
-    lines: list[str] = []
-    pct_keys = {
-        "hp_pct", "mp_pct", "final_dmg_bonus", "final_dmg_reduce",
-        "hp_regen_pct", "mp_regen_pct", "cooldown_reduce",
-        "burn_on_hit_pct", "slow_on_hit_pct",
-    }
-    name_map = {
-        "hp_pct": "HP", "mp_pct": "MP",
-        "final_dmg_bonus": "Tăng ST", "final_dmg_reduce": "Giảm ST",
-        "hp_regen_pct": "Hồi HP%", "mp_regen_pct": "Hồi MP%",
-        "cooldown_reduce": "Hồi Chiêu-",
-        "crit_rating": "Bạo Kích",
-        "crit_dmg_rating": "Bạo Thương",
-        "crit_res_rating": "Kháng Bạo",
-        "evasion_rating": "Né",
-        "res_element": "Kháng Hệ",
-        "res_all": "Kháng TN",
-        "spd_bonus": "Tốc Độ",
-    }
-    for k, v in form_bonuses.items():
-        if k.startswith("_") or k == "note":
-            continue
-        if isinstance(v, bool):
-            if v:
-                lines.append(f"✨ **{name_map.get(k, k)}**")
-            continue
-        if not isinstance(v, (int, float)) or v == 0:
-            continue
-        label = name_map.get(k, k)
-        if k in pct_keys:
-            lines.append(f"• {label}: **+{v * 100:.1f}%**")
-        else:
-            lines.append(f"• {label}: **+{int(v):,}**")
+    lines = _format_bonus_lines(form_bonuses)
     embed.add_field(
         name="📊 Hiệu Ứng Tổng",
         value="\n".join(lines) if lines else "*(không có)*",
@@ -189,43 +213,7 @@ def _formation_detail_embed(player, form_data: dict, form_bonuses: dict) -> disc
         else ""
     )
 
-    # Bonus summary — skip meta + bool flags
-    lines: list[str] = []
-    pct_keys = {
-        "hp_pct", "mp_pct", "final_dmg_bonus", "final_dmg_reduce",
-        "hp_regen_pct", "mp_regen_pct", "cooldown_reduce",
-        "burn_on_hit_pct", "slow_on_hit_pct",
-    }
-    name_map = {
-        "hp_pct": "HP", "mp_pct": "MP",
-        "final_dmg_bonus": "Tăng ST", "final_dmg_reduce": "Giảm ST",
-        "hp_regen_pct": "Hồi HP%", "mp_regen_pct": "Hồi MP%",
-        "cooldown_reduce": "Hồi Chiêu-",
-        "crit_rating": "Bạo Kích",
-        "crit_dmg_rating": "Bạo Thương",
-        "crit_res_rating": "Kháng Bạo",
-        "evasion_rating": "Né",
-        "res_element": "Kháng Hệ",
-        "res_all": "Kháng TN",
-        "spd_bonus": "Tốc Độ",
-        "burn_on_hit_pct": "Thiêu Đốt",
-        "slow_on_hit_pct": "Làm Chậm",
-    }
-    for k, v in form_bonuses.items():
-        if k.startswith("_") or k == "note":
-            continue
-        if isinstance(v, bool):
-            if v:
-                lines.append(f"✨ **{name_map.get(k, k)}**")
-            continue
-        if not isinstance(v, (int, float)) or v == 0:
-            continue
-        label = name_map.get(k, k)
-        if k in pct_keys:
-            lines.append(f"• {label}: **+{v * 100:.1f}%**")
-        else:
-            lines.append(f"• {label}: **+{int(v):,}**")
-
+    lines = _format_bonus_lines(form_bonuses)
     bonus_text = "\n".join(lines) if lines else "*(không có)*"
 
     embed = base_embed(
@@ -582,6 +570,7 @@ class SocketManagerView(discord.ui.View):
         back_fn=None,
         active_forms: list[dict] | None = None,
         target_formation_key: str | None = None,
+        gem_page: int = 0,
     ) -> None:
         super().__init__(timeout=240)
         self.discord_id = discord_id
@@ -592,6 +581,8 @@ class SocketManagerView(discord.ui.View):
         self._selected_gem_key: str | None = None
         self._target_formation_key = target_formation_key
         self._active_forms = active_forms or []
+        gem_pages = total_pages(len(self._gems_inv), per_page=PAGE_SIZE)
+        self._gem_page = max(0, min(gem_page, gem_pages - 1))
 
         # Row 0: formation selector (only shown when ≥2 active slots).
         # Keeps simple single-formation UI unchanged for normal players.
@@ -643,7 +634,7 @@ class SocketManagerView(discord.ui.View):
         # Gem select from inventory (only when gems exist)
         if gems_inv:
             gem_opts = []
-            for g in gems_inv[:25]:
+            for g in page_slice(self._gems_inv, self._gem_page, per_page=PAGE_SIZE):
                 elem = g["element"] or ""
                 emoji = _GEM_EMOJI.get(elem, "💠")
                 gem_opts.append(discord.SelectOption(
@@ -652,8 +643,11 @@ class SocketManagerView(discord.ui.View):
                     description=f"Hệ: {_GEM_ELEMENT_VI.get(elem, '—')}"[:100],
                     emoji=emoji,
                 ))
+            placeholder = "💠 Chọn ngọc để khảm..."
+            if gem_pages > 1:
+                placeholder = f"💠 Chọn ngọc để khảm (Trang {self._gem_page + 1}/{gem_pages})..."
             self._gem_select = discord.ui.Select(
-                placeholder="💠 Chọn ngọc để khảm...",
+                placeholder=placeholder,
                 options=gem_opts,
                 row=row_offset + 1,
             )
@@ -675,6 +669,32 @@ class SocketManagerView(discord.ui.View):
         back_btn = discord.ui.Button(label="◀ Trở Lại Trận", style=discord.ButtonStyle.secondary, row=action_row)
         back_btn.callback = self._on_back
         self.add_item(back_btn)
+
+        # Pagination on the row after the actions when there's space.
+        # If we're already at row 4, pagination shares row 4 with the
+        # actions — Discord renders both as long as total components ≤5.
+        page_row = min(4, action_row + 1)
+        add_page_controls(
+            self,
+            page=self._gem_page,
+            total=len(self._gems_inv),
+            on_change=self._on_page_change,
+            row=page_row,
+        )
+
+    async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        view = SocketManagerView(
+            self.discord_id, self._gem_slots, self._gems_inv,
+            back_fn=self._back_fn,
+            active_forms=self._active_forms,
+            target_formation_key=self._target_formation_key,
+            gem_page=new_page,
+        )
+        await interaction.edit_original_response(view=view)
 
     async def _on_form_pick(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

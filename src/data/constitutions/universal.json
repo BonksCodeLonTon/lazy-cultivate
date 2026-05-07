@@ -58,7 +58,7 @@
     "passive_description_vi": "Thân như Huyền Quy ẩn giữa biển sâu, lớp giáp dày chống chọi mọi nguyên tố.",
     "stat_bonuses": {
       "hp_pct": 0.12,
-      "res_all": 35,
+      "res_all": 0.17,
       "final_dmg_reduce": 0.04,
       "hp_regen_pct": 0.01,
       "shield_max_base": 50,
@@ -110,7 +110,7 @@
       "hp_pct": 0.06,
       "mp_pct": 0.06,
       "crit_rating": 60,
-      "res_all": 15
+      "res_all": 0.07
     },
     "special_requirements": null,
     "materials": {
@@ -133,7 +133,7 @@
       "hp_pct": 0.1,
       "mp_pct": 0.08,
       "crit_rating": 100,
-      "res_all": 30,
+      "res_all": 0.15,
       "spd_bonus": 2,
       "cultivation_speed_bonus": 0.05
     },
@@ -181,7 +181,7 @@
     "passive_description_vi": "Da thịt cứng như giáp sắt, đòn đánh chí mạng cũng khó khoét được vết thương sâu.",
     "stat_bonuses": {
       "hp_pct": 0.16,
-      "res_all": 50,
+      "res_all": 0.25,
       "final_dmg_reduce": 0.06,
       "hp_regen_pct": 0.015,
       "crit_res_rating": 80,
@@ -261,7 +261,7 @@
     "passive_description_vi": "Thân kiên cố như thiên thiết huyền ngọc, chịu đựng mọi đòn công phá.",
     "stat_bonuses": {
       "hp_pct": 0.22,
-      "res_all": 75,
+      "res_all": 0.38,
       "final_dmg_reduce": 0.1,
       "hp_regen_pct": 0.02,
       "crit_res_rating": 150,
@@ -345,7 +345,7 @@
     "passive_description_vi": "Thân tựa kim thạch ngàn năm bất hoại, mọi đòn công kích đều khó để lại dấu tích.",
     "stat_bonuses": {
       "hp_pct": 0.25,
-      "res_all": 100,
+      "res_all": 0.4,
       "final_dmg_reduce": 0.12,
       "hp_regen_pct": 0.03,
       "crit_res_rating": 200,
@@ -381,7 +381,7 @@
       "final_dmg_bonus": 0.06,
       "final_dmg_reduce": 0.04,
       "crit_rating": 150,
-      "res_all": 60,
+      "res_all": 0.3,
       "spd_bonus": 3,
       "cultivation_speed_bonus": 0.12
     },
@@ -491,7 +491,7 @@
     "passive_description_vi": "Hậu Thổ Thần Thể — **Hậu Thổ Trận Phản**: hậu thổ kiên cố, mỗi đòn đánh đều mượn khí lực của khiên — vừa phòng vừa công. Phản đòn trả về một phần qua khiên thay vì máu.",
     "stat_bonuses": {
       "hp_pct": 0.5,
-      "res_all": 150,
+      "res_all": 0.4,
       "final_dmg_reduce": 0.15,
       "thorn_pct": 0.2,
       "stun_on_hit_pct": 0.1,
@@ -529,7 +529,7 @@
       "mp_pct": 0.3,
       "final_dmg_bonus": 0.15,
       "crit_rating": 300,
-      "res_all": 60,
+      "res_all": 0.3,
       "cooldown_reduce": 0.08
     },
     "special_requirements": [
@@ -674,39 +674,6 @@
     "activation_chance": 0.25
   },
   {
-    "key": "ConstitutionThaiDuong",
-    "vi": "Thái Dương Thần Thể",
-    "en": "Supreme Yang Divine Body",
-    "rarity": "legendary",
-    "element": null,
-    "roll_weight": 0,
-    "cost": {
-      "merit": 0,
-      "stones": 150000
-    },
-    "passive_description_vi": "Thái dương thần thể, dương lực cực thịnh. Sát thương bạo kích đạt đỉnh cực dương, mọi đòn đánh đều như ánh mặt trời thiêu đốt.",
-    "stat_bonuses": {
-      "final_dmg_bonus": 0.4,
-      "crit_rating": 300,
-      "crit_dmg_rating": 600,
-      "burn_on_hit_pct": 0.25,
-      "burn_dmg_bonus": 0.3,
-      "element_pen": {
-        "hoa": 0.2
-      },
-      "dot_can_crit": true
-    },
-    "special_requirements": "requires_dao_ti_yang",
-    "materials": {
-      "MatDaoCotTinh": 8,
-      "MatThienDaoTuy": 5,
-      "MatHonNguyenCot": 2,
-      "SupremeDuongTinh": 3,
-      "ElemEssHoa": 3
-    },
-    "activation_chance": 0.25
-  },
-  {
     "key": "ConstitutionTieuDao",
     "vi": "Tiêu Dao Thần Thể",
     "en": "Carefree Divine Body",
@@ -750,7 +717,7 @@
     "passive_description_vi": "Trấn giới chi thể, áp chế mọi kẻ thù. Miễn nhiễm phần lớn debuff và gần như không thể bị bạo kích.",
     "stat_bonuses": {
       "crit_res_rating": 600,
-      "res_all": 150,
+      "res_all": 0.4,
       "hp_pct": 0.3,
       "debuff_immune_pct": 0.3,
       "final_dmg_reduce": 0.1,
@@ -783,7 +750,7 @@
     "stat_bonuses": {
       "hp_pct": 0.05,
       "mp_pct": 0.05,
-      "res_all": 10
+      "res_all": 0.05
     },
     "special_requirements": null,
     "materials": {
@@ -810,7 +777,7 @@
       "mp_pct": 0.08,
       "final_dmg_bonus": 0.04,
       "crit_rating": 60,
-      "res_all": 20
+      "res_all": 0.1
     },
     "special_requirements": null,
     "progresses_from": "ConstitutionHoangCoChain1",
@@ -839,8 +806,9 @@
       "final_dmg_bonus": 0.06,
       "crit_rating": 90,
       "crit_dmg_rating": 50,
-      "res_all": 30,
-      "shield_regen_pct": 0.02
+      "res_all": 0.15,
+      "shield_regen_pct": 0.02,
+      "shield_flat_per_realm": 50
     },
     "special_requirements": null,
     "progresses_from": "ConstitutionHoangCoChain2",
@@ -870,8 +838,9 @@
       "crit_rating": 130,
       "crit_dmg_rating": 80,
       "crit_res_rating": 60,
-      "res_all": 40,
-      "shield_regen_pct": 0.02
+      "res_all": 0.2,
+      "shield_regen_pct": 0.02,
+      "shield_flat_per_realm": 60
     },
     "special_requirements": null,
     "progresses_from": "ConstitutionHoangCoChain3",
@@ -928,8 +897,9 @@
       "crit_rating": 210,
       "crit_dmg_rating": 150,
       "crit_res_rating": 140,
-      "res_all": 80,
+      "res_all": 0.4,
       "shield_regen_pct": 0.03,
+      "shield_flat_per_realm": 70,
       "spd_bonus": 5,
       "cooldown_reduce": 0.04
     },
@@ -962,8 +932,9 @@
       "crit_rating": 260,
       "crit_dmg_rating": 200,
       "crit_res_rating": 180,
-      "res_all": 100,
+      "res_all": 0.4,
       "shield_regen_pct": 0.04,
+      "shield_flat_per_realm": 80,
       "spd_bonus": 6,
       "hp_regen_pct": 0.02,
       "mp_regen_pct": 0.02,
@@ -1000,8 +971,9 @@
       "crit_rating": 310,
       "crit_dmg_rating": 250,
       "crit_res_rating": 220,
-      "res_all": 125,
+      "res_all": 0.4,
       "shield_regen_pct": 0.04,
+      "shield_flat_per_realm": 90,
       "spd_bonus": 8,
       "hp_regen_pct": 0.03,
       "mp_regen_pct": 0.03,
@@ -1039,12 +1011,13 @@
       "crit_rating": 380,
       "crit_dmg_rating": 320,
       "crit_res_rating": 280,
-      "res_all": 150,
+      "res_all": 0.4,
       "spd_bonus": 10,
       "evasion_rating": 180,
       "hp_regen_pct": 0.05,
       "mp_regen_pct": 0.05,
       "shield_regen_pct": 0.06,
+      "shield_flat_per_realm": 120,
       "fortify_per_turn_pct": 0.025,
       "fortify_stack_cap": 10,
       "fortify_post_hit_dr_pct": 0.12,
@@ -1152,7 +1125,7 @@
       "crit_dmg_rating": 150,
       "evasion_rating": 150,
       "crit_res_rating": 150,
-      "res_all": 100,
+      "res_all": 0.4,
       "spd_bonus": 8,
       "comprehension": 200,
       "luck": 200,

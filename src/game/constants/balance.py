@@ -98,6 +98,12 @@ BASE_MP_REGEN_PCT: float = 0.03   # 1 % MP per turn baseline (before bonuses)
 MAX_FINAL_DMG_REDUCE: float = 0.90  # damage-reduction hard cap (buffs + debuffs)
 MAX_ELEMENTAL_RES: float = 0.75     # per-element resistance hard cap (post-shred, post-stack)
 
+# ── Auto-repeat loot gate ────────────────────────────────────────────────────
+# Fraction of auto-repeat kills that actually roll loot. The remainder yield
+# nothing — the gate fires before the drop table so afk grinding pays out at a
+# small fraction of manual play. 0.10 = 10 % of auto kills drop normal loot.
+AUTO_LOOT_DROP_RATE: float = 0.15
+
 # ── SPD → combat impact ───────────────────────────────────────────────────────
 # Every SPD point above baseline adds evasion rating (always-on defensive edge).
 SPD_EVASION_BASELINE: int = 10          # SPD at/below this grants no evasion bonus
@@ -259,25 +265,25 @@ ENCOUNTER_GRADES: list[dict] = [
     {
         "key": "di_thuong", "vi": "Dị Thường", "emoji": "⚡",
         "w_min": 25, "w_max": 28,
-        "stat_mult": 1.30, "loot_mult": 1.3, "luck_pct": 0.20, "merit_mult": 1.5,
+        "stat_mult": 1.30, "loot_mult": 1.2, "luck_pct": 0.20, "merit_mult": 1.5,
         "secondary_count": 1, "secondary_lo": 0.10, "secondary_hi": 0.20,
     },
     {
         "key": "tinh_anh", "vi": "Tinh Anh", "emoji": "🌟",
         "w_min": 10, "w_max": 22,
-        "stat_mult": 1.75, "loot_mult": 1.8, "luck_pct": 0.50, "merit_mult": 2.5,
+        "stat_mult": 1.75, "loot_mult": 1.5, "luck_pct": 0.50, "merit_mult": 2.5,
         "secondary_count": 2, "secondary_lo": 0.15, "secondary_hi": 0.30,
     },
     {
         "key": "vuong_gia", "vi": "Vương Giả", "emoji": "👑",
         "w_min": 4, "w_max": 14,
-        "stat_mult": 2.80, "loot_mult": 3.0, "luck_pct": 1.20, "merit_mult": 4.0,
+        "stat_mult": 2.80, "loot_mult": 2.0, "luck_pct": 1.20, "merit_mult": 4.0,
         "secondary_count": 2, "secondary_lo": 0.20, "secondary_hi": 0.40,
     },
     {
         "key": "truyen_thuyet", "vi": "Truyền Thuyết", "emoji": "🔱",
         "w_min": 1, "w_max": 6,
-        "stat_mult": 4.20, "loot_mult": 5.0, "luck_pct": 2.50, "merit_mult": 8.0,
+        "stat_mult": 4.50, "loot_mult": 3.0, "luck_pct": 1.50, "merit_mult": 8.0,
         "secondary_count": 3, "secondary_lo": 0.30, "secondary_hi": 0.50,
     },
 ]

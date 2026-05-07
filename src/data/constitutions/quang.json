@@ -408,8 +408,8 @@
   },
   {
     "key": "ConstitutionQuangKim_Leg",
-    "vi": "Đế Kim Quang Thể",
-    "en": "Imperial Golden Light Body",
+    "vi": "Thái Dương Đế Quang Thể",
+    "en": "Solar Emperor Light Body",
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
@@ -417,12 +417,12 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Đế Kim Quang Thể — **Thánh Quang Hộ Thuẫn**: Thanh Tẩy tự sinh khiên, khí lực khiên cộng vào sát thương. Hộ pháp sáng — vừa che chở vừa trừng trị.",
+    "passive_description_vi": "Thái Dương Đế Quang Thể — **Thánh Quang Hộ Thuẫn**: Thanh Tẩy tự sinh khiên, khí lực khiên cộng vào sát thương. Hộ pháp sáng — vừa che chở vừa trừng trị.",
     "stat_bonuses": {
       "hp_pct": 0.3,
       "final_dmg_bonus": 0.2,
       "crit_res_rating": 300,
-      "res_all": 100,
+      "res_all": 0.4,
       "final_dmg_reduce": 0.1,
       "shield_max_base": 400,
       "shield_max_pct": 0.15,
@@ -443,8 +443,8 @@
   },
   {
     "key": "ConstitutionQuangLien_Leg",
-    "vi": "Đế Bạch Liên Thể",
-    "en": "Imperial White Lotus Body",
+    "vi": "Tịnh Thế Bạch Liên Thể",
+    "en": "World-Purifying White Lotus Body",
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
@@ -452,7 +452,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Đế Bạch Liên Thể — Liên Hoa Tịnh Hóa: mỗi lần Thanh Tẩy, hoa sen nở giải trừ ô uế và rưới HP cho thân chủ.",
+    "passive_description_vi": "Tịnh Thế Bạch Liên Thể — Liên Hoa Tịnh Hóa: mỗi lần Thanh Tẩy, hoa sen nở giải trừ ô uế và rưới HP cho thân chủ.",
     "stat_bonuses": {
       "mp_pct": 0.4,
       "heal_pct": 0.4,
@@ -473,8 +473,8 @@
   },
   {
     "key": "ConstitutionQuangTinh_Leg",
-    "vi": "Đế Tịnh Quang Thể",
-    "en": "Imperial Pure Light Body",
+    "vi": "Vạn Đạo Hạo Quang Thể",
+    "en": "Ten Thousand Dao Bright Light Body",
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,
@@ -482,7 +482,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Đế Tịnh Quang Thể — **Tịnh Hóa Phản Đòn**: mỗi lần Thanh Tẩy đều phóng quang trảm phản công về kẻ địch. Thân thể thanh khiết miễn nhiễm phần lớn debuff.",
+    "passive_description_vi": "Vạn Đạo Hạo Quang Thể — **Tịnh Hóa Phản Đòn**: mỗi lần Thanh Tẩy đều phóng quang trảm phản công về kẻ địch. Thân thể thanh khiết miễn nhiễm phần lớn debuff.",
     "stat_bonuses": {
       "hp_pct": 0.35,
       "cleanse_on_turn_pct": 0.5,
@@ -504,8 +504,8 @@
   },
   {
     "key": "ConstitutionVoLuongQuang",
-    "vi": "Vô Lượng Thánh Quang Thể",
-    "en": "Infinite Holy Light Body",
+    "vi": "Vô Lượng Quang Minh Thánh Thể",
+    "en": "Infinite Brightness Holy Body",
     "rarity": "legendary",
     "element": "quang",
     "roll_weight": 0,

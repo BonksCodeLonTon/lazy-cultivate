@@ -128,8 +128,13 @@ async def _execute_boss_attack(
             )
             return
 
-        # Require player realm >= boss realm - 1 so lower realms cannot grief
-        if player.qi_realm + 1 < boss_data.get("realm", 1):
+        # Require the player's strongest axis (Luyện Thể / Luyện Khí /
+        # Trận Đạo) to be at least boss_realm - 1 — mirrors dungeon entry
+        # gating so a Thể Tu or Trận Tu isn't blocked just because their
+        # qi_realm lags. Lower realms still can't grief because all three
+        # axes would be behind.
+        best_realm = max(player.body_realm, player.qi_realm, player.formation_realm)
+        if best_realm + 1 < boss_data.get("realm", 1):
             await interaction.edit_original_response(
                 embed=error_embed(
                     f"Cảnh giới của ngươi chưa đủ để tấn công **{boss_data['vi']}**."
@@ -421,7 +426,13 @@ async def _refresh_hub(interaction: discord.Interaction, discord_id: int, back_f
         prepo = PlayerRepository(session)
         active = await wrepo.list_active()
         player = await prepo.get_by_discord_id(interaction.user.id)
-    player_realm = player.qi_realm if player else 0
+    # Hub eligibility shown using the player's strongest axis — matches the
+    # attack gate at ``attack`` so the green/red status in the list reflects
+    # what the actual eligibility check will say.
+    player_realm = (
+        max(player.body_realm, player.qi_realm, player.formation_realm)
+        if player else 0
+    )
 
     embed = _boss_list_embed(active, player_realm)
     extra_embeds: list[discord.Embed] = []

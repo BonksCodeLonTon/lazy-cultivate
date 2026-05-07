@@ -269,6 +269,121 @@ def test_consume_unknown_pill_returns_not_applied():
     assert not effect.applied
 
 
+# ── Grade gating: pill grade vs. player cultivation grade ──────────────────
+
+
+def _find_pill(effect_key: str, grade: int) -> str | None:
+    """Locate a pill in the registry by effect_key + grade."""
+    for p in registry.items.values():
+        if (p.get("type") == "pill"
+                and p.get("effect_key") == effect_key
+                and int(p.get("grade", 0)) == grade):
+            return p["key"]
+    return None
+
+
+def test_consume_exp_luyen_the_refused_when_body_realm_exceeds_pill_grade():
+    """A Grade-1 body XP pill must not absorb into a Cấp-2 (body_realm=1)
+    player — the body has surpassed what the pill can offer."""
+    pill_key = _find_pill("exp_luyen_the", 1)
+    assert pill_key, "expected a Grade-1 exp_luyen_the pill"
+
+    char = _make_char()
+    char.body_realm = 1   # one tier above the pill
+    effect = consume_pill(char, pill_key, 1)
+    assert not effect.applied
+    assert effect.body_xp_delta == 0
+    assert "phẩm cấp" in effect.message  # gated message wording
+
+
+def test_consume_exp_qi_refused_when_qi_realm_exceeds_pill_grade():
+    pill_key = _find_pill("exp_qi", 1)
+    assert pill_key, "expected a Grade-1 exp_qi pill"
+
+    char = _make_char(qi_realm=1)   # one tier above the pill
+    effect = consume_pill(char, pill_key, 1)
+    assert not effect.applied
+    assert effect.qi_xp_delta == 0
+
+
+def test_consume_reduce_toxicity_refused_when_either_axis_exceeds_pill_grade():
+    """``reduce_toxicity`` is global, so ANY axis exceeding the pill grade
+    triggers the gate — toxicity comes from both body + qi pill use."""
+    pill_key = _find_pill("reduce_toxicity", 2)
+    assert pill_key, "expected a Grade-2 reduce_toxicity pill"
+
+    char = _make_char()
+    char.body_realm = 2   # body alone exceeds grade-2 pill
+    effect = consume_pill(char, pill_key, 1)
+    assert not effect.applied
+    assert effect.dan_doc_delta == 0   # gated → no delta on the refused effect
+
+
+def test_consume_at_matching_grade_is_allowed():
+    """Boundary: pill_grade == player_realm + 1 (i.e., player_realm < pill_grade)
+    means the player is still within the pill's tier — consume goes through."""
+    pill_key = _find_pill("exp_luyen_the", 3)
+    assert pill_key, "expected a Grade-3 exp_luyen_the pill"
+
+    char = _make_char()
+    char.body_realm = 2   # Cấp 3 == pill grade → still inside the tier
+    effect = consume_pill(char, pill_key, 1)
+    assert effect.applied
+    assert effect.body_xp_delta > 0
+
+
+def test_pill_xp_scales_with_pill_grade_not_player_realm():
+    """A Grade-3 pill should grant strictly more XP than a Grade-1 pill at
+    Hoàng quality, regardless of the consumer's own realm — XP follows the
+    pill, not the consumer."""
+    g1 = _find_pill("exp_luyen_the", 1)
+    g3 = _find_pill("exp_luyen_the", 3)
+    assert g1 and g3
+
+    # Same low-realm consumer — under both grades' gates.
+    char_lo = _make_char()
+    char_hi = _make_char()
+    eff_lo = consume_pill(char_lo, g1, 1)
+    eff_hi = consume_pill(char_hi, g3, 1)
+    assert eff_lo.applied and eff_hi.applied
+    assert eff_hi.body_xp_delta > eff_lo.body_xp_delta
+
+
+def test_reduce_toxicity_magnitude_scales_with_pill_grade():
+    """Higher-grade purifiers must remove more Đan Độc per Hoàn pill."""
+    g2 = _find_pill("reduce_toxicity", 2)
+    g5 = _find_pill("reduce_toxicity", 5)
+    if not (g2 and g5):
+        pytest.skip("need both Grade-2 and Grade-5 reduce_toxicity pills in data")
+
+    char = _make_char()
+    eff_lo = consume_pill(char, g2, 1)
+    eff_hi = consume_pill(char, g5, 1)
+    assert eff_lo.applied and eff_hi.applied
+    # dan_doc_delta is negative for purifiers; "more removed" = "more negative".
+    assert eff_hi.dan_doc_delta < eff_lo.dan_doc_delta
+
+
+def test_pill_xp_per_grade_is_monotonic():
+    """No grade should grant less XP than the grade below it.
+
+    R8 (Đăng Tiên/Nhập Thánh) has an anomalously small bậc-9 threshold
+    (= ``TRIBULATION_EXP_COST``), so a naive ``threshold // target_pills``
+    formula gives Grade-9 pills ~270 XP vs Grade-8's ~1,264 — inverted.
+    The function carries a running-max floor to keep the curve monotonic;
+    pin it so a future refactor can't silently regress it.
+    """
+    from src.game.systems.alchemy import _pill_xp_for_grade
+    for axis in ("body", "qi"):
+        prev = 0
+        for grade in range(1, 10):
+            xp = _pill_xp_for_grade(axis, grade)
+            assert xp >= prev, (
+                f"axis={axis} grade={grade}: {xp} XP/pill < grade-{grade-1}'s {prev}"
+            )
+            prev = xp
+
+
 # ── AlchemyResult.consumed shape ───────────────────────────────────────────
 
 

@@ -395,8 +395,8 @@
   },
   {
     "key": "ConstitutionCuongPhongThan",
-    "vi": "Cuồng Phong Thiên Nhẫn Thể",
-    "en": "Storm Heaven-Blade Body",
+    "vi": "Thiên Nhẫn Cuồng Phong Thể",
+    "en": "Heavenly Blade Mad Gale Body",
     "rarity": "legendary",
     "element": "phong",
     "roll_weight": 0,
@@ -425,8 +425,8 @@
   },
   {
     "key": "ConstitutionPhongLoc_Leg",
-    "vi": "Đế Lốc Xoáy Thể",
-    "en": "Imperial Cyclone Wind Body",
+    "vi": "Hư Không Sát Nhất Thể",
+    "en": "Void Killing Unity Body",
     "rarity": "legendary",
     "element": "phong",
     "roll_weight": 0,
@@ -460,8 +460,8 @@
   },
   {
     "key": "ConstitutionPhongPhieu_Leg",
-    "vi": "Đế Phiêu Phong Thể",
-    "en": "Imperial Drifting Wind Body",
+    "vi": "Lăng Không Phiêu Diểu Thể",
+    "en": "Soaring Ethereal Void Body",
     "rarity": "legendary",
     "element": "phong",
     "roll_weight": 0,
@@ -494,8 +494,8 @@
   },
   {
     "key": "ConstitutionPhongTinh_Leg",
-    "vi": "Đế Tinh Phong Thể",
-    "en": "Imperial Spirit Wind Body",
+    "vi": "Tinh Thần Phong Phách Thể",
+    "en": "Starry Wind Soul Body",
     "rarity": "legendary",
     "element": "phong",
     "roll_weight": 0,

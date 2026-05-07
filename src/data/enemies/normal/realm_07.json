@@ -15,7 +15,8 @@
     "mp_regen_pct": 0.07,
     "skill_keys": [
       "EnemyKim_T3",
-      "EnemyApex_R7_Physical"
+      "EnemyApex_R7_Physical",
+      "EnemyDungeon_Kim_DaiNang_R7"
     ],
     "base_crit_rating": 15,
     "base_crit_dmg_rating": 25,
@@ -48,7 +49,8 @@
     "mp_regen_pct": 0.07,
     "skill_keys": [
       "EnemyMoc_T3",
-      "EnemyApex_R7_Magical"
+      "EnemyApex_R7_Magical",
+      "EnemyDungeon_Moc_DaiNang_R7"
     ],
     "base_crit_rating": 15,
     "base_crit_dmg_rating": 25,
@@ -81,7 +83,8 @@
     "mp_regen_pct": 0.07,
     "skill_keys": [
       "EnemyThuy_T3",
-      "EnemyApex_R7_Magical"
+      "EnemyApex_R7_Magical",
+      "EnemyDungeon_Thuy_DaiNang_R7"
     ],
     "base_crit_rating": 12,
     "base_crit_dmg_rating": 25,
@@ -114,7 +117,8 @@
     "mp_regen_pct": 0.07,
     "skill_keys": [
       "EnemyPhong_T3",
-      "EnemyApex_R7_Physical"
+      "EnemyApex_R7_Physical",
+      "EnemyDungeon_Phong_DaiNang_R7"
     ],
     "base_crit_rating": 20,
     "base_crit_dmg_rating": 30,
@@ -147,7 +151,8 @@
     "mp_regen_pct": 0.07,
     "skill_keys": [
       "EnemyTho_T3",
-      "EnemyApex_R7_Physical"
+      "EnemyApex_R7_Physical",
+      "EnemyDungeon_Tho_DaiNang_R7"
     ],
     "base_crit_rating": 15,
     "base_crit_dmg_rating": 25,

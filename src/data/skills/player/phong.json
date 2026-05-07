@@ -958,7 +958,7 @@
     },
     "mp_cost": 17,
     "cooldown": 1,
-    "base_dmg": 25,
+    "base_dmg": 15,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -982,7 +982,7 @@
     },
     "mp_cost": 27,
     "cooldown": 2,
-    "base_dmg": 45,
+    "base_dmg": 24,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1006,7 +1006,7 @@
     },
     "mp_cost": 28,
     "cooldown": 2,
-    "base_dmg": 55,
+    "base_dmg": 38,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1030,7 +1030,7 @@
     },
     "mp_cost": 48,
     "cooldown": 3,
-    "base_dmg": 130,
+    "base_dmg": 70,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1054,7 +1054,7 @@
     },
     "mp_cost": 45,
     "cooldown": 3,
-    "base_dmg": 110,
+    "base_dmg": 75,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1078,7 +1078,7 @@
     },
     "mp_cost": 50,
     "cooldown": 3,
-    "base_dmg": 135,
+    "base_dmg": 95,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1102,7 +1102,7 @@
     },
     "mp_cost": 60,
     "cooldown": 3,
-    "base_dmg": 160,
+    "base_dmg": 110,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1126,7 +1126,7 @@
     },
     "mp_cost": 65,
     "cooldown": 3,
-    "base_dmg": 195,
+    "base_dmg": 140,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1150,7 +1150,7 @@
     },
     "mp_cost": 70,
     "cooldown": 4,
-    "base_dmg": 230,
+    "base_dmg": 160,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1174,7 +1174,7 @@
     },
     "mp_cost": 75,
     "cooldown": 4,
-    "base_dmg": 270,
+    "base_dmg": 180,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1198,7 +1198,7 @@
     },
     "mp_cost": 80,
     "cooldown": 4,
-    "base_dmg": 220,
+    "base_dmg": 180,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1222,7 +1222,7 @@
     },
     "mp_cost": 95,
     "cooldown": 4,
-    "base_dmg": 240,
+    "base_dmg": 210,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1246,7 +1246,7 @@
     },
     "mp_cost": 100,
     "cooldown": 4,
-    "base_dmg": 290,
+    "base_dmg": 265,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1270,7 +1270,7 @@
     },
     "mp_cost": 105,
     "cooldown": 5,
-    "base_dmg": 340,
+    "base_dmg": 305,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1294,7 +1294,7 @@
     },
     "mp_cost": 110,
     "cooldown": 5,
-    "base_dmg": 385,
+    "base_dmg": 340,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1318,7 +1318,7 @@
     },
     "mp_cost": 130,
     "cooldown": 6,
-    "base_dmg": 460,
+    "base_dmg": 395,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1342,7 +1342,7 @@
     },
     "mp_cost": 135,
     "cooldown": 6,
-    "base_dmg": 520,
+    "base_dmg": 435,
     "effects": [
       "DebuffAnPhong"
     ],
@@ -1366,12 +1366,684 @@
     },
     "mp_cost": 165,
     "cooldown": 6,
-    "base_dmg": 660,
+    "base_dmg": 625,
     "effects": [
       "DebuffAnPhong"
     ],
     "effect_chances": {
       "DebuffAnPhong": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR1G2",
+    "vi": "Phong Huyền Đoạn Thuật",
+    "en": "Phong Huyền Severing Art",
+    "realm": 1,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 22,
+    "cooldown": 1,
+    "base_dmg": 20,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR1G2B",
+    "vi": "Phong Huyền Trảm Quyết",
+    "en": "Phong Huyền Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 22,
+    "cooldown": 1,
+    "base_dmg": 20,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR1G4",
+    "vi": "Phong Thiên Đoạn Thuật",
+    "en": "Phong Thiên Severing Art",
+    "realm": 1,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 32,
+    "cooldown": 2,
+    "base_dmg": 28,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR1G4B",
+    "vi": "Phong Thiên Trảm Quyết",
+    "en": "Phong Thiên Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 32,
+    "cooldown": 2,
+    "base_dmg": 28,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR2G3",
+    "vi": "Phong Địa Đoạn Thuật",
+    "en": "Phong Địa Severing Art",
+    "realm": 2,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 33,
+    "cooldown": 3,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR2G3B",
+    "vi": "Phong Địa Trảm Quyết",
+    "en": "Phong Địa Cleaving Edict",
+    "realm": 2,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 33,
+    "cooldown": 3,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR2G4",
+    "vi": "Phong Thiên Đoạn Thuật",
+    "en": "Phong Thiên Severing Art",
+    "realm": 2,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 38,
+    "cooldown": 3,
+    "base_dmg": 50,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR2G4B",
+    "vi": "Phong Thiên Trảm Quyết",
+    "en": "Phong Thiên Cleaving Edict",
+    "realm": 2,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 38,
+    "cooldown": 3,
+    "base_dmg": 50,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR3G1",
+    "vi": "Phong Hoàng Đoạn Thuật",
+    "en": "Phong Hoàng Severing Art",
+    "realm": 3,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 33,
+    "cooldown": 2,
+    "base_dmg": 42,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR3G1B",
+    "vi": "Phong Hoàng Trảm Quyết",
+    "en": "Phong Hoàng Cleaving Edict",
+    "realm": 3,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 33,
+    "cooldown": 2,
+    "base_dmg": 42,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR3G3",
+    "vi": "Phong Địa Đoạn Thuật",
+    "en": "Phong Địa Severing Art",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 43,
+    "cooldown": 3,
+    "base_dmg": 62,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR3G3B",
+    "vi": "Phong Địa Trảm Quyết",
+    "en": "Phong Địa Cleaving Edict",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 43,
+    "cooldown": 3,
+    "base_dmg": 62,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR4G3",
+    "vi": "Phong Địa Đoạn Thuật",
+    "en": "Phong Địa Severing Art",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR4G3B",
+    "vi": "Phong Địa Trảm Quyết",
+    "en": "Phong Địa Cleaving Edict",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR4G4",
+    "vi": "Phong Thiên Đoạn Thuật",
+    "en": "Phong Thiên Severing Art",
+    "realm": 4,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 128,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR4G4B",
+    "vi": "Phong Thiên Trảm Quyết",
+    "en": "Phong Thiên Cleaving Edict",
+    "realm": 4,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 128,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR6G3",
+    "vi": "Phong Địa Đoạn Thuật",
+    "en": "Phong Địa Severing Art",
+    "realm": 6,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 85,
+    "cooldown": 5,
+    "base_dmg": 210,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR6G3B",
+    "vi": "Phong Địa Trảm Quyết",
+    "en": "Phong Địa Cleaving Edict",
+    "realm": 6,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 85,
+    "cooldown": 5,
+    "base_dmg": 210,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR6G4",
+    "vi": "Phong Thiên Đoạn Thuật",
+    "en": "Phong Thiên Severing Art",
+    "realm": 6,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 90,
+    "cooldown": 5,
+    "base_dmg": 235,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR6G4B",
+    "vi": "Phong Thiên Trảm Quyết",
+    "en": "Phong Thiên Cleaving Edict",
+    "realm": 6,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.0
+    },
+    "mp_cost": 90,
+    "cooldown": 5,
+    "base_dmg": 235,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR8G1",
+    "vi": "Phong Hoàng Đoạn Thuật",
+    "en": "Phong Hoàng Severing Art",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 120,
+    "cooldown": 5,
+    "base_dmg": 270,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR8G1B",
+    "vi": "Phong Hoàng Trảm Quyết",
+    "en": "Phong Hoàng Cleaving Edict",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 120,
+    "cooldown": 5,
+    "base_dmg": 270,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR8G2",
+    "vi": "Phong Huyền Đoạn Thuật",
+    "en": "Phong Huyền Severing Art",
+    "realm": 8,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 125,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR8G2B",
+    "vi": "Phong Huyền Trảm Quyết",
+    "en": "Phong Huyền Cleaving Edict",
+    "realm": 8,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 125,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR9G1",
+    "vi": "Phong Hoàng Đoạn Thuật",
+    "en": "Phong Hoàng Severing Art",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 150,
+    "cooldown": 5,
+    "base_dmg": 380,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR9G1B",
+    "vi": "Phong Hoàng Trảm Quyết",
+    "en": "Phong Hoàng Cleaving Edict",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 150,
+    "cooldown": 5,
+    "base_dmg": 380,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR9G2",
+    "vi": "Phong Huyền Đoạn Thuật",
+    "en": "Phong Huyền Severing Art",
+    "realm": 9,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 155,
+    "cooldown": 5,
+    "base_dmg": 480,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerPhongR9G2B",
+    "vi": "Phong Huyền Trảm Quyết",
+    "en": "Phong Huyền Cleaving Edict",
+    "realm": 9,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 155,
+    "cooldown": 5,
+    "base_dmg": 480,
+    "effects": [
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffCuonBay": 0.35
     },
     "formation_key": null
   }

@@ -12,7 +12,8 @@
     "hp_regen_pct": 0.01,
     "skill_keys": [
       "EnemyMoc_R9",
-      "EnemyMoc_R8"
+      "EnemyMoc_R8",
+      "EnemyDungeon_Moc_ChiTon_R9"
     ],
     "loot_table_key": "DuocVienLoot_9",
     "base_atk": 78,
@@ -33,7 +34,8 @@
     "hp_regen_pct": 0.01,
     "skill_keys": [
       "EnemyMoc_R9",
-      "EnemyMoc_R8"
+      "EnemyMoc_R8",
+      "EnemyDungeon_Moc_ChiTon_R9"
     ],
     "loot_table_key": "DuocVienLoot_9",
     "base_atk": 78,
@@ -54,7 +56,8 @@
     "hp_regen_pct": 0.01,
     "skill_keys": [
       "EnemyMoc_R9",
-      "EnemyMoc_R8"
+      "EnemyMoc_R8",
+      "EnemyDungeon_Moc_ChiTon_R9"
     ],
     "loot_table_key": "DuocVienLoot_9",
     "base_atk": 78,

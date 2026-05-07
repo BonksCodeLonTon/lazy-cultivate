@@ -2,33 +2,33 @@
   "LootZone_2": [
     {
       "item_key": "MatHuyetTinh",
-      "weight": 150000,
+      "weight": 75000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatBiPhach",
-      "weight": 150000,
+      "weight": 75000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatKhiTuDan",
-      "weight": 120000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DanHoiHPSmall",
-      "weight": 350000,
+      "weight": 175000,
       "qty_min": 1,
-      "qty_max": 3
+      "qty_max": 2
     },
     {
       "item_key": "DanHoiMPSmall",
-      "weight": 350000,
+      "weight": 175000,
       "qty_min": 1,
-      "qty_max": 3
+      "qty_max": 2
     },
     {
       "item_key": "GemHoa_1",

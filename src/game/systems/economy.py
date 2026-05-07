@@ -16,9 +16,6 @@ FIXED_SHOP_ITEMS: list[dict] = [
     {"item_key": "DanHoiMPSmall",   "grade": 1, "price": 300,    "currency": "merit", "stock": -1},
     {"item_key": "DanHoiHPMid",     "grade": 2, "price": 800,    "currency": "merit", "stock": -1},
     {"item_key": "DanHoiMPMid",     "grade": 2, "price": 800,    "currency": "merit", "stock": -1},
-    {"item_key": "DanCurePoison",   "grade": 1, "price": 500,    "currency": "merit", "stock": -1},
-    {"item_key": "DanCureCC",       "grade": 1, "price": 500,    "currency": "merit", "stock": -1},
-    {"item_key": "DanCureBleeds",   "grade": 1, "price": 400,    "currency": "merit", "stock": -1},
     {"item_key": "ChestHoang",      "grade": 1, "price": 2000,   "currency": "merit", "stock": -1},
     {"item_key": "ChestHuyen",      "grade": 2, "price": 8000,   "currency": "merit", "stock": -1},
     {"item_key": "ItemTayNghiep",   "grade": 3, "price": 80000,  "currency": "merit", "stock": -1},
@@ -39,15 +36,8 @@ DARK_MARKET_FIXED = {
 ROTATING_POOL: list[dict] = [
     {"item_key": "DanHoiHPLarge",  "grade": 2, "price": 2000,  "currency": "merit"},
     {"item_key": "DanHoiMPLarge",  "grade": 2, "price": 2000,  "currency": "merit"},
-    {"item_key": "DanBuffHP",      "grade": 2, "price": 2000,  "currency": "merit"},
-    {"item_key": "DanBuffMP",      "grade": 2, "price": 2000,  "currency": "merit"},
-    {"item_key": "DanBuffCrit",    "grade": 2, "price": 3000,  "currency": "merit"},
-    {"item_key": "DanBuffSpeed",   "grade": 2, "price": 2500,  "currency": "merit"},
-    {"item_key": "DanBuffRes",     "grade": 2, "price": 2500,  "currency": "merit"},
     {"item_key": "DanHoiHPMP",     "grade": 2, "price": 1500,  "currency": "merit"},
     {"item_key": "DanHoiFull",     "grade": 3, "price": 8000,  "currency": "merit"},
-    {"item_key": "DanBuffFDmg",    "grade": 3, "price": 5000,  "currency": "merit"},
-    {"item_key": "DanBuffShield",  "grade": 3, "price": 6000,  "currency": "merit"},
     {"item_key": "ChestDia",       "grade": 3, "price": 30000, "currency": "merit"},
     {"item_key": "ItemPhaCanh",    "grade": 3, "price": 50000, "currency": "merit"},
     # Higher-tier Đan Lô — rotate in the shop; rarer sightings.
@@ -62,12 +52,8 @@ ROTATING_POOL: list[dict] = [
 
 # ── Dark market rotating pool (karma items) ──────────────────────────────────
 DARK_POOL: list[dict] = [
-    {"item_key": "DanDebuffFire",  "grade": 2, "price": 5000,  "currency": "karma_usable"},
-    {"item_key": "DanDebuffIce",   "grade": 2, "price": 5000,  "currency": "karma_usable"},
-    {"item_key": "DanDebuffMute",  "grade": 2, "price": 5000,  "currency": "karma_usable"},
     {"item_key": "DanKarmaDown",   "grade": 3, "price": 20000, "currency": "karma_usable"},
     {"item_key": "DanHoiFull",     "grade": 3, "price": 15000, "currency": "karma_usable"},
-    {"item_key": "DanBuffFDmg",    "grade": 3, "price": 10000, "currency": "karma_usable"},
     {"item_key": "ChestHuyen",     "grade": 2, "price": 12000, "currency": "karma_usable"},
     {"item_key": "MatCanNguyen",   "grade": 2, "price": 8000,  "currency": "karma_usable"},
 ]
@@ -96,7 +82,16 @@ def get_rotating_shop(seed: int | None = None) -> list[ShopSlot]:
 def get_dark_market(seed: int | None = None) -> tuple[ShopSlot, list[ShopSlot]]:
     fixed = ShopSlot(**DARK_MARKET_FIXED)
     rng = random.Random(seed)
-    count = rng.randint(5, min(8, len(DARK_POOL)))
+    pool_size = len(DARK_POOL)
+    if pool_size == 0:
+        return fixed, []
+    # Floor the lower bound at the actual pool size so the legacy
+    # ``randint(5, ...)`` range stays valid after pool trims (the elixir
+    # cleanup dropped DARK_POOL from 8 → 4 entries). Upper bound is the
+    # original 8-cap clamped by what the pool can supply.
+    lower = min(5, pool_size)
+    upper = min(8, pool_size)
+    count = rng.randint(lower, upper)
     rotating = [ShopSlot(**s) for s in rng.sample(DARK_POOL, count)]
     return fixed, rotating
 

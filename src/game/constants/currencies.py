@@ -26,19 +26,29 @@ MERIT_TITLE_THRESHOLDS = {
     1_000_000: "chung_dao",      # Chứng Đạo Thành Tiên
 }
 
-# ── Cultivation progression rates ────────────────────────────────────────────
-# Turns needed to gain 1 level on each axis.
-# At 1440 turns/day, target ~6 months to max one axis (81 levels).
-# body/qi: 259_200 total turns / 81 ≈ 3_200 turns/level
-# formation: half the time (1_600) but each level costs Công Đức
-TURNS_PER_CULT_LEVEL: dict[str, int] = {
-    "body":      720,   # ~12 hrs/level → ~40 days to max axis
-    "qi":        720,
-    "formation": 360,   # ~6 hrs/level (faster but costs Công Đức per level)
-}
+# Per-realm EXP gained per Công Đức spent on Trận Đạo (``study_formation``).
+# Late-game realms cost more merit per insight — Khai Huyền is cheap to
+# bootstrap, Đế Trận demands sustained investment.
+#
+# Rates are floats (sub-1.0 from R1 onward) because the previous integer
+# table let players dump stockpiled merit (from kills, dungeons, world
+# bosses) and skip whole bậc instantly while body/qi cultivators wait
+# real-time turns. The 10× nerf below pulls Trận Đạo back in line so the
+# axis stays balanced against turn-gated cultivation.
+FORMATION_EXP_PER_MERIT_BY_REALM: tuple[float, ...] = (
+    1.0,  # R0 Khai Huyền  — entry tier, stays cheap
+    0.8,  # R1 Nhập Huyền
+    0.6,  # R2 Luyện Huyền
+    0.5,  # R3 Dung Huyền
+    0.4,  # R4 Tâm Trận    — mid-game pivot
+    0.3,  # R5 Thiên Trận
+    0.3,  # R6 Thần Trận
+    0.3,  # R7 Thánh Trận  — heaviest realm by raw EXP
+    0.2,  # R8 Đế Trận     — endgame, smaller table but premium rate
+)
 
-# Công Đức cost per level gained on Trận Đạo axis
-# Scales with current realm: base × (realm_index + 1)
+# Legacy flat rate — retained for backward compatibility / external imports.
+# New code should call ``formation_exp_per_merit(realm)`` instead.
 FORMATION_MERIT_COST_BASE = 1_000
 
 # Shop special item

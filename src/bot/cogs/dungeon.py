@@ -22,12 +22,13 @@ from src.game.systems.combat import (
     build_enemy_combatant, build_player_combatant,
 )
 from src.game.systems.dungeon import (
-    apply_healing_elixir, check_can_enter, compute_realm_total,
+    apply_healing_elixir, best_axis_realm, check_can_enter, compute_realm_total,
     DungeonResult, merge_loot, qualifying_axis,
     _build_wave_list, _grade_progress, _roll_encounter_grade, _roll_boss_grade, _apply_encounter_grade,
 )
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
+from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
 
 log = logging.getLogger(__name__)
 
@@ -245,9 +246,47 @@ def _build_result_embeds(
     return summary_embed, log_embeds
 
 
+# ── Single-session lock ───────────────────────────────────────────────────────
+# In-memory guard against the "open /dungeon twice and run two dungeons in
+# parallel" exploit — without this, both async tasks operate on the same
+# Player row and double-credit merit/loot/stones. Single-process bot, so a
+# plain set is enough; a restart clears the set (acceptable for the rare
+# crash-mid-run case).
+_ACTIVE_DUNGEON_USERS: set[int] = set()
+
+
+def _try_acquire_dungeon_session(discord_id: int) -> bool:
+    """Mark ``discord_id`` as running a dungeon. Returns False if a session is
+    already active for this user."""
+    if discord_id in _ACTIVE_DUNGEON_USERS:
+        return False
+    _ACTIVE_DUNGEON_USERS.add(discord_id)
+    return True
+
+
+def _release_dungeon_session(discord_id: int) -> None:
+    _ACTIVE_DUNGEON_USERS.discard(discord_id)
+
+
+async def _send_already_running_error(interaction: discord.Interaction) -> None:
+    """Common reject path when a user tries to start a 2nd concurrent run."""
+    msg = error_embed(
+        "Bạn đang trong một bí cảnh khác. Hãy hoàn tất hoặc dừng "
+        "phiên hiện tại trước khi mở phiên mới."
+    )
+    try:
+        await interaction.followup.send(embed=msg, ephemeral=True)
+    except discord.HTTPException:
+        # Interaction may not be deferred yet — fall back to direct response.
+        try:
+            await interaction.response.send_message(embed=msg, ephemeral=True)
+        except discord.HTTPException:
+            pass
+
+
 # ── Auto-repeat support ───────────────────────────────────────────────────────
 
-AUTO_REPEAT_MAX_RUNS = 50          # hard ceiling so a forgotten loop self-terminates
+AUTO_REPEAT_MAX_RUNS = 20          # hard ceiling so a forgotten loop self-terminates
 AUTO_REPEAT_INTERSTITIAL_SEC = 3.0  # window between runs for the player to click Stop
 
 
@@ -352,43 +391,60 @@ async def _run_dungeon_with_repeat(
     dungeon_type: str,
 ) -> None:
     """Auto-repeat loop: run the same dungeon until defeat, Stop, the run cap,
-    or currency cap is reached. Renders aggregate totals at the end."""
+    or currency cap is reached. Renders aggregate totals at the end.
+
+    Each interstitial creates a fresh ``AutoRepeatStopView`` whose 120-second
+    timeout would set the shared ``stop_event`` if not cancelled. We stop the
+    previous view before creating a new one so an OLD view's timer can't fire
+    during a later run and abort the loop with a misleading "???" failure.
+    """
     totals = AutoRepeatTotals()
     stop_event = asyncio.Event()
     final_reason = "Hết số lần tối đa"
+    prev_view: AutoRepeatStopView | None = None
 
-    for run_idx in range(AUTO_REPEAT_MAX_RUNS):
-        result = await _execute_dungeon(
-            interaction, dungeon_key, player_best_realm, player_realm_total,
-            back_fn=back_fn, dungeon_type=dungeon_type,
-            auto_mode=True, stop_event=stop_event,
-        )
-        if result is None:
-            final_reason = "Lỗi hệ thống"
-            break
+    try:
+        for run_idx in range(AUTO_REPEAT_MAX_RUNS):
+            result = await _execute_dungeon(
+                interaction, dungeon_key, player_best_realm, player_realm_total,
+                back_fn=back_fn, dungeon_type=dungeon_type,
+                auto_mode=True, stop_event=stop_event,
+            )
+            if result is None:
+                final_reason = "Lỗi hệ thống"
+                break
 
-        totals.add(result)
+            totals.add(result)
 
-        if not result.success:
-            final_reason = f"Thất bại bởi **{result.died_on or '???'}**"
-            break
-        if stop_event.is_set():
-            final_reason = "Người chơi yêu cầu dừng"
-            break
-        if run_idx >= AUTO_REPEAT_MAX_RUNS - 1:
-            break
+            if not result.success:
+                final_reason = f"Thất bại bởi **{result.died_on or '???'}**"
+                break
+            if stop_event.is_set():
+                final_reason = "Người chơi yêu cầu dừng"
+                break
+            if run_idx >= AUTO_REPEAT_MAX_RUNS - 1:
+                break
 
-        # Inter-run window: show running totals + Stop button. Wait up to
-        # AUTO_REPEAT_INTERSTITIAL_SEC for a Stop click before continuing.
-        status_embed = _auto_repeat_status_embed(dungeon_key, totals, result)
-        stop_view = AutoRepeatStopView(interaction.user.id, stop_event)
-        await interaction.edit_original_response(embed=status_embed, view=stop_view)
-        try:
-            await asyncio.wait_for(stop_event.wait(), timeout=AUTO_REPEAT_INTERSTITIAL_SEC)
-            final_reason = "Người chơi yêu cầu dừng"
-            break
-        except asyncio.TimeoutError:
-            pass  # window elapsed, continue to next run
+            # Cancel the previous interstitial's view BEFORE creating a new one.
+            # Otherwise its 120-second on_timeout would still fire mid-run and
+            # set the shared stop_event — see docstring above.
+            if prev_view is not None:
+                prev_view.stop()
+
+            status_embed = _auto_repeat_status_embed(dungeon_key, totals, result)
+            prev_view = AutoRepeatStopView(interaction.user.id, stop_event)
+            await interaction.edit_original_response(embed=status_embed, view=prev_view)
+            try:
+                await asyncio.wait_for(stop_event.wait(), timeout=AUTO_REPEAT_INTERSTITIAL_SEC)
+                final_reason = "Người chơi yêu cầu dừng"
+                break
+            except asyncio.TimeoutError:
+                pass  # window elapsed, continue to next run
+    finally:
+        # Always stop the last surviving view so its dangling timer can't fire
+        # after the final summary embed has replaced the message contents.
+        if prev_view is not None:
+            prev_view.stop()
 
     # Player name lookup for the final summary.
     async with get_session() as session:
@@ -492,7 +548,18 @@ async def _execute_dungeon(
     # grade rolls just because qi_realm is 0.
     _qual_realm, _qual_level = qualifying_axis(char, req_realm)
     grade_progress = _grade_progress(_qual_realm, _qual_level, req_realm)
-    wave_enemies: list[str] = _build_wave_list(dungeon, _rng)
+    # Linh Căn dungeons cap enemy realm to +1 above the player's highest axis
+    # so a Thể Tu at body 7 / qi 0 isn't blocked by the qi-only cap, and no
+    # axis can pull a wave more than one realm above its own ceiling.
+    # ``best_axis_realm`` is 0-indexed (0=Luyện Khí); enemy ``realm_level`` is
+    # 1-indexed → +2 yields "best realm + 1" in enemy-space.
+    _max_enemy_realm = (
+        best_axis_realm(char) + 2
+        if dungeon.get("dungeon_type") == "linh_can" else None
+    )
+    wave_enemies: list[str] = _build_wave_list(
+        dungeon, _rng, max_realm_level=_max_enemy_realm,
+    )
     total_waves = len(wave_enemies)
     boss_min_idx = int(dungeon.get("boss_min_grade_idx", 2))
 
@@ -561,6 +628,7 @@ async def _execute_dungeon(
             player_skill_keys=skill_keys,
             loot_qty_multiplier=grade["loot_mult"],
             loot_luck_pct=grade.get("luck_pct", 0.0),
+            auto_mode=auto_mode,
         )
 
         # Show wave start
@@ -731,21 +799,31 @@ class DungeonPrepView(discord.ui.View):
         self.total_waves = total_waves
         self.done_event = asyncio.Event()
         self.abandoned = False
+        # Page index into the elixir list — preserved across re-renders so
+        # the user stays on the same slice after consuming one.
+        self._page = 0
         self._build_items()
 
     def _build_items(self) -> None:
         self.clear_items()
+        # Clamp the page if elixirs shrank (e.g. last stack consumed).
+        pages = total_pages(len(self.elixirs), per_page=PAGE_SIZE)
+        self._page = max(0, min(self._page, pages - 1))
         if self.elixirs:
+            visible = page_slice(self.elixirs, self._page, per_page=PAGE_SIZE)
             options = [
                 discord.SelectOption(
                     label=f"{e['name']} × {e['qty']}"[:100],
                     value=e["key"],
                     description=f"Dùng 1 × {e['name']}"[:100],
                 )
-                for e in self.elixirs[:25]
+                for e in visible
             ]
+            placeholder = "💊 Dùng Đan Dược..."
+            if pages > 1:
+                placeholder = f"💊 Dùng Đan Dược (Trang {self._page + 1}/{pages})..."
             sel = discord.ui.Select(
-                placeholder="💊 Dùng Đan Dược...",
+                placeholder=placeholder,
                 options=options,
                 row=0,
             )
@@ -763,6 +841,22 @@ class DungeonPrepView(discord.ui.View):
         )
         abandon_btn.callback = self._abandon_cb
         self.add_item(abandon_btn)
+
+        add_page_controls(
+            self,
+            page=self._page,
+            total=len(self.elixirs),
+            on_change=self._on_page_change,
+            row=2,
+        )
+
+    async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
+        if interaction.user.id != self.discord_id:
+            await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
+            return
+        self._page = new_page
+        self._build_items()
+        await interaction.response.edit_message(view=self)
 
     async def _use_elixir_cb(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self.discord_id:
@@ -1017,11 +1111,19 @@ class DungeonDetailView(discord.ui.View):
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
+        # Block parallel sessions BEFORE deferring so the rejection lands as a
+        # plain ephemeral response on the original interaction.
+        if not _try_acquire_dungeon_session(interaction.user.id):
+            await _send_already_running_error(interaction)
+            return
         await interaction.response.defer()
-        await _execute_dungeon(
-            interaction, self.dungeon_key, self.player_best_realm, self.player_realm_total,
-            back_fn=self._back_fn, dungeon_type=self._dungeon_type,
-        )
+        try:
+            await _execute_dungeon(
+                interaction, self.dungeon_key, self.player_best_realm, self.player_realm_total,
+                back_fn=self._back_fn, dungeon_type=self._dungeon_type,
+            )
+        finally:
+            _release_dungeon_session(interaction.user.id)
 
     @discord.ui.button(label="🔁 Tự Động Lặp Lại", style=discord.ButtonStyle.blurple, row=1)
     async def auto_repeat_btn(
@@ -1030,11 +1132,17 @@ class DungeonDetailView(discord.ui.View):
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
+        if not _try_acquire_dungeon_session(interaction.user.id):
+            await _send_already_running_error(interaction)
+            return
         await interaction.response.defer()
-        await _run_dungeon_with_repeat(
-            interaction, self.dungeon_key, self.player_best_realm, self.player_realm_total,
-            back_fn=self._back_fn, dungeon_type=self._dungeon_type,
-        )
+        try:
+            await _run_dungeon_with_repeat(
+                interaction, self.dungeon_key, self.player_best_realm, self.player_realm_total,
+                back_fn=self._back_fn, dungeon_type=self._dungeon_type,
+            )
+        finally:
+            _release_dungeon_session(interaction.user.id)
 
     @discord.ui.button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=2)
     async def back_btn(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
@@ -1132,8 +1240,14 @@ class DungeonCog(commands.Cog, name="Dungeon"):
 
         player_realm_total = compute_realm_total(player)
 
+        # Cross-path entry gate: a Thể Tu / Trận Tu qualifies via their
+        # strongest axis. Mirrors the /status hub's dungeon entry which
+        # already uses ``best_axis_realm`` — the standalone slash command
+        # used to pass raw ``qi_realm`` and locked late-realm body/formation
+        # players out of dungeons their realm-total clearly qualified for.
+        player_best_realm = best_axis_realm(player)
         embed = _dungeon_type_embed()
-        view = DungeonTypeSelectView(interaction.user.id, player.qi_realm, player_realm_total)
+        view = DungeonTypeSelectView(interaction.user.id, player_best_realm, player_realm_total)
         await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
 

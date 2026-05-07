@@ -7,20 +7,29 @@
     "realm_level": 1,
     "element": "tho",
     "base_hp": 1100,
-    "base_spd": 11,
+    "base_spd": 14,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyLCTho_T1",
-      "EnemyTho_T1"
+      "EnemyTho_T1",
+      "EnemyDungeon_Tho_TinhAnh_R1"
     ],
-    "base_atk": 38,
-    "base_matk": 65,
+    "base_atk": 48,
+    "base_matk": 81,
     "base_def": 47,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Tho",
     "final_dmg_bonus": 0.03,
     "base_res": {
-      "tho": 0.2
+      "tho": 0.25,
+      "kim": 0.1,
+      "moc": 0.1,
+      "thuy": 0.1,
+      "hoa": 0.1,
+      "loi": 0.1,
+      "phong": 0.1,
+      "quang": 0.1,
+      "am": 0.1
     },
     "res_cap_pct": 0.8,
     "loot_luck_bonus": 0.0
@@ -33,20 +42,29 @@
     "realm_level": 2,
     "element": "tho",
     "base_hp": 2520,
-    "base_spd": 7,
+    "base_spd": 9,
     "hp_scale": 1.8,
     "skill_keys": [
       "EnemyLCTho_T1",
-      "EnemyTho_T1"
+      "EnemyTho_T1",
+      "EnemyDungeon_Tho_TinhAnh_R2"
     ],
-    "base_atk": 90,
-    "base_matk": 37,
+    "base_atk": 112,
+    "base_matk": 46,
     "base_def": 120,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Tho",
     "final_dmg_bonus": 0.05,
     "base_res": {
-      "tho": 0.25
+      "tho": 0.3,
+      "kim": 0.1,
+      "moc": 0.1,
+      "thuy": 0.1,
+      "hoa": 0.1,
+      "loi": 0.1,
+      "phong": 0.1,
+      "quang": 0.1,
+      "am": 0.1
     },
     "res_cap_pct": 0.85,
     "loot_luck_bonus": 0.0
@@ -59,20 +77,29 @@
     "realm_level": 3,
     "element": "tho",
     "base_hp": 2900,
-    "base_spd": 12,
+    "base_spd": 16,
     "hp_scale": 1.65,
     "skill_keys": [
       "EnemyLCTho_T1",
-      "EnemyLCTho_T2"
+      "EnemyLCTho_T2",
+      "EnemyDungeon_Tho_TinhAnh_R3"
     ],
-    "base_atk": 92,
-    "base_matk": 165,
+    "base_atk": 115,
+    "base_matk": 206,
     "base_def": 105,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Tho",
     "final_dmg_bonus": 0.06,
     "base_res": {
-      "tho": 0.28
+      "tho": 0.33,
+      "kim": 0.1,
+      "moc": 0.1,
+      "thuy": 0.1,
+      "hoa": 0.1,
+      "loi": 0.1,
+      "phong": 0.1,
+      "quang": 0.1,
+      "am": 0.1
     },
     "res_cap_pct": 0.85,
     "loot_luck_bonus": 0.2
@@ -85,20 +112,29 @@
     "realm_level": 4,
     "element": "tho",
     "base_hp": 6000,
-    "base_spd": 8,
+    "base_spd": 10,
     "hp_scale": 1.9,
     "skill_keys": [
       "EnemyLCTho_T1",
-      "EnemyLCTho_T2"
+      "EnemyLCTho_T2",
+      "EnemyDungeon_Tho_CuongGia_R4"
     ],
-    "base_atk": 204,
-    "base_matk": 68,
+    "base_atk": 255,
+    "base_matk": 85,
     "base_def": 238,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Tho",
     "final_dmg_bonus": 0.08,
     "base_res": {
-      "tho": 0.35
+      "tho": 0.4,
+      "kim": 0.15,
+      "moc": 0.15,
+      "thuy": 0.15,
+      "hoa": 0.15,
+      "loi": 0.15,
+      "phong": 0.15,
+      "quang": 0.15,
+      "am": 0.15
     },
     "res_cap_pct": 0.85,
     "loot_luck_bonus": 0.5
@@ -111,21 +147,29 @@
     "realm_level": 5,
     "element": "tho",
     "base_hp": 7800,
-    "base_spd": 14,
+    "base_spd": 18,
     "hp_scale": 1.8,
     "skill_keys": [
       "EnemyLCTho_T2",
-      "EnemyLCTho_T3"
+      "EnemyLCTho_T3",
+      "EnemyDungeon_Tho_CuongGia_R5"
     ],
-    "base_atk": 200,
-    "base_matk": 360,
+    "base_atk": 250,
+    "base_matk": 450,
     "base_def": 190,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Tho",
     "final_dmg_bonus": 0.1,
     "base_res": {
-      "tho": 0.4,
-      "hoa": 0.05
+      "tho": 0.45,
+      "hoa": 0.1,
+      "kim": 0.15,
+      "moc": 0.15,
+      "thuy": 0.15,
+      "loi": 0.15,
+      "phong": 0.15,
+      "quang": 0.15,
+      "am": 0.15
     },
     "res_cap_pct": 0.88,
     "loot_luck_bonus": 0.8,
@@ -140,22 +184,30 @@
     "realm_level": 6,
     "element": "tho",
     "base_hp": 16800,
-    "base_spd": 9,
+    "base_spd": 12,
     "hp_scale": 2.0,
     "skill_keys": [
       "EnemyLCTho_T2",
       "EnemyLCTho_T3",
-      "EnemyLCTho_Apex"
+      "EnemyLCTho_Apex",
+      "EnemyDungeon_Tho_HungManh_R6"
     ],
-    "base_atk": 418,
-    "base_matk": 133,
+    "base_atk": 522,
+    "base_matk": 166,
     "base_def": 456,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Tho",
     "final_dmg_bonus": 0.12,
     "base_res": {
-      "tho": 0.5,
-      "hoa": 0.1
+      "tho": 0.55,
+      "hoa": 0.15,
+      "kim": 0.15,
+      "moc": 0.15,
+      "thuy": 0.15,
+      "loi": 0.15,
+      "phong": 0.15,
+      "quang": 0.15,
+      "am": 0.15
     },
     "res_cap_pct": 0.9,
     "loot_luck_bonus": 1.2
@@ -168,22 +220,30 @@
     "realm_level": 7,
     "element": "tho",
     "base_hp": 21000,
-    "base_spd": 16,
+    "base_spd": 21,
     "hp_scale": 1.95,
     "skill_keys": [
       "EnemyLCTho_T3",
       "EnemyLCTho_Apex",
-      "EnemyLCTho_T2"
+      "EnemyLCTho_T2",
+      "EnemyDungeon_Tho_HungManh_R7"
     ],
-    "base_atk": 410,
-    "base_matk": 730,
+    "base_atk": 512,
+    "base_matk": 912,
     "base_def": 380,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Tho",
     "final_dmg_bonus": 0.18,
     "base_res": {
-      "tho": 0.55,
-      "hoa": 0.13
+      "tho": 0.6,
+      "hoa": 0.18,
+      "kim": 0.2,
+      "moc": 0.2,
+      "thuy": 0.2,
+      "loi": 0.2,
+      "phong": 0.2,
+      "quang": 0.2,
+      "am": 0.2
     },
     "res_cap_pct": 0.9,
     "loot_luck_bonus": 1.5,
@@ -198,22 +258,30 @@
     "realm_level": 8,
     "element": "tho",
     "base_hp": 48000,
-    "base_spd": 10,
+    "base_spd": 13,
     "hp_scale": 2.2,
     "skill_keys": [
       "EnemyLCTho_Apex",
       "EnemyLCTho_T3",
-      "EnemyLCTho_T2"
+      "EnemyLCTho_T2",
+      "EnemyDungeon_Tho_DaiNang_R8"
     ],
-    "base_atk": 798,
-    "base_matk": 273,
+    "base_atk": 998,
+    "base_matk": 341,
     "base_def": 882,
     "mp_regen_pct": 0.08,
     "final_dmg_bonus": 0.28,
     "loot_table_key": "LinhCanLoot_Tho",
     "base_res": {
-      "tho": 0.65,
-      "hoa": 0.2
+      "tho": 0.7,
+      "hoa": 0.25,
+      "kim": 0.2,
+      "moc": 0.2,
+      "thuy": 0.2,
+      "loi": 0.2,
+      "phong": 0.2,
+      "quang": 0.2,
+      "am": 0.2
     },
     "res_cap_pct": 0.9,
     "loot_luck_bonus": 2.0
@@ -226,22 +294,30 @@
     "realm_level": 9,
     "element": "tho",
     "base_hp": 56000,
-    "base_spd": 17,
+    "base_spd": 22,
     "hp_scale": 2.05,
     "skill_keys": [
       "EnemyLCTho_Apex",
       "EnemyLCTho_T3",
-      "EnemyLCTho_T2"
+      "EnemyLCTho_T2",
+      "EnemyDungeon_Tho_DaiNang_R9"
     ],
-    "base_atk": 850,
-    "base_matk": 1480,
+    "base_atk": 1062,
+    "base_matk": 1850,
     "base_def": 720,
     "mp_regen_pct": 0.08,
     "loot_table_key": "LinhCanLoot_Tho",
     "final_dmg_bonus": 0.4,
     "base_res": {
-      "tho": 0.7,
-      "hoa": 0.25
+      "tho": 0.75,
+      "hoa": 0.3,
+      "kim": 0.2,
+      "moc": 0.2,
+      "thuy": 0.2,
+      "loi": 0.2,
+      "phong": 0.2,
+      "quang": 0.2,
+      "am": 0.2
     },
     "res_cap_pct": 0.92,
     "loot_luck_bonus": 2.6,
@@ -256,22 +332,30 @@
     "realm_level": 10,
     "element": "tho",
     "base_hp": 92000,
-    "base_spd": 18,
+    "base_spd": 23,
     "hp_scale": 2.2,
     "skill_keys": [
       "EnemyLCTho_Apex",
       "EnemyLCTho_T3",
-      "EnemyLCTho_T2"
+      "EnemyLCTho_T2",
+      "EnemyDungeon_Tho_ChiTon_R10"
     ],
-    "base_atk": 1200,
-    "base_matk": 2050,
+    "base_atk": 1500,
+    "base_matk": 2562,
     "base_def": 1000,
     "mp_regen_pct": 0.1,
     "loot_table_key": "LinhCanLoot_Tho",
     "final_dmg_bonus": 0.55,
     "base_res": {
-      "tho": 0.75,
-      "hoa": 0.3
+      "tho": 0.8,
+      "hoa": 0.35,
+      "kim": 0.25,
+      "moc": 0.25,
+      "thuy": 0.25,
+      "loi": 0.25,
+      "phong": 0.25,
+      "quang": 0.25,
+      "am": 0.25
     },
     "res_cap_pct": 0.92,
     "loot_luck_bonus": 3.5,

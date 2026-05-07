@@ -26,6 +26,7 @@ from src.game.systems.forge import (
 )
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed
+from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
 
 log = logging.getLogger(__name__)
 
@@ -404,9 +405,10 @@ class ForgeHubView(discord.ui.View):
         self._back_fn     = back_fn
 
         configs = [
-            ("⚒️ Rèn Trang Bị",      discord.ButtonStyle.primary,   self._craft_cb,  0),
-            ("📋 Danh Sách Trang Bị", discord.ButtonStyle.secondary,  self._list_cb,   0),
-            ("📜 Công Thức Rèn",      discord.ButtonStyle.secondary,  self._recipe_cb, 0),
+            ("⚒️ Rèn Trang Bị",      discord.ButtonStyle.primary,   self._craft_cb,   0),
+            ("♻️ Phân Giải",          discord.ButtonStyle.danger,    self._recycle_cb, 0),
+            ("📋 Danh Sách Trang Bị", discord.ButtonStyle.secondary, self._list_cb,    1),
+            ("📜 Công Thức Rèn",      discord.ButtonStyle.secondary, self._recipe_cb,  1),
         ]
         for label, style, cb, row in configs:
             btn = discord.ui.Button(label=label, style=style, row=row)
@@ -414,7 +416,7 @@ class ForgeHubView(discord.ui.View):
             self.add_item(btn)
 
         if back_fn is not None:
-            back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
+            back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=2)
             back_btn.callback = self._back_cb
             self.add_item(back_btn)
 
@@ -427,6 +429,29 @@ class ForgeHubView(discord.ui.View):
             return
         await interaction.response.defer()
         await _nav_slot(interaction, self._discord_id, self._back_fn)
+
+    async def _recycle_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        # Late import — recycle imports the forge cog indirectly via shared
+        # state util modules, so a top-level import would cycle.
+        from src.bot.cogs.recycle import RecycleView, _recycle_embed
+
+        async with get_session() as session:
+            prepo = PlayerRepository(session)
+            player = await prepo.get_by_discord_id(self._discord_id)
+            if player is None:
+                await interaction.edit_original_response(
+                    embed=error_embed("Chưa có nhân vật."), view=None,
+                )
+                return
+            erepo = EquipmentRepository(session)
+            bag = await erepo.get_bag(player.id)
+        embed = _recycle_embed(player.name, bag)
+        view = RecycleView(self._discord_id, player.name, bag)
+        await interaction.edit_original_response(embed=embed, view=view)
 
     async def _list_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
@@ -608,6 +633,7 @@ class _MaterialView(discord.ui.View):
         *,
         eligible: list[tuple[str, int]],
         required_qty: int,
+        page: int = 0,
     ) -> None:
         super().__init__(timeout=180)
         self._discord_id  = discord_id
@@ -615,10 +641,14 @@ class _MaterialView(discord.ui.View):
         self._base_key    = base_key
         self._grade       = grade
         self._hub_back_fn = hub_back_fn
+        self._eligible    = list(eligible)
+        self._required_qty = required_qty
+        pages = total_pages(len(self._eligible), per_page=PAGE_SIZE)
+        self._page = max(0, min(page, pages - 1))
 
-        if eligible:
+        if self._eligible:
             options: list[discord.SelectOption] = []
-            for key, qty in eligible[:25]:  # Discord's hard cap
+            for key, qty in page_slice(self._eligible, self._page, per_page=PAGE_SIZE):
                 item = registry.get_item(key) or {}
                 label = item.get("vi", key)
                 mat_g = get_material_grade(key)
@@ -627,9 +657,12 @@ class _MaterialView(discord.ui.View):
                     value=key,
                     description=f"Phẩm {mat_g} · có {qty}"[:100],
                 ))
-            max_picks = min(required_qty, len(options), 25)
+            max_picks = min(required_qty, len(options), PAGE_SIZE)
+            placeholder = f"🔨 Chọn 1–{max_picks} loại nguyên liệu…"
+            if pages > 1:
+                placeholder = f"🔨 Chọn 1–{max_picks} loại (Trang {self._page + 1}/{pages})…"
             select = discord.ui.Select(
-                placeholder=f"🔨 Chọn 1–{max_picks} loại nguyên liệu…",
+                placeholder=placeholder,
                 options=options,
                 min_values=1,
                 max_values=max_picks,
@@ -641,6 +674,28 @@ class _MaterialView(discord.ui.View):
         back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
         back_btn.callback = self._back_cb
         self.add_item(back_btn)
+
+        add_page_controls(
+            self,
+            page=self._page,
+            total=len(self._eligible),
+            on_change=self._on_page_change,
+            row=2,
+        )
+
+    async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        view = _MaterialView(
+            self._discord_id, self._slot, self._base_key, self._grade,
+            self._hub_back_fn,
+            eligible=self._eligible,
+            required_qty=self._required_qty,
+            page=new_page,
+        )
+        await interaction.edit_original_response(view=view)
 
     def _make_pick_cb(self, select: discord.ui.Select):
         async def _cb(interaction: discord.Interaction) -> None:
@@ -680,6 +735,7 @@ class _SuperMaterialView(discord.ui.View):
         *,
         selected_mat_keys: list[str],
         eligible: list[tuple[str, dict]],
+        page: int = 0,
     ) -> None:
         super().__init__(timeout=180)
         self._discord_id       = discord_id
@@ -688,10 +744,13 @@ class _SuperMaterialView(discord.ui.View):
         self._grade            = grade
         self._hub_back_fn      = hub_back_fn
         self._selected_mat_keys = selected_mat_keys
+        self._eligible         = list(eligible)
+        pages = total_pages(len(self._eligible), per_page=PAGE_SIZE)
+        self._page = max(0, min(page, pages - 1))
 
-        if eligible:
+        if self._eligible:
             options: list[discord.SelectOption] = []
-            for key, spec in eligible[:25]:
+            for key, spec in page_slice(self._eligible, self._page, per_page=PAGE_SIZE):
                 label = spec.get("vi", key)
                 min_g = spec.get("min_item_grade", spec.get("grade", 1))
                 options.append(discord.SelectOption(
@@ -699,8 +758,11 @@ class _SuperMaterialView(discord.ui.View):
                     value=key,
                     description=f"Tối thiểu cấp {min_g}"[:100],
                 ))
+            placeholder = "✨ Chọn vật liệu siêu hiếm…"
+            if pages > 1:
+                placeholder = f"✨ Chọn vật liệu siêu hiếm (Trang {self._page + 1}/{pages})…"
             select = discord.ui.Select(
-                placeholder="✨ Chọn vật liệu siêu hiếm…",
+                placeholder=placeholder,
                 options=options,
                 row=0,
             )
@@ -714,6 +776,28 @@ class _SuperMaterialView(discord.ui.View):
         back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
         back_btn.callback = self._back_cb
         self.add_item(back_btn)
+
+        add_page_controls(
+            self,
+            page=self._page,
+            total=len(self._eligible),
+            on_change=self._on_page_change,
+            row=2,
+        )
+
+    async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        view = _SuperMaterialView(
+            self._discord_id, self._slot, self._base_key, self._grade,
+            self._hub_back_fn,
+            selected_mat_keys=self._selected_mat_keys,
+            eligible=self._eligible,
+            page=new_page,
+        )
+        await interaction.edit_original_response(view=view)
 
     def _make_pick_cb(self, select: discord.ui.Select):
         async def _cb(interaction: discord.Interaction) -> None:

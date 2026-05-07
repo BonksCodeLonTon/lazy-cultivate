@@ -712,7 +712,7 @@
     },
     "mp_cost": 17,
     "cooldown": 1,
-    "base_dmg": 25,
+    "base_dmg": 15,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -736,7 +736,7 @@
     },
     "mp_cost": 23,
     "cooldown": 2,
-    "base_dmg": 45,
+    "base_dmg": 30,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -760,7 +760,7 @@
     },
     "mp_cost": 33,
     "cooldown": 2,
-    "base_dmg": 70,
+    "base_dmg": 42,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -784,7 +784,7 @@
     },
     "mp_cost": 48,
     "cooldown": 3,
-    "base_dmg": 130,
+    "base_dmg": 70,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -808,7 +808,7 @@
     },
     "mp_cost": 45,
     "cooldown": 3,
-    "base_dmg": 110,
+    "base_dmg": 75,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -832,7 +832,7 @@
     },
     "mp_cost": 50,
     "cooldown": 3,
-    "base_dmg": 135,
+    "base_dmg": 95,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -856,7 +856,7 @@
     },
     "mp_cost": 65,
     "cooldown": 3,
-    "base_dmg": 195,
+    "base_dmg": 140,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -880,7 +880,7 @@
     },
     "mp_cost": 70,
     "cooldown": 4,
-    "base_dmg": 230,
+    "base_dmg": 160,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -904,7 +904,7 @@
     },
     "mp_cost": 85,
     "cooldown": 5,
-    "base_dmg": 260,
+    "base_dmg": 210,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -928,7 +928,7 @@
     },
     "mp_cost": 90,
     "cooldown": 5,
-    "base_dmg": 295,
+    "base_dmg": 235,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -952,7 +952,7 @@
     },
     "mp_cost": 95,
     "cooldown": 4,
-    "base_dmg": 240,
+    "base_dmg": 210,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -976,7 +976,7 @@
     },
     "mp_cost": 125,
     "cooldown": 5,
-    "base_dmg": 390,
+    "base_dmg": 340,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -1000,7 +1000,7 @@
     },
     "mp_cost": 130,
     "cooldown": 6,
-    "base_dmg": 460,
+    "base_dmg": 395,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -1024,7 +1024,7 @@
     },
     "mp_cost": 135,
     "cooldown": 6,
-    "base_dmg": 520,
+    "base_dmg": 435,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -1048,7 +1048,7 @@
     },
     "mp_cost": 155,
     "cooldown": 5,
-    "base_dmg": 510,
+    "base_dmg": 480,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -1072,12 +1072,876 @@
     },
     "mp_cost": 160,
     "cooldown": 6,
-    "base_dmg": 590,
+    "base_dmg": 555,
     "effects": [
       "DebuffPhaGiap"
     ],
     "effect_chances": {
       "DebuffPhaGiap": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR1G2",
+    "vi": "Quang Huyền Đoạn Thuật",
+    "en": "Quang Huyền Severing Art",
+    "realm": 1,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 1,
+    "base_dmg": 20,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR1G2B",
+    "vi": "Quang Huyền Trảm Quyết",
+    "en": "Quang Huyền Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 22,
+    "cooldown": 1,
+    "base_dmg": 20,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR1G3",
+    "vi": "Quang Địa Đoạn Thuật",
+    "en": "Quang Địa Severing Art",
+    "realm": 1,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 27,
+    "cooldown": 2,
+    "base_dmg": 24,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR1G3B",
+    "vi": "Quang Địa Trảm Quyết",
+    "en": "Quang Địa Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 27,
+    "cooldown": 2,
+    "base_dmg": 24,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR1G4",
+    "vi": "Quang Thiên Đoạn Thuật",
+    "en": "Quang Thiên Severing Art",
+    "realm": 1,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 32,
+    "cooldown": 2,
+    "base_dmg": 28,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR1G4B",
+    "vi": "Quang Thiên Trảm Quyết",
+    "en": "Quang Thiên Cleaving Edict",
+    "realm": 1,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 32,
+    "cooldown": 2,
+    "base_dmg": 28,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR2G2",
+    "vi": "Quang Huyền Đoạn Thuật",
+    "en": "Quang Huyền Severing Art",
+    "realm": 2,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR2G2B",
+    "vi": "Quang Huyền Trảm Quyết",
+    "en": "Quang Huyền Cleaving Edict",
+    "realm": 2,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR2G3",
+    "vi": "Quang Địa Đoạn Thuật",
+    "en": "Quang Địa Severing Art",
+    "realm": 2,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 33,
+    "cooldown": 3,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR2G3B",
+    "vi": "Quang Địa Trảm Quyết",
+    "en": "Quang Địa Cleaving Edict",
+    "realm": 2,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 33,
+    "cooldown": 3,
+    "base_dmg": 45,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR2G4",
+    "vi": "Quang Thiên Đoạn Thuật",
+    "en": "Quang Thiên Severing Art",
+    "realm": 2,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 38,
+    "cooldown": 3,
+    "base_dmg": 50,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR2G4B",
+    "vi": "Quang Thiên Trảm Quyết",
+    "en": "Quang Thiên Cleaving Edict",
+    "realm": 2,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 38,
+    "cooldown": 3,
+    "base_dmg": 50,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR3G3",
+    "vi": "Quang Địa Đoạn Thuật",
+    "en": "Quang Địa Severing Art",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 43,
+    "cooldown": 3,
+    "base_dmg": 62,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR3G3B",
+    "vi": "Quang Địa Trảm Quyết",
+    "en": "Quang Địa Cleaving Edict",
+    "realm": 3,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 43,
+    "cooldown": 3,
+    "base_dmg": 62,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR4G3",
+    "vi": "Quang Địa Đoạn Thuật",
+    "en": "Quang Địa Severing Art",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR4G3B",
+    "vi": "Quang Địa Trảm Quyết",
+    "en": "Quang Địa Cleaving Edict",
+    "realm": 4,
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.15
+    },
+    "mp_cost": 55,
+    "cooldown": 4,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR4G4",
+    "vi": "Quang Thiên Đoạn Thuật",
+    "en": "Quang Thiên Severing Art",
+    "realm": 4,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 128,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR4G4B",
+    "vi": "Quang Thiên Trảm Quyết",
+    "en": "Quang Thiên Cleaving Edict",
+    "realm": 4,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 128,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR5G1",
+    "vi": "Quang Hoàng Đoạn Thuật",
+    "en": "Quang Hoàng Severing Art",
+    "realm": 5,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 60,
+    "cooldown": 3,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR5G1B",
+    "vi": "Quang Hoàng Trảm Quyết",
+    "en": "Quang Hoàng Cleaving Edict",
+    "realm": 5,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 60,
+    "cooldown": 3,
+    "base_dmg": 110,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR5G4",
+    "vi": "Quang Thiên Đoạn Thuật",
+    "en": "Quang Thiên Severing Art",
+    "realm": 5,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR5G4B",
+    "vi": "Quang Thiên Trảm Quyết",
+    "en": "Quang Thiên Cleaving Edict",
+    "realm": 5,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR6G1",
+    "vi": "Quang Hoàng Đoạn Thuật",
+    "en": "Quang Hoàng Severing Art",
+    "realm": 6,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 145,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR6G1B",
+    "vi": "Quang Hoàng Trảm Quyết",
+    "en": "Quang Hoàng Cleaving Edict",
+    "realm": 6,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 75,
+    "cooldown": 4,
+    "base_dmg": 145,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR6G2",
+    "vi": "Quang Huyền Đoạn Thuật",
+    "en": "Quang Huyền Severing Art",
+    "realm": 6,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 80,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR6G2B",
+    "vi": "Quang Huyền Trảm Quyết",
+    "en": "Quang Huyền Cleaving Edict",
+    "realm": 6,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 80,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR7G2",
+    "vi": "Quang Huyền Đoạn Thuật",
+    "en": "Quang Huyền Severing Art",
+    "realm": 7,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 100,
+    "cooldown": 4,
+    "base_dmg": 265,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR7G2B",
+    "vi": "Quang Huyền Trảm Quyết",
+    "en": "Quang Huyền Cleaving Edict",
+    "realm": 7,
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 100,
+    "cooldown": 4,
+    "base_dmg": 265,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.35
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR7G4",
+    "vi": "Quang Thiên Đoạn Thuật",
+    "en": "Quang Thiên Severing Art",
+    "realm": 7,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 110,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR7G4B",
+    "vi": "Quang Thiên Trảm Quyết",
+    "en": "Quang Thiên Cleaving Edict",
+    "realm": 7,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 110,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR8G1",
+    "vi": "Quang Hoàng Đoạn Thuật",
+    "en": "Quang Hoàng Severing Art",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 120,
+    "cooldown": 5,
+    "base_dmg": 270,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR8G1B",
+    "vi": "Quang Hoàng Trảm Quyết",
+    "en": "Quang Hoàng Cleaving Edict",
+    "realm": 8,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 120,
+    "cooldown": 5,
+    "base_dmg": 270,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR9G1",
+    "vi": "Quang Hoàng Đoạn Thuật",
+    "en": "Quang Hoàng Severing Art",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 150,
+    "cooldown": 5,
+    "base_dmg": 380,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR9G1B",
+    "vi": "Quang Hoàng Trảm Quyết",
+    "en": "Quang Hoàng Cleaving Edict",
+    "realm": 9,
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.85
+    },
+    "mp_cost": 150,
+    "cooldown": 5,
+    "base_dmg": 380,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR9G4",
+    "vi": "Quang Thiên Đoạn Thuật",
+    "en": "Quang Thiên Severing Art",
+    "realm": 9,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 165,
+    "cooldown": 6,
+    "base_dmg": 625,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillFillerQuangR9G4B",
+    "vi": "Quang Thiên Trảm Quyết",
+    "en": "Quang Thiên Cleaving Edict",
+    "realm": 9,
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.3
+    },
+    "mp_cost": 165,
+    "cooldown": 6,
+    "base_dmg": 625,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.45
     },
     "formation_key": null
   }

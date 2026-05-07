@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from src.data.registry import registry
 from src.game.models.character import Character
-from src.game.constants.realms import QI_REALMS, BODY_REALMS
+from src.game.constants.realms import QI_REALMS, BODY_REALMS, FORMATION_REALMS
 from src.game.systems.combat import (
     CombatEndReason,
     CombatSession,
@@ -21,12 +21,19 @@ class TribulationResult:
     cultivation_lost: bool = False
 
 
+_ALL_BREAKTHROUGHS: list[int] = list(range(8))
+
+
 class TribulationManager:
-    # Tribulation triggers every breakthrough from realm 4 onward (target realm 5..8)
-    # for both qi and body axes. Formation has no tribulation by design.
+    # Tribulation triggers on every realm-to-realm breakthrough across all three
+    # axes — current realm idx 0..7 → target idx 1..8. Each axis carries its own
+    # Thiên Kiếp themed for the realm being left (see ``trib_<axis>_<idx>``
+    # entries in ``data/tribulations/``). Per-realm trib stats are calibrated to
+    # Truyền Thuyết / chi_ton-tier so every breakthrough is a real fight.
     MAJOR_BREAKTHROUGHS = {
-        "qi":   [4, 5, 6, 7],
-        "body": [4, 5, 6, 7],
+        "qi":        _ALL_BREAKTHROUGHS,
+        "body":      _ALL_BREAKTHROUGHS,
+        "formation": _ALL_BREAKTHROUGHS,
     }
 
     @staticmethod
@@ -64,11 +71,13 @@ class TribulationManager:
         if not trib_c:
             trib_c = build_enemy_combatant("default_heavenly_trib", player_realm_total)
             if trib_c is not None:
-                realm_name = (
-                    QI_REALMS[target_realm_idx].vi if axis == "qi"
-                    else BODY_REALMS[target_realm_idx].vi
-                )
-                trib_c.name = f"Thiên Kiếp {realm_name}"
+                realm_table = {
+                    "qi":        QI_REALMS,
+                    "body":      BODY_REALMS,
+                    "formation": FORMATION_REALMS,
+                }.get(axis, QI_REALMS)
+                idx = min(target_realm_idx, len(realm_table) - 1)
+                trib_c.name = f"Thiên Kiếp {realm_table[idx].vi}"
 
         session = CombatSession(
             player=player_c,

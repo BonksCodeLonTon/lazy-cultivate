@@ -36,7 +36,7 @@
     "passive_description_vi": "Linh khí Kim sơ khởi tụ trong thân, mọi thuộc tính phòng ngự đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.06,
-      "res_all": 20,
+      "res_all": 0.1,
       "bleed_on_hit_pct": 0.04
     },
     "special_requirements": null,
@@ -129,7 +129,7 @@
     "passive_description_vi": "Linh khí Kim đã hậu nhập huyết mạch — sức mạnh phòng ngự vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.096,
-      "res_all": 32,
+      "res_all": 0.16,
       "thorn_pct": 0.064,
       "bleed_on_hit_pct": 0.064
     },
@@ -224,7 +224,7 @@
     "passive_description_vi": "Thân hóa linh thể Kim, phòng ngự mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.144,
-      "res_all": 48,
+      "res_all": 0.24,
       "thorn_pct": 0.096,
       "bleed_on_hit_pct": 0.096
     },
@@ -297,7 +297,7 @@
     "passive_description_vi": "Thần thể Kim cộng hưởng với đại đạo, phòng ngự bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.21,
-      "res_all": 70,
+      "res_all": 0.35,
       "thorn_pct": 0.14,
       "bleed_on_hit_pct": 0.14,
       "thorn_from_shield": true,
@@ -399,8 +399,8 @@
   },
   {
     "key": "ConstitutionKimCuong_Leg",
-    "vi": "Đế Cương Kim Thể",
-    "en": "Imperial Hardened Gold Body",
+    "vi": "Thần Hoàn Cương Kim Thể",
+    "en": "Divine Halo Astral Metal Body",
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
@@ -408,10 +408,10 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Đế Cương Kim Thể — **Kim Cương Phản Quang**: thân thể như kim cương phản chiếu — phản đòn (kèm hiệu ứng) lên kẻ tấn công, đồng thời khí lực của khiên hỗ trợ sát thương.",
+    "passive_description_vi": "Thần Hoàn Cương Kim Thể — **Kim Cương Phản Quang**: thân thể như kim cương phản chiếu — phản đòn (kèm hiệu ứng) lên kẻ tấn công, đồng thời khí lực của khiên hỗ trợ sát thương.",
     "stat_bonuses": {
       "hp_pct": 0.3,
-      "res_all": 100,
+      "res_all": 0.4,
       "thorn_pct": 0.25,
       "thorn_from_shield": true,
       "bleed_on_hit_pct": 0.25,
@@ -434,8 +434,8 @@
   },
   {
     "key": "ConstitutionKimSat_Leg",
-    "vi": "Đế Sát Kim Thể",
-    "en": "Imperial Slaying Gold Body",
+    "vi": "Trảm Linh Đế Kim Thể",
+    "en": "Spirit-Slicing Emperor Metal Body",
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
@@ -443,7 +443,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Đế Sát Kim Thể — **Sát Khí Đại Thành**: mỗi mạng giết được tích tụ thành sát ý, vĩnh viễn cộng dồn ST cuối trong dungeon. Càng giết, càng mạnh.",
+    "passive_description_vi": "Trảm Linh Đế Kim Thể — **Sát Khí Đại Thành**: mỗi mạng giết được tích tụ thành sát ý, vĩnh viễn cộng dồn ST cuối trong dungeon. Càng giết, càng mạnh.",
     "stat_bonuses": {
       "crit_rating": 400,
       "crit_dmg_rating": 250,
@@ -466,8 +466,8 @@
   },
   {
     "key": "ConstitutionKimTinh_Leg",
-    "vi": "Đế Tinh Kim Thể",
-    "en": "Imperial Essence Gold Body",
+    "vi": "Thái Cổ Tinh Kim Thể",
+    "en": "Primordial Star Metal Body",
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,
@@ -475,7 +475,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Đế Tinh Kim Thể — **Tinh Quang Thuấn Bộ**: bước chân tinh quang lẹ làng, bạo kích là cơ hội cướp lượt. Tinh hoa Kim ngưng kết — bạo thương cộng dồn cùng tê liệt khi bạo.",
+    "passive_description_vi": "Thái Cổ Tinh Kim Thể — **Tinh Quang Thuấn Bộ**: bước chân tinh quang lẹ làng, bạo kích là cơ hội cướp lượt. Tinh hoa Kim ngưng kết — bạo thương cộng dồn cùng tê liệt khi bạo.",
     "stat_bonuses": {
       "crit_rating": 350,
       "crit_dmg_rating": 350,
@@ -497,8 +497,8 @@
   },
   {
     "key": "ConstitutionThaiCucKim",
-    "vi": "Thái Cực Kim Cang Thể",
-    "en": "Supreme Diamond Body",
+    "vi": "Vĩnh Hằng Bất Diệt Kim Cang Thể",
+    "en": "Eternal Indestructible Vajra Body",
     "rarity": "legendary",
     "element": "kim",
     "roll_weight": 0,

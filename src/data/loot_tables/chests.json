@@ -37,12 +37,6 @@
       "qty_max": 3
     },
     {
-      "item_key": "DanCurePoison",
-      "weight": 300000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "GemHoa_1",
       "weight": 150000,
       "qty_min": 1,
@@ -147,12 +141,6 @@
       "weight": 300000,
       "qty_min": 1,
       "qty_max": 2
-    },
-    {
-      "item_key": "DanBuffCrit",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1
     },
     {
       "item_key": "GemHoa_1",
@@ -317,18 +305,6 @@
       "qty_max": 1
     },
     {
-      "item_key": "DanBuffFDmg",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "DanBuffCrit",
-      "weight": 200000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
       "item_key": "GemHoa_2",
       "weight": 200000,
       "qty_min": 1,
@@ -441,27 +417,6 @@
       "pool_id": "chest_dia_gem3"
     },
     {
-      "item_key": "ScrollAtkHoang",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "chest_dia_scroll"
-    },
-    {
-      "item_key": "ScrollDefHoang",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "chest_dia_scroll"
-    },
-    {
-      "item_key": "ScrollSupHoang",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "chest_dia_scroll"
-    },
-    {
       "item_key": "MatHuKhongTinh",
       "weight": 50000,
       "qty_min": 1,
@@ -510,24 +465,6 @@
       "weight": 600000,
       "qty_min": 1,
       "qty_max": 2
-    },
-    {
-      "item_key": "DanRegenAll",
-      "weight": 300000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "DanBuffFDmg",
-      "weight": 250000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "DanComprehend",
-      "weight": 100000,
-      "qty_min": 1,
-      "qty_max": 1
     },
     {
       "item_key": "GemKim_3",
@@ -584,27 +521,6 @@
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_thien_gem3"
-    },
-    {
-      "item_key": "ScrollAtkHuyen",
-      "weight": 120000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "chest_thien_scroll"
-    },
-    {
-      "item_key": "ScrollDefHuyen",
-      "weight": 120000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "chest_thien_scroll"
-    },
-    {
-      "item_key": "ScrollSupHuyen",
-      "weight": 120000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "chest_thien_scroll"
     },
     {
       "item_key": "MatChanLinhNgoc",

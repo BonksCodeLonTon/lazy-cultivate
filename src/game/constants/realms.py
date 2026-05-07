@@ -3,7 +3,13 @@
 Values sourced from ``docs/data.xlsx`` → sheet "Hệ Thống Tu Luyện".
 Each realm has its own cumulative bậc-1..9 threshold table; rate scales
 1..9 across realms. The final realm's bậc-9 threshold equals
-``TRIBULATION_EXP_COST`` (270,000) — one full Độ Kiếp attempt.
+``TRIBULATION_EXP_COST`` — one full Độ Kiếp attempt.
+
+Threshold shape: quadratic gap growth (``_upward``). The XP gap to
+advance into bậc N is ``step × N²``, so the bậc 8→9 gap is **81×** the
+bậc 0→1 gap. Each successive layer of insight costs the square of its
+position — the final few breakthroughs dominate the realm grind,
+sharper than a linear gap curve. bậc 9 = 285 × step.
 """
 from __future__ import annotations
 
@@ -12,7 +18,12 @@ from dataclasses import dataclass
 
 LEVELS_PER_REALM = 9
 MERIT_TO_FORMATION_EXP_RATIO = 10
-TRIBULATION_EXP_COST = 270_000  # endgame (realm 8) tribulation attempt cost
+# Endgame (realm 8) tribulation attempt cost = R8 bậc-9 threshold under the
+# quadratic shape (``_upward(150_000)`` = 150_000 × 285 = 42_750_000). Sized
+# so a Grade-9 Hoàn pill (level_exp_table[-1] // _TARGET_PILLS_PER_REALM[8]
+# per ``alchemy._pill_xp_for_grade``) grants strictly more XP than a
+# Grade-8 Hoàn pill, keeping the pill-grade hierarchy monotonic.
+TRIBULATION_EXP_COST = 42_750_000
 
 
 @dataclass(frozen=True)
@@ -25,21 +36,31 @@ class Realm:
     level_exp_table: tuple[int, ...]  # cumulative bậc-1..9 thresholds
 
 
-def _even(step: int) -> tuple[int, ...]:
-    """Cumulative thresholds evenly spaced by ``step``."""
-    return tuple(step * i for i in range(1, LEVELS_PER_REALM + 1))
+def _upward(step: int) -> tuple[int, ...]:
+    """Cumulative thresholds with quadratically-growing per-bậc gaps.
+
+    Gap from bậc n-1 → n is ``step × n²`` (sum of squares), so the bậc 8→9
+    gap is 81× the bậc 0→1 gap. The closed-form for the cumulative sum
+    is ``step × n(n+1)(2n+1)/6``. The late bậc carries an overwhelming
+    share of the realm — early bậc clear in a session, the final few
+    become a multi-week wall before tribulation. bậc 9 = 285 × step.
+    """
+    return tuple(
+        step * n * (n + 1) * (2 * n + 1) // 6
+        for n in range(1, LEVELS_PER_REALM + 1)
+    )
 
 
 # Per-realm EXP tables — bậc 1..9 cumulative within the realm.
-_R0 = (133, 267, 400, 533, 667, 800, 933, 1067, 1200)                           # Luyện Khí (rate 1)
-_R1 = _even(800)                                                                # Trúc Cơ    (rate 2)
-_R2 = _even(2400)                                                               # Kim Đan    (rate 3)
-_R3 = _even(6400)                                                               # Nguyên Anh (rate 4)
-_R4 = (14667, 29333, 44000, 58667, 73333, 88000, 102667, 117333, 132000)        # Hóa Thần   (rate 5)
-_R5 = _even(28800)                                                              # Luyện Hư   (rate 6)
-_R6 = _even(67200)                                                              # Hợp Đạo    (rate 7)
-_R7 = _even(115200)                                                             # Đại Thừa   (rate 8)
-_R8 = _even(30000)                                                              # Endgame    (rate 9) — bậc 9 = 270_000
+_R0 = _upward(133)                                                              # Luyện Khí (rate 1) — bậc 9 = 37,905
+_R1 = _upward(800)                                                              # Trúc Cơ    (rate 2) — bậc 9 = 228,000
+_R2 = _upward(2_400)                                                            # Kim Đan    (rate 3) — bậc 9 = 684,000
+_R3 = _upward(6_400)                                                            # Nguyên Anh (rate 4) — bậc 9 = 1,824,000
+_R4 = _upward(14_667)                                                           # Hóa Thần   (rate 5) — bậc 9 = 4,180,095
+_R5 = _upward(28_800)                                                           # Luyện Hư   (rate 6) — bậc 9 = 8,208,000
+_R6 = _upward(67_200)                                                           # Hợp Đạo    (rate 7) — bậc 9 = 19,152,000
+_R7 = _upward(115_200)                                                          # Đại Thừa   (rate 8) — bậc 9 = 32,832,000
+_R8 = _upward(150_000)                                                          # Đăng Tiên  (rate 9) — bậc 9 = 42,750,000 = TRIBULATION_EXP_COST
 
 _LEVEL_TABLES: tuple[tuple[int, ...], ...] = (_R0, _R1, _R2, _R3, _R4, _R5, _R6, _R7, _R8)
 _BASE_RATES:   tuple[int, ...]             = (1, 2, 3, 4, 5, 6, 7, 8, 9)

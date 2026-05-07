@@ -174,17 +174,17 @@
       },
       "5": {
         "hp_pct": 0.15,
-        "res_all": 10,
+        "res_all": 0.05,
         "note": "Thịnh Vượng Thổ Trận"
       },
       "7": {
         "hp_pct": 0.25,
-        "res_all": 25,
+        "res_all": 0.12,
         "note": "Vô Song Thổ Trận"
       },
       "10": {
         "hp_pct": 0.5,
-        "res_all": 50,
+        "res_all": 0.25,
         "dmg_reduce_flat": 50,
         "note": "Tuyệt Đỉnh Thổ Trận"
       }
@@ -521,26 +521,26 @@
     "formation_skill_key": "SkillFrmCuuCung",
     "gem_threshold_bonuses": {
       "1": {
-        "res_all": 10,
+        "res_all": 0.05,
         "note": "Sơ Khai Bát Quái Trận"
       },
       "3": {
-        "res_all": 25,
+        "res_all": 0.12,
         "note": "Kiên Cố Bát Quái Trận"
       },
       "5": {
-        "res_all": 40,
+        "res_all": 0.2,
         "cooldown_reduce": 0.05,
         "note": "Thịnh Vượng Bát Quái Trận"
       },
       "7": {
-        "res_all": 60,
+        "res_all": 0.3,
         "cooldown_reduce": 0.1,
         "final_dmg_bonus": 0.05,
         "note": "Vô Song Bát Quái Trận"
       },
       "10": {
-        "res_all": 100,
+        "res_all": 0.4,
         "cooldown_reduce": 0.2,
         "final_dmg_bonus": 0.15,
         "all_element_bonus": 0.1,

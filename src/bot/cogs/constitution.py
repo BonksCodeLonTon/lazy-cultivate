@@ -376,10 +376,74 @@ def _detail_embed(
 # ── Views ─────────────────────────────────────────────────────────────────────
 
 
-class _RaritySelect(discord.ui.Select):
-    """Dropdown listing constitutions — up to 25 per rarity bucket."""
+_ELEMENT_FILTER_TABS: tuple[tuple[str, str], ...] = (
+    ("universal", "Phổ Quát (Trung)"),
+    ("kim",       "Hệ Kim"),
+    ("moc",       "Hệ Mộc"),
+    ("thuy",      "Hệ Thủy"),
+    ("hoa",       "Hệ Hỏa"),
+    ("tho",       "Hệ Thổ"),
+    ("loi",       "Hệ Lôi"),
+    ("phong",     "Hệ Phong"),
+    ("quang",     "Hệ Quang"),
+    ("am",        "Hệ Ám"),
+)
 
-    def __init__(self, discord_id: int, rarity: str, back_fn) -> None:
+
+class _ElementFilterSelect(discord.ui.Select):
+    """Element sub-filter shown on every rarity tab.
+
+    Every rarity bucket is over Discord's 25-option Select cap when shown
+    raw (common 41 / uncommon 40 / rare 40 / epic 40 / legendary 61), so
+    the constitution dropdown only renders entries matching the selected
+    element. ``"universal"`` means ``element is None`` — bodies not bound
+    to any of the 9 elements.
+    """
+
+    def __init__(
+        self, discord_id: int, rarity: str, current_element: str, back_fn,
+    ) -> None:
+        self._discord_id = discord_id
+        self._rarity = rarity
+        self._back_fn = back_fn
+        options = [
+            discord.SelectOption(
+                label=label, value=key, default=(key == current_element),
+            )
+            for key, label in _ELEMENT_FILTER_TABS
+        ]
+        super().__init__(placeholder="🜁 Lọc theo hệ...", options=options, row=1)
+
+    async def callback(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await _open_hub(
+            interaction, self._discord_id, self._back_fn,
+            rarity=self._rarity, element_filter=self.values[0],
+        )
+
+
+class _RaritySelect(discord.ui.Select):
+    """Dropdown listing constitutions for the active (rarity, element) tab.
+
+    Every rarity bucket is over Discord's 25-option Select cap, so the pool
+    is sliced by ``element_filter`` (``"universal"`` → element=None,
+    otherwise exact element match). Per-element sub-buckets are ≤6 entries
+    everywhere; ``universal`` is the largest at 21 (legendary) — still
+    under cap. ``element_filter=None`` falls back to no slicing, matching
+    the old behaviour for any caller that hasn't migrated.
+    """
+
+    def __init__(
+        self,
+        discord_id: int,
+        rarity: str,
+        back_fn,
+        element_filter: str | None = None,
+        row: int = 2,
+    ) -> None:
         self._discord_id = discord_id
         self._rarity = rarity
         self._back_fn = back_fn
@@ -388,6 +452,9 @@ class _RaritySelect(discord.ui.Select):
             c for c in registry.constitutions.values()
             if c.get("rarity") == rarity
         ]
+        if element_filter:
+            target_elem = None if element_filter == "universal" else element_filter
+            pool = [c for c in pool if c.get("element") == target_elem]
         pool.sort(key=lambda c: (c.get("element") or "zz_none", c["vi"]))
 
         options: list[discord.SelectOption] = []
@@ -409,7 +476,7 @@ class _RaritySelect(discord.ui.Select):
         # there, so use the Vietnamese label only.
         rarity_vi = _RARITY_META.get(rarity, {}).get("vi", rarity)
         placeholder = f"{rarity_vi} — chọn Thể Chất..."
-        super().__init__(placeholder=placeholder, options=options, row=1)
+        super().__init__(placeholder=placeholder, options=options, row=row)
 
     async def callback(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self._discord_id:
@@ -428,7 +495,9 @@ class _RemoveSelect(discord.ui.Select):
     the sole entry would leave them bare; disabled for that path.
     """
 
-    def __init__(self, discord_id: int, equipped: list[str], back_fn) -> None:
+    def __init__(
+        self, discord_id: int, equipped: list[str], back_fn, row: int = 2,
+    ) -> None:
         self._discord_id = discord_id
         self._back_fn = back_fn
         options: list[discord.SelectOption] = []
@@ -444,7 +513,7 @@ class _RemoveSelect(discord.ui.Select):
             ))
         if not options:
             options = [discord.SelectOption(label="(không có)", value="__none__")]
-        super().__init__(placeholder="🗑️ Gỡ một Thể Chất...", options=options, row=2)
+        super().__init__(placeholder="🗑️ Gỡ một Thể Chất...", options=options, row=row)
 
     async def callback(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self._discord_id:
@@ -500,12 +569,20 @@ class TheChatHubView(discord.ui.View):
     def __init__(
         self, discord_id: int, rarity: str, back_fn,
         equipped: list[str] | None = None, show_remove: bool = False,
+        element_filter: str | None = None,
     ) -> None:
         super().__init__(timeout=300)
         self._discord_id = discord_id
         self._rarity = rarity
         self._back_fn = back_fn
+        self._element_filter = element_filter or "universal"
 
+        # Layout (uniform across all rarity tabs):
+        #   row 0: rarity tabs            (5 buttons)
+        #   row 1: element sub-filter     (Select)
+        #   row 2: constitution dropdown  (Select)
+        #   row 3: remove (Thể Tu only)   (Select)
+        #   row 4: back button
         for r in ("common", "uncommon", "rare", "epic", "legendary"):
             meta = _RARITY_META[r]
             style = discord.ButtonStyle.primary if r == rarity else discord.ButtonStyle.secondary
@@ -513,13 +590,19 @@ class TheChatHubView(discord.ui.View):
             btn.callback = self._make_tab_cb(r)
             self.add_item(btn)
 
-        self.add_item(_RaritySelect(discord_id, rarity, back_fn))
+        self.add_item(_ElementFilterSelect(
+            discord_id, rarity, self._element_filter, back_fn,
+        ))
+        self.add_item(_RaritySelect(
+            discord_id, rarity, back_fn,
+            element_filter=self._element_filter, row=2,
+        ))
 
         if show_remove and equipped:
-            self.add_item(_RemoveSelect(discord_id, equipped, back_fn))
+            self.add_item(_RemoveSelect(discord_id, equipped, back_fn, row=3))
 
         if back_fn:
-            back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=3)
+            back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=4)
             back_btn.callback = self._back_cb
             self.add_item(back_btn)
 
@@ -531,7 +614,12 @@ class TheChatHubView(discord.ui.View):
             # Must ack the interaction BEFORE _open_hub calls edit_original_response —
             # otherwise the original-response webhook is 404 "Unknown Webhook".
             await interaction.response.defer()
-            await _open_hub(interaction, self._discord_id, self._back_fn, rarity=rarity)
+            # Preserve the element sub-filter across rarity switches so the
+            # user doesn't have to re-pick their element each time.
+            await _open_hub(
+                interaction, self._discord_id, self._back_fn,
+                rarity=rarity, element_filter=self._element_filter,
+            )
         return _cb
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
@@ -740,14 +828,26 @@ class ConstitutionDetailView(discord.ui.View):
         await interaction.response.defer()
         const_data = registry.get_constitution(self._const_key) or {}
         rarity = const_data.get("rarity", "common")
-        await _open_hub(interaction, self._discord_id, self._back_fn, rarity=rarity)
+        # Land back on the same element bucket the user was browsing — for an
+        # element-locked body, that's its own element; for a universal one,
+        # the universal bucket. Avoids a confusing "I clicked into Quang and
+        # came back to a different element" jump.
+        elem = const_data.get("element") or "universal"
+        await _open_hub(
+            interaction, self._discord_id, self._back_fn,
+            rarity=rarity, element_filter=elem,
+        )
 
 
 # ── Entry points ──────────────────────────────────────────────────────────────
 
 
 async def _open_hub(
-    interaction: discord.Interaction, discord_id: int, back_fn, rarity: str = "common",
+    interaction: discord.Interaction,
+    discord_id: int,
+    back_fn,
+    rarity: str = "common",
+    element_filter: str | None = None,
 ) -> None:
     # Defensive ack — if a caller forgot to defer, we self-defer so
     # ``edit_original_response`` below doesn't 404 with "Unknown Webhook".
@@ -764,6 +864,13 @@ async def _open_hub(
         irepo = InventoryRepository(session)
         key_counts = await _inventory_counts(irepo, player.id, _HUB_KEY_MATERIALS)
 
+    # The element sub-filter is required on every rarity tab — each bucket
+    # is over Discord's 25-option Select cap. Default to ``"universal"``
+    # which covers element-agnostic bodies; the user can switch via the
+    # sub-select on row 1.
+    if element_filter is None:
+        element_filter = "universal"
+
     embed = _hub_embed(player, key_counts)
     equipped = get_constitutions(player.constitution_type)
     the_tu = is_the_tu(player.body_realm, player.qi_realm, player.formation_realm)
@@ -773,6 +880,7 @@ async def _open_hub(
     view = TheChatHubView(
         discord_id, rarity, back_fn,
         equipped=equipped, show_remove=show_remove,
+        element_filter=element_filter,
     )
     await interaction.edit_original_response(embed=embed, view=view)
 

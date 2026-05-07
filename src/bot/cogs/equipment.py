@@ -14,6 +14,7 @@ from src.db.repositories.player_repo import PlayerRepository
 from src.game.engine.equipment import SLOT_LABELS, SLOT_ORDER, STAT_LABELS, compute_equipment_stats, format_computed_stats, format_stat
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
+from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
 
 log = logging.getLogger(__name__)
 
@@ -138,11 +139,14 @@ class BagView(discord.ui.View):
         bag_items: list,
         equipped: list,
         slot_filter: str | None,
+        page: int = 0,
     ) -> None:
         super().__init__(timeout=300)
         self._discord_id = discord_id
         self._player_name = player_name
         self._slot_filter = slot_filter
+        self._bag_items = bag_items
+        self._equipped = equipped
 
         # ── Row 0: slot filter dropdown ──────────────────────────────────
         slot_select = discord.ui.Select(
@@ -173,17 +177,25 @@ class BagView(discord.ui.View):
             visible_bag = [i for i in bag_items if i.slot == slot_filter]
         else:
             visible_bag = list(bag_items)
+        # Bag and equipped lists may both overflow 25 — paginate them
+        # together (one shared page index keeps controls simple even if
+        # bag is much longer than equipped, the latter rarely paginates).
+        bag_pages = total_pages(len(visible_bag), per_page=PAGE_SIZE)
+        self._page = max(0, min(page, bag_pages - 1))
         if visible_bag:
             options = []
-            for inst in visible_bag[:25]:
+            for inst in page_slice(visible_bag, self._page, per_page=PAGE_SIZE):
                 slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?")
                 options.append(discord.SelectOption(
                     label=f"{inst.display_name}"[:100],
                     value=str(inst.id),
                     description=f"{slot_label} · {_grade_label(inst.grade)} · ID {inst.id}"[:100],
                 ))
+            placeholder = f"⚔️ Trang bị từ túi… ({len(visible_bag)} món)"
+            if bag_pages > 1:
+                placeholder = f"⚔️ Trang bị từ túi (Trang {self._page + 1}/{bag_pages})"
             equip_select = discord.ui.Select(
-                placeholder=f"⚔️ Trang bị từ túi… ({len(visible_bag)} món)",
+                placeholder=placeholder,
                 options=options,
                 row=1,
             )
@@ -197,7 +209,9 @@ class BagView(discord.ui.View):
             visible_eq = list(equipped)
         if visible_eq:
             options = []
-            for inst in visible_eq[:25]:
+            # Equipped count is capped by gear slot count (small) so a single
+            # page is always enough — no pagination needed here.
+            for inst in visible_eq[:PAGE_SIZE]:
                 slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?")
                 options.append(discord.SelectOption(
                     label=f"{inst.display_name}"[:100],
@@ -212,12 +226,34 @@ class BagView(discord.ui.View):
             unequip_select.callback = self._make_unequip_cb()
             self.add_item(unequip_select)
 
+        add_page_controls(
+            self,
+            page=self._page,
+            total=len(visible_bag),
+            on_change=self._on_page_change,
+            row=3,
+        )
+
+    async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await self._refresh(interaction, self._slot_filter, page=new_page)
+
     # ── Callbacks ────────────────────────────────────────────────────────
 
     def _guard(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self._discord_id
 
-    async def _refresh(self, interaction: discord.Interaction, slot_filter: str | None, *, status: str | None = None) -> None:
+    async def _refresh(
+        self,
+        interaction: discord.Interaction,
+        slot_filter: str | None,
+        *,
+        status: str | None = None,
+        page: int = 0,
+    ) -> None:
         """Re-fetch bag + equipped and re-render the view inline."""
         async with get_session() as session:
             prepo = PlayerRepository(session)
@@ -231,7 +267,7 @@ class BagView(discord.ui.View):
         embed = _bag_embed(self._player_name, bag, equipped, slot_filter)
         if status:
             embed.description = status
-        view = BagView(self._discord_id, self._player_name, bag, equipped, slot_filter)
+        view = BagView(self._discord_id, self._player_name, bag, equipped, slot_filter, page=page)
         await interaction.edit_original_response(embed=embed, view=view)
 
     def _make_filter_cb(self):
@@ -608,9 +644,9 @@ def _equip_bag_embed(
     return embed
 
 
-def _make_equip_options(bag_items: list) -> list[discord.SelectOption]:
+def _make_equip_options(bag_items: list, page: int = 0) -> list[discord.SelectOption]:
     options = []
-    for inst in bag_items[:25]:
+    for inst in page_slice(bag_items, page, per_page=PAGE_SIZE):
         slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?")
         stats = inst.computed_stats or {}
         desc = " | ".join(
@@ -644,6 +680,7 @@ class EquipBagView(discord.ui.View):
         back_fn,
         slot_filter: str | None = None,
         result_msg: str = "",
+        page: int = 0,
     ) -> None:
         super().__init__(timeout=300)
         self._discord_id  = discord_id
@@ -684,10 +721,15 @@ class EquipBagView(discord.ui.View):
             visible_bag = [i for i in bag_items if i.slot == slot_filter]
         else:
             visible_bag = list(bag_items)
+        bag_pages = total_pages(len(visible_bag), per_page=PAGE_SIZE)
+        self._page = max(0, min(page, bag_pages - 1))
         if visible_bag:
+            placeholder = f"⚔️ Trang bị từ túi… ({len(visible_bag)} món)"
+            if bag_pages > 1:
+                placeholder = f"⚔️ Trang bị từ túi (Trang {self._page + 1}/{bag_pages})"
             equip_select = discord.ui.Select(
-                placeholder=f"⚔️ Trang bị từ túi… ({len(visible_bag)} món)",
-                options=_make_equip_options(visible_bag),
+                placeholder=placeholder,
+                options=_make_equip_options(visible_bag, page=self._page),
                 min_values=1, max_values=1,
                 row=1,
             )
@@ -701,7 +743,8 @@ class EquipBagView(discord.ui.View):
             visible_eq = list(equipped)
         if visible_eq:
             options = []
-            for inst in visible_eq[:25]:
+            # Equipped count is bounded by gear slot count — single page.
+            for inst in visible_eq[:PAGE_SIZE]:
                 slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?")
                 options.append(discord.SelectOption(
                     label=inst.display_name[:100],
@@ -724,6 +767,21 @@ class EquipBagView(discord.ui.View):
         back_btn.callback = self._back_cb
         self.add_item(back_btn)
 
+        add_page_controls(
+            self,
+            page=self._page,
+            total=len(visible_bag),
+            on_change=self._on_page_change,
+            row=4,
+        )
+
+    async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        await self._refresh(interaction, self._slot_filter, page=new_page)
+
     def _guard(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self._discord_id
 
@@ -732,6 +790,7 @@ class EquipBagView(discord.ui.View):
         interaction: discord.Interaction,
         slot_filter: str | None,
         result_msg: str = "",
+        page: int = 0,
     ) -> None:
         async with get_session() as session:
             prepo = PlayerRepository(session)
@@ -745,7 +804,7 @@ class EquipBagView(discord.ui.View):
         embed = _equip_bag_embed(self._player_name, bag, equipped, slot_filter, result_msg=result_msg)
         view = EquipBagView(
             self._discord_id, self._player_name, bag, equipped,
-            self._back_fn, slot_filter=slot_filter,
+            self._back_fn, slot_filter=slot_filter, page=page,
         )
         await interaction.edit_original_response(embed=embed, view=view)
 

@@ -15,7 +15,8 @@
     "mp_regen_pct": 0.08,
     "skill_keys": [
       "EnemyHoa_R8",
-      "EnemyApex_R7_Magical"
+      "EnemyApex_R7_Magical",
+      "EnemyDungeon_Hoa_ThanThu_R8"
     ],
     "base_crit_rating": 15,
     "base_crit_dmg_rating": 25,
@@ -49,7 +50,8 @@
     "mp_regen_pct": 0.08,
     "skill_keys": [
       "EnemyBang_R8",
-      "EnemyApex_R7_Magical"
+      "EnemyApex_R7_Magical",
+      "EnemyDungeon_Thuy_ThanThu_R8"
     ],
     "base_crit_rating": 15,
     "base_crit_dmg_rating": 25,
@@ -84,7 +86,8 @@
     "skill_keys": [
       "EnemyKim_R8",
       "EnemyApex_R7_Physical",
-      "EnemyApex_R7_Magical"
+      "EnemyApex_R7_Magical",
+      "EnemyDungeon_Kim_ThanThu_R8"
     ],
     "base_crit_rating": 15,
     "base_crit_dmg_rating": 25,
@@ -118,7 +121,8 @@
     "mp_regen_pct": 0.08,
     "skill_keys": [
       "EnemyPhong_R6",
-      "EnemyApex_R7_Physical"
+      "EnemyApex_R7_Physical",
+      "EnemyDungeon_Phong_ThanThu_R8"
     ],
     "base_crit_rating": 25,
     "base_crit_dmg_rating": 30,

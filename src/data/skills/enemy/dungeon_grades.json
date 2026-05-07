@@ -1,0 +1,3364 @@
+[
+  {
+    "key": "EnemyDungeon_Am_TinhAnh_R1",
+    "vi": "Tinh Anh Ám Bí Pháp",
+    "en": "Elite Shadow Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 6,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_PhoThong_R1",
+    "vi": "Phổ Thông Hỏa Bí Pháp",
+    "en": "Common Fire Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 4,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_TinhAnh_R1",
+    "vi": "Tinh Anh Hỏa Bí Pháp",
+    "en": "Elite Fire Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 6,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_PhoThong_R1",
+    "vi": "Phổ Thông Kim Bí Pháp",
+    "en": "Common Metal Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 0.0
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 4,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_TinhAnh_R1",
+    "vi": "Tinh Anh Kim Bí Pháp",
+    "en": "Elite Metal Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 0.0
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 6,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_PhoThong_R1",
+    "vi": "Phổ Thông Lôi Bí Pháp",
+    "en": "Common Thunder Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 4,
+    "effects": [
+      "DebuffTeLiet"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_TinhAnh_R1",
+    "vi": "Tinh Anh Lôi Bí Pháp",
+    "en": "Elite Thunder Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 6,
+    "effects": [
+      "DebuffTeLiet"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_CuongGia_R1",
+    "vi": "Cường Giả Mộc Bí Pháp",
+    "en": "Strong Wood Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 8,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.4,
+      "DebuffBaoMon": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_PhoThong_R1",
+    "vi": "Phổ Thông Mộc Bí Pháp",
+    "en": "Common Wood Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 4,
+    "effects": [
+      "DebuffDocTo"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_TinhAnh_R1",
+    "vi": "Tinh Anh Mộc Bí Pháp",
+    "en": "Elite Wood Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 6,
+    "effects": [
+      "DebuffDocTo"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_PhoThong_R1",
+    "vi": "Phổ Thông Phong Bí Pháp",
+    "en": "Common Wind Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 0.0
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 4,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_TinhAnh_R1",
+    "vi": "Tinh Anh Phong Bí Pháp",
+    "en": "Elite Wind Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 0.0
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 6,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Quang_TinhAnh_R1",
+    "vi": "Tinh Anh Quang Bí Pháp",
+    "en": "Elite Light Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 6,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_PhoThong_R1",
+    "vi": "Phổ Thông Thổ Bí Pháp",
+    "en": "Common Earth Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 0.0
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 4,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_TinhAnh_R1",
+    "vi": "Tinh Anh Thổ Bí Pháp",
+    "en": "Elite Earth Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.3,
+      "matk": 0.0
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 6,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_PhoThong_R1",
+    "vi": "Phổ Thông Thủy Bí Pháp",
+    "en": "Common Water Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 4,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_TinhAnh_R1",
+    "vi": "Tinh Anh Thủy Bí Pháp",
+    "en": "Elite Water Secret Art",
+    "realm": 1,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.3
+    },
+    "mp_cost": 10,
+    "cooldown": 1,
+    "base_dmg": 6,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Am_TinhAnh_R2",
+    "vi": "Tinh Anh Ám Bí Pháp",
+    "en": "Elite Shadow Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 11,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_PhoThong_R2",
+    "vi": "Phổ Thông Hỏa Bí Pháp",
+    "en": "Common Fire Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 8,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_TinhAnh_R2",
+    "vi": "Tinh Anh Hỏa Bí Pháp",
+    "en": "Elite Fire Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 11,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_PhoThong_R2",
+    "vi": "Phổ Thông Kim Bí Pháp",
+    "en": "Common Metal Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.45,
+      "matk": 0.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 8,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_TinhAnh_R2",
+    "vi": "Tinh Anh Kim Bí Pháp",
+    "en": "Elite Metal Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.45,
+      "matk": 0.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 11,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_PhoThong_R2",
+    "vi": "Phổ Thông Lôi Bí Pháp",
+    "en": "Common Thunder Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 8,
+    "effects": [
+      "DebuffTeLiet"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_TinhAnh_R2",
+    "vi": "Tinh Anh Lôi Bí Pháp",
+    "en": "Elite Thunder Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 11,
+    "effects": [
+      "DebuffTeLiet"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_CuongGia_R2",
+    "vi": "Cường Giả Mộc Bí Pháp",
+    "en": "Strong Wood Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 14,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.4,
+      "DebuffBaoMon": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_PhoThong_R2",
+    "vi": "Phổ Thông Mộc Bí Pháp",
+    "en": "Common Wood Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 8,
+    "effects": [
+      "DebuffDocTo"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_TinhAnh_R2",
+    "vi": "Tinh Anh Mộc Bí Pháp",
+    "en": "Elite Wood Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 11,
+    "effects": [
+      "DebuffDocTo"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_PhoThong_R2",
+    "vi": "Phổ Thông Phong Bí Pháp",
+    "en": "Common Wind Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.45,
+      "matk": 0.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 8,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_TinhAnh_R2",
+    "vi": "Tinh Anh Phong Bí Pháp",
+    "en": "Elite Wind Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.45,
+      "matk": 0.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 11,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Quang_TinhAnh_R2",
+    "vi": "Tinh Anh Quang Bí Pháp",
+    "en": "Elite Light Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 11,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_PhoThong_R2",
+    "vi": "Phổ Thông Thổ Bí Pháp",
+    "en": "Common Earth Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.45,
+      "matk": 0.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 8,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_TinhAnh_R2",
+    "vi": "Tinh Anh Thổ Bí Pháp",
+    "en": "Elite Earth Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.45,
+      "matk": 0.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 11,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_PhoThong_R2",
+    "vi": "Phổ Thông Thủy Bí Pháp",
+    "en": "Common Water Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 8,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.2
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_TinhAnh_R2",
+    "vi": "Tinh Anh Thủy Bí Pháp",
+    "en": "Elite Water Secret Art",
+    "realm": 2,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.45
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 11,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Am_TinhAnh_R3",
+    "vi": "Tinh Anh Ám Bí Pháp",
+    "en": "Elite Shadow Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_TinhAnh_R3",
+    "vi": "Tinh Anh Hỏa Bí Pháp",
+    "en": "Elite Fire Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_TinhAnh_R3",
+    "vi": "Tinh Anh Kim Bí Pháp",
+    "en": "Elite Metal Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 0.0
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_TinhAnh_R3",
+    "vi": "Tinh Anh Lôi Bí Pháp",
+    "en": "Elite Thunder Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffTeLiet"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_CuongGia_R3",
+    "vi": "Cường Giả Mộc Bí Pháp",
+    "en": "Strong Wood Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 22,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.4,
+      "DebuffBaoMon": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_DaiNang_R3",
+    "vi": "Đại Năng Mộc Bí Pháp",
+    "en": "Mighty Wood Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 32,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.6,
+      "DebuffBaoMon": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_TinhAnh_R3",
+    "vi": "Tinh Anh Mộc Bí Pháp",
+    "en": "Elite Wood Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffDocTo"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_TinhAnh_R3",
+    "vi": "Tinh Anh Phong Bí Pháp",
+    "en": "Elite Wind Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 0.0
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Quang_TinhAnh_R3",
+    "vi": "Tinh Anh Quang Bí Pháp",
+    "en": "Elite Light Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffPhaGiap"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_TinhAnh_R3",
+    "vi": "Tinh Anh Thổ Bí Pháp",
+    "en": "Elite Earth Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.6,
+      "matk": 0.0
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_TinhAnh_R3",
+    "vi": "Tinh Anh Thủy Bí Pháp",
+    "en": "Elite Water Secret Art",
+    "realm": 3,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 28,
+    "cooldown": 2,
+    "base_dmg": 18,
+    "effects": [
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Am_CuongGia_R4",
+    "vi": "Cường Giả Ám Bí Pháp",
+    "en": "Strong Shadow Secret Art",
+    "realm": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
+    "mp_cost": 42,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffLoaMat",
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4,
+      "DebuffXeRach": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_CuongGia_R4",
+    "vi": "Cường Giả Hỏa Bí Pháp",
+    "en": "Strong Fire Secret Art",
+    "realm": 4,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
+    "mp_cost": 42,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.4,
+      "DebuffDotChay": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_CuongGia_R4",
+    "vi": "Cường Giả Kim Bí Pháp",
+    "en": "Strong Metal Secret Art",
+    "realm": 4,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.8,
+      "matk": 0.0
+    },
+    "mp_cost": 42,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4,
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_CuongGia_R4",
+    "vi": "Cường Giả Lôi Bí Pháp",
+    "en": "Strong Thunder Secret Art",
+    "realm": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
+    "mp_cost": 42,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.4,
+      "DebuffSetDanh": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_CuongGia_R4",
+    "vi": "Cường Giả Mộc Bí Pháp",
+    "en": "Strong Wood Secret Art",
+    "realm": 4,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
+    "mp_cost": 42,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.4,
+      "DebuffBaoMon": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_DaiNang_R4",
+    "vi": "Đại Năng Mộc Bí Pháp",
+    "en": "Mighty Wood Secret Art",
+    "realm": 4,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
+    "mp_cost": 42,
+    "cooldown": 2,
+    "base_dmg": 52,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.6,
+      "DebuffBaoMon": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_CuongGia_R4",
+    "vi": "Cường Giả Phong Bí Pháp",
+    "en": "Strong Wind Secret Art",
+    "realm": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.8,
+      "matk": 0.0
+    },
+    "mp_cost": 42,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.4,
+      "DebuffCuonBay": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Quang_CuongGia_R4",
+    "vi": "Cường Giả Quang Bí Pháp",
+    "en": "Strong Light Secret Art",
+    "realm": 4,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
+    "mp_cost": 42,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4,
+      "DebuffSetDanh": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_CuongGia_R4",
+    "vi": "Cường Giả Thổ Bí Pháp",
+    "en": "Strong Earth Secret Art",
+    "realm": 4,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.8,
+      "matk": 0.0
+    },
+    "mp_cost": 42,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.4,
+      "DebuffLunDat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_CuongGia_R4",
+    "vi": "Cường Giả Thủy Bí Pháp",
+    "en": "Strong Water Secret Art",
+    "realm": 4,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.8
+    },
+    "mp_cost": 42,
+    "cooldown": 2,
+    "base_dmg": 38,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.4,
+      "DebuffDongBang": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Am_CuongGia_R5",
+    "vi": "Cường Giả Ám Bí Pháp",
+    "en": "Strong Shadow Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 68,
+    "effects": [
+      "DebuffLoaMat",
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.4,
+      "DebuffXeRach": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_CuongGia_R5",
+    "vi": "Cường Giả Hỏa Bí Pháp",
+    "en": "Strong Fire Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 68,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.4,
+      "DebuffDotChay": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_HungManh_R5",
+    "vi": "Hùng Mãnh Hỏa Bí Pháp",
+    "en": "Fierce Fire Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 81,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.5,
+      "DebuffDotChay": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_CuongGia_R5",
+    "vi": "Cường Giả Kim Bí Pháp",
+    "en": "Strong Metal Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 68,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4,
+      "DebuffChayMau": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_HungManh_R5",
+    "vi": "Hùng Mãnh Kim Bí Pháp",
+    "en": "Fierce Metal Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 81,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.5,
+      "DebuffChayMau": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_CuongGia_R5",
+    "vi": "Cường Giả Lôi Bí Pháp",
+    "en": "Strong Thunder Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 68,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.4,
+      "DebuffSetDanh": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_HungManh_R5",
+    "vi": "Hùng Mãnh Lôi Bí Pháp",
+    "en": "Fierce Thunder Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 81,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.5,
+      "DebuffSetDanh": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_ChiTon_R5",
+    "vi": "Chí Tôn Mộc Bí Pháp",
+    "en": "Sovereign Wood Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 126,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon",
+      "DebuffCatDut"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.85,
+      "DebuffBaoMon": 0.75,
+      "DebuffCatDut": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_CuongGia_R5",
+    "vi": "Cường Giả Mộc Bí Pháp",
+    "en": "Strong Wood Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 68,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.4,
+      "DebuffBaoMon": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_DaiNang_R5",
+    "vi": "Đại Năng Mộc Bí Pháp",
+    "en": "Mighty Wood Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 94,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.6,
+      "DebuffBaoMon": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_HungManh_R5",
+    "vi": "Hùng Mãnh Mộc Bí Pháp",
+    "en": "Fierce Wood Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 81,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.5,
+      "DebuffBaoMon": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_CuongGia_R5",
+    "vi": "Cường Giả Phong Bí Pháp",
+    "en": "Strong Wind Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 68,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.4,
+      "DebuffCuonBay": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_HungManh_R5",
+    "vi": "Hùng Mãnh Phong Bí Pháp",
+    "en": "Fierce Wind Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 81,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.5,
+      "DebuffCuonBay": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Quang_CuongGia_R5",
+    "vi": "Cường Giả Quang Bí Pháp",
+    "en": "Strong Light Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 68,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.4,
+      "DebuffSetDanh": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_CuongGia_R5",
+    "vi": "Cường Giả Thổ Bí Pháp",
+    "en": "Strong Earth Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 68,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.4,
+      "DebuffLunDat": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_HungManh_R5",
+    "vi": "Hùng Mãnh Thổ Bí Pháp",
+    "en": "Fierce Earth Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 81,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.5,
+      "DebuffLunDat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_CuongGia_R5",
+    "vi": "Cường Giả Thủy Bí Pháp",
+    "en": "Strong Water Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 68,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.4,
+      "DebuffDongBang": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_HungManh_R5",
+    "vi": "Hùng Mãnh Thủy Bí Pháp",
+    "en": "Fierce Water Secret Art",
+    "realm": 5,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 58,
+    "cooldown": 3,
+    "base_dmg": 81,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.5,
+      "DebuffDongBang": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Am_HungManh_R6",
+    "vi": "Hùng Mãnh Ám Bí Pháp",
+    "en": "Fierce Shadow Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffLoaMat",
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.5,
+      "DebuffXeRach": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_HungManh_R6",
+    "vi": "Hùng Mãnh Hỏa Bí Pháp",
+    "en": "Fierce Fire Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.5,
+      "DebuffDotChay": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_HungManh_R6",
+    "vi": "Hùng Mãnh Kim Bí Pháp",
+    "en": "Fierce Metal Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.0
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.5,
+      "DebuffChayMau": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_HungManh_R6",
+    "vi": "Hùng Mãnh Lôi Bí Pháp",
+    "en": "Fierce Thunder Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.5,
+      "DebuffSetDanh": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_ChiTon_R6",
+    "vi": "Chí Tôn Mộc Bí Pháp",
+    "en": "Sovereign Wood Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 203,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon",
+      "DebuffCatDut"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.85,
+      "DebuffBaoMon": 0.75,
+      "DebuffCatDut": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_DaiNang_R6",
+    "vi": "Đại Năng Mộc Bí Pháp",
+    "en": "Mighty Wood Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 152,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.6,
+      "DebuffBaoMon": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_HungManh_R6",
+    "vi": "Hùng Mãnh Mộc Bí Pháp",
+    "en": "Fierce Wood Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.5,
+      "DebuffBaoMon": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_HungManh_R6",
+    "vi": "Hùng Mãnh Phong Bí Pháp",
+    "en": "Fierce Wind Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.0
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.5,
+      "DebuffCuonBay": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Quang_HungManh_R6",
+    "vi": "Hùng Mãnh Quang Bí Pháp",
+    "en": "Fierce Light Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.5,
+      "DebuffSetDanh": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_HungManh_R6",
+    "vi": "Hùng Mãnh Thổ Bí Pháp",
+    "en": "Fierce Earth Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.0
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.5,
+      "DebuffLunDat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_HungManh_R6",
+    "vi": "Hùng Mãnh Thủy Bí Pháp",
+    "en": "Fierce Water Secret Art",
+    "realm": 6,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.1
+    },
+    "mp_cost": 75,
+    "cooldown": 3,
+    "base_dmg": 130,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.5,
+      "DebuffDongBang": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Am_HungManh_R7",
+    "vi": "Hùng Mãnh Ám Bí Pháp",
+    "en": "Fierce Shadow Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 198,
+    "effects": [
+      "DebuffLoaMat",
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.5,
+      "DebuffXeRach": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_HungManh_R7",
+    "vi": "Hùng Mãnh Hỏa Bí Pháp",
+    "en": "Fierce Fire Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 198,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.5,
+      "DebuffDotChay": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_DaiNang_R7",
+    "vi": "Đại Năng Kim Bí Pháp",
+    "en": "Mighty Metal Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 231,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.6,
+      "DebuffChayMau": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_HungManh_R7",
+    "vi": "Hùng Mãnh Kim Bí Pháp",
+    "en": "Fierce Metal Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 198,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.5,
+      "DebuffChayMau": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_HungManh_R7",
+    "vi": "Hùng Mãnh Lôi Bí Pháp",
+    "en": "Fierce Thunder Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 198,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.5,
+      "DebuffSetDanh": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_ChiTon_R7",
+    "vi": "Chí Tôn Mộc Bí Pháp",
+    "en": "Sovereign Wood Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 308,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon",
+      "DebuffCatDut"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.85,
+      "DebuffBaoMon": 0.75,
+      "DebuffCatDut": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_DaiNang_R7",
+    "vi": "Đại Năng Mộc Bí Pháp",
+    "en": "Mighty Wood Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 231,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.6,
+      "DebuffBaoMon": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_HungManh_R7",
+    "vi": "Hùng Mãnh Mộc Bí Pháp",
+    "en": "Fierce Wood Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 198,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.5,
+      "DebuffBaoMon": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_DaiNang_R7",
+    "vi": "Đại Năng Phong Bí Pháp",
+    "en": "Mighty Wind Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 231,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.6,
+      "DebuffCuonBay": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_HungManh_R7",
+    "vi": "Hùng Mãnh Phong Bí Pháp",
+    "en": "Fierce Wind Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 198,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.5,
+      "DebuffCuonBay": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Quang_HungManh_R7",
+    "vi": "Hùng Mãnh Quang Bí Pháp",
+    "en": "Fierce Light Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 198,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.5,
+      "DebuffSetDanh": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_DaiNang_R7",
+    "vi": "Đại Năng Thổ Bí Pháp",
+    "en": "Mighty Earth Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 231,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.6,
+      "DebuffLunDat": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_HungManh_R7",
+    "vi": "Hùng Mãnh Thổ Bí Pháp",
+    "en": "Fierce Earth Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 198,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.5,
+      "DebuffLunDat": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_DaiNang_R7",
+    "vi": "Đại Năng Thủy Bí Pháp",
+    "en": "Mighty Water Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 231,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.6,
+      "DebuffDongBang": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_HungManh_R7",
+    "vi": "Hùng Mãnh Thủy Bí Pháp",
+    "en": "Fierce Water Secret Art",
+    "realm": 7,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.2
+    },
+    "mp_cost": 95,
+    "cooldown": 4,
+    "base_dmg": 198,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.5,
+      "DebuffDongBang": 0.4
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Am_DaiNang_R8",
+    "vi": "Đại Năng Ám Bí Pháp",
+    "en": "Mighty Shadow Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.69,
+      "matk": 1.25
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 336,
+    "effects": [
+      "DebuffLoaMat",
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.6,
+      "DebuffXeRach": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_DaiNang_R8",
+    "vi": "Đại Năng Hỏa Bí Pháp",
+    "en": "Mighty Fire Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.69,
+      "matk": 1.25
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 336,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.6,
+      "DebuffDotChay": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_ThanThu_R8",
+    "vi": "Thần Thú Hỏa Bí Pháp",
+    "en": "Divine Beast Fire Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.69,
+      "matk": 1.25
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 368,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.65,
+      "DebuffDotChay": 0.55,
+      "DebuffBaoMon": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_DaiNang_R8",
+    "vi": "Đại Năng Kim Bí Pháp",
+    "en": "Mighty Metal Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.25,
+      "matk": 0.69
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 336,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.6,
+      "DebuffChayMau": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_ThanThu_R8",
+    "vi": "Thần Thú Kim Bí Pháp",
+    "en": "Divine Beast Metal Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.25,
+      "matk": 0.69
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 368,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau",
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.65,
+      "DebuffChayMau": 0.55,
+      "DebuffXeRach": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_DaiNang_R8",
+    "vi": "Đại Năng Lôi Bí Pháp",
+    "en": "Mighty Thunder Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.69,
+      "matk": 1.25
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 336,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.6,
+      "DebuffSetDanh": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_ChiTon_R8",
+    "vi": "Chí Tôn Mộc Bí Pháp",
+    "en": "Sovereign Wood Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.69,
+      "matk": 1.25
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 448,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon",
+      "DebuffCatDut"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.85,
+      "DebuffBaoMon": 0.75,
+      "DebuffCatDut": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_DaiNang_R8",
+    "vi": "Đại Năng Mộc Bí Pháp",
+    "en": "Mighty Wood Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.69,
+      "matk": 1.25
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 336,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.6,
+      "DebuffBaoMon": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_DaiNang_R8",
+    "vi": "Đại Năng Phong Bí Pháp",
+    "en": "Mighty Wind Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.25,
+      "matk": 0.69
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 336,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.6,
+      "DebuffCuonBay": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_ThanThu_R8",
+    "vi": "Thần Thú Phong Bí Pháp",
+    "en": "Divine Beast Wind Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.25,
+      "matk": 0.69
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 368,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay",
+      "CCInterrupt"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.65,
+      "DebuffCuonBay": 0.55,
+      "CCInterrupt": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Quang_DaiNang_R8",
+    "vi": "Đại Năng Quang Bí Pháp",
+    "en": "Mighty Light Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.69,
+      "matk": 1.25
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 336,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.6,
+      "DebuffSetDanh": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_DaiNang_R8",
+    "vi": "Đại Năng Thổ Bí Pháp",
+    "en": "Mighty Earth Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.25,
+      "matk": 0.69
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 336,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.6,
+      "DebuffLunDat": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_DaiNang_R8",
+    "vi": "Đại Năng Thủy Bí Pháp",
+    "en": "Mighty Water Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.69,
+      "matk": 1.25
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 336,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.6,
+      "DebuffDongBang": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_ThanThu_R8",
+    "vi": "Thần Thú Thủy Bí Pháp",
+    "en": "Divine Beast Water Secret Art",
+    "realm": 8,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.69,
+      "matk": 1.25
+    },
+    "mp_cost": 118,
+    "cooldown": 4,
+    "base_dmg": 368,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.65,
+      "DebuffDongBang": 0.55,
+      "DebuffChayMau": 0.45
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Am_DaiNang_R9",
+    "vi": "Đại Năng Ám Bí Pháp",
+    "en": "Mighty Shadow Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.72,
+      "matk": 1.3
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 494,
+    "effects": [
+      "DebuffLoaMat",
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.6,
+      "DebuffXeRach": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_DaiNang_R9",
+    "vi": "Đại Năng Hỏa Bí Pháp",
+    "en": "Mighty Fire Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.72,
+      "matk": 1.3
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 494,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.6,
+      "DebuffDotChay": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_TienThu_R9",
+    "vi": "Tiên Thú Hỏa Bí Pháp",
+    "en": "Immortal Beast Fire Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.72,
+      "matk": 1.3
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 588,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.75,
+      "DebuffDotChay": 0.65,
+      "DebuffBaoMon": 0.55
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_DaiNang_R9",
+    "vi": "Đại Năng Kim Bí Pháp",
+    "en": "Mighty Metal Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.72
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 494,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.6,
+      "DebuffChayMau": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_DaiNang_R9",
+    "vi": "Đại Năng Lôi Bí Pháp",
+    "en": "Mighty Thunder Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.72,
+      "matk": 1.3
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 494,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.6,
+      "DebuffSetDanh": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_TienThu_R9",
+    "vi": "Tiên Thú Lôi Bí Pháp",
+    "en": "Immortal Beast Thunder Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.72,
+      "matk": 1.3
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 588,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh",
+      "CCStun"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.75,
+      "DebuffSetDanh": 0.65,
+      "CCStun": 0.55
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_ChiTon_R9",
+    "vi": "Chí Tôn Mộc Bí Pháp",
+    "en": "Sovereign Wood Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.72,
+      "matk": 1.3
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 658,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon",
+      "DebuffCatDut"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.85,
+      "DebuffBaoMon": 0.75,
+      "DebuffCatDut": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_DaiNang_R9",
+    "vi": "Đại Năng Mộc Bí Pháp",
+    "en": "Mighty Wood Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.72,
+      "matk": 1.3
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 494,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.6,
+      "DebuffBaoMon": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_DaiNang_R9",
+    "vi": "Đại Năng Phong Bí Pháp",
+    "en": "Mighty Wind Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.72
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 494,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.6,
+      "DebuffCuonBay": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Quang_DaiNang_R9",
+    "vi": "Đại Năng Quang Bí Pháp",
+    "en": "Mighty Light Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.72,
+      "matk": 1.3
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 494,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffSetDanh"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.6,
+      "DebuffSetDanh": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_DaiNang_R9",
+    "vi": "Đại Năng Thổ Bí Pháp",
+    "en": "Mighty Earth Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.72
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 494,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.6,
+      "DebuffLunDat": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_TienThu_R9",
+    "vi": "Tiên Thú Thổ Bí Pháp",
+    "en": "Immortal Beast Earth Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 0.72
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 588,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat",
+      "CCStun"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.75,
+      "DebuffLunDat": 0.65,
+      "CCStun": 0.55
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_DaiNang_R9",
+    "vi": "Đại Năng Thủy Bí Pháp",
+    "en": "Mighty Water Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.72,
+      "matk": 1.3
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 494,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.6,
+      "DebuffDongBang": 0.5
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_TienThu_R9",
+    "vi": "Tiên Thú Thủy Bí Pháp",
+    "en": "Immortal Beast Water Secret Art",
+    "realm": 9,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.72,
+      "matk": 1.3
+    },
+    "mp_cost": 142,
+    "cooldown": 5,
+    "base_dmg": 588,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.75,
+      "DebuffDongBang": 0.65,
+      "DebuffChayMau": 0.55
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Am_ChiTon_R10",
+    "vi": "Chí Tôn Ám Bí Pháp",
+    "en": "Sovereign Shadow Secret Art",
+    "realm": 10,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.77,
+      "matk": 1.4
+    },
+    "mp_cost": 170,
+    "cooldown": 5,
+    "base_dmg": 980,
+    "effects": [
+      "DebuffLoaMat",
+      "DebuffXeRach",
+      "DebuffCatDut"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.85,
+      "DebuffXeRach": 0.75,
+      "DebuffCatDut": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Hoa_ChiTon_R10",
+    "vi": "Chí Tôn Hỏa Bí Pháp",
+    "en": "Sovereign Fire Secret Art",
+    "realm": 10,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.77,
+      "matk": 1.4
+    },
+    "mp_cost": 170,
+    "cooldown": 5,
+    "base_dmg": 980,
+    "effects": [
+      "DebuffThieuDot",
+      "DebuffDotChay",
+      "DebuffBaoMon"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.85,
+      "DebuffDotChay": 0.75,
+      "DebuffBaoMon": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Kim_ChiTon_R10",
+    "vi": "Chí Tôn Kim Bí Pháp",
+    "en": "Sovereign Metal Secret Art",
+    "realm": 10,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.4,
+      "matk": 0.77
+    },
+    "mp_cost": 170,
+    "cooldown": 5,
+    "base_dmg": 980,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffChayMau",
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.85,
+      "DebuffChayMau": 0.75,
+      "DebuffXeRach": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Loi_ChiTon_R10",
+    "vi": "Chí Tôn Lôi Bí Pháp",
+    "en": "Sovereign Thunder Secret Art",
+    "realm": 10,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.77,
+      "matk": 1.4
+    },
+    "mp_cost": 170,
+    "cooldown": 5,
+    "base_dmg": 980,
+    "effects": [
+      "DebuffTeLiet",
+      "DebuffSetDanh",
+      "CCStun"
+    ],
+    "effect_chances": {
+      "DebuffTeLiet": 0.85,
+      "DebuffSetDanh": 0.75,
+      "CCStun": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Moc_ChiTon_R10",
+    "vi": "Chí Tôn Mộc Bí Pháp",
+    "en": "Sovereign Wood Secret Art",
+    "realm": 10,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.77,
+      "matk": 1.4
+    },
+    "mp_cost": 170,
+    "cooldown": 5,
+    "base_dmg": 980,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffBaoMon",
+      "DebuffCatDut"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.85,
+      "DebuffBaoMon": 0.75,
+      "DebuffCatDut": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Phong_ChiTon_R10",
+    "vi": "Chí Tôn Phong Bí Pháp",
+    "en": "Sovereign Wind Secret Art",
+    "realm": 10,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.4,
+      "matk": 0.77
+    },
+    "mp_cost": 170,
+    "cooldown": 5,
+    "base_dmg": 980,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay",
+      "CCInterrupt"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.85,
+      "DebuffCuonBay": 0.75,
+      "CCInterrupt": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Quang_ChiTon_R10",
+    "vi": "Chí Tôn Quang Bí Pháp",
+    "en": "Sovereign Light Secret Art",
+    "realm": 10,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.77,
+      "matk": 1.4
+    },
+    "mp_cost": 170,
+    "cooldown": 5,
+    "base_dmg": 980,
+    "effects": [
+      "DebuffPhaGiap",
+      "DebuffSetDanh",
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffPhaGiap": 0.85,
+      "DebuffSetDanh": 0.75,
+      "DebuffLoaMat": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Tho_ChiTon_R10",
+    "vi": "Chí Tôn Thổ Bí Pháp",
+    "en": "Sovereign Earth Secret Art",
+    "realm": 10,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.4,
+      "matk": 0.77
+    },
+    "mp_cost": 170,
+    "cooldown": 5,
+    "base_dmg": 980,
+    "effects": [
+      "DebuffTroBuoc",
+      "DebuffLunDat",
+      "CCStun"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.85,
+      "DebuffLunDat": 0.75,
+      "CCStun": 0.65
+    },
+    "formation_key": null
+  },
+  {
+    "key": "EnemyDungeon_Thuy_ChiTon_R10",
+    "vi": "Chí Tôn Thủy Bí Pháp",
+    "en": "Sovereign Water Secret Art",
+    "realm": 10,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.77,
+      "matk": 1.4
+    },
+    "mp_cost": 170,
+    "cooldown": 5,
+    "base_dmg": 980,
+    "effects": [
+      "DebuffLamCham",
+      "DebuffDongBang",
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffLamCham": 0.85,
+      "DebuffDongBang": 0.75,
+      "DebuffChayMau": 0.65
+    },
+    "formation_key": null
+  }
+]

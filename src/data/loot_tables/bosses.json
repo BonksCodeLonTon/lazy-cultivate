@@ -187,12 +187,6 @@
       "qty_max": 3
     },
     {
-      "item_key": "DanRegenAll",
-      "weight": 400000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
       "item_key": "GemUnique_AmThuc",
       "weight": 30000,
       "qty_min": 1,

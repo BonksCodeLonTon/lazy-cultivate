@@ -2,43 +2,37 @@
   "LootZone_5": [
     {
       "item_key": "MatNguTang",
-      "weight": 400000,
+      "weight": 200000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatCotHoa",
-      "weight": 350000,
+      "weight": 175000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatKimDanNguyen",
-      "weight": 150000,
+      "weight": 75000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiHPMid",
-      "weight": 200000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiMPMid",
-      "weight": 180000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "DanCurePoison",
-      "weight": 120000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiHPLarge",
-      "weight": 50000,
+      "weight": 25000,
       "qty_min": 1,
       "qty_max": 1
     },
@@ -303,115 +297,115 @@
     },
     {
       "item_key": "ChestHoang",
-      "weight": 30000,
+      "weight": 15000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemDmgKim",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemResKim",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemDmgMoc",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemResMoc",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemDmgThuy",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemResThuy",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemDmgHoa",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemResHoa",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemDmgTho",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemResTho",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemDmgLoi",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemResLoi",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemDmgPhong",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemResPhong",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemDmgQuang",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemResQuang",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemDmgAm",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatElemResAm",
-      "weight": 60000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     }

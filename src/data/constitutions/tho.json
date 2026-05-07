@@ -13,7 +13,7 @@
     "passive_description_vi": "Linh khí Thổ sơ khởi tụ trong thân, mọi thuộc tính phòng ngự đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.08,
-      "res_all": 30,
+      "res_all": 0.15,
       "final_dmg_reduce": 0.04,
       "hp_flat_per_realm": 200
     },
@@ -38,7 +38,8 @@
     "stat_bonuses": {
       "hp_pct": 0.08,
       "shield_regen_pct": 0.02,
-      "res_all": 20
+      "shield_flat_per_realm": 15,
+      "res_all": 0.1
     },
     "special_requirements": null,
     "materials": {
@@ -61,6 +62,7 @@
     "stat_bonuses": {
       "hp_pct": 0.06,
       "shield_regen_pct": 0.018,
+      "shield_flat_per_realm": 15,
       "evasion_rating": 50
     },
     "special_requirements": null,
@@ -84,6 +86,7 @@
     "stat_bonuses": {
       "hp_pct": 0.1,
       "shield_regen_pct": 0.025,
+      "shield_flat_per_realm": 15,
       "thorn_pct": 0.05
     },
     "special_requirements": null,
@@ -107,7 +110,8 @@
     "stat_bonuses": {
       "hp_pct": 0.12,
       "shield_regen_pct": 0.03,
-      "res_all": 35,
+      "shield_flat_per_realm": 30,
+      "res_all": 0.17,
       "thorn_pct": 0.05
     },
     "special_requirements": null,
@@ -130,7 +134,7 @@
     "passive_description_vi": "Linh khí Thổ đã hậu nhập huyết mạch — sức mạnh phòng ngự vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.128,
-      "res_all": 48,
+      "res_all": 0.24,
       "final_dmg_reduce": 0.064,
       "hp_flat_per_realm": 350
     },
@@ -155,6 +159,7 @@
     "stat_bonuses": {
       "hp_pct": 0.096,
       "shield_regen_pct": 0.029,
+      "shield_flat_per_realm": 30,
       "evasion_rating": 80
     },
     "special_requirements": null,
@@ -178,6 +183,7 @@
     "stat_bonuses": {
       "hp_pct": 0.16,
       "shield_regen_pct": 0.04,
+      "shield_flat_per_realm": 30,
       "thorn_pct": 0.08
     },
     "special_requirements": null,
@@ -201,8 +207,9 @@
     "stat_bonuses": {
       "hp_pct": 0.15,
       "shield_regen_pct": 0.04,
+      "shield_flat_per_realm": 50,
       "thorn_pct": 0.1,
-      "res_all": 40,
+      "res_all": 0.2,
       "stun_on_hit_pct": 0.05
     },
     "special_requirements": null,
@@ -226,7 +233,7 @@
     "passive_description_vi": "Thân hóa linh thể Thổ, phòng ngự mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.192,
-      "res_all": 72,
+      "res_all": 0.36,
       "final_dmg_reduce": 0.096,
       "hp_flat_per_realm": 500
     },
@@ -252,6 +259,7 @@
     "stat_bonuses": {
       "hp_pct": 0.144,
       "shield_regen_pct": 0.043,
+      "shield_flat_per_realm": 50,
       "evasion_rating": 120
     },
     "special_requirements": null,
@@ -276,6 +284,7 @@
     "stat_bonuses": {
       "hp_pct": 0.24,
       "shield_regen_pct": 0.06,
+      "shield_flat_per_realm": 50,
       "thorn_pct": 0.12
     },
     "special_requirements": null,
@@ -300,7 +309,7 @@
     "stat_bonuses": {
       "hp_pct": 0.22,
       "shield_regen_pct": 0.06,
-      "res_all": 80,
+      "res_all": 0.4,
       "thorn_pct": 0.15,
       "shield_max_pct": 0.05,
       "thorn_from_shield": true,
@@ -328,7 +337,7 @@
     "passive_description_vi": "Thần thể Thổ cộng hưởng với đại đạo, phòng ngự bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.28,
-      "res_all": 105,
+      "res_all": 0.4,
       "final_dmg_reduce": 0.14,
       "hp_flat_per_realm": 750,
       "damage_bonus_from_hp_pct": 0.08,
@@ -383,6 +392,7 @@
     "stat_bonuses": {
       "hp_pct": 0.25,
       "shield_regen_pct": 0.06,
+      "shield_flat_per_realm": 70,
       "thorn_pct": 0.12,
       "thorn_from_shield": true,
       "damage_bonus_from_shield_pct": 0.07
@@ -396,8 +406,8 @@
   },
   {
     "key": "ConstitutionThienDiaCuong",
-    "vi": "Thiên Địa Trấn Cương Thể",
-    "en": "Heaven-Earth Suppressing Body",
+    "vi": "Đại Địa Trấn Thế Thể",
+    "en": "Great Earth World-Suppressing Body",
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
@@ -413,7 +423,7 @@
       "thorn_pct": 0.2,
       "thorn_from_shield": true,
       "stun_on_hit_pct": 0.1,
-      "res_all": 60,
+      "res_all": 0.3,
       "shield_max_pct": 0.1
     },
     "special_requirements": null,
@@ -426,8 +436,8 @@
   },
   {
     "key": "ConstitutionThoCuong_Leg",
-    "vi": "Đế Cương Sơn Thể",
-    "en": "Imperial Iron Mountain Body",
+    "vi": "Thánh Sơn Bất Động Thể",
+    "en": "Immovable Sacred Mountain Body",
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
@@ -438,7 +448,7 @@
     "passive_description_vi": "Sơn nhạc trấn cương, máu thịt là vũ khí — sinh lực càng dồi dào, đòn đánh càng đè bẹp đối thủ; va chạm với khiên đá khiến chúng choáng váng.",
     "stat_bonuses": {
       "hp_pct": 0.4,
-      "res_all": 150,
+      "res_all": 0.4,
       "final_dmg_reduce": 0.2,
       "damage_bonus_from_hp_pct": 0.12,
       "thorn_from_shield": true,
@@ -455,8 +465,8 @@
   },
   {
     "key": "ConstitutionThoHoang_Leg",
-    "vi": "Đế Hoàng Sa Thể",
-    "en": "Imperial Yellow Sand Body",
+    "vi": "Hoàng Sa Tịch Diệt Thể",
+    "en": "Yellow Sand Annihilation Body",
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
@@ -472,7 +482,7 @@
       "damage_bonus_from_shield_pct": 0.12,
       "thorn_from_shield": true,
       "shield_max_pct": 0.2,
-      "res_all": 100,
+      "res_all": 0.4,
       "final_dmg_reduce": 0.12,
       "thorn_pct": 0.2,
       "shield_max_base": 400,
@@ -488,8 +498,8 @@
   },
   {
     "key": "ConstitutionThoTrach_Leg",
-    "vi": "Đế Trạch Thổ Thể",
-    "en": "Imperial Marshland Earth Body",
+    "vi": "Huyền Thổ Hậu Đức Thể",
+    "en": "Mystic Earth Profound Virtue Body",
     "rarity": "legendary",
     "element": "tho",
     "roll_weight": 0,
@@ -501,6 +511,7 @@
     "stat_bonuses": {
       "hp_pct": 0.5,
       "shield_regen_pct": 0.125,
+      "shield_flat_per_realm": 100,
       "thorn_pct": 0.25,
       "damage_bonus_from_hp_pct": 0.1,
       "stun_on_hit_pct": 0.08,

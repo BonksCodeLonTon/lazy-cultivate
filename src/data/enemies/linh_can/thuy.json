@@ -7,20 +7,29 @@
     "realm_level": 1,
     "element": "thuy",
     "base_hp": 1100,
-    "base_spd": 11,
+    "base_spd": 14,
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyLCThuy_T1",
-      "EnemyThuy_T1"
+      "EnemyThuy_T1",
+      "EnemyDungeon_Thuy_TinhAnh_R1"
     ],
-    "base_atk": 38,
-    "base_matk": 65,
+    "base_atk": 48,
+    "base_matk": 81,
     "base_def": 47,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Thuy",
     "final_dmg_bonus": 0.03,
     "base_res": {
-      "thuy": 0.2
+      "thuy": 0.25,
+      "kim": 0.1,
+      "moc": 0.1,
+      "hoa": 0.1,
+      "tho": 0.1,
+      "loi": 0.1,
+      "phong": 0.1,
+      "quang": 0.1,
+      "am": 0.1
     },
     "res_cap_pct": 0.8,
     "loot_luck_bonus": 0.0
@@ -33,20 +42,29 @@
     "realm_level": 2,
     "element": "thuy",
     "base_hp": 1980,
-    "base_spd": 10,
+    "base_spd": 13,
     "hp_scale": 1.6,
     "skill_keys": [
       "EnemyLCThuy_T1",
-      "EnemyBang_T1"
+      "EnemyBang_T1",
+      "EnemyDungeon_Thuy_TinhAnh_R2"
     ],
-    "base_atk": 75,
-    "base_matk": 90,
+    "base_atk": 94,
+    "base_matk": 112,
     "base_def": 90,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Thuy",
     "final_dmg_bonus": 0.05,
     "base_res": {
-      "thuy": 0.25
+      "thuy": 0.3,
+      "kim": 0.1,
+      "moc": 0.1,
+      "hoa": 0.1,
+      "tho": 0.1,
+      "loi": 0.1,
+      "phong": 0.1,
+      "quang": 0.1,
+      "am": 0.1
     },
     "res_cap_pct": 0.85,
     "loot_luck_bonus": 0.0
@@ -59,20 +77,29 @@
     "realm_level": 3,
     "element": "thuy",
     "base_hp": 2900,
-    "base_spd": 12,
+    "base_spd": 16,
     "hp_scale": 1.65,
     "skill_keys": [
       "EnemyLCThuy_T1",
-      "EnemyLCThuy_T2"
+      "EnemyLCThuy_T2",
+      "EnemyDungeon_Thuy_TinhAnh_R3"
     ],
-    "base_atk": 92,
-    "base_matk": 165,
+    "base_atk": 115,
+    "base_matk": 206,
     "base_def": 105,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Thuy",
     "final_dmg_bonus": 0.06,
     "base_res": {
-      "thuy": 0.28
+      "thuy": 0.33,
+      "kim": 0.1,
+      "moc": 0.1,
+      "hoa": 0.1,
+      "tho": 0.1,
+      "loi": 0.1,
+      "phong": 0.1,
+      "quang": 0.1,
+      "am": 0.1
     },
     "res_cap_pct": 0.85,
     "loot_luck_bonus": 0.2
@@ -85,20 +112,29 @@
     "realm_level": 4,
     "element": "thuy",
     "base_hp": 5000,
-    "base_spd": 12,
+    "base_spd": 16,
     "hp_scale": 1.7,
     "skill_keys": [
       "EnemyLCThuy_T1",
-      "EnemyLCThuy_T2"
+      "EnemyLCThuy_T2",
+      "EnemyDungeon_Thuy_CuongGia_R4"
     ],
-    "base_atk": 153,
-    "base_matk": 221,
+    "base_atk": 191,
+    "base_matk": 276,
     "base_def": 161,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Thuy",
     "final_dmg_bonus": 0.08,
     "base_res": {
-      "thuy": 0.35
+      "thuy": 0.4,
+      "kim": 0.15,
+      "moc": 0.15,
+      "hoa": 0.15,
+      "tho": 0.15,
+      "loi": 0.15,
+      "phong": 0.15,
+      "quang": 0.15,
+      "am": 0.15
     },
     "res_cap_pct": 0.85,
     "loot_luck_bonus": 0.5
@@ -111,21 +147,29 @@
     "realm_level": 5,
     "element": "thuy",
     "base_hp": 7800,
-    "base_spd": 14,
+    "base_spd": 18,
     "hp_scale": 1.8,
     "skill_keys": [
       "EnemyLCThuy_T2",
-      "EnemyLCThuy_T3"
+      "EnemyLCThuy_T3",
+      "EnemyDungeon_Thuy_CuongGia_R5"
     ],
-    "base_atk": 200,
-    "base_matk": 360,
+    "base_atk": 250,
+    "base_matk": 450,
     "base_def": 190,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Thuy",
     "final_dmg_bonus": 0.1,
     "base_res": {
-      "thuy": 0.4,
-      "kim": 0.05
+      "thuy": 0.45,
+      "kim": 0.1,
+      "moc": 0.15,
+      "hoa": 0.15,
+      "tho": 0.15,
+      "loi": 0.15,
+      "phong": 0.15,
+      "quang": 0.15,
+      "am": 0.15
     },
     "res_cap_pct": 0.88,
     "loot_luck_bonus": 0.8,
@@ -140,22 +184,30 @@
     "realm_level": 6,
     "element": "thuy",
     "base_hp": 13920,
-    "base_spd": 13,
+    "base_spd": 17,
     "hp_scale": 1.9,
     "skill_keys": [
       "EnemyLCThuy_T2",
       "EnemyLCThuy_T3",
-      "EnemyLCThuy_Apex"
+      "EnemyLCThuy_Apex",
+      "EnemyDungeon_Thuy_HungManh_R6"
     ],
-    "base_atk": 304,
-    "base_matk": 456,
+    "base_atk": 380,
+    "base_matk": 570,
     "base_def": 323,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Thuy",
     "final_dmg_bonus": 0.12,
     "base_res": {
-      "thuy": 0.5,
-      "kim": 0.1
+      "thuy": 0.55,
+      "kim": 0.15,
+      "moc": 0.15,
+      "hoa": 0.15,
+      "tho": 0.15,
+      "loi": 0.15,
+      "phong": 0.15,
+      "quang": 0.15,
+      "am": 0.15
     },
     "res_cap_pct": 0.9,
     "loot_luck_bonus": 1.2
@@ -168,22 +220,30 @@
     "realm_level": 7,
     "element": "thuy",
     "base_hp": 21000,
-    "base_spd": 16,
+    "base_spd": 21,
     "hp_scale": 1.95,
     "skill_keys": [
       "EnemyLCThuy_T3",
       "EnemyLCThuy_Apex",
-      "EnemyLCThuy_T2"
+      "EnemyLCThuy_T2",
+      "EnemyDungeon_Thuy_HungManh_R7"
     ],
-    "base_atk": 410,
-    "base_matk": 730,
+    "base_atk": 512,
+    "base_matk": 912,
     "base_def": 380,
     "mp_regen_pct": 0.07,
     "loot_table_key": "LinhCanLoot_Thuy",
     "final_dmg_bonus": 0.18,
     "base_res": {
-      "thuy": 0.55,
-      "kim": 0.13
+      "thuy": 0.6,
+      "kim": 0.18,
+      "moc": 0.2,
+      "hoa": 0.2,
+      "tho": 0.2,
+      "loi": 0.2,
+      "phong": 0.2,
+      "quang": 0.2,
+      "am": 0.2
     },
     "res_cap_pct": 0.9,
     "loot_luck_bonus": 1.5,
@@ -198,23 +258,31 @@
     "realm_level": 8,
     "element": "thuy",
     "base_hp": 37500,
-    "base_spd": 15,
+    "base_spd": 20,
     "hp_scale": 2.0,
     "skill_keys": [
       "EnemyLCThuy_Apex",
       "EnemyLCThuy_T3",
-      "EnemyLCThuy_T2"
+      "EnemyLCThuy_T2",
+      "EnemyDungeon_Thuy_DaiNang_R8"
     ],
-    "base_atk": 630,
-    "base_matk": 882,
+    "base_atk": 788,
+    "base_matk": 1102,
     "base_def": 588,
     "mp_regen_pct": 0.08,
     "base_evasion": 54,
     "final_dmg_bonus": 0.28,
     "loot_table_key": "LinhCanLoot_Thuy",
     "base_res": {
-      "thuy": 0.65,
-      "kim": 0.2
+      "thuy": 0.7,
+      "kim": 0.25,
+      "moc": 0.2,
+      "hoa": 0.2,
+      "tho": 0.2,
+      "loi": 0.2,
+      "phong": 0.2,
+      "quang": 0.2,
+      "am": 0.2
     },
     "res_cap_pct": 0.9,
     "loot_luck_bonus": 2.0
@@ -227,22 +295,30 @@
     "realm_level": 9,
     "element": "thuy",
     "base_hp": 56000,
-    "base_spd": 17,
+    "base_spd": 22,
     "hp_scale": 2.05,
     "skill_keys": [
       "EnemyLCThuy_Apex",
       "EnemyLCThuy_T3",
-      "EnemyLCThuy_T2"
+      "EnemyLCThuy_T2",
+      "EnemyDungeon_Thuy_DaiNang_R9"
     ],
-    "base_atk": 850,
-    "base_matk": 1480,
+    "base_atk": 1062,
+    "base_matk": 1850,
     "base_def": 720,
     "mp_regen_pct": 0.08,
     "loot_table_key": "LinhCanLoot_Thuy",
     "final_dmg_bonus": 0.4,
     "base_res": {
-      "thuy": 0.7,
-      "kim": 0.25
+      "thuy": 0.75,
+      "kim": 0.3,
+      "moc": 0.2,
+      "hoa": 0.2,
+      "tho": 0.2,
+      "loi": 0.2,
+      "phong": 0.2,
+      "quang": 0.2,
+      "am": 0.2
     },
     "res_cap_pct": 0.92,
     "loot_luck_bonus": 2.6,
@@ -257,22 +333,30 @@
     "realm_level": 10,
     "element": "thuy",
     "base_hp": 92000,
-    "base_spd": 18,
+    "base_spd": 23,
     "hp_scale": 2.2,
     "skill_keys": [
       "EnemyLCThuy_Apex",
       "EnemyLCThuy_T3",
-      "EnemyLCThuy_T2"
+      "EnemyLCThuy_T2",
+      "EnemyDungeon_Thuy_ChiTon_R10"
     ],
-    "base_atk": 1200,
-    "base_matk": 2050,
+    "base_atk": 1500,
+    "base_matk": 2562,
     "base_def": 1000,
     "mp_regen_pct": 0.1,
     "loot_table_key": "LinhCanLoot_Thuy",
     "final_dmg_bonus": 0.55,
     "base_res": {
-      "thuy": 0.75,
-      "kim": 0.3
+      "thuy": 0.8,
+      "kim": 0.35,
+      "moc": 0.25,
+      "hoa": 0.25,
+      "tho": 0.25,
+      "loi": 0.25,
+      "phong": 0.25,
+      "quang": 0.25,
+      "am": 0.25
     },
     "res_cap_pct": 0.92,
     "loot_luck_bonus": 3.5,

@@ -131,9 +131,12 @@ def test_advance_cultivation_levels_up_via_realm_table():
     char.active_axis = "qi"
     char.qi_realm = 0  # Luyện Khí
     char.qi_xp = 0
-    # Bậc 2 threshold = 267; 270 turns at rate 1 = 270 xp ≥ 267.
-    result = advance_cultivation_xp(char, 270)
-    assert char.qi_xp == 270
+    # Cultivate enough turns at rate 1 to cross bậc-2 threshold exactly —
+    # pulled from the realm table so this stays valid if the linear shape
+    # gets retuned.
+    bac_2_threshold = QI_REALMS[0].level_exp_table[1]
+    result = advance_cultivation_xp(char, bac_2_threshold)
+    assert char.qi_xp == bac_2_threshold
     assert char.qi_level == 2
     assert result["levels_gained"] >= 1
 
@@ -147,15 +150,31 @@ def test_formation_earns_no_exp_from_turns():
 
 
 def test_study_formation_with_merit_converts_exp_and_levels():
+    """Per-realm rate: at Nhập Huyền (R1) the rate is 0.8 EXP/merit (post-nerf)."""
+    from src.game.systems.cultivation import formation_exp_per_merit
+
     char = make_char()
-    char.merit = 1_000
-    char.formation_realm = 1  # Nhập Huyền, table max 7200
-    result = study_formation_with_merit(char, 80)  # 80 merit × 10 = 800 xp
+    char.merit = 2_000
+    char.formation_realm = 1  # Nhập Huyền, table step 800
+    rate = formation_exp_per_merit(1)
+    spend = 1_000  # → 1000 × 0.8 = 800 xp = exactly bậc-1 threshold
+    result = study_formation_with_merit(char, spend)
     assert result["success"]
-    assert char.merit == 920
-    assert char.formation_xp == 800
-    # Nhập Huyền level table step 800 → 800 xp crosses bậc-1 threshold.
+    assert result["exp_per_merit"] == rate
+    assert char.merit == 2_000 - spend
+    assert char.formation_xp == int(spend * rate)
     assert char.formation_level == 1
+
+
+def test_study_formation_rate_decays_with_realm():
+    """Late realms cost more merit per EXP. R0 should be the cheapest, R8 the most expensive."""
+    from src.game.systems.cultivation import formation_exp_per_merit
+
+    rates = [formation_exp_per_merit(r) for r in range(9)]
+    assert rates[0] >= rates[-1], "Khai Huyền should yield ≥ EXP/merit than Đế Trận"
+    # No mid-realm spike — rate should be non-increasing as realm rises
+    for i in range(1, len(rates)):
+        assert rates[i] <= rates[i - 1], f"R{i} rate {rates[i]} > R{i-1} rate {rates[i-1]}"
 
 
 def test_final_realm_breakthrough_gate_matches_tribulation_cost():

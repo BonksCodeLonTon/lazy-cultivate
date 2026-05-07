@@ -18,7 +18,7 @@
       {"materials": [{"mat_grade": 2, "qty": 5}]}
     ],
     "affix_pool": {"prefix": 1, "suffix": 1},
-    "quality_chances": {"hoan": 0.65, "huyen": 0.25, "dia": 0.09, "thien": 0.01}
+    "quality_chances": {"hoan": 0.65, "huyen": 0.25, "dia": 0.093, "thien": 0.007}
   },
   {
     "grade": 3,
@@ -28,7 +28,7 @@
       {"materials": [{"mat_grade": 2, "qty": 5}]}
     ],
     "affix_pool": {"prefix": 1, "suffix": 1},
-    "quality_chances": {"hoan": 0.55, "huyen": 0.30, "dia": 0.13, "thien": 0.02}
+    "quality_chances": {"hoan": 0.55, "huyen": 0.30, "dia": 0.141, "thien": 0.009}
   },
   {
     "grade": 4,
@@ -39,7 +39,7 @@
       {"materials": [{"mat_grade": 3, "qty": 5}]}
     ],
     "affix_pool": {"prefix": 2, "suffix": 1},
-    "quality_chances": {"hoan": 0.45, "huyen": 0.35, "dia": 0.17, "thien": 0.03}
+    "quality_chances": {"hoan": 0.45, "huyen": 0.35, "dia": 0.1895, "thien": 0.0105}
   },
   {
     "grade": 5,
@@ -49,7 +49,7 @@
       {"materials": [{"mat_grade": 3, "qty": 5}]}
     ],
     "affix_pool": {"prefix": 2, "suffix": 1},
-    "quality_chances": {"hoan": 0.35, "huyen": 0.38, "dia": 0.23, "thien": 0.04}
+    "quality_chances": {"hoan": 0.35, "huyen": 0.38, "dia": 0.2575, "thien": 0.0125}
   },
   {
     "grade": 6,
@@ -60,7 +60,7 @@
       {"materials": [{"mat_grade": 4, "qty": 5}]}
     ],
     "affix_pool": {"prefix": 2, "suffix": 2},
-    "quality_chances": {"hoan": 0.25, "huyen": 0.40, "dia": 0.29, "thien": 0.06}
+    "quality_chances": {"hoan": 0.25, "huyen": 0.40, "dia": 0.3355, "thien": 0.0145}
   },
   {
     "grade": 7,
@@ -70,7 +70,7 @@
       {"materials": [{"mat_grade": 4, "qty": 5}]}
     ],
     "affix_pool": {"prefix": 2, "suffix": 2},
-    "quality_chances": {"hoan": 0.15, "huyen": 0.38, "dia": 0.39, "thien": 0.08}
+    "quality_chances": {"hoan": 0.15, "huyen": 0.38, "dia": 0.4535, "thien": 0.0165}
   },
   {
     "grade": 8,
@@ -80,7 +80,7 @@
       {"materials": [{"mat_grade": 5, "qty": 5}]}
     ],
     "affix_pool": {"prefix": 3, "suffix": 2},
-    "quality_chances": {"hoan": 0.08, "huyen": 0.32, "dia": 0.48, "thien": 0.12}
+    "quality_chances": {"hoan": 0.08, "huyen": 0.32, "dia": 0.5815, "thien": 0.0185}
   },
   {
     "grade": 9,
@@ -90,6 +90,6 @@
       {"materials": [{"mat_grade": 6, "qty": 6}]}
     ],
     "affix_pool": {"prefix": 3, "suffix": 3},
-    "quality_chances": {"hoan": 0.03, "huyen": 0.22, "dia": 0.57, "thien": 0.18}
+    "quality_chances": {"hoan": 0.03, "huyen": 0.22, "dia": 0.73, "thien": 0.02}
   }
 ]

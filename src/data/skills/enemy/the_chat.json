@@ -8,37 +8,37 @@
     "element": null,
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 0.85,
+      "atk": 1.105,
       "matk": 0.0
     },
     "mp_cost": 28,
     "cooldown": 2,
-    "base_dmg": 90,
+    "base_dmg": 144,
     "effects": [
       "DebuffPhaGiap",
       "DebuffChayMau",
       "DebuffXeRach"
     ],
     "effect_chances": {
-      "DebuffPhaGiap": 0.55,
-      "DebuffChayMau": 0.45,
-      "DebuffXeRach": 0.3
+      "DebuffPhaGiap": 0.75,
+      "DebuffChayMau": 0.65,
+      "DebuffXeRach": 0.5
     },
     "effect_overrides": {
       "DebuffPhaGiap": {
-        "duration": 4,
+        "duration": 5,
         "stat_bonus": {
-          "final_dmg_reduce": -0.25
+          "final_dmg_reduce": -0.35
         }
       },
       "DebuffXeRach": {
-        "duration": 3,
+        "duration": 4,
         "stat_bonus": {
-          "res_all": -0.15
+          "res_all": -0.21
         }
       },
       "DebuffChayMau": {
-        "duration": 4
+        "duration": 5
       }
     },
     "formation_key": null
@@ -53,32 +53,32 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 0.95
+      "matk": 1.235
     },
     "mp_cost": 38,
     "cooldown": 3,
-    "base_dmg": 110,
+    "base_dmg": 176,
     "effects": [
       "CCMuted",
       "DebuffSocDien",
       "DebuffBaoMon"
     ],
     "effect_chances": {
-      "CCMuted": 0.4,
-      "DebuffSocDien": 0.55,
-      "DebuffBaoMon": 0.45
+      "CCMuted": 0.6,
+      "DebuffSocDien": 0.75,
+      "DebuffBaoMon": 0.65
     },
     "effect_overrides": {
       "CCMuted": {
-        "duration": 3
-      },
-      "DebuffSocDien": {
         "duration": 4
       },
+      "DebuffSocDien": {
+        "duration": 5
+      },
       "DebuffBaoMon": {
-        "duration": 4,
+        "duration": 5,
         "stat_bonus": {
-          "res_all": -0.12
+          "res_all": -0.168
         }
       }
     },
@@ -94,11 +94,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 0.4
+      "matk": 0.52
     },
     "mp_cost": 32,
     "cooldown": 4,
-    "base_dmg": 60,
+    "base_dmg": 96,
     "effects": [
       "BuffKimCuong",
       "BuffHoPhap",
@@ -107,24 +107,24 @@
     "effect_chances": {
       "BuffKimCuong": 1.0,
       "BuffHoPhap": 1.0,
-      "BuffBatTu": 0.5
+      "BuffBatTu": 0.7
     },
     "effect_overrides": {
       "BuffKimCuong": {
-        "duration": 5,
+        "duration": 6,
         "stat_bonus": {
-          "final_dmg_reduce": 0.3
+          "final_dmg_reduce": 0.42
         }
       },
       "BuffHoPhap": {
-        "duration": 5,
+        "duration": 6,
         "stat_bonus": {
-          "final_dmg_reduce": 0.35,
-          "crit_res_rating": 200
+          "final_dmg_reduce": 0.49,
+          "crit_res_rating": 300
         }
       },
       "BuffBatTu": {
-        "duration": 1
+        "duration": 2
       }
     },
     "formation_key": null
@@ -139,11 +139,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.1
+      "matk": 1.43
     },
     "mp_cost": 55,
     "cooldown": 4,
-    "base_dmg": 180,
+    "base_dmg": 288,
     "effects": [
       "CCStun",
       "DebuffTeLiet",
@@ -151,24 +151,24 @@
       "DebuffSetDanh"
     ],
     "effect_chances": {
-      "CCStun": 0.3,
-      "DebuffTeLiet": 0.5,
-      "DebuffSocDien": 0.65,
-      "DebuffSetDanh": 0.4
+      "CCStun": 0.5,
+      "DebuffTeLiet": 0.7,
+      "DebuffSocDien": 0.85,
+      "DebuffSetDanh": 0.6
     },
     "effect_overrides": {
       "CCStun": {
-        "duration": 2
+        "duration": 3
       },
       "DebuffTeLiet": {
-        "duration": 2
+        "duration": 3
       },
       "DebuffSocDien": {
-        "duration": 5
+        "duration": 6
       },
       "DebuffSetDanh": {
-        "duration": 3,
-        "dot_pct": 0.08
+        "duration": 4,
+        "dot_pct": 0.11
       }
     },
     "formation_key": null
@@ -182,37 +182,37 @@
     "element": "am",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 0.95,
+      "atk": 1.235,
       "matk": 0.0
     },
     "mp_cost": 35,
     "cooldown": 3,
-    "base_dmg": 130,
+    "base_dmg": 208,
     "effects": [
       "DebuffChayMau",
       "DebuffXeRach",
       "DebuffCatDut"
     ],
     "effect_chances": {
-      "DebuffChayMau": 0.7,
-      "DebuffXeRach": 0.5,
-      "DebuffCatDut": 0.3
+      "DebuffChayMau": 0.9,
+      "DebuffXeRach": 0.7,
+      "DebuffCatDut": 0.5
     },
     "effect_overrides": {
       "DebuffChayMau": {
-        "duration": 5,
-        "dot_pct": 0.06
+        "duration": 6,
+        "dot_pct": 0.09
       },
       "DebuffXeRach": {
-        "duration": 4,
+        "duration": 5,
         "stat_bonus": {
-          "res_all": -0.18
+          "res_all": -0.252
         }
       },
       "DebuffCatDut": {
-        "duration": 4,
+        "duration": 5,
         "stat_bonus": {
-          "hp_regen_pct": -0.6
+          "hp_regen_pct": -0.78
         }
       }
     },
@@ -227,12 +227,12 @@
     "element": null,
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.2,
-      "matk": 0.4
+      "atk": 1.56,
+      "matk": 0.52
     },
     "mp_cost": 65,
     "cooldown": 5,
-    "base_dmg": 220,
+    "base_dmg": 352,
     "effects": [
       "DebuffPhaGiap",
       "DebuffChayMau",
@@ -240,30 +240,30 @@
       "CCInterrupt"
     ],
     "effect_chances": {
-      "DebuffPhaGiap": 0.7,
-      "DebuffChayMau": 0.65,
-      "DebuffXeRach": 0.55,
-      "CCInterrupt": 0.3
+      "DebuffPhaGiap": 0.9,
+      "DebuffChayMau": 0.85,
+      "DebuffXeRach": 0.75,
+      "CCInterrupt": 0.5
     },
     "effect_overrides": {
       "DebuffPhaGiap": {
-        "duration": 5,
+        "duration": 6,
         "stat_bonus": {
-          "final_dmg_reduce": -0.35
+          "final_dmg_reduce": -0.49
         }
       },
       "DebuffChayMau": {
-        "duration": 6,
-        "dot_pct": 0.08
+        "duration": 7,
+        "dot_pct": 0.11
       },
       "DebuffXeRach": {
-        "duration": 5,
+        "duration": 6,
         "stat_bonus": {
-          "res_all": -0.25
+          "res_all": -0.35
         }
       },
       "CCInterrupt": {
-        "duration": 2
+        "duration": 3
       }
     },
     "formation_key": null

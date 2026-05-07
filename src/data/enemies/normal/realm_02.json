@@ -11,7 +11,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyHoa_R2",
-      "EnemyLoi_R2"
+      "EnemyLoi_R2",
+      "EnemyDungeon_Hoa_PhoThong_R2"
     ],
     "base_atk": 20,
     "base_matk": 42,
@@ -30,7 +31,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyMoc_R2",
-      "EnemyThuy_R2"
+      "EnemyThuy_R2",
+      "EnemyDungeon_Moc_PhoThong_R2"
     ],
     "base_atk": 20,
     "base_matk": 42,
@@ -49,7 +51,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyBang_R2",
-      "EnemyMoc_R2"
+      "EnemyMoc_R2",
+      "EnemyDungeon_Thuy_PhoThong_R2"
     ],
     "base_atk": 20,
     "base_matk": 42,
@@ -72,7 +75,8 @@
     "mp_regen_pct": 0.05,
     "skill_keys": [
       "EnemyTho_R2",
-      "EnemyKim_R2"
+      "EnemyKim_R2",
+      "EnemyDungeon_Tho_PhoThong_R2"
     ]
   },
   {
@@ -87,7 +91,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyKim_R2",
-      "EnemyPhong_R2"
+      "EnemyPhong_R2",
+      "EnemyDungeon_Kim_PhoThong_R2"
     ],
     "base_atk": 42,
     "base_matk": 20,
@@ -106,7 +111,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyLoi_R2",
-      "EnemyHoa_R2"
+      "EnemyHoa_R2",
+      "EnemyDungeon_Loi_PhoThong_R2"
     ],
     "base_atk": 20,
     "base_matk": 42,
@@ -125,7 +131,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyPhong_R2",
-      "EnemyMoc_R2"
+      "EnemyMoc_R2",
+      "EnemyDungeon_Phong_PhoThong_R2"
     ],
     "base_atk": 42,
     "base_matk": 20,
@@ -144,7 +151,8 @@
     "hp_scale": 1.5,
     "skill_keys": [
       "EnemyThuy_R2",
-      "EnemyBang_R2"
+      "EnemyBang_R2",
+      "EnemyDungeon_Thuy_PhoThong_R2"
     ],
     "base_atk": 20,
     "base_matk": 42,

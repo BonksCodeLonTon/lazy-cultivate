@@ -83,7 +83,7 @@
     "passive_description_vi": "Linh khí Mộc sơ khởi tụ trong thân, mọi thuộc tính phòng ngự đều được khơi dậy.",
     "stat_bonuses": {
       "hp_pct": 0.12,
-      "res_all": 25,
+      "res_all": 0.12,
       "hp_regen_pct": 0.008
     },
     "special_requirements": null,
@@ -153,7 +153,7 @@
     "passive_description_vi": "Linh khí Mộc đã hậu nhập huyết mạch — sức mạnh phòng ngự vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "hp_pct": 0.192,
-      "res_all": 40,
+      "res_all": 0.2,
       "hp_regen_pct": 0.013
     },
     "special_requirements": null,
@@ -249,7 +249,7 @@
     "passive_description_vi": "Thân hóa linh thể Mộc, phòng ngự mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "hp_pct": 0.288,
-      "res_all": 60,
+      "res_all": 0.3,
       "hp_regen_pct": 0.019
     },
     "special_requirements": null,
@@ -381,7 +381,7 @@
     "passive_description_vi": "Thần thể Mộc cộng hưởng với đại đạo, phòng ngự bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "hp_pct": 0.42,
-      "res_all": 88,
+      "res_all": 0.4,
       "hp_regen_pct": 0.028,
       "damage_bonus_from_hp_pct": 0.08,
       "thorn_pct": 0.1,
@@ -396,8 +396,8 @@
   },
   {
     "key": "ConstitutionHongMongMoc",
-    "vi": "Hồng Hoang Mộc Đế Thể",
-    "en": "Primordial Wood Emperor Body",
+    "vi": "Hồng Hoang Vạn Cổ Mộc Thể",
+    "en": "Great Desolation Eternal Wood Body",
     "rarity": "legendary",
     "element": "moc",
     "roll_weight": 0,
@@ -431,8 +431,8 @@
   },
   {
     "key": "ConstitutionMocDiep_Leg",
-    "vi": "Đế Diệp Mộc Thể",
-    "en": "Imperial Leaf Wood Body",
+    "vi": "Vạn Diệp Thiên Đế Thể",
+    "en": "Ten Thousand Leaves Heavenly Emperor Body",
     "rarity": "legendary",
     "element": "moc",
     "roll_weight": 0,
@@ -440,7 +440,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Đế Diệp Mộc Thể — **Vạn Lá Hấp Khí**: mỗi lượt rút linh khí nhỏ từ kẻ địch, đồng thời trị liệu của lá có thể bạo kích. DoT làm địch nuôi sống thân chủ.",
+    "passive_description_vi": "Vạn Diệp Thiên Đế Thể — **Vạn Lá Hấp Khí**: mỗi lượt rút linh khí nhỏ từ kẻ địch, đồng thời trị liệu của lá có thể bạo kích. DoT làm địch nuôi sống thân chủ.",
     "stat_bonuses": {
       "mp_pct": 0.4,
       "hp_regen_pct": 0.05,
@@ -463,8 +463,8 @@
   },
   {
     "key": "ConstitutionMocSinh_Leg",
-    "vi": "Đế Sinh Mộc Thể",
-    "en": "Imperial Living Wood Body",
+    "vi": "Trường Sinh Bất Tử Thể",
+    "en": "Everlasting Immortality Body",
     "rarity": "legendary",
     "element": "moc",
     "roll_weight": 0,
@@ -472,7 +472,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Đế Sinh Mộc Thể — Cội Nguồn Bất Tận: cây sự sống vĩnh viễn không tàn — khi đòn đánh quyết định ập đến, thân thể bám rễ vào sinh cơ, sống sót ở 30% HP rồi hồi chiêu 6 lượt.",
+    "passive_description_vi": "Trường Sinh Bất Tử Thể — Cội Nguồn Bất Tận: cây sự sống vĩnh viễn không tàn — khi đòn đánh quyết định ập đến, thân thể bám rễ vào sinh cơ, sống sót ở 30% HP rồi hồi chiêu 6 lượt.",
     "stat_bonuses": {
       "hp_pct": 0.5,
       "hp_regen_pct": 0.06,
@@ -495,8 +495,8 @@
   },
   {
     "key": "ConstitutionMocTung_Leg",
-    "vi": "Đế Cổ Tùng Thể",
-    "en": "Imperial Ancient Pine Body",
+    "vi": "Thái Thượng Cổ Tùng Thể",
+    "en": "Supreme Ancient Pine Body",
     "rarity": "legendary",
     "element": "moc",
     "roll_weight": 0,
@@ -507,7 +507,7 @@
     "passive_description_vi": "Đế thể Mộc — đỉnh cao của lộ trình phòng ngự, vạn cổ truyền tụng.",
     "stat_bonuses": {
       "hp_pct": 0.7,
-      "res_all": 150,
+      "res_all": 0.4,
       "hp_regen_pct": 0.06,
       "hp_regen_flat": 100,
       "final_dmg_reduce": 0.12,
@@ -525,8 +525,8 @@
   },
   {
     "key": "ConstitutionKhoMocThanThe",
-    "vi": "Khô Mộc Thần Thể",
-    "en": "Withered Wood Divine Body",
+    "vi": "Vô Tận Khô Vinh Thể",
+    "en": "Endless Wither-and-Bloom Body",
     "rarity": "legendary",
     "element": "moc",
     "roll_weight": 0,

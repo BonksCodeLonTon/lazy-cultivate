@@ -13,6 +13,7 @@ from src.game.constants.realms import realm_label
 from src.game.systems.cultivation import (
     can_breakthrough,
     apply_breakthrough,
+    formation_exp_per_merit,
     get_breakthrough_requirements,
     study_formation_with_merit,
 )
@@ -58,7 +59,7 @@ def _cultivate_embed(axis: str, result: dict) -> discord.Embed:
     if levels_up:
         lines.append(f"✨ Cảnh giới tiến: **+{levels_up} cấp**")
     if axis == "formation" and turns > 0 and exp_gained == 0:
-        lines.append("ℹ️ *Trận Đạo chỉ tiến bằng Công Đức — dùng `/study_formation`.*")
+        lines.append("ℹ️ *Trận Đạo chỉ tiến bằng Công Đức — bấm **📘 Học Trận** bên dưới.*")
     if turns == 0:
         if cap_reached:
             lines.append("⏳ *Đã đạt giới hạn **1440 lượt/ngày** — quay lại ngày mai.*")
@@ -86,10 +87,102 @@ def _breakthrough_overview_embed(player, readiness: dict[str, bool]) -> discord.
 
 # ── Views ─────────────────────────────────────────────────────────────────────
 
+class StudyFormationModal(discord.ui.Modal, title="Học Trận với Công Đức"):
+    """Modal that converts Công Đức → Trận Đạo EXP. Validates the requested
+    amount against the **live** DB merit at submit time so the user can
+    never spend more than they currently hold (defends against the modal
+    being opened while merit changed in another command)."""
+
+    merits = discord.ui.TextInput(
+        label="Số Công Đức muốn dùng",
+        placeholder="Nhập số nguyên dương",
+        required=True,
+        max_length=12,
+    )
+
+    def __init__(
+        self,
+        discord_id: int,
+        current_merit: int,
+        exp_per_merit: float,
+        refresh_fn,
+    ) -> None:
+        super().__init__()
+        self._discord_id = discord_id
+        self._refresh_fn = refresh_fn
+        # Sub-1 rates flip the display to "X Công Đức = 1 EXP" so the
+        # granularity is obvious at a glance.
+        if exp_per_merit >= 1.0:
+            rate_text = f"1 Công Đức = {exp_per_merit:g} EXP"
+        else:
+            from math import ceil
+            cost = max(1, ceil(1.0 / exp_per_merit))
+            rate_text = f"{cost:,} Công Đức = 1 EXP"
+        self.merits.placeholder = f"Tối đa {current_merit:,}  ·  {rate_text}"
+
+    async def on_submit(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+
+        raw = (self.merits.value or "").strip().replace(",", "").replace(".", "")
+        if not raw.isdigit():
+            await interaction.response.send_message(
+                embed=error_embed("Nhập số nguyên dương."), ephemeral=True,
+            )
+            return
+        amount = int(raw)
+        if amount <= 0:
+            await interaction.response.send_message(
+                embed=error_embed("Số Công Đức phải lớn hơn 0."), ephemeral=True,
+            )
+            return
+
+        await interaction.response.defer(ephemeral=True)
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player_orm = await repo.get_by_discord_id(interaction.user.id)
+            if player_orm is None:
+                await interaction.followup.send(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
+                return
+
+            if amount > player_orm.merit:
+                await interaction.followup.send(
+                    embed=error_embed(
+                        f"Không đủ Công Đức (cần {amount:,}, hiện có {player_orm.merit:,})."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
+            char = _player_to_model(player_orm)
+            res = study_formation_with_merit(char, amount)
+            if not res["success"]:
+                await interaction.followup.send(embed=error_embed(res["error"]), ephemeral=True)
+                return
+
+            player_orm.merit = char.merit
+            player_orm.formation_xp = char.formation_xp
+            player_orm.formation_level = char.formation_level
+            await session.commit()
+
+        await interaction.followup.send(
+            embed=success_embed(
+                f"Tiêu {emojis.for_currency('merit')} {res['merit_spent']:,} Công Đức "
+                f"→ +{res['exp_gained']:,} EXP Trận Đạo "
+                f"_(tỷ lệ: 1 Công Đức = {res['exp_per_merit']} EXP tại cảnh giới này)_."
+            ),
+            ephemeral=True,
+        )
+        if self._refresh_fn:
+            await self._refresh_fn(interaction)
+
+
 class CultivateView(discord.ui.View):
     def __init__(self, discord_id: int, active_axis: str, back_fn=None) -> None:
         super().__init__(timeout=120)
         self._discord_id = discord_id
+        self._active_axis = active_axis
         self._back_fn = back_fn
 
         for axis_id, axis_label in _AXIS_CONFIGS:
@@ -98,10 +191,65 @@ class CultivateView(discord.ui.View):
             btn.callback = self._make_cb(axis_id)
             self.add_item(btn)
 
+        if active_axis == "formation":
+            study_btn = discord.ui.Button(
+                label="📘 Học Trận (Công Đức)",
+                style=discord.ButtonStyle.success,
+                row=1,
+            )
+            study_btn.callback = self._study_cb
+            self.add_item(study_btn)
+
         if back_fn:
-            back = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
+            back = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=2)
             back.callback = self._back_cb
             self.add_item(back)
+
+    async def _study_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.response.send_message(
+                    embed=error_embed("Chưa có nhân vật."), ephemeral=True,
+                )
+                return
+            current_merit = player.merit
+            current_realm = player.formation_realm
+
+        if current_merit <= 0:
+            await interaction.response.send_message(
+                embed=error_embed("Bạn chưa có Công Đức nào để học Trận."),
+                ephemeral=True,
+            )
+            return
+
+        rate = formation_exp_per_merit(current_realm)
+        await interaction.response.send_modal(
+            StudyFormationModal(self._discord_id, current_merit, rate, self._refresh_panel)
+        )
+
+    async def _refresh_panel(self, interaction: discord.Interaction) -> None:
+        """Re-render the cultivate panel after a successful merit study so the
+        user sees their updated formation bậc / XP without a manual click."""
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(self._discord_id)
+            if player is None:
+                return
+            result = await apply_offline_ticks(player, repo, "formation")
+            await session.commit()
+
+        embed = _cultivate_embed("formation", result)
+        view = CultivateView(self._discord_id, "formation", back_fn=self._back_fn)
+        try:
+            await interaction.edit_original_response(embed=embed, view=view)
+        except discord.HTTPException:
+            pass
 
     def _make_cb(self, axis: str):
         async def _cb(interaction: discord.Interaction) -> None:
@@ -397,6 +545,64 @@ class CultivationCog(commands.Cog, name="Cultivation"):
 
         await interaction.response.send_message(embed=embed)
 
+    @app_commands.command(
+        name="reset_character",
+        description="Xóa nhân vật hiện tại để /register lại từ đầu",
+    )
+    @app_commands.describe(confirm="Gõ XOA để xác nhận xóa nhân vật")
+    async def reset_character(
+        self, interaction: discord.Interaction, confirm: str
+    ) -> None:
+        # Temporary: no cooldown — players may reset freely until a rate limit is added.
+        await interaction.response.defer(ephemeral=True)
+        if confirm.strip().upper() != "XOA":
+            await interaction.followup.send(
+                embed=error_embed("Hủy reset — gõ chính xác `XOA` để xác nhận."),
+                ephemeral=True,
+            )
+            return
+
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.followup.send(
+                    embed=error_embed(
+                        "Ngươi chưa có nhân vật để reset. Dùng `/register`."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
+            old_name = player.name
+            counts = {
+                "items": len(player.item_instances or []),
+                "inventory": len(player.inventory or []),
+                "skills": len(player.skills or []),
+                "formations": len(player.formations or []),
+                "artifacts": len(player.artifacts or []),
+            }
+            # Player relationships use cascade="all, delete-orphan" and every
+            # FK to players.id has ondelete="CASCADE", so deleting the Player
+            # purges item_instances (bag + equipped), inventory, skills,
+            # formations, artifacts, market listings, turn tracker, and
+            # world-boss participations.
+            await session.delete(player)
+            await session.commit()
+
+        await interaction.followup.send(
+            embed=success_embed(
+                f"✅ Đã xóa nhân vật **{old_name}** cùng toàn bộ tài sản:\n"
+                f"• 🗡️ Trang bị / vật phẩm: **{counts['items']}**\n"
+                f"• 🎒 Kho vật liệu: **{counts['inventory']}** dòng\n"
+                f"• 🎯 Kỹ năng: **{counts['skills']}**\n"
+                f"• 🔯 Trận pháp: **{counts['formations']}**\n"
+                f"• 🏺 Pháp bảo: **{counts['artifacts']}**\n\n"
+                f"Dùng `/register <tên>` để tạo nhân vật mới."
+            ),
+            ephemeral=True,
+        )
+
     @app_commands.command(name="cultivate", description="Tu luyện — áp dụng AFK ticks")
     async def cultivate(self, interaction: discord.Interaction) -> None:
         await interaction.response.defer(ephemeral=True)
@@ -420,24 +626,44 @@ class CultivationCog(commands.Cog, name="Cultivation"):
         await interaction.followup.send(embed=embed, view=view, ephemeral=True)
 
     @app_commands.command(name="study_formation", description="Dùng Công Đức tăng Trận Đạo")
-    @app_commands.describe(merits="Số lượng Công Đức")
-    async def study_formation(self, interaction: discord.Interaction, merits: int) -> None:
+    @app_commands.describe(merits="Số lượng Công Đức (≥1)")
+    async def study_formation(
+        self,
+        interaction: discord.Interaction,
+        merits: app_commands.Range[int, 1, None],
+    ) -> None:
         await interaction.response.defer(ephemeral=True)
         async with get_session() as session:
             repo = PlayerRepository(session)
             player_orm = await repo.get_by_discord_id(interaction.user.id)
-            if not player_orm: return await interaction.followup.send(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
-            
+            if not player_orm:
+                return await interaction.followup.send(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
+
+            if merits > player_orm.merit:
+                return await interaction.followup.send(
+                    embed=error_embed(
+                        f"Không đủ Công Đức (cần {merits:,}, hiện có {player_orm.merit:,})."
+                    ),
+                    ephemeral=True,
+                )
+
             char = _player_to_model(player_orm)
             res = study_formation_with_merit(char, merits)
-            if not res["success"]: return await interaction.followup.send(embed=error_embed(res["error"]), ephemeral=True)
-            
+            if not res["success"]:
+                return await interaction.followup.send(embed=error_embed(res["error"]), ephemeral=True)
+
             player_orm.merit = char.merit
             player_orm.formation_xp = char.formation_xp
             player_orm.formation_level = char.formation_level
             await session.commit()
-            
-            await interaction.followup.send(embed=success_embed(f"Tiêu {emojis.for_currency('merit')} {merits:,} Công Đức -> +{res['exp_gained']:,} EXP Trận Đạo."))
+
+            await interaction.followup.send(
+                embed=success_embed(
+                    f"Tiêu {emojis.for_currency('merit')} {res['merit_spent']:,} Công Đức "
+                    f"→ +{res['exp_gained']:,} EXP Trận Đạo "
+                    f"_(tỷ lệ: 1 Công Đức = {res['exp_per_merit']} EXP tại cảnh giới này)_."
+                )
+            )
 
     @app_commands.command(name="breakthrough", description="Độ Kiếp")
     async def breakthrough(self, interaction: discord.Interaction) -> None:

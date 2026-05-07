@@ -421,8 +421,8 @@
   },
   {
     "key": "ConstitutionDeHoaPhanThien",
-    "vi": "Đế Hỏa Phần Thiên Thể",
-    "en": "Emperor Flame Sky-Burner Body",
+    "vi": "Cửu U Phần Thiên Đế Thể",
+    "en": "Nine Nether Heavens-Burning Emperor Body",
     "rarity": "legendary",
     "element": "hoa",
     "roll_weight": 0,
@@ -453,8 +453,8 @@
   },
   {
     "key": "ConstitutionHoaDiem_Leg",
-    "vi": "Đế Liệt Diệm Thể",
-    "en": "Imperial Blazing Flame Body",
+    "vi": "Xích Dương Liệt Diệm Thể",
+    "en": "Crimson Sun Blazing Flame Body",
     "rarity": "legendary",
     "element": "hoa",
     "roll_weight": 0,
@@ -462,7 +462,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Đế Liệt Diệm Thể — **Diễm Hồn Truyền Đốt**: ngọn lửa thiêu đốt nội tạng đối thủ thấm sâu hơn, nhiều tầng hơn, lại có thể bạo kích DoT. Sát thương Hỏa của bản thân thấm vào kháng Hỏa địch (xuyên kháng).",
+    "passive_description_vi": "Xích Dương Liệt Diệm Thể — **Diễm Hồn Truyền Đốt**: ngọn lửa thiêu đốt nội tạng đối thủ thấm sâu hơn, nhiều tầng hơn, lại có thể bạo kích DoT. Sát thương Hỏa của bản thân thấm vào kháng Hỏa địch (xuyên kháng).",
     "stat_bonuses": {
       "final_dmg_bonus": 0.18,
       "burn_on_hit_pct": 0.5,
@@ -493,8 +493,8 @@
   },
   {
     "key": "ConstitutionHoaPhung_Leg",
-    "vi": "Đế Phượng Hỏa Thể",
-    "en": "Imperial Phoenix Flame Body",
+    "vi": "U Minh Phượng Thể",
+    "en": "Nirvana Underworld Phoenix Body",
     "rarity": "legendary",
     "element": "hoa",
     "roll_weight": 0,

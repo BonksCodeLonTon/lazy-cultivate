@@ -146,6 +146,12 @@ def _roll_starter_constitution(linh_can_list: list[str]) -> str:
     pool; otherwise the standard weighted pick runs as before. Legendary
     entries keep ``roll_weight=0`` and stay out of the weighted pool — the
     rate is independent of weight rebalancing.
+
+    Chain heads (``ConstitutionHoangCoChain1`` and similar entries with no
+    ``progresses_from``) are eligible to roll — they're the legitimate entry
+    point for their progression chain. Mid-chain entries (Chain 2..9) carry
+    ``progresses_from`` and are filtered out so a starter never leap-frogs
+    into a partially-broken seal.
     """
     from src.data.registry import registry
 
@@ -156,6 +162,7 @@ def _roll_starter_constitution(linh_can_list: list[str]) -> str:
             c for c in registry.constitutions.values()
             if c.get("rarity") == "legendary"
             and not c.get("special_requirements")
+            and not c.get("progresses_from")
             and (c.get("element") is None or c.get("element") in player_elems)
         ]
         if leg_pool:
@@ -171,6 +178,12 @@ def _roll_starter_constitution(linh_can_list: list[str]) -> str:
     weights = [float(c.get("roll_weight", 0)) for c in pool]
     chosen = random.choices(pool, weights=weights, k=1)[0]
     return chosen["key"]
+
+
+def _parse_pill_buff_counts(raw: str | None) -> dict[str, int]:
+    """Decode the JSON-encoded pill_buff_counts column into a plain dict."""
+    from src.game.systems.pill_buffs import parse_counts
+    return parse_counts(raw)
 
 
 def _player_to_model(player: Player):
@@ -195,6 +208,8 @@ def _player_to_model(player: Player):
         karma_accum=player.karma_accum,
         karma_usable=player.karma_usable,
         primordial_stones=player.primordial_stones,
+        dan_doc=player.dan_doc,
+        pill_buff_counts=_parse_pill_buff_counts(player.pill_buff_counts),
         hp_current=player.hp_current,
         mp_current=player.mp_current,
         active_formation=player.active_formation,
