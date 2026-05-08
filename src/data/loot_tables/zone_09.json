@@ -1,18 +1,6 @@
 {
   "LootZone_9": [
     {
-      "item_key": "MatHuKhongTinh",
-      "weight": 200000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
-      "item_key": "MatHopDaoNgoc",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
       "item_key": "MatSieuPhamTinh",
       "weight": 125000,
       "qty_min": 1,
@@ -73,13 +61,6 @@
     },
     {
       "item_key": "GemPhong_3",
-      "weight": 120000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "zone9_gem3"
-    },
-    {
-      "item_key": "GemBang_3",
       "weight": 120000,
       "qty_min": 1,
       "qty_max": 1,

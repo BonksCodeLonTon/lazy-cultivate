@@ -187,3 +187,44 @@ def grade_from_realm(realm_total: int) -> int:
     if realm_total < 45:
         return 2
     return 3
+
+
+def is_unique_key(item_key: str) -> bool:
+    """True iff ``item_key`` references an entry in ``registry.uniques``."""
+    from src.data.registry import registry
+    return registry.get_unique(item_key) is not None
+
+
+async def award_drops(
+    drops: list[dict],
+    player_id: int,
+    irepo,
+    eqrepo,
+    rng: random.Random | None = None,
+) -> list[dict]:
+    """Persist a list of loot drops, routing uniques to the equipment bag.
+
+    Each drop is ``{"item_key", "quantity"}``. Uniques are instantiated once
+    per quantity via ``generate_unique`` and stored as ``ItemInstance`` rows
+    so they can be equipped; non-uniques go to the stackable inventory at
+    their template grade. Returns the list of equipment dicts that were
+    spawned (callers render those separately from the merged inventory).
+    """
+    from src.data.registry import registry
+    from src.game.constants.grades import Grade
+
+    rng = rng or random.Random()
+    equipment_spawned: list[dict] = []
+    for drop in drops:
+        item_key = drop["item_key"]
+        qty = int(drop.get("quantity", 1))
+        if is_unique_key(item_key):
+            for _ in range(max(1, qty)):
+                eq_data = generate_unique(item_key, rng)
+                await eqrepo.add_to_bag(player_id, eq_data)
+                equipment_spawned.append(eq_data)
+            continue
+        item_data = registry.get_item(item_key)
+        grade_val = item_data.get("grade", 1) if item_data else 1
+        await irepo.add_item(player_id, item_key, Grade(grade_val), qty)
+    return equipment_spawned

@@ -440,7 +440,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Vạn Diệp Thiên Đế Thể — **Vạn Lá Hấp Khí**: mỗi lượt rút linh khí nhỏ từ kẻ địch, đồng thời trị liệu của lá có thể bạo kích. DoT làm địch nuôi sống thân chủ.",
+    "passive_description_vi": "Vạn Diệp Thiên Đế Thể — **Vạn Diệp Thực Linh**: mỗi lượt rút linh khí nhỏ từ kẻ địch, đồng thời trị liệu của lá có thể bạo kích. DoT làm địch nuôi sống thân chủ.",
     "stat_bonuses": {
       "mp_pct": 0.4,
       "hp_regen_pct": 0.05,

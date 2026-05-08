@@ -833,7 +833,7 @@
       "CCStun"
     ],
     "formation_key": null,
-    "description_vi": "Tận thế lôi đình — chân thương 8%, choáng + tê liệt, đỉnh Lôi Đạo Đăng Tiên.",
+    "description_vi": "Tận thế lôi đình — sát thương chuẩn 8%, choáng + tê liệt, đỉnh Lôi Đạo Đăng Tiên.",
     "effect_overrides": {
       "DebuffSocDien": {
         "dot_pct": 0.072,

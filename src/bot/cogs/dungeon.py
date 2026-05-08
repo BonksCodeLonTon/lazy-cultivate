@@ -12,6 +12,7 @@ from discord.ext import commands
 
 from src.data.registry import registry
 from src.db.connection import get_session
+from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.currencies import CURRENCY_CAP
@@ -104,10 +105,10 @@ def _dungeon_list_embed(player_best_realm: int, dungeon_type: str = "normal") ->
     meta = _DUNGEON_TYPE_META.get(dungeon_type, _DUNGEON_TYPE_META["normal"])
     pool = registry.dungeons_of_type(dungeon_type)
     pool = sorted(pool, key=lambda d: d.get("required_qi_realm", 0))
-    unlocked = sum(1 for d in pool if d.get("required_qi_realm", 0) <= player_best_realm)
     embed = base_embed(
         meta["title"],
-        f"Đã mở khóa **{unlocked}/{len(pool)}** khu vực.\n{meta['intro']}",
+        f"Tổng cộng **{len(pool)}** khu vực — bạn có thể vào bất kỳ bí cảnh nào, "
+        f"nhưng dưới mức khuyến nghị thì độ khó tăng mạnh.\n{meta['intro']}",
         color=meta["color"],
     )
     return embed
@@ -138,16 +139,16 @@ def _dungeon_detail_embed(
 
     req = d.get("required_qi_realm", 0)
     req_label = QI_REALMS[req].vi if req < len(QI_REALMS) else f"Realm {req}"
-    can_enter = player_best_realm >= req
+    above_recommended = player_best_realm >= req
 
-    embed = base_embed(d["vi"], d.get("description", ""), color=0x7B2D8B if can_enter else 0x555555)
+    embed = base_embed(d["vi"], d.get("description", ""), color=0x7B2D8B)
 
     embed.add_field(
-        name="Điều Kiện",
+        name="Khuyến nghị",
         value=(
-            "✅ Đủ điều kiện"
-            if can_enter
-            else f"🔒 Cần {req_label} trên **1 trong 3 hướng tu luyện**"
+            f"✅ {req_label} (đã đạt)"
+            if above_recommended
+            else f"⚠️ {req_label} — bạn chưa đạt, vào sẽ rất khó"
         ),
         inline=True,
     )
@@ -266,6 +267,19 @@ def _try_acquire_dungeon_session(discord_id: int) -> bool:
 
 def _release_dungeon_session(discord_id: int) -> None:
     _ACTIVE_DUNGEON_USERS.discard(discord_id)
+
+
+def force_release_dungeon_session(discord_id: int) -> bool:
+    """Admin escape hatch — drop a stale lock for ``discord_id``.
+
+    Returns True if the user was holding the lock (i.e. something was cleared),
+    False if they weren't. Used by the admin unstuck command when a previous
+    run leaked the in-memory entry without releasing it.
+    """
+    if discord_id not in _ACTIVE_DUNGEON_USERS:
+        return False
+    _ACTIVE_DUNGEON_USERS.discard(discord_id)
+    return True
 
 
 async def _send_already_running_error(interaction: discord.Interaction) -> None:
@@ -736,10 +750,9 @@ async def _execute_dungeon(
 
             if all_loot:
                 irepo = InventoryRepository(session)
-                for drop in all_loot:
-                    item_data = registry.get_item(drop["item_key"])
-                    grade_val = item_data.get("grade", 1) if item_data else 1
-                    await irepo.add_item(player.id, drop["item_key"], Grade(grade_val), drop["quantity"])
+                eqrepo = EquipmentRepository(session)
+                from src.game.engine.item_generator import award_drops
+                await award_drops(all_loot, player.id, irepo, eqrepo)
 
             await repo.save(player)
 
@@ -766,7 +779,10 @@ async def _load_elixirs(player_db_id: int) -> list[dict[str, Any]]:
         items = await irepo.get_all(player_db_id)
         for inv_item in items:
             item_data = registry.get_item(inv_item.item_key)
-            if item_data and item_data.get("type") == "elixir":
+            # Legacy elixirs were merged into the pill type but keep
+            # ``category="elixir"`` as a soft tag — dungeon prep only offers
+            # those HP/MP/karma items, not cultivation pills.
+            if item_data and item_data.get("category") == "elixir":
                 elixirs.append({
                     "key": inv_item.item_key,
                     "grade": inv_item.grade,
@@ -931,13 +947,13 @@ class DungeonSelect(discord.ui.Select):
         for d in pool[:25]:
             req = d.get("required_qi_realm", 0)
             req_label = QI_REALMS[req].vi if req < len(QI_REALMS) else f"Realm {req}"
-            can_enter = req <= player_best_realm
+            above_recommended = req <= player_best_realm
             merit = d.get("merit_reward", 0)
             options.append(discord.SelectOption(
                 label=d["vi"][:100],
                 value=d["key"],
-                description=f"Yêu cầu: {req_label} | +{merit:,} Công Đức"[:100],
-                emoji="✅" if can_enter else "🔒",
+                description=f"Khuyến nghị: {req_label} | +{merit:,} Công Đức"[:100],
+                emoji="✅" if above_recommended else "⚠️",
             ))
 
         placeholder = {
@@ -1116,8 +1132,10 @@ class DungeonDetailView(discord.ui.View):
         if not _try_acquire_dungeon_session(interaction.user.id):
             await _send_already_running_error(interaction)
             return
-        await interaction.response.defer()
+        # Wrap defer() in the try as well — if it raises (interaction expired,
+        # network blip), the finally still runs so we don't leak the lock.
         try:
+            await interaction.response.defer()
             await _execute_dungeon(
                 interaction, self.dungeon_key, self.player_best_realm, self.player_realm_total,
                 back_fn=self._back_fn, dungeon_type=self._dungeon_type,
@@ -1135,8 +1153,11 @@ class DungeonDetailView(discord.ui.View):
         if not _try_acquire_dungeon_session(interaction.user.id):
             await _send_already_running_error(interaction)
             return
-        await interaction.response.defer()
+        # See enter_btn for the rationale — defer() must be inside the try so
+        # a transient failure between acquire and the loop start can't leak
+        # the lock.
         try:
+            await interaction.response.defer()
             await _run_dungeon_with_repeat(
                 interaction, self.dungeon_key, self.player_best_realm, self.player_realm_total,
                 back_fn=self._back_fn, dungeon_type=self._dungeon_type,

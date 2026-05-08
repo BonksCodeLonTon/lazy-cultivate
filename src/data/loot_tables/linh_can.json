@@ -9,11 +9,16 @@
     {"item_key": "LCKim7",  "weight": 18000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_kim_apex"},
     {"item_key": "LCKim8",   "weight": 8000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_kim_apex"},
     {"item_key": "LCKim9",   "weight": 2000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_kim_apex"},
-    {"item_key": "LCUnlockKim",                "weight":  6000, "qty_min": 1, "qty_max": 1},
+    {"item_key": "LCUnlockKim",                "weight":  72000, "qty_min": 1, "qty_max": 1},
     {"item_key": "LCCatTinhNguyenChuLinh",     "weight": 70000, "qty_min": 1, "qty_max": 2, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatVanLinhDan",            "weight": 35000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatThienDiaTinhHoa",       "weight": 12000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
-    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
+    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatHongMongKhaiLinh",     "weight":  80000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatLinhKhiHoiTu",         "weight":  60000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatTuPhuDangLinh",        "weight":  30000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatVoCucLinhDinh",        "weight":  15000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatCuuLinhThongTuy",       "weight":   5000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
   ],
 
   "LinhCanLoot_Moc": [
@@ -26,11 +31,16 @@
     {"item_key": "LCMoc7",  "weight": 18000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_moc_apex"},
     {"item_key": "LCMoc8",   "weight": 8000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_moc_apex"},
     {"item_key": "LCMoc9",   "weight": 2000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_moc_apex"},
-    {"item_key": "LCUnlockMoc",                "weight":  6000, "qty_min": 1, "qty_max": 1},
+    {"item_key": "LCUnlockMoc",                "weight":  72000, "qty_min": 1, "qty_max": 1},
     {"item_key": "LCCatTinhNguyenChuLinh",     "weight": 70000, "qty_min": 1, "qty_max": 2, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatVanLinhDan",            "weight": 35000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatThienDiaTinhHoa",       "weight": 12000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
-    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
+    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatHongMongKhaiLinh",     "weight":  80000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatLinhKhiHoiTu",         "weight":  60000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatTuPhuDangLinh",        "weight":  30000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatVoCucLinhDinh",        "weight":  15000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatCuuLinhThongTuy",       "weight":   5000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
   ],
 
   "LinhCanLoot_Thuy": [
@@ -43,11 +53,16 @@
     {"item_key": "LCThuy7",  "weight": 18000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_thuy_apex"},
     {"item_key": "LCThuy8",   "weight": 8000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_thuy_apex"},
     {"item_key": "LCThuy9",   "weight": 2000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_thuy_apex"},
-    {"item_key": "LCUnlockThuy",               "weight":  6000, "qty_min": 1, "qty_max": 1},
+    {"item_key": "LCUnlockThuy",               "weight":  72000, "qty_min": 1, "qty_max": 1},
     {"item_key": "LCCatTinhNguyenChuLinh",     "weight": 70000, "qty_min": 1, "qty_max": 2, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatVanLinhDan",            "weight": 35000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatThienDiaTinhHoa",       "weight": 12000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
-    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
+    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatHongMongKhaiLinh",     "weight":  80000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatLinhKhiHoiTu",         "weight":  60000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatTuPhuDangLinh",        "weight":  30000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatVoCucLinhDinh",        "weight":  15000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatCuuLinhThongTuy",       "weight":   5000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
   ],
 
   "LinhCanLoot_Hoa": [
@@ -60,11 +75,16 @@
     {"item_key": "LCHoa7",  "weight": 18000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_hoa_apex"},
     {"item_key": "LCHoa8",   "weight": 8000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_hoa_apex"},
     {"item_key": "LCHoa9",   "weight": 2000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_hoa_apex"},
-    {"item_key": "LCUnlockHoa",                "weight":  6000, "qty_min": 1, "qty_max": 1},
+    {"item_key": "LCUnlockHoa",                "weight":  72000, "qty_min": 1, "qty_max": 1},
     {"item_key": "LCCatTinhNguyenChuLinh",     "weight": 70000, "qty_min": 1, "qty_max": 2, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatVanLinhDan",            "weight": 35000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatThienDiaTinhHoa",       "weight": 12000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
-    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
+    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatHongMongKhaiLinh",     "weight":  80000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatLinhKhiHoiTu",         "weight":  60000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatTuPhuDangLinh",        "weight":  30000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatVoCucLinhDinh",        "weight":  15000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatCuuLinhThongTuy",       "weight":   5000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
   ],
 
   "LinhCanLoot_Tho": [
@@ -77,11 +97,16 @@
     {"item_key": "LCTho7",  "weight": 18000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_tho_apex"},
     {"item_key": "LCTho8",   "weight": 8000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_tho_apex"},
     {"item_key": "LCTho9",   "weight": 2000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_tho_apex"},
-    {"item_key": "LCUnlockTho",                "weight":  6000, "qty_min": 1, "qty_max": 1},
+    {"item_key": "LCUnlockTho",                "weight":  72000, "qty_min": 1, "qty_max": 1},
     {"item_key": "LCCatTinhNguyenChuLinh",     "weight": 70000, "qty_min": 1, "qty_max": 2, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatVanLinhDan",            "weight": 35000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatThienDiaTinhHoa",       "weight": 12000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
-    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
+    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatHongMongKhaiLinh",     "weight":  80000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatLinhKhiHoiTu",         "weight":  60000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatTuPhuDangLinh",        "weight":  30000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatVoCucLinhDinh",        "weight":  15000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatCuuLinhThongTuy",       "weight":   5000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
   ],
 
   "LinhCanLoot_Phong": [
@@ -94,11 +119,16 @@
     {"item_key": "LCPhong7",  "weight": 18000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_phong_apex"},
     {"item_key": "LCPhong8",   "weight": 8000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_phong_apex"},
     {"item_key": "LCPhong9",   "weight": 2000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_phong_apex"},
-    {"item_key": "LCUnlockPhong",              "weight":  6000, "qty_min": 1, "qty_max": 1},
+    {"item_key": "LCUnlockPhong",              "weight":  72000, "qty_min": 1, "qty_max": 1},
     {"item_key": "LCCatTinhNguyenChuLinh",     "weight": 70000, "qty_min": 1, "qty_max": 2, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatVanLinhDan",            "weight": 35000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatThienDiaTinhHoa",       "weight": 12000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
-    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
+    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatHongMongKhaiLinh",     "weight":  80000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatLinhKhiHoiTu",         "weight":  60000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatTuPhuDangLinh",        "weight":  30000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatVoCucLinhDinh",        "weight":  15000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatCuuLinhThongTuy",       "weight":   5000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
   ],
 
   "LinhCanLoot_Loi": [
@@ -111,11 +141,16 @@
     {"item_key": "LCLoi7",  "weight": 18000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_loi_apex"},
     {"item_key": "LCLoi8",   "weight": 8000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_loi_apex"},
     {"item_key": "LCLoi9",   "weight": 2000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_loi_apex"},
-    {"item_key": "LCUnlockLoi",                "weight":  6000, "qty_min": 1, "qty_max": 1},
+    {"item_key": "LCUnlockLoi",                "weight":  72000, "qty_min": 1, "qty_max": 1},
     {"item_key": "LCCatTinhNguyenChuLinh",     "weight": 70000, "qty_min": 1, "qty_max": 2, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatVanLinhDan",            "weight": 35000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatThienDiaTinhHoa",       "weight": 12000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
-    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
+    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatHongMongKhaiLinh",     "weight":  80000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatLinhKhiHoiTu",         "weight":  60000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatTuPhuDangLinh",        "weight":  30000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatVoCucLinhDinh",        "weight":  15000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatCuuLinhThongTuy",       "weight":   5000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
   ],
 
   "LinhCanLoot_Quang": [
@@ -128,11 +163,16 @@
     {"item_key": "LCQuang7",  "weight": 18000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_quang_apex"},
     {"item_key": "LCQuang8",   "weight": 8000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_quang_apex"},
     {"item_key": "LCQuang9",   "weight": 2000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_quang_apex"},
-    {"item_key": "LCUnlockQuang",              "weight":  6000, "qty_min": 1, "qty_max": 1},
+    {"item_key": "LCUnlockQuang",              "weight":  72000, "qty_min": 1, "qty_max": 1},
     {"item_key": "LCCatTinhNguyenChuLinh",     "weight": 70000, "qty_min": 1, "qty_max": 2, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatVanLinhDan",            "weight": 35000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatThienDiaTinhHoa",       "weight": 12000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
-    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
+    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatHongMongKhaiLinh",     "weight":  80000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatLinhKhiHoiTu",         "weight":  60000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatTuPhuDangLinh",        "weight":  30000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatVoCucLinhDinh",        "weight":  15000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatCuuLinhThongTuy",       "weight":   5000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
   ],
 
   "LinhCanLoot_Am": [
@@ -145,10 +185,15 @@
     {"item_key": "LCAm7",  "weight": 18000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_am_apex"},
     {"item_key": "LCAm8",   "weight": 8000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_am_apex"},
     {"item_key": "LCAm9",   "weight": 2000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_am_apex"},
-    {"item_key": "LCUnlockAm",                 "weight":  6000, "qty_min": 1, "qty_max": 1},
+    {"item_key": "LCUnlockAm",                 "weight":  72000, "qty_min": 1, "qty_max": 1},
     {"item_key": "LCCatTinhNguyenChuLinh",     "weight": 70000, "qty_min": 1, "qty_max": 2, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatVanLinhDan",            "weight": 35000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
     {"item_key": "LCCatThienDiaTinhHoa",       "weight": 12000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
-    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
+    {"item_key": "LCCatLinhHonCongSinh",        "weight": 4000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatHongMongKhaiLinh",     "weight":  80000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatLinhKhiHoiTu",         "weight":  60000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatTuPhuDangLinh",        "weight":  30000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatVoCucLinhDinh",        "weight":  15000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"},
+    {"item_key": "LCCatCuuLinhThongTuy",       "weight":   5000, "qty_min": 1, "qty_max": 1, "pool_id": "linh_can_catalyst"}
   ]
 }

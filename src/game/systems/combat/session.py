@@ -73,6 +73,11 @@ class CombatSession:
     rng: random.Random = field(default_factory=random.Random)
     turn: int = 0
     max_turns: int = 30  # full rounds (player + enemy each act once per round)
+    # When True (default), running out of turns is treated as a player defeat —
+    # if the player can't kill the enemy within ``max_turns`` it counts as a
+    # loss. World boss combat opts out (``False``) because hitting the round
+    # limit there is the normal "chip away" cadence, not a death.
+    max_turns_is_defeat: bool = True
     log: list[str] = field(default_factory=list)
     loot_qty_multiplier: float = 1.0  # >1.0 for elite/upgraded-rank encounters
     # Scales drop-roll weights in the drop engine. Independent of quantity:
@@ -130,6 +135,12 @@ class CombatSession:
         result is None while the fight is still ongoing.
         """
         if self.turn >= self.max_turns:
+            if self.max_turns_is_defeat:
+                self.log.append(
+                    f"\n⏰ **{self.player.name}** không hạ được đối thủ trong "
+                    f"{self.max_turns} lượt — coi như thất bại."
+                )
+                return ([], self._defeat())
             return ([], CombatResult(
                 reason=CombatEndReason.MAX_TURNS,
                 turns=self.turn, log=self.log, loot=[], merit_gained=0, karma_gained=0,
@@ -358,6 +369,7 @@ class CombatSession:
         combatant.burn_stacks = 0
         combatant.bleed_stacks = 0
         combatant.shock_stacks = 0
+        combatant.poison_stacks = 0
         combatant.effects.clear()
 
         buff_tag = f" · ST/Giáp +{buff * 100:.0f}%" if buff > 0 else ""

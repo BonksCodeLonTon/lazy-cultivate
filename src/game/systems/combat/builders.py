@@ -198,10 +198,20 @@ def build_world_boss_combatant(
     hp_max = int(boss_data["base_hp"] * boss_data.get("hp_scale", 1.0))
     hp = max(0, min(current_hp, hp_max)) if current_hp else hp_max
 
-    atk = int(ENEMY_RANK_BASE_ATK.get(rank, 100) * realm_scale * 1.5)
-    matk = int(ENEMY_RANK_BASE_MATK.get(rank, 100) * realm_scale * 1.5)
-    def_stat = int(ENEMY_RANK_BASE_DEF.get(rank, 60) * realm_scale * 1.5)
-    evasion_rating = int(ENEMY_RANK_BASE_EVASION.get(rank, 0) * realm_scale)
+    # Honor per-boss base_atk / base_matk / base_def / base_evasion overrides
+    # like ``build_enemy_combatant`` does — falls back to the chi_ton baseline
+    # when JSON omits the field. The pre-existing 1.5× multiplier is folded
+    # into the JSON values so high-realm bosses can dial in stronger stats
+    # directly (e.g. R9 at ~3.4× chi_ton baseline).
+    atk_base = boss_data.get("base_atk", ENEMY_RANK_BASE_ATK.get(rank, 100) * 1.5)
+    matk_base = boss_data.get("base_matk", ENEMY_RANK_BASE_MATK.get(rank, 100) * 1.5)
+    def_base = boss_data.get("base_def", ENEMY_RANK_BASE_DEF.get(rank, 60) * 1.5)
+    evasion_base = boss_data.get("base_evasion", ENEMY_RANK_BASE_EVASION.get(rank, 0))
+
+    atk = int(atk_base * realm_scale)
+    matk = int(matk_base * realm_scale)
+    def_stat = int(def_base * realm_scale)
+    evasion_rating = int(evasion_base * realm_scale)
     enemy_dmg_bonus = (player_realm_total / ENEMY_SCALE_MAX) * ENEMY_DMG_BONUS_SCALE
 
     elem = boss_data.get("element")

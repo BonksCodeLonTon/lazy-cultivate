@@ -39,7 +39,6 @@ ROTATING_POOL: list[dict] = [
     {"item_key": "DanHoiHPMP",     "grade": 2, "price": 1500,  "currency": "merit"},
     {"item_key": "DanHoiFull",     "grade": 3, "price": 8000,  "currency": "merit"},
     {"item_key": "ChestDia",       "grade": 3, "price": 30000, "currency": "merit"},
-    {"item_key": "ItemPhaCanh",    "grade": 3, "price": 50000, "currency": "merit"},
     # Higher-tier Đan Lô — rotate in the shop; rarer sightings.
     {"item_key": "DanLoThuong_G3", "grade": 3, "price": 120000, "currency": "merit"},
     {"item_key": "DanLoThuong_G4", "grade": 4, "price": 800000, "currency": "merit"},

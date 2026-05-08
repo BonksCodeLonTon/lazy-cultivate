@@ -43,7 +43,7 @@ ELEMENT_ANSI: dict[Element, str] = {
     Element.QUANG: f"{_ESC}[37m",   # white — light
 }
 assert set(ELEMENT_ANSI) == set(Element), "ELEMENT_ANSI missing element entries"
-# "physical" (non-elemental) and "true" (Chân Thương) damage lanes.
+# "physical" (non-elemental) and "true" (Sát Thương Chuẩn) damage lanes.
 PHYSICAL_ANSI = f"{_ESC}[37m"     # plain white — generic
 TRUE_DMG_ANSI = f"{_ESC}[1;33m"   # bold yellow — unblockable marker
 
@@ -54,7 +54,7 @@ def colorize_damage(dmg_text: str, element: str | None, *,
 
     ``element`` is the attack's element key (``hoa``/``kim``/…) or ``None``
     for physical. ``true_dmg=True`` overrides the element palette with a
-    bold-yellow tag to mark Chân Thương unblockable damage.
+    bold-yellow tag to mark Sát Thương Chuẩn unblockable damage.
     """
     if true_dmg:
         prefix = TRUE_DMG_ANSI

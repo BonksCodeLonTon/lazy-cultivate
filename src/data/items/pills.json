@@ -105,7 +105,7 @@
     "cultivation_gain": ""
   },
   {
-    "key": "DuongLuyenHuyetDan",
+    "key": "QuangLuyenHuyetDan",
     "vi": "Quang Luyện Huyết Đan",
     "en": "",
     "type": "pill",
@@ -300,7 +300,7 @@
     "cultivation_gain": ""
   },
   {
-    "key": "DuongBiCao",
+    "key": "QuangBiCao",
     "vi": "Quang Bì Cao",
     "en": "",
     "type": "pill",
@@ -342,6 +342,21 @@
     "effect_vi": "Tăng tốc độ di chuyển",
     "dan_doc": 2,
     "description_vi": "Hỏa Tinh Táo kích hoạt linh khí Hỏa bùng phát tức thời, Ninh Thần Hoa ổn định thần thức, giúp tu sĩ khinh công và di chuyển nhanh hơn trong thời gian ngắn.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "SoTinhDan",
+    "vi": "Sơ Tịnh Đan",
+    "en": "",
+    "type": "pill",
+    "grade": 1,
+    "stack_max": 99,
+    "shop_price_merit": 0,
+    "category": "Đan Thông Thường",
+    "effect_key": "reduce_toxicity",
+    "effect_vi": "Giảm đan độc tích lũy",
+    "dan_doc": 0,
+    "description_vi": "Đan dược nhập môn cho người tu đạo sơ kỳ — Ninh Tâm Thảo thanh lý tạp khí trong kinh mạch, Ngưng Huyết Thảo cố bản dưỡng huyết hồi phục cơ thể sau khi dùng đan, Thiên Thanh Hoa linh khí thanh đạm dẫn đan độc nhẹ ra ngoài. Hiệu quả tốt khi nghỉ ngơi sau tu luyện.",
     "cultivation_gain": ""
   },
   {
@@ -600,7 +615,7 @@
     "cultivation_gain": ""
   },
   {
-    "key": "DuongLuyenCanDich",
+    "key": "QuangLuyenCanDich",
     "vi": "Quang Luyện Cân Dịch",
     "en": "",
     "type": "pill",
@@ -829,14 +844,14 @@
     "vi": "Trúc Cơ Đan",
     "en": "",
     "type": "pill",
-    "grade": 3,
+    "grade": 1,
     "stack_max": 99,
     "shop_price_merit": 0,
     "category": "Đan Đặc Biệt",
     "effect_key": "breakthrough_truc_co",
     "effect_vi": "Trúc cơ — hỗ trợ đột phá cảnh giới",
     "dan_doc": 25,
-    "description_vi": "Đan dược Grade 3 đặc chế dành riêng cho tu sĩ cấp 1 đang nỗ lực trúc cơ. Huyền Băng Hoa cực hàn lượng lớn làm chủ dược tịnh hóa kinh mạch và ổn định linh cơ, Thiên Linh Quả cung cấp linh lực thiên địa tinh thuần, Ảo Tâm Thảo xử lý đặc biệt phá vỡ tâm chướng trong lúc đột phá, Tử Hầu Hoa dẫn toàn bộ dược lực hội tụ về đan điền đúng thời điểm. Đan độc cực cao vì cơ thể cấp 1 chưa đủ sức hấp thu hoàn toàn dược lực Grade 3.",
+    "description_vi": "Đan dược Grade 1 đặc chế dành riêng cho tu sĩ Luyện Khí đang nỗ lực trúc cơ. Ngân Nguyệt Hoa lượng lớn làm chủ dược thanh tâm tĩnh khí và ổn định linh cơ, Thiên Thanh Hoa cung cấp linh lực thiên địa thuần khiết, Ninh Tâm Thảo phá vỡ tâm chướng trong lúc đột phá. Đan độc cao vì cơ thể Luyện Khí cảnh chưa đủ sức gánh chịu áp lực trúc cơ.",
     "cultivation_gain": ""
   },
   {
@@ -960,7 +975,7 @@
     "cultivation_gain": ""
   },
   {
-    "key": "DuongLuyenCotDich",
+    "key": "QuangLuyenCotDich",
     "vi": "Quang Luyện Cốt Dịch",
     "en": "",
     "type": "pill",
@@ -1024,14 +1039,14 @@
     "vi": "Tụ Đỉnh Đan",
     "en": "",
     "type": "pill",
-    "grade": 4,
+    "grade": 2,
     "stack_max": 99,
     "shop_price_merit": 0,
     "category": "Đan Đặc Biệt",
     "effect_key": "breakthrough_kim_dan",
     "effect_vi": "Kết đan — đột phá lên Kim Đan cảnh",
     "dan_doc": 30,
-    "description_vi": "Ô Trù Mộc G3 linh tài không thể thiếu trong đan dược kết đan lượng kép làm cốt lõi, Ngũ Liễu Căn G3 cứng cáp phi thường gia cố cấu trúc Kim Đan vừa hình thành tránh vỡ vụn, Long Lân Quả G3 lấp lánh như lân giáp chân long tạo ra lớp bảo hộ tinh luyện bên ngoài Kim Đan, Băng Linh Quả G3 tỉnh não khai khiếu dẫn toàn bộ dược lực hội tụ đúng thời điểm đột phá. Đan độc cực cao — cơ thể Trúc Cơ gánh chịu toàn bộ áp lực kết đan.",
+    "description_vi": "Hồng Lăng Thảo G2 thân đỏ rực dẻo dai làm cốt lõi gia cố cấu trúc Kim Đan vừa hình thành, Hà Thủ Ô G2 hoạt huyết khỏe người cố bản bồi nguyên hỗ trợ quá trình kết đan ổn định, Thiên Nguyên Quả G2 ngũ hành cân bằng dẫn toàn bộ dược lực hội tụ đúng thời điểm đột phá. Đan độc cực cao — cơ thể Trúc Cơ gánh chịu toàn bộ áp lực kết đan.",
     "cultivation_gain": ""
   },
   {
@@ -1290,7 +1305,7 @@
     "cultivation_gain": ""
   },
   {
-    "key": "DuongLuyenTuyDan",
+    "key": "QuangLuyenTuyDan",
     "vi": "Quang Luyện Tủy Đan",
     "en": "",
     "type": "pill",
@@ -1500,7 +1515,7 @@
     "cultivation_gain": ""
   },
   {
-    "key": "DuongPhapTuongDan",
+    "key": "QuangPhapTuongDan",
     "vi": "Quang Pháp Tướng Đan",
     "en": "",
     "type": "pill",
@@ -1639,14 +1654,14 @@
     "vi": "Triều Nguyên Đan",
     "en": "",
     "type": "pill",
-    "grade": 5,
+    "grade": 3,
     "stack_max": 99,
     "shop_price_merit": 0,
     "category": "Đan Đặc Biệt",
     "effect_key": "breakthrough_nguyen_anh",
     "effect_vi": "Nguyên Anh — đột phá lên Nguyên Anh cảnh",
     "dan_doc": 38,
-    "description_vi": "Đan phá cảnh cấp 5 dành cho Kim Đan cảnh đỉnh phong đang nỗ lực ngưng tụ Nguyên Anh. Đăng Tâm Thảo hỏa linh khí nồng đậm lượng lớn làm chủ dược thiêu đốt và thanh lọc Kim Đan chuẩn bị cho quá trình chuyển hóa thành Nguyên Anh, Quỷ Cữu Thảo âm linh mọc nơi ma khí tràn ngập cân bằng hỏa lực tránh phản đan bạo phát — Hỏa Âm tương kế tạo ra trạng thái hỗn nguyên lý tưởng để Nguyên Anh ngưng tụ, Nguyệt Linh Hoa hấp thụ tinh hoa trăng lượng kép — dược liệu phụ không thể thiếu trong đan kết đan — tiếp thêm thiên địa nguyên khí tinh thuần vào quá trình ngưng tụ, Huyết Ngọc Trúc vân máu trong suốt tăng tốc độ tập trung toàn bộ linh lực vào một điểm dẫn phá Kim Đan giải phóng Nguyên Anh. Đan độc cực cao — cơ thể Kim Đan chịu áp lực chuyển hóa toàn diện.",
+    "description_vi": "Đan phá cảnh cấp 3 dành cho Kim Đan cảnh đỉnh phong đang nỗ lực ngưng tụ Nguyên Anh. Đăng Tâm Thảo G3 hỏa linh khí nồng đậm lượng lớn làm chủ dược thanh lọc Kim Đan chuẩn bị chuyển hóa thành Nguyên Anh, Quỷ Cữu Thảo G3 âm linh cân bằng hỏa lực tránh phản đan bạo phát — Hỏa Âm tương kế tạo ra trạng thái hỗn nguyên lý tưởng, Huyền Băng Hoa G3 cực hàn dẫn toàn bộ linh lực hội tụ phá Kim Đan giải phóng Nguyên Anh. Đan độc cực cao — cơ thể Kim Đan chịu áp lực chuyển hóa toàn diện.",
     "cultivation_gain": ""
   },
   {
@@ -1770,7 +1785,7 @@
     "cultivation_gain": ""
   },
   {
-    "key": "DuongKimThanDan",
+    "key": "QuangKimThanDan",
     "vi": "Quang Kim Thân Đan",
     "en": "",
     "type": "pill",
@@ -1965,7 +1980,7 @@
     "cultivation_gain": ""
   },
   {
-    "key": "DuongSieuPhamDan",
+    "key": "QuangSieuPhamDan",
     "vi": "Quang Siêu Phàm Đan",
     "en": "",
     "type": "pill",
@@ -2160,7 +2175,7 @@
     "cultivation_gain": ""
   },
   {
-    "key": "DuongNhapThanhDan",
+    "key": "QuangNhapThanhDan",
     "vi": "Quang Nhập Thánh Đan",
     "en": "",
     "type": "pill",
@@ -2224,14 +2239,14 @@
     "vi": "Hóa Thần Đan",
     "en": "",
     "type": "pill",
-    "grade": 6,
+    "grade": 4,
     "stack_max": 99,
     "shop_price_merit": 0,
     "category": "Đan Đặc Biệt",
     "effect_key": "breakthrough_hoa_than",
     "effect_vi": "Hóa Thần cảnh — đột phá cảnh giới",
     "dan_doc": 48,
-    "description_vi": "Tuyệt Hồn Thảo G4 rèn luyện tâm cảnh cực tốt làm chủ dược mở ra tầng nhận thức Hóa Thần, Lang Đào G4 hình tiên đào kết đan linh lực và Ngọc Tủy Chi G4 tăng tỷ lệ thành công hỗ trợ quá trình thần hồn hóa thần, Hư Minh Mộng Lan G4 mộng định dẫn tu sĩ vào trạng thái siêu thức đột phá. Cần Kim Đan cảnh đỉnh phong mới dùng được.",
+    "description_vi": "Bổ Thiên Chi G3 trân phẩm trong các loại thuốc làm chủ dược trực tiếp nâng cao tu vi căn cơ mở ra tầng nhận thức Hóa Thần, Ảo Tâm Thảo G3 xử lý đặc biệt phá tâm chướng và Cửu Diệp Chi G3 cực hiếm hỗ trợ quá trình thần hồn hóa thần, Vong Ưu Hoa G3 dẫn tu sĩ vào trạng thái tâm cảnh siêu thức đột phá. Cần Nguyên Anh cảnh đỉnh phong mới dùng được.",
     "cultivation_gain": ""
   },
   {
@@ -2239,14 +2254,14 @@
     "vi": "Luyện Hư Đan",
     "en": "",
     "type": "pill",
-    "grade": 7,
+    "grade": 5,
     "stack_max": 99,
     "shop_price_merit": 0,
     "category": "Đan Đặc Biệt",
     "effect_key": "breakthrough_luyen_hu",
     "effect_vi": "Luyện Hư cảnh — đột phá cảnh giới",
     "dan_doc": 54,
-    "description_vi": "Vấn Đạo Hoa G5 vạn năm mới nở ẩn chứa chân ý Đạo làm chủ dược dẫn tu sĩ chạm đến ranh giới Hư Không chi Đạo, Đạo Uẩn Hoa G5 an phủ tâm thần và Luyện Tâm Chi G5 ích lớn cho thần hồn cùng ổn định tâm thần trong quá trình hư hóa, Thái Huyền Vấn Tâm Quả G5 khai ngộ dẫn toàn bộ dược lực vào cảnh giới Luyện Hư. Cần Nguyên Anh cảnh đỉnh phong mới dùng được.",
+    "description_vi": "Tuyệt Hồn Thảo G4 rèn luyện tâm cảnh cực tốt làm chủ dược dẫn tu sĩ chạm đến ranh giới Hư Không chi Đạo, Lang Đào G4 hình tiên đào kết đan linh lực và Ngọc Tủy Chi G4 ổn định thần hồn trong quá trình hư hóa, Hư Minh Mộng Lan G4 mộng định dẫn toàn bộ dược lực vào cảnh giới Luyện Hư. Cần Hóa Thần cảnh đỉnh phong mới dùng được.",
     "cultivation_gain": ""
   },
   {
@@ -2254,14 +2269,14 @@
     "vi": "Hợp Đạo Đan",
     "en": "",
     "type": "pill",
-    "grade": 8,
+    "grade": 6,
     "stack_max": 99,
     "shop_price_merit": 0,
     "category": "Đan Đặc Biệt",
     "effect_key": "breakthrough_hop_dao",
     "effect_vi": "Hợp Đạo cảnh — đột phá cảnh giới",
     "dan_doc": 60,
-    "description_vi": "Thiên Đạo Quả G6 ẩn chứa lượng lớn đạo chi chân ý làm chủ dược mở ra con đường hợp nhất với Đạo — tầng cảnh giới mà ý chí và Thiên Đạo hòa làm một, Vấn Đạo Hoa G5 chân ý Đạo và Minh Tâm Vấn Đạo Quả G6 cường kiện thần hồn tạo ra cộng hưởng G5+G6 mở rộng nhận thức Đạo đến cực hạn, Đạo Uẩn Quả G6 chín lần nở hoa dẫn tu sĩ vào đốn ngộ hợp nhất sâu nhất. Cần Hóa Thần cảnh đỉnh phong mới dùng được.",
+    "description_vi": "Phượng Huyết Quả G4 lượng kép tạo ra làn sóng tịnh huyết mạnh mở ra con đường hợp nhất với Đạo — tầng cảnh giới mà ý chí và Thiên Đạo hòa làm một, Tuyệt Hồn Thảo G4 rèn luyện tâm cảnh và Băng Tinh Chi G4 cân bằng tinh hoa hỗ trợ quá trình hợp đạo ổn định, Hư Minh Mộng Lan G4 mộng định dẫn tu sĩ vào đốn ngộ hợp nhất sâu nhất. Cần Luyện Hư cảnh đỉnh phong mới dùng được.",
     "cultivation_gain": ""
   },
   {
@@ -2269,14 +2284,14 @@
     "vi": "Đại Thừa Đan",
     "en": "",
     "type": "pill",
-    "grade": 9,
+    "grade": 7,
     "stack_max": 99,
     "shop_price_merit": 0,
     "category": "Đan Đặc Biệt",
     "effect_key": "breakthrough_dai_thua",
     "effect_vi": "Đại Thừa cảnh — đột phá cảnh giới",
     "dan_doc": 68,
-    "description_vi": "Thiên Đạo Quả G6 chứa lượng lớn đạo chi chân ý tột đỉnh làm chủ dược, Đạo Uẩn Quả G6 đốn ngộ và Mộc Linh Tam Châm Hoa G6 linh thảo chí trân bị đâm phải cảm nhận ngũ vị nhân sinh — hai vị G6 cùng khai mở nhận thức về ranh giới cuối cùng trước Đại Thừa, Minh Tâm Vấn Đạo Quả G6 vạn năm kết quả dẫn thần hồn hội tụ chân ý Đại Thừa. Đan độc cao nhất trong chuỗi đột phá — cần Luyện Hư cảnh đỉnh phong mới dùng được.",
+    "description_vi": "Vấn Đạo Hoa G5 vạn năm mới nở ẩn chứa chân ý Đạo làm chủ dược, Đạo Uẩn Hoa G5 an phủ tâm thần và Thái Huyền Vấn Tâm Quả G5 khai ngộ — hai vị G5 cùng khai mở nhận thức về ranh giới cuối cùng trước Đại Thừa, Luyện Tâm Chi G5 ích lớn cho thần hồn dẫn thần hồn hội tụ chân ý Đại Thừa. Đan độc cao nhất trong chuỗi đột phá — cần Hợp Đạo cảnh đỉnh phong mới dùng được.",
     "cultivation_gain": ""
   },
   {
@@ -2307,6 +2322,171 @@
     "effect_vi": "Giảm đan độc tích lũy",
     "dan_doc": 0,
     "description_vi": "Địa Tâm Tôi Linh Nhũ G6 chỉ tiếp xúc qua ngọc khí nếu không linh khí tiêu tán cực nhanh làm chủ dược tẩy tủy từ gốc rễ — đặc trị đan độc cấp 8-9 ngấm sâu vào cốt tủy mà các đan cấp thấp không thể chạm tới, Kỳ Nhung Thông Thiên Cúc G6 ôn dưỡng thần hồn và ổn định cơ thể trong quá trình tẩy độc cấp cao, Đạo Uẩn Quả G6 an phủ tâm thần dẫn tâm thức vào trạng thái bình tĩnh để cơ thể tự đào thải độc tố ra ngoài hoàn toàn. Hiệu quả tốt nhất khi nghỉ ngơi sau tu luyện.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanHoiHPSmall",
+    "vi": "Tiểu Hồi Huyết Đan",
+    "en": "Minor Blood Pill",
+    "type": "pill",
+    "grade": 1,
+    "stack_max": 99,
+    "shop_price_merit": 300,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đan dược hồi huyết nhỏ, khôi phục sinh lực ít.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanHoiHPMid",
+    "vi": "Trung Hồi Huyết Đan",
+    "en": "Medium Blood Pill",
+    "type": "pill",
+    "grade": 2,
+    "stack_max": 99,
+    "shop_price_merit": 800,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đan dược hồi huyết vừa, khôi phục sinh lực trung bình.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanHoiHPLarge",
+    "vi": "Đại Hồi Huyết Đan",
+    "en": "Major Blood Pill",
+    "type": "pill",
+    "grade": 2,
+    "stack_max": 99,
+    "shop_price_merit": 2000,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đan dược hồi huyết lớn, khôi phục sinh lực nhiều.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanHoiHPFull",
+    "vi": "Mãn Huyết Đan",
+    "en": "Full Blood Pill",
+    "type": "pill",
+    "grade": 3,
+    "stack_max": 99,
+    "shop_price_merit": 5000,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đan dược mãn huyết, hồi phục toàn bộ sinh lực.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanHoiHPMiss",
+    "vi": "Hồi Huyết Tinh Đan",
+    "en": "Missing HP Recovery Pill",
+    "type": "pill",
+    "grade": 3,
+    "stack_max": 99,
+    "shop_price_merit": 4000,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đan dược tinh hoa hồi huyết, hồi phục theo % máu mất.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanHoiMPSmall",
+    "vi": "Tiểu Tụ Khí Đan",
+    "en": "Minor Qi Pill",
+    "type": "pill",
+    "grade": 1,
+    "stack_max": 99,
+    "shop_price_merit": 300,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đan dược tụ khí nhỏ, bổ sung linh khí ít.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanHoiMPMid",
+    "vi": "Trung Tụ Khí Đan",
+    "en": "Medium Qi Pill",
+    "type": "pill",
+    "grade": 2,
+    "stack_max": 99,
+    "shop_price_merit": 800,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đan dược tụ khí vừa, bổ sung linh khí trung bình.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanHoiMPLarge",
+    "vi": "Đại Tụ Khí Đan",
+    "en": "Major Qi Pill",
+    "type": "pill",
+    "grade": 2,
+    "stack_max": 99,
+    "shop_price_merit": 2000,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đan dược tụ khí lớn, bổ sung linh khí nhiều.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanHoiHPMP",
+    "vi": "Song Phục Đan",
+    "en": "Dual Recovery Pill",
+    "type": "pill",
+    "grade": 2,
+    "stack_max": 99,
+    "shop_price_merit": 1500,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đan dược song phục, đồng thời hồi huyết và hồi khí.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanHoiFull",
+    "vi": "Đại Phục Nguyên Đan",
+    "en": "Great Restoration Pill",
+    "type": "pill",
+    "grade": 3,
+    "stack_max": 99,
+    "shop_price_merit": 8000,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đại đan phục nguyên, hồi phục hoàn toàn huyết và khí.",
+    "cultivation_gain": ""
+  },
+  {
+    "key": "DanKarmaDown",
+    "vi": "Nghiệp Tiêu Đan",
+    "en": "Karma Reduction Pill",
+    "type": "pill",
+    "grade": 3,
+    "stack_max": 99,
+    "shop_price_merit": 0,
+    "category": "elixir",
+    "effect_key": null,
+    "effect_vi": "",
+    "dan_doc": 0,
+    "description_vi": "Đan dược tiêu nghiệp, giảm nghiệp chướng. Chỉ dùng nghiệp lực.",
     "cultivation_gain": ""
   }
 ]

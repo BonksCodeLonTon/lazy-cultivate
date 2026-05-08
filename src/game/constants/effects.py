@@ -56,6 +56,10 @@ class EffectKey(StrEnum):
     DEBUFF_SOC_DIEN  = "DebuffSocDien"    # shock (Loi build) — stacks, takes extra loi damage
     DEBUFF_AN_PHONG  = "DebuffAnPhong"    # wind mark (Phong build) — evasion debuff + crit vulnerable
     DEBUFF_LOA_MAT   = "DebuffLoaMat"     # blind (Âm build) — attacker rolls a chance to miss each strike
+    # Ngưng Đọng — historical key with an "Effect"-style prefix instead of
+    # "Debuff*". Predates the data-driven ``EffectMeta.cleansable`` flag;
+    # the kind-based default (DEBUFF → cleansable=True) handles it now, so
+    # this naming is harmless. Kept as-is to avoid touching every reference.
     EFFECT_NGUNG_DONG = "EffectNgungDong"  # stagnation (spd debuff)
 
     # ── Crowd control ────────────────────────────────────────────────────────

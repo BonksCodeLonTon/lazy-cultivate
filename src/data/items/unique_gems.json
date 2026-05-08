@@ -321,7 +321,7 @@
   },
   {
     "key": "GemUnique_VoThuongChanThuong",
-    "vi": "Vô Thường Chân Thương Ngọc",
+    "vi": "Vô Thường Sát Thương Chuẩn Ngọc",
     "en": "Impermanence True-Damage Gem",
     "type": "gem",
     "grade": 4,
@@ -927,7 +927,7 @@
     "unique": true,
     "element": "kim",
     "shop_price_merit": 80000,
-    "description_vi": "Ngọc kim có sát khí phá vỡ bản nguyên, mỗi đòn đều mang theo một ít chân thương.",
+    "description_vi": "Ngọc kim có sát khí phá vỡ bản nguyên, mỗi đòn đều mang theo một ít sát thương chuẩn.",
     "unique_bonus": {
       "final_dmg_bonus": 0.08,
       "crit_dmg_rating": 80,
@@ -1427,8 +1427,7 @@
       "poison_dmg_bonus": 0.15,
       "element_pen": {
         "moc": 0.05
-      },
-      "burn_dmg_bonus": 0.1
+      }
     }
   },
   {

@@ -29,6 +29,27 @@ class EquipmentRepository:
         )
         return result.scalar_one_or_none()
 
+    async def lock_instance(
+        self, instance_id: int, player_id: int,
+    ) -> ItemInstance | None:
+        """Fetch a player's instance with ``SELECT ... FOR UPDATE``.
+
+        Locks the row for the duration of the transaction so concurrent
+        listing / equip / discard attempts on the same instance serialize.
+        Without this lock, two rapid market-list submits for the same
+        weapon both read ``location='bag'``, both flip it to ``'market'``,
+        and both create listings pointing at the same instance — a dupe.
+        """
+        result = await self._session.execute(
+            select(ItemInstance)
+            .where(
+                ItemInstance.id == instance_id,
+                ItemInstance.player_id == player_id,
+            )
+            .with_for_update()
+        )
+        return result.scalar_one_or_none()
+
     async def get_bag(self, player_id: int) -> list[ItemInstance]:
         result = await self._session.execute(
             select(ItemInstance).where(

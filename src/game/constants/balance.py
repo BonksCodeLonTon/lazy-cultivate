@@ -102,7 +102,7 @@ MAX_ELEMENTAL_RES: float = 0.75     # per-element resistance hard cap (post-shre
 # Fraction of auto-repeat kills that actually roll loot. The remainder yield
 # nothing — the gate fires before the drop table so afk grinding pays out at a
 # small fraction of manual play. 0.10 = 10 % of auto kills drop normal loot.
-AUTO_LOOT_DROP_RATE: float = 0.15
+AUTO_LOOT_DROP_RATE: float = 0.20
 
 # ── SPD → combat impact ───────────────────────────────────────────────────────
 # Every SPD point above baseline adds evasion rating (always-on defensive edge).
@@ -153,6 +153,11 @@ DEFAULT_BLEED_STACK_CAP: int = 5
 DEFAULT_BLEED_PER_STACK_PCT: float = 0.008
 DEFAULT_SHOCK_STACK_CAP: int = 5
 DEFAULT_SHOCK_PER_STACK_PCT: float = 0.04
+# Poison stacks (Mộc / Âm DoT mirror of burn/bleed). Each stack adds one
+# instance of ``poison_per_stack_pct`` to the DebuffDocTo tick. Re-applying
+# poison adds a stack instead of merely refreshing duration.
+DEFAULT_POISON_STACK_CAP: int = 5
+DEFAULT_POISON_PER_STACK_PCT: float = 0.008
 DEFAULT_MANA_STACK_CAP: int = 10
 # Turn-based combat regenerates shield every turn — ``DEFAULT_SHIELD_RECHARGE_DELAY``
 # of 0 means there is no "no-regen" pause after a hit (the PoE-style recharge
@@ -170,22 +175,26 @@ DEFAULT_SHIELD_RECHARGE_DELAY: int = 0
 # ``dot_scales_hp_pct`` flag (granted only by R9 late-game uniques).
 DOT_POWER_COEF: float = 4.0
 
+# ── Skill damage scaling ──────────────────────────────────────────────────────
+# Multipliers applied inside ``engine/damage/base.py`` to inflate skill output
+# without rewriting every skill JSON. Affects players and enemies symmetrically
+# (any combatant using a skill object goes through the same pipeline).
+#   final_base_dmg = skill.base_dmg × max(1, skill.realm) × SKILL_BASE_DMG_REALM_MULT
+#   final_scaled   = (atk × scale.atk + matk × scale.matk) × SKILL_STAT_SCALE_MULT
+# At realm 9 the base flat damage becomes 9× current; ATK/MATK contribution is
+# 4× current at every realm. Tune here when rebalancing globally.
+SKILL_BASE_DMG_REALM_MULT: float = 1.0
+SKILL_STAT_SCALE_MULT: float = 4.0
+
 # ── True damage cap ───────────────────────────────────────────────────────────
-# Per-hit cap on the % true-damage mechanic used by the Kim playstyle. Combines
-# skill and passive contributions. 0.20 = max 20% of target hp_max per hit,
-# preventing 5-shot kills even when stacking multiple true-damage sources.
-TRUE_DMG_PCT_CAP: float = 0.20
-# World bosses have shared HP pools + a 5 % per-attack damage cap (see
-# world_boss.PER_ATTACK_DMG_CAP_PCT). Percent-HP true damage is fundamentally
-# incompatible with that cap — a single 20 % chip already blows past the
-# window. Scale true damage WAY down vs world bosses so the cap stays the
-# authoritative ceiling. Also clamps the absolute per-hit true-damage amount
-# to ``floor(hp_max * TRUE_DMG_WORLD_BOSS_FLOOR_PCT)`` after scaling.
-TRUE_DMG_WORLD_BOSS_MULT: float = 0.05   # 20% → 1% per hit
-# Hard ceiling: 0.3 % hp_max per hit. With ~20 hits per 15-round attack session
-# that's ~6 % of the boss HP ceiling from true damage alone — leaves room for
-# the normal damage path without vaporizing the 5 % per-attack session cap.
-TRUE_DMG_WORLD_BOSS_FLOOR_PCT: float = 0.003
+# Per-hit cap on the Sát Thương Chuẩn mechanic. The pct now scales the *hit's*
+# damage (post-mitigation), not the target's hp_max — so a 0.50 cap means
+# at most +50 % bonus on top of the regular damage. Combines skill +
+# passive contributions. The world-boss-specific carve-out from the legacy
+# %HP model is gone: with a damage-based scalar, true damage is naturally
+# bounded by the per-attack damage cap that already gates world-boss
+# contributions, so no extra clamp is needed.
+TRUE_DMG_PCT_CAP: float = 0.50
 
 # ── Âm (Shadow) soul-drain / stat-steal caps ─────────────────────────────────
 # Soul Drain (Hồn Phệ): each successful on-hit proc permanently removes

@@ -206,9 +206,21 @@ class Combatant:
     crit_rating_vs_bleed: int = 0
     # Bonus crit damage vs bleeding targets (flat rating added to crit_dmg_rating).
     crit_dmg_vs_bleed: int = 0
-    # True damage: percentage of target hp_max applied unblockable on each hit.
-    # Max per-hit cap is TRUE_DMG_PCT_CAP in the damage pipeline.
+    # Sát Thương Chuẩn — % of the hit's *damage* applied as unblockable bonus on
+    # each successful hit (NOT % of target hp_max — that was the legacy
+    # model). Aggregated across constitution, unique gear, gems, skills,
+    # and Linh Căn passives. Capped at TRUE_DMG_PCT_CAP in
+    # ``engine/damage/true_damage.py``.
     true_dmg_pct: float = 0.0
+
+    # ── Poison stacks (Mộc / Âm DoT) ─────────────────────────────────────────
+    # Mirror of burn/bleed/shock. Each application of DebuffDocTo adds one
+    # stack (clamped by ``poison_stack_cap``); the DoT tick scales with
+    # stacks × ``poison_per_stack_pct`` × max(atk, matk) × DOT_POWER_COEF.
+    # Stacks reset to 0 when the DebuffDocTo effect fully expires.
+    poison_stacks: int = 0
+    poison_stack_cap: int = 5
+    poison_per_stack_pct: float = 0.008
 
     # ── Mộc (Wood / Poison Leech) build ──────────────────────────────────────
     # When any DoT ticks on the opposing combatant, this combatant leeches
@@ -584,6 +596,17 @@ class Combatant:
         self.bleed_stacks = 0
         return stacks
 
+    def add_poison_stack(self, count: int = 1) -> int:
+        """Add poison stacks, clamped by ``poison_stack_cap``. Returns stacks gained."""
+        before = self.poison_stacks
+        self.poison_stacks = min(self.poison_stack_cap, self.poison_stacks + count)
+        return self.poison_stacks - before
+
+    def consume_poison_stacks(self) -> int:
+        stacks = self.poison_stacks
+        self.poison_stacks = 0
+        return stacks
+
     def add_mana_stack(self, count: int = 1) -> int:
         before = self.mana_stacks
         self.mana_stacks = min(self.mana_stack_cap, self.mana_stacks + count)
@@ -660,6 +683,8 @@ class Combatant:
             self.bleed_stacks = 0
         if "DebuffSocDien" in expired:
             self.shock_stacks = 0
+        if "DebuffDocTo" in expired:
+            self.poison_stacks = 0
         return expired
 
     def tick_cooldowns(self) -> None:

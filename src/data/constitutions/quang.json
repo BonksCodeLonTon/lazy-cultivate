@@ -277,7 +277,7 @@
       "merit": 15000,
       "stones": 0
     },
-    "passive_description_vi": "Thân mang thánh quang áp chế tà khí, cấm phép và khóa hồi máu đối thủ.",
+    "passive_description_vi": "Thân mang thánh quang áp chế tà khí, cấm phép và Môn hồi máu đối thủ.",
     "stat_bonuses": {
       "hp_pct": 0.15,
       "heal_reduce_on_hit_pct": 0.15,
@@ -408,7 +408,7 @@
   },
   {
     "key": "ConstitutionQuangKim_Leg",
-    "vi": "Thái Dương Đế Quang Thể",
+    "vi": "Thái Dương Đạo Thể",
     "en": "Solar Emperor Light Body",
     "rarity": "legendary",
     "element": "quang",
@@ -417,7 +417,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Thái Dương Đế Quang Thể — **Thánh Quang Hộ Thuẫn**: Thanh Tẩy tự sinh khiên, khí lực khiên cộng vào sát thương. Hộ pháp sáng — vừa che chở vừa trừng trị.",
+    "passive_description_vi": "Thái Dương Đạo Thể — **Thái Dương Hộ Thuẫn**: Thanh Tẩy tự sinh khiên, khí lực khiên cộng vào sát thương. Hộ pháp sáng — vừa che chở vừa trừng trị.",
     "stat_bonuses": {
       "hp_pct": 0.3,
       "final_dmg_bonus": 0.2,
@@ -473,7 +473,7 @@
   },
   {
     "key": "ConstitutionQuangTinh_Leg",
-    "vi": "Vạn Đạo Hạo Quang Thể",
+    "vi": "Vạn Đạo Hào Quang Thể",
     "en": "Ten Thousand Dao Bright Light Body",
     "rarity": "legendary",
     "element": "quang",
@@ -482,7 +482,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Vạn Đạo Hạo Quang Thể — **Tịnh Hóa Phản Đòn**: mỗi lần Thanh Tẩy đều phóng quang trảm phản công về kẻ địch. Thân thể thanh khiết miễn nhiễm phần lớn debuff.",
+    "passive_description_vi": "Vạn Đạo Hào Quang Thể — **Tịnh Hóa Phản Đòn**: mỗi lần Thanh Tẩy đều phóng quang trảm phản công về kẻ địch. Thân thể thanh khiết miễn nhiễm phần lớn debuff.",
     "stat_bonuses": {
       "hp_pct": 0.35,
       "cleanse_on_turn_pct": 0.5,
@@ -504,7 +504,7 @@
   },
   {
     "key": "ConstitutionVoLuongQuang",
-    "vi": "Vô Lượng Quang Minh Thánh Thể",
+    "vi": "Vô Lượng Thánh Quang Thể",
     "en": "Infinite Brightness Holy Body",
     "rarity": "legendary",
     "element": "quang",

@@ -21,6 +21,22 @@ class MarketRepository:
         )
         return result.scalar_one_or_none()
 
+    async def lock_for_update(self, listing_id: int) -> MarketListing | None:
+        """Fetch a listing with ``SELECT ... FOR UPDATE``.
+
+        Locks the row for the duration of the current transaction so that
+        concurrent buy / cancel attempts serialize on it instead of both
+        passing the existence check, granting items, and producing a dupe.
+        Returns ``None`` if the listing was already deleted (claimed by
+        another transaction that committed first).
+        """
+        result = await self._session.execute(
+            select(MarketListing)
+            .where(MarketListing.id == listing_id)
+            .with_for_update()
+        )
+        return result.scalar_one_or_none()
+
     async def get_active_by_seller(self, seller_id: int) -> list[MarketListing]:
         now = datetime.now(timezone.utc)
         result = await self._session.execute(

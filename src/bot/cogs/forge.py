@@ -12,7 +12,6 @@ from src.db.connection import get_session
 from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
-from src.game.constants.grades import Grade
 from src.game.engine.equipment import format_stat
 from src.game.systems.forge import (
     QUALITY_LABELS,
@@ -947,20 +946,21 @@ class _ConfirmView(discord.ui.View):
                     )
                     return
 
-            # Consume each picked material by its allocated share
+            # Consume each picked material by its allocated share. ``remove_any_grade``
+            # iterates rows ascending-by-grade so legacy stacks (which were
+            # added at HOANG before the per-template-grade convention) are
+            # decremented identically to current rows that sit at the
+            # template grade.
             consumed: list[tuple[str, int]] = []
             for k, take in split.items():
                 if take <= 0:
                     continue
-                mat_grade = get_material_grade(k)
-                if mat_grade is None:
+                if get_material_grade(k) is None:
                     await interaction.edit_original_response(
                         embed=error_embed("Nguyên liệu không hợp lệ."), view=None
                     )
                     return
-                ok_remove = await inv_repo.remove_item(
-                    player.id, k, Grade(mat_grade), take,
-                )
+                ok_remove = await inv_repo.remove_any_grade(player.id, k, take)
                 if not ok_remove:
                     await interaction.edit_original_response(
                         embed=error_embed("Không thể tiêu hao nguyên liệu."), view=None
@@ -970,10 +970,8 @@ class _ConfirmView(discord.ui.View):
 
             # Consume the super material (at most one, singular arg)
             if self._selected_super_key:
-                super_spec = registry.get_super_material(self._selected_super_key) or {}
-                super_grade = int(super_spec.get("grade", 1))
-                await inv_repo.remove_item(
-                    player.id, self._selected_super_key, Grade(super_grade), 1,
+                await inv_repo.remove_any_grade(
+                    player.id, self._selected_super_key, 1,
                 )
 
             result = forge_equipment(

@@ -8,7 +8,7 @@
     },
     {
       "item_key": "HangTamThao",
-      "weight": 80000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -38,190 +38,190 @@
     },
     {
       "item_key": "NgungHuyetThao",
-      "weight": 80000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HongLangThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HaThuO",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThatTinhThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DaGiaoDang_2",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KhinhLinhThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HaKhoThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "XaDienQua",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DiaHoangSam",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "PhongLinhHoa",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LaTeThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HoaTinhTao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LongKhue",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuyenSam",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "PhatLanThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BachThaoLo",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KiemLo",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NinhThanHoa",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThienNguyenQua",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KimHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r1_yeuthu"
     },
     {
       "item_key": "MocHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r1_yeuthu"
     },
     {
       "item_key": "ThuyHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r1_yeuthu"
     },
     {
       "item_key": "HoaHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r1_yeuthu"
     },
     {
       "item_key": "ThoHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r1_yeuthu"
     },
     {
       "item_key": "LoiHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r1_yeuthu"
     },
     {
       "item_key": "PhongHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r1_yeuthu"
     },
     {
       "item_key": "AmHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r1_yeuthu"
     },
     {
-      "item_key": "DuongHuyetTinh",
-      "weight": 40000,
+      "item_key": "QuangHuyetTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r1_yeuthu"
     },
     {
       "item_key": "DanHoiHPSmall",
-      "weight": 150000,
+      "weight": 51000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DanHoiMPSmall",
-      "weight": 150000,
+      "weight": 51000,
       "qty_min": 1,
       "qty_max": 2
     }
@@ -235,7 +235,7 @@
     },
     {
       "item_key": "HangTamThao",
-      "weight": 80000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -265,190 +265,190 @@
     },
     {
       "item_key": "NgungHuyetThao",
-      "weight": 80000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HongLangThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HaThuO",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThatTinhThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DaGiaoDang_2",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KhinhLinhThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HaKhoThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "XaDienQua",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DiaHoangSam",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "PhongLinhHoa",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LaTeThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HoaTinhTao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LongKhue",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuyenSam",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "PhatLanThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BachThaoLo",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KiemLo",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NinhThanHoa",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThienNguyenQua",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KimHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r2_yeuthu"
     },
     {
       "item_key": "MocHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r2_yeuthu"
     },
     {
       "item_key": "ThuyHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r2_yeuthu"
     },
     {
       "item_key": "HoaHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r2_yeuthu"
     },
     {
       "item_key": "ThoHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r2_yeuthu"
     },
     {
       "item_key": "LoiHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r2_yeuthu"
     },
     {
       "item_key": "PhongHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r2_yeuthu"
     },
     {
       "item_key": "AmHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r2_yeuthu"
     },
     {
-      "item_key": "DuongHuyetTinh",
-      "weight": 40000,
+      "item_key": "QuangHuyetTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r2_yeuthu"
     },
     {
       "item_key": "DanHoiHPSmall",
-      "weight": 150000,
+      "weight": 51000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DanHoiMPSmall",
-      "weight": 150000,
+      "weight": 51000,
       "qty_min": 1,
       "qty_max": 2
     }
@@ -456,328 +456,328 @@
   "DuocVienLoot_3": [
     {
       "item_key": "HongLangThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HaThuO",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThatTinhThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DaGiaoDang_2",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KhinhLinhThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HaKhoThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "XaDienQua",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DiaHoangSam",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhongLinhHoa",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LaTeThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HoaTinhTao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LongKhue",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyenSam",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhatLanThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BachThaoLo",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KiemLo",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NinhThanHoa",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThienNguyenQua",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BoThienChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "OTruMoc",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NgocLongSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NguLieuCan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BoDeHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "PhucLongSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TuHauHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TuyetNgungHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuyenBangHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThienLinhQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "AoTamThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LongLanQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "QuyCuuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BangLinhQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "CuuDiepChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LangPhongHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "CamDiaLa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BanYeuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "PhongHuongChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DangTamThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KiemTamTruc",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LongVanThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThachLongNhue",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "VongUuHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KimHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r3_yeuthu"
     },
     {
       "item_key": "MocHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r3_yeuthu"
     },
     {
       "item_key": "ThuyHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r3_yeuthu"
     },
     {
       "item_key": "HoaHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r3_yeuthu"
     },
     {
       "item_key": "ThoHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r3_yeuthu"
     },
     {
       "item_key": "LoiHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r3_yeuthu"
     },
     {
       "item_key": "PhongHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r3_yeuthu"
     },
     {
       "item_key": "AmHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r3_yeuthu"
     },
     {
-      "item_key": "DuongHuyetTinh",
-      "weight": 40000,
+      "item_key": "QuangHuyetTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r3_yeuthu"
     },
     {
       "item_key": "DanHoiHPSmall",
-      "weight": 150000,
+      "weight": 51000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DanHoiMPSmall",
-      "weight": 150000,
+      "weight": 51000,
       "qty_min": 1,
       "qty_max": 2
     }
@@ -785,378 +785,378 @@
   "DuocVienLoot_4": [
     {
       "item_key": "HongLangThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HaThuO",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThatTinhThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DaGiaoDang_2",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KhinhLinhThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HaKhoThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "XaDienQua",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DiaHoangSam",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhongLinhHoa",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LaTeThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HoaTinhTao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LongKhue",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyenSam",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhatLanThao",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BachThaoLo",
-      "weight": 30000,
+      "weight": 54000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KiemLo",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NinhThanHoa",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThienNguyenQua",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BoThienChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "OTruMoc",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NgocLongSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NguLieuCan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BoDeHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "PhucLongSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TuHauHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TuyetNgungHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuyenBangHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThienLinhQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "AoTamThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LongLanQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "QuyCuuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BangLinhQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "CuuDiepChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LangPhongHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "CamDiaLa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BanYeuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "PhongHuongChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DangTamThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KiemTamTruc",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LongVanThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThachLongNhue",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "VongUuHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KimHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "MocHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "ThuyHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "HoaHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "ThoHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "LoiHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "PhongHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "AmHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
-      "item_key": "DuongHuyetTinh",
-      "weight": 40000,
+      "item_key": "QuangHuyetTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "KimLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "MocLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "ThuyLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "HoaLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "ThoLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "LoiLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "PhongLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
       "item_key": "AmLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
     },
     {
-      "item_key": "DuongLinhTinh",
-      "weight": 40000,
+      "item_key": "QuangLinhTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r4_yeuthu"
@@ -1165,402 +1165,402 @@
   "DuocVienLoot_5": [
     {
       "item_key": "BoThienChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "OTruMoc",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NgocLongSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NguLieuCan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BoDeHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhucLongSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TuHauHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TuyetNgungHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyenBangHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThienLinhQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "AoTamThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LongLanQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "QuyCuuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BangLinhQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "CuuDiepChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LangPhongHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "CamDiaLa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BanYeuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhongHuongChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DangTamThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KiemTamTruc",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LongVanThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThachLongNhue",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "VongUuHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KeQuanThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuyetLienTinh",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NganTinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BachTramChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "QuyDienHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LangDao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TuyetHonThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HunNguyenQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BangTinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuyetBoDe",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DuYeuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BaVuongHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HoaLinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "AmNgungThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TrangThucThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KhoManDang",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NguyetLinhHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuyetNgocTruc",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HacThienMa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NgocTuyChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "PhuongHuyetQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuMinhMongLan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KimHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "MocHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "ThuyHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "HoaHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "ThoHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "LoiHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "PhongHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "AmHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
-      "item_key": "DuongHuyetTinh",
-      "weight": 40000,
+      "item_key": "QuangHuyetTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "KimLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "MocLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "ThuyLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "HoaLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "ThoLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "LoiLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "PhongLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
       "item_key": "AmLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
     },
     {
-      "item_key": "DuongLinhTinh",
-      "weight": 40000,
+      "item_key": "QuangLinhTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r5_yeuthu"
@@ -1569,402 +1569,402 @@
   "DuocVienLoot_6": [
     {
       "item_key": "BoThienChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "OTruMoc",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NgocLongSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NguLieuCan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BoDeHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhucLongSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TuHauHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TuyetNgungHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyenBangHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThienLinhQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "AoTamThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LongLanQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "QuyCuuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BangLinhQua",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "CuuDiepChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LangPhongHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "CamDiaLa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BanYeuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhongHuongChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DangTamThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KiemTamTruc",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LongVanThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThachLongNhue",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "VongUuHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KeQuanThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuyetLienTinh",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NganTinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BachTramChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "QuyDienHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LangDao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TuyetHonThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HunNguyenQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BangTinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuyetBoDe",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DuYeuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BaVuongHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HoaLinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "AmNgungThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TrangThucThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KhoManDang",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NguyetLinhHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuyetNgocTruc",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HacThienMa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "NgocTuyChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "PhuongHuyetQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuMinhMongLan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KimHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "MocHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "ThuyHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "HoaHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "ThoHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "LoiHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "PhongHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "AmHuyetTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
-      "item_key": "DuongHuyetTinh",
-      "weight": 40000,
+      "item_key": "QuangHuyetTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "KimLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "MocLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "ThuyLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "HoaLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "ThoLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "LoiLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "PhongLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
       "item_key": "AmLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
     },
     {
-      "item_key": "DuongLinhTinh",
-      "weight": 40000,
+      "item_key": "QuangLinhTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r6_yeuthu"
@@ -1973,402 +1973,402 @@
   "DuocVienLoot_7": [
     {
       "item_key": "KeQuanThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyetLienTinh",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NganTinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BachTramChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "QuyDienHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LangDao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TuyetHonThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HunNguyenQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BangTinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyetBoDe",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DuYeuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BaVuongHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HoaLinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "AmNgungThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TrangThucThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KhoManDang",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NguyetLinhHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyetNgocTruc",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HacThienMa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NgocTuyChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhuongHuyetQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuMinhMongLan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TamDiepThanhChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DiaTamHoaChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TuyetNgocCotSam",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuCotLinhHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LuuKimLinhHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DaoUanHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThatThaiNguyetLan",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "SamDanMoc",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BangLinhDiemThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HaoDieuThuyDang",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MangDiemQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "VoNganLinhSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KiemPhachLinhDiep",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LuyenTamChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "VanDaoHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThaiHuyenVanTamQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThaiToThanhLinhChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThaiAtBichOanhHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "AmDuongHoangTuyenHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThienVanHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LuyenTuyDang",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TrongNguyenHoanHuyetThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TamViPhongDiep",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThienLoiNganCan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KimLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "MocLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "ThuyLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "HoaLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "ThoLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "LoiLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "PhongLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "AmLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
-      "item_key": "DuongLinhTinh",
-      "weight": 40000,
+      "item_key": "QuangLinhTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "KimYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "MocYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "ThuyYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "HoaYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "ThoYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "LoiYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "PhongYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
       "item_key": "AmYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
     },
     {
-      "item_key": "DuongYeuDan",
-      "weight": 40000,
+      "item_key": "QuangYeuDan",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r7_yeuthu"
@@ -2377,402 +2377,402 @@
   "DuocVienLoot_8": [
     {
       "item_key": "KeQuanThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyetLienTinh",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NganTinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BachTramChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "QuyDienHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LangDao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TuyetHonThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HunNguyenQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BangTinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyetBoDe",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DuYeuThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BaVuongHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HoaLinhChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "AmNgungThao",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TrangThucThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KhoManDang",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NguyetLinhHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyetNgocTruc",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HacThienMa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NgocTuyChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhuongHuyetQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuMinhMongLan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TamDiepThanhChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DiaTamHoaChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TuyetNgocCotSam",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuCotLinhHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LuuKimLinhHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DaoUanHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThatThaiNguyetLan",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "SamDanMoc",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BangLinhDiemThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HaoDieuThuyDang",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MangDiemQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "VoNganLinhSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KiemPhachLinhDiep",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LuyenTamChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "VanDaoHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThaiHuyenVanTamQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThaiToThanhLinhChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThaiAtBichOanhHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "AmDuongHoangTuyenHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThienVanHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LuyenTuyDang",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TrongNguyenHoanHuyetThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TamViPhongDiep",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThienLoiNganCan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KimLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "MocLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "ThuyLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "HoaLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "ThoLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "LoiLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "PhongLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "AmLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
-      "item_key": "DuongLinhTinh",
-      "weight": 40000,
+      "item_key": "QuangLinhTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "KimYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "MocYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "ThuyYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "HoaYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "ThoYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "LoiYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "PhongYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
       "item_key": "AmYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
     },
     {
-      "item_key": "DuongYeuDan",
-      "weight": 40000,
+      "item_key": "QuangYeuDan",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r8_yeuthu"
@@ -2781,360 +2781,360 @@
   "DuocVienLoot_9": [
     {
       "item_key": "TamDiepThanhChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DiaTamHoaChi",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TuyetNgocCotSam",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuCotLinhHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LuuKimLinhHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DaoUanHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThatThaiNguyetLan",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "SamDanMoc",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BangLinhDiemThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HaoDieuThuyDang",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MangDiemQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "VoNganLinhSam",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KiemPhachLinhDiep",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LuyenTamChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "VanDaoHoa",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThaiHuyenVanTamQua",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThaiToThanhLinhChi",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThaiAtBichOanhHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "AmDuongHoangTuyenHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThienVanHoa",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "LuyenTuyDang",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TrongNguyenHoanHuyetThao",
-      "weight": 20000,
+      "weight": 53000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TamViPhongDiep",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThienLoiNganCan",
-      "weight": 20000,
+      "weight": 52000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DaoUanQua",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LuuHamThienTinhThao",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "BatGiacHuyenBangThao",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KyNhungThongThienCuc",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DiaTamToiLinhNhu",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanMangCuuDiepHoa",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KhamThuyHuyenBangQua",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "LyHoaNgoDongChi",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "TranLoiNhamLanQua",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KiemPhachTrucThuan",
-      "weight": 40000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MinhTamVanDaoQua",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThienDaoQua",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanLinhQua",
-      "weight": 40000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MocLinhTamChamHoa",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HuKhongLinhCan",
-      "weight": 40000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "KimLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "MocLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "ThuyLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "HoaLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "ThoLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "LoiLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "PhongLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "AmLinhTinh",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
-      "item_key": "DuongLinhTinh",
-      "weight": 40000,
+      "item_key": "QuangLinhTinh",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "KimYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "MocYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "ThuyYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "HoaYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "ThoYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "LoiYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "PhongYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
       "item_key": "AmYeuDan",
-      "weight": 40000,
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"
     },
     {
-      "item_key": "DuongYeuDan",
-      "weight": 40000,
+      "item_key": "QuangYeuDan",
+      "weight": 64000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "duoc_vien_r9_yeuthu"

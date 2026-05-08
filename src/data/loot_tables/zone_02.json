@@ -13,12 +13,6 @@
       "qty_max": 2
     },
     {
-      "item_key": "MatKhiTuDan",
-      "weight": 60000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "DanHoiHPSmall",
       "weight": 175000,
       "qty_min": 1,
@@ -39,13 +33,6 @@
     },
     {
       "item_key": "GemMoc_1",
-      "weight": 70000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "zone2_gem"
-    },
-    {
-      "item_key": "GemBang_1",
       "weight": 70000,
       "qty_min": 1,
       "qty_max": 1,

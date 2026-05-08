@@ -44,7 +44,7 @@ from src.game.models.character import Character
 class IngredientPick:
     """Ingredient chosen from one of a recipe slot's alternative options."""
     slot_role: str               # "chu" (chủ dược) / "phu" (phụ dược) / "dan" (dẫn dược)
-    key: str                     # herb/yeu_thu item key
+    key: str                     # herb item key (herbs subsume former yeu_thu materials)
     qty: int
 
 
@@ -165,7 +165,7 @@ def check_requirements(
     """Validate realm, merit, ingredient stock, and furnace tier for a recipe.
 
     ``inventory_map`` maps ``item_key → total_quantity`` across all grades
-    (for stackable herb/yeu_thu items this is just the quantity row value).
+    (for stackable herbs this is just the quantity row value).
     ``owned_furnace_keys`` is an iterable of furnace item_keys currently in
     the player's bag; the best qualifying one is selected and returned.
     Returns ``(ok, error_message, chosen_ingredients, chosen_furnace)``.
@@ -547,9 +547,24 @@ def consume_pill(
     from src.game.systems.toxicity import pill_exp_multiplier
     _xp_mult = pill_exp_multiplier(int(getattr(char, "dan_doc", 0) or 0))
 
+    # Constitution ``cultivation_speed_bonus`` (e.g. Tiên Thiên Đạo Thai
+    # at 1.5 → ×2.5 EXP) was already wired into turn-based cultivation
+    # and merit→formation studies, but pill EXP was bypassing it. Apply
+    # the same bonus here so high-tier constitutions cut effective
+    # realm-progression time across every EXP source. Imported lazily to
+    # avoid bootstrapping cycles between alchemy and cultivation.
+    from src.game.systems.cultivation import compute_constitution_bonuses
+    _const_bonuses = compute_constitution_bonuses(getattr(char, "constitution_type", "") or "")
+    _speed_bonus = float(_const_bonuses.get("cultivation_speed_bonus", 0.0))
+    _speed_mult = 1.0 + _speed_bonus
+
     def _scale_xp(raw: int) -> int:
-        """Apply both quality + toxicity scalars to a raw XP magnitude."""
-        return int(round(raw * mult * _xp_mult))
+        """Apply quality + toxicity + constitution-speed scalars to a raw
+        XP magnitude. Toxicity zeroes out everything at Mãn Độc, but the
+        constitution multiplier still lifts the floor whenever the player
+        does have any pill XP to absorb.
+        """
+        return int(round(raw * mult * _xp_mult * _speed_mult))
 
     if effect_key == "exp_luyen_the":
         magnitude = _scale_xp(_pill_xp_for_grade("body", pill_grade))

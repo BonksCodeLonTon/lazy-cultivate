@@ -456,7 +456,7 @@
     "key": "pfx_dmg_reduce",
     "vi": "Thép Thân",
     "type": "prefix",
-    "stat": "dmg_reduce",
+    "stat": "final_dmg_reduce",
     "is_pct": true,
     "slots": [
       "armor",

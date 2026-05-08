@@ -66,20 +66,19 @@ def _required_materials(const_data: dict) -> dict[str, int]:
     return dict(_FALLBACK_MATERIALS)
 
 
-def _item_grade(item_key: str) -> Grade:
-    """Resolve an item's stored grade; fall back to HOANG if unknown."""
-    data = registry.get_item(item_key)
-    if not data:
-        return Grade.HOANG
-    return Grade(int(data.get("grade", 1)))
-
-
 async def _inventory_counts(irepo: InventoryRepository, player_id: int, keys) -> dict[str, int]:
-    """Return {item_key: owned_qty} for each requested item."""
-    counts: dict[str, int] = {}
-    for k in keys:
-        row = await irepo.get_item(player_id, k, _item_grade(k))
-        counts[k] = row.quantity if row else 0
+    """Return {item_key: owned_qty} summed across every grade row.
+
+    Constitution materials may sit at the template grade for current
+    drops or at HOANG for legacy rows — so a single-grade lookup misses
+    half the stack. Counting every row keyed by ``item_key`` mirrors how
+    the alchemy/forge consume paths total their stacks before deducting.
+    """
+    keyset = set(keys)
+    counts: dict[str, int] = {k: 0 for k in keyset}
+    for row in await irepo.get_all(player_id):
+        if row.item_key in keyset:
+            counts[row.item_key] += row.quantity
     return counts
 
 
@@ -134,8 +133,8 @@ _BONUS_FORMATTERS: list[tuple[str, str]] = [
     ("silence_on_crit_pct",           "🤐 Cấm Phép +{pct:.0f}%"),
     ("heal_reduce_on_hit_pct",        "🚫 Giảm Hồi {pct:.0f}%"),
     ("cleanse_on_turn_pct",           "✨ Thanh Tẩy +{pct:.0f}%"),
-    ("true_dmg_pct",                  "🗡️ ST Thật {pct:.0f}%"),
-    ("thorn_pct",                     "🌵 Gai +{pct:.0f}%"),
+    ("true_dmg_pct",                  "🗡️ ST Chuẩn {pct:.0f}%"),
+    ("thorn_pct",                     "🌵 Phản +{pct:.0f}% lại kẻ địch"),
     ("shield_regen_pct",              "🛡️ Hồi Khiên {pct:.1f}% Khiên/lượt"),
     ("shield_regen_flat",             "🛡️ Hồi Khiên +{flat}/lượt"),
     ("shield_max_base",               "🛡️ Khiên Nền +{flat}"),
@@ -747,7 +746,7 @@ class ConstitutionDetailView(discord.ui.View):
 
             # ── Deduct cost first (attempt economy — pay even on failure) ──
             for k, need in materials.items():
-                await irepo.remove_item(player.id, k, _item_grade(k), need)
+                await irepo.remove_any_grade(player.id, k, need)
             if cost_merit > 0:
                 player.merit -= cost_merit
             if cost_stones > 0:

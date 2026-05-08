@@ -9,9 +9,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from src.data.registry import registry
-from src.game.constants.balance import (
-    TRUE_DMG_PCT_CAP, TRUE_DMG_WORLD_BOSS_FLOOR_PCT, TRUE_DMG_WORLD_BOSS_MULT,
-)
+from src.game.engine.damage.true_damage import apply_true_damage
 from src.game.constants.effects import EffectKey
 from src.game.engine import linh_can_effects as lc_effects
 from src.game.engine.damage import (
@@ -70,7 +68,6 @@ def cast_skill(
         skill_obj = _build_skill_obj(skill_key, skill_data, mp_cost)
         attack_stats = build_attack_stats(actor, target, actor_mods, skill_obj.element)
         defense_stats = build_defense_stats(target, target_mods, actor, spd_evasion_bonus)
-        # Pre-damage: Kim Linh Căn — may gain elemental penetration this hit
         pen_pct = lc_effects.get_pen_pct(actor, session.rng, session.log)
         result = calculate_damage(skill_obj, attack_stats, defense_stats, session.rng, pen_pct)
         dmg = result.final
@@ -136,26 +133,13 @@ def cast_skill(
                     + (f" 🛡️-{absorbed2:,}" if absorbed2 > 0 else "")
                     + f" | {target.name}: {target.hp:,}/{target.hp_max:,} HP"
                 )
-
-            skill_true_pct = float(skill_data.get("true_dmg_pct", 0.0))
-            total_true_pct = min(
-                TRUE_DMG_PCT_CAP, skill_true_pct + actor.true_dmg_pct,
+            
+            apply_true_damage(
+                actor, target,
+                base_damage=dmg, is_crit=result.is_crit,
+                log=session.log,
+                skill_pct=float(skill_data.get("true_dmg_pct", 0.0)),
             )
-            if target.is_world_boss:
-                total_true_pct = min(
-                    TRUE_DMG_WORLD_BOSS_FLOOR_PCT,
-                    total_true_pct * TRUE_DMG_WORLD_BOSS_MULT,
-                )
-            if target.is_alive() and total_true_pct > 0:
-                true_dmg = max(1, int(target.hp_max * total_true_pct))
-                if result.is_crit:
-                    true_dmg = int(true_dmg * 1.5)
-                target.take_damage(true_dmg)
-                true_tag = colorize_damage(f"-{true_dmg:,} HP", None, true_dmg=True)
-                session.log.append(
-                    f"    🗡️ **Chân Thương** xuyên mọi phòng ngự → {true_tag}"
-                    f" ({total_true_pct * 100:.1f}% máu)"
-                )
 
             run_on_hit_procs(session, actor, target, is_crit=result.is_crit)
             session._apply_mana_gains(actor, dmg)
@@ -244,50 +228,67 @@ def fire_formation_skills(
 def apply_support_skill(
     session: "CombatSession", skill_data: dict, actor: Combatant, target: Combatant
 ) -> None:
-    """Handle a support/defense skill: instant heals and buff application."""
+    """Handle a support/defense skill: instant heals and buff application.
+
+    Instant heal/MP magnitudes come from ``meta.instant_heal_pct`` /
+    ``meta.instant_mp_pct`` (with per-cast override via
+    ``effect_overrides[<key>]``). Apply chance falls back to
+    ``meta.apply_chance`` when the skill JSON omits ``effect_chances[<key>]``.
+    """
     effect_chances: dict[str, float] = skill_data.get("effect_chances", {})
     effect_overrides: dict[str, dict] = skill_data.get("effect_overrides", {})
     for effect_key in skill_data.get("effects", []):
         meta = EFFECTS.get(effect_key)
+        if meta is None:
+            continue
+        override = effect_overrides.get(effect_key) or {}
 
-        if effect_key == "HpRegen":
-            # Instant HP heal (10% of max) — routed through _apply_heal so
-            # bleed reduction, clamp, and queued_heal_dmg all apply.
+        # ── Instant HP pulse (HpRegen + future cleanse-with-heal effects) ──
+        heal_pct = float(override.get("instant_heal_pct", meta.instant_heal_pct))
+        if heal_pct > 0:
             actor_mods = get_combat_modifiers(actor)
             heal_mult = 1.0 + actor.heal_pct + actor_mods.get("hp_regen_pct", 0.0)
-            requested = max(1, int(actor.hp_max * 0.10 * heal_mult))
+            requested = max(1, int(actor.hp_max * heal_pct * heal_mult))
             if actor.bleed_stacks > 0 and actor.bleed_heal_reduce > 0:
                 session.log.append(
-                    f"    🩸 *Chảy Máu giảm hiệu lực hồi máu {actor.bleed_heal_reduce * 100:.0f}%*"
+                    f"    🩸 *Chảy Máu giảm hiệu lực hồi máu "
+                    f"{actor.bleed_heal_reduce * 100:.0f}%*"
                 )
             applied = session._apply_heal(actor, requested)
             session.log.append(f"    ❤️ +{applied:,} HP")
 
-        elif effect_key == "MpRegen":
-            # Instant MP restore (10% of max)
-            regen = max(1, actor.mp_max // 10)
+        # ── Instant MP pulse (MpRegen + future mana-burst effects) ────────
+        mp_pct = float(override.get("instant_mp_pct", meta.instant_mp_pct))
+        if mp_pct > 0:
+            regen = max(1, int(actor.mp_max * mp_pct))
             actor.mp = min(actor.mp_max, actor.mp + regen)
             session.log.append(f"    💙 +{regen:,} MP")
 
-        elif meta and meta.kind.value == "buff":
+        # If this is a pure-pulse effect (no kind-specific behavior beyond
+        # the instant heal/mp above), we're done with this slot. Skips the
+        # buff/debuff branches so an HpRegen pulse doesn't also try to
+        # ``apply_effect`` a stat-less buff onto the actor.
+        if (heal_pct > 0 or mp_pct > 0) and not meta.stat_bonus and not meta.dot_pct:
+            continue
+
+        if meta.kind.value == "buff":
             # Apply buff to self (actor) — overrides may carry custom duration
             # or stronger stat_bonus values.
-            override = effect_overrides.get(effect_key)
-            dur = int((override or {}).get("duration", default_duration(effect_key)))
-            stamp = {k: v for k, v in (override or {}).items() if k != "duration"} or None
+            dur = int(override.get("duration", default_duration(effect_key)))
+            stamp = {k: v for k, v in override.items() if k != "duration"} or None
             actor.apply_effect(effect_key, dur, overrides=stamp)
             session.log.append(
                 f"    {meta.emoji} **{meta.vi}** ({dur}t) — {meta.description_vi}"
             )
 
-        elif meta and meta.kind.value in ("debuff", "cc"):
+        elif meta.kind.value in ("debuff", "cc"):
             # CC skills with base_dmg=0 that debuff the target (e.g. CCBind skill)
-            base_chance = effect_chances.get(effect_key, 1.0)
+            base_chance = effect_chances.get(effect_key, meta.apply_chance)
             effective_chance = base_chance * (1.0 - target.debuff_immune_pct)
             if effective_chance >= 1.0 or session.rng.random() < effective_chance:
                 inflict_debuff(
                     session, effect_key, meta, target, actor=actor,
-                    overrides=effect_overrides.get(effect_key),
+                    overrides=override or None,
                 )
 
 
@@ -297,8 +298,10 @@ def apply_skill_effects(
 ) -> None:
     """Apply all effect_keys from a skill's effects list to the appropriate target.
 
-    For debuffs/CC: checks the skill's effect_chances dict (default 1.0) multiplied
-    by (1 - target.debuff_immune_pct) to get the effective proc probability.
+    For debuffs/CC: checks the skill's ``effect_chances`` dict, falling back
+    to ``meta.apply_chance`` when the skill doesn't specify a per-effect
+    chance. The result is multiplied by ``(1 - target.debuff_immune_pct)``
+    to get the effective proc probability.
 
     Special keywords handled in-line (not in the EFFECTS registry).
     """
@@ -342,7 +345,7 @@ def apply_skill_effects(
             actor.apply_effect(effect_key, dur, overrides=stamp)
             session.log.append(f"    {meta.emoji} **{actor.name}** nhận **{meta.vi}** ({dur}t)")
         elif hit and meta.kind.value in ("debuff", "cc"):
-            base_chance = effect_chances.get(effect_key, 1.0)
+            base_chance = effect_chances.get(effect_key, meta.apply_chance)
             effective_chance = base_chance * (1.0 - target.debuff_immune_pct)
             if effective_chance >= 1.0 or session.rng.random() < effective_chance:
                 inflict_debuff(
@@ -408,7 +411,17 @@ def inflict_debuff(
             f"    {meta.emoji} **{target.name}** bị **{meta.vi}** [×{target.shock_stacks}/{target.shock_stack_cap}] ({dur}t)"
         )
         return
-    # Generic DoT: propagate attacker's DoT damage boosters (poison, bleed-mk2, etc.)
+    # Poison stacks — Mộc / Âm playstyle mirror of burn. Each application
+    # adds a stack; tick scales with stacks × poison_per_stack_pct.
+    if effect_key == EffectKey.DEBUFF_DOC_TO:
+        if actor is not None:
+            _propagate_stack_build(actor, target, "poison")
+        target.add_poison_stack(1)
+        session.log.append(
+            f"    {meta.emoji} **{target.name}** bị **{meta.vi}** [×{target.poison_stacks}/{target.poison_stack_cap}] ({dur}t)"
+        )
+        return
+    # Generic DoT: propagate attacker's DoT damage boosters (bleed-mk2, etc.)
     if meta.dot_pct > 0 and actor is not None:
         _propagate_dot_bonuses(actor, target)
     session.log.append(

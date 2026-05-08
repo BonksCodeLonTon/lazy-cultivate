@@ -219,7 +219,6 @@ async def _consume(session, player, cost: LinhCanCost) -> None:
     the player mutation.
     """
     from src.db.repositories.inventory_repo import InventoryRepository
-    from src.game.constants.grades import Grade
 
     if player.merit < cost.merit:
         raise LinhCanError(
@@ -227,20 +226,25 @@ async def _consume(session, player, cost: LinhCanCost) -> None:
         )
 
     irepo = InventoryRepository(session)
-    # Pre-flight: check every material before consuming any so we don't half-consume.
+    # Pre-flight: total each material across every grade row so legacy
+    # stacks (HOANG-stored) and current-template-grade stacks both count.
+    needed = set(cost.materials)
+    owned: dict[str, int] = {k: 0 for k in needed}
+    for row in await irepo.get_all(player.id):
+        if row.item_key in needed:
+            owned[row.item_key] += row.quantity
+
     for item_key, qty in cost.materials.items():
         item = registry.get_item(item_key)
         if not item:
             raise LinhCanError(f"Nguyên liệu `{item_key}` không tồn tại trong dữ liệu.")
-        grade = Grade(int(item.get("grade", 1)))
-        if not await irepo.has_item(player.id, item_key, grade, qty):
+        if owned[item_key] < qty:
             raise LinhCanError(
                 f"Thiếu **{item['vi']}** ×{qty} (cần đủ trong túi đồ trước khi nâng)."
             )
 
-    # Commit deductions.
+    # Commit deductions. ``remove_any_grade`` decrements ascending-by-grade
+    # so a split stack drains evenly without half-consuming.
     player.merit -= cost.merit
     for item_key, qty in cost.materials.items():
-        item = registry.get_item(item_key)
-        grade = Grade(int(item.get("grade", 1)))
-        await irepo.remove_item(player.id, item_key, grade, qty)
+        await irepo.remove_any_grade(player.id, item_key, qty)

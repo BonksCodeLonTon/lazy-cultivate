@@ -154,16 +154,13 @@ def qualifying_axis(char: Character, req_realm: int) -> tuple[int, int]:
 
 
 def check_can_enter(char: Character, dungeon_key: str) -> tuple[bool, str]:
+    """Validate that ``dungeon_key`` exists. The realm gate has been retired
+    so any player can attempt any bí cảnh — under-realm entry just leads
+    to a tougher fight (enemy grade still scales off ``required_qi_realm``
+    via ``qualifying_axis``/``_grade_progress``)."""
     dungeon = registry.get_dungeon(dungeon_key)
     if not dungeon:
         return False, "Bí cảnh không tồn tại."
-    req = dungeon.get("required_qi_realm", 0)
-    if best_axis_realm(char) < req:
-        req_label = QI_REALMS[req].vi if req < len(QI_REALMS) else f"Realm {req}"
-        return False, (
-            f"Cần đạt **{req_label}** trên ít nhất **một hướng tu luyện** "
-            f"(Luyện Thể / Luyện Khí / Trận Đạo) để vào bí cảnh này."
-        )
     return True, ""
 
 

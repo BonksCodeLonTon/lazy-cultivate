@@ -16,8 +16,11 @@ Default (``dot_scales_hp_pct == False``):
 Legacy (``dot_scales_hp_pct == True``) — rare late-game uniques:
     dmg = hp_max × base_pct
 
-``base_pct`` is ``burn_per_stack_pct × burn_stacks`` for DebuffThieuDot,
-``bleed_per_stack_pct × bleed_stacks`` for DebuffChayMau, else ``meta.dot_pct``.
+``base_pct`` for stack-based DoTs (``meta.stack_kind`` ∈ {burn / bleed /
+poison}) reads ``combatant.<kind>_per_stack_pct × <kind>_stacks``; for
+classic DoTs it falls back to ``meta.dot_pct``. The ``stack_kind`` field
+on EffectMeta lets each effect declare its kind once in the data so the
+runtime doesn't need to grow a per-effect-key branch.
 
 After base scaling, elemental resistance and amp bonuses (``dot_dmg_bonus``
 plus per-type ``burn_dmg_bonus`` / ``bleed_dmg_bonus`` / ``poison_dmg_bonus``)
@@ -29,7 +32,6 @@ import random
 from typing import TYPE_CHECKING
 
 from src.game.constants.balance import DOT_POWER_COEF, MAX_ELEMENTAL_RES
-from src.game.constants.effects import EffectKey
 
 if TYPE_CHECKING:
     from src.game.engine.effects import EffectMeta
@@ -43,20 +45,30 @@ DOT_CRIT_MULT:   float = 1.5
 DOT_HP_FALLBACK_MULT: float = 0.5
 
 
+# Stack-DoT kinds → (stack-counter attr, per-stack-pct attr) on Combatant.
+# Driven by ``EffectMeta.stack_kind`` so the data declares the kind once and
+# this module doesn't need an ``if effect_key == X`` chain that grows every
+# time a new stack-DoT ships.
+_STACK_DOT_FIELDS: dict[str, tuple[str, str]] = {
+    "burn":   ("burn_stacks",   "burn_per_stack_pct"),
+    "bleed":  ("bleed_stacks",  "bleed_per_stack_pct"),
+    "poison": ("poison_stacks", "poison_per_stack_pct"),
+}
+
+
 def _base_pct(combatant: "Combatant", effect_key: str, meta: "EffectMeta") -> float:
     """Return the DoT's base tick fraction before scaling/resistance/amp.
 
-    Burn and bleed scale with stacks × per-stack pct; everything else uses
-    the static ``meta.dot_pct``. A clamp of ``max(1, stacks)`` keeps the
-    first-tick case working when the effect is applied but stacks haven't
-    been added yet.
+    Stack DoTs (``meta.stack_kind`` set) tick from the combatant's stack
+    counter × per-stack pct. Classic DoTs use the static ``meta.dot_pct``.
+    The clamp ``max(1, stacks)`` keeps the first tick working when the
+    effect is applied before any stack has been added.
     """
-    if effect_key == EffectKey.DEBUFF_THIEU_DOT:
-        stacks = max(1, combatant.burn_stacks)
-        return combatant.burn_per_stack_pct * stacks
-    if effect_key == EffectKey.DEBUFF_CHAY_MAU:
-        stacks = max(1, combatant.bleed_stacks)
-        return combatant.bleed_per_stack_pct * stacks
+    fields = _STACK_DOT_FIELDS.get(meta.stack_kind) if meta.stack_kind else None
+    if fields:
+        stacks_attr, pct_attr = fields
+        stacks = max(1, getattr(combatant, stacks_attr, 0))
+        return float(getattr(combatant, pct_attr, 0.0)) * stacks
     return meta.dot_pct
 
 
@@ -81,15 +93,21 @@ def _apply_resistance(dmg: int, combatant: "Combatant", meta: "EffectMeta") -> i
     return max(1, int(dmg * (1.0 - res_pct)))
 
 
-def _dot_amp(combatant: "Combatant", effect_key: str) -> float:
+# Stack-DoT kind → per-type damage-amp attribute on Combatant. Mirrors
+# ``_STACK_DOT_FIELDS`` so the per-kind amp lookup is data-driven too.
+_STACK_DOT_AMP_ATTR: dict[str, str] = {
+    "burn":   "burn_dmg_bonus",
+    "bleed":  "bleed_dmg_bonus",
+    "poison": "poison_dmg_bonus",
+}
+
+
+def _dot_amp(combatant: "Combatant", meta: "EffectMeta") -> float:
     """Sum the global + per-type DoT amp bonuses for this effect."""
     amp = combatant.dot_dmg_bonus
-    if effect_key == EffectKey.DEBUFF_THIEU_DOT:
-        amp += combatant.burn_dmg_bonus
-    elif effect_key == EffectKey.DEBUFF_CHAY_MAU:
-        amp += combatant.bleed_dmg_bonus
-    elif effect_key == EffectKey.DEBUFF_DOC_TO:
-        amp += combatant.poison_dmg_bonus
+    attr = _STACK_DOT_AMP_ATTR.get(meta.stack_kind) if meta.stack_kind else None
+    if attr:
+        amp += float(getattr(combatant, attr, 0.0))
     return amp
 
 
@@ -108,7 +126,7 @@ def calculate_dot_damage(
     dmg = _scale_damage(combatant, _base_pct(combatant, effect_key, meta))
     dmg = _apply_resistance(dmg, combatant, meta)
 
-    amp = _dot_amp(combatant, effect_key)
+    amp = _dot_amp(combatant, meta)
     if amp > 0:
         dmg = max(1, int(dmg * (1.0 + amp)))
 

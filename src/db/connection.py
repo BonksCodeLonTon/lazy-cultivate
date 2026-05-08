@@ -23,6 +23,7 @@ import src.db.models.formation  # noqa: F401
 import src.db.models.market  # noqa: F401
 import src.db.models.item_instance  # noqa: F401
 import src.db.models.world_boss  # noqa: F401
+import src.db.models.reroll_tracker  # noqa: F401
 
 engine: AsyncEngine = create_async_engine(
     settings.database_url,

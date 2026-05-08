@@ -1,14 +1,5 @@
 [
   {
-    "key": "ItemPhaCanh",
-    "vi": "Phá Cảnh Đan",
-    "en": "Realm Breaker Pill",
-    "type": "special",
-    "grade": 3,
-    "shop_price_merit": 50000,
-    "description_vi": "Đan dược phá cảnh, giúp đột phá bức tường tu vi."
-  },
-  {
     "key": "ItemTayNghiep",
     "vi": "Tẩy Nghiệp Đan",
     "en": "Karma Cleanse Pill",

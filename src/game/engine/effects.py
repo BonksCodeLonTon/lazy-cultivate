@@ -39,10 +39,18 @@ class EffectMeta:
     # Stat keys: final_dmg_bonus, final_dmg_reduce, crit_rating, crit_dmg_rating,
     #            evasion_rating, crit_res_rating, spd_pct, hp_regen_pct, res_all
     stat_bonus: dict[str, float] = field(default_factory=dict)
-    # Periodic damage per turn as fraction of holder's hp_max (DoT effects)
+    # Periodic damage per turn as fraction of holder's hp_max (DoT effects).
+    # Stack-based DoTs (burn / bleed / poison) leave this at 0.0 and declare
+    # ``stack_kind`` instead — the per-tick damage there comes from
+    # ``combatant.<kind>_per_stack_pct × stacks`` (see engine/damage/dot.py).
     dot_pct: float = 0.0
     # Element of the DoT damage — holder's resistance to this element reduces DoT damage
     dot_element: str | None = None
+    # Stack-based DoT kind ("burn" / "bleed" / "poison"). When set, the
+    # tick math reads the combatant's per-stack pct and stack counter
+    # instead of ``dot_pct``. Lets each stack DoT declare its kind in the
+    # data once and removes the per-effect-key branches from dot.py.
+    stack_kind: str | None = None
     # Whether this CC effect causes the holder to skip their turn (deterministic)
     skips_turn: bool = False
     # Whether this effect prevents skill usage (silence / interrupt)
@@ -55,8 +63,40 @@ class EffectMeta:
     # the proc falls back to ``default_duration(effect_key)``. Applied in
     # ``combat._run_on_hit_procs``; respects hard-CC immunity.
     aura_on_hit: tuple[str, float] | tuple[str, float, int] | None = None
+    # Instant-pulse magnitudes (one-shot when the effect is "applied" by a
+    # support skill, NOT a per-turn DoT/regen). Used by HpRegen / MpRegen
+    # and any future cleanse/recharge effects. A skill can override on a
+    # per-cast basis via ``effect_overrides[<key>]``:
+    #   "effect_overrides": { "HpRegen": { "instant_heal_pct": 0.25 } }
+    # Routed through ``_apply_heal`` so bleed-heal-reduce, heal-can-crit,
+    # and queued_heal_dmg conversions all behave consistently.
+    instant_heal_pct: float = 0.0
+    instant_mp_pct:   float = 0.0
+    # Default chance to apply this effect when listed in a skill's
+    # ``effects`` array. ``apply_skill_effects`` and ``apply_support_skill``
+    # use it as the fallback when the skill JSON omits an explicit
+    # ``effect_chances[<key>]``. Most effects stay at 1.0 (apply on hit);
+    # set < 1.0 here for inherently probabilistic effects (e.g. a CC that
+    # is supposed to land 35 % of the time by design rather than per-skill).
+    apply_chance: float = 1.0
+    # Whether Quang Thanh Tẩy (and any future cleanse source) can remove
+    # this effect. Replaces the old string-substring filter
+    # (``"Debuff" in key or "CC" in key``) with an explicit, data-driven
+    # flag — ``EffectNgungDong`` and any other oddly-named debuff now flow
+    # through correctly. Default is derived from ``kind`` in
+    # ``__post_init__``: DEBUFF / CC → True, BUFF → False. Pass ``True``
+    # explicitly for an exception (e.g. a future cleansable buff) or
+    # leave alone for the kind-based default.
+    cleansable: bool = False
     # Display emoji
     emoji: str = "✨"
+
+    def __post_init__(self) -> None:
+        # Frozen dataclass — bypass the freeze for the kind-based default.
+        # Only flips False → True; an explicit ``cleansable=True`` set on
+        # a BUFF (rare cleansable-buff case) is preserved verbatim.
+        if self.kind != EffectKind.BUFF and not self.cleansable:
+            object.__setattr__(self, "cleansable", True)
 
 
 # ── Buff definitions (23) ─────────────────────────────────────────────────────
@@ -262,7 +302,9 @@ _DEBUFFS_CC: list[EffectMeta] = [
         vi="Thiêu Đốt", en="Burning",
         kind=EffectKind.DEBUFF,
         description_vi="Lửa đốt cháy cơ thể, gây sát thương mỗi lượt.",
-        dot_pct=0.04,
+        # Stack-based: tick = burn_stacks × burn_per_stack_pct × max(atk, matk) × DOT_POWER_COEF.
+        # ``dot_pct`` is intentionally 0 — the runtime reads the per-stack value off the combatant.
+        stack_kind="burn",
         dot_element="hoa",
         emoji="🔥",
     ),
@@ -311,7 +353,8 @@ _DEBUFFS_CC: list[EffectMeta] = [
         vi="Độc Tố", en="Poison",
         kind=EffectKind.DEBUFF,
         description_vi="Độc tố ăn mòn cơ thể, gây sát thương mỗi lượt.",
-        dot_pct=0.04,
+        # Stack-based: tick = poison_stacks × poison_per_stack_pct × max(atk, matk) × DOT_POWER_COEF.
+        stack_kind="poison",
         dot_element="moc",
         emoji="☠️",
     ),
@@ -368,7 +411,8 @@ _DEBUFFS_CC: list[EffectMeta] = [
         vi="Chảy Máu", en="Bleed",
         kind=EffectKind.DEBUFF,
         description_vi="Máu chảy không ngừng, gây sát thương mỗi lượt.",
-        dot_pct=0.033,
+        # Stack-based: tick = bleed_stacks × bleed_per_stack_pct × max(atk, matk) × DOT_POWER_COEF.
+        stack_kind="bleed",
         dot_element="kim",
         emoji="🩸",
     ),
@@ -470,9 +514,30 @@ _DEBUFFS_CC: list[EffectMeta] = [
     ),
 ]
 
+_UTIL: list[EffectMeta] = [
+    EffectMeta(
+        key="HpRegen",
+        vi="Hồi Sinh Lực", en="HP Regen",
+        kind=EffectKind.BUFF,
+        description_vi="Hồi tức thì 10% sinh lực tối đa khi sử dụng.",
+        # Skill JSON can override per-cast via
+        # ``effect_overrides.HpRegen.instant_heal_pct``.
+        instant_heal_pct=0.10,
+        emoji="💚",
+    ),
+    EffectMeta(
+        key="MpRegen",
+        vi="Hồi Linh Lực", en="MP Regen",
+        kind=EffectKind.BUFF,
+        description_vi="Hồi tức thì 10% linh lực tối đa khi sử dụng.",
+        instant_mp_pct=0.10,
+        emoji="💙",
+    ),
+]
+
 # ── Build registry ────────────────────────────────────────────────────────────
 
-EFFECTS: dict[str, EffectMeta] = {m.key: m for m in _BUFFS + _DEBUFFS_CC}
+EFFECTS: dict[str, EffectMeta] = {m.key: m for m in _BUFFS + _DEBUFFS_CC + _UTIL}
 
 # ── Default durations ─────────────────────────────────────────────────────────
 
@@ -578,7 +643,10 @@ def get_periodic_damage(
             continue
         override = combatant.effect_overrides.get(effect_key) or {}
         effective_meta = _meta_with_override(meta, override)
-        if effective_meta.dot_pct <= 0:
+        # Gate accepts both classic %HP DoTs (``dot_pct > 0``) and stack-based
+        # DoTs (``stack_kind`` set, dot_pct stays 0 in the data because the
+        # tick comes from the combatant's per-stack counters).
+        if effective_meta.dot_pct <= 0 and not effective_meta.stack_kind:
             continue
         if effect_key == EffectKey.DEBUFF_DOC_TO and combatant.poison_immunity:
             continue

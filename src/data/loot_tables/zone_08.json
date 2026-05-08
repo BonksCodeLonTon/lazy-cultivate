@@ -1,18 +1,6 @@
 {
   "LootZone_8": [
     {
-      "item_key": "MatHoaThanDan",
-      "weight": 200000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
-      "item_key": "MatHuKhongTinh",
-      "weight": 125000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
       "item_key": "MatPhaTuongKinh",
       "weight": 150000,
       "qty_min": 1,
@@ -45,13 +33,6 @@
     },
     {
       "item_key": "GemLoi_2",
-      "weight": 120000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "zone8_gem2"
-    },
-    {
-      "item_key": "GemBang_2",
       "weight": 120000,
       "qty_min": 1,
       "qty_max": 1,

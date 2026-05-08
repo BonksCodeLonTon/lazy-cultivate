@@ -152,3 +152,80 @@ def test_cultivation_xp_drops_with_toxicity():
     # Floor still grants meaningful progress, never zero.
     assert full > 0
     assert full >= int(1000 * MIN_CULT_SPEED_MULT)
+
+
+# ── Realm-breakthrough cleanses dan_doc ──────────────────────────────────────
+# A successful realm bump sheds accumulated pill toxicity on every axis.
+# Level-ups within the same realm leave dan_doc untouched — only crossing the
+# realm boundary triggers the cleanse.
+
+def _make_char(**overrides):
+    """Char with empty constitution so the cultivation-speed bonus stays at 0."""
+    from src.game.models.character import Character
+    base = dict(player_id=1, discord_id=1, name="X", constitution_type="")
+    base.update(overrides)
+    return Character(**base)
+
+
+def test_breakthrough_body_resets_dan_doc():
+    from src.game.constants.realms import BODY_REALMS
+    from src.game.systems.cultivation import apply_breakthrough
+
+    char = _make_char(dan_doc=TOXICITY_FULL)
+    char.body_realm = 0
+    char.body_xp = BODY_REALMS[0].level_exp_table[-1]
+    apply_breakthrough(char, "body")
+    assert char.body_realm == 1
+    assert char.dan_doc == 0
+
+
+def test_breakthrough_qi_resets_dan_doc():
+    from src.game.constants.realms import QI_REALMS
+    from src.game.systems.cultivation import apply_breakthrough
+
+    char = _make_char(dan_doc=150)
+    char.qi_realm = 0
+    char.qi_xp = QI_REALMS[0].level_exp_table[-1]
+    apply_breakthrough(char, "qi")
+    assert char.qi_realm == 1
+    assert char.dan_doc == 0
+
+
+def test_breakthrough_formation_resets_dan_doc():
+    """Formation breakthrough is merit-gated, not item-gated, but still cleanses."""
+    from src.game.systems.cultivation import (
+        FORMATION_BREAKTHROUGH_MERIT,
+        apply_breakthrough,
+    )
+
+    char = _make_char(dan_doc=TOXICITY_FULL * 5)  # over-saturated
+    char.formation_realm = 0
+    char.merit = FORMATION_BREAKTHROUGH_MERIT[0] * 2
+    apply_breakthrough(char, "formation")
+    assert char.formation_realm == 1
+    assert char.dan_doc == 0
+
+
+def test_apply_realm_up_resets_dan_doc_on_every_axis():
+    """Legacy ``apply_realm_up`` path mirrors ``apply_breakthrough`` so test
+    callers using either entry point get the same cleanse semantics."""
+    from src.game.systems.cultivation import apply_realm_up
+
+    for axis in ("body", "qi", "formation"):
+        char = _make_char(dan_doc=80)
+        apply_realm_up(char, axis)
+        assert getattr(char, f"{axis}_realm") == 1
+        assert char.dan_doc == 0, f"axis={axis} did not cleanse dan_doc"
+
+
+def test_level_up_within_realm_does_not_reset_dan_doc():
+    """Cultivating across a level threshold (1→9 within the same realm) must
+    NOT cleanse dan_doc — only the realm boundary does."""
+    from src.game.systems.cultivation import advance_cultivation_xp
+
+    char = _make_char(active_axis="qi", qi_realm=0, qi_level=1, qi_xp=0, dan_doc=60)
+    # Burn enough turns to gain levels but stop short of the realm-9 cap.
+    advance_cultivation_xp(char, turns=2000)
+    assert char.qi_realm == 0, "test setup should not have crossed a realm"
+    assert char.qi_level > 1, "test should have produced a level-up"
+    assert char.dan_doc == 60, "level-up must leave dan_doc untouched"

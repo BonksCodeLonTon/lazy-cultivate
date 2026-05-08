@@ -8,11 +8,13 @@ from discord import app_commands
 from discord.ext import commands
 
 from src.db.connection import get_session
+from src.db.models.reroll_tracker import RerollTracker
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.realms import realm_label
 from src.game.systems.cultivation import (
     can_breakthrough,
     apply_breakthrough,
+    effective_formation_exp_per_merit,
     formation_exp_per_merit,
     get_breakthrough_requirements,
     study_formation_with_merit,
@@ -21,7 +23,6 @@ from src.game.systems.cultivation_service import (
     apply_offline_ticks,
     pre_breakthrough_realm,
 )
-from src.game.constants.grades import Grade
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.assets import AXIS_LABELS, AXIS_ICONS
@@ -33,6 +34,9 @@ _AXIS_CONFIGS = [
     ("qi",        "🔮 Luyện Khí"),
     ("formation", "🔯 Trận Đạo"),
 ]
+
+# Maximum total /reset_character uses per Discord user (lifetime cap).
+REROLL_LIMIT = 10000
 
 # ── Embed builders ────────────────────────────────────────────────────────────
 
@@ -166,11 +170,20 @@ class StudyFormationModal(discord.ui.Modal, title="Học Trận với Công Đ�
             player_orm.formation_level = char.formation_level
             await session.commit()
 
+        eff_rate = res.get("effective_exp_per_merit", res["exp_per_merit"])
+        speed_mult = res.get("speed_mult", 1.0)
+        # Show the effective rate the player actually got. When penalties
+        # /bonuses move the multiplier off 1.0 we annotate the line so the
+        # number match between merit spent and EXP gained is obvious.
+        rate_line = f"_(tỷ lệ: 1 Công Đức = {eff_rate:g} EXP tại cảnh giới này"
+        if abs(speed_mult - 1.0) > 1e-6:
+            rate_line += f" · gốc {res['exp_per_merit']:g} × hệ số {speed_mult:.2f}"
+        rate_line += ")_"
         await interaction.followup.send(
             embed=success_embed(
                 f"Tiêu {emojis.for_currency('merit')} {res['merit_spent']:,} Công Đức "
                 f"→ +{res['exp_gained']:,} EXP Trận Đạo "
-                f"_(tỷ lệ: 1 Công Đức = {res['exp_per_merit']} EXP tại cảnh giới này)_."
+                f"{rate_line}."
             ),
             ephemeral=True,
         )
@@ -219,7 +232,12 @@ class CultivateView(discord.ui.View):
                 )
                 return
             current_merit = player.merit
-            current_realm = player.formation_realm
+            # Use the *effective* rate (constitution speed bonus + Đan Độc
+            # toxicity penalty) so the placeholder matches what the player
+            # actually receives — otherwise R0 shows "1 Công Đức = 1 EXP"
+            # but a poisoned player only gets 0.95 EXP per merit.
+            char = _player_to_model(player)
+            rate = effective_formation_exp_per_merit(char)
 
         if current_merit <= 0:
             await interaction.response.send_message(
@@ -228,7 +246,6 @@ class CultivateView(discord.ui.View):
             )
             return
 
-        rate = formation_exp_per_merit(current_realm)
         await interaction.response.send_modal(
             StudyFormationModal(self._discord_id, current_merit, rate, self._refresh_panel)
         )
@@ -410,7 +427,14 @@ class BreakthroughView(discord.ui.View):
                 apply_breakthrough(char, axis, inventory=inventory_map)
 
                 if reqs["item_key"] and reqs["quantity"]:
-                    await inv_repo.remove_item(player.id, reqs["item_key"], Grade.HOANG, reqs["quantity"])
+                    # Pills are stored per-quality (Hoàn/Huyền/Địa/Thiên) so a
+                    # player's stack can be split across rows. ``remove_any_grade``
+                    # iterates ascending-by-grade and decrements greedily — for
+                    # legacy materials that always sit at Grade.HOANG it behaves
+                    # identically to a single-row remove.
+                    await inv_repo.remove_any_grade(
+                        player.id, reqs["item_key"], reqs["quantity"]
+                    )
 
                 player.body_realm      = char.body_realm
                 player.body_level      = char.body_level
@@ -423,6 +447,7 @@ class BreakthroughView(discord.ui.View):
                 player.formation_xp    = char.formation_xp
                 player.merit           = char.merit
                 player.dao_ti_unlocked = char.dao_ti_unlocked
+                player.dan_doc         = char.dan_doc
 
                 char = _player_to_model(player)
 
@@ -547,13 +572,12 @@ class CultivationCog(commands.Cog, name="Cultivation"):
 
     @app_commands.command(
         name="reset_character",
-        description="Xóa nhân vật hiện tại để /register lại từ đầu",
+        description="Xóa nhân vật hiện tại để /register lại từ đầu (tối đa 5 lần)",
     )
     @app_commands.describe(confirm="Gõ XOA để xác nhận xóa nhân vật")
     async def reset_character(
         self, interaction: discord.Interaction, confirm: str
     ) -> None:
-        # Temporary: no cooldown — players may reset freely until a rate limit is added.
         await interaction.response.defer(ephemeral=True)
         if confirm.strip().upper() != "XOA":
             await interaction.followup.send(
@@ -574,6 +598,20 @@ class CultivationCog(commands.Cog, name="Cultivation"):
                 )
                 return
 
+            # Reroll cap — counter lives on its own table so deleting the
+            # player row doesn't reset it. 5 attempts total per Discord user.
+            tracker = await session.get(RerollTracker, interaction.user.id)
+            used = tracker.count if tracker else 0
+            if used >= REROLL_LIMIT:
+                await interaction.followup.send(
+                    embed=error_embed(
+                        f"Đã dùng hết **{REROLL_LIMIT}/{REROLL_LIMIT}** lượt reset — "
+                        "không thể tu luyện lại nữa."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
             old_name = player.name
             counts = {
                 "items": len(player.item_instances or []),
@@ -588,7 +626,14 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             # formations, artifacts, market listings, turn tracker, and
             # world-boss participations.
             await session.delete(player)
+
+            if tracker is None:
+                tracker = RerollTracker(discord_id=interaction.user.id, count=1)
+                session.add(tracker)
+            else:
+                tracker.count = used + 1
             await session.commit()
+            remaining = REROLL_LIMIT - tracker.count
 
         await interaction.followup.send(
             embed=success_embed(
@@ -598,8 +643,151 @@ class CultivationCog(commands.Cog, name="Cultivation"):
                 f"• 🎯 Kỹ năng: **{counts['skills']}**\n"
                 f"• 🔯 Trận pháp: **{counts['formations']}**\n"
                 f"• 🏺 Pháp bảo: **{counts['artifacts']}**\n\n"
+                f"♻️ Lượt reset còn lại: **{remaining}/{REROLL_LIMIT}**\n"
                 f"Dùng `/register <tên>` để tạo nhân vật mới."
             ),
+            ephemeral=True,
+        )
+
+    @app_commands.command(
+        name="rename",
+        description="Đổi Đạo hiệu của bạn",
+    )
+    @app_commands.describe(new_name="Đạo hiệu mới (2–24 ký tự)")
+    async def rename(
+        self, interaction: discord.Interaction, new_name: str,
+    ) -> None:
+        await interaction.response.defer(ephemeral=True)
+        new_name = new_name.strip()
+        if len(new_name) < 2 or len(new_name) > 24:
+            await interaction.followup.send(
+                embed=error_embed("Đạo hiệu phải từ 2–24 ký tự."),
+                ephemeral=True,
+            )
+            return
+
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.followup.send(
+                    embed=error_embed("Chưa có nhân vật. Dùng `/register` trước."),
+                    ephemeral=True,
+                )
+                return
+
+            if player.name == new_name:
+                await interaction.followup.send(
+                    embed=error_embed(
+                        f"Đạo hiệu của ngươi đã là **{new_name}** — không có gì để đổi."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
+            old_name = player.name
+            player.name = new_name
+            await session.commit()
+
+        await interaction.followup.send(
+            embed=success_embed(
+                f"✅ Đã đổi đạo hiệu **{old_name}** → **{new_name}**."
+            ),
+            ephemeral=True,
+        )
+
+    @app_commands.command(
+        name="legendary_reroll",
+        description="Đổi Thể Chất sơ khởi sang một Truyền Thuyết (chỉ dùng được 1 lần)",
+    )
+    async def legendary_reroll(self, interaction: discord.Interaction) -> None:
+        import random
+
+        from src.data.registry import registry
+        from src.game.constants.linh_can import parse_linh_can
+        from src.game.systems.the_chat import get_constitutions, set_constitutions
+
+        await interaction.response.defer(ephemeral=True)
+
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.followup.send(
+                    embed=error_embed("Chưa có nhân vật. Dùng `/register` trước."),
+                    ephemeral=True,
+                )
+                return
+
+            tracker = await session.get(RerollTracker, interaction.user.id)
+            if tracker and tracker.legendary_reroll_used:
+                await interaction.followup.send(
+                    embed=error_embed(
+                        "Ngươi đã dùng lượt **Đổi Thể Chất Truyền Thuyết** rồi — "
+                        "mỗi đạo hữu chỉ có 1 lần duy nhất."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
+            player_elems = set(parse_linh_can(player.linh_can or ""))
+            leg_pool = [
+                c for c in registry.constitutions.values()
+                if c.get("rarity") == "legendary"
+                and not c.get("special_requirements")
+                and not c.get("progresses_from")
+                and (c.get("element") is None or c.get("element") in player_elems)
+            ]
+            if not leg_pool:
+                await interaction.followup.send(
+                    embed=error_embed(
+                        "Không tìm thấy Thể Chất Truyền Thuyết phù hợp với "
+                        "Linh Căn hiện tại — hãy mở thêm Linh Căn rồi thử lại."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
+            chosen = random.choice(leg_pool)
+            chosen_key = chosen["key"]
+
+            # Replace the primary slot (first entry) with the rolled legendary,
+            # preserving any extra slots the player has equipped.
+            equipped = get_constitutions(player.constitution_type)
+            old_primary = equipped[0] if equipped else None
+            new_equipped = [chosen_key] + [k for k in equipped[1:] if k != chosen_key]
+            player.constitution_type = set_constitutions(new_equipped)
+
+            if tracker is None:
+                tracker = RerollTracker(
+                    discord_id=interaction.user.id,
+                    count=0,
+                    legendary_reroll_used=True,
+                )
+                session.add(tracker)
+            else:
+                tracker.legendary_reroll_used = True
+
+            await session.commit()
+
+        from src.bot.cogs.constitution import _format_bonus_lines
+        old_data = registry.get_constitution(old_primary) if old_primary else None
+        old_vi = old_data.get("vi", old_primary or "—") if old_data else (old_primary or "—")
+        new_vi = chosen.get("vi", chosen_key)
+        bonus_lines = _format_bonus_lines(chosen.get("stat_bonuses", {}))
+        passive_desc = chosen.get("passive_description_vi", "")
+
+        body_parts = [
+            f"🌟 **{old_vi}** → ✨ **{new_vi}** *(Truyền Thuyết)*",
+        ]
+        if passive_desc:
+            body_parts.append(f"_{passive_desc}_")
+        if bonus_lines:
+            body_parts.append("**Chỉ số:**\n" + "\n".join(bonus_lines))
+        body_parts.append("⚠️ Lượt đổi Thể Chất Truyền Thuyết đã sử dụng — không thể dùng lại.")
+
+        await interaction.followup.send(
+            embed=success_embed("\n\n".join(body_parts)),
             ephemeral=True,
         )
 
@@ -657,11 +845,17 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             player_orm.formation_level = char.formation_level
             await session.commit()
 
+            eff_rate = res.get("effective_exp_per_merit", res["exp_per_merit"])
+            speed_mult = res.get("speed_mult", 1.0)
+            rate_line = f"_(tỷ lệ: 1 Công Đức = {eff_rate:g} EXP tại cảnh giới này"
+            if abs(speed_mult - 1.0) > 1e-6:
+                rate_line += f" · gốc {res['exp_per_merit']:g} × hệ số {speed_mult:.2f}"
+            rate_line += ")_"
             await interaction.followup.send(
                 embed=success_embed(
                     f"Tiêu {emojis.for_currency('merit')} {res['merit_spent']:,} Công Đức "
                     f"→ +{res['exp_gained']:,} EXP Trận Đạo "
-                    f"_(tỷ lệ: 1 Công Đức = {res['exp_per_merit']} EXP tại cảnh giới này)_."
+                    f"{rate_line}."
                 )
             )
 
@@ -672,32 +866,44 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             repo = PlayerRepository(session)
             player_orm = await repo.get_by_discord_id(interaction.user.id)
             if not player_orm: return
-        
-            
+
             char = _player_to_model(player_orm)
             axis = char.active_axis
-            
-            inventory_map = {inv.item_key: inv.quantity for inv in player_orm.inventory}
 
-            readiness: dict[str, bool] = {}
-            for ax in ("body", "qi", "formation"):
-                ok, _ = can_breakthrough(char, ax, inventory=inventory_map)
-                readiness[ax] = ok
+            # Aggregate by item_key across all grade rows — pills sit in
+            # inventory at their alchemy quality (Hoàn/Huyền/Địa/Thiên), so a
+            # naive dict-comp would only keep one row per item_key.
+            inventory_map: dict[str, int] = {}
+            for inv_item in player_orm.inventory:
+                inventory_map[inv_item.item_key] = (
+                    inventory_map.get(inv_item.item_key, 0) + inv_item.quantity
+                )
+
+            ok, reason = can_breakthrough(char, axis, inventory=inventory_map)
+            if not ok:
+                await interaction.followup.send(embed=error_embed(reason), ephemeral=True)
+                return
 
             from src.game.systems.tribulation import TribulationManager
             manager = TribulationManager()
             skill_keys = [s.skill_key for s in player_orm.skills]
             result = await manager.run_tribulation(interaction, char, axis, skill_keys)
-            
+
             if result.success:
+                from src.db.repositories.inventory_repo import InventoryRepository
+                inv_repo = InventoryRepository(session)
+
+                old_realm_idx = pre_breakthrough_realm(player_orm, axis)
+                reqs = get_breakthrough_requirements(axis, old_realm_idx)
+
                 apply_breakthrough(char, axis, inventory=inventory_map)
-                
+
+                if reqs["item_key"] and reqs["quantity"]:
+                    await inv_repo.remove_any_grade(
+                        player_orm.id, reqs["item_key"], reqs["quantity"]
+                    )
+
                 player_orm.update_from_model(char)
-                
-                for inv_item in player_orm.inventory:
-                    if inv_item.item_key in inventory_map:
-                        inv_item.quantity = inventory_map[inv_item.item_key]
-                
                 await session.commit()
 
 

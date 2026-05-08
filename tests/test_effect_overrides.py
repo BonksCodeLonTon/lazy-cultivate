@@ -73,20 +73,21 @@ def test_partial_override_keeps_other_meta_stats():
 
 # ── DoT override ───────────────────────────────────────────────────────────
 
-def test_dot_pct_override_increases_tick_damage():
-    target = _make_target()
-    rng = random.Random(0)
-    target.apply_effect("DebuffDocTo", 3)
-    base_ticks = sum(d for _, d, _ in get_periodic_damage(target, rng))
+def test_poison_stacks_increase_tick_damage():
+    """Poison now scales with stacks (mirror of burn/bleed/shock). Each
+    additional stack should strictly raise the per-tick damage.
+    """
+    base = _make_target()
+    base.apply_effect("DebuffDocTo", 3)
+    base.poison_stacks = 1
+    base_ticks = sum(d for _, d, _ in get_periodic_damage(base, random.Random(0)))
 
-    boosted = _make_target()
-    boosted.apply_effect(
-        "DebuffDocTo", 3,
-        overrides={"dot_pct": EFFECTS["DebuffDocTo"].dot_pct * 3.0},
-    )
-    boosted_ticks = sum(d for _, d, _ in get_periodic_damage(boosted, random.Random(0)))
-    # 3× dot_pct should yield strictly more tick damage.
-    assert boosted_ticks > base_ticks
+    stacked = _make_target()
+    stacked.apply_effect("DebuffDocTo", 3)
+    stacked.poison_stacks = 5
+    stacked_ticks = sum(d for _, d, _ in get_periodic_damage(stacked, random.Random(0)))
+    # 5× the stacks should yield strictly more tick damage.
+    assert stacked_ticks > base_ticks
 
 
 def test_dot_element_override_changes_resistance_target():

@@ -9,16 +9,13 @@ from src.game.constants.grades import Grade
 
 
 class ItemType(StrEnum):
-    MATERIAL = "material"      # Cultivation material
     GEM = "gem"                # Formation gem (Ngọc Khảm)
     SCROLL = "scroll"          # Skill scroll (Ngọc Giản)
     CHEST = "chest"            # Loot chest (Rương)
-    ELIXIR = "elixir"          # Elixir (Đan Dược)
     ARTIFACT = "artifact"      # Pháp Bảo
     SPECIAL = "special"        # Special items (Phá Cảnh Đan, Hỗn Nguyên Thạch...)
-    HERB = "herb"              # Luyện đan ingredient (Thảo Dược)
-    YEU_THU = "yeu_thu"        # Luyện đan ingredient (Nguyên Liệu Yêu Thú)
-    PILL = "pill"              # Crafted alchemy pill (Đan Dược)
+    HERB = "herb"              # Luyện đan ingredient (Thảo Dược + tinh hoa yêu thú)
+    PILL = "pill"              # Đan Dược — covers crafted pills + legacy elixir consumables
     FURNACE = "furnace"        # Đan Lô — alchemy tool (enables/boosts pill crafting)
 
 

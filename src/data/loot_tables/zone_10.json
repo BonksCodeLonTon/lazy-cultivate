@@ -67,13 +67,6 @@
       "pool_id": "zone10_gem3"
     },
     {
-      "item_key": "GemBang_3",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "zone10_gem3"
-    },
-    {
       "item_key": "GemTo_3",
       "weight": 150000,
       "qty_min": 1,

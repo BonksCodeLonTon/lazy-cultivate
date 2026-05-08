@@ -53,14 +53,14 @@ BODY_BREAKTHROUGH_MATERIALS: dict[int, tuple[str, int]] = {
 }
 
 QI_BREAKTHROUGH_MATERIALS: dict[int, tuple[str, int]] = {
-    0: ("MatKhiTuDan",      1),  # Luyện Khí  → Trúc Cơ
-    1: ("MatTrucCoDan",     1),  # Trúc Cơ    → Kim Đan
-    2: ("MatKimDanNguyen",  2),  # Kim Đan    → Nguyên Anh
-    3: ("MatNguyenAnhThach",2),  # Nguyên Anh → Hóa Thần
-    4: ("MatHoaThanDan",    3),  # Hóa Thần   → Luyện Hư
-    5: ("MatHuKhongTinh",   3),  # Luyện Hư   → Hợp Đạo
-    6: ("MatHopDaoNgoc",    5),  # Hợp Đạo   → Đại Thừa
-    7: ("MatDaiThuaKinh",   5),  # Đại Thừa  → Đăng Tiên
+    0: ("TrucCoDan",      1),  # Luyện Khí  → Trúc Cơ
+    1: ("TuDinhDan",      1),  # Trúc Cơ    → Kim Đan
+    2: ("TrieuNguyenDan", 2),  # Kim Đan    → Nguyên Anh
+    3: ("HoaThanDan",     2),  # Nguyên Anh → Hóa Thần
+    4: ("LuyenHuDan",     3),  # Hóa Thần   → Luyện Hư
+    5: ("HopDaoDan",      3),  # Luyện Hư   → Hợp Đạo
+    6: ("DaiThuaDan",     5),  # Hợp Đạo   → Đại Thừa
+    7: ("MatDaiThuaKinh", 5),  # Đại Thừa  → Đăng Tiên (no breakthrough pill exists)
 }
 
 # Formation breakthrough costs Công Đức only (no materials per design doc)
@@ -195,10 +195,20 @@ def compute_gem_bonuses(gem_keys: list[str]) -> dict:
     if not gem_keys:
         return merged
 
-    # Element aliases: gem key uses capitalised segment that must map to element key
+    # Element aliases: gem key uses capitalised segment that must map to element key.
+    # ``To`` and ``Duong`` are legacy spellings (pre-rename: GemTo_* → tho,
+    # GemDuong_* → quang). Current data files use ``Tho``/``Quang`` directly,
+    # but kept here so legacy player-inventory rows continue to grant stats.
     elem_map = {
-        "Kim": "kim", "Moc": "moc", "Thuy": "thuy", "Hoa": "hoa",
-        "Tho": "tho", "Loi": "loi", "Phong": "phong", "Quang": "quang", "Am": "am",
+        "Kim": "kim",
+        "Moc": "moc",
+        "Thuy": "thuy",
+        "Hoa": "hoa",
+        "Tho": "tho", "To": "tho",
+        "Loi": "loi",
+        "Phong": "phong",
+        "Quang": "quang", "Duong": "quang",
+        "Am": "am",
     }
 
     for key in gem_keys:
@@ -211,6 +221,11 @@ def compute_gem_bonuses(gem_keys: list[str]) -> dict:
             for stat, value in (item.get("unique_bonus") or {}).items():
                 if isinstance(value, bool):
                     merged[stat] = merged.get(stat, False) or value
+                elif isinstance(value, dict):
+                    # Nested dict (e.g. element_pen: {hoa: 0.05}) — merge additively per key.
+                    bucket = merged.setdefault(stat, {})
+                    for sub_k, sub_v in value.items():
+                        bucket[sub_k] = bucket.get(sub_k, 0) + sub_v
                 else:
                     merged[stat] = merged.get(stat, 0) + value
             continue
@@ -290,7 +305,44 @@ def max_formation_slots(body_realm: int, qi_realm: int, formation_realm: int) ->
     """
     if not is_tran_tu(body_realm, qi_realm, formation_realm):
         return 1
-    return min(MAX_FORMATION_SLOT_CEILING, 1 + formation_realm // 3)
+    return min(MAX_FORMATION_SLOT_CEILING, 1 + formation_realm // 2)
+
+
+def max_unlocked_gem_slots(formation_realm: int) -> int:
+    """How many gem-inlay slots the player has unlocked in any one formation.
+
+    The 10-slot inlay grid is gated by Trận Đạo progression: the topmost
+    slot (idx 9) is reserved for the peak formation realm (Đế Trận, idx 8),
+    each lower slot lifts one realm earlier so that fresh formation
+    cultivators run with a 2-slot grid and grow into the full 10 over the
+    course of all 9 realms.
+
+    Curve (mapping formation_realm → unlocked slot count, 1-indexed):
+        realm 0 → 2 slots  (slots 1-2 / idx 0-1)
+        realm 1 → 3 slots
+        realm 2 → 4 slots
+        realm 3 → 5 slots
+        realm 4 → 6 slots
+        realm 5 → 7 slots
+        realm 6 → 8 slots
+        realm 7 → 9 slots
+        realm 8 → 10 slots (full grid)
+
+    Equivalently, slot index ``i`` (0-based) is locked while
+    ``formation_realm < i - 1`` — slot 0 is always available, slot 9 needs
+    realm 8 (max).
+    """
+    from src.db.models.formation import FORMATION_GEM_SLOTS
+    return min(FORMATION_GEM_SLOTS, max(1, int(formation_realm) + 2))
+
+
+def gem_slot_unlock_realm(slot_index: int) -> int:
+    """Minimum ``formation_realm`` required to inlay into ``slot_index``.
+
+    Slot 0 is always unlocked → returns 0 (any realm satisfies). Slot 9
+    requires realm 8 (max). General formula: ``max(0, slot_index - 1)``.
+    """
+    return max(0, int(slot_index) - 1)
 
 
 def formation_reserve_reduction(formation_stages: int) -> float:
@@ -628,16 +680,17 @@ def can_breakthrough(
     axis: str,
     inventory: dict[str, int] | None = None,
 ) -> tuple[bool, str]:
-    """Ready to break through once xp ≥ the current realm's bậc-9 threshold
-    AND any merit cost is affordable.
+    """Ready to break through once xp ≥ the current realm's bậc-9 threshold,
+    any merit cost is affordable, and the required material/pill is in
+    inventory.
 
-    ``inventory`` is accepted for call-site compatibility; material checks
-    happen in ``apply_breakthrough``. The merit cost gate applies only to
-    the formation axis (body/qi breakthroughs are material-only) and
-    prevents the historical "drive merit negative on Trận Đạo độ kiếp"
-    bug — see ``tests/test_merit_never_negative.py``.
+    ``inventory`` should aggregate quantities by item_key across all grades
+    (e.g. a Trúc Cơ Đan stack split across Hoàn/Huyền/Địa/Thiên collapses
+    into one count). The merit cost gate applies only to the formation
+    axis (body/qi breakthroughs are item-only) and prevents the historical
+    "drive merit negative on Trận Đạo độ kiếp" bug — see
+    ``tests/test_merit_never_negative.py``.
     """
-    del inventory
     realm_idx = getattr(character, f"{axis}_realm")
     realm = get_realm(axis, realm_idx)
     if realm is None:
@@ -655,6 +708,25 @@ def can_breakthrough(
     if current_xp < max_xp:
         needed = max_xp - current_xp
         return False, f"Linh khí chưa đủ tụ (Thiếu {needed:,} EXP để Độ Kiếp)."
+
+    # Item gate fires only when the caller passes an inventory snapshot.
+    # ``None`` preserves the historical "I'll check later" contract used by
+    # unit tests that don't model inventory; cogs always pass a dict so the
+    # gate triggers in real play.
+    if inventory is not None:
+        reqs = get_breakthrough_requirements(axis, realm_idx)
+        item_key = reqs.get("item_key")
+        qty_needed = int(reqs.get("quantity") or 0)
+        if item_key and qty_needed > 0:
+            have = int(inventory.get(item_key, 0))
+            if have < qty_needed:
+                from src.data.registry import registry as _reg
+                item_def = _reg.get_item(item_key) or {}
+                item_vi = item_def.get("vi") or item_key
+                return False, (
+                    f"Cần **{qty_needed}× {item_vi}** để Độ Kiếp "
+                    f"(hiện có {have})."
+                )
 
     return True, "Cảm nhận thiên địa dị động, Thiên Kiếp chuẩn bị giáng xuống!"
 
@@ -694,6 +766,9 @@ def apply_realm_up(character: Character, axis: str) -> None:
         character.formation_realm += 1
         character.formation_level = 1
         character.formation_xp = 0
+    # Realm breakthrough on any axis cleanses Đan Độc — the body sheds
+    # accumulated pill toxicity as it reforges itself for the next realm.
+    character.dan_doc = 0
 
 
 def apply_breakthrough(
@@ -725,6 +800,10 @@ def apply_breakthrough(
     setattr(character, f"{axis}_realm", new_realm)
     setattr(character, f"{axis}_level", 1)
     setattr(character, f"{axis}_xp", 0)
+
+    # Realm breakthrough on any axis cleanses Đan Độc — the body sheds
+    # accumulated pill toxicity as it reforges itself for the next realm.
+    character.dan_doc = 0
 
     if axis == "body" and new_realm == len(BODY_REALMS) - 1:
         if hasattr(character, "dao_ti_unlocked"):
@@ -783,6 +862,25 @@ def advance_cultivation_xp(character: Character, turns: int) -> dict:
         "is_ready_for_tribulation": new_total_xp >= realm.level_exp_table[-1],
     }
 
+def cultivation_speed_mult(character: Character) -> float:
+    """Effective EXP multiplier for the character right now.
+
+    Combines the additive constitution ``cultivation_speed_bonus`` and the
+    Đan Độc toxicity penalty, floored at ``MIN_CULT_SPEED_MULT``. Used by
+    both turn-based cultivation and the merit→formation-EXP path so the
+    UI can display the real rate the player will receive (otherwise the
+    placeholder shows "1:1" but the spend awards less due to penalties).
+    """
+    const_bonuses = compute_constitution_bonuses(character.constitution_type)
+    speed = 1.0 + float(const_bonuses.get("cultivation_speed_bonus", 0.0))
+    return max(MIN_CULT_SPEED_MULT, speed - cult_speed_penalty(character.dan_doc))
+
+
+def effective_formation_exp_per_merit(character: Character) -> float:
+    """Effective merit→EXP rate for the character (base × speed_mult)."""
+    return formation_exp_per_merit(character.formation_realm) * cultivation_speed_mult(character)
+
+
 def study_formation_with_merit(character: Character, merits: int) -> dict:
     """Convert Công Đức into Trận Đạo EXP and re-derive bậc on the current
     formation realm's level table.
@@ -799,22 +897,19 @@ def study_formation_with_merit(character: Character, merits: int) -> dict:
     if character.merit < merits:
         return {"success": False, "error": f"Không đủ Công Đức (Cần {merits}, hiện có {character.merit})"}
 
-    const_bonuses = compute_constitution_bonuses(character.constitution_type)
-    speed_mult = 1.0 + float(const_bonuses.get("cultivation_speed_bonus", 0.0))
-    # Same Đan Độc penalty as turn-based cultivation — keeps Trận Tu
-    # consistent with body/qi pacing under toxicity.
-    speed_mult = max(MIN_CULT_SPEED_MULT, speed_mult - cult_speed_penalty(character.dan_doc))
+    speed_mult = cultivation_speed_mult(character)
     exp_per_merit = formation_exp_per_merit(character.formation_realm)
-    exp_gained = int(merits * exp_per_merit * speed_mult)
+    effective_rate = exp_per_merit * speed_mult
+    exp_gained = int(merits * effective_rate)
     # Guard against fractional rates (R1+ are sub-1.0): spending too few merit
     # rounds to 0 EXP. Refuse the spend rather than silently burning merit.
     if exp_gained <= 0:
         from math import ceil
-        min_spend = max(1, ceil(1.0 / max(exp_per_merit * speed_mult, 1e-9)))
+        min_spend = max(1, ceil(1.0 / max(effective_rate, 1e-9)))
         return {
             "success": False,
             "error": (
-                f"Tỷ lệ tại cảnh giới này là {exp_per_merit:g} EXP/Công Đức — "
+                f"Tỷ lệ tại cảnh giới này là {effective_rate:g} EXP/Công Đức — "
                 f"cần ít nhất {min_spend:,} Công Đức để nhận 1 EXP."
             ),
         }
@@ -827,10 +922,12 @@ def study_formation_with_merit(character: Character, merits: int) -> dict:
     )
 
     return {
-        "success":          True,
-        "merit_spent":      merits,
-        "exp_gained":       exp_gained,
-        "exp_per_merit":    exp_per_merit,
-        "current_total_xp": character.formation_xp,
-        "current_level":    character.formation_level,
+        "success":              True,
+        "merit_spent":          merits,
+        "exp_gained":           exp_gained,
+        "exp_per_merit":        exp_per_merit,         # base rate (no penalties)
+        "effective_exp_per_merit": effective_rate,     # actual rate applied
+        "speed_mult":           speed_mult,
+        "current_total_xp":     character.formation_xp,
+        "current_level":        character.formation_level,
     }

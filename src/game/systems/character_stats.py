@@ -20,6 +20,8 @@ from src.game.constants.balance import (
     DEFAULT_BLEED_PER_STACK_PCT,
     DEFAULT_SHOCK_STACK_CAP,
     DEFAULT_SHOCK_PER_STACK_PCT,
+    DEFAULT_POISON_STACK_CAP,
+    DEFAULT_POISON_PER_STACK_PCT,
     DEFAULT_MANA_STACK_CAP,
     DEFAULT_SHIELD_RECHARGE_DELAY,
 )
@@ -179,6 +181,9 @@ class CombatStats:
     shock_per_stack_pct: float = DEFAULT_SHOCK_PER_STACK_PCT
     shock_on_hit_pct: float = 0.0
     turn_steal_pct: float = 0.0
+    # ── Poison stacks (Mộc / Âm) ──────────────────────────────────────────
+    poison_stack_cap: int = DEFAULT_POISON_STACK_CAP
+    poison_per_stack_pct: float = DEFAULT_POISON_PER_STACK_PCT
     # ── Phong (wind/evasion/mark) build ───────────────────────────────────
     mark_on_hit_pct: float = 0.0
     damage_bonus_from_evasion_pct: float = 0.0
@@ -556,6 +561,9 @@ def compute_combat_stats(
     shock_per_stack_pct_bonus    = float(bonuses.get("shock_per_stack_pct_bonus", 0.0))
     shock_on_hit_pct             = float(bonuses.get("shock_on_hit_pct", 0.0))
     turn_steal_pct               = float(bonuses.get("turn_steal_pct", 0.0))
+    # Poison-stack build fields (Mộc / Âm)
+    poison_stack_cap_bonus       = int(bonuses.get("poison_stack_cap_bonus", 0))
+    poison_per_stack_pct_bonus   = float(bonuses.get("poison_per_stack_pct_bonus", 0.0))
     # Phong-build fields
     mark_on_hit_pct              = float(bonuses.get("mark_on_hit_pct", 0.0))
     damage_bonus_from_evasion_pct= float(bonuses.get("damage_bonus_from_evasion_pct", 0.0))
@@ -709,6 +717,9 @@ def compute_combat_stats(
         shock_per_stack_pct_bonus    += float(equip_stats.get("shock_per_stack_pct_bonus", 0.0))
         shock_on_hit_pct             += float(equip_stats.get("shock_on_hit_pct", 0.0))
         turn_steal_pct               += float(equip_stats.get("turn_steal_pct", 0.0))
+        # Poison-stack build fields (Mộc / Âm)
+        poison_stack_cap_bonus       += int(equip_stats.get("poison_stack_cap_bonus", 0))
+        poison_per_stack_pct_bonus   += float(equip_stats.get("poison_per_stack_pct_bonus", 0.0))
         # Phong-build fields
         mark_on_hit_pct              += float(equip_stats.get("mark_on_hit_pct", 0.0))
         damage_bonus_from_evasion_pct+= float(equip_stats.get("damage_bonus_from_evasion_pct", 0.0))
@@ -852,6 +863,8 @@ def compute_combat_stats(
         shock_per_stack_pct=DEFAULT_SHOCK_PER_STACK_PCT + shock_per_stack_pct_bonus,
         shock_on_hit_pct=shock_on_hit_pct,
         turn_steal_pct=turn_steal_pct,
+        poison_stack_cap=DEFAULT_POISON_STACK_CAP + poison_stack_cap_bonus,
+        poison_per_stack_pct=DEFAULT_POISON_PER_STACK_PCT + poison_per_stack_pct_bonus,
         mark_on_hit_pct=mark_on_hit_pct,
         damage_bonus_from_evasion_pct=damage_bonus_from_evasion_pct,
         crit_rating_vs_marked=crit_rating_vs_marked,

@@ -41,9 +41,9 @@ class GameRegistry:
 
     # Danh mục file item nằm trong thư mục con src/data/items/
     _ITEM_FILES = (
-        "chests", "elixirs", "gems", "unique_gems", "materials", "scrolls", "specials",
+        "chests", "gems", "unique_gems", "scrolls", "specials",
         "forge_materials", "super_materials",
-        "herbs", "yeu_thu", "pills", "furnaces",
+        "herbs", "pills", "furnaces",
         "constitution_materials",
         "linh_can_material",
         "world_boss_chests",
@@ -296,8 +296,36 @@ class GameRegistry:
 
     # ── Getters ──────────────────────────────────────────────────────────────
 
+    _KEY_ALIASES: dict[str, str] = {
+        "DuongLuyenHuyetDan":  "QuangLuyenHuyetDan",
+        "DuongBiCao":          "QuangBiCao",
+        "DuongLuyenCanDich":   "QuangLuyenCanDich",
+        "DuongLuyenCotDich":   "QuangLuyenCotDich",
+        "DuongLuyenTuyDan":    "QuangLuyenTuyDan",
+        "DuongPhapTuongDan":   "QuangPhapTuongDan",
+        "DuongKimThanDan":     "QuangKimThanDan",
+        "DuongSieuPhamDan":    "QuangSieuPhamDan",
+        "DuongNhapThanhDan":   "QuangNhapThanhDan",
+        "DuongHuyetTinh":      "QuangHuyetTinh",
+        "DuongLinhTinh":       "QuangLinhTinh",
+        "DuongYeuDan":         "QuangYeuDan",
+        "GemDuong_1":          "GemQuang_1",
+        "GemDuong_2":          "GemQuang_2",
+        "GemDuong_3":          "GemQuang_3",
+        "GemDuong_4":          "GemQuang_4",
+        "DanPhuongDuongLuyenHuyetDan": "DanPhuongQuangLuyenHuyetDan",
+        "DanPhuongDuongBiCao":         "DanPhuongQuangBiCao",
+        "DanPhuongDuongLuyenCanDich":  "DanPhuongQuangLuyenCanDich",
+        "DanPhuongDuongLuyenCotDich":  "DanPhuongQuangLuyenCotDich",
+        "DanPhuongDuongLuyenTuyDan":   "DanPhuongQuangLuyenTuyDan",
+        "DanPhuongDuongPhapTuongDan":  "DanPhuongQuangPhapTuongDan",
+        "DanPhuongDuongKimThanDan":    "DanPhuongQuangKimThanDan",
+        "DanPhuongDuongSieuPhamDan":   "DanPhuongQuangSieuPhamDan",
+        "DanPhuongDuongNhapThanhDan":  "DanPhuongQuangNhapThanhDan",
+    }
+
     def get_item(self, key: str) -> dict | None:
-        return self.items.get(key)
+        return self.items.get(key) or self.items.get(self._KEY_ALIASES.get(key, ""))
 
     def get_skill(self, key: str) -> dict | None:
         return self.skills.get(key)
@@ -402,12 +430,15 @@ class GameRegistry:
         return out
 
     def get_pill_recipe(self, key: str) -> dict | None:
-        return self.pill_recipes.get(key)
+        return (
+            self.pill_recipes.get(key)
+            or self.pill_recipes.get(self._KEY_ALIASES.get(key, ""))
+        )
 
     def get_herb(self, key: str) -> dict | None:
-        """Return an herb/yeu_thu ingredient by key (any alchemy ingredient type)."""
+        """Return an alchemy ingredient by key (``type == "herb"``)."""
         item = self.items.get(key)
-        if item and item.get("type") in ("herb", "yeu_thu"):
+        if item and item.get("type") == "herb":
             return item
         return None
 
@@ -454,7 +485,7 @@ class GameRegistry:
                 if r.get("min_qi_realm", 0) <= qi_realm]
 
     def items_by_type(self, item_type: str) -> list[dict]:
-        """Lọc vật phẩm theo loại (material, elixir, gem, ...)."""
+        """Lọc vật phẩm theo loại (pill, gem, scroll, ...)."""
         return [i for i in self.items.values() if i.get("type") == item_type]
 
     def enemies_by_rank(self, rank: str) -> list[dict]:

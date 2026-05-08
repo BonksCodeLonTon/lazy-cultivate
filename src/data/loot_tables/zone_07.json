@@ -1,24 +1,6 @@
 {
   "LootZone_7": [
     {
-      "item_key": "MatKimDanNguyen",
-      "weight": 200000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
-      "item_key": "MatNguyenAnhThach",
-      "weight": 175000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
-      "item_key": "MatHoaThanDan",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "MatPhaTuongKinh",
       "weight": 75000,
       "qty_min": 1,
@@ -45,13 +27,6 @@
     },
     {
       "item_key": "GemMoc_2",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "zone7_gem2"
-    },
-    {
-      "item_key": "GemBang_2",
       "weight": 150000,
       "qty_min": 1,
       "qty_max": 1,

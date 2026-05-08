@@ -18,7 +18,7 @@ Optional per-entry fields:
 
 Entry format (JSON):
   {
-    "item_key":  "MatHoaThanDan",
+    "item_key":  "MatHuyetTinh",
     "weight":    50000,       // out of 1,000,000 (5%) for independent; relative for pool
     "qty_min":   1,
     "qty_max":   2,

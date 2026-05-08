@@ -60,20 +60,18 @@ EMOJI_RARITY_LEGENDARY = "<:legendary:1501071696231399514>"
 
 
 ITEM_TYPE_EMOJI: dict[str, str] = {
-    "forge_material":   EMOJI_THIEN_CONG,
-    "material":         "🪨",
-    "super_material":   "💠",
-    "gem":              "💠",
-    "scroll":           EMOJI_NGOC_GIAN,
-    "chest":            "📦",
-    "elixir":           EMOJI_LUYEN_DAN,
-    "pill":             EMOJI_LUYEN_DAN,
-    "herb":             "🌿",
-    "yeu_thu":          "🐉",
-    "furnace":          "🏺",
-    "special":          "⭐",
-    "artifact":         "🗡️",
-    "equipment":        "🗡️",
+    "forge_material":         EMOJI_THIEN_CONG,
+    "constitution_material":  "🪨",
+    "super_material":         "💠",
+    "gem":                    "💠",
+    "scroll":                 EMOJI_NGOC_GIAN,
+    "chest":                  "📦",
+    "pill":                   EMOJI_LUYEN_DAN,
+    "herb":                   "🌿",
+    "furnace":                "🏺",
+    "special":                "⭐",
+    "artifact":               "🗡️",
+    "equipment":              "🗡️",
 }
 
 SKILL_CATEGORY_EMOJI: dict[str, str] = {

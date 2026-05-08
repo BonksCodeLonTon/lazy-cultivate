@@ -19,8 +19,10 @@ from src.game.systems.character_stats import active_formation_gem_map
 from src.game.systems.cultivation import (
     formation_path_multiplier,
     formation_reserve_reduction,
+    gem_slot_unlock_realm,
     get_active_formations,
     max_formation_slots,
+    max_unlocked_gem_slots,
     set_active_formations,
 )
 from src.game.systems.formation import (
@@ -35,13 +37,11 @@ log = logging.getLogger(__name__)
 _GEM_ELEMENT_VI = {
     "kim": "Kim", "moc": "Mộc", "thuy": "Thủy", "hoa": "Hỏa",
     "tho": "Thổ", "loi": "Lôi", "phong": "Phong", "quang": "Quang", "am": "Âm",
-    "bang": "Băng",
 }
 
 _GEM_EMOJI = {
     "kim": "⚙️", "moc": "🌿", "thuy": "💧", "hoa": "🔥",
     "tho": "🪨", "loi": "⚡", "phong": "🌬️", "quang": "☀️", "am": "🌑",
-    "bang": "❄️",
 }
 
 # Stat keys whose value is a fraction (0.18 → "18.0%"). Anything not listed is
@@ -279,6 +279,37 @@ async def _load_formation_view_state(discord_id: int):
         gem_map = active_formation_gem_map(player)
         form_bonuses = compute_active_formation_bonuses(player)
     return player, active_form_data, form_bonuses, gem_map
+
+
+async def _find_unique_gem_socket(
+    frepo: FormationRepository,
+    player_id: int,
+    *,
+    gem_key: str,
+    skip_formation_key: str | None = None,
+    skip_slot_index: int | None = None,
+) -> tuple[str, int] | None:
+    """Return ``(formation_key, slot_index)`` if ``gem_key`` is already inlaid
+    in any other slot of any formation row (active or inactive), else ``None``.
+
+    The ``skip_*`` pair lets the caller exclude the slot it's writing to so
+    a no-op replace (same key into the same slot) doesn't trip the check.
+    """
+    for form in await frepo.get_all(player_id):
+        for slot_str, k in (form.gem_slots or {}).items():
+            if k != gem_key:
+                continue
+            try:
+                slot_idx = int(slot_str)
+            except (TypeError, ValueError):
+                continue
+            if (
+                form.formation_key == skip_formation_key
+                and slot_idx == skip_slot_index
+            ):
+                continue
+            return form.formation_key, slot_idx
+    return None
 
 
 async def _player_gem_inventory(player_db_id: int) -> list[dict]:
@@ -520,9 +551,13 @@ async def _render_socket_manager(
 
     gems_inv = await _player_gem_inventory(player.id)
 
+    unlocked_count = max_unlocked_gem_slots(player.formation_realm)
+
     lines = [
         f"Khảm ngọc để mở ngưỡng **1 / 3 / 5 / 7 / {FORMATION_GEM_SLOTS}**.",
         f"**Trận đang khảm**: {form_data['vi']}",
+        f"🔓 Đã mở: **{unlocked_count}/{FORMATION_GEM_SLOTS}** ổ khảm "
+        f"(cảnh giới Trận Đạo hiện tại: {FORMATION_REALMS[player.formation_realm].vi}).",
     ]
     if len(active_forms) > 1:
         lines.append(
@@ -532,7 +567,12 @@ async def _render_socket_manager(
     lines.append("")
     for i in range(FORMATION_GEM_SLOTS):
         gem_key = gem_slots.get(str(i))
-        lines.append(f"`[{i}]` {_gem_display(gem_key)}")
+        if i >= unlocked_count:
+            req_idx = gem_slot_unlock_realm(i)
+            req_vi = FORMATION_REALMS[req_idx].vi
+            lines.append(f"`[{i}]` 🔒 *Khóa — cần Trận Đạo {req_vi}*")
+        else:
+            lines.append(f"`[{i}]` {_gem_display(gem_key)}")
 
     if gems_inv:
         lines.append("\n**Ngọc có trong túi đồ:**")
@@ -550,6 +590,7 @@ async def _render_socket_manager(
     view = SocketManagerView(
         discord_id, gem_slots, gems_inv, back_fn=back_fn,
         active_forms=active_forms, target_formation_key=form_data["key"],
+        unlocked_slot_count=unlocked_count,
     )
     await interaction.edit_original_response(embed=embed, view=view)
 
@@ -571,6 +612,7 @@ class SocketManagerView(discord.ui.View):
         active_forms: list[dict] | None = None,
         target_formation_key: str | None = None,
         gem_page: int = 0,
+        unlocked_slot_count: int = FORMATION_GEM_SLOTS,
     ) -> None:
         super().__init__(timeout=240)
         self.discord_id = discord_id
@@ -581,6 +623,7 @@ class SocketManagerView(discord.ui.View):
         self._selected_gem_key: str | None = None
         self._target_formation_key = target_formation_key
         self._active_forms = active_forms or []
+        self._unlocked_slot_count = max(1, min(FORMATION_GEM_SLOTS, int(unlocked_slot_count)))
         gem_pages = total_pages(len(self._gems_inv), per_page=PAGE_SIZE)
         self._gem_page = max(0, min(gem_page, gem_pages - 1))
 
@@ -606,22 +649,34 @@ class SocketManagerView(discord.ui.View):
             self.add_item(self._form_select)
             row_offset = 1
 
-        # Slot select — all 10 slots, showing whether occupied
+        # Slot select — all 10 slots, showing whether occupied + lock state.
+        # Locked slots stay listed (so players see what's coming) but their
+        # description warns that selecting one will fail at inlay time; the
+        # _on_inlay handler is the canonical gate.
         slot_opts = []
         for i in range(FORMATION_GEM_SLOTS):
             gk = gem_slots.get(str(i))
-            if gk:
+            locked = i >= self._unlocked_slot_count
+            if locked:
+                req_idx = gem_slot_unlock_realm(i)
+                req_vi = FORMATION_REALMS[req_idx].vi
+                label = f"[{i}] 🔒 (khóa)"
+                desc = f"Cần Trận Đạo {req_vi}"
+                emoji = "🔒"
+            elif gk:
                 data = registry.get_item(gk) or {}
                 label = f"[{i}] {data.get('vi', gk)[:80]}"
                 desc = "Đã khảm — chọn để gỡ hoặc thay"
+                emoji = "💎"
             else:
                 label = f"[{i}] (trống)"
                 desc = "Slot trống"
+                emoji = "⬜"
             slot_opts.append(discord.SelectOption(
                 label=label[:100],
                 value=str(i),
                 description=desc[:100],
-                emoji="💎" if gk else "⬜",
+                emoji=emoji,
             ))
         self._slot_select = discord.ui.Select(
             placeholder="🎯 Chọn slot...",
@@ -693,6 +748,7 @@ class SocketManagerView(discord.ui.View):
             active_forms=self._active_forms,
             target_formation_key=self._target_formation_key,
             gem_page=new_page,
+            unlocked_slot_count=self._unlocked_slot_count,
         )
         await interaction.edit_original_response(view=view)
 
@@ -753,14 +809,65 @@ class SocketManagerView(discord.ui.View):
                 return
             target = self._target_formation_key
 
+            # Slot-unlock gate — slot index ``i`` requires formation_realm
+            # ≥ ``i - 1`` (slot 0 always free, slot 9 needs realm 8 / max).
+            unlocked_count = max_unlocked_gem_slots(player.formation_realm)
+            if self._selected_slot >= unlocked_count:
+                required_realm_idx = gem_slot_unlock_realm(self._selected_slot)
+                required_realm = FORMATION_REALMS[required_realm_idx]
+                await interaction.followup.send(
+                    embed=error_embed(
+                        f"Slot `[{self._selected_slot}]` chưa mở khóa — "
+                        f"cần đạt **Trận Đạo {required_realm.vi}** "
+                        f"(cảnh giới thứ {required_realm_idx + 1})."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
             gem_data = registry.get_item(self._selected_gem_key) or {}
-            grade = Grade(gem_data.get("grade", 1))
-            if not await irepo.has_item(player.id, self._selected_gem_key, grade):
+            # Total the gem across every grade row — legacy stacks may sit at
+            # a grade that differs from the registry template (e.g. unique
+            # gems landed at HOANG before drops normalised to template grade).
+            # A grade-pinned has_item miss made the inlay refuse a gem the
+            # player visibly owned in the dropdown.
+            owned_qty = sum(
+                row.quantity
+                for row in await irepo.get_all(player.id)
+                if row.item_key == self._selected_gem_key
+            )
+            if owned_qty < 1:
                 await interaction.followup.send(
                     embed=error_embed(f"Không đủ **{gem_data.get('vi', self._selected_gem_key)}** trong túi đồ."),
                     ephemeral=True,
                 )
                 return
+
+            # Unique gems can only occupy one slot at a time across the entire
+            # roster — otherwise their bonuses double-stack via
+            # ``compute_gem_bonuses``. Scan every formation row (active or
+            # not — players can swap formations freely) for the same key,
+            # ignoring the slot we're about to write to.
+            if gem_data.get("unique"):
+                conflict = await _find_unique_gem_socket(
+                    frepo, player.id,
+                    gem_key=self._selected_gem_key,
+                    skip_formation_key=target,
+                    skip_slot_index=self._selected_slot,
+                )
+                if conflict is not None:
+                    other_form_key, other_slot = conflict
+                    other_form = registry.get_formation(other_form_key) or {}
+                    other_form_vi = other_form.get("vi", other_form_key)
+                    await interaction.followup.send(
+                        embed=error_embed(
+                            f"**{gem_data.get('vi', self._selected_gem_key)}** là ngọc "
+                            f"độc nhất — đã khảm ở **{other_form_vi}** slot `[{other_slot}]`. "
+                            "Hãy gỡ ngọc cũ trước khi khảm vào ổ mới."
+                        ),
+                        ephemeral=True,
+                    )
+                    return
 
             # If slot was occupied, return the old gem to inventory first
             existing = await frepo.get(player.id, target)
@@ -776,7 +883,7 @@ class SocketManagerView(discord.ui.View):
                 player.id, target,
                 self._selected_slot, self._selected_gem_key,
             )
-            await irepo.remove_item(player.id, self._selected_gem_key, grade, 1)
+            await irepo.remove_any_grade(player.id, self._selected_gem_key, 1)
 
         await _render_socket_manager(
             interaction, self.discord_id, back_fn=self._back_fn,

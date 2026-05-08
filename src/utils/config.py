@@ -7,7 +7,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     discord_token: str
-    discord_guild_id: int = 0
+    discord_guild_id: int = 123
+    discord_owner_id: int = 123
 
     # PostgreSQL connection components (avoids URL special-char issues)
     db_host: str = "localhost"

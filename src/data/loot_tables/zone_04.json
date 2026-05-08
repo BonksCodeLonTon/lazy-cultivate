@@ -51,13 +51,6 @@
       "pool_id": "zone4_gem1"
     },
     {
-      "item_key": "GemBang_1",
-      "weight": 100000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "zone4_gem1"
-    },
-    {
       "item_key": "GemKim_1",
       "weight": 100000,
       "qty_min": 1,
@@ -101,13 +94,6 @@
     },
     {
       "item_key": "GemKim_2",
-      "weight": 50000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "zone4_gem2"
-    },
-    {
-      "item_key": "GemBang_2",
       "weight": 50000,
       "qty_min": 1,
       "qty_max": 1,
@@ -405,6 +391,96 @@
     },
     {
       "item_key": "MatElemResAm",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatBleedDmg",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatBurnDmg",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatPoisonDmg",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatDotDmg",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatElemDmgAll",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatHpRegen",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatMpRegen",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatMpMax",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatShieldMax",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatShieldRegen",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatShieldDmg",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatSpd",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatStr",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatThorn",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatMatk",
       "weight": 30000,
       "qty_min": 1,
       "qty_max": 1

@@ -10,7 +10,7 @@
       "merit": 0,
       "stones": 0
     },
-    "passive_description_vi": "Thân phàm thường — không có thiên phú đặc biệt, nhưng nhờ chăm chỉ rèn luyện không ngừng, tốc độ tu luyện được tăng nhẹ. Thể chất phổ biến nhất trong vạn tu sĩ phàm trần.",
+    "passive_description_vi": "Phàm thể, không có thiên phú đặc biệt, nhưng nhờ chăm chỉ rèn luyện không ngừng, tốc độ tu luyện được tăng nhẹ. Thể chất phổ biến nhất trong vạn tu sĩ phàm trần.",
     "stat_bonuses": {
       "hp_pct": 0.02,
       "mp_pct": 0.02,
@@ -55,7 +55,7 @@
       "merit": 0,
       "stones": 0
     },
-    "passive_description_vi": "Thân như Huyền Quy ẩn giữa biển sâu, lớp giáp dày chống chọi mọi nguyên tố.",
+    "passive_description_vi": "Thân như Huyền Quy ẩn giữa biển sâu, lớp mai dày chống chọi mọi nguyên tố.",
     "stat_bonuses": {
       "hp_pct": 0.12,
       "res_all": 0.17,
@@ -222,7 +222,7 @@
   },
   {
     "key": "ConstitutionDaoCoThe",
-    "vi": "Đạo Cổ Linh Thể",
+    "vi": "Cổ Đạo Linh Thể",
     "en": "Ancient Dao Spirit Body",
     "rarity": "rare",
     "element": null,
@@ -279,7 +279,7 @@
   },
   {
     "key": "ConstitutionLinhLung",
-    "vi": "Linh Lung Thần Thể",
+    "vi": "Chúng Diệu Chi Linh Thể",
     "en": "Spirit Luminous Divine Body",
     "rarity": "rare",
     "element": null,
@@ -394,7 +394,7 @@
   },
   {
     "key": "ConstitutionLoiTocThe",
-    "vi": "Lôi Tốc Thần Thể",
+    "vi": "Kinh Lôi Thần Thể",
     "en": "Lightning-Swift Divine Body",
     "rarity": "epic",
     "element": null,
@@ -460,14 +460,19 @@
       "merit": 0,
       "stones": 100000
     },
-    "passive_description_vi": "Bất diệt bất hoại, thân thể tự hồi phục không ngừng. Trị liệu có thể bạo kích, hồi máu mạnh hơn cả thần tiên.",
+    "passive_description_vi": "Bất diệt bất hoại, thân thể tự hồi phục không ngừng. Trị liệu có thể bạo kích, hồi máu mạnh hơn cả yêu thánh.",
     "stat_bonuses": {
-      "hp_pct": 0.4,
-      "hp_regen_pct": 0.05,
-      "hp_regen_flat": 50,
+      "hp_pct": 0.5,
+      "hp_regen_pct": 0.07,
+      "hp_regen_flat": 100,
       "heal_pct": 0.3,
       "heal_can_crit": true,
-      "final_dmg_reduce": 0.08
+      "final_dmg_reduce": 0.12,
+      "hp_flat_per_realm": 1000,
+      "res_all": 0.3,
+      "damage_bonus_from_hp_pct": 0.12,
+      "endure_threshold_pct": 0.3,
+      "endure_cooldown": 6
     },
     "special_requirements": null,
     "materials": {
@@ -522,7 +527,7 @@
       "merit": 0,
       "stones": 0
     },
-    "passive_description_vi": "Hỗn độn chi thể, hội tụ đạo lý nguyên thủy của thiên địa. Passive nền của các thần thể khác được khuếch đại 1.25 lần (không áp dụng cho hệ số sát thương/hồi chiêu đã nhân kép), kèm chỉ số nền áp chế vạn đạo. Yêu cầu giác ngộ toàn bộ đạo ti.",
+    "passive_description_vi": "Hỗn độn chi thể, bao hàm Nguyên thủy đại đạo. Passive nền của các thần thể khác được khuếch đại 1.25 lần (không áp dụng cho hệ số sát thương/hồi chiêu đã nhân kép), kèm chỉ số nền áp chế vạn đạo. Yêu cầu giác ngộ toàn bộ đạo ti.",
     "stat_bonuses": {
       "all_passives_multiplier": 1.25,
       "hp_pct": 0.3,
@@ -558,7 +563,7 @@
       "merit": 0,
       "stones": 100000
     },
-    "passive_description_vi": "Khí hải vô tận, linh khí như đại dương không bao giờ cạn. Linh khí càng dồi dào thì sát thương pháp chiêu càng kinh hoàng.",
+    "passive_description_vi": "Khí hải vô tận, linh khí như đại dương không bao giờ cạn. Linh khí càng dồi dào thì sát thương pháp chiêu càng mạnh.",
     "stat_bonuses": {
       "mp_pct": 0.6,
       "cooldown_reduce": 0.3,
@@ -621,7 +626,7 @@
       "merit": 0,
       "stones": 100000
     },
-    "passive_description_vi": "Thần thể phá thiên, mỗi đòn tấn công đều mang sức mạnh hủy diệt. Bạo kích đẩy lên đỉnh cao và phá nát mọi phòng ngự.",
+    "passive_description_vi": "Thần thể phá thiên, chưởng khống \"Phá\" cùng \"Diệt\". Bạo kích đẩy lên đỉnh cao, nghiền nát mọi phòng ngự.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.3,
       "crit_rating": 500,
@@ -642,7 +647,7 @@
   },
   {
     "key": "ConstitutionThaiAm",
-    "vi": "Thái Âm Thần Thể",
+    "vi": "Thái Âm Đạo Thể",
     "en": "Supreme Yin Divine Body",
     "rarity": "legendary",
     "element": null,
@@ -651,7 +656,7 @@
       "merit": 0,
       "stones": 150000
     },
-    "passive_description_vi": "Thái âm thần thể, âm lực cực thịnh. Linh khí, né tránh và âm phệ đều đạt cảnh giới cực âm — hút hồn, cướp chỉ số của kẻ thù.",
+    "passive_description_vi": "Nguyên sơ Thái Âm, âm lực cực thịnh. Linh lực, né tránh và âm phệ đều đạt cảnh giới chí âm — hút hồn, cướp chỉ số của kẻ thù.",
     "stat_bonuses": {
       "mp_pct": 0.4,
       "cooldown_reduce": 0.35,
@@ -665,6 +670,7 @@
     },
     "special_requirements": "requires_dao_ti_yin",
     "materials": {
+      "MatThaiAmTinh": 10,
       "MatDaoCotTinh": 8,
       "MatThienDaoTuy": 5,
       "MatHonNguyenCot": 2,
@@ -684,7 +690,7 @@
       "merit": 0,
       "stones": 100000
     },
-    "passive_description_vi": "Tiêu dao tự tại như gió mây, thân pháp biến ảo vô thường. Né tránh càng cao thì sát thương càng kinh khủng.",
+    "passive_description_vi": "Tiêu dao tựa gió mây, biến ảo vô thường. Né tránh càng cao thì sát thương càng kinh khủng.",
     "stat_bonuses": {
       "spd_bonus": 22,
       "evasion_rating": 500,
@@ -714,7 +720,7 @@
       "merit": 0,
       "stones": 100000
     },
-    "passive_description_vi": "Trấn giới chi thể, áp chế mọi kẻ thù. Miễn nhiễm phần lớn debuff và gần như không thể bị bạo kích.",
+    "passive_description_vi": "Trấn giới chi thể, áp chế mọi kẻ thù. Miễn nhiễm phần lớn hiệu ứng xấu và gần như không thể bị bạo kích.",
     "stat_bonuses": {
       "crit_res_rating": 600,
       "res_all": 0.4,
@@ -737,7 +743,7 @@
   },
   {
     "key": "ConstitutionHoangCoChain1",
-    "vi": "Hoang Cổ Thánh Thể - Sơ Tỉnh",
+    "vi": "Hoang Cổ Thánh Thể - Nhất Trọng Thiên",
     "en": "Primordial Holy Body - Initial Awakening",
     "rarity": "legendary",
     "element": null,
@@ -746,7 +752,7 @@
       "merit": 20000,
       "stones": 0
     },
-    "passive_description_vi": "Thánh thể thượng cổ phong ấn bằng Cửu Đạo Thần Khóa. **Khóa Thứ Nhất** vừa rạn nứt — sinh khí cổ xưa thẩm thấu vào kinh mạch, khai mở những phần chỉ số nền tảng. Tiếp tục phá khóa để giải phóng toàn bộ thần thể.",
+    "passive_description_vi": "Thượng cổ Thánh thể, bị phong ấn dưới Cửu Trọng Thiên. ** Nhất Trọng Thiên** — Cổ linh khí thấm vào kinh mạch, khai mở nền tảng. Tiếp tục vượt thiên môn để giải phóng toàn bộ thần thể.",
     "stat_bonuses": {
       "hp_pct": 0.05,
       "mp_pct": 0.05,
@@ -762,7 +768,7 @@
   },
   {
     "key": "ConstitutionHoangCoChain2",
-    "vi": "Hoang Cổ Thánh Thể - Phá Nhị Khóa",
+    "vi": "Hoang Cổ Thánh Thể -  Nhị Trọng Thiên",
     "en": "Primordial Holy Body - 2nd Chain Broken",
     "rarity": "legendary",
     "element": null,
@@ -771,7 +777,7 @@
       "merit": 25000,
       "stones": 0
     },
-    "passive_description_vi": "**Khóa Thứ Hai** vỡ vụn — phượng huyết hoang cổ bùng cháy trong huyết mạch, công kích và bạo kích đều mạnh hơn rõ rệt. Tiến hóa từ Sơ Tỉnh.",
+    "passive_description_vi": "**Nhị Trọng Thiên**— Nhân tổ huyết mạch bùng cháy, công kích và bạo kích đều mạnh hơn rõ rệt. Tiến hóa từ Nhị Trọng Thiên.",
     "stat_bonuses": {
       "hp_pct": 0.1,
       "mp_pct": 0.08,
@@ -790,7 +796,7 @@
   },
   {
     "key": "ConstitutionHoangCoChain3",
-    "vi": "Hoang Cổ Thánh Thể - Phá Tam Khóa",
+    "vi": "Hoang Cổ Thánh Thể - Tam Trọng Thiên",
     "en": "Primordial Holy Body - 3rd Chain Broken",
     "rarity": "legendary",
     "element": null,
@@ -799,7 +805,7 @@
       "merit": 35000,
       "stones": 0
     },
-    "passive_description_vi": "**Khóa Thứ Ba** đứt đoạn — văn quy hoang cổ thức tỉnh, hộ thể tự sinh khiên hồi tự thân. **Cột Mốc 3:** mở khóa Hồi Khiên (Shield Regen) đầu tiên. Tiến hóa từ Phá Nhị Khóa.",
+    "passive_description_vi": "**Tam Trọng Thiên** — Cổ quy văn thức tỉnh, hộ thể tự sinh khiên hồi tự thân. **Cột Mốc 3:** mở Môn Hồi Khiên (Shield Regen) đầu tiên. Tiến hóa từ Nhị Trọng Thiên.",
     "stat_bonuses": {
       "hp_pct": 0.13,
       "mp_pct": 0.1,
@@ -821,7 +827,7 @@
   },
   {
     "key": "ConstitutionHoangCoChain4",
-    "vi": "Hoang Cổ Thánh Thể - Phá Tứ Khóa",
+    "vi": "Hoang Cổ Thánh Thể -Tứ Trọng Thiên",
     "en": "Primordial Holy Body - 4th Chain Broken",
     "rarity": "legendary",
     "element": null,
@@ -830,7 +836,7 @@
       "merit": 45000,
       "stones": 0
     },
-    "passive_description_vi": "**Khóa Thứ Tư** rơi rụng — tủy lân hoang cổ bồi đắp khung xương, mọi mặt trận đều thăng hoa. Tiến hóa từ Phá Tam Khóa.",
+    "passive_description_vi": "**Tứ Trọng Thiên** — tủy lân hoang cổ bồi đắp khung xương, mọi mặt trận đều thăng hoa. Tiến hóa từ Tam Trọng Thiên.",
     "stat_bonuses": {
       "hp_pct": 0.16,
       "mp_pct": 0.12,
@@ -853,7 +859,7 @@
   },
   {
     "key": "ConstitutionHoangCoChain5",
-    "vi": "Hoang Cổ Thánh Thể - Phá Ngũ Khóa",
+    "vi": "Hoang Cổ Thánh Thể - Ngũ Trọng Thiên",
     "en": "Primordial Holy Body - 5th Chain Broken",
     "rarity": "legendary",
     "element": null,
@@ -862,7 +868,7 @@
       "merit": 0,
       "stones": 15000
     },
-    "passive_description_vi": "**Khóa Thứ Năm** tan biến — tinh quang cửu thiên hộ thân, sát thương ngoại lai bị triệt tiêu một phần. **Cột Mốc 5:** mở khóa Giảm Sát Thương (Final DMG Reduce) thực sự. Tiến hóa từ Phá Tứ Khóa.",
+    "passive_description_vi": "**Ngũ Trọng Thiên** — Cửu thiên tinh quang hộ thân, sát thương nhận vào bị triệt tiêu một phần. **Cột Mốc 5:** mở Môn Giảm Sát Thương (Final DMG Reduce) thực sự. Tiến hóa từ Tứ Trọng Thiên.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.12,
       "crit_rating": 200,
@@ -879,7 +885,7 @@
   },
   {
     "key": "ConstitutionHoangCoChain6",
-    "vi": "Hoang Cổ Thánh Thể - Phá Lục Khóa",
+    "vi": "Hoang Cổ Thánh Thể - Lục Trọng Thiên",
     "en": "Primordial Holy Body - 6th Chain Broken",
     "rarity": "legendary",
     "element": null,
@@ -888,7 +894,7 @@
       "merit": 0,
       "stones": 20000
     },
-    "passive_description_vi": "**Khóa Thứ Sáu** vỡ tan — địa phách hoang cổ trầm trọng, sức bền và tốc độ vận chuyển nguyên khí đều bứt phá. Tiến hóa từ Phá Ngũ Khóa.",
+    "passive_description_vi": "**Lục Trọng Thiên** — Cổ phách trầm trọng, sức bền và tốc độ vận chuyển nguyên khí đều bứt phá. Tiến hóa từ Ngũ Trọng Thiên.",
     "stat_bonuses": {
       "hp_pct": 0.25,
       "mp_pct": 0.18,
@@ -914,7 +920,7 @@
   },
   {
     "key": "ConstitutionHoangCoChain7",
-    "vi": "Hoang Cổ Thánh Thể - Phá Thất Khóa",
+    "vi": "Hoang Cổ Thánh Thể - Thất Trọng Thiên",
     "en": "Primordial Holy Body - 7th Chain Broken",
     "rarity": "legendary",
     "element": null,
@@ -923,7 +929,7 @@
       "merit": 0,
       "stones": 25000
     },
-    "passive_description_vi": "**Khóa Thứ Bảy** sụp đổ — đạo văn nguyên thủy hiển hóa, miễn nhiễm phần lớn debuff và xuất hiện tia sát ý xuyên giáp. **Cột Mốc 7:** mở khóa Miễn Debuff + Sát Thương Thật. Tiến hóa từ Phá Lục Khóa.",
+    "passive_description_vi": "**Thất Trọng Thiên** — Nguyên thủy đạo văn hiển hóa, miễn nhiễm phần lớn debuff và xuất hiện tia sát ý xuyên giáp. **Cột Mốc 7:** mở Môn Miễn Debuff + Sát Thương Chuẩn. Tiến hóa từ Lục Trọng Thiên.",
     "stat_bonuses": {
       "hp_pct": 0.3,
       "mp_pct": 0.22,
@@ -953,7 +959,7 @@
   },
   {
     "key": "ConstitutionHoangCoChain8",
-    "vi": "Hoang Cổ Thánh Thể - Phá Bát Khóa",
+    "vi": "Hoang Cổ Thánh Thể - Bát Trọng Thiên",
     "en": "Primordial Holy Body - 8th Chain Broken",
     "rarity": "legendary",
     "element": null,
@@ -962,7 +968,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "**Khóa Thứ Tám** vỡ vụn — thần tâm hoang cổ đập rền vạn cổ, sinh cơ + chiến lực đều đạt cận thánh nhân. Chỉ còn một khóa cuối cùng để khai mở viên mãn. Tiến hóa từ Phá Thất Khóa.",
+    "passive_description_vi": "**Bát Trọng Thiên** — Thần tâm chấn thiên, sinh cơ cùng chiến lực tiệm cận thánh nhân. Chỉ còn một thiên môn cuối cùng để khai mở viên mãn. Tiến hóa từ Thất Trọng Thiên.",
     "stat_bonuses": {
       "hp_pct": 0.36,
       "mp_pct": 0.28,
@@ -993,7 +999,7 @@
   },
   {
     "key": "ConstitutionHoangCoChain9",
-    "vi": "Hoang Cổ Thánh Thể - Viên Mãn",
+    "vi": "Hoang Cổ Thánh Thể - Cửu Trọng Thiên",
     "en": "Primordial Holy Body - Complete",
     "rarity": "legendary",
     "element": null,
@@ -1002,7 +1008,7 @@
       "merit": 0,
       "stones": 120000
     },
-    "passive_description_vi": "**Khóa Cuối Cùng tan vỡ** — Hoang Cổ Thánh Thể viên mãn, thân thể trở về hình thái nguyên thủy của thượng cổ thánh nhân. **Hào Quang Củng Cố (Fortify Aura):** mỗi lượt tự động tích lũy 1 tầng Củng Cố — mỗi tầng cộng thêm ST cuối + Giảm ST (cap tối đa 10 tầng); khi nhận đòn không phải DoT, lập tức trỗi dậy lớp **Phòng Ngự Hậu-Thương** — cộng thêm Giảm ST trong 1 lượt kế tiếp. Cộng với nền Giảm ST khổng lồ — sát thương vào người gần như bị triệt tiêu. Tiến hóa cuối cùng từ Phá Bát Khóa.",
+    "passive_description_vi": "**Cửu Trọng Thiên** — Thánh Thể viên mãn,  trở về hình thái của thượng cổ thánh nhân. **Hào Quang Củng Cố (Fortify Aura):** mỗi lượt tự động tích lũy 1 tầng Củng Cố — mỗi tầng cộng thêm ST cuối + Giảm ST ( tối đa 10 tầng); khi nhận đòn không phải DoT, lập tức tạo **Phòng Ngự Hậu-Thương** — cộng thêm Giảm ST trong 1 lượt kế tiếp. Cộng với nền Giảm ST khổng lồ — sát thương vào người gần như bị triệt tiêu. Tiến hóa cuối cùng từ Bát Trọng Thiên.",
     "stat_bonuses": {
       "hp_pct": 0.45,
       "mp_pct": 0.35,
@@ -1046,7 +1052,7 @@
       "merit": 0,
       "stones": 100000
     },
-    "passive_description_vi": "Linh hồn cô đặc thành Khiên — **30% sinh lực hóa khiên năng**, đan điền trở thành kho năng lượng pháp khí. Pháp Công bùng phát theo lượng khiên hiện tại: **+25% Khiên hiện tại tính vào Pháp Công** mỗi đòn. Khi khiên cạn, sát thương pháp cũng yếu đi — quản lý khiên là quản lý sát thương.",
+    "passive_description_vi": "Thần hồn hóa thuẫn — **30% sinh lực hóa năng thuẫn**, đan điền trở thành kho năng lượng pháp khí. Pháp Công bùng phát theo lượng khiên hiện tại: **+25% Khiên hiện tại tính vào Pháp Công** mỗi đòn. ",
     "stat_bonuses": {
       "hp_to_shield_pct": 0.3,
       "matk_from_shield_pct": 0.25,
@@ -1080,7 +1086,7 @@
       "merit": 0,
       "stones": 100000
     },
-    "passive_description_vi": "Khiên hóa thành vũ khí — **30% sinh lực luyện thành cương khiên**, mỗi đòn vung ra mượn khí lực của khiên: **+25% Khiên hiện tại tính vào Công** mỗi đòn. Càng giữ vững khiên, đòn đánh càng nặng — quản lý khiên là quản lý sát thương.",
+    "passive_description_vi": "Thuẫn hóa thần binh — **30% sinh lực luyện thành cương thuẫn**, mỗi đòn vung ra mượn khí lực của khiên: **+25% Khiên hiện tại tính vào Công** mỗi đòn. ",
     "stat_bonuses": {
       "hp_to_shield_pct": 0.3,
       "atk_from_shield_pct": 0.25,
@@ -1105,7 +1111,7 @@
   },
   {
     "key": "ConstitutionTienThienThanhTheDaoThai",
-    "vi": "Tiên Thiên Thánh Thể Đạo Thai",
+    "vi": "Tiên Thiên Đạo Thai",
     "en": "Innate Sacred Body Dao Embryo",
     "rarity": "legendary",
     "element": null,

@@ -310,7 +310,7 @@
       "DebuffPhaGiap": 0.8
     },
     "formation_key": null,
-    "description_vi": "Kiếm khí xuyên mọi phòng ngự — gây thêm 6% HP tối đa mục tiêu làm chân thương.",
+    "description_vi": "Kiếm khí xuyên mọi phòng ngự — gây thêm 6% Sát Thương Chuẩn (tính theo sát thương đòn đánh, xuyên mọi phòng ngự).",
     "effect_overrides": {
       "DebuffChayMau": {
         "dot_pct": 0.0429
@@ -547,7 +547,7 @@
       "DebuffBaoMon": 0.6
     },
     "formation_key": null,
-    "description_vi": "Đòn chém chuyên khóa mục tiêu chảy máu — chồng 2 tầng, gây 10% HP tối đa làm chân thương.",
+    "description_vi": "Đòn chém chuyên khóa mục tiêu chảy máu — chồng 2 tầng, gây thêm 10% Sát Thương Chuẩn (tính theo sát thương đòn đánh).",
     "effect_overrides": {
       "DebuffChayMau": {
         "dot_pct": 0.0495,
@@ -736,7 +736,7 @@
       "DebuffCatDut": 0.8
     },
     "formation_key": null,
-    "description_vi": "Đỉnh cao Kim Đạo — chồng 3 tầng Chảy Máu và gây 18% HP tối đa làm chân thương, cắt đứt linh khí ngăn hồi phục.",
+    "description_vi": "Đỉnh cao Kim Đạo — chồng 3 tầng Chảy Máu và gây thêm 18% Sát Thương Chuẩn (tính theo sát thương đòn đánh), cắt đứt linh khí ngăn hồi phục.",
     "effect_overrides": {
       "DebuffChayMau": {
         "dot_pct": 0.0561,
@@ -780,7 +780,7 @@
       "DebuffBaoMon"
     ],
     "formation_key": null,
-    "description_vi": "Vĩnh hằng kim quang — chân thương 7% HP, kết hợp 4 debuff Kim đỉnh cao.",
+    "description_vi": "Vĩnh hằng kim quang — +7% Sát Thương Chuẩn (tính theo sát thương đòn đánh), kết hợp 4 debuff Kim đỉnh cao.",
     "effect_overrides": {
       "DebuffPhaGiap": {
         "stat_bonus": {

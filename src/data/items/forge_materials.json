@@ -1090,5 +1090,225 @@
     "element": "Ám",
     "effect": "Phù linh hấp thụ năng lượng Ám — luyện chế trang bị thiên về kháng Ám.",
     "desc": "Phù linh hấp thụ năng lượng Ám — luyện chế trang bị thiên về kháng Ám."
+  },
+  {
+    "key": "MatBleedDmg",
+    "vi": "Huyết Tỷ Tinh",
+    "en": "Bleed Crystal",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_bleed_dmg"
+    ],
+    "element": "Kim",
+    "effect": "Hấp thu sát khí Kim — luyện chế trang bị thiên về sát thương chảy máu (Bleed).",
+    "desc": "Tinh thể đỏ thẫm hình thành từ máu khô của vạn loài Kim Tu. Khi nung trong lò, kiếm khí ngưng tụ hóa thành những lưỡi vô hình rạch sâu vào nhục thân địch."
+  },
+  {
+    "key": "MatBurnDmg",
+    "vi": "Liễm Hỏa Sa",
+    "en": "Burn Cinder",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_burn_dmg"
+    ],
+    "element": "Hỏa",
+    "effect": "Tro tàn hỏa độc — luyện chế trang bị thiên về sát thương thiêu đốt (Burn).",
+    "desc": "Hạt sa kết tinh từ tàn lửa thiên kiếp, mỗi hạt vẫn ngấm lửa âm ỉ. Tẩm vào pháp bảo, đòn đánh kéo theo viêm độc gặm nhấm linh hồn."
+  },
+  {
+    "key": "MatPoisonDmg",
+    "vi": "Độc Tủy Tinh",
+    "en": "Venom Marrow",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_poison_dmg"
+    ],
+    "element": "Mộc",
+    "effect": "Tinh hoa thảo độc — luyện chế trang bị thiên về sát thương trúng độc (Poison).",
+    "desc": "Tủy chiết xuất từ Vạn Độc Linh Mộc, xanh lục dày đặc. Một giọt rơi xuống, vạn cỏ héo úa, vạn thú quỵ ngã."
+  },
+  {
+    "key": "MatDotDmg",
+    "vi": "Triền Khốn Tinh",
+    "en": "Affliction Essence",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_dot_dmg",
+      "sfx_dot_dmg"
+    ],
+    "element": "Ám",
+    "effect": "Khí Ám tà nguyên — luyện chế trang bị khuếch đại mọi sát thương kéo dài (DOT).",
+    "desc": "Tinh thể tích tụ từ tà khí U Minh, không phân hệ riêng. Mọi vết thương từ pháp bảo này đều rỉ máu chậm rãi, không thể cầm máu."
+  },
+  {
+    "key": "MatElemDmgAll",
+    "vi": "Vạn Pháp Tinh",
+    "en": "Omni Element Essence",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_dmg_elem_all"
+    ],
+    "effect": "Hỗn hợp ngũ hành tinh hoa — luyện chế trang bị khuếch đại sát thương toàn ngũ hành.",
+    "desc": "Khoáng thạch hiếm thấy ngậm trọn vẹn cả Kim, Mộc, Thủy, Hỏa, Thổ. Pháp bảo rèn từ đây không thiên hệ nào, mạnh đều mọi mặt."
+  },
+  {
+    "key": "MatHpRegen",
+    "vi": "Sinh Khí Tinh",
+    "en": "Vital Essence",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_regen_flat",
+      "sfx_regen_flat"
+    ],
+    "element": "Mộc",
+    "effect": "Sinh cơ Mộc tủy — luyện chế trang bị tăng tốc độ hồi sinh lực.",
+    "desc": "Nhựa cây Sinh Mệnh Cổ Mộc đặc lại thành tinh. Đặt trên thương tích, máu ngừng chảy, da thịt liền lại trong khoảnh khắc."
+  },
+  {
+    "key": "MatMpRegen",
+    "vi": "Linh Tuyền Tinh",
+    "en": "Mana Spring",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_mp_regen",
+      "pfx_mp_regen_flat",
+      "sfx_mp_regen",
+      "sfx_mp_regen_flat"
+    ],
+    "element": "Quang",
+    "effect": "Quang minh tinh hoa — luyện chế trang bị tăng tốc độ hồi linh lực.",
+    "desc": "Một mảnh từ mạch nước thần ở Vạn Phật Đỉnh, không bao giờ cạn. Pháp bảo kết hợp với nó tự sản sinh linh khí dùng mãi không hết."
+  },
+  {
+    "key": "MatMpMax",
+    "vi": "Linh Hải Tinh",
+    "en": "Mana Sea Crystal",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "sfx_mp"
+    ],
+    "element": "Quang",
+    "effect": "Tinh thể Linh Hải — luyện chế trang bị mở rộng linh lực tối đa.",
+    "desc": "Khối linh tinh chứa một biển linh khí thu nhỏ. Đeo trên người mở rộng đan điền, dung tích linh lực đột phá giới hạn."
+  },
+  {
+    "key": "MatShieldMax",
+    "vi": "Hộ Thuẫn Tinh",
+    "en": "Shield Core",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_shield_cap",
+      "pfx_shield_max_pct",
+      "pfx_shield_max_flat"
+    ],
+    "element": "Thổ",
+    "effect": "Lõi linh thuẫn Thổ — luyện chế trang bị mở rộng dung lượng linh thuẫn.",
+    "desc": "Lõi tinh chiết từ Hậu Thổ Linh Đài, nặng đến mức cong cả linh khí xung quanh. Pháp bảo kết hợp tạo ra hộ thuẫn dày như thành quách."
+  },
+  {
+    "key": "MatShieldRegen",
+    "vi": "Hộ Thuẫn Tủy",
+    "en": "Shield Marrow",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_shield_regen_flat",
+      "sfx_shield_regen_flat",
+      "sfx_shield_regen_pct"
+    ],
+    "element": "Thủy",
+    "effect": "Tủy linh Thủy — luyện chế trang bị tăng tốc độ phục hồi linh thuẫn.",
+    "desc": "Chất lỏng nhớt như ngọc, chảy ra từ tâm Hàn Băng Uyên. Tự động vá lại các vết nứt trên hộ thuẫn nhanh hơn cả tốc độ phá hủy."
+  },
+  {
+    "key": "MatShieldDmg",
+    "vi": "Phản Thuẫn Tinh",
+    "en": "Shieldforge Essence",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "sfx_shield_to_dmg"
+    ],
+    "element": "Ám",
+    "effect": "Khí Ám phản chuyển — luyện chế trang bị chuyển hộ thuẫn thành sát thương.",
+    "desc": "Tinh thể U Minh nuốt năng lượng phòng ngự để tạo ra cơn sóng phản kích. Hộ thuẫn càng dày, đòn đánh càng tàn khốc."
+  },
+  {
+    "key": "MatSpd",
+    "vi": "Phong Tốc Tinh",
+    "en": "Swift Crystal",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_spd_boot",
+      "sfx_spd_boot"
+    ],
+    "element": "Phong",
+    "effect": "Tinh hoa Phong cực tốc — luyện chế giày/trang bị tăng tốc độ.",
+    "desc": "Mảnh tinh hình thành trong mắt bão Cửu Tiêu Phong. Bước chân kẻ đeo nó vượt qua âm thanh, gió chỉ còn theo sau."
+  },
+  {
+    "key": "MatStr",
+    "vi": "Lực Tủy Tinh",
+    "en": "Strength Marrow",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_str"
+    ],
+    "element": "Thổ",
+    "effect": "Tủy đại lực — luyện chế giáp/đai/mũ tăng cường công kích.",
+    "desc": "Tủy của một vị Cổ Tu thân thể đắc đạo. Hộ tâm tích nó vào, bắp thịt cuồn cuộn, vung tay vạn cân tựa lông hồng."
+  },
+  {
+    "key": "MatThorn",
+    "vi": "Thích Lăng Tinh",
+    "en": "Thorn Crystal",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "pfx_thorn",
+      "sfx_thorn"
+    ],
+    "element": "Thổ",
+    "effect": "Tinh thể gai Thổ — luyện chế trang bị phản đòn (Thorn).",
+    "desc": "Khoáng tinh mọc gai sắc lẹm, càng bị tấn công càng phình to. Kẻ đánh vào nó tự nhận sát thương ngược do chính lực mình tạo ra."
+  },
+  {
+    "key": "MatMatk",
+    "vi": "Pháp Tủy Tinh",
+    "en": "Spellforge Marrow",
+    "type": "forge_material",
+    "grade": 2,
+    "shop_price_merit": 2000,
+    "affix_bias": [
+      "sfx_matk"
+    ],
+    "element": "Quang",
+    "effect": "Tủy linh thuần khiết — luyện chế trang bị tăng cường pháp công.",
+    "desc": "Tinh tủy chiết từ những bậc đại năng pháp tu vẫn lạc, cô đặc lại thành lõi sáng. Kết hợp pháp bảo, mỗi câu chú niệm ra uy lực gấp bội."
   }
 ]

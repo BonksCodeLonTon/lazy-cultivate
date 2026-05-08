@@ -1,7 +1,7 @@
 [
   {
     "key": "ConstitutionAmLinhThe",
-    "vi": "Ám Linh Thể",
+    "vi": "Âm Linh Thể",
     "en": "Shadow Spirit Body",
     "rarity": "common",
     "element": "am",
@@ -299,7 +299,7 @@
       "element_pen": {
         "am": 0.08
       },
-      "debuff_immune_pct": 0.10,
+      "debuff_immune_pct": 0.1,
       "true_dmg_pct": 0.03
     },
     "special_requirements": null,
@@ -409,7 +409,7 @@
   },
   {
     "key": "ConstitutionAmSuong_Leg",
-    "vi": "Vĩnh Dạ Hắc Vụ Thể",
+    "vi": "Vĩnh Dạ Hắc Ám Thể",
     "en": "Eternal Night Black Mist Body",
     "rarity": "legendary",
     "element": "am",
@@ -453,7 +453,13 @@
     "stat_bonuses": {
       "final_dmg_bonus": 0.3,
       "soul_drain_on_hit_pct": 0.4,
-      "true_dmg_pct": 0.1
+      "true_dmg_pct": 0.1,
+      "crit_rating": 300,
+      "crit_dmg_rating": 250,
+      "stat_steal_on_hit_pct": 0.25,
+      "element_pen": { "am": 0.15 },
+      "hp_pct": 0.2,
+      "debuff_immune_pct": 0.2
     },
     "special_requirements": null,
     "materials": {

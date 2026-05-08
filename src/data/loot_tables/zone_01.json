@@ -1,12 +1,6 @@
 {
   "LootZone_1": [
     {
-      "item_key": "MatKhiTuDan",
-      "weight": 100000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
       "item_key": "DanHoiHPSmall",
       "weight": 400000,
       "qty_min": 1,
@@ -27,13 +21,6 @@
     },
     {
       "item_key": "GemMoc_1",
-      "weight": 60000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "zone1_gem"
-    },
-    {
-      "item_key": "GemBang_1",
       "weight": 60000,
       "qty_min": 1,
       "qty_max": 1,

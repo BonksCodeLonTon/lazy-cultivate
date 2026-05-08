@@ -453,7 +453,11 @@
       "damage_bonus_from_hp_pct": 0.12,
       "thorn_from_shield": true,
       "stun_on_hit_pct": 0.08,
-      "hp_flat_per_realm": 1000
+      "hp_flat_per_realm": 1000,
+      "shield_max_base": 400,
+      "shield_max_pct": 0.2,
+      "thorn_pct": 0.2,
+      "damage_bonus_from_shield_pct": 0.12
     },
     "special_requirements": null,
     "materials": {
@@ -515,7 +519,11 @@
       "thorn_pct": 0.25,
       "damage_bonus_from_hp_pct": 0.1,
       "stun_on_hit_pct": 0.08,
-      "damage_bonus_from_shield_pct": 0.1
+      "damage_bonus_from_shield_pct": 0.1,
+      "res_all": 0.35,
+      "final_dmg_reduce": 0.12,
+      "shield_max_base": 400,
+      "slow_on_hit_pct": 0.25
     },
     "special_requirements": null,
     "materials": {

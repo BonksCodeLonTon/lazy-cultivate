@@ -770,7 +770,7 @@
     },
     "burst_shield_mult": 2.5,
     "formation_key": null,
-    "description_vi": "Đỉnh cao Thổ Đạo — triệu hồi núi thiêng đè đối thủ, 8% HP chân thương, chắc choáng + phá giáp, nổ toàn bộ Thổ Tường với hệ số 250%.",
+    "description_vi": "Đỉnh cao Thổ Đạo — triệu hồi núi thiêng đè đối thủ, +8% Sát Thương Chuẩn (tính theo sát thương đòn đánh), chắc choáng + phá giáp, nổ toàn bộ Thổ Tường với hệ số 250%.",
     "effect_overrides": {
       "CCStun": {
         "duration": 2

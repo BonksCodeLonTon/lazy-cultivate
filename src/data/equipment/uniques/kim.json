@@ -225,7 +225,7 @@
       "true_dmg_pct": 0.05,
       "bleed_per_stack_pct_bonus": 0.008
     },
-    "description_vi": "Thần cung Huyết Ẩn — 80% Chảy Máu on-hit, 5% HP chân thương, mỗi tầng nặng hơn."
+    "description_vi": "Thần cung Huyết Ẩn — 80% Chảy Máu on-hit, +5% Sát Thương Chuẩn, mỗi tầng nặng hơn."
   },
   {
     "key": "uniq_truong_thuong_huyet",
@@ -253,7 +253,7 @@
       "bleed_stack_cap_bonus": 3,
       "true_dmg_pct": 0.04
     },
-    "description_vi": "Trường thương 2H — 80% Chảy Máu on-hit, +3 tầng, 4% HP chân thương."
+    "description_vi": "Trường thương 2H — 80% Chảy Máu on-hit, +3 tầng, +4% Sát Thương Chuẩn."
   },
   {
     "key": "uniq_kim_tu_bao",
@@ -306,7 +306,7 @@
       "bleed_heal_reduce": 0.42,
       "true_dmg_pct": 0.05
     },
-    "description_vi": "Quan Huyết Đạo — +5 tầng, mỗi tầng +0.8% ST, 42% heal-reduce, 5% HP chân thương."
+    "description_vi": "Quan Huyết Đạo — +5 tầng, mỗi tầng +0.8% ST, 42% heal-reduce, +5% Sát Thương Chuẩn."
   },
   {
     "key": "uniq_kim_tu_nhan",
@@ -365,7 +365,7 @@
       "bleed_on_hit_pct": 1.0,
       "true_dmg_pct": 0.06
     },
-    "description_vi": "Tổ kiếm Huyết Cổ — báu vật thượng cổ, khiến Chảy Máu ngươi gây ra đánh theo **% HP tối đa** mục tiêu (cơ chế cổ rất hiếm). Mọi đòn đánh đều Chảy Máu, 6% HP chân thương."
+    "description_vi": "Tổ kiếm Huyết Cổ — báu vật thượng cổ, khiến Chảy Máu ngươi gây ra đánh theo **% HP tối đa** mục tiêu (cơ chế cổ rất hiếm). Mọi đòn đánh đều Chảy Máu, +6% Sát Thương Chuẩn."
   },
   {
     "key": "uniq_kim_tu_kiem",
@@ -393,6 +393,6 @@
       "bleed_stack_cap_bonus": 5,
       "true_dmg_pct": 0.08
     },
-    "description_vi": "Tổ kiếm Kim Đạo — mọi đòn gây Chảy Máu, +5 tầng (max 10), 8% HP chân thương."
+    "description_vi": "Tổ kiếm Kim Đạo — mọi đòn gây Chảy Máu, +5 tầng (max 10), +8% Sát Thương Chuẩn."
   }
 ]

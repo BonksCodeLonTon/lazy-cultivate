@@ -37,23 +37,26 @@ def _propagate_dot_bonuses(actor: Combatant, target: Combatant) -> None:
 # Max-merge keeps the strongest build in play when multiple attackers stack the
 # same DoT on one target.
 _STACK_BUILD_FIELDS: dict[str, tuple[str, ...]] = {
-    "burn":  ("burn_stack_cap", "burn_per_stack_pct"),
-    "bleed": ("bleed_stack_cap", "bleed_per_stack_pct", "bleed_heal_reduce"),
-    "shock": ("shock_stack_cap", "shock_per_stack_pct"),
+    "burn":   ("burn_stack_cap", "burn_per_stack_pct"),
+    "bleed":  ("bleed_stack_cap", "bleed_per_stack_pct", "bleed_heal_reduce"),
+    "shock":  ("shock_stack_cap", "shock_per_stack_pct"),
+    "poison": ("poison_stack_cap", "poison_per_stack_pct"),
 }
 
 
 def _propagate_stack_build(actor: Combatant, target: Combatant, kind: str) -> None:
     """Copy the attacker's DoT-stack build flags onto the target (max-merge).
 
-    kind ∈ {"burn", "bleed", "shock"}. Fire/bleed also propagate ``dot_can_crit``
-    and the DoT damage-bonus aggregate. Shock only needs the cap + per-stack.
+    kind ∈ {"burn", "bleed", "shock", "poison"}. Fire/bleed/poison also
+    propagate ``dot_can_crit`` and the DoT damage-bonus aggregate so the
+    holder's DoT ticks honour the attacker's build. Shock only needs the
+    cap + per-stack.
     """
     for field_name in _STACK_BUILD_FIELDS[kind]:
         a_val = getattr(actor, field_name)
         if a_val > getattr(target, field_name):
             setattr(target, field_name, a_val)
-    if kind in ("burn", "bleed"):
+    if kind in ("burn", "bleed", "poison"):
         if actor.dot_can_crit:
             target.dot_can_crit = True
         _propagate_dot_bonuses(actor, target)

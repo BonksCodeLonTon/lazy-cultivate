@@ -20,6 +20,7 @@ from src.game.constants.grades import Grade, GRADE_LABELS
 from src.game.engine.equipment import format_computed_stats
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
+from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
 
 _PAGE_SIZE = 5
 
@@ -379,18 +380,10 @@ class MarketListMenuView(discord.ui.View):
                 embed=error_embed("Túi đồ thường trống."), ephemeral=True
             )
             return
-        options = [
-            discord.SelectOption(
-                label=f"{_item_name(i.item_key)} × {i.quantity}"[:100],
-                description=f"Phẩm {_grade_label(i.grade)}"[:100],
-                value=f"{i.item_key}|{i.grade}",
-            )
-            for i in self._inv_items[:25]
-        ]
         embed = base_embed("🎒 Chọn Vật Phẩm Để Đăng Bán", color=0x27AE60)
         await interaction.response.edit_message(
             embed=embed,
-            view=_InvSelectView(self._discord_id, options, self._back_fn),
+            view=_InvSelectView(self._discord_id, self._inv_items, self._back_fn),
         )
 
     async def _gear_cb(self, interaction: discord.Interaction) -> None:
@@ -403,18 +396,10 @@ class MarketListMenuView(discord.ui.View):
                 embed=error_embed("Túi trang bị trống."), ephemeral=True
             )
             return
-        options = [
-            discord.SelectOption(
-                label=f"[ID:{i.id}] {i.display_name}"[:100],
-                description=(format_computed_stats(i.computed_stats) or "—")[:100],
-                value=str(i.id),
-            )
-            for i in bag[:25]
-        ]
         embed = base_embed("⚔️ Chọn Trang Bị Để Đăng Bán", color=0x27AE60)
         await interaction.response.edit_message(
             embed=embed,
-            view=_GearSelectView(self._discord_id, options, bag, self._back_fn),
+            view=_GearSelectView(self._discord_id, bag, self._back_fn),
         )
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
@@ -427,26 +412,58 @@ class MarketListMenuView(discord.ui.View):
 
 
 class _InvSelectView(discord.ui.View):
-    def __init__(self, discord_id: int, options: list, back_fn=None) -> None:
+    """Paginated inventory picker. Discord caps each Select at 25 options,
+    so longer bags need page controls — without them, items past index 24
+    were silently unreachable."""
+
+    def __init__(self, discord_id: int, inv_items: list, back_fn=None, page: int = 0) -> None:
         super().__init__(timeout=300)
         self._discord_id = discord_id
-        self._selected_key: str | None = None
-        self._selected_grade: int | None = None
+        self._inv_items = inv_items
         self._back_fn = back_fn
+        self._page = max(0, min(page, total_pages(len(inv_items), per_page=PAGE_SIZE) - 1))
+        self._build()
+
+    def _build(self) -> None:
+        visible = page_slice(self._inv_items, self._page, per_page=PAGE_SIZE)
+        options = [
+            discord.SelectOption(
+                label=f"{_item_name(i.item_key)} × {i.quantity}"[:100],
+                description=f"Phẩm {_grade_label(i.grade)}"[:100],
+                value=f"{i.item_key}|{i.grade}",
+            )
+            for i in visible
+        ]
+        pages = total_pages(len(self._inv_items), per_page=PAGE_SIZE)
+        placeholder = "Chọn vật phẩm..."
+        if pages > 1:
+            placeholder = f"Chọn vật phẩm... (Trang {self._page + 1}/{pages})"
 
         sel = discord.ui.Select(
-            placeholder="Chọn vật phẩm...", options=options, min_values=1, max_values=1, row=0
+            placeholder=placeholder, options=options, min_values=1, max_values=1, row=0,
         )
         sel.callback = self._sel_cb
         self.add_item(sel)
 
-        if back_fn:
+        if self._back_fn:
             back = discord.ui.Button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=1)
             back.callback = self._back_cb
             self.add_item(back)
 
+        add_page_controls(
+            self, page=self._page, total=len(self._inv_items),
+            on_change=self._on_page_change, row=2,
+        )
+
     def _guard(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self._discord_id
+
+    async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        view = _InvSelectView(self._discord_id, self._inv_items, self._back_fn, page=new_page)
+        await interaction.response.edit_message(view=view)
 
     async def _sel_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
@@ -454,10 +471,6 @@ class _InvSelectView(discord.ui.View):
             return
         val = interaction.data["values"][0]
         item_key, grade_str = val.split("|")
-        self._selected_key = item_key
-        self._selected_grade = int(grade_str)
-        item_data = registry.get_item(item_key)
-        item_name = item_data["vi"] if item_data else item_key
 
         async def _on_submit(inter: discord.Interaction, qty: int, price: int) -> None:
             await _do_list_inventory(inter, item_key, int(grade_str), qty, price, self._back_fn)
@@ -474,32 +487,65 @@ class _InvSelectView(discord.ui.View):
 
 
 class _GearSelectView(discord.ui.View):
-    def __init__(self, discord_id: int, options: list, bag_items: list, back_fn=None) -> None:
+    """Paginated equipment picker — same 25-option Discord cap workaround
+    as ``_InvSelectView``, but for gear instances."""
+
+    def __init__(self, discord_id: int, bag_items: list, back_fn=None, page: int = 0) -> None:
         super().__init__(timeout=300)
         self._discord_id = discord_id
-        self._bag_items = {str(i.id): i for i in bag_items}
+        self._bag_items = bag_items
+        self._bag_lookup = {str(i.id): i for i in bag_items}
         self._back_fn = back_fn
+        self._page = max(0, min(page, total_pages(len(bag_items), per_page=PAGE_SIZE) - 1))
+        self._build()
+
+    def _build(self) -> None:
+        visible = page_slice(self._bag_items, self._page, per_page=PAGE_SIZE)
+        options = [
+            discord.SelectOption(
+                label=f"[ID:{i.id}] {i.display_name}"[:100],
+                description=(format_computed_stats(i.computed_stats) or "—")[:100],
+                value=str(i.id),
+            )
+            for i in visible
+        ]
+        pages = total_pages(len(self._bag_items), per_page=PAGE_SIZE)
+        placeholder = "Chọn trang bị..."
+        if pages > 1:
+            placeholder = f"Chọn trang bị... (Trang {self._page + 1}/{pages})"
 
         sel = discord.ui.Select(
-            placeholder="Chọn trang bị...", options=options, min_values=1, max_values=1, row=0
+            placeholder=placeholder, options=options, min_values=1, max_values=1, row=0,
         )
         sel.callback = self._sel_cb
         self.add_item(sel)
 
-        if back_fn:
+        if self._back_fn:
             back = discord.ui.Button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=1)
             back.callback = self._back_cb
             self.add_item(back)
 
+        add_page_controls(
+            self, page=self._page, total=len(self._bag_items),
+            on_change=self._on_page_change, row=2,
+        )
+
     def _guard(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self._discord_id
+
+    async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        view = _GearSelectView(self._discord_id, self._bag_items, self._back_fn, page=new_page)
+        await interaction.response.edit_message(view=view)
 
     async def _sel_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
         instance_id = int(interaction.data["values"][0])
-        inst = self._bag_items.get(str(instance_id))
+        inst = self._bag_lookup.get(str(instance_id))
         if not inst:
             await interaction.response.send_message(embed=error_embed("Không tìm thấy trang bị."), ephemeral=True)
             return
@@ -607,8 +653,15 @@ async def _do_list_inventory(
             await _reply(interaction, embed=error_embed(msg), ephemeral=True)
             return
 
+        # Atomic claim — single conditional UPDATE that decrements only if
+        # stock covers the requested quantity. Replaces the old
+        # ``has_item → remove_item`` two-step that had a race window where
+        # two rapid modal submits for the same stack both passed the
+        # existence check and both decremented (allowing 24 listed from a
+        # 12-stack). Now two concurrent submits serialize on the row lock —
+        # one wins (rowcount=1), the other gets the "không đủ" error below.
         irepo = InventoryRepository(session)
-        if not await irepo.has_item(player.id, item_key, grade, quantity):
+        if not await irepo.try_remove_item(player.id, item_key, grade, quantity):
             await _reply(
                 interaction,
                 embed=error_embed(f"Không đủ **{item_data['vi']}** trong túi (cần {quantity})."),
@@ -628,7 +681,6 @@ async def _do_list_inventory(
             currency_type="merit",
             expires_at=datetime.now(timezone.utc) + timedelta(hours=MARKET_LISTING_HOURS),
         )
-        await irepo.remove_item(player.id, item_key, grade, quantity)
         await mrepo.create(listing)
 
     fee = int(item_data.get("shop_price_merit", price) * TRADE_FEE_RATE * quantity)
@@ -659,8 +711,14 @@ async def _do_list_equipment(
             await _reply(interaction, embed=error_embed(msg), ephemeral=True)
             return
 
+        # Lock the instance row for the rest of this transaction. Two
+        # rapid list submits for the same gear used to both read
+        # location='bag', both flip to 'market', and both create
+        # listings pointing at the same instance_id — a dupe. With the
+        # lock, the second submit blocks until the first commits, then
+        # reads location='market' on the post-lock check and bails.
         erepo = EquipmentRepository(session)
-        real_inst = await erepo.get_instance(instance_id, player.id)
+        real_inst = await erepo.lock_instance(instance_id, player.id)
         if not real_inst or real_inst.location != "bag":
             await _reply(
                 interaction,
@@ -668,7 +726,8 @@ async def _do_list_equipment(
             )
             return
 
-        # Lock item in market location
+        # Park in market location — listing row created next so the
+        # location flip + listing INSERT land in the same commit.
         real_inst.location = "market"
         await session.flush()
 
@@ -695,12 +754,18 @@ async def _do_list_equipment(
 
 
 async def _execute_buy(discord_user_id: int, listing_id: int) -> str:
-    """Execute a market purchase. Returns a result message string."""
+    """Execute a market purchase. Returns a result message string.
+
+    Uses ``SELECT ... FOR UPDATE`` to lock the listing row so concurrent
+    buy / cancel attempts serialize. The second transaction sees ``None``
+    (the first has already deleted the listing) and bails out — preventing
+    the dupe where both buyers got the item and the seller got it back.
+    """
     async with get_session() as session:
         mrepo = MarketRepository(session)
-        listing = await mrepo.get_by_id(listing_id)
+        listing = await mrepo.lock_for_update(listing_id)
         if not listing:
-            return "❌ Đơn hàng không tồn tại."
+            return "❌ Đơn hàng không tồn tại hoặc vừa được người khác mua."
         if listing.is_expired(datetime.now(timezone.utc)):
             return "❌ Đơn hàng đã hết hạn."
 
@@ -715,6 +780,21 @@ async def _execute_buy(discord_user_id: int, listing_id: int) -> str:
         if buyer.merit < total:
             return f"❌ Không đủ {emojis.for_currency('merit')} Công Đức. Cần **{total:,}**, có **{buyer.merit:,}**."
 
+        # ── Equipment-specific defensive check ─────────────────────────────
+        # The listing row lock alone isn't enough if the underlying
+        # ``ItemInstance`` location has somehow drifted (e.g. admin grant,
+        # past bug). Refuse the buy unless the item is still parked in
+        # ``location == "market"`` so we never re-grant a piece that's
+        # already in someone's bag.
+        if listing.listing_type == "equipment" and listing.instance_id:
+            erepo = EquipmentRepository(session)
+            inst = await erepo.get_by_id(listing.instance_id)
+            if inst is None or inst.location != "market":
+                return "❌ Trang bị không còn khả dụng — đơn hàng có thể đã được xử lý."
+        else:
+            inst = None
+
+        # All checks passed — commit the transfer atomically.
         buyer.merit -= total
 
         seller = await prepo.get_by_id(listing.seller_id)
@@ -722,13 +802,10 @@ async def _execute_buy(discord_user_id: int, listing_id: int) -> str:
             seller.merit = min(seller.merit + listing.price, 10_000_000)
             await prepo.save(seller)
 
-        if listing.listing_type == "equipment" and listing.instance_id:
-            erepo = EquipmentRepository(session)
-            inst = await erepo.get_by_id(listing.instance_id)
-            if inst:
-                inst.player_id = buyer.id
-                inst.location = "bag"
-                await session.flush()
+        if listing.listing_type == "equipment" and listing.instance_id and inst is not None:
+            inst.player_id = buyer.id
+            inst.location = "bag"
+            await session.flush()
             item_name = listing.item_key or "Trang Bị"
         else:
             irepo = InventoryRepository(session)
@@ -747,7 +824,12 @@ async def _execute_buy(discord_user_id: int, listing_id: int) -> str:
 
 
 async def _execute_cancel(discord_user_id: int, listing_id: int) -> str:
-    """Cancel a listing and return items to seller."""
+    """Cancel a listing and return items to seller.
+
+    Uses the same row lock as ``_execute_buy``: a cancel racing a buy on
+    the same listing will see ``None`` after the buy commits and bail out,
+    so the seller can't get items back AND have them sold.
+    """
     async with get_session() as session:
         prepo = PlayerRepository(session)
         player = await prepo.get_by_discord_id(discord_user_id)
@@ -755,14 +837,19 @@ async def _execute_cancel(discord_user_id: int, listing_id: int) -> str:
             return "❌ Chưa có nhân vật."
 
         mrepo = MarketRepository(session)
-        listing = await mrepo.get_by_id(listing_id)
-        if not listing or listing.seller_id != player.id:
-            return "❌ Đơn hàng không tồn tại hoặc không thuộc về bạn."
+        listing = await mrepo.lock_for_update(listing_id)
+        if not listing:
+            return "❌ Đơn hàng không tồn tại hoặc đã được xử lý."
+        if listing.seller_id != player.id:
+            return "❌ Đơn hàng không thuộc về bạn."
 
         if listing.listing_type == "equipment" and listing.instance_id:
             erepo = EquipmentRepository(session)
             inst = await erepo.get_by_id(listing.instance_id)
-            if inst:
+            # Only return the item if it's still parked in market — guards
+            # against a corner case where the equipment was already
+            # resolved by another path.
+            if inst is not None and inst.location == "market":
                 inst.location = "bag"
                 await session.flush()
             item_name = listing.item_key or "Trang Bị"

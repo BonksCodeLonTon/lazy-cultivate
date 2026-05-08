@@ -45,7 +45,8 @@
     "furnace_tier": 4,
     "stack_max": 1,
     "shop_price_merit": 800000,
-    "description_vi": "Đan lô thượng giai đúc từ Thái Ất tinh thiết. Hỗ trợ luyện chế đan dược cấp 7-9."
+    "quality_bonus": { "huyen": 0.05, "dia": 0.04, "thien": 0.03 },
+    "description_vi": "Đan lô thượng giai đúc từ Thái Ất tinh thiết. Hỗ trợ luyện chế đan dược cấp 7-9, gia tăng nhẹ cơ hội xuất hiện đan Huyền/Địa/Thiên phẩm."
   },
 
   {
@@ -71,7 +72,7 @@
     "furnace_tier": 2,
     "stack_max": 1,
     "shop_price_merit": 0,
-    "quality_bonus": { "huyen": 0.08, "dia": 0.05, "thien": 0.02 },
+    "quality_bonus": { "huyen": 0.2, "dia": 0.3, "thien": 0.4 },
     "description_vi": "Đan lô khắc nhập tứ linh (Kim Mộc Thủy Hỏa). Khi luyện đan cấp 3-4, cơ hội ra đan cao phẩm tăng đáng kể."
   },
   {
@@ -84,7 +85,7 @@
     "furnace_tier": 3,
     "stack_max": 1,
     "shop_price_merit": 0,
-    "quality_bonus": { "huyen": 0.10, "dia": 0.08, "thien": 0.04 },
+    "quality_bonus": { "huyen": 0.10, "dia": 0.20, "thien": 0.50 },
     "description_vi": "Đan lô dung hợp huyền hoàng nhị khí. Khi luyện đan cấp 5-6, đại tăng cơ hội ra Địa/Thiên phẩm."
   },
   {
@@ -97,7 +98,7 @@
     "furnace_tier": 4,
     "stack_max": 1,
     "shop_price_merit": 0,
-    "quality_bonus": { "huyen": 0.12, "dia": 0.10, "thien": 0.08 },
-    "description_vi": "Đan lô sinh cùng Thiên Đạo, chứa một tia mệnh hỏa. Khi luyện đan cấp 7-9, cơ hội ra Thiên Phẩm tăng vọt."
+    "quality_bonus": { "huyen": 0.05, "dia": 0.10, "thien": 0.80 },
+    "description_vi": "Đan lô sinh cùng Thiên Đạo, chứa một tia mệnh hỏa. Khi luyện đan cấp 7-9, cơ hội ra Thiên Phẩm tăng vọt — đại tăng tỷ lệ Địa/Thiên phẩm."
   }
 ]

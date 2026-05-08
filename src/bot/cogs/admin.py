@@ -1,6 +1,8 @@
 """Admin commands for development and management."""
 from __future__ import annotations
 
+import logging
+
 import discord
 from discord import app_commands
 from discord.app_commands import Choice
@@ -18,7 +20,61 @@ from src.game.constants.linh_can import (
 )
 from src.game.systems.the_chat import set_constitutions
 from src.utils import emojis
+from src.utils.config import settings
 from src.utils.embed_builder import error_embed, success_embed
+
+log = logging.getLogger(__name__)
+
+
+# ── Bot-owner gate ────────────────────────────────────────────────────────────
+# Admin slash commands are restricted to the bot owner — NOT every Discord-
+# server admin. Two acceptance paths:
+#   1. Discord application owner — fetched once via ``application_info`` and
+#      cached on the predicate (covers personal bots and team-owned bots
+#      where Discord knows the owner).
+#   2. ``settings.discord_owner_id`` — explicit override from .env. When
+#      non-zero, this user ID also passes. Acts as the canonical fallback
+#      when the bot is run by a non-application-owner Discord account.
+#
+# ``app_commands.default_permissions(administrator=True)`` is kept as a UI
+# hint so the command-picker hides commands from server members who lack
+# admin in the guild — but the real authentication is the predicate below.
+
+async def _is_bot_owner(interaction: discord.Interaction) -> bool:
+    """Predicate that resolves to True iff the invoking user is the bot owner."""
+    user_id = interaction.user.id
+
+    # Path 1: explicit override from .env
+    if settings.discord_owner_id and user_id == settings.discord_owner_id:
+        return True
+
+    client = interaction.client
+    # Path 2a: cached application info (populated on bot startup)
+    app = getattr(client, "application", None)
+    if app is not None and app.owner is not None:
+        if user_id == app.owner.id:
+            return True
+        # Team-owned applications: ``app.team`` lists every team member
+        team = getattr(app, "team", None)
+        if team is not None and any(m.id == user_id for m in (team.members or [])):
+            return True
+
+    # Path 2b: fall back to a fresh fetch (cold start, cache miss)
+    try:
+        info = await client.application_info()
+    except Exception as e:  # noqa: BLE001 — defensive; never block on transient failure
+        log.warning("application_info() failed during owner check: %s", e)
+        return False
+    if info.owner is not None and user_id == info.owner.id:
+        return True
+    if info.team is not None and any(m.id == user_id for m in (info.team.members or [])):
+        return True
+    return False
+
+
+def _owner_only():
+    """Decorator that gates a slash command behind ``_is_bot_owner``."""
+    return app_commands.check(_is_bot_owner)
 
 
 # ── Test build presets ────────────────────────────────────────────────────────
@@ -121,7 +177,7 @@ def _preset_config(preset: str) -> dict:
                 "CuuCungBatQua": {
                     0: "GemKim_3", 1: "GemHoa_3", 2: "GemLoi_3",
                     3: "GemMoc_3", 4: "GemThuy_3", 5: "GemTo_3",
-                    6: "GemPhong_3", 7: "GemAm_3", 8: "GemDuong_3",
+                    6: "GemPhong_3", 7: "GemAm_3", 8: "GemQuang_3",
                 },
                 "NhatNguyenHoa": {
                     0: "GemHoa_3", 1: "GemHoa_3", 2: "GemHoa_3",
@@ -357,8 +413,34 @@ class AdminCog(commands.Cog, name="Admin"):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
+    async def cog_app_command_error(
+        self,
+        interaction: discord.Interaction,
+        error: app_commands.AppCommandError,
+    ) -> None:
+        """Convert ``_owner_only`` rejections into a clean ephemeral message.
+
+        Unrelated errors are re-raised so the global handler still sees them.
+        """
+        if isinstance(error, app_commands.CheckFailure):
+            msg = "🔒 Lệnh này chỉ dành cho **chủ bot**."
+            try:
+                if interaction.response.is_done():
+                    await interaction.followup.send(
+                        embed=error_embed(msg), ephemeral=True,
+                    )
+                else:
+                    await interaction.response.send_message(
+                        embed=error_embed(msg), ephemeral=True,
+                    )
+            except discord.HTTPException:
+                pass  # interaction expired or already replied — best effort only
+            return
+        raise error
+
     @app_commands.command(name="sync", description="[Admin] Đồng bộ các lệnh slash commands")
     @app_commands.default_permissions(administrator=True)
+    @_owner_only()
     async def sync(self, interaction: discord.Interaction) -> None:
         await interaction.response.defer(ephemeral=True)
         guild_count = 0
@@ -380,6 +462,7 @@ class AdminCog(commands.Cog, name="Admin"):
         description="[Admin] Áp preset build để test combat / world boss / constitutions",
     )
     @app_commands.default_permissions(administrator=True)
+    @_owner_only()
     @app_commands.describe(
         preset="Loại test build",
         target="Người chơi muốn áp (mặc định: chính bạn)",
@@ -432,6 +515,7 @@ class AdminCog(commands.Cog, name="Admin"):
         description="[Admin] Xóa nhân vật của người chơi (phải /register lại)",
     )
     @app_commands.default_permissions(administrator=True)
+    @_owner_only()
     @app_commands.describe(
         target="Người chơi cần reset (mặc định: chính bạn)",
         confirm="Gõ XOA để xác nhận xóa nhân vật",
@@ -478,10 +562,153 @@ class AdminCog(commands.Cog, name="Admin"):
         )
 
     @app_commands.command(
+        name="admin_reset_all",
+        description="[Admin] Reset tiến trình của TẤT CẢ người chơi (giữ Thể Chất + Linh Căn)",
+    )
+    @app_commands.default_permissions(administrator=True)
+    @_owner_only()
+    @app_commands.describe(
+        confirm="Gõ XOA TAT CA để xác nhận reset toàn bộ người chơi",
+    )
+    async def admin_reset_all(
+        self,
+        interaction: discord.Interaction,
+        confirm: str,
+    ) -> None:
+        from datetime import datetime, timezone
+
+        from sqlalchemy import select
+        from sqlalchemy.orm import selectinload
+
+        from src.db.models.player import Player
+        from src.db.models.turn_tracker import TurnTracker
+        from src.game.constants.currencies import BONUS_TURNS
+
+        await interaction.response.defer(ephemeral=True)
+        if confirm.strip().upper() != "XOA TAT CA":
+            await interaction.followup.send(
+                embed=error_embed(
+                    "Hủy reset toàn bộ — phải gõ chính xác `XOA TAT CA` "
+                    "vào ô confirm để xác nhận."
+                ),
+                ephemeral=True,
+            )
+            return
+
+        async with get_session() as session:
+            # Eager-load every cascading relationship in one shot.
+            # Async sessions forbid lazy-loading; touching ``player.inventory``
+            # without selectinload triggers ``MissingGreenlet`` since SQLAlchemy
+            # would have to fire a sync SELECT inside the iteration.
+            result = await session.execute(
+                select(Player).options(
+                    selectinload(Player.turn_tracker),
+                    selectinload(Player.inventory),
+                    selectinload(Player.skills),
+                    selectinload(Player.artifacts),
+                    selectinload(Player.formations),
+                    selectinload(Player.market_listings),
+                    selectinload(Player.item_instances),
+                )
+            )
+            players = list(result.scalars().all())
+
+            if not players:
+                await interaction.followup.send(
+                    embed=error_embed("Không có người chơi nào để reset."),
+                    ephemeral=True,
+                )
+                return
+
+            reset_count = 0
+            for player in players:
+                # Wipe every cascading relationship so the player ends up
+                # with zero items, no skills, no formations, no listings.
+                # constitution_type and linh_can stay untouched on purpose.
+                for rel_name in (
+                    "inventory", "skills", "artifacts",
+                    "formations", "market_listings", "item_instances",
+                ):
+                    rel = getattr(player, rel_name, None) or []
+                    for row in list(rel):
+                        await session.delete(row)
+                    if rel is not None:
+                        rel.clear()
+
+                # Reset all progression scalars. ``constitution_type``,
+                # ``linh_can``, ``id``, ``discord_id``, ``name`` are
+                # intentionally omitted so the player's "born identity"
+                # survives.
+                player.body_realm = 0
+                player.body_level = 1
+                player.qi_realm = 0
+                player.qi_level = 1
+                player.formation_realm = 0
+                player.formation_level = 1
+                player.body_xp = 0
+                player.qi_xp = 0
+                player.formation_xp = 0
+                player.dao_ti_unlocked = False
+                player.merit = 0
+                player.karma_accum = 0
+                player.karma_usable = 0
+                player.primordial_stones = 0
+                player.active_axis = "qi"
+                player.active_formation = None
+                player.dan_doc = 0
+                player.pill_buff_counts = "{}"
+                player.preferred_furnace_key = None
+                player.main_title = None
+                player.sub_title = None
+                player.evil_title = None
+
+                # Refresh turn tracker — delete the old row, create a fresh
+                # one with the registration-time bonus pool restored.
+                if player.turn_tracker is not None:
+                    await session.delete(player.turn_tracker)
+                    player.turn_tracker = None
+                await session.flush()
+                session.add(TurnTracker(
+                    player_id=player.id,
+                    turns_today=0,
+                    bonus_turns_remaining=BONUS_TURNS,
+                    last_tick_at=datetime.now(timezone.utc),
+                ))
+
+                # Restore HP/MP to fresh-realm-0 totals so the player isn't
+                # left with the old combat-state numbers from before reset.
+                from src.game.systems.character_stats import (
+                    active_formation_gem_keys, compute_combat_stats,
+                )
+                from src.db.repositories.player_repo import _player_to_model
+                char = _player_to_model(player)
+                gem_keys = active_formation_gem_keys(player)
+                cs = compute_combat_stats(
+                    char, gem_count=len(gem_keys), gem_keys=gem_keys,
+                )
+                player.hp_current = cs.hp_max
+                player.mp_current = cs.mp_max
+
+                reset_count += 1
+
+            await session.commit()
+
+        await interaction.followup.send(
+            embed=success_embed(
+                f"✅ Đã reset **{reset_count}** người chơi.\n"
+                f"• Giữ lại: 🧬 Thể Chất, 🌿 Linh Căn, tên đạo hữu\n"
+                f"• Reset: cảnh giới, EXP, công đức, túi đồ, trang bị, "
+                f"kỹ năng, trận pháp, danh hiệu, đan độc, pill buffs"
+            ),
+            ephemeral=True,
+        )
+
+    @app_commands.command(
         name="admin_grant_item",
         description="[Admin] Cấp vật phẩm cho người chơi để test",
     )
     @app_commands.default_permissions(administrator=True)
+    @_owner_only()
     @app_commands.describe(
         item_key="Key của vật phẩm (vd: MatDaoCotTinh, ChestWorldBossR9)",
         qty="Số lượng (mặc định 1)",
@@ -529,6 +756,43 @@ class AdminCog(commands.Cog, name="Admin"):
             ),
             ephemeral=True,
         )
+
+
+    @app_commands.command(
+        name="admin_unstuck_dungeon",
+        description="[Admin] Gỡ khoá phiên bí cảnh bị kẹt trong bộ nhớ",
+    )
+    @app_commands.default_permissions(administrator=True)
+    @_owner_only()
+    @app_commands.describe(
+        target="Người chơi đang bị kẹt (mặc định: chính bạn)",
+    )
+    async def admin_unstuck_dungeon(
+        self,
+        interaction: discord.Interaction,
+        target: discord.User | None = None,
+    ) -> None:
+        from src.bot.cogs.dungeon import force_release_dungeon_session
+
+        await interaction.response.defer(ephemeral=True)
+        target_user = target or interaction.user
+        cleared = force_release_dungeon_session(target_user.id)
+        if cleared:
+            await interaction.followup.send(
+                embed=success_embed(
+                    f"✅ Đã gỡ khoá phiên bí cảnh cho {target_user.mention} "
+                    f"(`{target_user.id}`). Họ có thể vào bí cảnh ngay."
+                ),
+                ephemeral=True,
+            )
+        else:
+            await interaction.followup.send(
+                embed=error_embed(
+                    f"{target_user.mention} (`{target_user.id}`) hiện không có "
+                    "khoá phiên bí cảnh nào — vấn đề khác đang chặn họ."
+                ),
+                ephemeral=True,
+            )
 
 
 async def setup(bot: commands.Bot) -> None:

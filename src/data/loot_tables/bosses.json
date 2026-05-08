@@ -1,12 +1,6 @@
 {
   "LootBossHoaLinh": [
     {
-      "item_key": "MatHoaThanDan",
-      "weight": 800000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "MatThaiDuongTinh",
       "weight": 500000,
       "qty_min": 1,
@@ -50,12 +44,6 @@
     }
   ],
   "LootBossLoiLong": [
-    {
-      "item_key": "MatHuKhongTinh",
-      "weight": 800000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
     {
       "item_key": "MatThaiDuongTinh",
       "weight": 400000,
@@ -101,19 +89,7 @@
   ],
   "LootBossBangHon": [
     {
-      "item_key": "MatHopDaoNgoc",
-      "weight": 800000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "MatThaiAmTinh",
-      "weight": 400000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "GemBang_3",
       "weight": 400000,
       "qty_min": 1,
       "qty_max": 1
@@ -165,12 +141,6 @@
     {
       "item_key": "MatDaiThuaKinh",
       "weight": 600000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "MatChanLinhNgoc",
-      "weight": 200000,
       "qty_min": 1,
       "qty_max": 1
     },

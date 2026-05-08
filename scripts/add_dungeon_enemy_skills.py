@@ -102,8 +102,7 @@ REALM_DMG_SCALE: dict[int, float] = {
     6: 1.10, 7: 1.20, 8: 1.25, 9: 1.30, 10: 1.40,
 }
 
-# Element archetype — physical or magical, plus debuff list ordered
-# from most-thematic (slot 0) to least.
+
 ARCHETYPE: dict[str, tuple[str, tuple[str, ...]]] = {
     "kim":   ("physical", ("DebuffPhaGiap", "DebuffChayMau", "DebuffXeRach")),
     "moc":   ("magical",  ("DebuffDocTo", "DebuffBaoMon", "DebuffCatDut")),

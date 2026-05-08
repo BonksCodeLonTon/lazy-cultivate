@@ -49,6 +49,15 @@ STAT_LABELS: dict[str, str] = {
     "shield_max_pct":    "Khiên Tối Đa %",
     "shield_regen_flat": "Hồi Khiên",
     "shield_regen_pct":  "Hồi Khiên %",
+    # DOT bonuses (rolled by weapon/glove/ring/amulet affixes).
+    "burn_dmg_bonus":    "ST Thiêu Đốt",
+    "bleed_dmg_bonus":   "ST Chảy Máu",
+    "poison_dmg_bonus":  "ST Trúng Độc",
+    "dot_dmg_bonus":     "ST DOT",
+    # Other affix-only stats.
+    "thorn_pct":                    "Phản Đòn",
+    "damage_bonus_from_shield_pct": "ST từ Khiên",
+    "spd_bonus":                    "Tốc Độ",
 }
 
 SLOT_LABELS: dict[str, str] = {
@@ -76,6 +85,11 @@ _PCT_STATS = frozenset({
     "res_kim", "res_moc", "res_thuy", "res_hoa", "res_tho",
     "res_loi", "res_phong", "res_quang", "res_am",
     "shield_max_pct", "shield_regen_pct",
+    # DOT-bonus & misc-pct affix stats — rolled as fractions (0.06 = 6%).
+    # Without this, format_stat fell through to the int branch and rendered
+    # rolled values as "+0 burn_dmg_bonus" etc. on every dropped/forged item.
+    "burn_dmg_bonus", "bleed_dmg_bonus", "poison_dmg_bonus", "dot_dmg_bonus",
+    "thorn_pct", "damage_bonus_from_shield_pct",
 })
 
 
@@ -103,11 +117,21 @@ def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
             else:
                 container[stat] = container.get(stat, 0.0) + float(val)
 
+    # Legacy stat-key aliases — old item_instances baked the affix's stat key
+    # into computed_stats at generation time, so renaming an affix doesn't
+    # reach existing equipment. Map the legacy key to the canonical one as
+    # we accumulate so consumers (character_stats, format_stat) see only the
+    # current name.
+    _STAT_ALIASES: dict[str, str] = {
+        "dmg_reduce": "final_dmg_reduce",
+    }
+
     totals: dict[str, float] = {}
     for inst in equipped:
         if inst.location != "equipped":
             continue
         for stat, val in (inst.computed_stats or {}).items():
+            stat = _STAT_ALIASES.get(stat, stat)
             totals[stat] = totals.get(stat, 0.0) + float(val)
 
         # Merge unique passive bonuses if the item is a unique with passives

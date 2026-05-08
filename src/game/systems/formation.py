@@ -15,16 +15,35 @@ from src.game.systems.cultivation import (
 )
 
 
+_GEM_PREFIX_ALIAS: dict[str, str] = {
+    # Legacy spelling for earth gems used across loot tables and admin presets.
+    "to": "tho",
+    # In-game Yang gems are the Light element on the linh_can wheel.
+    "duong": "quang",
+}
+
+
 def gem_element(gem_key: str) -> str | None:
     """Parse the element prefix from a gem key (``GemHoa_2`` → ``hoa``).
+
+    Unique gems use the ``GemUnique_<Name>`` naming scheme — their actual
+    element lives on the registry entry, not in the key, so resolve it
+    there. Falls back to the prefix parse for elemental gems, normalising a
+    couple of legacy/alias spellings (``GemTo_*`` → ``tho``, ``GemDuong_*``
+    → ``quang``) so emoji and label lookups succeed.
 
     Returns ``None`` for non-gem keys so callers can short-circuit on
     inventory items that aren't gems.
     """
     if not gem_key.startswith("Gem"):
         return None
-    rest = gem_key[3:].split("_", 1)[0]
-    return rest.lower()
+    if gem_key.startswith("GemUnique_"):
+        from src.data.registry import registry
+        item = registry.get_item(gem_key) or {}
+        elem = item.get("element")
+        return elem.lower() if isinstance(elem, str) and elem else None
+    rest = gem_key[3:].split("_", 1)[0].lower()
+    return _GEM_PREFIX_ALIAS.get(rest, rest)
 
 
 def compute_active_formation_bonuses(player) -> dict:

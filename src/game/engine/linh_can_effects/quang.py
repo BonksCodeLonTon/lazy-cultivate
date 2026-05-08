@@ -102,10 +102,23 @@ def try_cleanse(
 
     did_cleanse = False
 
-    debuffs = [k for k in list(actor.effects) if "Debuff" in k or "CC" in k]
-    if debuffs:
-        removed = debuffs[0]
+    # Pick a cleansable effect via the data-driven ``EffectMeta.cleansable``
+    # flag (replaces the old ``"Debuff" in k or "CC" in k`` substring match,
+    # which silently skipped odd-keyed debuffs like ``EffectNgungDong``).
+    # Random pick instead of "first in iteration order" so debuff
+    # application order can't be gamed as a buffer for important debuffs.
+    from src.game.engine.effects import EFFECTS
+    cleansable_keys = [
+        k for k in list(actor.effects)
+        if (m := EFFECTS.get(k)) is not None and m.cleansable
+    ]
+    if cleansable_keys:
+        removed = rng.choice(cleansable_keys)
         del actor.effects[removed]
+        # Drop any per-instance overrides too — mirrors the natural-expiry
+        # path in ``Combatant.tick_effects`` so a re-application starts
+        # from the meta default rather than inheriting a stale stamp.
+        actor.effect_overrides.pop(removed, None)
         log.append(f"  ✨ **{actor.name}** [Quang] Thanh Tẩy: giải *{removed}*")
         did_cleanse = True
 

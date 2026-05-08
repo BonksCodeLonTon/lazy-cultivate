@@ -13,9 +13,11 @@ from discord.ext import commands, tasks
 from src.data.registry import registry
 from src.db.connection import get_session
 from src.db.models.world_boss import WorldBossInstance
+from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.db.repositories.world_boss_repo import WorldBossRepository
+from src.game.constants.grades import Grade, GRADE_LABELS
 from src.game.constants.realms import QI_REALMS
 from src.game.engine.equipment import compute_equipment_stats
 from src.game.systems.combat import (
@@ -31,6 +33,30 @@ from src.game.systems.world_boss import (
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
 
 log = logging.getLogger(__name__)
+
+
+# ── Single-session lock ───────────────────────────────────────────────────────
+# In-memory guard against the "open /world_boss attack twice and run two
+# attacks in parallel" exploit — without this, both async tasks build their
+# own combat sim against the same instance and each ends up applying damage /
+# crediting participation, double-counting the player on the leaderboard and
+# burning through the boss HP pool faster than intended. Single-process bot,
+# so a plain set is enough; a restart clears the set (acceptable for the rare
+# crash-mid-attack case).
+_ACTIVE_WORLD_BOSS_USERS: set[int] = set()
+
+
+def _try_acquire_world_boss_session(discord_id: int) -> bool:
+    """Mark ``discord_id`` as running a world-boss attack. Returns False if a
+    session is already active for this user."""
+    if discord_id in _ACTIVE_WORLD_BOSS_USERS:
+        return False
+    _ACTIVE_WORLD_BOSS_USERS.add(discord_id)
+    return True
+
+
+def _release_world_boss_session(discord_id: int) -> None:
+    _ACTIVE_WORLD_BOSS_USERS.discard(discord_id)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -107,6 +133,24 @@ async def _execute_boss_attack(
     interaction: discord.Interaction, boss_key: str, back_fn=None,
 ) -> None:
     """Run one player-initiated attack session on the world boss."""
+    if not _try_acquire_world_boss_session(interaction.user.id):
+        await interaction.edit_original_response(
+            embed=error_embed(
+                "Bạn đang tấn công một boss thế giới khác. Hãy chờ phiên hiện "
+                "tại kết thúc trước khi mở phiên mới."
+            ),
+            view=None,
+        )
+        return
+    try:
+        await _execute_boss_attack_inner(interaction, boss_key, back_fn=back_fn)
+    finally:
+        _release_world_boss_session(interaction.user.id)
+
+
+async def _execute_boss_attack_inner(
+    interaction: discord.Interaction, boss_key: str, back_fn=None,
+) -> None:
     rng = _rng_mod.Random()
 
     async with get_session() as session:
@@ -188,14 +232,25 @@ async def _execute_boss_attack(
             player_skill_keys=skill_keys,
             rng=rng,
             max_turns=ATTACK_ROUND_LIMIT,
+            # World boss: hitting the round limit is the expected "chip away"
+            # cadence, not a player defeat — keep the MAX_TURNS reason so the
+            # post-combat embed shows the damage-dealt path, not death.
+            max_turns_is_defeat=False,
         )
 
         starting_hp = boss_c.hp
-        # Snapshot hp_max BEFORE combat — mechanics like Âm Hồn Phệ used to
-        # shrink it during the local sim, which would drop the cap denominator.
-        # The is_world_boss flag now blocks that, but snapshotting makes the
-        # cap immune to any future mutation regardless.
-        starting_hp_max = boss_c.hp_max
+        # Anchor the per-attack cap to the DB-stored ``instance.hp_max`` (set
+        # at spawn time) rather than ``boss_c.hp_max`` (recomputed from the
+        # current ``world_bosses.json`` each attack). When the two diverge —
+        # e.g. config gets buffed mid-window so a stale instance still has
+        # the smaller pre-buff hp_max — using the freshly computed value
+        # makes the cap larger than the entire remaining ``hp_current`` and
+        # a single attack drains the boss in one hit. The DB hp_max is the
+        # contract every attacker fought under; that's the right denominator.
+        # is_world_boss already blocks Âm Hồn Phệ from mutating combatant
+        # hp_max mid-combat, and the DB row is untouched by that path either
+        # way, so this snapshot stays immune to in-combat mutations too.
+        instance_hp_max = int(instance.hp_max)
         player_name = player.name
         instance_id = instance.id
 
@@ -252,7 +307,7 @@ async def _execute_boss_attack(
     # inside ``apply_damage_atomic`` (authoritative, so client-side bypass
     # still hits the wall). Denominator is the PRE-combat snapshot so no
     # hp_max-mutating mechanic can shrink the cap.
-    dmg_cap = int(starting_hp_max * PER_ATTACK_DMG_CAP_PCT)
+    dmg_cap = int(instance_hp_max * PER_ATTACK_DMG_CAP_PCT)
     uncapped_damage = damage_dealt_local
     damage_dealt_local = min(damage_dealt_local, dmg_cap)
     cap_hit = uncapped_damage > dmg_cap
@@ -289,8 +344,12 @@ async def _execute_boss_attack(
             player.mp_current = max(0, player_c.mp)
             await prepo.save(player)
 
-    # Build post-attack embed — report damage actually credited to the shared pool
-    remaining_pct = ending_hp_shared / boss_c.hp_max if boss_c.hp_max else 0.0
+    # Build post-attack embed — report damage actually credited to the shared pool.
+    # Uses ``instance_hp_max`` (the DB row's spawn-time hp_max) so the displayed
+    # remaining-% lines up with how the cap was computed; mixing in the freshly
+    # recomputed ``boss_c.hp_max`` would make ``ending_hp_shared/boss_c.hp_max``
+    # exceed 100 % whenever the two diverge.
+    remaining_pct = ending_hp_shared / instance_hp_max if instance_hp_max else 0.0
     if combat_result.reason == CombatEndReason.PLAYER_DEAD:
         header = f"💀 **{player_name}** đã ngã xuống nhưng vẫn gây **{applied_damage:,}** sát thương!"
         color = 0xFF4444
@@ -314,7 +373,7 @@ async def _execute_boss_attack(
         footer = "\n\n☠️ Boss đã bị đánh bại bởi tu sĩ khác! Dùng `/world_boss rewards` để nhận phần tham chiến."
     else:
         footer = (
-            f"\n\nBoss còn **{ending_hp_shared:,} / {boss_c.hp_max:,}** HP ({remaining_pct*100:.1f}%)"
+            f"\n\nBoss còn **{ending_hp_shared:,} / {instance_hp_max:,}** HP ({remaining_pct*100:.1f}%)"
             "\nDùng `/world_boss attack` để tấn công tiếp."
         )
 
@@ -343,6 +402,7 @@ async def _claim_rewards(interaction: discord.Interaction) -> None:
         prepo = PlayerRepository(session)
         wrepo = WorldBossRepository(session)
         irepo = InventoryRepository(session)
+        eqrepo = EquipmentRepository(session)
 
         player = await prepo.get_by_discord_id(interaction.user.id)
         if player is None:
@@ -388,9 +448,11 @@ async def _claim_rewards(interaction: discord.Interaction) -> None:
             if my_reward is None or my_reward.tier == "none":
                 continue
 
-            drops = await grant_loot_from_tables(
+            drops, equipment_drops = await grant_loot_from_tables(
                 irepo, player.id,
                 my_reward.loot_table_keys, my_reward.bonus_items, rng,
+                boss_realm=boss_data.get("realm", 1),
+                eqrepo=eqrepo,
             )
 
             tier_label = {
@@ -402,10 +464,21 @@ async def _claim_rewards(interaction: discord.Interaction) -> None:
                 f"{(registry.get_item(d['item_key']) or {}).get('vi', d['item_key'])}×{d['quantity']}"
                 for d in drops
             ) or "*(không)*"
-            report_lines.append(
+            eq_lines: list[str] = []
+            for eq in equipment_drops:
+                eq_grade = GRADE_LABELS.get(Grade(eq.get("grade", 1)))
+                eq_grade_label = eq_grade[0] if eq_grade else str(eq.get("grade", 1))
+                eq_lines.append(
+                    f"⚔️ **{eq.get('display_name', '???')}** *(Phẩm {eq_grade_label})*"
+                )
+            eq_str = "\n".join(eq_lines)
+            report = (
                 f"**{boss_data['vi']}** — {tier_label} (Hạng #{my_reward.rank}, "
                 f"{my_reward.damage_pct*100:.2f}% HP)\n🎁 {drop_str}"
             )
+            if eq_str:
+                report += f"\n{eq_str}"
+            report_lines.append(report)
 
     if not report_lines:
         msg = "Các trận tham chiến không đạt ngưỡng phần thưởng."

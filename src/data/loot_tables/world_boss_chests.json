@@ -127,7 +127,7 @@
       "pool_id": "recipe"
     },
     {
-      "item_key": "DanPhuongDuongLuyenHuyetDan",
+      "item_key": "DanPhuongQuangLuyenHuyetDan",
       "weight": 400000,
       "qty_min": 1,
       "qty_max": 1,
@@ -400,7 +400,7 @@
       "pool_id": "recipe"
     },
     {
-      "item_key": "DanPhuongDuongBiCao",
+      "item_key": "DanPhuongQuangBiCao",
       "weight": 400000,
       "qty_min": 1,
       "qty_max": 1,
@@ -554,12 +554,6 @@
       "pool_id": "unique"
     },
     {
-      "item_key": "MatKhiTuDan",
-      "weight": 600000,
-      "qty_min": 2,
-      "qty_max": 4
-    },
-    {
       "item_key": "DanHoiFull",
       "weight": 350000,
       "qty_min": 1,
@@ -694,7 +688,7 @@
       "pool_id": "recipe"
     },
     {
-      "item_key": "DanPhuongDuongLuyenCanDich",
+      "item_key": "DanPhuongQuangLuyenCanDich",
       "weight": 400000,
       "qty_min": 1,
       "qty_max": 1,
@@ -1093,7 +1087,7 @@
       "pool_id": "recipe"
     },
     {
-      "item_key": "DanPhuongDuongLuyenCotDich",
+      "item_key": "DanPhuongQuangLuyenCotDich",
       "weight": 400000,
       "qty_min": 1,
       "qty_max": 1,
@@ -1387,7 +1381,7 @@
       "pool_id": "recipe"
     },
     {
-      "item_key": "DanPhuongDuongLuyenTuyDan",
+      "item_key": "DanPhuongQuangLuyenTuyDan",
       "weight": 400000,
       "qty_min": 1,
       "qty_max": 1,
@@ -1588,12 +1582,6 @@
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "unique"
-    },
-    {
-      "item_key": "MatHoaThanDan",
-      "weight": 500000,
-      "qty_min": 1,
-      "qty_max": 3
     },
     {
       "item_key": "DanHoiFull",
@@ -1799,7 +1787,7 @@
       "pool_id": "recipe"
     },
     {
-      "item_key": "DanPhuongDuongPhapTuongDan",
+      "item_key": "DanPhuongQuangPhapTuongDan",
       "weight": 400000,
       "qty_min": 1,
       "qty_max": 1,
@@ -2127,7 +2115,7 @@
       "pool_id": "recipe"
     },
     {
-      "item_key": "DanPhuongDuongKimThanDan",
+      "item_key": "DanPhuongQuangKimThanDan",
       "weight": 400000,
       "qty_min": 1,
       "qty_max": 1,
@@ -2483,7 +2471,7 @@
       "pool_id": "recipe"
     },
     {
-      "item_key": "DanPhuongDuongSieuPhamDan",
+      "item_key": "DanPhuongQuangSieuPhamDan",
       "weight": 400000,
       "qty_min": 1,
       "qty_max": 1,
@@ -2895,7 +2883,7 @@
       "pool_id": "recipe"
     },
     {
-      "item_key": "DanPhuongDuongNhapThanhDan",
+      "item_key": "DanPhuongQuangNhapThanhDan",
       "weight": 400000,
       "qty_min": 1,
       "qty_max": 1,
@@ -3208,12 +3196,6 @@
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "unique"
-    },
-    {
-      "item_key": "MatHuKhongTinh",
-      "weight": 400000,
-      "qty_min": 1,
-      "qty_max": 2
     },
     {
       "item_key": "DanHoiFull",

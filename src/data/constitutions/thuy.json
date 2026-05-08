@@ -313,7 +313,7 @@
   },
   {
     "key": "ConstitutionThuyBang_Epi",
-    "vi": "Thần Hàn Băng Thể",
+    "vi": "Cửu Hàn Ngưng Băng Thể",
     "en": "Divine Cold Frost Body",
     "rarity": "epic",
     "element": "thuy",
@@ -422,7 +422,7 @@
   },
   {
     "key": "ConstitutionThuyBang_Leg",
-    "vi": "Thái Âm Hàn Băng Đế Thể",
+    "vi": "Thiên Hàn Đế Thể",
     "en": "Great Yin Frost Emperor Body",
     "rarity": "legendary",
     "element": "thuy",
@@ -475,9 +475,12 @@
       "cooldown_reduce": 0.25,
       "reflect_pct": 0.2,
       "damage_bonus_from_mp_pct": 0.15,
-      "mana_stack_per_attack": 1,
-      "mana_stack_dmg_bonus": 0.04,
-      "hp_flat_per_realm": 1000
+      "mana_stack_per_attack": 2,
+      "mana_stack_dmg_bonus": 0.06,
+      "hp_flat_per_realm": 1000,
+      "mp_regen_pct": 0.05,
+      "hp_pct": 0.2,
+      "element_pen": { "thuy": 0.12 }
     },
     "special_requirements": null,
     "materials": {
@@ -500,14 +503,17 @@
     },
     "passive_description_vi": "Thân hóa lưu thủy phù vân — đòn phản kích không chỉ trả sát thương, mà còn ép ngược mọi hiệu ứng kẻ thù vừa giáng xuống.",
     "stat_bonuses": {
-      "mp_pct": 0.5,
+      "hp_flat_per_realm": 500,
       "mp_regen_pct": 0.075,
       "cooldown_reduce": 0.2,
       "reflect_applies_effects": true,
-      "damage_bonus_from_mp_pct": 0.12,
+      "reflect_pct": 0.2,
       "element_pen": {
         "thuy": 0.1
-      }
+      },
+      "hp_pct": 0.25,
+      "evasion_rating": 350,
+      "final_dmg_bonus": 0.15
     },
     "special_requirements": null,
     "materials": {

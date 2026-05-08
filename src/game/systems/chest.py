@@ -7,10 +7,11 @@ opening one is a separate concern that belongs here.
 from __future__ import annotations
 
 import random
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from src.data.registry import registry
 from src.game.engine.drop import roll_drops
+from src.game.systems.world_boss import maybe_generate_equipment_for_realm
 
 
 # Chest item_key → loot-table key in the registry. Add new chest tiers here.
@@ -47,6 +48,10 @@ class ChestOpenResult:
     ok: bool
     message: str
     loot: list[dict]  # [{"item_key": str, "quantity": int}]
+    equipment: list[dict] = field(default_factory=list)
+_WORLD_BOSS_CHEST_REALM: dict[str, int] = {
+    f"ChestWorldBossR{n}": n for n in range(1, 10)
+}
 
 
 def open_chest(chest_key: str, rng: random.Random | None = None) -> ChestOpenResult:
@@ -59,7 +64,9 @@ def open_chest(chest_key: str, rng: random.Random | None = None) -> ChestOpenRes
     Returns:
         ChestOpenResult with ok=True and a non-empty loot list on success,
         or ok=False with an error message if the chest key is unknown or its
-        registered loot table is missing.
+        registered loot table is missing. World-boss realm chests also
+        populate ``equipment`` with one randomly-affixed piece sampled from
+        ``EQUIPMENT_DROP_BY_REALM``.
     """
     loot_table_key = _CHEST_LOOT_TABLE.get(chest_key)
     if not loot_table_key:
@@ -79,4 +86,12 @@ def open_chest(chest_key: str, rng: random.Random | None = None) -> ChestOpenRes
 
     rng = rng or random.Random()
     loot = roll_drops(drop_table, rng).merge()
-    return ChestOpenResult(ok=True, message="", loot=loot)
+
+    equipment: list[dict] = []
+    realm = _WORLD_BOSS_CHEST_REALM.get(chest_key)
+    if realm is not None:
+        eq = maybe_generate_equipment_for_realm(realm, rng)
+        if eq is not None:
+            equipment.append(eq)
+
+    return ChestOpenResult(ok=True, message="", loot=loot, equipment=equipment)

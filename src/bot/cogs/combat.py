@@ -11,6 +11,7 @@ from discord.ext import commands
 
 from src.data.registry import registry
 from src.db.connection import get_session
+from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.currencies import CURRENCY_CAP
@@ -209,10 +210,9 @@ async def _execute_fight(interaction: discord.Interaction, internal_rank: str | 
                 player.karma_accum = min(player.karma_accum + result.karma_gained, 500_000)
                 player.karma_usable = min(player.karma_usable + result.karma_gained, CURRENCY_CAP)
                 irepo = InventoryRepository(session)
-                for drop in result.loot:
-                    item_data = registry.get_item(drop["item_key"])
-                    grade_val = item_data.get("grade", 1) if item_data else 1
-                    await irepo.add_item(player.id, drop["item_key"], Grade(grade_val), drop["quantity"])
+                eqrepo = EquipmentRepository(session)
+                from src.game.engine.item_generator import award_drops
+                await award_drops(result.loot, player.id, irepo, eqrepo)
 
             await prepo.save(player)
 

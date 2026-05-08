@@ -87,8 +87,8 @@ def get_material_grade(material_key: str) -> int | None:
     Forge eligibility is gated on ``type == "forge_material"`` — that's the
     single source of truth for the rebalance after ``elemental_materials.json``
     was merged into ``forge_materials.json``. Realm-breakthrough materials
-    (which use the generic ``type == "material"`` tag) are deliberately
-    excluded so they can't be burned for forging.
+    (now ``type == "constitution_material"``) are deliberately excluded so
+    they can't be burned for forging.
     """
     item = registry.get_item(material_key)
     if item and item.get("type") == "forge_material":

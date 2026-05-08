@@ -453,7 +453,7 @@
   },
   {
     "key": "ConstitutionHoaDiem_Leg",
-    "vi": "Xích Dương Liệt Diệm Thể",
+    "vi": "Xích Dương Liệt Viêm Thể",
     "en": "Crimson Sun Blazing Flame Body",
     "rarity": "legendary",
     "element": "hoa",
@@ -462,7 +462,7 @@
       "merit": 0,
       "stones": 80000
     },
-    "passive_description_vi": "Xích Dương Liệt Diệm Thể — **Diễm Hồn Truyền Đốt**: ngọn lửa thiêu đốt nội tạng đối thủ thấm sâu hơn, nhiều tầng hơn, lại có thể bạo kích DoT. Sát thương Hỏa của bản thân thấm vào kháng Hỏa địch (xuyên kháng).",
+    "passive_description_vi": "Xích Dương Liệt Viêm Thể — **Viêm Hồn Truyền Đốt**: ngọn lửa thiêu đốt nội tạng đối thủ thấm sâu hơn, nhiều tầng hơn, lại có thể bạo kích DoT. Sát thương Hỏa của bản thân thấm vào kháng Hỏa địch (xuyên kháng).",
     "stat_bonuses": {
       "final_dmg_bonus": 0.18,
       "burn_on_hit_pct": 0.5,
@@ -508,7 +508,13 @@
       "burn_dmg_bonus": 0.4,
       "burn_on_hit_pct": 0.35,
       "phoenix_revive_pct": 0.7,
-      "phoenix_revive_buff_pct": 0.2
+      "phoenix_revive_buff_pct": 0.2,
+      "burn_stack_cap_bonus": 3,
+      "burn_per_stack_pct_bonus": 0.006,
+      "dot_can_crit": true,
+      "hp_pct": 0.25,
+      "element_pen": { "hoa": 0.12 },
+      "crit_rating": 250
     },
     "special_requirements": null,
     "materials": {
@@ -520,7 +526,7 @@
   },
   {
     "key": "ConstitutionThaiDuongThanThe",
-    "vi": "Thái Dương Thần Thể",
+    "vi": "Liệt Nhật Viên Dương Thể",
     "en": "Sun God Body",
     "rarity": "legendary",
     "element": "hoa",
@@ -529,11 +535,12 @@
       "merit": 0,
       "stones": 100000
     },
-    "passive_description_vi": "Thân hóa Thái Dương, tỏa ra Thần Quang thiêu đốt vạn vật. Mỗi lượt tự động giáng đòn lửa lên đối thủ bằng 4% HP tối đa của bản thân — hào quang này không phải đòn đánh, không phải DoT, được khuếch đại bởi mọi chỉ số tăng sát thương lửa và sát thương lên mục tiêu Thiêu Đốt.",
+    "passive_description_vi": "Thân hóa Thái Dương, tỏa ra Thần Hỏa thiêu đốt vạn vật. Mỗi lượt tự động giáng đòn lửa lên đối thủ bằng 5% HP tối đa của bản thân — hào quang này không phải đòn đánh, không phải DoT, được khuếch đại bởi mọi chỉ số tăng sát thương lửa và sát thương lên mục tiêu Thiêu Đốt.",
     "stat_bonuses": {
-      "solar_aura_pct": 0.04,
-      "hp_flat_per_realm": 500,
-      "hp_pct": 0.2,
+      "solar_aura_pct": 0.05,
+      "hp_flat_per_realm": 800,
+      "hp_pct": 0.4,
+      "hp_regen_pct": 0.08,
       "burn_dmg_bonus": 0.3,
       "bonus_dmg_vs_burn": 0.2,
       "element_pen": {
@@ -545,6 +552,7 @@
     },
     "special_requirements": null,
     "materials": {
+      "MatThaiDuongTinh": 10,
       "MatDaoCotTinh": 6,
       "MatThienDaoTuy": 4,
       "MatHonNguyenCot": 1,

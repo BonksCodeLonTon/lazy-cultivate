@@ -170,7 +170,7 @@ def _format_stat_bonus(stat: str, val: float) -> str:
 def _describe_effect(key: str) -> str:
     """Short human description of a single skill effect key.
 
-    Returns a compact ``emoji name(detail)`` tag — e.g. ``🔥Thiêu Đốt(4%HP/t)``
+    Returns a compact ``emoji name(detail)`` tag — e.g. ``💥Đốt Cháy(8%/t)``
     or ``🛡️Hàn Khí(+10% ST nhận)`` — so the skill browser shows what each
     debuff/buff will actually do instead of raw registry keys.
     """
@@ -184,9 +184,10 @@ def _describe_effect(key: str) -> str:
         return key  # unknown — fall back to the raw key
 
     details: list[str] = []
-    # DoT tick as %HP/turn
+    # DoT tick rate per turn — the absolute damage scales with the applier's
+    # max(atk, matk) at apply time, so a "% HP" label would be misleading.
     if meta.dot_pct > 0:
-        details.append(f"{meta.dot_pct * 100:.1f}% HP/t")
+        details.append(f"DoT {meta.dot_pct * 100:.1f}%/t")
     # Stat mods — signed, shortened
     for stat, val in meta.stat_bonus.items():
         details.append(_format_stat_bonus(stat, val))

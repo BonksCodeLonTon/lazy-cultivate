@@ -875,7 +875,7 @@
       "DebuffCatDut": 1.0
     },
     "formation_key": null,
-    "description_vi": "Đỉnh cao Mộc Đạo — chồng 2 tầng Độc Tố, xuyên 15% Kháng Mộc, cắt đứt hồi phục, gây 8% HP chân thương và tự hồi 10% HP để nuôi sát thương kế.",
+    "description_vi": "Đỉnh cao Mộc Đạo — chồng 2 tầng Độc Tố, xuyên 15% Kháng Mộc, cắt đứt hồi phục, gây thêm 8% Sát Thương Chuẩn (tính theo sát thương đòn đánh) và tự hồi 10% HP để nuôi sát thương kế.",
     "effect_overrides": {
       "DebuffDocTo": {
         "dot_pct": 0.068,

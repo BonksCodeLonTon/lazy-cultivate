@@ -220,7 +220,7 @@ def _chapter_combat() -> discord.Embed:
             f"• Bạo Kích tối đa: **{MAX_CRIT_CHANCE * 100:.0f}%**\n"
             f"• Giảm Sát Thương Cuối tối đa: **{MAX_FINAL_DMG_REDUCE * 100:.0f}%**\n"
             f"• Giảm Sát Thương Vật Lý (DEF) tối đa: **{MAX_PHYS_REDUCTION * 100:.0f}%**\n"
-            f"• Sát Thương Chân Thực / đòn: **{TRUE_DMG_PCT_CAP * 100:.0f}%** HP tối đa\n"
+            f"• Sát Thương Chuẩn / đòn: **+{TRUE_DMG_PCT_CAP * 100:.0f}%** sát thương đòn (xuyên kháng)\n"
             f"• Hồn Phệ (Âm) / trận: **{SOUL_DRAIN_CAP_PCT * 100:.0f}%** HP gốc\n"
             f"• Cướp Chỉ Số (Âm) / chỉ số: **{STAT_STEAL_CAP_PCT * 100:.0f}%**\n"
             f"• Bạo Kích Hồi Máu (Mộc/Quang): **{HEAL_CRIT_CHANCE * 100:.0f}%** chance, "

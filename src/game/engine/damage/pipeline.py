@@ -48,6 +48,7 @@ def calculate_damage(
     raw = roll_base(
         skill.base_dmg, skill.mp_cost, rng,
         atk=attacker.atk, matk=attacker.matk, dmg_scale=skill.dmg_scale,
+        skill_realm=skill.realm,
     )
     dmg, is_crit = apply_critical(
         raw, attacker.crit_rating, defender.crit_res_rating, attacker.crit_dmg_rating, rng,

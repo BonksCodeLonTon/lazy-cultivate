@@ -23,6 +23,7 @@ from src.game.systems.alchemy import (
     craft_pill,
     get_recipe,
 )
+from src.game.systems.pill_buffs import is_buff_pill
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed
 from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
@@ -37,8 +38,18 @@ QUALITY_COLORS: dict[str, discord.Color] = {
     "thien": discord.Color.from_str("#C0392B"),
 }
 
-# Herbs/yeu_thu always stack in inventory at this single grade slot —
-# their intrinsic grade (1-6) is a template attribute, not per-row state.
+_QUALITY_LABEL_VI: dict[int, str] = {1: "Hoàng", 2: "Huyền", 3: "Địa", 4: "Thiên"}
+_QUALITY_KEY_BY_TIER: dict[int, str] = {1: "hoan", 2: "huyen", 3: "dia", 4: "thien"}
+
+# Hard cap on a single bulk consume click. Endgame realms target ~1000
+# pills, but each iteration is a real DB hit — keep the per-click cost
+# bounded and let the player click again for more.
+_BULK_CONSUME_HARD_CAP: int = 999
+
+# Herbs always stack in inventory at this single grade slot — their
+# intrinsic grade (1-6) is a template attribute, not per-row state.
+# Note: yêu thú materials were merged into the ``herb`` type, so this
+# covers both legacy herb drops and former yêu thú drops.
 INGREDIENT_GRADE = Grade.HOANG
 
 
@@ -47,14 +58,14 @@ def _guard(interaction: discord.Interaction, discord_id: int) -> bool:
 
 
 async def _ingredient_map(player_id: int) -> dict[str, int]:
-    """Return {item_key: total_qty} for all herb/yeu_thu rows in inventory."""
+    """Return {item_key: total_qty} for every herb (alchemy ingredient) in inventory."""
     async with get_session() as session:
         inv_repo = InventoryRepository(session)
         rows = await inv_repo.get_all(player_id)
     result: dict[str, int] = {}
     for row in rows:
         item = registry.get_item(row.item_key)
-        if item and item.get("type") in ("herb", "yeu_thu"):
+        if item and item.get("type") == "herb":
             result[row.item_key] = result.get(row.item_key, 0) + row.quantity
     return result
 
@@ -122,8 +133,6 @@ async def _alchemy_hub_embed(player: Player) -> discord.Embed:
     """Build the Luyện Đan hub embed with summary counts."""
     herbs = sum(1 for r in player.inventory
                 if registry.get_item(r.item_key) and registry.get_item(r.item_key).get("type") == "herb")
-    yeu_thu = sum(1 for r in player.inventory
-                  if registry.get_item(r.item_key) and registry.get_item(r.item_key).get("type") == "yeu_thu")
     pills = sum(1 for r in player.inventory
                 if registry.get_item(r.item_key) and registry.get_item(r.item_key).get("type") == "pill")
     unlocked = len(registry.pill_recipes_for_realm(player.qi_realm))
@@ -144,7 +153,7 @@ async def _alchemy_hub_embed(player: Player) -> discord.Embed:
 
     embed = base_embed(
         "⚗️ Luyện Đan",
-        "Luyện chế linh đan từ thảo dược và nguyên liệu yêu thú.",
+        "Luyện chế linh đan từ thảo dược (bao gồm tinh hoa từ yêu thú).",
         color=0x2E7D32,
     )
     from src.game.systems.toxicity import (
@@ -168,7 +177,6 @@ async def _alchemy_hub_embed(player: Player) -> discord.Embed:
     embed.add_field(name="Đan Độc",      value=tox_value, inline=False)
     embed.add_field(name="Đan Phương",   value=f"📜 {unlocked}/{total_recipes} mở khoá", inline=True)
     embed.add_field(name="Thảo Dược",    value=f"🌿 {herbs} loại", inline=True)
-    embed.add_field(name="Nguyên Liệu",  value=f"🩸 {yeu_thu} loại", inline=True)
     embed.add_field(name="Đan Dược",     value=f"💊 {pills} loại", inline=True)
     embed.add_field(name="🔥 Đan Lô Sở Hữu", value=furnace_display, inline=False)
     return embed
@@ -686,7 +694,7 @@ async def _do_craft(
             if not item:
                 continue
             t = item.get("type")
-            if t in ("herb", "yeu_thu"):
+            if t == "herb":
                 bag[row.item_key] = bag.get(row.item_key, 0) + row.quantity
             elif t == "furnace":
                 owned_furnace_keys.append(row.item_key)
@@ -852,104 +860,450 @@ class PillSelect(discord.ui.Select):
         await interaction.response.defer()
         key, grade_str = self.values[0].split("|")
         grade = int(grade_str)
-        effect = await _do_consume(interaction, key, grade)
 
-        embed = base_embed(
-            "💊 Sử dụng Đan Dược",
-            effect.message if effect.applied else (effect.message or "Thất bại."),
-            color=0x27AE60 if effect.applied else 0xC0392B,
+        # Pull the latest owned quantity for this pill — list snapshot may
+        # be stale if multiple sessions touched inventory. Fall back to the
+        # cached list value if we somehow can't find the row.
+        owned = next(
+            (q for k, g, q in self._all_pills if k == key and g == grade),
+            0,
         )
 
-        # Refresh pill bag for the back view, preserving the page so the
-        # user stays on whatever slice they were browsing when the picked
-        # pill ran out.
-        async with get_session() as session:
-            player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
-            pills = await _pills_in_bag(player.id) if player else []
-        view = PillBagView(self._discord_id, pills, self._back_fn, page=self._page)
+        embed = _pill_detail_embed(key, grade, owned)
+        view = PillDetailView(
+            self._discord_id,
+            key,
+            grade,
+            owned,
+            self._all_pills,
+            self._back_fn,
+            page=self._page,
+        )
         await interaction.edit_original_response(embed=embed, view=view)
 
 
-async def _do_consume(interaction: discord.Interaction, pill_key: str, grade: int) -> PillEffect:
+def _pill_detail_embed(
+    pill_key: str,
+    grade: int,
+    quantity_owned: int,
+) -> discord.Embed:
+    """Per-pill embed shown before the bulk-quantity buttons.
+
+    Surfaces the effect description, owned count, and per-pill toxicity so
+    the player can decide how many to consume. Quality (Hoàng→Thiên) is
+    derived from ``grade`` (the inventory bucket), not the recipe grade.
+    """
+    pill = registry.get_pill(pill_key)
+    quality_key = _QUALITY_KEY_BY_TIER.get(grade, "hoan")
+    quality_vi = _QUALITY_LABEL_VI.get(grade, "?")
+    color = QUALITY_COLORS.get(quality_key, discord.Color.green())
+
+    if not pill:
+        return error_embed(f"Không tìm thấy đan dược '{pill_key}'.")
+
+    embed = discord.Embed(
+        title=f"💊 {pill['vi']} ({quality_vi} Phẩm)",
+        description=pill.get("effect_vi", ""),
+        color=color,
+    )
+    embed.add_field(name="📦 Số lượng", value=f"×{quantity_owned}", inline=True)
+    embed.add_field(name="📋 Phẩm cấp", value=f"Cấp {pill.get('grade', '?')}", inline=True)
+    base_doc = int(pill.get("dan_doc", 0))
+    reduction = 1.0 - (grade - 1) * 0.2
+    per_pill_doc = max(0, int(round(base_doc * reduction)))
+    embed.add_field(name="☠️ Đan độc / viên", value=f"{per_pill_doc}", inline=True)
+    embed.set_footer(text="Chọn số lượng dùng. Đan dược không thể hấp thu sẽ tự dừng.")
+    return embed
+
+
+class PillQuantityModal(discord.ui.Modal, title="Số Lượng Sử Dụng"):
+    qty_input: discord.ui.TextInput = discord.ui.TextInput(
+        label="Số lượng đan dược",
+        placeholder="vd: 25",
+        max_length=4,
+    )
+
+    def __init__(self, on_submit, max_qty: int) -> None:
+        super().__init__()
+        self._on_submit = on_submit
+        self._max_qty = max_qty
+        self.qty_input.placeholder = f"Tối đa: {min(max_qty, _BULK_CONSUME_HARD_CAP)}"
+
+    async def on_submit(self, interaction: discord.Interaction) -> None:
+        raw = self.qty_input.value.strip().replace(",", "")
+        if not raw.isdigit() or int(raw) < 1:
+            await interaction.response.send_message(
+                embed=error_embed("Số lượng phải là số nguyên dương."),
+                ephemeral=True,
+            )
+            return
+        qty = min(int(raw), self._max_qty, _BULK_CONSUME_HARD_CAP)
+        await self._on_submit(interaction, qty)
+
+
+class PillDetailView(discord.ui.View):
+    """Quantity-picker shown after a pill is selected from the bag.
+
+    Exposes presets (1 / 5 / 10 / all) and a modal for arbitrary amounts.
+    Each click triggers a bulk consume via :func:`_do_consume`; the result
+    embed is rendered inline and the back button returns to the pill bag
+    (preserving the previous page so the user keeps their place).
+    """
+
+    def __init__(
+        self,
+        discord_id: int,
+        pill_key: str,
+        grade: int,
+        quantity_owned: int,
+        all_pills: list[tuple[str, int, int]],
+        back_fn,
+        page: int = 0,
+    ) -> None:
+        super().__init__(timeout=180)
+        self._discord_id = discord_id
+        self._pill_key = pill_key
+        self._grade = grade
+        self._owned = quantity_owned
+        self._all_pills = all_pills
+        self._back_fn = back_fn
+        self._page = page
+
+        for qty in self._quantity_presets():
+            label = f"Dùng {qty}" if qty < quantity_owned else f"Dùng tất cả ({qty})"
+            btn = discord.ui.Button(
+                label=label,
+                style=discord.ButtonStyle.success,
+                row=0,
+                disabled=quantity_owned < 1,
+            )
+            btn.callback = self._make_consume_cb(qty)
+            self.add_item(btn)
+
+        custom_btn = discord.ui.Button(
+            label="Số khác…",
+            style=discord.ButtonStyle.primary,
+            row=1,
+            disabled=quantity_owned < 1,
+        )
+        custom_btn.callback = self._open_modal
+        self.add_item(custom_btn)
+
+        back_btn = discord.ui.Button(
+            label="◀ Quay lại",
+            style=discord.ButtonStyle.secondary,
+            row=1,
+        )
+        back_btn.callback = self._back_cb
+        self.add_item(back_btn)
+
+    def _quantity_presets(self) -> list[int]:
+        """Preset quantities to render as buttons.
+
+        Always includes 1 (when affordable), then 5/10 if the player owns
+        that many, then ``self._owned`` as the "all" option when it's not
+        already a preset. Caps at 4 buttons so the row stays under
+        Discord's 5-component-per-row limit.
+        """
+        result: list[int] = []
+        for q in (1, 5, 10):
+            if q <= self._owned and q not in result:
+                result.append(q)
+        if self._owned > 0 and self._owned not in result and len(result) < 4:
+            result.append(self._owned)
+        return result or ([1] if self._owned >= 1 else [])
+
+    def _make_consume_cb(self, quantity: int):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if not _guard(interaction, self._discord_id):
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
+            await interaction.response.defer()
+            await self._consume_and_render(interaction, quantity)
+        return _cb
+
+    async def _open_modal(self, interaction: discord.Interaction) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+
+        async def _on_submit(modal_inter: discord.Interaction, qty: int) -> None:
+            await modal_inter.response.defer()
+            await self._consume_and_render(modal_inter, qty)
+
+        await interaction.response.send_modal(
+            PillQuantityModal(_on_submit, max_qty=self._owned)
+        )
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        await interaction.response.defer()
+        async with get_session() as session:
+            player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
+            pills = await _pills_in_bag(player.id) if player else []
+        embed = _pill_bag_embed(pills, page=self._page)
+        view = PillBagView(self._discord_id, pills, self._back_fn, page=self._page)
+        await interaction.edit_original_response(embed=embed, view=view)
+
+    async def _consume_and_render(
+        self, interaction: discord.Interaction, quantity: int
+    ) -> None:
+        effect, consumed = await _do_consume(
+            interaction, self._pill_key, self._grade, quantity
+        )
+
+        # Refresh inventory snapshot so the next render reflects the new
+        # count (or hides the pill if the stack ran out).
+        async with get_session() as session:
+            player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
+            pills = await _pills_in_bag(player.id) if player else []
+
+        if not effect.applied and consumed == 0:
+            embed = base_embed(
+                "💊 Sử dụng Đan Dược",
+                effect.message,
+                color=0xC0392B,
+            )
+        else:
+            embed = base_embed(
+                "💊 Sử dụng Đan Dược",
+                effect.message,
+                color=0x27AE60,
+            )
+
+        # If the player still owns this pill, stay on the detail view so
+        # they can keep pressing quantity buttons. Otherwise drop back to
+        # the bag (the pill is gone from the dropdown options).
+        new_owned = next(
+            (q for k, g, q in pills if k == self._pill_key and g == self._grade),
+            0,
+        )
+        if new_owned > 0:
+            view = PillDetailView(
+                self._discord_id,
+                self._pill_key,
+                self._grade,
+                new_owned,
+                pills,
+                self._back_fn,
+                page=self._page,
+            )
+        else:
+            view = PillBagView(self._discord_id, pills, self._back_fn, page=self._page)
+        await interaction.edit_original_response(embed=embed, view=view)
+
+
+async def _do_consume(
+    interaction: discord.Interaction,
+    pill_key: str,
+    grade: int,
+    quantity: int = 1,
+) -> tuple[PillEffect, int]:
+    """Consume up to ``quantity`` pills of ``(pill_key, grade)``.
+
+    Returns ``(effect, consumed_count)`` where ``effect.message`` is a
+    human-readable summary aggregating per-pill effects. Stops early if
+    a single consume is refused (combat-buff cap, grade-gated, or stock
+    runs out) and includes the refusal reason in the summary so the
+    player learns *why* the bulk run stopped short.
+    """
+    quantity = max(1, min(int(quantity), _BULK_CONSUME_HARD_CAP))
+
     async with get_session() as session:
         player_repo = PlayerRepository(session)
         inv_repo = InventoryRepository(session)
 
         player = await player_repo.get_by_discord_id(interaction.user.id)
         if not player:
-            return PillEffect(False, "Không tìm thấy nhân vật.")
+            return PillEffect(False, "Không tìm thấy nhân vật."), 0
 
-        # Predict the effect before deducting inventory — combat-buff pills
-        # can refuse mid-consume when the per-key cap is reached, and we
-        # don't want to silently eat the pill in that case.
+        # Single inventory lookup — cap requested quantity to what's
+        # actually in the bag and decrement after the consume loop in one
+        # call. Avoids N round-trips through SQLAlchemy when bulk-using.
+        existing = await inv_repo.get_item(player.id, pill_key, Grade(grade))
+        if not existing or existing.quantity < 1:
+            return PillEffect(False, "Không có đan dược này trong túi."), 0
+        available = int(existing.quantity)
+        to_attempt = min(quantity, available)
+
         char = _player_to_model(player)
-        effect = consume_pill(char, pill_key, grade)
-        if not effect.applied:
-            return effect
+        pill = registry.get_pill(pill_key)
+        effect_key = pill.get("effect_key", "") if pill else ""
+        is_buff = is_buff_pill(effect_key)
 
-        ok = await inv_repo.remove_item(player.id, pill_key, Grade(grade), 1)
+        consumed = 0
+        last_effect: PillEffect | None = None
+        last_refusal: str | None = None
+        total_dan_doc = 0
+        total_merit = 0
+        total_qi_xp = 0
+        total_body_xp = 0
+        total_heal = 0
+        last_buff_increment: str | None = None
+
+        for _ in range(to_attempt):
+            effect = consume_pill(char, pill_key, grade)
+            if not effect.applied:
+                last_refusal = effect.message
+                break
+            consumed += 1
+            last_effect = effect
+            total_dan_doc += effect.dan_doc_delta
+            total_merit += effect.merit_delta
+            total_qi_xp += effect.qi_xp_delta
+            total_body_xp += effect.body_xp_delta
+            total_heal += effect.heal_delta
+            if effect.pill_buff_increment:
+                last_buff_increment = effect.pill_buff_increment
+
+        if consumed == 0:
+            # No pills consumed — surface the refusal so the player knows
+            # why (grade-gated, buff cap reached, etc.).
+            return PillEffect(False, last_refusal or "Không thể dùng đan dược."), 0
+
+        ok = await inv_repo.remove_item(player.id, pill_key, Grade(grade), consumed)
         if not ok:
-            return PillEffect(False, "Không có đan dược này trong túi.")
+            # Should not happen: we capped to ``available`` above. If we
+            # land here the row was modified mid-flight; fail safe.
+            return PillEffect(False, "Lỗi nội bộ: không thể trừ đan dược."), 0
 
-        # Persist effects back to player row
-        player.dan_doc = max(0, int(player.dan_doc or 0) + effect.dan_doc_delta)
-        if effect.qi_xp_delta:
-            player.qi_xp = int(player.qi_xp or 0) + effect.qi_xp_delta
-        if effect.body_xp_delta:
-            player.body_xp = int(player.body_xp or 0) + effect.body_xp_delta
-        if effect.merit_delta:
-            player.merit = int(player.merit or 0) + effect.merit_delta
-        if effect.heal_delta and player.hp_current > 0:
-            player.hp_current = player.hp_current + effect.heal_delta
-        if effect.pill_buff_increment:
-            # Combat-buff pill ticked a per-effect counter — persist the
-            # updated dict via the JSON column so future consumes see the
-            # latest count and ``compute_combat_stats`` applies the bonus.
+        # Persist aggregated deltas in one save.
+        player.dan_doc = max(0, int(player.dan_doc or 0) + total_dan_doc)
+        if total_qi_xp:
+            player.qi_xp = int(player.qi_xp or 0) + total_qi_xp
+        if total_body_xp:
+            player.body_xp = int(player.body_xp or 0) + total_body_xp
+        # Re-derive bậc from the new XP — pill XP otherwise leaves
+        # ``*_level`` stale, which strands the player at "overflow XP, can't
+        # progress" because gates like ``check_needs_tribulation`` and the
+        # status embed's progress bar both read the level column.
+        if total_body_xp or total_qi_xp:
+            from src.game.constants.realms import get_level_from_exp, get_realm
+            if total_body_xp:
+                body_realm = get_realm("body", player.body_realm)
+                if body_realm is not None:
+                    player.body_level = get_level_from_exp(player.body_xp, body_realm)
+            if total_qi_xp:
+                qi_realm = get_realm("qi", player.qi_realm)
+                if qi_realm is not None:
+                    player.qi_level = get_level_from_exp(player.qi_xp, qi_realm)
+        if total_merit:
+            player.merit = int(player.merit or 0) + total_merit
+        if total_heal and player.hp_current > 0:
+            player.hp_current = player.hp_current + total_heal
+        if last_buff_increment:
             from src.game.systems.pill_buffs import encode_counts
             player.pill_buff_counts = encode_counts(char.pill_buff_counts)
 
         await player_repo.save(player)
 
-    return effect
+    summary_message = _format_bulk_consume_message(
+        pill_key=pill_key,
+        grade=grade,
+        consumed=consumed,
+        requested=quantity,
+        is_buff=is_buff,
+        last_effect=last_effect,
+        total_dan_doc=total_dan_doc,
+        total_qi_xp=total_qi_xp,
+        total_body_xp=total_body_xp,
+        total_heal=total_heal,
+        total_merit=total_merit,
+        refusal=last_refusal,
+    )
+
+    return (
+        PillEffect(
+            applied=True,
+            message=summary_message,
+            dan_doc_delta=total_dan_doc,
+            merit_delta=total_merit,
+            qi_xp_delta=total_qi_xp,
+            body_xp_delta=total_body_xp,
+            heal_delta=total_heal,
+            pill_buff_increment=last_buff_increment,
+        ),
+        consumed,
+    )
+
+
+def _format_bulk_consume_message(
+    *,
+    pill_key: str,
+    grade: int,
+    consumed: int,
+    requested: int,
+    is_buff: bool,
+    last_effect: PillEffect | None,
+    total_dan_doc: int,
+    total_qi_xp: int,
+    total_body_xp: int,
+    total_heal: int,
+    total_merit: int,
+    refusal: str | None,
+) -> str:
+    """Produce the user-facing summary for a bulk consume run."""
+    if consumed == 1 and last_effect is not None:
+        msg = last_effect.message
+    elif is_buff and last_effect is not None:
+        # The last successful buff message already shows the cumulative
+        # stat and the new ``count/cap`` — most informative summary line.
+        msg = f"✨ Dùng **{consumed}** viên — " + last_effect.message
+    else:
+        pill = registry.get_pill(pill_key)
+        name = pill["vi"] if pill else pill_key
+        quality = _QUALITY_LABEL_VI.get(grade, "?")
+        parts: list[str] = []
+        if total_qi_xp:
+            parts.append(f"+{total_qi_xp:,} EXP Luyện Khí")
+        if total_body_xp:
+            parts.append(f"+{total_body_xp:,} EXP Luyện Thể")
+        if total_heal:
+            parts.append(f"+{total_heal:,} HP")
+        if total_merit:
+            parts.append(f"+{total_merit:,} Công Đức")
+        if total_dan_doc > 0:
+            parts.append(f"☠️ +{total_dan_doc} Đan Độc")
+        elif total_dan_doc < 0:
+            parts.append(f"☠️ −{abs(total_dan_doc)} Đan Độc")
+        body = ", ".join(parts) if parts else "Hiệu ứng đã áp dụng"
+        msg = f"✨ Dùng **{consumed}** viên **{name}** ({quality} Phẩm) — {body}"
+
+    if refusal and consumed < requested:
+        msg += f"\n\n⚠️ Dừng sau {consumed} viên: {refusal}"
+
+    return msg
 
 
 # ── Herb bag ────────────────────────────────────────────────────────────────
 
 def _herb_bag_embed(herbs: dict[str, int]) -> discord.Embed:
     embed = base_embed(
-        "🌿 Thảo Dược & Nguyên Liệu",
-        "Nguyên liệu luyện đan trong túi. Thảo dược rớt từ **Dược Viên**; "
-        "nguyên liệu yêu thú rớt từ yêu thú tại **Bí Cảnh Thường**.",
+        "🌿 Thảo Dược",
+        "Nguyên liệu luyện đan trong túi — bao gồm thảo dược rớt từ "
+        "**Dược Viên** và tinh hoa yêu thú rớt từ **Bí Cảnh Thường**.",
         color=0x16A085,
     )
     if not herbs:
         embed.description += "\n\n*(Túi rỗng.)*"
         return embed
 
-    # Group by type then grade
-    herb_lines_by_grade: dict[int, list[str]] = {}
-    yeu_lines_by_grade: dict[int, list[str]] = {}
+    # Group by grade only — yêu thú materials were merged into the
+    # ``herb`` type and now sit alongside regular thảo dược.
+    lines_by_grade: dict[int, list[str]] = {}
     for key, qty in sorted(herbs.items()):
         item = registry.get_item(key)
         if not item:
             continue
         grade = int(item.get("grade", 1))
-        line = f"• {item['vi']} ×{qty}"
-        if item.get("type") == "herb":
-            herb_lines_by_grade.setdefault(grade, []).append(line)
-        else:
-            yeu_lines_by_grade.setdefault(grade, []).append(line)
+        lines_by_grade.setdefault(grade, []).append(f"• {item['vi']} ×{qty}")
 
-    for grade in sorted(herb_lines_by_grade):
+    for grade in sorted(lines_by_grade):
         embed.add_field(
             name=f"🌿 Thảo Dược phẩm {grade}",
-            value="\n".join(herb_lines_by_grade[grade][:20]),
-            inline=False,
-        )
-    for grade in sorted(yeu_lines_by_grade):
-        embed.add_field(
-            name=f"🩸 Nguyên liệu yêu thú phẩm {grade}",
-            value="\n".join(yeu_lines_by_grade[grade][:20]),
+            value="\n".join(lines_by_grade[grade][:20]),
             inline=False,
         )
     return embed

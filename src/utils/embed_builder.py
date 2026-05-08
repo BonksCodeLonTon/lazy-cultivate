@@ -256,7 +256,7 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         at_max    = level >= LEVELS_PER_REALM
         marker    = " **◀**" if axis_key == active_axis else ""
 
-        header = f"{icon} {tier_icon} **{label}** · Cấp {level}/{LEVELS_PER_REALM}{marker}"
+        header = f"{icon} {tier_icon} **{label}**{marker}"
         if at_max or realm is None:
             body = "  ⚡ *Sẵn sàng đột phá!*"
         else:

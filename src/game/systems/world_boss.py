@@ -21,10 +21,11 @@ from src.data.registry import registry
 
 # ── Reward tiers (item keys appended on top of boss's own loot chest) ──────────
 FINISHER_BONUS_ITEMS: dict[int, tuple[str, int]] = {
-    # realm → (item_key, qty) — additional bonus for the killing blow
-    1: ("ItemPhaCanh", 1),
-    2: ("ItemPhaCanh", 1),
-    3: ("ItemPhaCanh", 2),
+    # realm → (item_key, qty) — additional bonus for the killing blow.
+    # R1–R3 omitted intentionally: their old bonus ItemPhaCanh ("Phá Cảnh Đan",
+    # special-type) had no consumption logic anywhere, so finishers were just
+    # accumulating dead-stock. Lookup uses ``.get(realm)`` so missing keys
+    # resolve to None and the caller's ``if bonus_item:`` guard skips the grant.
     4: ("ItemHonNguyen", 1),
     5: ("ItemHonNguyen", 2),
     6: ("ItemHonNguyen", 3),
@@ -210,17 +211,141 @@ from src.game.systems.dungeon import merge_loot
 _log = _logging.getLogger(__name__)
 
 
+def boss_realm_to_grade(realm: int) -> Grade:
+    """Map a world-boss realm tier (1–9) to the inventory grade its loot
+    lands at. Mirrors the participation-chest tier scheme already in
+    ``compute_rewards`` (LootChestHuyen / Dia / Thien) so primary, top, and
+    participant drops all stamp into the same tier for a given boss.
+
+    The mapping is intentionally coarse — three bosses per grade — so the
+    same chest definition works for every boss in a tier, and so the
+    inventory grade conveys "this came from a R4-6 boss" rather than the
+    item's intrinsic 1–9 template grade. This also sidesteps the issue
+    that the inventory ``Grade`` enum tops out at 4 (Thiên) while higher
+    realm bosses can drop registry-grade-5+ items.
+    """
+    if realm <= 3:
+        return Grade.HUYEN
+    if realm <= 6:
+        return Grade.DIA
+    return Grade.THIEN
+
+
+# ── Equipment drop tuning ─────────────────────────────────────────────────────
+# Each world-boss reward also rolls one piece of randomly-affixed equipment
+# scaled by the boss realm. Higher realm bosses skew toward higher grades, but
+# Thiên (4) stays scarce throughout — only ~20% chance even at R9, so a Thiên
+# drop remains a meaningful event. Hoàng (1) is gradually phased out at high
+# realm so end-game loot doesn't dilute with Yellow-grade noise.
+EQUIPMENT_DROP_BY_REALM: dict[int, dict] = {
+    1: {"chance": 0.85, "grade_weights": {1: 80,  2: 18,  3: 2,   4: 0}},
+    2: {"chance": 0.85, "grade_weights": {1: 60,  2: 30,  3: 9.5, 4: 0.5}},
+    3: {"chance": 0.90, "grade_weights": {1: 40,  2: 40,  3: 19,  4: 1}},
+    4: {"chance": 0.90, "grade_weights": {1: 20,  2: 40,  3: 37,  4: 3}},
+    5: {"chance": 0.95, "grade_weights": {1: 10,  2: 35,  3: 50,  4: 5}},
+    6: {"chance": 0.95, "grade_weights": {1: 5,   2: 30,  3: 57,  4: 8}},
+    7: {"chance": 1.00, "grade_weights": {1: 0,   2: 20,  3: 70,  4: 10}},
+    8: {"chance": 1.00, "grade_weights": {1: 0,   2: 10,  3: 75,  4: 15}},
+    9: {"chance": 1.00, "grade_weights": {1: 0,   2: 5,   3: 75,  4: 20}},
+}
+
+
+def _pick_equipment_grade(realm: int, rng: _random_mod.Random) -> int:
+    """Sample a grade (1–4) from the realm-keyed weight table."""
+    cfg = EQUIPMENT_DROP_BY_REALM.get(realm) or EQUIPMENT_DROP_BY_REALM[1]
+    weights = cfg["grade_weights"]
+    pool = [(g, float(w)) for g, w in weights.items() if w > 0]
+    total = sum(w for _, w in pool)
+    pick = rng.uniform(0, total)
+    cumulative = 0.0
+    for g, w in pool:
+        cumulative += w
+        if pick <= cumulative:
+            return g
+    return pool[-1][0]
+
+
+def maybe_generate_equipment_for_realm(
+    realm: int, rng: _random_mod.Random,
+) -> dict | None:
+    """Roll a single piece of randomly-affixed equipment for ``realm``, or
+    return None if the chance check fails.
+
+    Reuses the working forge primitives (``roll_implicit_stats`` /
+    ``roll_affixes`` / ``compute_stats``) — the older ``item_generator``
+    module targets an obsolete affix schema and isn't compatible with the
+    current ``slots`` / ``by_grade`` JSON. Drops always roll at "hoan"
+    quality (no quality bonus, no affix floor) so forge remains the
+    canonical path to upgraded-quality gear.
+    """
+    from src.game.engine.quality import QUALITY_SPECIAL
+    from src.game.systems.forge import (
+        _build_display_name,
+        compute_stats,
+        roll_affixes,
+        roll_implicit_stats,
+    )
+
+    cfg = EQUIPMENT_DROP_BY_REALM.get(realm) or EQUIPMENT_DROP_BY_REALM[1]
+    if rng.random() >= cfg["chance"]:
+        return None
+    bases = [
+        b for b in (registry.bases.values() if hasattr(registry, "bases") else [])
+        if "implicit_by_grade" in b
+    ]
+    if not bases:
+        return None
+    base = rng.choice(bases)
+    grade = _pick_equipment_grade(realm, rng)
+    quality = "hoan"
+    try:
+        implicit = roll_implicit_stats(base, grade, quality)
+        affixes = roll_affixes(
+            base["slot"], grade, quality,
+            material_keys=None,
+            two_handed=bool(base.get("two_handed", False)),
+        )
+        computed = compute_stats(implicit, affixes)
+        name = _build_display_name(base, quality, affixes)
+    except Exception as e:  # noqa: BLE001 — defensive; shouldn't block rest of claim
+        _log.warning(
+            "Equipment generation failed for base=%s grade=%s: %s",
+            base.get("key"), grade, e,
+        )
+        return None
+
+    return {
+        "slot": base["slot"],
+        "base_key": base["key"],
+        "grade": grade,
+        "quality": quality,
+        "special_label": QUALITY_SPECIAL[quality]["special_label"],
+        "implicit_stats": implicit,
+        "affixes": affixes,
+        "computed_stats": computed,
+        "display_name": name,
+    }
+
+
 async def grant_loot_from_tables(
     irepo,
     player_id: int,
     table_keys: list[str],
     bonus_items: list[tuple[str, int]],
     rng: _random_mod.Random,
-) -> list[dict]:
-    """Roll all loot tables + add bonus items, merge duplicates, and grant.
+    boss_realm: int,
+    eqrepo=None,
+) -> tuple[list[dict], list[dict]]:
+    """Roll all loot tables + add bonus items + roll one piece of equipment.
 
-    Returns the merged drop list so the caller can render it. Items are
-    added at their registry-declared grade (default Hoàng = 1 if missing).
+    Returns ``(merged_inventory_drops, equipment_drops)`` so callers can
+    render both buckets separately. Every inventory drop is stamped at the
+    boss-realm-corresponding grade (``boss_realm_to_grade``); the equipment
+    roll uses ``EQUIPMENT_DROP_BY_REALM`` weights and creates a real
+    ``ItemInstance`` row via ``eqrepo.add_to_bag`` when an
+    ``EquipmentRepository`` is supplied. Without ``eqrepo`` no equipment is
+    granted (callers that don't have an equipment-repo on hand stay
+    backwards-compatible).
     """
     all_drops: list[dict] = []
     for table_key in table_keys:
@@ -232,11 +357,26 @@ async def grant_loot_from_tables(
         all_drops.append({"item_key": item_key, "quantity": qty})
 
     final = [{"item_key": k, "quantity": v} for k, v in merge_loot(all_drops).items()]
+    from src.game.engine.item_generator import is_unique_key, generate_unique
+    grade = boss_realm_to_grade(boss_realm)
+    equipment_drops: list[dict] = []
+    inventory_drops: list[dict] = []
     for drop in final:
-        data = registry.get_item(drop["item_key"])
-        grade_val = data.get("grade", 1) if data else 1
-        await irepo.add_item(player_id, drop["item_key"], Grade(grade_val), drop["quantity"])
-    return final
+        if eqrepo is not None and is_unique_key(drop["item_key"]):
+            for _ in range(max(1, int(drop["quantity"]))):
+                eq_data = generate_unique(drop["item_key"], rng)
+                await eqrepo.add_to_bag(player_id, eq_data)
+                equipment_drops.append(eq_data)
+            continue
+        await irepo.add_item(player_id, drop["item_key"], grade, drop["quantity"])
+        inventory_drops.append(drop)
+
+    if eqrepo is not None:
+        eq_data = maybe_generate_equipment_for_realm(boss_realm, rng)
+        if eq_data is not None:
+            await eqrepo.add_to_bag(player_id, eq_data)
+            equipment_drops.append(eq_data)
+    return inventory_drops, equipment_drops
 
 
 async def flag_rewards_distributed(wb_repo, instance_id: int, boss_key: str) -> bool:

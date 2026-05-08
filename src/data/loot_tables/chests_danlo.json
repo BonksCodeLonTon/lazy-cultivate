@@ -22,7 +22,7 @@
     },
     {
       "item_key": "HangTamThao",
-      "weight": 300000,
+      "weight": 2400000,
       "qty_min": 1,
       "qty_max": 3
     },
@@ -48,39 +48,32 @@
       "pool_id": "chest_danlo_g2_pick"
     },
     {
-      "item_key": "DanLoThuong_G2",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "chest_danlo_g2_pick"
-    },
-    {
       "item_key": "KimHuyetTinh",
-      "weight": 250000,
+      "weight": 2000000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MocHuyetTinh",
-      "weight": 250000,
+      "weight": 2000000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HoaHuyetTinh",
-      "weight": 250000,
+      "weight": 2000000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThuyHuyetTinh",
-      "weight": 250000,
+      "weight": 2000000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThoHuyetTinh",
-      "weight": 250000,
+      "weight": 2000000,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -108,25 +101,25 @@
     },
     {
       "item_key": "KimLinhTinh",
-      "weight": 200000,
+      "weight": 1600000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MocLinhTinh",
-      "weight": 200000,
+      "weight": 1600000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HoaLinhTinh",
-      "weight": 200000,
+      "weight": 1600000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThuyLinhTinh",
-      "weight": 200000,
+      "weight": 1600000,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -146,33 +139,26 @@
       "pool_id": "chest_danlo_g4_pick"
     },
     {
-      "item_key": "DanLoThuong_G4",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1,
-      "pool_id": "chest_danlo_g4_pick"
-    },
-    {
       "item_key": "KimYeuDan",
-      "weight": 150000,
+      "weight": 1200000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MocYeuDan",
-      "weight": 150000,
+      "weight": 1200000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "HoaYeuDan",
-      "weight": 150000,
+      "weight": 1200000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ThuyYeuDan",
-      "weight": 150000,
+      "weight": 1200000,
       "qty_min": 1,
       "qty_max": 1
     },
@@ -200,13 +186,13 @@
     },
     {
       "item_key": "HaThuO",
-      "weight": 400000,
+      "weight": 3200000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "ThatTinhThao",
-      "weight": 350000,
+      "weight": 2800000,
       "qty_min": 1,
       "qty_max": 3
     },
@@ -218,13 +204,13 @@
     },
     {
       "item_key": "BoThienChi",
-      "weight": 250000,
+      "weight": 2000000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NgocLongSam",
-      "weight": 200000,
+      "weight": 1600000,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -258,55 +244,55 @@
     },
     {
       "item_key": "KimHuyetTinh",
-      "weight": 300000,
+      "weight": 2400000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MocHuyetTinh",
-      "weight": 300000,
+      "weight": 2400000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "ThuyHuyetTinh",
-      "weight": 300000,
+      "weight": 2400000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "HoaHuyetTinh",
-      "weight": 300000,
+      "weight": 2400000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "ThoHuyetTinh",
-      "weight": 300000,
+      "weight": 2400000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "KimLinhTinh",
-      "weight": 150000,
+      "weight": 1200000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MocLinhTinh",
-      "weight": 150000,
+      "weight": 1200000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "BoThienChi",
-      "weight": 250000,
+      "weight": 2000000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "OTruMoc",
-      "weight": 250000,
+      "weight": 2000000,
       "qty_min": 1,
       "qty_max": 2
     },

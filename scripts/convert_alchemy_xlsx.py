@@ -302,7 +302,6 @@ def parse_recipes(
             "output_pill": pill_key,
             "furnace": furnace_text,
             "furnace_tier": furnace_tier,
-            "craft_time_display": _strip(row[6]),
             "cost_cong_duc": cost_cong_duc,
             "ingredients": ingredients,
             "quality_chances": QUALITY_CHANCES_BY_GRADE.get(grade, QUALITY_CHANCES_BY_GRADE[9]),
