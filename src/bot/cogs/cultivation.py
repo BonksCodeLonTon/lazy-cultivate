@@ -26,6 +26,7 @@ from src.game.systems.cultivation_service import (
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.assets import AXIS_LABELS, AXIS_ICONS
+from src.utils.discord_safe import safe_defer
 
 log = logging.getLogger(__name__)
 
@@ -142,7 +143,8 @@ class StudyFormationModal(discord.ui.Modal, title="Học Trận với Công Đ�
             )
             return
 
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             repo = PlayerRepository(session)
             player_orm = await repo.get_by_discord_id(interaction.user.id)
@@ -274,8 +276,8 @@ class CultivateView(discord.ui.View):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
 
-            await interaction.response.defer()
-
+            if not await safe_defer(interaction):
+                return
             async with get_session() as session:
                 repo = PlayerRepository(session)
                 player = await repo.get_by_discord_id(interaction.user.id)
@@ -322,7 +324,8 @@ class CultivateView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 
@@ -350,8 +353,8 @@ class BreakthroughView(discord.ui.View):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
 
-            await interaction.response.defer()
-
+            if not await safe_defer(interaction):
+                return
             async with get_session() as session:
                 repo = PlayerRepository(session)
                 player = await repo.get_by_discord_id(interaction.user.id)
@@ -430,8 +433,8 @@ class BreakthroughView(discord.ui.View):
                     # Pills are stored per-quality (Hoàn/Huyền/Địa/Thiên) so a
                     # player's stack can be split across rows. ``remove_any_grade``
                     # iterates ascending-by-grade and decrements greedily — for
-                    # legacy materials that always sit at Grade.HOANG it behaves
-                    # identically to a single-row remove.
+                    # single-grade materials it behaves identically to a
+                    # single-row remove.
                     await inv_repo.remove_any_grade(
                         player.id, reqs["item_key"], reqs["quantity"]
                     )
@@ -459,11 +462,11 @@ class BreakthroughView(discord.ui.View):
                 post_cs = compute_combat_stats(
                     char, gem_count=len(post_gem_keys),
                     gem_keys=post_gem_keys, gem_keys_by_formation=post_gem_map,
-                    learned_skill_keys=[s.skill_key for s in (player.skills or [])],
                 )
 
                 player.hp_current = post_cs.hp_max
                 player.mp_current = post_cs.mp_max
+                player.shield_current = post_cs.shield_max
 
                 await repo.save(player)
 
@@ -493,7 +496,8 @@ class BreakthroughView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 
@@ -578,7 +582,8 @@ class CultivationCog(commands.Cog, name="Cultivation"):
     async def reset_character(
         self, interaction: discord.Interaction, confirm: str
     ) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         if confirm.strip().upper() != "XOA":
             await interaction.followup.send(
                 embed=error_embed("Hủy reset — gõ chính xác `XOA` để xác nhận."),
@@ -657,7 +662,8 @@ class CultivationCog(commands.Cog, name="Cultivation"):
     async def rename(
         self, interaction: discord.Interaction, new_name: str,
     ) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         new_name = new_name.strip()
         if len(new_name) < 2 or len(new_name) > 24:
             await interaction.followup.send(
@@ -707,8 +713,8 @@ class CultivationCog(commands.Cog, name="Cultivation"):
         from src.game.constants.linh_can import parse_linh_can
         from src.game.systems.the_chat import get_constitutions, set_constitutions
 
-        await interaction.response.defer(ephemeral=True)
-
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             repo = PlayerRepository(session)
             player = await repo.get_by_discord_id(interaction.user.id)
@@ -793,8 +799,8 @@ class CultivationCog(commands.Cog, name="Cultivation"):
 
     @app_commands.command(name="cultivate", description="Tu luyện — áp dụng AFK ticks")
     async def cultivate(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
-
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             repo = PlayerRepository(session)
             player = await repo.get_by_discord_id(interaction.user.id)
@@ -820,7 +826,8 @@ class CultivationCog(commands.Cog, name="Cultivation"):
         interaction: discord.Interaction,
         merits: app_commands.Range[int, 1, None],
     ) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             repo = PlayerRepository(session)
             player_orm = await repo.get_by_discord_id(interaction.user.id)
@@ -861,7 +868,8 @@ class CultivationCog(commands.Cog, name="Cultivation"):
 
     @app_commands.command(name="breakthrough", description="Độ Kiếp")
     async def breakthrough(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             repo = PlayerRepository(session)
             player_orm = await repo.get_by_discord_id(interaction.user.id)

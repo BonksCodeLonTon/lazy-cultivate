@@ -4,7 +4,7 @@ Covers:
 - ``distribute_qty`` allocation across N picks for various R/N splits.
 - ``_get_affix_bias`` unions biased keys across multiple consumed materials.
 - ``roll_affixes`` honors the unioned bias (each picked material's bias
-  contributes to the 3× weight pool).
+  contributes to the 6×–15× weight pool).
 - ``forge_equipment`` end-to-end with two distinct materials in
   ``consumed_materials`` produces a working item without crashing.
 """
@@ -17,7 +17,7 @@ import pytest
 
 from src.data.registry import registry
 from src.game.systems.forge import (
-    _get_affix_bias,
+    _get_affix_bias_weights,
     distribute_qty,
     forge_equipment,
     roll_affixes,
@@ -39,7 +39,7 @@ def _test_char():
 
 def _first_forgable_base() -> str:
     for base in registry.bases.values():
-        if "implicit_by_grade" in base:
+        if "implicit_by_realm" in base:
             return base["key"]
     pytest.skip("no forgable base in registry")
     return ""
@@ -78,7 +78,7 @@ def test_distribute_returns_none_for_empty_picks():
     assert distribute_qty([], 5) is None
 
 
-# ── _get_affix_bias union ──────────────────────────────────────────────────
+# ── _get_affix_bias_weights union ──────────────────────────────────────────
 
 def test_get_affix_bias_union_across_multiple_materials(monkeypatch):
     """Multiple consumed materials → unioned bias set."""
@@ -89,25 +89,25 @@ def test_get_affix_bias_union_across_multiple_materials(monkeypatch):
     monkeypatch.setattr(
         registry, "get_item", lambda k: fake_items.get(k, registry.items.get(k))
     )
-    bias = _get_affix_bias(["MatA", "MatB"])
-    assert bias == {"pfx_hp", "pfx_def", "pfx_evasion"}
+    weights = _get_affix_bias_weights(["MatA", "MatB"])
+    assert set(weights) == {"pfx_hp", "pfx_def", "pfx_evasion"}
 
 
 def test_get_affix_bias_single_string_legacy(monkeypatch):
-    """Backward-compat: a single string still returns its bias."""
+    """A single string is accepted and produces that material's bias."""
     fake_items = {
         "MatA": {"type": "forge_material", "affix_bias": ["pfx_hp"]},
     }
     monkeypatch.setattr(
         registry, "get_item", lambda k: fake_items.get(k, registry.items.get(k))
     )
-    assert _get_affix_bias("MatA") == {"pfx_hp"}
+    assert set(_get_affix_bias_weights("MatA")) == {"pfx_hp"}
 
 
 def test_get_affix_bias_empty_inputs():
-    assert _get_affix_bias(None) == set()
-    assert _get_affix_bias([]) == set()
-    assert _get_affix_bias("") == set()
+    assert _get_affix_bias_weights(None) == {}
+    assert _get_affix_bias_weights([]) == {}
+    assert _get_affix_bias_weights("") == {}
 
 
 # ── roll_affixes honors unioned bias ───────────────────────────────────────
@@ -124,7 +124,7 @@ def _biased_keys_in_pool(slot: str = "armor") -> list[str]:
 
 def test_roll_affixes_unioned_bias_increases_pick_rate(monkeypatch):
     """With two materials each biasing a different key, both biased keys
-    should land more often than baseline across many rolls (bias is 3×)."""
+    should land more often than baseline across many rolls (grade-1 bias is 6×)."""
     biased_a, biased_b = _biased_keys_in_pool()
 
     fake_items = {
@@ -149,8 +149,8 @@ def test_roll_affixes_unioned_bias_increases_pick_rate(monkeypatch):
 
     # Baseline frequency: 1 prefix slot at hoan, 11 prefix-eligible affixes
     # → unbiased expectation per affix = trials / 11 ≈ 73. Biased keys get
-    # 3× weight, so they should land notably more often. Assert each biased
-    # key is picked at least 1.5× the unbiased average.
+    # 6× weight (grade 1), so they should land notably more often. Assert
+    # each biased key is picked at least 1.5× the unbiased average.
     unbiased_avg = trials / 11
     assert counts[biased_a] > unbiased_avg * 1.5
     assert counts[biased_b] > unbiased_avg * 1.5

@@ -3,7 +3,6 @@
     "key": "EnemyLCMoc_T1",
     "vi": "Bích Mộc Phong Bế",
     "en": "Verdant Wood Seal",
-    "realm": 2,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 14,
     "cooldown": 1,
-    "base_dmg": 16,
+    "base_dmg": 32,
     "effects": [
       "DebuffLamCham"
     ],
@@ -26,7 +25,6 @@
     "key": "EnemyLCMoc_T2",
     "vi": "Diệp Vũ Hấp Tinh",
     "en": "Leaf Rain Essence Drain",
-    "realm": 4,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -36,7 +34,7 @@
     },
     "mp_cost": 24,
     "cooldown": 2,
-    "base_dmg": 32,
+    "base_dmg": 128,
     "effects": [
       "DebuffTroBuoc"
     ],
@@ -49,7 +47,6 @@
     "key": "EnemyLCMoc_T3",
     "vi": "Cự Mộc Trấn Tâm",
     "en": "Colossal Wood Heart-Suppression",
-    "realm": 6,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -59,7 +56,7 @@
     },
     "mp_cost": 40,
     "cooldown": 3,
-    "base_dmg": 70,
+    "base_dmg": 420,
     "effects": [
       "CCMuted",
       "DebuffLamCham"

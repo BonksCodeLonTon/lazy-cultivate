@@ -16,7 +16,15 @@ from src.game.constants.grades import Grade, GRADE_LABELS
 from src.game.engine.equipment import format_computed_stats
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
+from src.utils.discord_safe import safe_defer
+from src.utils.search import SearchModal, matches
 from src.data.registry import registry
+
+
+def _registry_item_name(key: str) -> str:
+    """Resolve a Vietnamese display name for an inventory item_key."""
+    data = registry.get_item(key)
+    return data["vi"] if data else key
 
 _TRADE_TIMEOUT = 300  # seconds
 
@@ -133,40 +141,65 @@ class _AddInvSelectView(discord.ui.View):
 
     def __init__(
         self, session: _TradeSession, discord_id: int,
-        message: discord.Message, inv_items: list, page: int = 0,
+        message: discord.Message, inv_items: list,
+        page: int = 0, search: str = "",
     ) -> None:
         super().__init__(timeout=300)
         self._session = session
         self._discord_id = discord_id
         self._message = message
         self._inv_items = inv_items
-        self._page = max(0, min(page, total_pages(len(inv_items), per_page=PAGE_SIZE) - 1))
+        self._search = search
+        self._filtered = [
+            inv for inv in inv_items
+            if matches(search, _registry_item_name(inv.item_key))
+        ]
+        pages = max(1, total_pages(len(self._filtered), per_page=PAGE_SIZE))
+        self._page = max(0, min(page, pages - 1))
         self._build()
 
     def _build(self) -> None:
-        visible = page_slice(self._inv_items, self._page, per_page=PAGE_SIZE)
-        options = []
-        for inv in visible:
-            data = registry.get_item(inv.item_key)
-            name = data["vi"] if data else inv.item_key
-            options.append(discord.SelectOption(
-                label=f"{name} × {inv.quantity}"[:100],
-                description=f"Phẩm {_grade_label(inv.grade)}"[:100],
-                value=f"{inv.item_key}|{inv.grade}",
-            ))
-        pages = total_pages(len(self._inv_items), per_page=PAGE_SIZE)
-        placeholder = "Chọn vật phẩm..."
+        visible = page_slice(self._filtered, self._page, per_page=PAGE_SIZE)
+        if visible:
+            options = []
+            for inv in visible:
+                name = _registry_item_name(inv.item_key)
+                options.append(discord.SelectOption(
+                    label=f"{name} × {inv.quantity}"[:100],
+                    description=f"Phẩm {_grade_label(inv.grade)}"[:100],
+                    value=f"{inv.item_key}|{inv.grade}",
+                ))
+        else:
+            options = [discord.SelectOption(label="(không có kết quả)", value="__noop")]
+        pages = total_pages(len(self._filtered), per_page=PAGE_SIZE)
+        prefix = f"🔎 [{self._search[:20]}] " if self._search else ""
+        placeholder = f"{prefix}Chọn vật phẩm..."
         if pages > 1:
-            placeholder = f"Chọn vật phẩm... (Trang {self._page + 1}/{pages})"
+            placeholder = f"{prefix}Chọn vật phẩm... (Trang {self._page + 1}/{pages})"
 
         sel = discord.ui.Select(
             placeholder=placeholder, options=options, min_values=1, max_values=1, row=0,
+            disabled=not visible,
         )
         sel.callback = self._sel_cb
         self.add_item(sel)
+
+        search_btn = discord.ui.Button(
+            label=f"🔎 Tìm: {self._search[:18]}" if self._search else "🔎 Tìm Kiếm",
+            style=discord.ButtonStyle.primary, row=1,
+        )
+        search_btn.callback = self._search_cb
+        self.add_item(search_btn)
+        if self._search:
+            clear_btn = discord.ui.Button(
+                label="✖ Xoá Lọc", style=discord.ButtonStyle.secondary, row=1,
+            )
+            clear_btn.callback = self._clear_cb
+            self.add_item(clear_btn)
+
         add_page_controls(
-            self, page=self._page, total=len(self._inv_items),
-            on_change=self._on_page_change, row=1,
+            self, page=self._page, total=len(self._filtered),
+            on_change=self._on_page_change, row=2,
         )
 
     def _guard(self, interaction: discord.Interaction) -> bool:
@@ -178,7 +211,33 @@ class _AddInvSelectView(discord.ui.View):
             return
         view = _AddInvSelectView(
             self._session, self._discord_id, self._message,
-            self._inv_items, page=new_page,
+            self._inv_items, page=new_page, search=self._search,
+        )
+        await interaction.response.edit_message(view=view)
+
+    async def _search_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+
+        async def _on_query(inter: discord.Interaction, query: str) -> None:
+            view = _AddInvSelectView(
+                self._session, self._discord_id, self._message,
+                self._inv_items, page=0, search=query,
+            )
+            await inter.response.edit_message(view=view)
+
+        await interaction.response.send_modal(
+            SearchModal("Tìm Vật Phẩm", _on_query, default=self._search)
+        )
+
+    async def _clear_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        view = _AddInvSelectView(
+            self._session, self._discord_id, self._message,
+            self._inv_items, page=0, search="",
         )
         await interaction.response.edit_message(view=view)
 
@@ -187,6 +246,9 @@ class _AddInvSelectView(discord.ui.View):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
         val = interaction.data["values"][0]
+        if val == "__noop":
+            await interaction.response.defer()
+            return
         item_key, grade_str = val.split("|")
         grade_val = int(grade_str)
         item_data = registry.get_item(item_key)
@@ -239,7 +301,8 @@ class _AddEquipSelectView(discord.ui.View):
 
     def __init__(
         self, session: _TradeSession, discord_id: int,
-        message: discord.Message, bag_items: list, page: int = 0,
+        message: discord.Message, bag_items: list,
+        page: int = 0, search: str = "",
     ) -> None:
         super().__init__(timeout=300)
         self._session = session
@@ -247,32 +310,56 @@ class _AddEquipSelectView(discord.ui.View):
         self._message = message
         self._bag_items = bag_items
         self._bag_lookup = {str(i.id): i for i in bag_items}
-        self._page = max(0, min(page, total_pages(len(bag_items), per_page=PAGE_SIZE) - 1))
+        self._search = search
+        self._filtered = [
+            i for i in bag_items if matches(search, i.display_name)
+        ]
+        pages = max(1, total_pages(len(self._filtered), per_page=PAGE_SIZE))
+        self._page = max(0, min(page, pages - 1))
         self._build()
 
     def _build(self) -> None:
-        visible = page_slice(self._bag_items, self._page, per_page=PAGE_SIZE)
-        options = [
-            discord.SelectOption(
-                label=f"[ID:{i.id}] {i.display_name}"[:100],
-                description=(format_computed_stats(i.computed_stats) or "—")[:100],
-                value=str(i.id),
-            )
-            for i in visible
-        ]
-        pages = total_pages(len(self._bag_items), per_page=PAGE_SIZE)
-        placeholder = "Chọn trang bị..."
+        visible = page_slice(self._filtered, self._page, per_page=PAGE_SIZE)
+        if visible:
+            options = [
+                discord.SelectOption(
+                    label=f"[ID:{i.id}] {i.display_name}"[:100],
+                    description=(format_computed_stats(i.computed_stats) or "—")[:100],
+                    value=str(i.id),
+                )
+                for i in visible
+            ]
+        else:
+            options = [discord.SelectOption(label="(không có kết quả)", value="__noop")]
+        pages = total_pages(len(self._filtered), per_page=PAGE_SIZE)
+        prefix = f"🔎 [{self._search[:20]}] " if self._search else ""
+        placeholder = f"{prefix}Chọn trang bị..."
         if pages > 1:
-            placeholder = f"Chọn trang bị... (Trang {self._page + 1}/{pages})"
+            placeholder = f"{prefix}Chọn trang bị... (Trang {self._page + 1}/{pages})"
 
         sel = discord.ui.Select(
             placeholder=placeholder, options=options, min_values=1, max_values=1, row=0,
+            disabled=not visible,
         )
         sel.callback = self._sel_cb
         self.add_item(sel)
+
+        search_btn = discord.ui.Button(
+            label=f"🔎 Tìm: {self._search[:18]}" if self._search else "🔎 Tìm Kiếm",
+            style=discord.ButtonStyle.primary, row=1,
+        )
+        search_btn.callback = self._search_cb
+        self.add_item(search_btn)
+        if self._search:
+            clear_btn = discord.ui.Button(
+                label="✖ Xoá Lọc", style=discord.ButtonStyle.secondary, row=1,
+            )
+            clear_btn.callback = self._clear_cb
+            self.add_item(clear_btn)
+
         add_page_controls(
-            self, page=self._page, total=len(self._bag_items),
-            on_change=self._on_page_change, row=1,
+            self, page=self._page, total=len(self._filtered),
+            on_change=self._on_page_change, row=2,
         )
 
     def _guard(self, interaction: discord.Interaction) -> bool:
@@ -284,7 +371,33 @@ class _AddEquipSelectView(discord.ui.View):
             return
         view = _AddEquipSelectView(
             self._session, self._discord_id, self._message,
-            self._bag_items, page=new_page,
+            self._bag_items, page=new_page, search=self._search,
+        )
+        await interaction.response.edit_message(view=view)
+
+    async def _search_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+
+        async def _on_query(inter: discord.Interaction, query: str) -> None:
+            view = _AddEquipSelectView(
+                self._session, self._discord_id, self._message,
+                self._bag_items, page=0, search=query,
+            )
+            await inter.response.edit_message(view=view)
+
+        await interaction.response.send_modal(
+            SearchModal("Tìm Trang Bị", _on_query, default=self._search)
+        )
+
+    async def _clear_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        view = _AddEquipSelectView(
+            self._session, self._discord_id, self._message,
+            self._bag_items, page=0, search="",
         )
         await interaction.response.edit_message(view=view)
 
@@ -292,7 +405,11 @@ class _AddEquipSelectView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        instance_id = int(interaction.data["values"][0])
+        val = interaction.data["values"][0]
+        if val == "__noop":
+            await interaction.response.defer()
+            return
+        instance_id = int(val)
         inst = self._bag_lookup.get(str(instance_id))
         if inst is None:
             await interaction.response.send_message(
@@ -520,7 +637,8 @@ class TradeView(discord.ui.View):
         self._session.set_confirmed(interaction.user.id, True)
 
         if self._session.both_confirmed():
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             result = await _execute_trade(self._session)
             _remove_session(self._session)
             embed = base_embed("🤝 Giao Dịch Hoàn Tất" if result is None else "❌ Giao Dịch Thất Bại", color=0x2ECC71 if result is None else 0xE74C3C)

@@ -3,7 +3,6 @@
     "key": "EnemyHoa_R2",
     "vi": "Yêu Hỏa Thiêu Thân",
     "en": "Demon Fire Self-Immolate",
-    "realm": 2,
     "category": "attack",
     "element": "hoa",
     "attack_type": "magical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 14,
     "cooldown": 1,
-    "base_dmg": 20,
+    "base_dmg": 40,
     "effects": [
       "DebuffThieuDot"
     ],
@@ -26,7 +25,6 @@
     "key": "EnemyLoi_R2",
     "vi": "Yêu Lôi Chấp Pháp",
     "en": "Demon Thunder Enforcer",
-    "realm": 2,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -36,7 +34,7 @@
     },
     "mp_cost": 15,
     "cooldown": 1,
-    "base_dmg": 22,
+    "base_dmg": 44,
     "effects": [
       "DebuffTeLiet"
     ],
@@ -54,7 +52,6 @@
     "key": "EnemyBang_R2",
     "vi": "Yêu Băng Sương Kích",
     "en": "Demon Ice Frost Strike",
-    "realm": 2,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -64,7 +61,7 @@
     },
     "mp_cost": 13,
     "cooldown": 1,
-    "base_dmg": 20,
+    "base_dmg": 40,
     "effects": [
       "DebuffLamCham"
     ],
@@ -77,7 +74,6 @@
     "key": "EnemyKim_R2",
     "vi": "Yêu Kim Đoạn Trảm",
     "en": "Demon Metal Cleave",
-    "realm": 2,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -87,7 +83,7 @@
     },
     "mp_cost": 12,
     "cooldown": 1,
-    "base_dmg": 22,
+    "base_dmg": 44,
     "effects": [
       "DebuffCatDut"
     ],
@@ -100,7 +96,6 @@
     "key": "EnemyMoc_R2",
     "vi": "Yêu Mộc Thân Hiên",
     "en": "Demon Wood Vine Lash",
-    "realm": 2,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -110,7 +105,7 @@
     },
     "mp_cost": 13,
     "cooldown": 1,
-    "base_dmg": 18,
+    "base_dmg": 36,
     "effects": [
       "DebuffDocTo"
     ],
@@ -123,7 +118,6 @@
     "key": "EnemyPhong_R2",
     "vi": "Yêu Phong Xích Kiếm",
     "en": "Demon Wind Lash-Sword",
-    "realm": 2,
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
@@ -133,7 +127,7 @@
     },
     "mp_cost": 12,
     "cooldown": 1,
-    "base_dmg": 22,
+    "base_dmg": 44,
     "effects": [
       "DebuffChayMau"
     ],
@@ -146,7 +140,6 @@
     "key": "EnemyTho_R2",
     "vi": "Yêu Thổ Cự Thạch",
     "en": "Demon Earth Great-Stone",
-    "realm": 2,
     "category": "attack",
     "element": "tho",
     "attack_type": "physical",
@@ -156,7 +149,7 @@
     },
     "mp_cost": 15,
     "cooldown": 2,
-    "base_dmg": 26,
+    "base_dmg": 52,
     "effects": [
       "DebuffTroBuoc"
     ],
@@ -169,7 +162,6 @@
     "key": "EnemyThuy_R2",
     "vi": "Yêu Thủy Ngạn Đoạt",
     "en": "Demon Water Torrent Strike",
-    "realm": 2,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -179,7 +171,7 @@
     },
     "mp_cost": 13,
     "cooldown": 1,
-    "base_dmg": 20,
+    "base_dmg": 40,
     "effects": [],
     "effect_chances": {},
     "formation_key": null

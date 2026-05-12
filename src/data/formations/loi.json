@@ -1,0 +1,93 @@
+[
+  {
+    "key": "NhatNguyenLoi",
+    "vi": "Nhất Nguyên Lôi Trận",
+    "en": "One Origin Thunder Formation",
+    "element": "loi",
+    "base_stat_bonus": {
+      "hp_pct": 0.03,
+      "mp_pct": 0.08,
+      "spd_bonus": 2
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "mp_pct": 0.03,
+        "shock_on_hit_pct": 0.08,
+        "note": "Sơ Khai Lôi Trận"
+      },
+      "3": {
+        "mp_pct": 0.08,
+        "shock_on_hit_pct": 0.18,
+        "element_pen": {
+          "loi": 0.05
+        },
+        "note": "Kiên Cố Lôi Trận"
+      },
+      "5": {
+        "mp_pct": 0.15,
+        "crit_rating": 50,
+        "shock_on_hit_pct": 0.3,
+        "element_pen": {
+          "loi": 0.1
+        },
+        "spd_bonus": 3,
+        "turn_steal_pct": 0.05,
+        "note": "Thịnh Vượng Lôi Trận"
+      },
+      "7": {
+        "mp_pct": 0.25,
+        "crit_rating": 100,
+        "shock_on_hit_pct": 0.45,
+        "shock_stack_cap_bonus": 2,
+        "shock_per_stack_pct_bonus": 0.015,
+        "element_pen": {
+          "loi": 0.15
+        },
+        "spd_bonus": 5,
+        "turn_steal_pct": 0.1,
+        "note": "Vô Song Lôi Trận"
+      },
+      "10": {
+        "mp_pct": 0.5,
+        "crit_rating": 200,
+        "paralysis_on_crit": true,
+        "shock_on_hit_pct": 0.7,
+        "shock_stack_cap_bonus": 5,
+        "shock_per_stack_pct_bonus": 0.03,
+        "element_pen": {
+          "loi": 0.25
+        },
+        "spd_bonus": 8,
+        "turn_steal_pct": 0.2,
+        "note": "Tuyệt Đỉnh Lôi Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmLoi",
+      "vi": "Nhất Nguyên Lôi Thức",
+      "en": "One Origin Thunder Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "loi",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 1.1
+      },
+      "mp_cost": 120,
+      "cooldown": 4,
+      "base_dmg": 900,
+      "effects": [
+        "DebuffSocDien",
+        "DebuffSocDien",
+        "DebuffTeLiet"
+      ],
+      "effect_overrides": {
+        "DebuffTeLiet": {
+          "duration": 2
+        }
+      },
+      "reserved_mp_pct": 0.09
+    }
+  }
+]

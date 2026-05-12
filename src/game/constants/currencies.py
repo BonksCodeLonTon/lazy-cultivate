@@ -47,10 +47,6 @@ FORMATION_EXP_PER_MERIT_BY_REALM: tuple[float, ...] = (
     0.2,  # R8 Đế Trận     — endgame, smaller table but premium rate
 )
 
-# Legacy flat rate — retained for backward compatibility / external imports.
-# New code should call ``formation_exp_per_merit(realm)`` instead.
-FORMATION_MERIT_COST_BASE = 1_000
-
 # Shop special item
 CELESTIAL_DAO_COST = 99_000    # Thiên Đạo Phù Nghịch (×2 merit 30 days)
 

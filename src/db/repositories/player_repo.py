@@ -4,9 +4,9 @@ from __future__ import annotations
 import random
 from datetime import datetime, timezone
 
-from sqlalchemy import select
+from sqlalchemy import inspect, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import joinedload, selectinload
 
 from src.db.models.player import Player
 from src.db.models.turn_tracker import TurnTracker
@@ -14,6 +14,23 @@ from src.game.constants.currencies import BONUS_TURNS
 from src.game.constants.linh_can import (
     ALL_LINH_CAN, format_linh_can, parse_linh_can, parse_linh_can_levels,
 )
+
+
+# Loader options shared by ``get_by_discord_id`` / ``get_by_id`` — the full
+# eager chain that lets every cog access player.inventory, .skills, etc.
+# without lazy-load failures. ``turn_tracker`` is 1:1 so we ``joinedload``
+# (single JOIN, no extra round-trip) while the collections use
+# ``selectinload`` (batched IN-list query, avoids a Cartesian explosion
+# when the player owns hundreds of inventory rows + dozens of skills).
+def _full_loader_options() -> tuple:
+    return (
+        joinedload(Player.turn_tracker),
+        selectinload(Player.inventory),
+        selectinload(Player.skills),
+        selectinload(Player.artifacts),
+        selectinload(Player.formations),
+        selectinload(Player.item_instances),
+    )
 
 
 class PlayerRepository:
@@ -24,31 +41,51 @@ class PlayerRepository:
         result = await self._session.execute(
             select(Player)
             .where(Player.discord_id == discord_id)
-            .options(
-                selectinload(Player.turn_tracker),
-                selectinload(Player.inventory),
-                selectinload(Player.skills),
-                selectinload(Player.artifacts),
-                selectinload(Player.formations),
-                selectinload(Player.item_instances),
-            )
+            .options(*_full_loader_options())
         )
-        return result.scalar_one_or_none()
+        return result.unique().scalar_one_or_none()
 
     async def get_by_id(self, player_id: int) -> Player | None:
         result = await self._session.execute(
             select(Player)
             .where(Player.id == player_id)
-            .options(
-                selectinload(Player.turn_tracker),
-                selectinload(Player.inventory),
-                selectinload(Player.skills),
-                selectinload(Player.artifacts),
-                selectinload(Player.formations),
-                selectinload(Player.item_instances),
-            )
+            .options(*_full_loader_options())
         )
-        return result.scalar_one_or_none()
+        return result.unique().scalar_one_or_none()
+
+    async def get_by_discord_id_lite(self, discord_id: int) -> Player | None:
+        """Lightweight Player + turn_tracker fetch — no collection loads.
+
+        Use this for command paths that only need scalar fields (merit /
+        karma / realm / hp / mp / titles) or the ×2 merit buff state.
+        Skipping the four selectinloads turns a 5-query lookup into a
+        1-query lookup; on a cold connection that's the difference
+        between hitting Discord's 3 s interaction window or not.
+
+        Caller MUST NOT touch ``player.inventory``, ``.skills``,
+        ``.artifacts``, ``.formations``, or ``.item_instances`` — those
+        are unloaded and will raise ``MissingGreenlet`` under async.
+        """
+        result = await self._session.execute(
+            select(Player)
+            .where(Player.discord_id == discord_id)
+            .options(joinedload(Player.turn_tracker))
+        )
+        return result.unique().scalar_one_or_none()
+
+    async def get_names_by_ids(self, player_ids: list[int]) -> dict[int, str]:
+        """Return ``{player_id: name}`` for ids in ``player_ids``.
+
+        Lightweight projection (id + name only) for leaderboard rendering —
+        avoids the heavy selectinload chain in ``get_by_id`` when callers
+        only need display names.
+        """
+        if not player_ids:
+            return {}
+        result = await self._session.execute(
+            select(Player.id, Player.name).where(Player.id.in_(player_ids))
+        )
+        return {pid: name for pid, name in result.all()}
 
     async def create(self, discord_id: int, name: str) -> Player:
         # Randomly assign 1–3 Linh Căn at registration
@@ -85,6 +122,7 @@ class PlayerRepository:
         init_cs = compute_combat_stats(char, gem_count=len(init_gem_keys), gem_keys=init_gem_keys)
         player.hp_current = init_cs.hp_max
         player.mp_current = init_cs.mp_max
+        player.shield_current = init_cs.shield_max
 
 
 
@@ -126,7 +164,20 @@ class PlayerRepository:
         return result.scalar_one_or_none() is not None
 
     async def save(self, player: Player) -> None:
-        self._session.add(player)
+        """Persist mutations on ``player``. Skips ``session.add`` when the
+        instance is already managed by this session — calling ``add`` on a
+        persistent instance triggers a cascade walk through eagerly-loaded
+        relationships, and any child marked deleted earlier in the same
+        session (e.g. an inventory row consumed by ``remove_any_grade``)
+        raises ``InvalidRequestError: Instance has been deleted``. The
+        managed-instance path lets SQLAlchemy's dirty tracking flush the
+        attribute changes (merit, hp_current, …) without re-cascading
+        through children. Transient / detached players still get added so
+        new-player creation flows keep working.
+        """
+        state = inspect(player)
+        if state.transient or state.detached:
+            self._session.add(player)
         await self._session.flush()
 
 
@@ -212,6 +263,7 @@ def _player_to_model(player: Player):
         pill_buff_counts=_parse_pill_buff_counts(player.pill_buff_counts),
         hp_current=player.hp_current,
         mp_current=player.mp_current,
+        shield_current=player.shield_current,
         active_formation=player.active_formation,
         main_title=player.main_title,
         sub_title=player.sub_title,

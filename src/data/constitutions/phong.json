@@ -272,9 +272,13 @@
       "evasion_rating": 180,
       "spd_bonus": 7,
       "mark_on_hit_pct": 0.15,
-      "crit_rating_vs_marked": 120,
       "element_pen": {
         "phong": 0.08
+      },
+      "crit_amp_vs": {
+        "marked": {
+          "rating": 120
+        }
       }
     },
     "special_requirements": null,
@@ -356,8 +360,12 @@
       "spd_bonus": 14,
       "mark_on_hit_pct": 0.21,
       "damage_bonus_from_evasion_pct": 0.06,
-      "crit_rating_vs_marked": 100,
-      "crit_dmg_vs_marked": 100
+      "crit_amp_vs": {
+        "marked": {
+          "rating": 100,
+          "dmg": 100
+        }
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -474,15 +482,19 @@
       "evasion_rating": 400,
       "spd_bonus": 25,
       "mark_on_hit_pct": 0.15,
-      "crit_rating_vs_marked": 200,
-      "crit_dmg_vs_marked": 150,
       "damage_bonus_from_evasion_pct": 0.12,
       "element_pen": {
         "phong": 0.1
       },
       "final_dmg_bonus": 0.2,
       "crit_rating": 200,
-      "true_dmg_pct": 0.04
+      "true_dmg_pct": 0.04,
+      "crit_amp_vs": {
+        "marked": {
+          "rating": 200,
+          "dmg": 150
+        }
+      }
     },
     "special_requirements": null,
     "materials": {

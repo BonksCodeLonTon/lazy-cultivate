@@ -3,7 +3,6 @@
     "key": "EnemyLCKim_T1",
     "vi": "Kim Quang Trảm",
     "en": "Metal Light Slash",
-    "realm": 2,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 12,
     "cooldown": 1,
-    "base_dmg": 18,
+    "base_dmg": 36,
     "effects": [
       "DebuffChayMau"
     ],
@@ -26,7 +25,6 @@
     "key": "EnemyLCKim_T2",
     "vi": "Tích Kim Phá Sơn",
     "en": "Hoarded Metal Mountain-Breaker",
-    "realm": 4,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -36,7 +34,7 @@
     },
     "mp_cost": 22,
     "cooldown": 2,
-    "base_dmg": 36,
+    "base_dmg": 144,
     "effects": [
       "DebuffPhaGiap",
       "DebuffChayMau"
@@ -51,7 +49,6 @@
     "key": "EnemyLCKim_T3",
     "vi": "Cuồng Kim Loạn Vũ",
     "en": "Wild Metal Frenzy Dance",
-    "realm": 6,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -61,7 +58,7 @@
     },
     "mp_cost": 38,
     "cooldown": 3,
-    "base_dmg": 78,
+    "base_dmg": 468,
     "effects": [
       "DebuffXeRach",
       "DebuffChayMau"

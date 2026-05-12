@@ -77,5 +77,5 @@ def test_enemy_resistance_cap_uses_player_constant():
 def test_caps_are_the_constants_not_magic_numbers():
     """Smoke check that the caps come from named constants, not stray
     literals — guards against future drift between player and enemy caps."""
-    assert MAX_ELEMENTAL_RES == pytest.approx(0.75)
+    assert MAX_ELEMENTAL_RES == pytest.approx(0.90)
     assert MAX_FINAL_DMG_REDUCE == pytest.approx(0.90)

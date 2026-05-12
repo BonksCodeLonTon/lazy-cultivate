@@ -12,7 +12,7 @@ from src.db.connection import get_session
 from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
-from src.game.engine.equipment import format_stat
+from src.game.engine.equipment import STAT_LABELS, format_stat
 from src.game.systems.forge import (
     QUALITY_LABELS,
     check_forge_requirements,
@@ -24,10 +24,55 @@ from src.game.systems.forge import (
     max_affix_total,
 )
 from src.utils import emojis
+from src.utils.discord_safe import safe_defer
 from src.utils.embed_builder import base_embed, error_embed
 from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
 
 log = logging.getLogger(__name__)
+
+
+def _format_affix_bias(material_key: str, *, max_chars: int | None = None) -> str:
+    """Render a material's ``affix_bias`` list as a comma-joined Vietnamese
+    stat-label string. Returns an empty string if the material has no bias.
+
+    Each entry shows the underlying stat (``STAT_LABELS`` — e.g. ``Công``,
+    ``Pháp Công``) plus a ``(Tiền)`` / ``(Hậu)`` tag so players can tell
+    a prefix-variant material apart from a suffix-variant one when both
+    exist for the same stat (e.g. ``pfx_matk`` ``Pháp Lực`` vs ``sfx_matk``
+    ``Pháp Tủy`` — both render as ``Pháp Công`` without the tag).
+
+    Distinct affix keys may still resolve to the same final label after
+    tagging — we dedupe order-preservingly. ``max_chars`` truncates with
+    an ellipsis to fit Discord's 100-char ``SelectOption.description``.
+    """
+    item = registry.get_item(material_key) or {}
+    keys = item.get("affix_bias") or []
+    if not keys:
+        return ""
+    seen: set[str] = set()
+    labels: list[str] = []
+    for k in keys:
+        affix = registry.get_affix(k) or {}
+        stat = affix.get("stat")
+        base = STAT_LABELS.get(stat) if stat else None
+        if not base:
+            base = affix.get("vi", k)
+        kind = affix.get("type")
+        if kind == "prefix":
+            label = f"{base} (Tiền)"
+        elif kind == "suffix":
+            label = f"{base} (Hậu)"
+        else:
+            label = base
+        if label in seen:
+            continue
+        seen.add(label)
+        labels.append(label)
+    joined = ", ".join(labels)
+    if max_chars is not None and len(joined) > max_chars:
+        joined = joined[: max(0, max_chars - 1)].rstrip(", ") + "…"
+    return joined
+
 
 SLOT_VI: dict[str, str] = {
     "weapon":   "Vũ Khí",
@@ -150,6 +195,88 @@ async def _load_forge_bag(discord_id: int):
     return char, mats_in_bag, super_mats_in_bag
 
 
+_MATERIAL_PAGE_SIZE = 10
+
+
+def _material_embed(
+    grade: int,
+    eligible: list[tuple[str, int]],
+    required_qty: int,
+    page: int,
+    picks: set[str] | None = None,
+) -> discord.Embed:
+    """Build the material picker embed for a given page.
+
+    Bias listing and dropdown share ``_MATERIAL_PAGE_SIZE`` so the embed
+    text always describes exactly the materials shown in the current
+    dropdown slice. Page controls (``◀ / ▶``) re-render this embed.
+    ``picks`` is the cross-page accumulator — surfaced as an "Đã chọn"
+    summary so the player can see selections made on other pages.
+    """
+    pages = total_pages(len(eligible), per_page=_MATERIAL_PAGE_SIZE)
+    page = max(0, min(page, pages - 1))
+    total_owned = sum(qty for _, qty in eligible)
+    picks = picks or set()
+
+    description = (
+        f"Cần tổng cộng **{required_qty}** vật liệu luyện khí "
+        "(bất kỳ phẩm). Có thể trộn nhiều loại — vật liệu phẩm cao kéo "
+        "chỉ số mạnh hơn: **3× / 4× / 5× / 6×** cho phẩm 1 / 2 / 3 / 4.\n"
+        f"Đang có: **{total_owned}** vật liệu trong kho."
+    )
+    if pages > 1:
+        description += f"\n*Trang {page + 1} / {pages}*"
+    embed = discord.Embed(
+        title=f"⚒️ Chọn Nguyên Liệu Rèn — Cấp {grade}",
+        description=description,
+        color=0xB8860B,
+    )
+    if total_owned < required_qty:
+        embed.add_field(
+            name="⚠️ Thiếu Nguyên Liệu",
+            value=f"Tổng nguyên liệu hợp lệ chưa đủ {required_qty}. Hãy tích trữ thêm.",
+            inline=False,
+        )
+    if eligible:
+        bias_lines: list[str] = []
+        for key, qty in page_slice(eligible, page, per_page=_MATERIAL_PAGE_SIZE):
+            item = registry.get_item(key) or {}
+            name = item.get("vi", key)
+            bias = _format_affix_bias(key)
+            tail = (
+                f" — Tăng tỉ lệ ra chỉ số: {bias}"
+                if bias else " — *(không có ưu tiên chỉ số)*"
+            )
+            marker = "✅ " if key in picks else ""
+            bias_lines.append(f"• {marker}**{name}** ×{qty}{tail}")
+        embed.add_field(
+            name="🎯 Tăng Tỉ Lệ Ra Chỉ Số Theo Nguyên Liệu",
+            value="\n".join(bias_lines),
+            inline=False,
+        )
+    if picks:
+        # Cross-page accumulator summary — lets the player see selections
+        # made on other pages without flipping back to verify.
+        owned_map = dict(eligible)
+        chosen_lines: list[str] = []
+        for key in sorted(picks):
+            data = registry.get_item(key) or {}
+            name = data.get("vi", key)
+            chosen_lines.append(f"• **{name}** (có {owned_map.get(key, 0)})")
+        embed.add_field(
+            name=f"🧺 Đã Chọn ({len(picks)})",
+            value="\n".join(chosen_lines)[:1024],
+            inline=False,
+        )
+    else:
+        embed.add_field(
+            name="🧺 Đã Chọn (0)",
+            value="*Chưa chọn nguyên liệu nào — chọn từ danh sách rồi nhấn ✅ Xác Nhận.*",
+            inline=False,
+        )
+    return embed
+
+
 async def _nav_material(
     interaction: discord.Interaction,
     discord_id: int,
@@ -157,6 +284,9 @@ async def _nav_material(
     base_key: str,
     grade: int,
     hub_back_fn,
+    *,
+    page: int = 0,
+    picks: set[str] | None = None,
 ) -> None:
     loaded = await _load_forge_bag(discord_id)
     if loaded is None:
@@ -166,41 +296,31 @@ async def _nav_material(
         return
     char, mats_in_bag, _ = loaded
 
-    recipe = get_recipe(grade)
     required_qty = max_affix_total(grade)
-    required_grades = sorted({r["mat_grade"] for opt in (recipe or {}).get("options", []) for r in opt["materials"]})
 
-    # Any owned material whose grade matches the recipe is a valid pick.
-    # Mix-and-match is allowed — total qty is checked at confirm time.
+    # Any owned forge_material is now eligible — no per-grade gate. The
+    # cog-level filter in ``_load_forge_bag`` already restricts the bag
+    # to ``type == "forge_material"`` rows. Mix-and-match is allowed;
+    # total qty is checked at confirm time.
     eligible: list[tuple[str, int]] = sorted(
         (
             (key, qty) for key, qty in mats_in_bag.items()
-            if qty >= 1 and get_material_grade(key) in required_grades
+            if qty >= 1
         ),
         key=lambda kv: -kv[1],
     )
-    total_owned = sum(qty for _, qty in eligible)
 
-    embed = discord.Embed(
-        title=f"⚒️ Chọn Nguyên Liệu Rèn — Cấp {grade}",
-        description=(
-            f"Cần tổng cộng **{required_qty}** nguyên liệu "
-            f"(phẩm {', '.join(str(g) for g in required_grades)}). "
-            "Có thể trộn nhiều loại — affix bias của mọi loại đã chọn đều được "
-            "cộng dồn (ưu tiên 3× lúc roll).\n"
-            f"Đang có: **{total_owned}** nguyên liệu hợp lệ trong kho."
-        ),
-        color=0xB8860B,
+    # Drop stale picks for materials no longer in the bag (drained between
+    # page flips by another action).
+    valid_keys = {k for k, _ in eligible}
+    picks = {p for p in (picks or set()) if p in valid_keys}
+
+    embed = _material_embed(grade, eligible, required_qty, page, picks)
+    view = _MaterialView(
+        discord_id, slot, base_key, grade, hub_back_fn,
+        eligible=eligible, required_qty=required_qty,
+        page=page, picks=picks,
     )
-    if total_owned < required_qty:
-        embed.add_field(
-            name="⚠️ Thiếu Nguyên Liệu",
-            value=f"Tổng nguyên liệu hợp lệ chưa đủ {required_qty}. Hãy tích trữ thêm.",
-            inline=False,
-        )
-
-    view = _MaterialView(discord_id, slot, base_key, grade, hub_back_fn,
-                         eligible=eligible, required_qty=required_qty)
     await interaction.edit_original_response(embed=embed, view=view)
 
 
@@ -358,14 +478,13 @@ def _build_confirm_embed(
                 inline=False,
             )
         else:
-            mat_lines = []
-            for i, opt in enumerate(recipe["options"], 1):
-                opt_label = f"[PA {i}] " if len(recipe["options"]) > 1 else ""
-                for req in opt["materials"]:
-                    owned = sum(qty for k, qty in mats_in_bag.items() if get_material_grade(k) == req["mat_grade"])
-                    icon  = "✅" if owned >= required_qty else "❌"
-                    mat_lines.append(f"{icon} {opt_label}{required_qty}x Linh Thiết Phẩm {req['mat_grade']} (có: {owned})")
-            embed.add_field(name="Nguyên Liệu", value="\n".join(mat_lines) or "—", inline=False)
+            owned_total = sum(qty for _, qty in mats_in_bag.items())
+            icon = "✅" if owned_total >= required_qty else "❌"
+            embed.add_field(
+                name="Nguyên Liệu",
+                value=f"{icon} {required_qty}x Vật liệu luyện khí (có: {owned_total})",
+                inline=False,
+            )
 
         if selected_super_key:
             super_spec = registry.get_super_material(selected_super_key) or {}
@@ -426,14 +545,16 @@ class ForgeHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_slot(interaction, self._discord_id, self._back_fn)
 
     async def _recycle_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         # Late import — recycle imports the forge cog indirectly via shared
         # state util modules, so a top-level import would cycle.
         from src.bot.cogs.recycle import RecycleView, _recycle_embed
@@ -456,7 +577,8 @@ class ForgeHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
 
         embed = discord.Embed(title="⚒️ Danh Sách Trang Bị Có Thể Rèn", color=discord.Color.gold())
         for slot, bases in sorted(_bases_by_slot().items()):
@@ -467,7 +589,8 @@ class ForgeHubView(discord.ui.View):
         back_view = discord.ui.View(timeout=120)
         back_btn  = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary)
         async def _back(inter: discord.Interaction) -> None:
-            await inter.response.defer()
+            if not await safe_defer(inter):
+                return
             await _nav_hub(inter, self._discord_id, self._back_fn)
         back_btn.callback = _back
         back_view.add_item(back_btn)
@@ -477,7 +600,8 @@ class ForgeHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         embed = discord.Embed(
             title="📜 Công Thức Rèn — Chọn Cấp",
             description="Nhấn nút để xem công thức rèn theo cấp trang bị.",
@@ -489,7 +613,8 @@ class ForgeHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 
@@ -520,7 +645,8 @@ class _SlotView(discord.ui.View):
             if not _guard(interaction, self._discord_id):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             await _nav_base(interaction, self._discord_id, slot, self._hub_back_fn)
         return _cb
 
@@ -528,7 +654,8 @@ class _SlotView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_hub(interaction, self._discord_id, self._hub_back_fn)
 
 
@@ -560,7 +687,8 @@ class _BaseView(discord.ui.View):
             if not _guard(interaction, self._discord_id):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             await _nav_grade(interaction, self._discord_id, self._slot, base_key, self._hub_back_fn)
         return _cb
 
@@ -568,7 +696,8 @@ class _BaseView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_slot(interaction, self._discord_id, self._hub_back_fn)
 
 
@@ -600,7 +729,8 @@ class _GradeView(discord.ui.View):
             if not _guard(interaction, self._discord_id):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             await _nav_material(interaction, self._discord_id, self._slot, self._base_key, grade, self._hub_back_fn)
         return _cb
 
@@ -608,7 +738,8 @@ class _GradeView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_base(interaction, self._discord_id, self._slot, self._hub_back_fn)
 
 
@@ -633,6 +764,7 @@ class _MaterialView(discord.ui.View):
         eligible: list[tuple[str, int]],
         required_qty: int,
         page: int = 0,
+        picks: set[str] | None = None,
     ) -> None:
         super().__init__(timeout=180)
         self._discord_id  = discord_id
@@ -642,33 +774,59 @@ class _MaterialView(discord.ui.View):
         self._hub_back_fn = hub_back_fn
         self._eligible    = list(eligible)
         self._required_qty = required_qty
-        pages = total_pages(len(self._eligible), per_page=PAGE_SIZE)
+        pages = total_pages(len(self._eligible), per_page=_MATERIAL_PAGE_SIZE)
         self._page = max(0, min(page, pages - 1))
+        self._picks: set[str] = set(picks or set())
+        # Track current-page keys so the dropdown callback knows which
+        # entries to overwrite vs which to leave untouched (keeps picks
+        # made on other pages alive after a re-selection).
+        self._current_page_keys: list[str] = []
 
         if self._eligible:
             options: list[discord.SelectOption] = []
-            for key, qty in page_slice(self._eligible, self._page, per_page=PAGE_SIZE):
+            for key, qty in page_slice(self._eligible, self._page, per_page=_MATERIAL_PAGE_SIZE):
+                self._current_page_keys.append(key)
                 item = registry.get_item(key) or {}
                 label = item.get("vi", key)
                 mat_g = get_material_grade(key)
+                # Reserve room in the 100-char description for the prefix
+                # ("Phẩm N · có M · Tăng tỉ lệ: ") so the bias names don't
+                # overflow Discord's SelectOption.description hard limit.
+                # Embed-body label uses the full "Tăng tỉ lệ ra chỉ số"; in
+                # the cramped dropdown row the trailing words are dropped.
+                head = f"Phẩm {mat_g} · có {qty}"
+                bias = _format_affix_bias(key, max_chars=100 - len(head) - len(" · Tăng tỉ lệ: "))
+                desc = f"{head} · Tăng tỉ lệ: {bias}" if bias else head
                 options.append(discord.SelectOption(
                     label=label[:100],
                     value=key,
-                    description=f"Phẩm {mat_g} · có {qty}"[:100],
+                    description=desc[:100],
+                    default=(key in self._picks),
                 ))
-            max_picks = min(required_qty, len(options), PAGE_SIZE)
-            placeholder = f"🔨 Chọn 1–{max_picks} loại nguyên liệu…"
+            max_picks = min(len(options), _MATERIAL_PAGE_SIZE)
+            placeholder = "🔨 Chọn nguyên liệu cho trang này…"
             if pages > 1:
-                placeholder = f"🔨 Chọn 1–{max_picks} loại (Trang {self._page + 1}/{pages})…"
+                placeholder = f"🔨 Chọn nguyên liệu (Trang {self._page + 1}/{pages})…"
             select = discord.ui.Select(
                 placeholder=placeholder,
                 options=options,
-                min_values=1,
+                # min_values=0 lets the player deselect every option on the
+                # current page without losing picks made on other pages.
+                min_values=0,
                 max_values=max_picks,
                 row=0,
             )
             select.callback = self._make_pick_cb(select)
             self.add_item(select)
+
+        confirm_btn = discord.ui.Button(
+            label=f"✅ Xác Nhận ({len(self._picks)})",
+            style=discord.ButtonStyle.success,
+            row=1,
+            disabled=not self._picks,
+        )
+        confirm_btn.callback = self._on_confirm
+        self.add_item(confirm_btn)
 
         back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
         back_btn.callback = self._back_cb
@@ -680,40 +838,75 @@ class _MaterialView(discord.ui.View):
             total=len(self._eligible),
             on_change=self._on_page_change,
             row=2,
+            per_page=_MATERIAL_PAGE_SIZE,
         )
 
     async def _on_page_change(self, interaction: discord.Interaction, new_page: int) -> None:
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
+        embed = _material_embed(
+            self._grade, self._eligible, self._required_qty, new_page, self._picks,
+        )
         view = _MaterialView(
             self._discord_id, self._slot, self._base_key, self._grade,
             self._hub_back_fn,
             eligible=self._eligible,
             required_qty=self._required_qty,
-            page=new_page,
+            page=new_page, picks=self._picks,
         )
-        await interaction.edit_original_response(view=view)
+        await interaction.edit_original_response(embed=embed, view=view)
 
     def _make_pick_cb(self, select: discord.ui.Select):
         async def _cb(interaction: discord.Interaction) -> None:
             if not _guard(interaction, self._discord_id):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
-            picked: list[str] = list(select.values)
-            await _nav_super(
-                interaction, self._discord_id, self._slot, self._base_key, self._grade,
-                selected_mat_keys=picked, hub_back_fn=self._hub_back_fn,
+            if not await safe_defer(interaction):
+                return
+            # Replace only the current-page slice of the accumulator —
+            # picks made on other pages stay intact so the user can build
+            # up a multi-page selection.
+            new_picks = (self._picks - set(self._current_page_keys)) | set(select.values)
+            self._picks = new_picks
+            embed = _material_embed(
+                self._grade, self._eligible, self._required_qty,
+                self._page, self._picks,
             )
+            view = _MaterialView(
+                self._discord_id, self._slot, self._base_key, self._grade,
+                self._hub_back_fn,
+                eligible=self._eligible,
+                required_qty=self._required_qty,
+                page=self._page, picks=self._picks,
+            )
+            await interaction.edit_original_response(embed=embed, view=view)
         return _cb
+
+    async def _on_confirm(self, interaction: discord.Interaction) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not self._picks:
+            await interaction.response.send_message(
+                embed=error_embed("Chưa chọn nguyên liệu nào."), ephemeral=True,
+            )
+            return
+        if not await safe_defer(interaction):
+            return
+        await _nav_super(
+            interaction, self._discord_id, self._slot, self._base_key, self._grade,
+            selected_mat_keys=list(self._picks), hub_back_fn=self._hub_back_fn,
+        )
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_grade(interaction, self._discord_id, self._slot, self._base_key, self._hub_back_fn)
 
 
@@ -788,7 +981,8 @@ class _SuperMaterialView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         view = _SuperMaterialView(
             self._discord_id, self._slot, self._base_key, self._grade,
             self._hub_back_fn,
@@ -803,7 +997,8 @@ class _SuperMaterialView(discord.ui.View):
             if not _guard(interaction, self._discord_id):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             picked = select.values[0]
             await _nav_confirm(
                 interaction, self._discord_id, self._slot, self._base_key, self._grade,
@@ -817,7 +1012,8 @@ class _SuperMaterialView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_confirm(
             interaction, self._discord_id, self._slot, self._base_key, self._grade,
             selected_mat_keys=self._selected_mat_keys,
@@ -829,7 +1025,8 @@ class _SuperMaterialView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_material(interaction, self._discord_id, self._slot, self._base_key, self._grade, self._hub_back_fn)
 
 
@@ -882,7 +1079,8 @@ class _ConfirmView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
 
         required_qty = max_affix_total(self._grade)
 
@@ -918,13 +1116,13 @@ class _ConfirmView(discord.ui.View):
                 await interaction.edit_original_response(embed=error_embed("Không tìm thấy công thức rèn."), view=None)
                 return
 
-            # Every pick's grade must be allowed by some recipe option
-            recipe_grades = {req["mat_grade"] for opt in recipe["options"] for req in opt["materials"]}
+            # Every pick must still be a forge_material (defends against
+            # stale dropdown values pointing at non-forge items). Recipe
+            # grade no longer gates eligibility.
             for k in self._selected_mat_keys:
-                mg = get_material_grade(k)
-                if mg is None or mg not in recipe_grades:
+                if get_material_grade(k) is None:
                     await interaction.edit_original_response(
-                        embed=error_embed("Có nguyên liệu không khớp công thức rèn."), view=None
+                        embed=error_embed("Có nguyên liệu không hợp lệ."), view=None
                     )
                     return
 
@@ -947,10 +1145,8 @@ class _ConfirmView(discord.ui.View):
                     return
 
             # Consume each picked material by its allocated share. ``remove_any_grade``
-            # iterates rows ascending-by-grade so legacy stacks (which were
-            # added at HOANG before the per-template-grade convention) are
-            # decremented identically to current rows that sit at the
-            # template grade.
+            # iterates rows ascending-by-grade so split stacks at different
+            # grades all drain into the same recipe slot.
             consumed: list[tuple[str, int]] = []
             for k, take in split.items():
                 if take <= 0:
@@ -1028,7 +1224,8 @@ class _ConfirmView(discord.ui.View):
         back_view = discord.ui.View(timeout=120)
         back_btn  = discord.ui.Button(label="◀ Về Luyện Công Phường", style=discord.ButtonStyle.secondary)
         async def _to_hub(inter: discord.Interaction) -> None:
-            await inter.response.defer()
+            if not await safe_defer(inter):
+                return
             await _nav_hub(inter, self._discord_id, self._hub_back_fn)
         back_btn.callback = _to_hub
         back_view.add_item(back_btn)
@@ -1039,7 +1236,8 @@ class _ConfirmView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_super(
             interaction, self._discord_id, self._slot, self._base_key, self._grade,
             selected_mat_keys=self._selected_mat_keys,
@@ -1073,7 +1271,8 @@ class _RecipeSelectView(discord.ui.View):
             if not _guard(interaction, self._discord_id):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             embed = discord.Embed(
                 title=f"📜 Công Thức Rèn Cấp {grade}",
                 description=describe_recipe(grade),
@@ -1082,7 +1281,8 @@ class _RecipeSelectView(discord.ui.View):
             back_view = discord.ui.View(timeout=120)
             back_btn  = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary)
             async def _back(inter: discord.Interaction) -> None:
-                await inter.response.defer()
+                if not await safe_defer(inter):
+                    return
                 await inter.edit_original_response(
                     embed=discord.Embed(
                         title="📜 Công Thức Rèn — Chọn Cấp",
@@ -1100,7 +1300,8 @@ class _RecipeSelectView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_hub(interaction, self._discord_id, self._hub_back_fn)
 
 

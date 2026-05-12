@@ -47,64 +47,63 @@ def _legendary_entry(activation_override: float | None = None) -> dict:
 
 def test_legendary_base_rate_is_35_percent_for_non_the_tu():
     entry = _legendary_entry()
-    chance = activation_chance(entry, body_realm=0, qi_realm=5, formation_realm=5)
+    chance = activation_chance(entry, active_axis="qi")
     assert chance == pytest.approx(_BASE_SUCCESS["legendary"])
     assert chance == pytest.approx(0.35)
 
 
 def test_legendary_rate_adds_the_tu_bonus():
     entry = _legendary_entry()
-    chance = activation_chance(entry, body_realm=5, qi_realm=5, formation_realm=5)
+    chance = activation_chance(entry, active_axis="body")
     assert chance == pytest.approx(_BASE_SUCCESS["legendary"] + THE_TU_SUCCESS_BONUS)
     assert chance == pytest.approx(0.55)
 
 
 def test_legendary_explicit_activation_chance_overrides_rarity_default():
     entry = _legendary_entry(activation_override=0.20)
-    chance = activation_chance(entry, body_realm=0, qi_realm=5, formation_realm=5)
+    chance = activation_chance(entry, active_axis="qi")
     assert chance == pytest.approx(0.20)
 
 
 def test_legendary_explicit_chance_still_receives_the_tu_bonus():
     entry = _legendary_entry(activation_override=0.20)
-    chance = activation_chance(entry, body_realm=5, qi_realm=5, formation_realm=5)
+    chance = activation_chance(entry, active_axis="body")
     assert chance == pytest.approx(0.40)
 
 
 def test_activation_chance_is_clamped_to_one():
     entry = _legendary_entry(activation_override=0.95)
-    chance = activation_chance(entry, body_realm=5, qi_realm=5, formation_realm=5)
+    chance = activation_chance(entry, active_axis="body")
     assert chance == 1.0
 
 
 def test_activation_chance_is_clamped_to_zero():
     entry = _legendary_entry(activation_override=-0.5)
-    chance = activation_chance(entry, body_realm=0, qi_realm=5, formation_realm=5)
+    chance = activation_chance(entry, active_axis="qi")
     assert chance == 0.0
 
 
 # ── Activation roll: empirical rate matches expected ────────────────────────
 
 
-def _empirical_rate(entry: dict, *, realms: tuple[int, int, int], trials: int, seed: int) -> float:
+def _empirical_rate(entry: dict, *, active_axis: str, trials: int, seed: int) -> float:
     rng = random.Random(seed)
-    body, qi, formation = realms
     successes = sum(
         1 for _ in range(trials)
-        if roll_activation(entry, body, qi, formation, rng=rng)
+        if roll_activation(entry, active_axis, rng=rng)
     )
     return successes / trials
 
 
 def test_legendary_empirical_rate_matches_35_percent_non_the_tu():
     entry = _legendary_entry()
-    rate = _empirical_rate(entry, realms=(0, 5, 5), trials=20_000, seed=42)
+    rate = _empirical_rate(entry, active_axis="qi", trials=20_000, seed=42)
     assert rate == pytest.approx(0.35, abs=0.02)
 
 
 def test_legendary_empirical_rate_matches_55_percent_the_tu():
     entry = _legendary_entry()
-    rate = _empirical_rate(entry, realms=(5, 5, 5), trials=20_000, seed=42)
+    rate = _empirical_rate(entry, active_axis="body", trials=20_000, seed=42)
     assert rate == pytest.approx(0.55, abs=0.02)
 
 
@@ -113,7 +112,7 @@ def test_hon_don_empirical_rate_matches_20_percent():
     gets only 40%, the highest gate in the game."""
     hon_don = registry.get_constitution(HON_DON_KEY)
     assert hon_don is not None, "Hỗn Độn Đạo Thể should be registered"
-    rate = _empirical_rate(hon_don, realms=(0, 5, 5), trials=20_000, seed=42)
+    rate = _empirical_rate(hon_don, active_axis="qi", trials=20_000, seed=42)
     assert rate == pytest.approx(0.20, abs=0.02)
 
 

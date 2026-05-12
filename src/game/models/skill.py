@@ -27,17 +27,14 @@ class DmgScale:
     matk: float = 0.0
 
     @classmethod
-    def from_raw(cls, raw: dict | float | int | None) -> "DmgScale":
-        """Build from JSON (object {atk, matk} or legacy scalar)."""
-        if raw is None:
+    def from_raw(cls, raw: dict | None) -> "DmgScale":
+        """Build from JSON (``{atk, matk}`` object)."""
+        if not raw:
             return cls()
-        if isinstance(raw, dict):
-            return cls(
-                atk=float(raw.get("atk", 0.0)),
-                matk=float(raw.get("matk", 0.0)),
-            )
-        # Legacy scalar: applied as a single scale; caller decides stat via attack_type
-        return cls(atk=float(raw), matk=float(raw))
+        return cls(
+            atk=float(raw.get("atk", 0.0)),
+            matk=float(raw.get("matk", 0.0)),
+        )
 
 
 @dataclass(frozen=True)
@@ -45,7 +42,6 @@ class Skill:
     key: str
     vi: str
     en: str
-    realm: int                      # 1–9 (cultivation realm that gates the skill)
     category: SkillCategory
     mp_cost: int
     cooldown: int                   # turns
@@ -55,3 +51,4 @@ class Skill:
     formation_key: Optional[str] = None  # required if category == FORMATION
     attack_type: AttackType = AttackType.MAGICAL
     dmg_scale: DmgScale = field(default_factory=DmgScale)
+    bypass_evasion: bool = False    # Skips the defender's evasion roll entirely

@@ -1,0 +1,58 @@
+[
+  {
+    "key": "NhatNguyenTho",
+    "vi": "Nhất Nguyên Thổ Trận",
+    "en": "One Origin Earth Formation",
+    "element": "tho",
+    "base_stat_bonus": {
+      "hp_pct": 0.1,
+      "mp_pct": 0.01
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "hp_pct": 0.03,
+        "note": "Sơ Khai Thổ Trận"
+      },
+      "3": {
+        "hp_pct": 0.08,
+        "note": "Kiên Cố Thổ Trận"
+      },
+      "5": {
+        "hp_pct": 0.15,
+        "res_all": 0.05,
+        "note": "Thịnh Vượng Thổ Trận"
+      },
+      "7": {
+        "hp_pct": 0.25,
+        "res_all": 0.12,
+        "note": "Vô Song Thổ Trận"
+      },
+      "10": {
+        "hp_pct": 0.5,
+        "res_all": 0.25,
+        "dmg_reduce_flat": 50,
+        "note": "Tuyệt Đỉnh Thổ Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmTo",
+      "vi": "Nhất Nguyên Thổ Thức",
+      "en": "One Origin Earth Form",
+      "scroll_grade": 2,
+      "category": "formation",
+      "element": "tho",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 1.0,
+        "matk": 0.0
+      },
+      "mp_cost": 49,
+      "cooldown": 3,
+      "base_dmg": 300,
+      "effects": [
+        "DebuffLunDat"
+      ],
+      "reserved_mp_pct": 0.06
+    }
+  }
+]

@@ -19,20 +19,12 @@ from typing import Iterable
 
 from src.data.registry import registry
 
-# ── Reward tiers (item keys appended on top of boss's own loot chest) ──────────
-FINISHER_BONUS_ITEMS: dict[int, tuple[str, int]] = {
-    # realm → (item_key, qty) — additional bonus for the killing blow.
-    # R1–R3 omitted intentionally: their old bonus ItemPhaCanh ("Phá Cảnh Đan",
-    # special-type) had no consumption logic anywhere, so finishers were just
-    # accumulating dead-stock. Lookup uses ``.get(realm)`` so missing keys
-    # resolve to None and the caller's ``if bonus_item:`` guard skips the grant.
-    4: ("ItemHonNguyen", 1),
-    5: ("ItemHonNguyen", 2),
-    6: ("ItemHonNguyen", 3),
-    7: ("ItemHonNguyen", 4),
-    8: ("ItemHonNguyen", 5),
-    9: ("ItemHonNguyen", 8),
-}
+# Number of EXTRA rolls the finisher gets on the boss's primary loot table.
+# The finisher's bonus is now drawn directly from the boss's own loot pool
+# (instead of a hardcoded ``ItemHonNguyen``), so a killing blow doubles their
+# pulls on whatever the boss can drop. Tune this if "the killing blow feels
+# weak / too strong" — every step is one full extra roll on the boss table.
+FINISHER_BONUS_ROLLS = 1
 
 # Minimum % of boss HP a player must damage to qualify for participation reward
 PARTICIPATION_MIN_DMG_PCT = 0.005   # 0.5%
@@ -129,8 +121,14 @@ def compute_rewards(
     """Return ParticipantReward list sorted by damage desc.
 
     Reward tiering:
-      - Finisher (killing blow):   boss's primary loot_chest_key + finisher bonus items
-      - Top 3 by damage:            boss's primary loot_chest_key (rare drops likely)
+      - Finisher (killing blow):    boss's primary loot_chest_key rolled
+                                    ``1 + FINISHER_BONUS_ROLLS`` times — the
+                                    bonus draw comes from the boss's own pool
+                                    instead of a hardcoded item, so the killing
+                                    blow gets extra shots at every super-rare
+                                    forge mat / supreme constitution mat /
+                                    unique gem the boss can already drop.
+      - Top 3 by damage:            boss's primary loot_chest_key (one roll)
       - Participants (>= threshold): ChestHuyen/Dia participation drops
     """
     rewards: list[ParticipantReward] = []
@@ -138,7 +136,6 @@ def compute_rewards(
 
     realm = boss_data.get("realm", 1)
     primary_chest = boss_data.get("loot_chest_key")
-    bonus_item = FINISHER_BONUS_ITEMS.get(realm)
     threshold = int(boss_hp_max * PARTICIPATION_MIN_DMG_PCT)
 
     # Participation tier chest is tier-scaled by realm
@@ -156,10 +153,12 @@ def compute_rewards(
         is_finisher = part.player_id == finisher_player_id
 
         if is_finisher and primary_chest:
-            # Finisher always gets the primary chest + finisher bonus items
-            loot_tables.append(primary_chest)
-            if bonus_item:
-                bonuses.append(bonus_item)
+            # Finisher's bonus is N extra rolls on the boss's own pool —
+            # ``grant_loot_from_tables`` rolls each entry independently and
+            # then merges, so duplicating the key here is exactly "one more
+            # pass through the same loot table".
+            for _ in range(1 + FINISHER_BONUS_ROLLS):
+                loot_tables.append(primary_chest)
             tier = "finisher"
         elif rank <= 3 and primary_chest and part.damage_dealt >= threshold:
             loot_tables.append(primary_chest)
@@ -184,16 +183,34 @@ def compute_rewards(
 
 # ── Participation helpers ─────────────────────────────────────────────────────
 
-def format_leaderboard(participations: Iterable, max_rows: int = 10) -> str:
-    """Render a short damage leaderboard for display in a Discord embed."""
+def format_leaderboard(
+    participations: Iterable,
+    max_rows: int = 10,
+    name_lookup: dict[int, str] | None = None,
+    boss_hp_max: int | None = None,
+) -> str:
+    """Render a short damage leaderboard for display in a Discord embed.
+
+    ``name_lookup`` maps player_id → display name; falls back to
+    ``Player #<id>`` when missing. ``boss_hp_max`` adds a per-row %HP
+    column when supplied.
+    """
     sorted_parts = sorted(participations, key=lambda p: p.damage_dealt, reverse=True)
     if not sorted_parts:
         return "*(chưa có ai tấn công)*"
+    name_lookup = name_lookup or {}
     lines = []
     medals = ["🥇", "🥈", "🥉"]
     for i, p in enumerate(sorted_parts[:max_rows]):
         icon = medals[i] if i < len(medals) else f"`#{i+1}`"
-        lines.append(f"{icon} Player #{p.player_id} — {p.damage_dealt:,} sát thương ({p.attack_count} đòn)")
+        name = name_lookup.get(p.player_id, f"Player #{p.player_id}")
+        pct_str = ""
+        if boss_hp_max:
+            pct_str = f" ({p.damage_dealt / boss_hp_max * 100:.2f}% HP)"
+        lines.append(
+            f"{icon} **{name}** — {p.damage_dealt:,} sát thương{pct_str} "
+            f"· {p.attack_count} đòn"
+        )
     return "\n".join(lines)
 
 
@@ -274,7 +291,7 @@ def maybe_generate_equipment_for_realm(
     Reuses the working forge primitives (``roll_implicit_stats`` /
     ``roll_affixes`` / ``compute_stats``) — the older ``item_generator``
     module targets an obsolete affix schema and isn't compatible with the
-    current ``slots`` / ``by_grade`` JSON. Drops always roll at "hoan"
+    current ``slots`` / ``by_realm`` JSON. Drops always roll at "hoan"
     quality (no quality bonus, no affix floor) so forge remains the
     canonical path to upgraded-quality gear.
     """
@@ -291,7 +308,7 @@ def maybe_generate_equipment_for_realm(
         return None
     bases = [
         b for b in (registry.bases.values() if hasattr(registry, "bases") else [])
-        if "implicit_by_grade" in b
+        if "implicit_by_realm" in b
     ]
     if not bases:
         return None

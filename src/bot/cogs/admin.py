@@ -22,6 +22,7 @@ from src.game.systems.the_chat import set_constitutions
 from src.utils import emojis
 from src.utils.config import settings
 from src.utils.embed_builder import error_embed, success_embed
+from src.utils.discord_safe import safe_defer
 
 log = logging.getLogger(__name__)
 
@@ -100,6 +101,7 @@ def _preset_config(preset: str) -> dict:
     """
     if preset == "endgame_the_tu":
         return {
+            "active_axis": "body",                   # path = Thể Tu (drives slot cap)
             "body_realm": 8, "body_level": 9,
             "qi_realm": 0,   "qi_level": 1,
             "formation_realm": 0, "formation_level": 1,
@@ -111,13 +113,14 @@ def _preset_config(preset: str) -> dict:
             "skills": ["SkillAtkKim1", "SkillAtkHoa1", "SkillAtkLoi1", "SkillDefTo"],
         }
     if preset == "endgame_khi_tu":
-        # Khí Tu all-element: qi maxed, body intentionally low so `is_the_tu`
-        # is False → 1 constitution slot. All 9 Linh Căn active so every
-        # element-specific passive (Kim Xuyên Thấu, Hỏa Bạo Liệt, Quang Thanh
-        # Tẩy, etc.) runs side-by-side. Phá Thiên is a neutral-element
+        # Khí Tu all-element: active_axis = "qi" so the 1-slot constitution
+        # rule + Linh Căn breadth multiplier both fire. All 9 Linh Căn active
+        # so every element-specific passive (Kim Xuyên Thấu, Hỏa Bạo Liệt,
+        # Quang Thanh Tẩy, etc.) runs side-by-side. Phá Thiên is a neutral
         # legendary so no single element dominates the build. Linh Căn maxed
         # to Lv9 so every threshold effect (Lv3/5/7/9) is active.
         return {
+            "active_axis": "qi",                     # path = Khí Tu (breadth gate)
             "body_realm": 1, "body_level": 1,
             "qi_realm": 8,   "qi_level": 9,
             "formation_realm": 4, "formation_level": 5,
@@ -136,14 +139,15 @@ def _preset_config(preset: str) -> dict:
             ],
         }
     if preset == "endgame_tran_tu":
-        # Trận Tu: formation-maxed — body intentionally low so the 3-slot
-        # Trận Tu rule triggers (is_tran_tu = True, formation_realm=8 → 3
-        # slots in max_formation_slots). Legendary Khí Hải for MP/CDR kit.
+        # Trận Tu: active_axis = "formation" so the multi-formation slot rule
+        # fires (formation_realm=8 → 3 slots via max_formation_slots).
+        # Legendary Khí Hải for MP/CDR kit.
         # Anchor slot: CuuCungBatQua (neutral, 9 gems covering every element —
         # opens every threshold bonus). Slot 2/3: elemental formations that
         # each contribute their own signature skill + small stat kit; left
         # gem-less so MP reservation stays sane.
         return {
+            "active_axis": "formation",              # path = Trận Tu (multi-slot gate)
             "body_realm": 0, "body_level": 1,
             "qi_realm": 6,   "qi_level": 9,
             "formation_realm": 8, "formation_level": 9,
@@ -153,9 +157,9 @@ def _preset_config(preset: str) -> dict:
             "linh_can_levels": {"kim": 7, "hoa": 7, "loi": 7, "phong": 7, "quang": 7, "am": 7},
             "constitutions": ["ConstitutionKhiHai"],
             "skills": [
-                "SkillFrmHonNguyen_R9",   # apex formation skill
-                "SkillFrmChuThien_R9",    # apex formation skill
-                "SkillFrmThienMa_R8",
+                "SkillFrmCuuCung",        # neutral anchor formation skill
+                "SkillFrmHoa",            # Hoa formation skill
+                "SkillFrmLoi",            # Loi formation skill
                 "SkillAtkHoa_R9",         # elemental fallback
                 "SkillAtkLoi_R9",
             ],
@@ -176,7 +180,7 @@ def _preset_config(preset: str) -> dict:
             "formation_gems": {
                 "CuuCungBatQua": {
                     0: "GemKim_3", 1: "GemHoa_3", 2: "GemLoi_3",
-                    3: "GemMoc_3", 4: "GemThuy_3", 5: "GemTo_3",
+                    3: "GemMoc_3", 4: "GemThuy_3", 5: "GemTho_3",
                     6: "GemPhong_3", 7: "GemAm_3", 8: "GemQuang_3",
                 },
                 "NhatNguyenHoa": {
@@ -268,6 +272,159 @@ _PRESET_CHOICES = [
 ]
 
 
+# Crit-focused affix preference for the Phá Thiên / R9 admin loadout.
+# Order matters — the generator picks top-N from each list, skipping
+# anything the slot doesn't allow. Designed to capitalise on the new
+# ``crit_dmg_rating_to_dmg_pct`` Phá Thiên grants: every prefix slot
+# pumps either crit chance / crit-dmg rating or raw offense. MATK is
+# preferred over ATK so the build leans into magic-attack scaling
+# (most Phá Thiên / Khí Tu skills scale off MATK).
+_PHATIEN_CRIT_PREFIX_PREFERENCE: list[str] = [
+    "pfx_crit_dmg",   # Hủy Diệt — feeds the new flat-dmg crit-rating scaling
+    "pfx_crit_rate",  # Bạo Liệt
+    "pfx_matk",       # Pháp Lực
+    "pfx_final_dmg",  # Siêu Việt
+    "pfx_hp",         # Cường Thể — sustain
+]
+_PHATIEN_CRIT_SUFFIX_PREFERENCE: list[str] = [
+    "sfx_crit",        # của Huyết Tộc — extra crit_rating
+    "sfx_matk",        # Pháp Tủy
+    "sfx_dmg_bonus",   # của Sát Thần
+    "sfx_hp",          # của Trường Thọ
+]
+
+
+def _gen_crit_thien_r9_item(slot: str, base_key: str) -> dict | None:
+    """Build a max-rolled, crit-focused Thiên-quality grade-9 item dict.
+
+    Bypasses the regular forge RNG: implicit + affix values are pinned to
+    the per-realm ``hi`` bound so the test character's combat numbers are
+    reproducible. Affix choice walks the crit-preference lists and picks
+    the first ``n_pre`` / ``n_suf`` entries the slot allows. Returned
+    shape matches ``forge_equipment``'s ``item_data`` so the existing
+    ``EquipmentRepository.add_to_bag`` path consumes it unchanged.
+    """
+    from src.game.systems.forge import (
+        QUALITY_SPECIAL,
+        compute_stats,
+        get_affix_count,
+        _build_display_name,
+    )
+
+    base = registry.get_base(base_key)
+    if base is None or "implicit_by_realm" not in base:
+        return None
+
+    grade, quality = 9, "thien"
+    spec = QUALITY_SPECIAL[quality]
+    n_pre, n_suf = get_affix_count(grade, quality)
+    if base.get("two_handed", False):
+        n_pre *= 2
+        n_suf *= 2
+
+    idx = grade - 1
+
+    # Max-roll implicit stats — mirrors roll_implicit_stats but skips the
+    # uniform/randint draw so the test build isn't subject to RNG variance.
+    mult = spec["implicit_mult"]
+    implicit: dict[str, float] = {}
+    for stat, ranges in base["implicit_by_realm"].items():
+        lo, hi = ranges[idx]
+        if isinstance(lo, float) and lo < 1:
+            implicit[stat] = round(hi * mult, 5)
+        else:
+            implicit[stat] = round(int(hi) * mult)
+
+    def _slot_ok(affix: dict) -> bool:
+        return "all" in affix["slots"] or slot in affix["slots"]
+
+    def _max_roll(a: dict) -> dict:
+        lo, hi = a["by_realm"][idx]
+        val = hi if a.get("is_pct") else int(hi)
+        return {"key": a["key"], "stat": a["stat"], "value": val, "type": a["type"]}
+
+    def _pick(preference: list[str], pool_type: str, count: int) -> list[dict]:
+        chosen: list[dict] = []
+        seen_keys: set[str] = set()
+        seen_stats: set[str] = set()
+        # Walk preferred keys first; fall back to any same-type slot-allowed
+        # affix to satisfy the count when preferences run out.
+        for key in preference:
+            if len(chosen) >= count:
+                break
+            a = registry.affixes.get(key)
+            if not a or a["type"] != pool_type or not _slot_ok(a):
+                continue
+            if a["key"] in seen_keys or a["stat"] in seen_stats:
+                continue
+            chosen.append(_max_roll(a))
+            seen_keys.add(a["key"])
+            seen_stats.add(a["stat"])
+        if len(chosen) < count:
+            for a in registry.affixes.values():
+                if len(chosen) >= count:
+                    break
+                if a["type"] != pool_type or not _slot_ok(a):
+                    continue
+                if a["key"] in seen_keys or a["stat"] in seen_stats:
+                    continue
+                chosen.append(_max_roll(a))
+                seen_keys.add(a["key"])
+                seen_stats.add(a["stat"])
+        return chosen
+
+    affixes = _pick(_PHATIEN_CRIT_PREFIX_PREFERENCE, "prefix", n_pre)
+    affixes += _pick(_PHATIEN_CRIT_SUFFIX_PREFERENCE, "suffix", n_suf)
+
+    computed = compute_stats(implicit, affixes)
+    name = _build_display_name(base, quality, affixes)
+
+    return {
+        "slot": base["slot"],
+        "base_key": base_key,
+        "grade": grade,
+        "quality": quality,
+        "special_label": spec["special_label"],
+        "implicit_stats": implicit,
+        "affixes": affixes,
+        "computed_stats": computed,
+        "display_name": name,
+        "super_material_key": None,
+    }
+
+
+async def _apply_phatien_crit_loadout(session, player) -> list[str]:
+    """Generate a full Thiên R9 crit-focused loadout and equip every slot.
+
+    Picks the first base per slot from the registry (deterministic — the
+    same player gets the same base every time so re-running the command
+    is idempotent in spirit). Existing equipped items are displaced to
+    bag by ``EquipmentRepository.equip``.
+    """
+    from src.db.repositories.equipment_repo import EquipmentRepository
+    from src.game.engine.equipment import SLOT_ORDER
+
+    erepo = EquipmentRepository(session)
+    summary: list[str] = []
+    for slot in SLOT_ORDER:
+        bases = registry.bases_for_slot(slot)
+        # Skip 2H weapon variants on the weapon slot — picking the first
+        # 1H base keeps the off_hand slot usable.
+        bases_1h = [b for b in bases if not b.get("two_handed", False)]
+        if not bases_1h:
+            bases_1h = bases
+        if not bases_1h:
+            continue
+        base = bases_1h[0]
+        item_data = _gen_crit_thien_r9_item(slot, base["key"])
+        if item_data is None:
+            continue
+        inst = await erepo.add_to_bag(player.id, item_data)
+        await erepo.equip(player.id, inst.id)
+        summary.append(f"`{slot}` → **{item_data['display_name']}**")
+    return summary
+
+
 async def _apply_testbuild(session, player, cfg: dict) -> list[str]:
     """Apply the preset patch to a player and return a list of human-readable
     change descriptions for the admin.
@@ -292,6 +449,13 @@ async def _apply_testbuild(session, player, cfg: dict) -> list[str]:
             f"form {player.formation_realm}.{player.formation_level}"
             + (f" · Đạo Thể ✅" if player.dao_ti_unlocked else "")
         )
+
+    # ── Active axis (drives Thể/Khí/Trận Tu archetype + slot caps) ──────────
+    if "active_axis" in cfg:
+        axis = str(cfg["active_axis"])
+        if axis in ("body", "qi", "formation"):
+            player.active_axis = axis
+            lines.append(f"🧭 Active axis: **{axis}**")
 
     # ── Currencies ──────────────────────────────────────────────────────────
     for k in ("merit", "karma_accum", "karma_usable", "primordial_stones"):
@@ -356,10 +520,15 @@ async def _apply_testbuild(session, player, cfg: dict) -> list[str]:
                 player.skills.append(new_skill)
         lines.append(f"🎯 Skills ({len(valid_skills)}): {', '.join(valid_skills) or '(trống)'}")
 
-    # ── Active formation(s) — accepts either a single key (legacy preset) or a
-    # list of keys (multi-slot Trận Tu). Stored as comma-separated string.
+    # ── Active formation(s) — accepts either a single key or a list of keys
+    # (multi-slot Trận Tu). Stored as comma-separated string.
+    # Presets unlock formations directly (CharacterFormation row) since they
+    # bypass the normal "learn the skill" path that does this for players.
     if "active_formation" in cfg:
-        from src.game.systems.cultivation import set_active_formations
+        from src.game.systems.cultivation import (
+            get_active_formations, set_active_formations,
+        )
+        from src.db.repositories.formation_repo import FormationRepository
         raw = cfg["active_formation"]
         if raw is None:
             player.active_formation = None
@@ -367,6 +536,12 @@ async def _apply_testbuild(session, player, cfg: dict) -> list[str]:
             player.active_formation = raw
         else:
             player.active_formation = set_active_formations(list(raw))
+        active_keys = get_active_formations(player.active_formation)
+        if active_keys:
+            preset_frepo = FormationRepository(session)
+            for fk in active_keys:
+                if registry.get_formation(fk):
+                    await preset_frepo.get_or_create(player.id, fk)
         lines.append(f"🔯 Active formation(s): {player.active_formation or '(none)'}")
 
     # ── Formation gems — inlay a full gem loadout per formation ─────────────
@@ -398,11 +573,13 @@ async def _apply_testbuild(session, player, cfg: dict) -> list[str]:
     cs = compute_combat_stats(
         char, gem_count=len(gem_keys), gem_keys=gem_keys,
         gem_keys_by_formation=gem_map,
-        learned_skill_keys=[s.skill_key for s in (player.skills or [])],
     )
     player.hp_current = cs.hp_max
     player.mp_current = cs.mp_max
-    lines.append(f"❤️ HP/MP restored: {cs.hp_max:,} / {cs.mp_max:,}")
+    player.shield_current = cs.shield_max
+    lines.append(
+        f"❤️ HP/MP/Shield restored: {cs.hp_max:,} / {cs.mp_max:,} / {cs.shield_max:,}"
+    )
 
     return lines
 
@@ -442,7 +619,8 @@ class AdminCog(commands.Cog, name="Admin"):
     @app_commands.default_permissions(administrator=True)
     @_owner_only()
     async def sync(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         guild_count = 0
         if interaction.guild:
             await self.bot.tree.sync(guild=interaction.guild)
@@ -474,7 +652,8 @@ class AdminCog(commands.Cog, name="Admin"):
         preset: Choice[str],
         target: discord.User | None = None,
     ) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         target_user = target or interaction.user
         cfg = _preset_config(preset.value)
         if not cfg:
@@ -526,7 +705,8 @@ class AdminCog(commands.Cog, name="Admin"):
         confirm: str,
         target: discord.User | None = None,
     ) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         if confirm.strip().upper() != "XOA":
             await interaction.followup.send(
                 embed=error_embed(
@@ -584,7 +764,8 @@ class AdminCog(commands.Cog, name="Admin"):
         from src.db.models.turn_tracker import TurnTracker
         from src.game.constants.currencies import BONUS_TURNS
 
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         if confirm.strip().upper() != "XOA TAT CA":
             await interaction.followup.send(
                 embed=error_embed(
@@ -688,6 +869,7 @@ class AdminCog(commands.Cog, name="Admin"):
                 )
                 player.hp_current = cs.hp_max
                 player.mp_current = cs.mp_max
+                player.shield_current = cs.shield_max
 
                 reset_count += 1
 
@@ -721,7 +903,8 @@ class AdminCog(commands.Cog, name="Admin"):
         qty: int = 1,
         target: discord.User | None = None,
     ) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         target_user = target or interaction.user
         qty = max(1, int(qty))
 
@@ -774,7 +957,8 @@ class AdminCog(commands.Cog, name="Admin"):
     ) -> None:
         from src.bot.cogs.dungeon import force_release_dungeon_session
 
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         target_user = target or interaction.user
         cleared = force_release_dungeon_session(target_user.id)
         if cleared:
@@ -793,6 +977,96 @@ class AdminCog(commands.Cog, name="Admin"):
                 ),
                 ephemeral=True,
             )
+
+
+    @app_commands.command(
+        name="admin_phatien_build",
+        description="[Admin] Tạo build Phá Thiên Thần Thể + trang bị Thiên cấp 9 với crit",
+    )
+    @app_commands.default_permissions(administrator=True)
+    @_owner_only()
+    @app_commands.describe(
+        target="Người chơi muốn áp build (mặc định: chính bạn)",
+    )
+    async def admin_phatien_build(
+        self,
+        interaction: discord.Interaction,
+        target: discord.User | None = None,
+    ) -> None:
+        if not await safe_defer(interaction, ephemeral=True):
+            return
+        target_user = target or interaction.user
+
+        # Khí Tu chassis tuned for Phá Thiên: max qi realm so the new
+        # ``crit_dmg_rating_to_dmg_pct`` floor multiplies against R9 affix
+        # values, every Linh Căn at Lv9 so element-passives all fire,
+        # 10M Công Đức + 1M Hỗn Nguyên for follow-up crafting tests.
+        cfg = {
+            "body_realm": 1, "body_level": 1,
+            "qi_realm": 8,   "qi_level": 9,
+            "formation_realm": 4, "formation_level": 5,
+            "dao_ti_unlocked": False,
+            "merit": 10_000_000,
+            "primordial_stones": 1_000_000,
+            "linh_can_levels": {elem: 9 for elem in ALL_LINH_CAN},
+            "constitutions": ["ConstitutionPhaTien"],
+            "skills": [
+                "SkillAtkKim_R8",
+                "SkillAtkHoa_R8",
+                "SkillAtkLoi_R8",
+                "SkillAtkPhong_R8",
+                "SkillAtkQuang_R8",
+                "SkillAtkAm_R8",
+            ],
+        }
+
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(target_user.id)
+            if player is None:
+                await interaction.followup.send(
+                    embed=error_embed(
+                        f"{target_user.mention} chưa có nhân vật — gọi `/register` trước."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
+            change_lines = await _apply_testbuild(session, player, cfg)
+            gear_lines = await _apply_phatien_crit_loadout(session, player)
+            # HP/MP recompute so the freshly-equipped Thiên affixes land
+            # before the test character starts taking hits.
+            from src.game.systems.character_stats import (
+                active_formation_gem_keys, active_formation_gem_map, compute_combat_stats,
+            )
+            from src.game.engine.equipment import compute_equipment_stats
+            from src.db.repositories.player_repo import _player_to_model
+            char = _player_to_model(player)
+            equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
+            cs = compute_combat_stats(
+                char,
+                gem_count=len(active_formation_gem_keys(player)),
+                equip_stats=compute_equipment_stats(equipped),
+                gem_keys=active_formation_gem_keys(player),
+                gem_keys_by_formation=active_formation_gem_map(player),
+            )
+            player.hp_current = cs.hp_max
+            player.mp_current = cs.mp_max
+            player.shield_current = cs.shield_max
+
+            await session.commit()
+
+        gear_summary = (
+            "\n".join(f"  • {l}" for l in gear_lines)
+            if gear_lines else "  *(không sinh được trang bị nào)*"
+        )
+        summary = (
+            f"✅ Áp build **Phá Thiên Thần Thể** cho {target_user.mention}.\n\n"
+            + "\n".join(change_lines)
+            + f"\n\n🗡️ **Trang bị Thiên Cấp 9 (max-roll, ưu tiên crit):**\n{gear_summary}"
+            + f"\n\n❤️ HP/MP sau khi mặc: {cs.hp_max:,} / {cs.mp_max:,}"
+        )
+        await interaction.followup.send(embed=success_embed(summary), ephemeral=True)
 
 
 async def setup(bot: commands.Bot) -> None:

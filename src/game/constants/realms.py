@@ -17,7 +17,6 @@ from dataclasses import dataclass
 
 
 LEVELS_PER_REALM = 9
-MERIT_TO_FORMATION_EXP_RATIO = 10
 # Endgame (realm 8) tribulation attempt cost = R8 bậc-9 threshold under the
 # quadratic shape (``_upward(150_000)`` = 150_000 × 285 = 42_750_000). Sized
 # so a Grade-9 Hoàn pill (level_exp_table[-1] // _TARGET_PILLS_PER_REALM[8]

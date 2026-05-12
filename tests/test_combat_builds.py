@@ -50,10 +50,12 @@ def make_session(player: Combatant, enemy: Combatant, *, seed: int = 0) -> Comba
 
 # ── Fire / Burn build ──────────────────────────────────────────────────────
 def test_burn_build_propagates_stack_cap_and_per_stack_pct():
-    actor = make_combatant("a", burn_stack_cap=10, burn_per_stack_pct=0.02, dot_can_crit=True)
+    # Stack caps now live on EffectMeta + ``stack_cap_bonuses`` (not on
+    # Combatant fields). Verify per_stack_pct still propagates, plus
+    # dot_can_crit and the DoT-source registration.
+    actor = make_combatant("a", burn_per_stack_pct=0.02, dot_can_crit=True)
     target = make_combatant("t")
     _propagate_stack_build(actor, target, "burn")
-    assert target.burn_stack_cap == 10
     assert target.burn_per_stack_pct == 0.02
     assert target.dot_can_crit is True
     # DoT source registration happens for burn
@@ -61,7 +63,7 @@ def test_burn_build_propagates_stack_cap_and_per_stack_pct():
 
 
 def test_on_hit_burn_proc_applies_stack_and_debuff():
-    actor = make_combatant("a", burn_on_hit_pct=1.0, burn_stack_cap=3)
+    actor = make_combatant("a", burn_on_hit_pct=1.0)
     target = make_combatant("t")
     session = make_session(actor, target, seed=1)
     session._run_on_hit_procs(actor, target, is_crit=False)
@@ -76,10 +78,10 @@ def test_on_hit_burn_proc_applies_stack_and_debuff():
 
 # ── Kim / Bleed build ──────────────────────────────────────────────────────
 def test_bleed_build_propagates_heal_reduce():
-    actor = make_combatant("a", bleed_stack_cap=8, bleed_heal_reduce=0.4)
+    # Caps now ride on the meta — only the heal-reduce build flag propagates here.
+    actor = make_combatant("a", bleed_heal_reduce=0.4)
     target = make_combatant("t")
     _propagate_stack_build(actor, target, "bleed")
-    assert target.bleed_stack_cap == 8
     assert target.bleed_heal_reduce == 0.4
     assert "a" in target.dot_bonus_sources
 
@@ -95,10 +97,10 @@ def test_on_hit_bleed_applies_stack_and_debuff():
 
 # ── Lôi / Shock build ──────────────────────────────────────────────────────
 def test_shock_build_propagates_cap_and_per_stack():
-    actor = make_combatant("a", shock_stack_cap=7, shock_per_stack_pct=0.08)
+    # Caps now ride on the meta — only the per-stack damage flag propagates here.
+    actor = make_combatant("a", shock_per_stack_pct=0.08)
     target = make_combatant("t")
     _propagate_stack_build(actor, target, "shock")
-    assert target.shock_stack_cap == 7
     assert target.shock_per_stack_pct == 0.08
     # shock does NOT propagate DoT bonus sources
     assert target.dot_bonus_sources == {}
@@ -334,19 +336,20 @@ def test_stat_steal_transfers_from_target_to_actor():
 
 def test_stat_steal_respects_cap():
     from src.game.constants.balance import STAT_STEAL_CAP_PCT
-    actor = make_combatant("a", stat_steal_on_hit_pct=1.0)
+    # Cap is anchored to the actor's starting stat, NOT the target's.
+    actor = make_combatant("a", stat_steal_on_hit_pct=1.0)  # atk=matk=100, def=20
     target = make_combatant("t", atk=500, matk=500, def_stat=200)
     session = make_session(actor, target, seed=14)
     for _ in range(200):
         session._run_on_hit_procs(actor, target, is_crit=False)
-    assert target.stolen_atk == int(500 * STAT_STEAL_CAP_PCT)
-    assert target.stolen_matk == int(500 * STAT_STEAL_CAP_PCT)
-    assert target.stolen_def == int(200 * STAT_STEAL_CAP_PCT)
+    assert target.stolen_atk == int(100 * STAT_STEAL_CAP_PCT)
+    assert target.stolen_matk == int(100 * STAT_STEAL_CAP_PCT)
+    assert target.stolen_def == int(20 * STAT_STEAL_CAP_PCT)
 
 
 def test_crit_rating_vs_drained_only_applies_when_target_drained():
     from src.game.engine.damage import build_attack_stats
-    actor = make_combatant("a", crit_rating=100, crit_rating_vs_drained=200)
+    actor = make_combatant("a", crit_rating=100, crit_amp_vs={"drained": {"rating": 200, "dmg": 0}})
     target = make_combatant("t")
     # Not drained yet — no bonus
     stats = build_attack_stats(actor, target, {})
@@ -392,12 +395,13 @@ def test_skill_apply_stat_steal_multi_proc():
         {"effects": ["ApplyStatSteal"], "stat_steal_procs": 2},
         actor, target, hit=True,
     )
-    # 2 procs * 4% of 200 atk/matk = 16 each, 2 * 4% of 100 def = 8
-    assert target.stolen_atk == 16
-    assert target.stolen_matk == 16
-    assert target.stolen_def == 8
-    assert actor.atk == 116
-    assert target.atk == 184
+    # 2 procs * 2% (STAT_STEAL_PER_PROC_PCT) of actor's start —
+    # atk: 100 * 0.02 = 2/proc → 4 total; def: 50 * 0.02 = 1/proc → 2 total
+    assert target.stolen_atk == 4
+    assert target.stolen_matk == 4
+    assert target.stolen_def == 2
+    assert actor.atk == 104
+    assert target.atk == 196
 
 
 def test_quang_cleanse_reverses_am_soul_drain_and_stat_steal():

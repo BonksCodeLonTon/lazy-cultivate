@@ -3,7 +3,6 @@
     "key": "EnemyLCQuang_T1",
     "vi": "Thánh Quang Lệ Trảm",
     "en": "Holy Light Tear Slash",
-    "realm": 2,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 13,
     "cooldown": 1,
-    "base_dmg": 17,
+    "base_dmg": 34,
     "effects": [
       "DebuffBaoMon"
     ],
@@ -26,7 +25,6 @@
     "key": "EnemyLCQuang_T2",
     "vi": "Phật Tâm Tịnh Quang",
     "en": "Buddha Heart Pure Light",
-    "realm": 4,
     "category": "defense",
     "element": "quang",
     "attack_type": "magical",
@@ -36,7 +34,7 @@
     },
     "mp_cost": 24,
     "cooldown": 3,
-    "base_dmg": 24,
+    "base_dmg": 96,
     "effects": [
       "BuffHoPhap",
       "BuffHoangKim"
@@ -51,7 +49,6 @@
     "key": "EnemyLCQuang_T3",
     "vi": "Đại La Quang Hỏa",
     "en": "Great Luo Light Fire",
-    "realm": 6,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -61,7 +58,7 @@
     },
     "mp_cost": 44,
     "cooldown": 3,
-    "base_dmg": 78,
+    "base_dmg": 468,
     "effects": [
       "CCMuted",
       "DebuffBaoMon"

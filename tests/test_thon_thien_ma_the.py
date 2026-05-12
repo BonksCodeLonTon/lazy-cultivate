@@ -189,6 +189,6 @@ def test_ma_the_registered_with_aura_and_progression():
 def test_ma_than_cong_skill_registered():
     s = registry.get_skill("SkillMaThanCong_R9")
     assert s is not None
-    assert s["realm"] == 9
+    assert "realm" not in s, "skills no longer carry a realm field"
     assert s["scroll_grade"] == 4
     assert s["element"] == "am"

@@ -22,7 +22,7 @@
     },
     "passive_bonus": {
       "slow_on_hit_pct": 0.15,
-      "freeze_on_skill": true
+      "freeze_on_skill_chance": 0.15
     },
     "description_vi": "Kiếm lạnh như băng, kỹ năng đóng băng, đòn có thể slow."
   },
@@ -109,7 +109,7 @@
     },
     "passive_bonus": {
       "slow_on_hit_pct": 0.35,
-      "freeze_on_skill": true,
+      "freeze_on_skill_chance": 0.15,
       "reflect_pct": 0.1
     },
     "description_vi": "Đai Băng Tâm — 35% slow on-hit, phản 10%, đóng băng khi dùng kỹ năng."
@@ -138,7 +138,7 @@
     "passive_bonus": {
       "reflect_pct": 0.2,
       "reflect_applies_effects": true,
-      "freeze_on_skill": true
+      "freeze_on_skill_chance": 0.15
     },
     "description_vi": "Khiên gương băng — phản 20% ST mang theo đóng băng."
   },

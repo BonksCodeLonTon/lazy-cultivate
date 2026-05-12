@@ -59,17 +59,17 @@ def merge_loot(loot: list[dict]) -> dict[str, int]:
     return merged
 
 
-# ── Healing elixir effects ──────────────────────────────────────────────────
+# ── Healing pill effects ────────────────────────────────────────────────────
 # Map the inventory-item-key suffix → (effect description, mutator).
 # Mutator receives the Combatant and returns a description string with the
 # realised heal/regen values filled in (since they depend on the combatant's
 # max HP/MP at use-time).
 
-def apply_healing_elixir(player_c, item_key: str) -> str:
-    """Apply one elixir use to ``player_c`` in place. Returns user-facing effect text.
+def apply_healing_pill(player_c, item_key: str) -> str:
+    """Apply one healing pill to ``player_c`` in place. Returns user-facing effect text.
 
     Recognises substring-based keys (``HoiHPSmall``, ``HoiMPLarge``,
-    ``HoiHPMiss`` etc.) so any grade variant of the same elixir family
+    ``HoiHPMiss`` etc.) so any grade variant of the same healing pill family
     routes to the right effect. Unknown keys fall through to a generic
     "applied" message — they're typically buffs handled elsewhere or
     no-ops in dungeon prep.
@@ -167,10 +167,10 @@ def check_can_enter(char: Character, dungeon_key: str) -> tuple[bool, str]:
 def _grade_progress(player_qi_realm: int, player_qi_level: int, dungeon_req_realm: int) -> float:
     """0.0 = just entered dungeon realm; 1.0 = max level or beyond.
 
-    ``player_qi_realm``/``player_qi_level`` are legacy parameter names — the
-    caller should now pass the **qualifying axis**'s realm/level (see
+    The first two args carry the **qualifying axis**'s realm/level (see
     ``qualifying_axis``) so cross-path cultivators get the progression
-    scaling they've actually earned.
+    scaling they've actually earned. The parameter names are historical
+    (qi-axis was the only path early in development).
     """
     if player_qi_realm > dungeon_req_realm:
         return 1.0
@@ -329,15 +329,26 @@ def run_dungeon(
 
     boss_min_grade_idx = int(dungeon.get("boss_min_grade_idx", _BOSS_GRADE_START))
 
-    # ── Linh Căn element dungeons ──────────────────────────────────────────
-    # These dungeons override the per-enemy loot table so every wave drops
-    # from the element's bespoke material table, and apply a *negative* luck
-    # so high-realm players get fewer drops (encouraging early-realm
-    # farming). The decay is per-realm (qi_realm 0..8): at decay=0.10 a
-    # Đăng Tiên player (qi_realm=8) sees -80% effective drop weight.
-    linh_can_loot_table: str | None = dungeon.get("linh_can_loot_table")
+    # ── Loot table override ────────────────────────────────────────────────
+    # Two flavors of override are recognised:
+    #   • ``loot_table_key`` (generic) — every wave drops from this table
+    #     instead of the per-enemy default. Normal dungeons use this to
+    #     point at their realm zone (DungeonLuyenKhi → LootZone_1, etc.)
+    #     so realm-tier mat drops aren't hostage to the enemy's own loot
+    #     table (which can be element-themed and miss universal mats).
+    #   • ``linh_can_loot_table`` (linh_can family) — same
+    #     behavior, but additionally applies a *negative* luck that scales
+    #     with ``linh_can_loot_decay_per_realm × qi_realm`` so high-realm
+    #     players get fewer drops (encouraging early-realm farming).
+    # ``linh_can_loot_table`` wins when both are present so the decay stays
+    # paired with the linh_can-specific table.
+    loot_table_override: str | None = (
+        dungeon.get("linh_can_loot_table") or dungeon.get("loot_table_key")
+    )
     linh_can_decay = float(dungeon.get("linh_can_loot_decay_per_realm", 0.0))
-    realm_loot_penalty = -min(0.95, linh_can_decay * char.qi_realm) if linh_can_loot_table else 0.0
+    realm_loot_penalty = (
+        -min(0.95, linh_can_decay * char.qi_realm) if linh_can_decay > 0 else 0.0
+    )
     # Per-element environmental effect (Hỏa burns the player, Mộc heals the
     # enemy, Quang grants debuff immunity, etc). Applied per-wave after the
     # encounter grade so the realm-scaled effect lands on the final stat
@@ -393,7 +404,7 @@ def run_dungeon(
             rng=rng,
             loot_qty_multiplier=grade["loot_mult"],
             loot_luck_pct=grade.get("luck_pct", 0.0) + realm_loot_penalty,
-            loot_table_override=linh_can_loot_table,
+            loot_table_override=loot_table_override,
         )
         result = session.run()
         all_logs.extend(result.log)

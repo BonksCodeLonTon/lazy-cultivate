@@ -1,7 +1,7 @@
 """Pagination helpers for Discord ``Select`` components.
 
 Discord caps each ``Select`` at 25 options. When a player's bag (pills,
-elixirs, gems, forge materials, equipment, …) grows past that, anything
+gems, forge materials, equipment, …) grows past that, anything
 past index 24 becomes unreachable from the picker. The helpers here let
 a view show one page of ≤ 25 items at a time and add prev/next buttons
 that re-render the same view with the next slice.

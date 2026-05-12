@@ -1,0 +1,2625 @@
+[
+  {
+    "key": "GemAm_1",
+    "vi": "Ngọc Âm Hoàng Phẩm",
+    "en": "Yin Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc âm hoàng phẩm, tăng cường âm lực.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "am": 0.005
+      }
+    }
+  },
+  {
+    "key": "GemAm_2",
+    "vi": "Ngọc Âm Huyền Phẩm",
+    "en": "Yin Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc âm huyền phẩm, âm khí thâm trầm.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "am": 0.01
+      }
+    }
+  },
+  {
+    "key": "GemAm_3",
+    "vi": "Ngọc Âm Địa Phẩm",
+    "en": "Yin Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc âm địa phẩm, tinh hoa âm đạo.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "am": 0.015
+      }
+    }
+  },
+  {
+    "key": "GemAm_4",
+    "vi": "Ngọc Âm Thiên Phẩm",
+    "en": "Yin Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc âm thiên phẩm, cực phẩm vô giá.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "am": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemAnh_1",
+    "vi": "Ngọc Ảnh Hoàng Phẩm",
+    "en": "Phantom Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc ảnh cấp 1, tăng Né Tránh.",
+    "bonus": {
+      "evasion_rating": 8.0
+    }
+  },
+  {
+    "key": "GemAnh_2",
+    "vi": "Ngọc Ảnh Huyền Phẩm",
+    "en": "Phantom Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc ảnh cấp 2, tăng Né Tránh.",
+    "bonus": {
+      "evasion_rating": 16.0
+    }
+  },
+  {
+    "key": "GemAnh_3",
+    "vi": "Ngọc Ảnh Địa Phẩm",
+    "en": "Phantom Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc ảnh cấp 3, tăng Né Tránh.",
+    "bonus": {
+      "evasion_rating": 24.0
+    }
+  },
+  {
+    "key": "GemAnh_4",
+    "vi": "Ngọc Ảnh Thiên Phẩm",
+    "en": "Phantom Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc ảnh cấp 4, tăng Né Tránh.",
+    "bonus": {
+      "evasion_rating": 32.0
+    }
+  },
+  {
+    "key": "GemBao_1",
+    "vi": "Ngọc Bạo Hoàng Phẩm",
+    "en": "Burst Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc bạo cấp 1, tăng Sát Thương Bạo Kích.",
+    "bonus": {
+      "crit_dmg_rating": 12.0
+    }
+  },
+  {
+    "key": "GemBao_2",
+    "vi": "Ngọc Bạo Huyền Phẩm",
+    "en": "Burst Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc bạo cấp 2, tăng Sát Thương Bạo Kích.",
+    "bonus": {
+      "crit_dmg_rating": 24.0
+    }
+  },
+  {
+    "key": "GemBao_3",
+    "vi": "Ngọc Bạo Địa Phẩm",
+    "en": "Burst Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc bạo cấp 3, tăng Sát Thương Bạo Kích.",
+    "bonus": {
+      "crit_dmg_rating": 36.0
+    }
+  },
+  {
+    "key": "GemBao_4",
+    "vi": "Ngọc Bạo Thiên Phẩm",
+    "en": "Burst Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc bạo cấp 4, tăng Sát Thương Bạo Kích.",
+    "bonus": {
+      "crit_dmg_rating": 48.0
+    }
+  },
+  {
+    "key": "GemChuan_1",
+    "vi": "Ngọc Chuẩn Hoàng Phẩm",
+    "en": "Accurate Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc chuẩn cấp 1, tăng Tỷ Lệ Chính Xác.",
+    "bonus": {
+      "accuracy_rating": 8.0
+    }
+  },
+  {
+    "key": "GemChuan_2",
+    "vi": "Ngọc Chuẩn Huyền Phẩm",
+    "en": "Accurate Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc chuẩn cấp 2, tăng Tỷ Lệ Chính Xác.",
+    "bonus": {
+      "accuracy_rating": 16.0
+    }
+  },
+  {
+    "key": "GemChuan_3",
+    "vi": "Ngọc Chuẩn Địa Phẩm",
+    "en": "Accurate Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc chuẩn cấp 3, tăng Tỷ Lệ Chính Xác.",
+    "bonus": {
+      "accuracy_rating": 24.0
+    }
+  },
+  {
+    "key": "GemChuan_4",
+    "vi": "Ngọc Chuẩn Thiên Phẩm",
+    "en": "Accurate Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc chuẩn cấp 4, tăng Tỷ Lệ Chính Xác.",
+    "bonus": {
+      "accuracy_rating": 32.0
+    }
+  },
+  {
+    "key": "GemCong_1",
+    "vi": "Ngọc Công Hoàng Phẩm",
+    "en": "Forceful Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc công cấp 1, tăng Vật Công.",
+    "bonus": {
+      "atk_bonus": 8.0
+    }
+  },
+  {
+    "key": "GemCong_2",
+    "vi": "Ngọc Công Huyền Phẩm",
+    "en": "Forceful Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc công cấp 2, tăng Vật Công.",
+    "bonus": {
+      "atk_bonus": 16.0
+    }
+  },
+  {
+    "key": "GemCong_3",
+    "vi": "Ngọc Công Địa Phẩm",
+    "en": "Forceful Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc công cấp 3, tăng Vật Công.",
+    "bonus": {
+      "atk_bonus": 24.0
+    }
+  },
+  {
+    "key": "GemCong_4",
+    "vi": "Ngọc Công Thiên Phẩm",
+    "en": "Forceful Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc công cấp 4, tăng Vật Công.",
+    "bonus": {
+      "atk_bonus": 32.0
+    }
+  },
+  {
+    "key": "GemCuong_1",
+    "vi": "Ngọc Cường Hoàng Phẩm",
+    "en": "Sturdy Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc cường cấp 1, tăng Phòng Thủ.",
+    "bonus": {
+      "def_bonus": 8.0
+    }
+  },
+  {
+    "key": "GemCuong_2",
+    "vi": "Ngọc Cường Huyền Phẩm",
+    "en": "Sturdy Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc cường cấp 2, tăng Phòng Thủ.",
+    "bonus": {
+      "def_bonus": 16.0
+    }
+  },
+  {
+    "key": "GemCuong_3",
+    "vi": "Ngọc Cường Địa Phẩm",
+    "en": "Sturdy Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc cường cấp 3, tăng Phòng Thủ.",
+    "bonus": {
+      "def_bonus": 24.0
+    }
+  },
+  {
+    "key": "GemCuong_4",
+    "vi": "Ngọc Cường Thiên Phẩm",
+    "en": "Sturdy Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc cường cấp 4, tăng Phòng Thủ.",
+    "bonus": {
+      "def_bonus": 32.0
+    }
+  },
+  {
+    "key": "GemHai_1",
+    "vi": "Ngọc Hải Hoàng Phẩm",
+    "en": "Oceanic Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc hải cấp 1, tăng Hồi MP.",
+    "bonus": {
+      "mp_regen_pct": 0.0024
+    }
+  },
+  {
+    "key": "GemHai_2",
+    "vi": "Ngọc Hải Huyền Phẩm",
+    "en": "Oceanic Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc hải cấp 2, tăng Hồi MP.",
+    "bonus": {
+      "mp_regen_pct": 0.0048
+    }
+  },
+  {
+    "key": "GemHai_3",
+    "vi": "Ngọc Hải Địa Phẩm",
+    "en": "Oceanic Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc hải cấp 3, tăng Hồi MP.",
+    "bonus": {
+      "mp_regen_pct": 0.0072
+    }
+  },
+  {
+    "key": "GemHai_4",
+    "vi": "Ngọc Hải Thiên Phẩm",
+    "en": "Oceanic Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc hải cấp 4, tăng Hồi MP.",
+    "bonus": {
+      "mp_regen_pct": 0.0096
+    }
+  },
+  {
+    "key": "GemHoa_1",
+    "vi": "Ngọc Hỏa Hoàng Phẩm",
+    "en": "Fire Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc hỏa hoàng phẩm, tăng cường hỏa hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "hoa": 0.005
+      }
+    }
+  },
+  {
+    "key": "GemHoa_2",
+    "vi": "Ngọc Hỏa Huyền Phẩm",
+    "en": "Fire Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc hỏa huyền phẩm, tăng cường hỏa hệ mạnh hơn.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "hoa": 0.01
+      }
+    }
+  },
+  {
+    "key": "GemHoa_3",
+    "vi": "Ngọc Hỏa Địa Phẩm",
+    "en": "Fire Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc hỏa địa phẩm, tinh hoa hỏa hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "hoa": 0.015
+      }
+    }
+  },
+  {
+    "key": "GemHoa_4",
+    "vi": "Ngọc Hỏa Thiên Phẩm",
+    "en": "Fire Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc hỏa thiên phẩm, cực phẩm vô giá.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "hoa": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemKim_1",
+    "vi": "Ngọc Kim Hoàng Phẩm",
+    "en": "Metal Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc kim hoàng phẩm, tăng cường kim hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "kim": 0.005
+      }
+    }
+  },
+  {
+    "key": "GemKim_2",
+    "vi": "Ngọc Kim Huyền Phẩm",
+    "en": "Metal Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc kim huyền phẩm, tăng cường kim hệ mạnh hơn.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "kim": 0.01
+      }
+    }
+  },
+  {
+    "key": "GemKim_3",
+    "vi": "Ngọc Kim Địa Phẩm",
+    "en": "Metal Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc kim địa phẩm, tinh hoa kim hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "kim": 0.015
+      }
+    }
+  },
+  {
+    "key": "GemKim_4",
+    "vi": "Ngọc Kim Thiên Phẩm",
+    "en": "Metal Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc kim thiên phẩm, cực phẩm vô giá.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "kim": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemLoi_1",
+    "vi": "Ngọc Lôi Hoàng Phẩm",
+    "en": "Thunder Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc lôi hoàng phẩm, tăng cường lôi hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "loi": 0.005
+      }
+    }
+  },
+  {
+    "key": "GemLoi_2",
+    "vi": "Ngọc Lôi Huyền Phẩm",
+    "en": "Thunder Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc lôi huyền phẩm, tăng cường lôi hệ mạnh hơn.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "loi": 0.01
+      }
+    }
+  },
+  {
+    "key": "GemLoi_3",
+    "vi": "Ngọc Lôi Địa Phẩm",
+    "en": "Thunder Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc lôi địa phẩm, tinh hoa lôi hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "loi": 0.015
+      }
+    }
+  },
+  {
+    "key": "GemLoi_4",
+    "vi": "Ngọc Lôi Thiên Phẩm",
+    "en": "Thunder Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc lôi thiên phẩm, cực phẩm vô giá.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "loi": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemMenh_1",
+    "vi": "Ngọc Mệnh Hoàng Phẩm",
+    "en": "Vital Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc mệnh cấp 1, tăng HP tối đa.",
+    "bonus": {
+      "hp_max_bonus": 200.0
+    }
+  },
+  {
+    "key": "GemMenh_2",
+    "vi": "Ngọc Mệnh Huyền Phẩm",
+    "en": "Vital Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc mệnh cấp 2, tăng HP tối đa.",
+    "bonus": {
+      "hp_max_bonus": 400.0
+    }
+  },
+  {
+    "key": "GemMenh_3",
+    "vi": "Ngọc Mệnh Địa Phẩm",
+    "en": "Vital Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc mệnh cấp 3, tăng HP tối đa.",
+    "bonus": {
+      "hp_max_bonus": 600.0
+    }
+  },
+  {
+    "key": "GemMenh_4",
+    "vi": "Ngọc Mệnh Thiên Phẩm",
+    "en": "Vital Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc mệnh cấp 4, tăng HP tối đa.",
+    "bonus": {
+      "hp_max_bonus": 800.0
+    }
+  },
+  {
+    "key": "GemMoc_1",
+    "vi": "Ngọc Mộc Hoàng Phẩm",
+    "en": "Wood Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc mộc hoàng phẩm, tăng cường mộc hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "moc": 0.005
+      }
+    }
+  },
+  {
+    "key": "GemMoc_2",
+    "vi": "Ngọc Mộc Huyền Phẩm",
+    "en": "Wood Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc mộc huyền phẩm, tăng cường mộc hệ mạnh hơn.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "moc": 0.01
+      }
+    }
+  },
+  {
+    "key": "GemMoc_3",
+    "vi": "Ngọc Mộc Địa Phẩm",
+    "en": "Wood Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc mộc địa phẩm, tinh hoa mộc hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "moc": 0.015
+      }
+    }
+  },
+  {
+    "key": "GemMoc_4",
+    "vi": "Ngọc Mộc Thiên Phẩm",
+    "en": "Wood Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc mộc thiên phẩm, cực phẩm vô giá.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "moc": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemPhap_1",
+    "vi": "Ngọc Pháp Hoàng Phẩm",
+    "en": "Mystic Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc pháp cấp 1, tăng Pháp Công.",
+    "bonus": {
+      "matk_bonus": 8.0
+    }
+  },
+  {
+    "key": "GemPhap_2",
+    "vi": "Ngọc Pháp Huyền Phẩm",
+    "en": "Mystic Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc pháp cấp 2, tăng Pháp Công.",
+    "bonus": {
+      "matk_bonus": 16.0
+    }
+  },
+  {
+    "key": "GemPhap_3",
+    "vi": "Ngọc Pháp Địa Phẩm",
+    "en": "Mystic Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc pháp cấp 3, tăng Pháp Công.",
+    "bonus": {
+      "matk_bonus": 24.0
+    }
+  },
+  {
+    "key": "GemPhap_4",
+    "vi": "Ngọc Pháp Thiên Phẩm",
+    "en": "Mystic Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc pháp cấp 4, tăng Pháp Công.",
+    "bonus": {
+      "matk_bonus": 32.0
+    }
+  },
+  {
+    "key": "GemPhong_1",
+    "vi": "Ngọc Phong Hoàng Phẩm",
+    "en": "Wind Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc phong hoàng phẩm, tăng cường phong hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "phong": 0.005
+      }
+    }
+  },
+  {
+    "key": "GemPhong_2",
+    "vi": "Ngọc Phong Huyền Phẩm",
+    "en": "Wind Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc phong huyền phẩm, tăng cường phong hệ mạnh hơn.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "phong": 0.01
+      }
+    }
+  },
+  {
+    "key": "GemPhong_3",
+    "vi": "Ngọc Phong Địa Phẩm",
+    "en": "Wind Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc phong địa phẩm, tinh hoa phong hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "phong": 0.015
+      }
+    }
+  },
+  {
+    "key": "GemPhong_4",
+    "vi": "Ngọc Phong Thiên Phẩm",
+    "en": "Wind Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc phong thiên phẩm, cực phẩm vô giá.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "phong": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemQuang_1",
+    "vi": "Ngọc Quang Hoàng Phẩm",
+    "en": "Yang Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc dương hoàng phẩm, tăng cường dương lực.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "quang": 0.005
+      }
+    }
+  },
+  {
+    "key": "GemQuang_2",
+    "vi": "Ngọc Quang Huyền Phẩm",
+    "en": "Yang Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc dương huyền phẩm, dương khí sung mãn.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "quang": 0.01
+      }
+    }
+  },
+  {
+    "key": "GemQuang_3",
+    "vi": "Ngọc Quang Địa Phẩm",
+    "en": "Yang Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc dương địa phẩm, tinh hoa dương đạo.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "quang": 0.015
+      }
+    }
+  },
+  {
+    "key": "GemQuang_4",
+    "vi": "Ngọc Quang Thiên Phẩm",
+    "en": "Yang Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc dương thiên phẩm, cực phẩm vô giá.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "quang": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemSat_1",
+    "vi": "Ngọc Sát Hoàng Phẩm",
+    "en": "Lethal Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc sát cấp 1, tăng Tỷ Lệ Bạo Kích.",
+    "bonus": {
+      "crit_rating": 8.0
+    }
+  },
+  {
+    "key": "GemSat_2",
+    "vi": "Ngọc Sát Huyền Phẩm",
+    "en": "Lethal Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc sát cấp 2, tăng Tỷ Lệ Bạo Kích.",
+    "bonus": {
+      "crit_rating": 16.0
+    }
+  },
+  {
+    "key": "GemSat_3",
+    "vi": "Ngọc Sát Địa Phẩm",
+    "en": "Lethal Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc sát cấp 3, tăng Tỷ Lệ Bạo Kích.",
+    "bonus": {
+      "crit_rating": 24.0
+    }
+  },
+  {
+    "key": "GemSat_4",
+    "vi": "Ngọc Sát Thiên Phẩm",
+    "en": "Lethal Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc sát cấp 4, tăng Tỷ Lệ Bạo Kích.",
+    "bonus": {
+      "crit_rating": 32.0
+    }
+  },
+  {
+    "key": "GemSinh_1",
+    "vi": "Ngọc Sinh Hoàng Phẩm",
+    "en": "Vital Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc sinh cấp 1, tăng Hồi HP.",
+    "bonus": {
+      "hp_regen_pct": 0.0024
+    }
+  },
+  {
+    "key": "GemSinh_2",
+    "vi": "Ngọc Sinh Huyền Phẩm",
+    "en": "Vital Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc sinh cấp 2, tăng Hồi HP.",
+    "bonus": {
+      "hp_regen_pct": 0.0048
+    }
+  },
+  {
+    "key": "GemSinh_3",
+    "vi": "Ngọc Sinh Địa Phẩm",
+    "en": "Vital Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc sinh cấp 3, tăng Hồi HP.",
+    "bonus": {
+      "hp_regen_pct": 0.0072
+    }
+  },
+  {
+    "key": "GemSinh_4",
+    "vi": "Ngọc Sinh Thiên Phẩm",
+    "en": "Vital Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc sinh cấp 4, tăng Hồi HP.",
+    "bonus": {
+      "hp_regen_pct": 0.0096
+    }
+  },
+  {
+    "key": "GemTho_1",
+    "vi": "Ngọc Thổ Hoàng Phẩm",
+    "en": "Earth Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc thổ hoàng phẩm, tăng cường thổ hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "tho": 0.005
+      }
+    }
+  },
+  {
+    "key": "GemTho_2",
+    "vi": "Ngọc Thổ Huyền Phẩm",
+    "en": "Earth Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc thổ huyền phẩm, tăng cường thổ hệ mạnh hơn.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "tho": 0.01
+      }
+    }
+  },
+  {
+    "key": "GemTho_3",
+    "vi": "Ngọc Thổ Địa Phẩm",
+    "en": "Earth Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc thổ địa phẩm, tinh hoa thổ hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "tho": 0.015
+      }
+    }
+  },
+  {
+    "key": "GemTho_4",
+    "vi": "Ngọc Thổ Thiên Phẩm",
+    "en": "Earth Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc thổ thiên phẩm, cực phẩm vô giá.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "tho": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemThuan_1",
+    "vi": "Ngọc Thuẫn Hoàng Phẩm",
+    "en": "Bulwark Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc thuẫn cấp 1, tăng Khiên tối đa.",
+    "bonus": {
+      "shield_max_flat": 200.0
+    }
+  },
+  {
+    "key": "GemThuan_2",
+    "vi": "Ngọc Thuẫn Huyền Phẩm",
+    "en": "Bulwark Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc thuẫn cấp 2, tăng Khiên tối đa.",
+    "bonus": {
+      "shield_max_flat": 400.0
+    }
+  },
+  {
+    "key": "GemThuan_3",
+    "vi": "Ngọc Thuẫn Địa Phẩm",
+    "en": "Bulwark Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc thuẫn cấp 3, tăng Khiên tối đa.",
+    "bonus": {
+      "shield_max_flat": 600.0
+    }
+  },
+  {
+    "key": "GemThuan_4",
+    "vi": "Ngọc Thuẫn Thiên Phẩm",
+    "en": "Bulwark Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc thuẫn cấp 4, tăng Khiên tối đa.",
+    "bonus": {
+      "shield_max_flat": 800.0
+    }
+  },
+  {
+    "key": "GemThuy_1",
+    "vi": "Ngọc Thủy Hoàng Phẩm",
+    "en": "Water Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc thủy hoàng phẩm, tăng cường thủy hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "thuy": 0.005
+      }
+    }
+  },
+  {
+    "key": "GemThuy_2",
+    "vi": "Ngọc Thủy Huyền Phẩm",
+    "en": "Water Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc thủy huyền phẩm, tăng cường thủy hệ mạnh hơn.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "thuy": 0.01
+      }
+    }
+  },
+  {
+    "key": "GemThuy_3",
+    "vi": "Ngọc Thủy Địa Phẩm",
+    "en": "Water Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc thủy địa phẩm, tinh hoa thủy hệ.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "thuy": 0.015
+      }
+    }
+  },
+  {
+    "key": "GemThuy_4",
+    "vi": "Ngọc Thủy Thiên Phẩm",
+    "en": "Water Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc thủy thiên phẩm, cực phẩm vô giá.",
+    "bonus": {
+      "element_dmg_bonus": {
+        "thuy": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemToc_1",
+    "vi": "Ngọc Tốc Hoàng Phẩm",
+    "en": "Swift Gem Yellow Grade",
+    "type": "gem",
+    "grade": 1,
+    "shop_price_merit": 200,
+    "description_vi": "Ngọc tốc cấp 1, tăng Tốc Độ.",
+    "bonus": {
+      "spd_bonus": 0.64
+    }
+  },
+  {
+    "key": "GemToc_2",
+    "vi": "Ngọc Tốc Huyền Phẩm",
+    "en": "Swift Gem Mystic Grade",
+    "type": "gem",
+    "grade": 2,
+    "shop_price_merit": 500,
+    "description_vi": "Ngọc tốc cấp 2, tăng Tốc Độ.",
+    "bonus": {
+      "spd_bonus": 1.28
+    }
+  },
+  {
+    "key": "GemToc_3",
+    "vi": "Ngọc Tốc Địa Phẩm",
+    "en": "Swift Gem Earth Grade",
+    "type": "gem",
+    "grade": 3,
+    "shop_price_merit": 2000,
+    "description_vi": "Ngọc tốc cấp 3, tăng Tốc Độ.",
+    "bonus": {
+      "spd_bonus": 1.92
+    }
+  },
+  {
+    "key": "GemToc_4",
+    "vi": "Ngọc Tốc Thiên Phẩm",
+    "en": "Swift Gem Heaven Grade",
+    "type": "gem",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc tốc cấp 4, tăng Tốc Độ.",
+    "bonus": {
+      "spd_bonus": 2.56
+    }
+  },
+  {
+    "key": "GemUnique_AmThuc",
+    "vi": "Âm Thực Thôn Linh Ngọc",
+    "en": "Shadow-Devour Soul Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "am",
+    "shop_price_merit": 0,
+    "description_vi": "Bên trong ngọc có linh hồn cổ ma vẫn thức tỉnh, tự động nuốt linh khí kẻ địch khi tấn công. Khi linh hồn đối thủ đã suy yếu, đòn đánh lại càng tìm được yếu hại.",
+    "bonus": {
+      "crit_rating": 50,
+      "soul_drain_on_hit_pct": 0.08,
+      "element_pen": {
+        "am": 0.08
+      },
+      "crit_amp_vs": {
+        "drained": {
+          "rating": 100
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_AmThuc_G1",
+    "vi": "Âm Khí Ngọc",
+    "en": "Shadow-Aura Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "am",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc nhuộm âm khí mờ nhạt, chớm hút sinh lực đối thủ.",
+    "bonus": {
+      "crit_rating": 20,
+      "element_pen": {
+        "am": 0.03
+      }
+    }
+  },
+  {
+    "key": "GemUnique_AmThuc_G2",
+    "vi": "U Hồn Ngọc",
+    "en": "Hidden-Soul Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "am",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc ẩn chứa hồn phách u ám, thỉnh thoảng ăn mòn HP tối đa của địch.",
+    "bonus": {
+      "crit_rating": 30,
+      "soul_drain_on_hit_pct": 0.04,
+      "element_pen": {
+        "am": 0.04
+      }
+    }
+  },
+  {
+    "key": "GemUnique_AmThuc_G3",
+    "vi": "Âm Nghiệp Ngọc",
+    "en": "Shadow-Karma Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "am",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc gắn đạo lý âm nghiệp, với địch đã bị bào mòn thì càng dễ tìm nhược điểm.",
+    "bonus": {
+      "crit_rating": 40,
+      "soul_drain_on_hit_pct": 0.06,
+      "element_pen": {
+        "am": 0.06
+      },
+      "crit_amp_vs": {
+        "drained": {
+          "rating": 60
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_AnPhongPhaGioi",
+    "vi": "Phong Ấn Phá Giới Ngọc",
+    "en": "Seal-Break Boundary Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc cổ phá vỡ phong ấn thiên địa. Miễn nhiễm nhiều loại trói buộc, kháng tất cả hệ nguyên tố.",
+    "bonus": {
+      "debuff_immune_pct": 0.15,
+      "final_dmg_bonus": 0.05,
+      "res_all": 0.2,
+      "crit_res_rating": 100
+    }
+  },
+  {
+    "key": "GemUnique_AnPhongPhaGioi_G1",
+    "vi": "Cấm Pháp Ngọc",
+    "en": "Forbidden-Law Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc trung tính mang dấu cổ pháp, kháng một phần debuff.",
+    "bonus": {
+      "debuff_immune_pct": 0.06,
+      "res_all": 0.07
+    }
+  },
+  {
+    "key": "GemUnique_AnPhongPhaGioi_G2",
+    "vi": "Phá Ấn Ngọc",
+    "en": "Seal-Break Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc trung tính phá vỡ phong ấn, miễn nhiễm nhiều loại trói buộc.",
+    "bonus": {
+      "debuff_immune_pct": 0.1,
+      "res_all": 0.12,
+      "crit_res_rating": 60
+    }
+  },
+  {
+    "key": "GemUnique_AnPhongPhaGioi_G3",
+    "vi": "Phá Giới Ngọc",
+    "en": "Boundary-Break Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc trung tính vượt qua giới luật thiên địa, kháng toàn diện và khó bị bạo kích.",
+    "bonus": {
+      "debuff_immune_pct": 0.12,
+      "res_all": 0.16,
+      "crit_res_rating": 80,
+      "final_dmg_bonus": 0.04
+    }
+  },
+  {
+    "key": "GemUnique_CuLongTam",
+    "vi": "Cự Long Tâm Ngọc",
+    "en": "Dragon-Heart Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc luyện từ tim của cự long ngàn năm. Huyết mạch nồng đậm tạo nguồn sức mạnh khủng khiếp, HP càng nhiều thì đòn đánh càng hủy diệt.",
+    "bonus": {
+      "hp_pct": 0.15,
+      "damage_bonus_from_hp_pct": 0.03,
+      "hp_regen_pct": 0.015,
+      "hp_regen_flat": 40
+    }
+  },
+  {
+    "key": "GemUnique_CuLongTam_G1",
+    "vi": "Long Tủy Ngọc",
+    "en": "Dragon-Marrow Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc luyện từ tủy rồng non, tăng cơ bản sức sống.",
+    "bonus": {
+      "hp_pct": 0.06,
+      "hp_regen_flat": 20
+    }
+  },
+  {
+    "key": "GemUnique_CuLongTam_G2",
+    "vi": "Long Cốt Ngọc",
+    "en": "Dragon-Bone Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc luyện từ xương rồng trưởng thành, HP càng nhiều thì đòn càng khủng.",
+    "bonus": {
+      "hp_pct": 0.1,
+      "damage_bonus_from_hp_pct": 0.012,
+      "hp_regen_flat": 30
+    }
+  },
+  {
+    "key": "GemUnique_CuLongTam_G3",
+    "vi": "Long Tâm Ngọc",
+    "en": "Dragon-Heart Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc luyện từ tim rồng cổ đại, mạch huyết nồng đậm nuôi dưỡng sức mạnh hủy diệt.",
+    "bonus": {
+      "hp_pct": 0.12,
+      "damage_bonus_from_hp_pct": 0.022,
+      "hp_regen_pct": 0.012,
+      "hp_regen_flat": 32
+    }
+  },
+  {
+    "key": "GemUnique_CuuKhieuHoiXuan",
+    "vi": "Cửu Khiếu Hồi Xuân Ngọc",
+    "en": "Nine-Aperture Revival Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc mộc chín ngả sinh cơ, mỗi nhịp hồi phục đều có thể bùng lên như thần dược. Người mang ngọc có hai mạch: một mạch sống lâu, một mạch hồi máu bạo kích.",
+    "bonus": {
+      "hp_pct": 0.08,
+      "heal_pct": 0.25,
+      "heal_can_crit": true,
+      "hp_regen_pct": 0.015
+    }
+  },
+  {
+    "key": "GemUnique_CuuKhieuHoiXuan_G1",
+    "vi": "Sinh Mạch Ngọc",
+    "en": "Life-Meridian Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc mộc khai mở một mạch sinh cơ trong kinh mạch người đeo.",
+    "bonus": {
+      "hp_pct": 0.04,
+      "hp_regen_pct": 0.006
+    }
+  },
+  {
+    "key": "GemUnique_CuuKhieuHoiXuan_G2",
+    "vi": "Dưỡng Sinh Ngọc",
+    "en": "Nurturing-Life Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc mộc thu tinh hoa thảo dược, hồi phục tự nhiên và khuếch đại hiệu lực trị liệu.",
+    "bonus": {
+      "hp_pct": 0.05,
+      "heal_pct": 0.1,
+      "hp_regen_pct": 0.009
+    }
+  },
+  {
+    "key": "GemUnique_CuuKhieuHoiXuan_G3",
+    "vi": "Hồi Xuân Ngọc",
+    "en": "Revival-Spring Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc mộc vận vạn xuân, trị liệu tăng vọt và thân thể tái tạo không ngừng.",
+    "bonus": {
+      "hp_pct": 0.06,
+      "heal_pct": 0.2,
+      "hp_regen_pct": 0.012
+    }
+  },
+  {
+    "key": "GemUnique_DiaHuyenKimCuong",
+    "vi": "Địa Huyền Kim Cương Ngọc",
+    "en": "Earth-Mystic Diamond Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc kim cương hấp thụ địa huyền linh khí ngàn năm. Khiên phản thương khổng lồ, mọi đòn đánh trúng đều bị bật ngược.",
+    "bonus": {
+      "thorn_pct": 0.2,
+      "shield_regen_flat": 50,
+      "final_dmg_reduce": 0.06,
+      "thorn_from_shield": true
+    }
+  },
+  {
+    "key": "GemUnique_DiaHuyenKimCuong_G1",
+    "vi": "Kim Cương Ngọc",
+    "en": "Diamond Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc thổ cứng như kim cương, phản một phần sát thương nhận vào.",
+    "bonus": {
+      "thorn_pct": 0.08,
+      "shield_regen_flat": 20
+    }
+  },
+  {
+    "key": "GemUnique_DiaHuyenKimCuong_G2",
+    "vi": "Huyền Thạch Ngọc",
+    "en": "Mystic-Stone Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc thổ huyền bí, khiên hồi phục và phản thương đều mạnh mẽ.",
+    "bonus": {
+      "thorn_pct": 0.12,
+      "shield_regen_flat": 30,
+      "final_dmg_reduce": 0.03
+    }
+  },
+  {
+    "key": "GemUnique_DiaHuyenKimCuong_G3",
+    "vi": "Địa Huyền Ngọc",
+    "en": "Earth-Mystic Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc thổ huyền khổng lồ, phản thương kinh hoàng và khiên tự dày lên theo thời gian.",
+    "bonus": {
+      "thorn_pct": 0.16,
+      "shield_regen_flat": 40,
+      "final_dmg_reduce": 0.05,
+      "shield_max_pct": 0.06
+    }
+  },
+  {
+    "key": "GemUnique_HanPhongBangCot",
+    "vi": "Hàn Phong Băng Cốt Ngọc",
+    "en": "Frost-Bone Wind Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc thủy lạnh thấu xương, chiêu thức mang hàn khí có 15% cơ hội đóng băng đối thủ — kẻ địch bị làm chậm và ngày càng run sợ.",
+    "bonus": {
+      "freeze_on_skill_chance": 0.15,
+      "slow_on_hit_pct": 0.2,
+      "element_pen": {
+        "thuy": 0.06
+      },
+      "crit_amp_vs": {
+        "marked": {
+          "rating": 60
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_HanPhongBangCot_G1",
+    "vi": "Băng Tâm Ngọc",
+    "en": "Ice-Heart Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc thủy lạnh thấm vào tâm, đòn đánh làm chậm đối thủ đôi chút.",
+    "bonus": {
+      "slow_on_hit_pct": 0.08,
+      "element_pen": {
+        "thuy": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemUnique_HanPhongBangCot_G2",
+    "vi": "Hàn Phong Ngọc",
+    "en": "Cold-Wind Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc thủy thổi hàn phong, địch bị đánh dấu trở nên dễ bạo kích hơn.",
+    "bonus": {
+      "slow_on_hit_pct": 0.12,
+      "element_pen": {
+        "thuy": 0.04
+      },
+      "crit_amp_vs": {
+        "marked": {
+          "rating": 30
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_HanPhongBangCot_G3",
+    "vi": "Băng Cốt Ngọc",
+    "en": "Frost-Bone Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc thủy lạnh thấu xương, chiêu thức ngấm hàn khí xóa đi sức nóng của địch.",
+    "bonus": {
+      "slow_on_hit_pct": 0.16,
+      "element_pen": {
+        "thuy": 0.05
+      },
+      "crit_amp_vs": {
+        "marked": {
+          "rating": 50
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_HonNguyenTinh",
+    "vi": "Hỗn Nguyên Tinh Ngọc",
+    "en": "Primordial-Chaos Essence Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc ngưng tụ tinh hoa hỗn nguyên thái sơ. Cân bằng vạn đạo, không có mặt yếu nhưng cũng không có mặt siêu việt; bù lại phù hợp mọi lộ trình tu luyện.",
+    "bonus": {
+      "final_dmg_bonus": 0.04,
+      "final_dmg_reduce": 0.04,
+      "res_all": 0.25,
+      "crit_rating": 40,
+      "cooldown_reduce": 0.05
+    }
+  },
+  {
+    "key": "GemUnique_HonNguyenTinh_G1",
+    "vi": "Nguyên Khí Ngọc",
+    "en": "Origin-Qi Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc trung tính mang nguyên khí thô sơ, tăng sát thương và giảm sát thương nhẹ.",
+    "bonus": {
+      "final_dmg_bonus": 0.02,
+      "final_dmg_reduce": 0.02,
+      "res_all": 0.07
+    }
+  },
+  {
+    "key": "GemUnique_HonNguyenTinh_G2",
+    "vi": "Hỗn Khí Ngọc",
+    "en": "Chaos-Qi Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc trung tính ngấm hỗn khí, cân bằng công và thủ ở mức khá.",
+    "bonus": {
+      "final_dmg_bonus": 0.03,
+      "final_dmg_reduce": 0.03,
+      "res_all": 0.12,
+      "crit_rating": 20
+    }
+  },
+  {
+    "key": "GemUnique_HonNguyenTinh_G3",
+    "vi": "Hỗn Nguyên Ngọc",
+    "en": "Primordial-Chaos Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc trung tính tiếp cận đạo hỗn nguyên, không nổi trội nhưng phù hợp mọi lộ trình.",
+    "bonus": {
+      "final_dmg_bonus": 0.035,
+      "final_dmg_reduce": 0.035,
+      "res_all": 0.2,
+      "crit_rating": 30,
+      "cooldown_reduce": 0.04
+    }
+  },
+  {
+    "key": "GemUnique_HuyetSat",
+    "vi": "Huyết Sát Linh Ngọc",
+    "en": "Blood Killer Spirit Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc kim mang sát khí huyết chiến, tăng bạo kích và trực tiếp gây Chảy Máu lên mục tiêu. Đối với kẻ đang chảy máu, mỗi nhát đâm đều tìm nhược điểm.",
+    "bonus": {
+      "crit_rating": 80,
+      "bleed_on_hit_pct": 0.15,
+      "dot_stack_cap_bonus": {
+        "bleed": 3
+      },
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 60
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_HuyetSat_G1",
+    "vi": "Sát Khí Ngọc",
+    "en": "Killing-Aura Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc hàm chứa sát khí sơ khởi, tăng bạo kích và sát thương bạo kích cho người đeo.",
+    "bonus": {
+      "crit_rating": 30,
+      "crit_dmg_rating": 25
+    }
+  },
+  {
+    "key": "GemUnique_HuyetSat_G2",
+    "vi": "Thanh Huyết Ngọc",
+    "en": "Cleansing-Blood Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc luyện từ máu tươi của sát thủ ngàn người. Đòn đánh dễ dàng rạch mở da thịt đối thủ.",
+    "bonus": {
+      "crit_rating": 40,
+      "bleed_on_hit_pct": 0.08,
+      "dot_stack_cap_bonus": {
+        "bleed": 1
+      }
+    }
+  },
+  {
+    "key": "GemUnique_HuyetSat_G3",
+    "vi": "Chu Sát Ngọc",
+    "en": "Crimson-Slaughter Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc đỏ như máu đông cứng. Bạo kích tìm đến nhược điểm của kẻ đang chảy máu một cách vô tình.",
+    "bonus": {
+      "crit_rating": 55,
+      "bleed_on_hit_pct": 0.1,
+      "dot_stack_cap_bonus": {
+        "bleed": 2
+      },
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 40
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_KienThienKhien",
+    "vi": "Kiên Thiên Hộ Ngọc",
+    "en": "Sky-Firming Shield Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc thổ rắn như trụ trời. Khiên từ từ hồi phục và phản chấn mọi đòn đánh; địch càng đánh mạnh càng tự chịu đau.",
+    "bonus": {
+      "final_dmg_reduce": 0.08,
+      "shield_regen_pct": 0.02,
+      "thorn_pct": 0.1,
+      "shield_max_pct": 0.1
+    }
+  },
+  {
+    "key": "GemUnique_KienThienKhien_G1",
+    "vi": "Thạch Bì Ngọc",
+    "en": "Stone-Skin Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc thổ tạo da cứng như đá, giảm sát thương đòn đánh trực tiếp.",
+    "bonus": {
+      "final_dmg_reduce": 0.03,
+      "shield_max_pct": 0.03
+    }
+  },
+  {
+    "key": "GemUnique_KienThienKhien_G2",
+    "vi": "Bàn Thạch Ngọc",
+    "en": "Boulder Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc thổ nặng như bàn thạch, đòn đánh trúng bị bật ngược.",
+    "bonus": {
+      "final_dmg_reduce": 0.05,
+      "thorn_pct": 0.05,
+      "shield_max_pct": 0.06
+    }
+  },
+  {
+    "key": "GemUnique_KienThienKhien_G3",
+    "vi": "Kiên Thiên Ngọc",
+    "en": "Firm-Sky Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc thổ vững như trụ chống trời, khiên hồi phục dần và phản thương mạnh mẽ.",
+    "bonus": {
+      "final_dmg_reduce": 0.06,
+      "thorn_pct": 0.08,
+      "shield_regen_pct": 0.015,
+      "shield_max_pct": 0.08
+    }
+  },
+  {
+    "key": "GemUnique_LoiToa",
+    "vi": "Lôi Tỏa Cuồng Ngọc",
+    "en": "Thunder-Shackle Fury Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "loi",
+    "shop_price_merit": 0,
+    "description_vi": "Chín đạo lôi khí khóa chặt vào ngọc. Người đeo nhanh như chớp, có thể cướp lượt của địch khi lôi chấn bùng nổ.",
+    "bonus": {
+      "crit_rating": 60,
+      "shock_on_hit_pct": 0.25,
+      "turn_steal_pct": 0.05,
+      "spd_bonus": 6
+    }
+  },
+  {
+    "key": "GemUnique_LoiToa_G1",
+    "vi": "Lôi Quang Ngọc",
+    "en": "Thunder-Light Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "loi",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc lôi mới tụ, chớp sáng nhẹ nhưng đủ để thân pháp nhanh hơn.",
+    "bonus": {
+      "crit_rating": 25,
+      "spd_bonus": 3
+    }
+  },
+  {
+    "key": "GemUnique_LoiToa_G2",
+    "vi": "Lôi Cuồng Ngọc",
+    "en": "Thunder-Fury Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "loi",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc lôi nổ tung khi giáng đòn, thỉnh thoảng làm tê liệt đối thủ.",
+    "bonus": {
+      "crit_rating": 40,
+      "shock_on_hit_pct": 0.15,
+      "spd_bonus": 4
+    }
+  },
+  {
+    "key": "GemUnique_LoiToa_G3",
+    "vi": "Lôi Tỏa Ngọc",
+    "en": "Thunder-Shackle Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "loi",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc lôi khóa chặt đối thủ bằng chín đạo điện lưới, thỉnh thoảng cướp lượt hành động.",
+    "bonus": {
+      "crit_rating": 50,
+      "shock_on_hit_pct": 0.2,
+      "turn_steal_pct": 0.03,
+      "spd_bonus": 5
+    }
+  },
+  {
+    "key": "GemUnique_PhaNguyen",
+    "vi": "Phá Nguyên Chí Sát Ngọc",
+    "en": "Origin-Breaker Killing Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc kim có sát khí phá vỡ bản nguyên của vạn vật. Mỗi đòn đánh đều chém qua phòng ngự, bạo kích thương tổn gấp bội.",
+    "bonus": {
+      "final_dmg_bonus": 0.1,
+      "true_dmg_pct": 0.02,
+      "crit_dmg_rating": 100,
+      "element_pen": {
+        "kim": 0.05
+      }
+    }
+  },
+  {
+    "key": "GemUnique_PhaNguyen_G1",
+    "vi": "Phá Thạch Ngọc",
+    "en": "Stone-Breaker Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc kim sắc bén, chém qua lớp giáp mỏng của đối thủ.",
+    "bonus": {
+      "final_dmg_bonus": 0.04,
+      "crit_dmg_rating": 40
+    }
+  },
+  {
+    "key": "GemUnique_PhaNguyen_G2",
+    "vi": "Phá Quân Ngọc",
+    "en": "Army-Breaker Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc kim oai hùng, xuyên qua phòng ngự vạn binh, sát thương tăng vọt.",
+    "bonus": {
+      "final_dmg_bonus": 0.06,
+      "crit_dmg_rating": 60,
+      "element_pen": {
+        "kim": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemUnique_PhaNguyen_G3",
+    "vi": "Phá Nguyên Ngọc",
+    "en": "Origin-Break Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc kim có sát khí phá vỡ bản nguyên, mỗi đòn đều mang theo một ít sát thương chuẩn.",
+    "bonus": {
+      "final_dmg_bonus": 0.08,
+      "crit_dmg_rating": 80,
+      "true_dmg_pct": 0.015,
+      "element_pen": {
+        "kim": 0.03
+      }
+    }
+  },
+  {
+    "key": "GemUnique_PhongThanToc",
+    "vi": "Phong Thần Tốc Ngọc",
+    "en": "Wind-God Haste Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "phong",
+    "shop_price_merit": 0,
+    "description_vi": "Thần phong ngưng tụ thành ngọc. Người đeo thân pháp như gió lốc, né tránh càng nhiều thì sát thương càng kinh hoàng.",
+    "bonus": {
+      "spd_bonus": 12,
+      "evasion_rating": 100,
+      "mark_on_hit_pct": 0.15,
+      "damage_bonus_from_evasion_pct": 0.05
+    }
+  },
+  {
+    "key": "GemUnique_PhongThanToc_G1",
+    "vi": "Khinh Công Ngọc",
+    "en": "Lightfoot Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "phong",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc phong làm thân pháp nhẹ như lông hồng, né tránh tốt hơn.",
+    "bonus": {
+      "spd_bonus": 5,
+      "evasion_rating": 40
+    }
+  },
+  {
+    "key": "GemUnique_PhongThanToc_G2",
+    "vi": "Thần Hành Ngọc",
+    "en": "Divine-Stride Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "phong",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc phong ngấm linh khí thần hành, né đòn và gắn dấu lên địch.",
+    "bonus": {
+      "spd_bonus": 8,
+      "evasion_rating": 70,
+      "mark_on_hit_pct": 0.08
+    }
+  },
+  {
+    "key": "GemUnique_PhongThanToc_G3",
+    "vi": "Phong Ảnh Ngọc",
+    "en": "Wind-Shadow Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "phong",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc phong tan theo bóng gió, né càng cao thì sát thương càng khủng khiếp.",
+    "bonus": {
+      "spd_bonus": 10,
+      "evasion_rating": 90,
+      "mark_on_hit_pct": 0.12,
+      "damage_bonus_from_evasion_pct": 0.03
+    }
+  },
+  {
+    "key": "GemUnique_SongPhachPhanThan",
+    "vi": "Song Phách Phân Thân Ngọc",
+    "en": "Dual-Soul Clone Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "loi",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc chia hồn thành hai mạch song hành. Bạo kích đồng thời gây tê liệt đối phương, đôi khi lôi quang xé toạc không gian.",
+    "bonus": {
+      "crit_rating": 80,
+      "crit_dmg_rating": 80,
+      "paralysis_on_crit": true,
+      "shock_on_hit_pct": 0.1
+    }
+  },
+  {
+    "key": "GemUnique_SongPhachPhanThan_G1",
+    "vi": "Song Nguyệt Ngọc",
+    "en": "Twin-Moon Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "loi",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc lôi chia hai ánh trăng, tăng bạo kích cơ bản.",
+    "bonus": {
+      "crit_rating": 32,
+      "crit_dmg_rating": 30
+    }
+  },
+  {
+    "key": "GemUnique_SongPhachPhanThan_G2",
+    "vi": "Phân Hồn Ngọc",
+    "en": "Split-Soul Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "loi",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc lôi phân tách hồn lực, đòn đánh kèm theo dư chấn.",
+    "bonus": {
+      "crit_rating": 48,
+      "crit_dmg_rating": 50,
+      "shock_on_hit_pct": 0.05
+    }
+  },
+  {
+    "key": "GemUnique_SongPhachPhanThan_G3",
+    "vi": "Song Phách Ngọc",
+    "en": "Dual-Soul Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "loi",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc lôi chia hai mạch song hành, bạo kích bùng nổ lôi quang khắp nơi.",
+    "bonus": {
+      "crit_rating": 64,
+      "crit_dmg_rating": 65,
+      "shock_on_hit_pct": 0.08,
+      "spd_bonus": 3
+    }
+  },
+  {
+    "key": "GemUnique_ThanhQuangTinhThe",
+    "vi": "Thánh Quang Tịnh Thế Ngọc",
+    "en": "Holy-Light Purification Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "quang",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc quang tỏa ra sát khí thần thánh. Trị liệu thêm mạnh mẽ, đồng thời bạo kích còn đóng cửa linh khí đối phương.",
+    "bonus": {
+      "heal_pct": 0.2,
+      "silence_on_crit_pct": 0.2,
+      "cleanse_on_turn_pct": 0.1,
+      "barrier_on_cleanse": true,
+      "element_pen": {
+        "quang": 0.08
+      }
+    }
+  },
+  {
+    "key": "GemUnique_ThanhQuangTinhThe_G1",
+    "vi": "Quang Tâm Ngọc",
+    "en": "Light-Heart Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "quang",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc quang chiếu sáng trái tim, trị liệu mạnh mẽ hơn người thường.",
+    "bonus": {
+      "heal_pct": 0.08,
+      "element_pen": {
+        "quang": 0.03
+      }
+    }
+  },
+  {
+    "key": "GemUnique_ThanhQuangTinhThe_G2",
+    "vi": "Tịnh Hóa Ngọc",
+    "en": "Purification Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "quang",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc quang tự động tẩy debuff nhẹ nhàng và khuếch đại hiệu lực trị liệu.",
+    "bonus": {
+      "heal_pct": 0.12,
+      "cleanse_on_turn_pct": 0.05,
+      "element_pen": {
+        "quang": 0.05
+      }
+    }
+  },
+  {
+    "key": "GemUnique_ThanhQuangTinhThe_G3",
+    "vi": "Thánh Quang Ngọc",
+    "en": "Holy-Light Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "quang",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc quang thần thánh, bạo kích làm đối thủ câm lặng và hồi phục của người đeo tăng vọt.",
+    "bonus": {
+      "heal_pct": 0.16,
+      "silence_on_crit_pct": 0.12,
+      "cleanse_on_turn_pct": 0.08,
+      "element_pen": {
+        "quang": 0.06
+      }
+    }
+  },
+  {
+    "key": "GemUnique_ThienTamQuyDao",
+    "vi": "Thiên Tâm Quỹ Đạo Ngọc",
+    "en": "Heavenly-Orbit Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc ngưng tụ quỹ đạo tinh tú, kỹ năng xoay vần không ngừng nghỉ. Giảm hồi chiêu sâu và hồi linh lực nhanh hơn người thường.",
+    "bonus": {
+      "cooldown_reduce": 0.15,
+      "final_dmg_bonus": 0.05,
+      "mp_regen_pct": 0.03,
+      "mp_regen_flat": 20
+    }
+  },
+  {
+    "key": "GemUnique_ThienTamQuyDao_G1",
+    "vi": "Quỹ Thạch Ngọc",
+    "en": "Orbit-Stone Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc trung tính vận hành nhỏ xoay quanh đan điền, giảm hồi chiêu một ít.",
+    "bonus": {
+      "cooldown_reduce": 0.06,
+      "mp_regen_pct": 0.012
+    }
+  },
+  {
+    "key": "GemUnique_ThienTamQuyDao_G2",
+    "vi": "Tinh Hà Ngọc",
+    "en": "Starstream Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc trung tính kết tinh từ hà sao, kỹ năng xoay vần không ngừng.",
+    "bonus": {
+      "cooldown_reduce": 0.09,
+      "mp_regen_pct": 0.018,
+      "final_dmg_bonus": 0.02
+    }
+  },
+  {
+    "key": "GemUnique_ThienTamQuyDao_G3",
+    "vi": "Thiên Quỹ Ngọc",
+    "en": "Heaven-Orbit Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": null,
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc trung tính mang quỹ đạo tinh tú, hồi linh và giảm CD sâu như thiên đạo xoay chuyển.",
+    "bonus": {
+      "cooldown_reduce": 0.12,
+      "mp_regen_pct": 0.024,
+      "final_dmg_bonus": 0.03,
+      "mp_regen_flat": 15
+    }
+  },
+  {
+    "key": "GemUnique_ThieuHon",
+    "vi": "Thiêu Hồn Hỏa Ngọc",
+    "en": "Soul-Burning Fire Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "hoa",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc hỏa luyện thành từ hồn phách yêu linh. Mỗi đòn đánh đều phủ lên đối thủ lớp lửa âm thiêu, càng đốt lâu càng rát.",
+    "bonus": {
+      "final_dmg_bonus": 0.06,
+      "burn_on_hit_pct": 0.2,
+      "element_pen": {
+        "hoa": 0.05
+      },
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.15
+      }
+    }
+  },
+  {
+    "key": "GemUnique_ThieuHon_G1",
+    "vi": "Hỏa Tâm Ngọc",
+    "en": "Fire-Heart Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "hoa",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc hỏa nhỏ ấp ủ ngọn lửa tâm nguyên. Sát thương tăng nhẹ nhưng ổn định.",
+    "bonus": {
+      "final_dmg_bonus": 0.03,
+      "burn_on_hit_pct": 0.05
+    }
+  },
+  {
+    "key": "GemUnique_ThieuHon_G2",
+    "vi": "Hỏa Diễm Ngọc",
+    "en": "Fire-Flame Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "hoa",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc hỏa diễm cháy rát, đòn đánh phủ lửa đốt cháy y giáp đối thủ.",
+    "bonus": {
+      "final_dmg_bonus": 0.04,
+      "burn_on_hit_pct": 0.12,
+      "element_pen": {
+        "hoa": 0.03
+      }
+    }
+  },
+  {
+    "key": "GemUnique_ThieuHon_G3",
+    "vi": "Thiêu Thiên Ngọc",
+    "en": "Sky-Burning Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "hoa",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc hỏa cháy lên tận mây xanh, càng đốt lâu càng rát, địch nhân đeo lửa khó lành.",
+    "bonus": {
+      "final_dmg_bonus": 0.05,
+      "burn_on_hit_pct": 0.16,
+      "element_pen": {
+        "hoa": 0.04
+      },
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.1
+      }
+    }
+  },
+  {
+    "key": "GemUnique_ThoDiaThuong",
+    "vi": "Thổ Địa Thượng Ngọc",
+    "en": "Earth-Suppression Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc thổ đè nặng vạn vật. Cơ thể rắn như thạch khối, đòn đánh có thể chấn choáng địch nhân khi chạm trúng.",
+    "bonus": {
+      "hp_pct": 0.1,
+      "stun_on_hit_pct": 0.08,
+      "damage_bonus_from_hp_pct": 0.02,
+      "shield_max_pct": 0.05
+    }
+  },
+  {
+    "key": "GemUnique_ThoDiaThuong_G1",
+    "vi": "Thổ Chấn Ngọc",
+    "en": "Earth-Quake Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc thổ làm thân thể vững chãi, chịu đòn tốt hơn người thường.",
+    "bonus": {
+      "hp_pct": 0.04
+    }
+  },
+  {
+    "key": "GemUnique_ThoDiaThuong_G2",
+    "vi": "Trấn Địa Ngọc",
+    "en": "Earth-Suppress Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc thổ đè nặng vạn vật, đôi khi đòn đánh làm choáng đối thủ.",
+    "bonus": {
+      "hp_pct": 0.06,
+      "stun_on_hit_pct": 0.03
+    }
+  },
+  {
+    "key": "GemUnique_ThoDiaThuong_G3",
+    "vi": "Địa Uy Ngọc",
+    "en": "Earth-Might Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "tho",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc thổ oai phong, HP càng nhiều thì đòn đánh càng nặng nề.",
+    "bonus": {
+      "hp_pct": 0.08,
+      "stun_on_hit_pct": 0.06,
+      "damage_bonus_from_hp_pct": 0.015,
+      "shield_max_pct": 0.04
+    }
+  },
+  {
+    "key": "GemUnique_TinhLuuKhiHai",
+    "vi": "Tinh Lưu Khí Hải Ngọc",
+    "en": "Spirit-Stream Qi Ocean Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc thủy mang tinh lưu trường sinh. MP càng nhiều thì đòn đánh càng mạnh, đồng thời mỗi đòn hút linh khí đối thủ để bổ sung.",
+    "bonus": {
+      "mp_pct": 0.15,
+      "mp_leech_pct": 0.08,
+      "damage_bonus_from_mp_pct": 0.04,
+      "mp_regen_pct": 0.02,
+      "element_pen": {
+        "thuy": 0.05
+      }
+    }
+  },
+  {
+    "key": "GemUnique_TinhLuuKhiHai_G1",
+    "vi": "Thủy Linh Ngọc",
+    "en": "Water-Spirit Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc thủy tỏa linh khí nhẹ nhàng, mở rộng dung lượng linh lực của người đeo.",
+    "bonus": {
+      "mp_pct": 0.06,
+      "mp_regen_pct": 0.008
+    }
+  },
+  {
+    "key": "GemUnique_TinhLuuKhiHai_G2",
+    "vi": "Linh Khí Ngọc",
+    "en": "Spirit-Qi Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc thủy mang tinh lưu linh khí, hút MP đối thủ khi đánh trúng.",
+    "bonus": {
+      "mp_pct": 0.09,
+      "mp_leech_pct": 0.04,
+      "mp_regen_pct": 0.012
+    }
+  },
+  {
+    "key": "GemUnique_TinhLuuKhiHai_G3",
+    "vi": "Khí Hải Ngọc",
+    "en": "Qi-Ocean Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc thủy mang đại hải linh khí, mỗi giọt MP đều trở thành sát thương thêm.",
+    "bonus": {
+      "mp_pct": 0.12,
+      "mp_leech_pct": 0.06,
+      "damage_bonus_from_mp_pct": 0.025,
+      "element_pen": {
+        "thuy": 0.04
+      }
+    }
+  },
+  {
+    "key": "GemUnique_TuyetLongCamDao",
+    "vi": "Tuyết Long Cấm Đạo Ngọc",
+    "en": "Snow-Dragon Forbidden-Dao Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc ngưng từ hơi thở của tuyết long cổ đại. Chiêu thức có 18% cơ hội đóng băng địch nhân, đồng thời cắt đứt nguồn hồi phục.",
+    "bonus": {
+      "heal_reduce_on_hit_pct": 0.25,
+      "freeze_on_skill_chance": 0.18,
+      "slow_on_hit_pct": 0.15,
+      "final_dmg_bonus": 0.05
+    }
+  },
+  {
+    "key": "GemUnique_TuyetLongCamDao_G1",
+    "vi": "Tuyết Linh Ngọc",
+    "en": "Snow-Spirit Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc thủy ngấm linh khí tuyết, làm chậm đối thủ đôi chút.",
+    "bonus": {
+      "slow_on_hit_pct": 0.08,
+      "heal_reduce_on_hit_pct": 0.1
+    }
+  },
+  {
+    "key": "GemUnique_TuyetLongCamDao_G2",
+    "vi": "Cấm Tuyết Ngọc",
+    "en": "Forbidden-Snow Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc thủy mang phong ấn tuyết cấm, cắt đứt nguồn hồi phục của địch.",
+    "bonus": {
+      "slow_on_hit_pct": 0.12,
+      "heal_reduce_on_hit_pct": 0.18,
+      "element_pen": {
+        "thuy": 0.03
+      }
+    }
+  },
+  {
+    "key": "GemUnique_TuyetLongCamDao_G3",
+    "vi": "Tuyết Long Ngọc",
+    "en": "Snow-Dragon Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "thuy",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc thủy hóa tuyết long, chiêu thức đóng băng một phần và anti-heal mạnh mẽ.",
+    "bonus": {
+      "slow_on_hit_pct": 0.14,
+      "heal_reduce_on_hit_pct": 0.22,
+      "element_pen": {
+        "thuy": 0.04
+      },
+      "final_dmg_bonus": 0.03
+    }
+  },
+  {
+    "key": "GemUnique_VanHoaTuyetDoi",
+    "vi": "Vạn Hoa Tuyệt Đối Ngọc",
+    "en": "Myriad-Flower Absolute Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc hoa tụ hương độc ngàn loại. DoT trên địch đều được khuếch đại và có thể bạo kích, thương tổn kéo dài không dứt.",
+    "bonus": {
+      "dot_dmg_bonus": 0.25,
+      "dot_can_crit": true,
+      "element_pen": {
+        "moc": 0.06
+      },
+      "dot_dmg_bonus_by_kind": {
+        "poison": 0.2
+      }
+    }
+  },
+  {
+    "key": "GemUnique_VanHoaTuyetDoi_G1",
+    "vi": "Độc Hương Ngọc",
+    "en": "Poison-Incense Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc mộc tỏa mùi hương lờ mờ, khuếch đại hiệu lực DoT nhẹ.",
+    "bonus": {
+      "dot_dmg_bonus": 0.1,
+      "element_pen": {
+        "moc": 0.02
+      }
+    }
+  },
+  {
+    "key": "GemUnique_VanHoaTuyetDoi_G2",
+    "vi": "Vạn Độc Ngọc",
+    "en": "Myriad-Poison Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc mộc ngấm vạn loại độc dược, DoT thấm sâu và lâu tan.",
+    "bonus": {
+      "dot_dmg_bonus": 0.15,
+      "element_pen": {
+        "moc": 0.03
+      },
+      "dot_dmg_bonus_by_kind": {
+        "poison": 0.1
+      }
+    }
+  },
+  {
+    "key": "GemUnique_VanHoaTuyetDoi_G3",
+    "vi": "Vạn Hoa Ngọc",
+    "en": "Myriad-Flower Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "moc",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc mộc chứa vạn hoa cực độc, DoT thăng hoa thành trào lưu hủy diệt.",
+    "bonus": {
+      "dot_dmg_bonus": 0.2,
+      "element_pen": {
+        "moc": 0.05
+      },
+      "dot_dmg_bonus_by_kind": {
+        "poison": 0.15
+      }
+    }
+  },
+  {
+    "key": "GemUnique_VoThuongChanThuong",
+    "vi": "Vô Thường Sát Thương Chuẩn Ngọc",
+    "en": "Impermanence True-Damage Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc mang đạo lý vô thường sinh diệt. Xuyên qua mọi phòng ngự, đồng thời làm chảy máu đối thủ không ngừng.",
+    "bonus": {
+      "true_dmg_pct": 0.03,
+      "bleed_on_hit_pct": 0.1,
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 80,
+          "dmg": 60
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_VoThuongChanThuong_G1",
+    "vi": "Sắc Kiếm Ngọc",
+    "en": "Keen-Blade Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc kim sắc bén, rạch vết thương hở trên da đối thủ.",
+    "bonus": {
+      "bleed_on_hit_pct": 0.05,
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 30
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_VoThuongChanThuong_G2",
+    "vi": "Vô Hình Ngọc",
+    "en": "Formless Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc kim mang đạo vô hình, một số đòn xuyên thẳng qua phòng ngự.",
+    "bonus": {
+      "true_dmg_pct": 0.012,
+      "bleed_on_hit_pct": 0.08,
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 45
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_VoThuongChanThuong_G3",
+    "vi": "Vô Thường Ngọc",
+    "en": "Impermanence Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "kim",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc kim mang đạo lý vô thường, xuyên qua giáp và chảy máu không ngừng.",
+    "bonus": {
+      "true_dmg_pct": 0.02,
+      "bleed_on_hit_pct": 0.08,
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 60,
+          "dmg": 45
+        }
+      }
+    }
+  },
+  {
+    "key": "GemUnique_XichHuyetBaoMenh",
+    "vi": "Xích Huyết Bảo Mệnh Ngọc",
+    "en": "Crimson-Blood Life Gem",
+    "type": "gem",
+    "grade": 4,
+    "unique": true,
+    "element": "hoa",
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc hỏa đỏ như máu. Bảo hộ sinh mệnh chủ nhân, hồi phục không ngừng nghỉ và giảm sát thương nhận vào.",
+    "bonus": {
+      "hp_pct": 0.2,
+      "hp_regen_flat": 80,
+      "final_dmg_reduce": 0.05,
+      "hp_regen_pct": 0.01
+    }
+  },
+  {
+    "key": "GemUnique_XichHuyetBaoMenh_G1",
+    "vi": "Xích Tâm Ngọc",
+    "en": "Crimson-Heart Gem",
+    "type": "gem",
+    "grade": 1,
+    "unique": true,
+    "element": "hoa",
+    "shop_price_merit": 3000,
+    "description_vi": "Ngọc hỏa đỏ như lửa yếu ớt, tăng một chút HP và hồi phục.",
+    "bonus": {
+      "hp_pct": 0.08,
+      "hp_regen_flat": 30
+    }
+  },
+  {
+    "key": "GemUnique_XichHuyetBaoMenh_G2",
+    "vi": "Huyết Linh Ngọc",
+    "en": "Blood-Spirit Gem",
+    "type": "gem",
+    "grade": 2,
+    "unique": true,
+    "element": "hoa",
+    "shop_price_merit": 15000,
+    "description_vi": "Ngọc hỏa mang huyết linh khí, hồi máu liên tục và giảm sát thương nhận vào.",
+    "bonus": {
+      "hp_pct": 0.12,
+      "hp_regen_flat": 50,
+      "final_dmg_reduce": 0.03
+    }
+  },
+  {
+    "key": "GemUnique_XichHuyetBaoMenh_G3",
+    "vi": "Bảo Mệnh Ngọc",
+    "en": "Life-Treasure Gem",
+    "type": "gem",
+    "grade": 3,
+    "unique": true,
+    "element": "hoa",
+    "shop_price_merit": 80000,
+    "description_vi": "Ngọc hỏa bảo hộ sinh mệnh, hồi phục không ngừng nghỉ và thân thể cứng cáp.",
+    "bonus": {
+      "hp_pct": 0.16,
+      "hp_regen_flat": 65,
+      "final_dmg_reduce": 0.04,
+      "hp_regen_pct": 0.008
+    }
+  }
+]

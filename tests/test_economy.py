@@ -51,11 +51,11 @@ def test_evil_title_at_threshold():
 # ── Dark market sampling ─────────────────────────────────────────────────
 
 def test_get_dark_market_handles_small_pool(monkeypatch):
-    """``DARK_POOL`` shrank from 8 → 4 entries when legacy elixirs were
-    stripped. The old ``randint(5, min(8, len(pool)))`` bound inverted to
-    ``randint(5, 4)`` and crashed every Quỷ Thị render. The fix floors
-    the lower bound at the actual pool size — pin the regression here so
-    a future trim doesn't re-introduce the same crash."""
+    """When ``DARK_POOL`` shrinks below 5 entries the old
+    ``randint(5, min(8, len(pool)))`` bound inverts to ``randint(5, 4)``
+    and crashes every Quỷ Thị render. The fix floors the lower bound at
+    the actual pool size — pin the regression here so a future trim
+    doesn't re-introduce the same crash."""
     from src.game.systems import economy
     monkeypatch.setattr(economy, "DARK_POOL", economy.DARK_POOL[:4])
     fixed, rotating = economy.get_dark_market(seed=42)

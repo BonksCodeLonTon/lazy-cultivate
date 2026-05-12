@@ -18,6 +18,7 @@ from src.game.systems.economy import (
 )
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
+from src.utils.discord_safe import safe_defer
 
 log = logging.getLogger(__name__)
 
@@ -163,13 +164,12 @@ def _build_tkc_embed_view(
             skill = registry.get_skill(skill_key) or {}
             scroll_item = registry.get_item(slot.item_key) or {}
             name = scroll_item.get("vi", slot.item_key)
-            realm = skill.get("realm", "?")
             mp = skill.get("mp_cost", 0)
             dmg = skill.get("base_dmg", 0)
             cd = skill.get("cooldown", 1)
             lines.append(
                 f"{_grade_emoji(slot.grade)} **{name}**\n"
-                f"  Cảnh giới **{realm}** · MP **{mp}** · DMG **{dmg}** · CD **{cd}t** · ✨ **{slot.price:,}**"
+                f"  MP **{mp}** · DMG **{dmg}** · CD **{cd}t** · ✨ **{slot.price:,}**"
             )
         embed = base_embed(title, "\n".join(lines), color=0xFFD700)
 
@@ -252,7 +252,7 @@ class TangKinhCacView(discord.ui.View):
                 skill = registry.get_skill(skill_key) or {}
                 scroll_item = registry.get_item(slot.item_key) or {}
                 name = scroll_item.get("vi", slot.item_key)[:100]
-                desc = f"✨ {slot.price:,} • Cảnh giới {skill.get('realm', '?')}"[:100]
+                desc = f"✨ {slot.price:,} • CD {skill.get('cooldown', 1)}t"[:100]
                 options.append(discord.SelectOption(
                     label=name,
                     description=desc,
@@ -351,7 +351,8 @@ class TangKinhCacView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
     async def _buy_cb(self, interaction: discord.Interaction) -> None:
@@ -450,7 +451,8 @@ class ShopView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 
@@ -475,8 +477,8 @@ class ShopBuyView(discord.ui.View):
             if interaction.user.id != self._discord_id:
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
-
+            if not await safe_defer(interaction):
+                return
             async with get_session() as session:
                 prepo = PlayerRepository(session)
                 player = await prepo.get_by_discord_id(interaction.user.id)
@@ -541,8 +543,8 @@ class ShopCog(commands.Cog, name="Shop"):
 
     @app_commands.command(name="shop", description="Mở Đạo Thương & Quỷ Thị")
     async def shop(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
-
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             if not await prepo.exists(interaction.user.id):

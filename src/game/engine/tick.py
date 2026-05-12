@@ -18,7 +18,11 @@ from src.game.models.character import Character
 from src.game.systems.cultivation import advance_cultivation_xp
 
 
-def compute_offline_ticks(character: Character, last_tick_at: datetime) -> dict:
+def compute_offline_ticks(
+    character: Character,
+    last_tick_at: datetime,
+    merit_multiplier: float = 1.0,
+) -> dict:
     now = datetime.now(timezone.utc)
 
     # Daily reset. Two triggers:
@@ -48,10 +52,10 @@ def compute_offline_ticks(character: Character, last_tick_at: datetime) -> dict:
     bonus_turns_used = min(turns, character.bonus_turns_remaining)
     normal_turns     = turns - bonus_turns_used
 
-    merit_gained = (
+    merit_gained = int((
         bonus_turns_used * MERIT_PER_BONUS_TURN
         + normal_turns * MERIT_PER_NORMAL_TURN
-    )
+    ) * max(1.0, merit_multiplier))
     karma_gained = normal_turns * KARMA_PER_NORMAL_TURN
 
     new_merit = min(character.merit + merit_gained, CURRENCY_CAP)

@@ -39,9 +39,9 @@ def _test_char():
 
 
 def _first_forgable_base(min_grade: int) -> str:
-    """Pick a base that supports implicit_by_grade for the requested item grade."""
+    """Pick a base that supports implicit_by_realm for the requested item grade."""
     for base in registry.bases.values():
-        if "implicit_by_grade" in base:
+        if "implicit_by_realm" in base:
             return base["key"]
     pytest.skip("no forgable base in registry")
     return ""  # unreachable
@@ -100,12 +100,15 @@ def test_forge_stamps_super_material_key_on_success():
 
 # ── compute_equipment_stats — passive merging ──────────────────────────────
 def test_compute_equipment_merges_super_material_passive():
-    """granted_passive values are summed onto totals when the item is equipped."""
+    """Numeric granted_passive values are baked into computed_stats by forge.py
+    as super-type affixes; compute_equipment_stats sums those alongside other
+    stats. No double-counting from the super_material_key path."""
     inst = SimpleNamespace(
         location="equipped",
-        computed_stats={"atk": 50},
+        # forge.py bakes super numerics into computed_stats — simulate that here.
+        computed_stats={"atk": 50, "crit_rating": 80, "crit_dmg_rating": 100},
         unique_key=None,
-        super_material_key="SuperCuuChuanLinhTinh",  # +80 crit, +100 crit_dmg
+        super_material_key="SuperCuuChuanLinhTinh",  # bool-only flags would merge; this one has none
     )
     totals = compute_equipment_stats([inst])
     assert totals["atk"] == 50.0
@@ -114,12 +117,14 @@ def test_compute_equipment_merges_super_material_passive():
 
 
 def test_compute_equipment_merges_bool_passive_bool_safe():
-    """Bool passives (heal_can_crit, barrier_on_cleanse) merge via OR — not sum."""
+    """Bool passives (heal_can_crit, barrier_on_cleanse) merge via OR — not sum.
+    Numeric portions of the same granted_passive come pre-baked into
+    computed_stats by forge.py."""
     inst = SimpleNamespace(
         location="equipped",
-        computed_stats={},
+        computed_stats={"heal_pct": 0.12},  # numeric portion baked in by forge.py
         unique_key=None,
-        super_material_key="SuperThienThuKiep",  # heal_can_crit: true
+        super_material_key="SuperThienThuKiep",  # heal_can_crit: true (bool merges here)
     )
     totals = compute_equipment_stats([inst])
     assert totals["heal_can_crit"] is True

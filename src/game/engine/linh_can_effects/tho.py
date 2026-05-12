@@ -1,9 +1,7 @@
 """Thổ Linh Căn — Hộ Thể proc + shield buff toolkit.
 
-The legacy Hộ Thể was a one-shot HP-percentage shield that ignored the rest
-of the Energy Shield economy (cap, regen, dmg-from-shield). Now Thổ players
-who actually invest in shield gear get a proportional payoff: every dial the
-build exposes — flat, pct, regen, dmg — feeds the same proc and the same
+Thổ players who invest in shield gear get a proportional payoff: every dial
+the build exposes — flat, pct, regen, dmg — feeds the same proc and the same
 helpers.
 
 Public surface:
@@ -35,20 +33,15 @@ from __future__ import annotations
 from src.game.systems.combatant import Combatant
 
 # ── Hộ Thể tunables ─────────────────────────────────────────────────────────
-# Earlier trigger (50% HP, was 35%) so the reactive engages before the
-# holder is already dying — the previous threshold often fired the same
-# turn the player got finished, making the proc cosmetic.
+# 50% HP trigger so the reactive engages before the holder is already dying.
 _HP_THRESHOLD = 0.50
-# Bigger base + level scaling: a Lv1 user gets 30% HP shield (was 20%);
-# Lv9 gets 30% + 8×4% = 62% HP (was 36%). The legacy values trivialised
-# the proc once players had ≥50% HP-equivalent shield_cap from gear, so
-# the cap-aware add_shield path consistently returned 0.
+# Base + level scaling: Lv1 gets 30% HP shield, Lv9 gets 30% + 8×4% = 62%.
 _BASE_SHIELD_PCT = 0.30
 _SHIELD_PER_LEVEL = 0.04
 # Floor share of flat shield investment (shield_max_base + shield_max_flat)
-# the proc never undershoots. Bumped 0.30 → 0.55 so a pure shield build
-# with low hp_max still gets a meaningful reactive that scales with the
-# investment, not with HP.
+# the proc never undershoots. Set to 0.55 so a pure shield build with low
+# hp_max still gets a meaningful reactive that scales with the investment,
+# not with HP.
 _FLAT_FLOOR_SHARE = 0.55
 # Per-level boost to the shield_max_pct amplifier applied to the proc's
 # raw amount. Lets a Lv9 Thổ player turn a +20% shield_max_pct passive
@@ -93,9 +86,9 @@ def check_shield(combatant: Combatant, log: list[str]) -> None:
          it's allowed to push ``shield`` above ``shield_cap()`` for one
          burst. Subsequent regen ticks (which use ``add_shield``) cannot
          replenish above cap, so the overcap portion is single-use and
-         drains naturally as the holder takes hits. The legacy cap-aware
-         path made the proc trivially small for anyone who built into
-         shield gear — exactly the player it should reward.
+         drains naturally as the holder takes hits. A cap-aware path here
+         would trivialise the proc for any shield-gear build (precisely
+         the player it should reward).
       5. Chain an immediate regen pulse so the recharge pump engages this
          turn (no wait for the recharge_delay). The pulse uses the normal
          cap-aware path; if shield is already overcap it adds 0, else it

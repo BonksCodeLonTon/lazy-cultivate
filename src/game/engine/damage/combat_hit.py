@@ -19,10 +19,50 @@ from src.game.constants.balance import (
     SPD_EVASION_PER_POINT,
 )
 from src.game.constants.effects import EffectKey
+from src.game.engine.effects import EFFECTS, EffectKind
 from src.game.engine.stats import AttackStats, DefenseStats
 
 if TYPE_CHECKING:
     from src.game.systems.combatant import Combatant
+
+
+# Element → ``<name>_dmg_taken`` stat_bonus key. Per-element "damage taken"
+# amps live under English names so any source — debuffs, equipment,
+# constitutions — can write to a generic, reusable key. Mirrors the 9-element
+# system in ``src/game/constants/elements.py``.
+ELEMENT_DMG_TAKEN_KEYS: dict[str, str] = {
+    "kim":   "metal_dmg_taken",
+    "moc":   "wood_dmg_taken",
+    "thuy":  "water_dmg_taken",
+    "hoa":   "fire_dmg_taken",
+    "tho":   "earth_dmg_taken",
+    "loi":   "lightning_dmg_taken",
+    "phong": "wind_dmg_taken",
+    "quang": "light_dmg_taken",
+    "am":    "shadow_dmg_taken",
+}
+
+
+def _doan_tuyet_bonus(actor: "Combatant", target: "Combatant") -> float:
+    """Đoạn Tuyệt: +``dmg_per_debuff_pct`` per active debuff on the target.
+
+    Magnitude is supplied per-cast via ``effect_overrides[BuffDoanTuyet]
+    [dmg_per_debuff_pct]`` and stamped onto the actor when the buff is
+    applied. Counts only ``EffectKind.DEBUFF`` entries (CC and DoT
+    debuffs both count if their meta kind is DEBUFF; pure CC kinds are
+    ignored to keep the multiplier semantically about debuffs).
+    """
+    if not actor.has_effect(EffectKey.BUFF_DOAN_TUYET):
+        return 0.0
+    override = actor.effect_overrides.get(EffectKey.BUFF_DOAN_TUYET) or {}
+    per_debuff = float(override.get("dmg_per_debuff_pct", 0.0))
+    if per_debuff <= 0:
+        return 0.0
+    debuff_count = sum(
+        1 for k in target.effects
+        if (m := EFFECTS.get(k)) and m.kind is EffectKind.DEBUFF
+    )
+    return per_debuff * debuff_count
 
 
 def spd_evasion_bonus(spd: int) -> int:
@@ -82,17 +122,26 @@ def build_attack_stats(
         and target.shock_per_stack_pct > 0
     ):
         final_dmg_bonus += target.shock_stacks * target.shock_per_stack_pct
+    final_dmg_bonus += _doan_tuyet_bonus(actor, target)
 
     crit_rating = actor.crit_rating + int(actor_mods.get("crit_rating", 0))
     crit_dmg_rating = actor.crit_dmg_rating + int(actor_mods.get("crit_dmg_rating", 0))
+    # Conditional crit amps from ``actor.crit_amp_vs``: outer key = state,
+    # inner = {"rating": int, "dmg": int}. Missing keys default to 0 so a
+    # build that doesn't roll the corresponding affix simply contributes
+    # nothing.
     if target.bleed_stacks > 0:
-        crit_rating += actor.crit_rating_vs_bleed
-        crit_dmg_rating += actor.crit_dmg_vs_bleed
+        _amp = actor.crit_amp_vs.get("bleed") or {}
+        crit_rating += int(_amp.get("rating", 0))
+        crit_dmg_rating += int(_amp.get("dmg", 0))
     if target.has_effect(EffectKey.DEBUFF_AN_PHONG):
-        crit_rating += actor.crit_rating_vs_marked
-        crit_dmg_rating += actor.crit_dmg_vs_marked
+        _amp = actor.crit_amp_vs.get("marked") or {}
+        crit_rating += int(_amp.get("rating", 0))
+        crit_dmg_rating += int(_amp.get("dmg", 0))
     if target.hp_max_drained > 0:
-        crit_rating += actor.crit_rating_vs_drained
+        _amp = actor.crit_amp_vs.get("drained") or {}
+        crit_rating += int(_amp.get("rating", 0))
+        crit_dmg_rating += int(_amp.get("dmg", 0))
 
     force_crit = target.has_effect(EffectKey.DEBUFF_DONG_BANG)
 
@@ -106,6 +155,17 @@ def build_attack_stats(
     effective_matk = actor.matk
     if actor.matk_from_shield_pct > 0 and actor.shield > 0:
         effective_matk += int(actor.shield * actor.matk_from_shield_pct)
+    # Active-effect ATK/MATK percent modifiers (e.g. DebuffSuyKhi reducing atk,
+    # DebuffPhapNhuoc reducing matk). Floor at 1 so a heavy stack can't
+    # zero out the swing — also keeps ``effective_atk × dmg_scale`` honest.
+    atk_pct_mod = actor_mods.get("atk_pct", 0.0)
+    if atk_pct_mod:
+        effective_atk = max(1, int(effective_atk * (1.0 + atk_pct_mod)))
+    matk_pct_mod = actor_mods.get("matk_pct", 0.0)
+    if matk_pct_mod:
+        effective_matk = max(1, int(effective_matk * (1.0 + matk_pct_mod)))
+
+    accuracy_rating = actor.accuracy_rating + int(actor_mods.get("accuracy_rating", 0))
 
     return AttackStats(
         crit_rating=crit_rating,
@@ -114,6 +174,8 @@ def build_attack_stats(
         atk=effective_atk,
         matk=effective_matk,
         force_crit=force_crit,
+        accuracy_rating=accuracy_rating,
+        crit_dmg_rating_to_dmg_pct=actor.crit_dmg_rating_to_dmg_pct,
     )
 
 
@@ -130,21 +192,41 @@ def build_defense_stats(
     """
     res_all_mod = target_mods.get("res_all", 0.0)
     effective_res: dict[str, float] = {}
+    from src.game.engine.effects import effective_res_cap
     for elem, res in target.resistances.items():
         per_elem_mod = target_mods.get(f"res_{elem}", 0.0)
         pen = float(actor.element_pen.get(elem, 0.0))
-        effective_res[elem] = max(0.0, min(MAX_ELEMENTAL_RES, res + res_all_mod + per_elem_mod - pen))
+        cap = effective_res_cap(target, elem)
+        effective_res[elem] = max(0.0, min(cap, res + res_all_mod + per_elem_mod - pen))
 
     effective_spd = max(1, round(target.spd * (1.0 + target_mods.get("spd_pct", 0.0))))
+    # ``evasion_rating_pct`` is a multiplier on the holder's base
+    # ``evasion_rating`` (mirrors how ``spd_pct`` multiplies spd). Stacks
+    # additively across sources via the standard get_combat_modifiers
+    # aggregation; applied to the holder's base rating only (not to flat
+    # evasion_rating mods or spd-evasion conversion).
+    eva_pct = float(target_mods.get("evasion_rating_pct", 0.0))
+    evasion_pct_bonus = int(target.evasion_rating * eva_pct) if eva_pct else 0
+    # Per-element damage-taken multipliers — any active effect contributes via
+    # the canonical key (see ``ELEMENT_DMG_TAKEN_KEYS``, e.g. ``fire_dmg_taken``
+    # for hoa). Aggregated by element so the pipeline's apply_elemental step
+    # can amp the right hits.
+    damage_taken_by_element: dict[str, float] = {}
+    for elem, key in ELEMENT_DMG_TAKEN_KEYS.items():
+        amp = float(target_mods.get(key, 0.0))
+        if amp:
+            damage_taken_by_element[elem] = amp
     return DefenseStats(
         evasion_rating=(
             target.evasion_rating
             + int(target_mods.get("evasion_rating", 0))
             + spd_evasion_bonus(effective_spd)
+            + evasion_pct_bonus
         ),
         crit_res_rating=target.crit_res_rating + int(target_mods.get("crit_res_rating", 0)),
         def_stat=target.def_stat,
         resistances=effective_res,
+        damage_taken_by_element=damage_taken_by_element,
     )
 
 

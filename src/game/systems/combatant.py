@@ -25,6 +25,8 @@ class Combatant:
     crit_dmg_rating: int = 0
     evasion_rating: int = 0
     crit_res_rating: int = 0
+    # Counter to defender evasion — see engine/damage/evasion.check_evasion.
+    accuracy_rating: int = 0
     final_dmg_bonus: float = 0.0
     # Damage reduction on received hits (from formation/constitution)
     final_dmg_reduce: float = 0.0
@@ -50,12 +52,9 @@ class Combatant:
     burn_on_hit_pct: float = 0.0
     slow_on_hit_pct: float = 0.0
     paralysis_on_crit: bool = False
-    freeze_on_skill: bool = False
-    # Explicit chance override for the freeze proc (cast-trigger). When > 0
-    # this takes precedence over the legacy ``freeze_on_skill: True`` flag's
-    # hardcoded 15%. Mirror proc on reflect uses the same value scaled by
-    # ``_FREEZE_MIRROR_BOOST`` (in procs.py) to preserve the legacy 0.15→0.25
-    # relationship for legacy bool-flag combatants.
+    # Cast-trigger chance for the freeze proc. Mirror proc on reflect scales
+    # by ``_FREEZE_MIRROR_BOOST`` (in procs.py) — reflected freeze fires
+    # harder than the original cast.
     freeze_on_skill_chance: float = 0.0
     poison_immunity: bool = False
     # Flat chance (0.0–1.0) to resist any incoming debuff or CC proc.
@@ -70,6 +69,12 @@ class Combatant:
     # shared HP pool stays authoritative and can't be trivialized by a
     # single attack's local-sim mutations.
     is_world_boss: bool = False
+    # Blocks any mechanic that permanently mutates the target's stats —
+    # currently Âm Hồn Phệ soul-drain (hp_max shrink) and Đạo Pháp Thôn Phệ
+    # stat-steal (atk/matk/def_stat siphon). World bosses get this implicitly
+    # via ``is_world_boss``; chi-tôn dungeon bosses (Chung Yên) opt in via
+    # JSON to keep their cosmic-tier resistance from being whittled down.
+    immune_stat_mutation: bool = False
     # Immunity / special flags
     active_flags: dict[str, bool] = field(default_factory=dict)
     # Active effects: effect_key → turns_remaining
@@ -83,6 +88,34 @@ class Combatant:
     # Skill cooldowns: skill_key → turns_remaining
     cooldowns: dict[str, int] = field(default_factory=dict)
     skill_keys: list[str] = field(default_factory=list)
+    # Per-fight cast counter — drives the ``usage_limit`` field on skill
+    # JSONs. Incremented in ``cast_skill`` for top-level casts only
+    # (multi-hit follow-ups and chained skills don't bump the counter).
+    skill_usage_count: dict[str, int] = field(default_factory=dict)
+    # Per-fight non-DoT hit counter on this combatant — drives the
+    # ``proc_on_hits_taken`` field on skill JSONs (e.g. Hư Vô fires every 4
+    # incoming hits). Incremented inside ``take_damage`` whenever a non-DoT
+    # call is made; DoT ticks are ignored so passive bleed/burn/poison can't
+    # game the counter.
+    hits_taken: int = 0
+    # Per-round damage-taken accumulator. Reset to 0 at the start of every
+    # ``CombatSession.step()``; ``Combatant.take_damage`` increments it by
+    # the HP-applied amount on every non-DoT and DoT call. Drives
+    # ``proc_on_heavy_hit_pct`` skills that fire when the holder's cumulative
+    # damage in the round crosses a fraction of their ``hp_max``.
+    damage_taken_this_turn: int = 0
+    # Bất Diệt Hỏa Chủng — two-tick retaliation counter. Set to 2 when the
+    # heavy-hit passive triggers; ``_process_periodic`` decrements it each
+    # round and fires the delayed retaliation (burst + enemy stun) when it
+    # transitions from 1 to 0. The skill key driving the retaliation lives
+    # on the holder's ``skill_keys`` — the periodic hook looks it up there
+    # to read ``retaliate_dmg_pct_max_hp`` / ``retaliate_stun_turns``.
+    bat_diet_retaliate_pending: int = 0
+    # Per-fight evade counter on this combatant — drives the
+    # ``proc_on_target_evades`` field on skill JSONs (e.g. Bắc Minh Hữu Ngư
+    # fires when the opponent has dodged 3 incoming hits). Incremented in
+    # ``cast_skill`` whenever an attack on this combatant resolves as evaded.
+    evades_count: int = 0
     # Formation skills — one entry per active formation slot. Fire in PARALLEL
     # each turn after the main skill (Trận Tu multi-formation simultaneity):
     # every formation that's off cooldown + can afford MP pings the target
@@ -103,10 +136,11 @@ class Combatant:
     # ── Fire DoT build support ────────────────────────────────────────────────
     # Burn stacks: multiple stacks pile on the same target, each contributing
     # per-stack damage to the DebuffThieuDot tick. Stacks decay when the burn
-    # effect fully expires.
+    # effect fully expires. Stack cap is read from ``EffectMeta.stack_cap``
+    # (default 5) via ``effective_stack_cap`` — gear / constitution / Linh
+    # Căn flat bonuses (``burn_stack_cap_bonus``) flow through
+    # ``stack_cap_bonuses["DebuffThieuDot"]``.
     burn_stacks: int = 0
-    # Max concurrent stacks. Base 5; fire-build items raise this.
-    burn_stack_cap: int = 5
     # Bonus damage multiplier vs targets that currently have burn stacks.
     # e.g. 0.25 → +25% final damage if target has any burn stack.
     bonus_dmg_vs_burn: float = 0.0
@@ -115,6 +149,62 @@ class Combatant:
     dot_can_crit: bool = False
     # Per-stack burn damage fraction of hp_max (applied by get_periodic_damage).
     burn_per_stack_pct: float = 0.005
+
+    # Tam Muội Chân Hỏa — Daoist "true fire" stack. Each stack ticks 2 % hp_max
+    # as fire DoT (driven by ``stack_kind="chan_hoa"`` in dot.py) AND adds a
+    # flat per-stack amp to *every* fire-element DoT on the holder via
+    # ``_dot_amp``. Stack cap rides on ``EffectMeta.stack_cap`` (read via
+    # ``effective_stack_cap``); per-stack pct/amp flow attacker → target via
+    # ``_propagate_stack_build`` so attacker gear/build still influences the tick.
+    chan_hoa_stacks: int = 0
+    chan_hoa_per_stack_pct: float = 0.02
+    chan_hoa_per_stack_fire_amp: float = 0.04
+
+    # Hồng Liên Nghiệp Hỏa — karma-fire stacks. While the holder carries
+    # ``DebuffNghiepHoaHongLien``, every incoming debuff/CC pushes a stack
+    # onto ``DebuffNghiepHoa`` (3 % hp_max fire DoT per stack). Stack cap
+    # rides on ``EffectMeta.stack_cap`` (99 as a safety rail).
+    nghiep_hoa_stacks: int = 0
+    nghiep_hoa_per_stack_pct: float = 0.03
+
+    # U Minh Quỷ Hỏa — underworld ghost-fire mark. Pure MP-burn DoT: each
+    # stack drains ``u_minh_per_stack_mp_pct × mp_max`` from the holder per
+    # turn for as long as DebuffUMinh is active. No HP damage. Stacks clear
+    # when the debuff expires. Cap from ``EffectMeta.stack_cap``.
+    u_minh_stacks: int = 0
+    u_minh_per_stack_mp_pct: float = 0.05
+
+    # Hỏa Vân — fire-cloud mark. Stack counter consumed by the
+    # ``SkillAtkHoaVanSauThienKiem_R7`` finisher (auto-cast on 5 stacks).
+    # No DoT damage; stacks just track combo state. Cap from
+    # ``EffectMeta.stack_cap``; clears when ``DebuffHoaVan`` expires.
+    hoa_van_stacks: int = 0
+
+    # Phượng Hỏa — phoenix-fire mark reflected onto attackers by the
+    # BuffPhuongHoangChanHoa defensive aura. Each stack ticks a fire DoT
+    # (``phuong_hoa_per_stack_pct × hp_max``) and shaves 10% off the holder's
+    # incoming healing (folded via the per-stack heal-reduce placeholder in
+    # get_combat_modifiers). Stacks clear when DebuffPhuongHoa expires.
+    # Cap from ``EffectMeta.stack_cap``.
+    phuong_hoa_stacks: int = 0
+    phuong_hoa_per_stack_pct: float = 0.02
+
+    # Lưu Ly Tịnh Hỏa — cleanse counter. Each successful cleanse pulse from
+    # the BuffLuuLyTinhHoa aura (one roll per distinct fire DoT kind on the
+    # opponent) bumps this counter, which feeds the per-stack crit_res
+    # scaling rule. The cap rides on ``EffectMeta.stack_cap`` (read via
+    # ``effective_stack_cap``) since there's no gear/build hook scaling it.
+    # Counter resets to 0 when the buff expires.
+    luu_ly_tinh_hoa_stacks: int = 0
+
+    # Generic flat stack-cap bonuses, keyed by effect_key. Gear / constitution
+    # / Linh Căn / formation effects all write here at character-build time
+    # via ``character_stats.py`` — ``effective_stack_cap`` sums the entry on
+    # top of the meta cap + per-instance override. Designed for the migrated
+    # caps (chan_hoa/nghiep_hoa/u_minh/phuong_hoa/thuy_mark/cuu_khuc/luu_ly)
+    # that don't carry a dedicated ``<kind>_stack_cap`` field. Burn/bleed/
+    # shock/poison keep their own ``<kind>_stack_cap`` field instead.
+    stack_cap_bonuses: dict[str, int] = field(default_factory=dict)
     # Solar aura — every turn, deal hp_max × pct as fire damage to opponent.
     # Independent of skill actions and DoTs; benefits from final_dmg_bonus,
     # burn_dmg_bonus, bonus_dmg_vs_burn, and shreds opponent's hoa resist.
@@ -140,6 +230,18 @@ class Combatant:
     # transfer doesn't compound on every step() call.
     stat_drain_aura_pct: float = 0.0
     stat_drain_aura_applied: bool = False
+    # Lục Dục Thiên Ma Vũ — auto-cycling six-desires passive. Counter ticks
+    # down during the post-amp expired phase; while > 0 the cycle hook skips
+    # gain/amp logic. Driven by ``SkillAmLucDucThienMaVu_R9`` ownership in the
+    # holder's skill_keys; the cycle hook lives in
+    # ``CombatSession._tick_luc_duc_thien_ma_vu``.
+    luc_duc_expire_turns_left: int = 0
+    # Quỷ Ảnh Mê Tung — every successful evade bumps this counter (cap 3),
+    # multiplying the holder's per-stack evasion + spd contribution from the
+    # ``BuffQuyAnhMeTung`` marker. ``get_combat_modifiers`` expands the
+    # per-stack stat_bonus values into concrete ``evasion_rating`` /
+    # ``spd_pct`` contributions when this counter is > 0.
+    quy_anh_stacks: int = 0
     # Thánh Tuyền Thể — only ``damage_defer_pct`` of incoming damage is
     # deferred; the rest (``1 - damage_defer_pct``) is taken immediately.
     # The deferred portion is split into ``damage_defer_turns`` chunks queued
@@ -181,6 +283,24 @@ class Combatant:
     # merge in ``_merge_bonus_dict``.
     damage_taken_convert_pct: dict[str, float] = field(default_factory=dict)
     element_dmg_bonus: dict[str, float] = field(default_factory=dict)
+    # Per-element soft-cap lifter for resistance. Without an entry here, the
+    # player's effective ``res_<elem>`` caps at ``RES_SOFT_CAP`` (0.75). Each
+    # 0.01 raises the cap one-for-one, up to ``MAX_ELEMENTAL_RES`` (0.90).
+    # Read via ``effective_res_cap``; gear / constitution / Linh Căn / buff
+    # stat_bonus all contribute additively (gear via this dict, buffs via
+    # ``<element>_max_resist_bonus`` stat_bonus keys folded by
+    # ``get_combat_modifiers``). Enemies bypass this — their cap stays at
+    # ``MAX_ELEMENTAL_RES`` (or whatever their ``res_cap_pct`` JSON declares).
+    element_max_resist_bonus: dict[str, float] = field(default_factory=dict)
+    # Per-element MP cost multiplier — extra MP cost (additive on top of base
+    # 1.0×) charged when casting a skill of the matching element. E.g.
+    # ``element_mp_cost_mult["thuy"] = 2.0`` makes every thuy cast pay
+    # 3× MP (1.0 base + 2.0 extra). Because the damage formula is
+    # ``DMG = base + mp_cost``, the extra MP also amplifies damage
+    # proportionally — used by Thiên Nhất Sinh Thủy Trận. Multiple sources
+    # (formation base + threshold tiers) compound additively via
+    # ``_merge_bonus_dict``. Missing element ⇒ no scaling (1.0× cost).
+    element_mp_cost_mult: dict[str, float] = field(default_factory=dict)
     # Per-element penetration — passive attacker-side stat that lowers the
     # target's effective res when this combatant attacks. Read by
     # build_defense_stats and by the Linh Căn / formation / burst paths via
@@ -193,8 +313,8 @@ class Combatant:
 
     # ── Kim (Bleed) build support ─────────────────────────────────────────────
     # Bleed stacks: like burn, but physical (kim element) and slows healing.
+    # Cap via ``EffectMeta.stack_cap`` + ``stack_cap_bonuses["DebuffChayMau"]``.
     bleed_stacks: int = 0
-    bleed_stack_cap: int = 5
     # Per-stack bleed damage fraction of hp_max.
     bleed_per_stack_pct: float = 0.005
     # When holder has bleed stacks, incoming heals are multiplied by (1 - bleed_heal_reduce).
@@ -202,24 +322,32 @@ class Combatant:
     bleed_heal_reduce: float = 0.0
     # On-hit: chance actor applies a bleed stack.
     bleed_on_hit_pct: float = 0.0
-    # Bonus crit chance vs bleeding targets (flat rating added to crit_rating).
-    crit_rating_vs_bleed: int = 0
-    # Bonus crit damage vs bleeding targets (flat rating added to crit_dmg_rating).
-    crit_dmg_vs_bleed: int = 0
+    # Conditional crit amps vs targets in specific debuff states — single
+    # nested dict (mirrors element_pen / dmg_taken). Outer key = state
+    # ("bleed", "marked", "drained"); inner = {"rating": int, "dmg": int}.
+    # Read at hit-time in damage/combat_hit.py.
+    crit_amp_vs: dict[str, dict[str, int]] = field(default_factory=dict)
     # Sát Thương Chuẩn — % of the hit's *damage* applied as unblockable bonus on
-    # each successful hit (NOT % of target hp_max — that was the legacy
-    # model). Aggregated across constitution, unique gear, gems, skills,
-    # and Linh Căn passives. Capped at TRUE_DMG_PCT_CAP in
+    # each successful hit. Aggregated across constitution, unique gear,
+    # gems, skills, and Linh Căn passives. Capped at TRUE_DMG_PCT_CAP in
     # ``engine/damage/true_damage.py``.
     true_dmg_pct: float = 0.0
+    # Generic life-steal: heal actor for X% of damage dealt on each direct
+    # hit (skill or follow-up multistrike). Routed through ``_apply_heal``.
+    life_steal_pct: float = 0.0
+    # Hybrid scaling: ``crit_dmg_rating_to_dmg_pct × crit_dmg_rating`` is
+    # added as flat damage to the base roll in ``engine/damage/base.py``.
+    # Lets crit-damage-stacking constitutions (Phá Thiên Thần Thể) get
+    # both the crit-spike multiplier AND a reliable per-hit floor.
+    crit_dmg_rating_to_dmg_pct: float = 0.0
 
     # ── Poison stacks (Mộc / Âm DoT) ─────────────────────────────────────────
     # Mirror of burn/bleed/shock. Each application of DebuffDocTo adds one
-    # stack (clamped by ``poison_stack_cap``); the DoT tick scales with
-    # stacks × ``poison_per_stack_pct`` × max(atk, matk) × DOT_POWER_COEF.
-    # Stacks reset to 0 when the DebuffDocTo effect fully expires.
+    # stack; the DoT tick scales with stacks × ``poison_per_stack_pct`` ×
+    # max(atk, matk) × DOT_POWER_COEF. Stacks reset to 0 when the
+    # DebuffDocTo effect fully expires. Cap via ``EffectMeta.stack_cap`` +
+    # ``stack_cap_bonuses["DebuffDocTo"]``.
     poison_stacks: int = 0
-    poison_stack_cap: int = 5
     poison_per_stack_pct: float = 0.008
 
     # ── Mộc (Wood / Poison Leech) build ──────────────────────────────────────
@@ -236,7 +364,7 @@ class Combatant:
     # ── Thủy (Water / Mana) build ────────────────────────────────────────────
     # Fraction of incoming damage reflected back to the attacker after HP loss.
     reflect_pct: float = 0.0
-    # When True, the defender's own on-hit procs (freeze_on_skill, slow, etc.)
+    # When True, the defender's own on-hit procs (freeze, slow, etc.)
     # fire on the attacker as part of the reflected hit — the mirror carries
     # not just damage but the defender's build effects.
     reflect_applies_effects: bool = False
@@ -262,9 +390,9 @@ class Combatant:
     #   shield_max_pct    — multiplicative on the base+flat sum
     #
     # ``shield_regen_pct`` is a fraction of the holder's own ``shield_cap()``
-    # restored each periodic phase (NOT hp_max — that was the legacy model
-    # that produced over-cap regen once Energy Shield got rebuilt around its
-    # own base+flat+pct sources). ``shield_regen_flat`` adds on top.
+    # restored each periodic phase. Scaling off shield_cap (not hp_max)
+    # keeps regen proportional to actual shield investment.
+    # ``shield_regen_flat`` adds on top.
     # Turn-based combat regenerates every turn; ``shield_recharge_pause`` is
     # preserved as a knob for build-specific delays but defaults to 0.
     shield_regen_pct: float = 0.0
@@ -315,6 +443,16 @@ class Combatant:
     # apply naturally. Theme: lightning combos, sword storm, wind cascade.
     multi_strike_pct: float = 0.0
     multi_strike_dmg_pct: float = 0.50
+    # Extra echoes for ``per_hit_followup`` formation skills. Threshold-only
+    # bonus (e.g. Thập Nhị Đô Thiên Thần Sát's 10-gem tier).
+    formation_echo_bonus: int = 0
+    # Multiplier on a ``per_hit_followup`` formation skill's ``base_dmg``.
+    # Sourced from gem thresholds on the matching formation; gated to
+    # passive echo skills only.
+    formation_skill_dmg_bonus: float = 0.0
+    # Bumps effective summon ``limit`` (Thiên Giới Thẩm Phán tier-10 lets
+    # 2 Đại Thiên Sứ coexist instead of 1). Read by maybe_spawn_summon.
+    summon_limit_bonus: int = 0
     shield_recharge_delay: int = 0
     shield_recharge_pause: int = 0
     # Every hit adds flat damage = current shield × this fraction.
@@ -337,9 +475,8 @@ class Combatant:
     # damage_bonus_from_hp_pct / damage_bonus_from_mp_pct). Converts a
     # defensive stat into offensive power — core Phong playstyle.
     damage_bonus_from_evasion_pct: float = 0.0
-    # Bonus crit rating and crit-dmg rating vs targets carrying Ấn Phong.
-    crit_rating_vs_marked: int = 0
-    crit_dmg_vs_marked: int = 0
+    # ``crit_rating_vs_marked`` / ``crit_dmg_vs_marked`` moved into the
+    # consolidated ``crit_amp_vs`` dict above.
 
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
@@ -383,9 +520,8 @@ class Combatant:
     atk_original: int = 0
     matk_original: int = 0
     def_stat_original: int = 0
-    # Bonus crit rating vs targets already marked for soul-drain (i.e.
-    # hp_max_drained > 0). Rewards stacking drains before the finisher.
-    crit_rating_vs_drained: int = 0
+    # ``crit_rating_vs_drained`` moved into the consolidated ``crit_amp_vs``
+    # dict above (along with the bleed/marked variants).
     # On-hit: chance actor applies DebuffLoaMat (Lóa Mắt). The blinded target
     # then has BLIND_MISS_CHANCE per swing to whiff. Goes through the generic
     # on-hit proc table.
@@ -394,14 +530,54 @@ class Combatant:
     # ── Lôi (Lightning / Shock) build ────────────────────────────────────────
     # Shock stacks — applied by on-hit procs or loi skills. Each stack makes
     # the holder take an additional ``shock_per_stack_pct`` of any incoming
-    # Lôi-element hit as flat final-damage amplification, up to
-    # ``shock_stack_cap`` (the lightning payload resonates with the shock;
-    # non-Lôi skills do not trigger the bonus).
+    # Lôi-element hit as flat final-damage amplification (non-Lôi skills do
+    # not trigger the bonus). Cap via ``EffectMeta.stack_cap`` +
+    # ``stack_cap_bonuses["DebuffSocDien"]``.
     shock_stacks: int = 0
-    shock_stack_cap: int = 5
     # Per-stack final-damage multiplier the attacker adds when a Lôi-element
     # hit lands on a shocked target. e.g. 0.03 → +3% final damage per stack.
     shock_per_stack_pct: float = 0.03
+
+    # ── Thủy (Nhược Thủy Ấn) mark build ──────────────────────────────────────
+    # Nhược Thủy Ấn marks: each stack shreds 4% res_thuy via
+    # ``get_combat_modifiers``; at the cap the next application detonates
+    # for ``thuy_mark_detonate_lost_hp_pct × (hp_max - hp)`` and resets
+    # the counter to 0. Stacks clear when DebuffNhuocThuyAn expires. Cap
+    # from ``EffectMeta.stack_cap``.
+    thuy_mark_stacks: int = 0
+
+    # ── Thủy (Cửu Khúc Hoàng Hà) formation mark build ─────────────────────────
+    # Player-side tunables — single dict (mirrors ``toa_hon_amp`` /
+    # ``element_pen`` / ``dmg_taken``). Keys: ``per_hit`` (>0 enables the
+    # per-skill auto-stamp in ``cast_skill``), ``atk_reduce_pct`` /
+    # ``res_shred_pct`` / ``followup_pct`` (threshold magnitudes snapshotted
+    # into the target on apply), ``followup_skill_key`` (chain target at full
+    # stack). JSON declares the dict; gem thresholds merge additively for
+    # numbers and last-write-wins for the string key.
+    cuu_khuc: dict = field(default_factory=dict)
+    # Xích Luyện Tỏa Hồn Trận — single dict of stat_bonus deltas layered on
+    # top of DebuffXichLuyenToaHon at apply time. Mirrors ``element_pen`` /
+    # ``dmg_taken`` — JSON gem thresholds declare
+    # ``toa_hon_amp: {"evasion_rating_pct": -0.05, ...}`` and apply_skill_effects
+    # merges each entry into the debuff's stat_bonus. Keys MUST match the
+    # debuff's stat keys verbatim.
+    toa_hon_amp: dict[str, float] = field(default_factory=dict)
+    # Reusable per-element "damage taken" amps the holder contributes to its
+    # debuffs (mirrors ``element_pen``). Any source can write to any element
+    # via ``dmg_taken: {"hoa": 0.15}`` in JSON / bonus dicts. At apply time
+    # the relevant entry is stamped onto the target's stat_bonus under the
+    # flat ``<name>_dmg_taken`` key (see ELEMENT_DMG_TAKEN_KEYS in
+    # damage/combat_hit.py), then consumed by apply_elemental.
+    dmg_taken: dict[str, float] = field(default_factory=dict)
+    # Target-side counter + per-stack snapshot of the applier's tier magnitudes.
+    # Snapshots are written by ``inflict_debuff`` so the debuff's effect
+    # magnitude follows the formation that *applied* it (not the holder's
+    # own tunables, which would never trigger). Stacks clear when
+    # DebuffCuuKhuc expires. Cap from ``EffectMeta.stack_cap`` (default 9;
+    # gates 3/6/9 use the cap as their max).
+    cuu_khuc_stacks: int = 0
+    cuu_khuc_atk_reduce_active: float = 0.0
+    cuu_khuc_res_shred_active: float = 0.0
     # On-hit: chance the actor lands a Sốc Điện stack on the target.
     shock_on_hit_pct: float = 0.0
     # After a normal turn, flat chance to immediately steal an extra turn
@@ -412,10 +588,11 @@ class Combatant:
     # Additive multiplier on ALL DoT ticks this combatant's own DoTs cause.
     # e.g. 0.25 → DoTs tick 25% harder.
     dot_dmg_bonus: float = 0.0
-    # Per-type multipliers stacked on top of dot_dmg_bonus.
-    burn_dmg_bonus: float = 0.0
-    bleed_dmg_bonus: float = 0.0
-    poison_dmg_bonus: float = 0.0
+    # Per-DoT-kind multipliers stacked on top of ``dot_dmg_bonus``. Keyed by
+    # stack_kind (``burn`` / ``bleed`` / ``poison``). Flat JSON keys
+    # ``<kind>_dmg_bonus`` stay the data-side convention; translated into
+    # this dict in build_combat_stats.
+    dot_dmg_bonus_by_kind: dict[str, float] = field(default_factory=dict)
     # Per-attacker DoT-bonus contributions received while holding DoTs.
     # Keyed by attacker.key; values are dicts with {dot_dmg_bonus, burn, bleed,
     # poison, power, scales_hp_pct}. The live target.dot_*_bonus fields are the
@@ -424,15 +601,45 @@ class Combatant:
     # time; ``scales_hp_pct`` = actor's dot_scales_hp_pct flag.
     dot_bonus_sources: dict = field(default_factory=dict)
     # When True, DoTs ticking on this combatant scale with the target's hp_max
-    # (the legacy model). When False (default), DoTs scale with the APPLIER's
-    # atk/matk power — the regular-play model. The flag propagates from the
-    # attacker at DoT-apply time; rare late-game uniques set it True.
+    # (a rare late-game uniques opt-in). When False (default), DoTs scale with
+    # the APPLIER's atk/matk power — the standard model. The flag propagates
+    # from the attacker at DoT-apply time.
     dot_scales_hp_pct: bool = False
+
+    # ── Phase-Lock invulnerability mode (Thập Nhật Chung Yên pattern) ────────
+    # When ``phase_lock_config`` is set on an enemy and its HP drops below the
+    # configured threshold for the first time, the enemy enters an
+    # invulnerability phase: heals to full, gains MAX final_dmg_reduce + MAX
+    # res on every element + shield = hp_max, and skips its own turns. Each
+    # round those bonuses decay linearly back to their pre-phase values; if
+    # the player can't kill the enemy before the timer expires, the player
+    # dies. Config schema:
+    #   {"trigger_hp_pct": 0.5, "duration": 10,
+    #    "phase_name_vi": "Thập Nhật Chung Yên", "phase_emoji": "☀️"}
+    phase_lock_config: dict | None = None
+    phase_lock_active: bool = False
+    phase_lock_triggered: bool = False
+    phase_lock_remaining: int = 0
+    # Snapshots so decay/expiry can restore the pre-phase profile cleanly
+    # instead of leaving the enemy permanently buffed if the fight ends
+    # mid-phase via some other path (player flee, max_turns, etc.).
+    phase_lock_orig_dr: float = 0.0
+    phase_lock_orig_res: dict[str, float] = field(default_factory=dict)
+    phase_lock_orig_shield_base: int = 0
+    # Cached starting deltas so per-turn decay subtracts a fixed step instead
+    # of recomputing from a moving target.
+    phase_lock_dr_step: float = 0.0
+    phase_lock_res_step: float = 0.0
 
     # ── Skill-extras state ───────────────────────────────────────────────────
     # Per-skill cast counter — feeds the ``charge_bonus`` mechanic where a
     # skill detonates extra damage on every Nth cast. Keyed by skill_key.
     skill_cast_counts: dict[str, int] = field(default_factory=dict)
+    # Per-skill chain counter — feeds the ``chain_skill.every`` mechanic where
+    # a follow-up cast fires only every Nth top-level cast. Kept separate from
+    # ``skill_cast_counts`` so a skill can wire both ``charge_bonus`` and
+    # ``chain_skill: {every: N}`` without their counters colliding.
+    skill_chain_counts: dict[str, int] = field(default_factory=dict)
     # Active summons spawned by ``summon_spec`` skills. Each entry:
     #   {"name": str, "vi": str, "element": str|None,
     #    "dmg": int, "turns": int, "emoji": str}
@@ -443,7 +650,9 @@ class Combatant:
     def is_alive(self) -> bool:
         return self.hp > 0
 
-    def take_damage(self, amount: int, is_dot: bool = False) -> int:
+    def take_damage(
+        self, amount: int, is_dot: bool = False, bypass_shield: bool = False,
+    ) -> int:
         """Apply ``amount`` damage with PoE-style Energy Shield absorption.
 
         Pipeline (in order):
@@ -476,6 +685,12 @@ class Combatant:
         """
         if amount <= 0:
             return 0
+        # Hit-taken counter for ``proc_on_hits_taken`` skills. Counts only
+        # non-DoT calls so passive bleed/burn ticks don't game the trigger;
+        # incremented once per call regardless of where damage routes
+        # (shield, HP, deferred queue, element conversion).
+        if not is_dot:
+            self.hits_taken += 1
         # Fortify Aura: any non-DoT incoming damage primes the post-hit brace
         # for the next combat resolution. Set BEFORE conversion/defer so even
         # a fully-deferred installment still arms the brace this turn.
@@ -485,31 +700,52 @@ class Combatant:
         # Step 1 — element conversion (self-mitigation through holder's res
         # for the named element). Loops over ``damage_taken_convert_pct`` so
         # any element (and any combination) routes through this generic path.
-        if self.damage_taken_convert_pct:
+        # Active-effect modifiers fold in via ``damage_convert_<elem>`` and
+        # ``res_<elem>`` stat_bonus keys so a buff like Vô Tướng Thiên Ma can
+        # pump conversion + resistance for its lifetime.
+        from src.game.engine.effects import get_combat_modifiers
+        active_mods = get_combat_modifiers(self)
+        elements_in_play = set(self.damage_taken_convert_pct)
+        elements_in_play.update(
+            elem.removeprefix("damage_convert_")
+            for elem in active_mods
+            if elem.startswith("damage_convert_")
+            and active_mods[elem] > 0
+        )
+        if elements_in_play:
             from src.game.constants.balance import MAX_ELEMENTAL_RES
-            total_pct = sum(
-                p for p in self.damage_taken_convert_pct.values() if p > 0
-            )
+            effective_convert = {
+                elem: max(
+                    0.0,
+                    self.damage_taken_convert_pct.get(elem, 0.0)
+                    + float(active_mods.get(f"damage_convert_{elem}", 0.0)),
+                )
+                for elem in elements_in_play
+            }
+            total_pct = sum(p for p in effective_convert.values() if p > 0)
             # Cap aggregate conversion at 100% so the holder always takes at
             # least the unconverted remainder.
             total_pct = min(1.0, total_pct)
             unconverted = int(amount * (1.0 - total_pct))
             new_amount = unconverted
-            for elem, pct in self.damage_taken_convert_pct.items():
+            for elem, pct in effective_convert.items():
                 if pct <= 0:
                     continue
                 # Each element's slice scales proportionally if total_pct was
                 # capped (so {hoa: 0.7, thuy: 0.6} effectively becomes
                 # {hoa: 7/13, thuy: 6/13} of the converted total).
-                share = pct / sum(self.damage_taken_convert_pct.values()) \
-                    if sum(self.damage_taken_convert_pct.values()) > 0 else 0
+                raw_total = sum(effective_convert.values())
+                share = pct / raw_total if raw_total > 0 else 0
                 converted = int(amount * total_pct * share)
                 if converted <= 0:
                     continue
-                elem_res = max(
-                    0.0,
-                    min(MAX_ELEMENTAL_RES, self.resistances.get(elem, 0.0)),
-                )
+                # Effective resistance = base + active stat_bonus mod, clamped
+                # by the holder's per-element cap (soft cap for player + bonus,
+                # MAX_ELEMENTAL_RES for enemies).
+                from src.game.engine.effects import effective_res_cap
+                base_res = self.resistances.get(elem, 0.0)
+                mod_res = float(active_mods.get(f"res_{elem}", 0.0))
+                elem_res = max(0.0, min(effective_res_cap(self, elem), base_res + mod_res))
                 new_amount += max(1, int(converted * (1.0 - elem_res)))
             amount = new_amount
 
@@ -526,13 +762,31 @@ class Combatant:
                     self.deferred_damage_queue.append(chunk + (1 if i < remainder else 0))
             amount = immediate
 
+        # Step 2.5 — HP→MP redirect (Thủy Mặc Thiên Hoa "mana shield"). A
+        # fraction of the post-conversion, post-defer amount is paid out of
+        # MP instead of HP/shield. Any portion the holder can't pay (mp <
+        # required redirect) falls back into ``amount`` and continues through
+        # shield + HP normally — a depleted mana pool can't tank infinite
+        # damage. Skipped on DoT calls (matches the shield's chaos-bypass
+        # semantics — sustained damage drains HP through the buff).
+        if not is_dot and amount > 0:
+            redirect_pct = float(active_mods.get("dmg_to_mp_pct", 0.0))
+            if redirect_pct > 0 and self.mp > 0:
+                want = int(amount * redirect_pct)
+                paid = min(self.mp, want)
+                if paid > 0:
+                    self.mp -= paid
+                    amount -= paid
+
         # Step 3 — Energy Shield absorption (PoE-style, non-DoT only). The
         # shield acts as a first-defense pool; damage that fits inside the
         # shield never touches HP. Any non-zero non-DoT damage primes the
         # recharge delay regardless of whether shield was 0 before — taking a
         # hit always pauses regen for the pre-configured window.
+        # ``bypass_shield`` skips the absorption step but still pauses regen,
+        # so a shielded target can't repair while being shield-pierced.
         if not is_dot and amount > 0:
-            if self.shield > 0:
+            if self.shield > 0 and not bypass_shield:
                 absorbed = min(self.shield, amount)
                 self.shield -= absorbed
                 amount -= absorbed
@@ -541,7 +795,12 @@ class Combatant:
             )
 
         # Step 4 — HP damage (leftover spill or full DoT amount).
+        hp_before = self.hp
         self.hp = max(0, self.hp - amount)
+        # Accumulate per-round damage taken for ``proc_on_heavy_hit_pct`` skills.
+        # Counts HP loss only (shield-absorbed damage doesn't qualify as
+        # "HP damage taken in this turn"). Reset to 0 in ``CombatSession.step``.
+        self.damage_taken_this_turn += hp_before - self.hp
 
         # Step 5 — Endure (Cội Nguồn Bất Tận). When a hit would kill the
         # holder and the cooldown is not engaged, clamp HP to a survival
@@ -562,9 +821,11 @@ class Combatant:
         return amount
 
     def add_burn_stack(self, count: int = 1) -> int:
-        """Add burn stacks, clamped by ``burn_stack_cap``. Returns stacks gained."""
+        """Add burn stacks, clamped by the meta's stack cap. Returns stacks gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffThieuDot")
         before = self.burn_stacks
-        self.burn_stacks = min(self.burn_stack_cap, self.burn_stacks + count)
+        self.burn_stacks = min(cap, self.burn_stacks + count)
         return self.burn_stacks - before
 
     def consume_burn_stacks(self) -> int:
@@ -573,10 +834,64 @@ class Combatant:
         self.burn_stacks = 0
         return stacks
 
+    def add_chan_hoa_stack(self, count: int = 1) -> int:
+        """Add Chân Hỏa stacks, clamped by the meta's stack cap. Returns gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffChanHoa")
+        before = self.chan_hoa_stacks
+        self.chan_hoa_stacks = min(cap, self.chan_hoa_stacks + count)
+        return self.chan_hoa_stacks - before
+
+    def consume_chan_hoa_stacks(self) -> int:
+        """Strip all Chân Hỏa stacks and return how many were consumed."""
+        stacks = self.chan_hoa_stacks
+        self.chan_hoa_stacks = 0
+        return stacks
+
+    def add_nghiep_hoa_stack(self, count: int = 1) -> int:
+        """Add Nghiệp Hỏa stacks, clamped by the meta's stack cap. Returns gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffNghiepHoa")
+        before = self.nghiep_hoa_stacks
+        self.nghiep_hoa_stacks = min(cap, self.nghiep_hoa_stacks + count)
+        return self.nghiep_hoa_stacks - before
+
+    def consume_nghiep_hoa_stacks(self) -> int:
+        """Strip all Nghiệp Hỏa stacks and return how many were consumed."""
+        stacks = self.nghiep_hoa_stacks
+        self.nghiep_hoa_stacks = 0
+        return stacks
+
+    def add_u_minh_stack(self, count: int = 1) -> int:
+        """Add U Minh stacks, clamped by the meta's stack cap. Returns gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffUMinh")
+        before = self.u_minh_stacks
+        self.u_minh_stacks = min(cap, self.u_minh_stacks + count)
+        return self.u_minh_stacks - before
+
+    def add_hoa_van_stack(self, count: int = 1) -> int:
+        """Add Hỏa Vân stacks, clamped by the meta's stack cap. Returns gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffHoaVan")
+        before = self.hoa_van_stacks
+        self.hoa_van_stacks = min(cap, self.hoa_van_stacks + count)
+        return self.hoa_van_stacks - before
+
+    def add_phuong_hoa_stack(self, count: int = 1) -> int:
+        """Add Phượng Hỏa stacks, clamped by the meta's stack cap. Returns gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffPhuongHoa")
+        before = self.phuong_hoa_stacks
+        self.phuong_hoa_stacks = min(cap, self.phuong_hoa_stacks + count)
+        return self.phuong_hoa_stacks - before
+
     def add_shock_stack(self, count: int = 1) -> int:
-        """Add shock stacks, clamped by ``shock_stack_cap``. Returns stacks gained."""
+        """Add shock stacks, clamped by the meta's stack cap. Returns stacks gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffSocDien")
         before = self.shock_stacks
-        self.shock_stacks = min(self.shock_stack_cap, self.shock_stacks + count)
+        self.shock_stacks = min(cap, self.shock_stacks + count)
         return self.shock_stacks - before
 
     def consume_shock_stacks(self) -> int:
@@ -586,9 +901,11 @@ class Combatant:
         return stacks
 
     def add_bleed_stack(self, count: int = 1) -> int:
-        """Add bleed stacks, clamped by ``bleed_stack_cap``. Returns stacks gained."""
+        """Add bleed stacks, clamped by the meta's stack cap. Returns stacks gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffChayMau")
         before = self.bleed_stacks
-        self.bleed_stacks = min(self.bleed_stack_cap, self.bleed_stacks + count)
+        self.bleed_stacks = min(cap, self.bleed_stacks + count)
         return self.bleed_stacks - before
 
     def consume_bleed_stacks(self) -> int:
@@ -596,10 +913,42 @@ class Combatant:
         self.bleed_stacks = 0
         return stacks
 
+    def add_thuy_mark_stack(self, count: int = 1) -> int:
+        """Add Nhược Thủy marks, clamped by the meta's stack cap. Returns gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffNhuocThuyAn")
+        before = self.thuy_mark_stacks
+        self.thuy_mark_stacks = min(cap, self.thuy_mark_stacks + count)
+        return self.thuy_mark_stacks - before
+
+    def consume_thuy_mark_stacks(self) -> int:
+        """Strip all Nhược Thủy marks and return how many were consumed."""
+        stacks = self.thuy_mark_stacks
+        self.thuy_mark_stacks = 0
+        return stacks
+
+    def add_cuu_khuc_stack(self, count: int = 1) -> int:
+        """Add Cửu Khúc marks, clamped by the meta's stack cap. Returns gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffCuuKhuc")
+        before = self.cuu_khuc_stacks
+        self.cuu_khuc_stacks = min(cap, self.cuu_khuc_stacks + count)
+        return self.cuu_khuc_stacks - before
+
+    def consume_cuu_khuc_stacks(self) -> int:
+        """Strip all Cửu Khúc marks and clear the snapshots. Returns count."""
+        stacks = self.cuu_khuc_stacks
+        self.cuu_khuc_stacks = 0
+        self.cuu_khuc_atk_reduce_active = 0.0
+        self.cuu_khuc_res_shred_active = 0.0
+        return stacks
+
     def add_poison_stack(self, count: int = 1) -> int:
-        """Add poison stacks, clamped by ``poison_stack_cap``. Returns stacks gained."""
+        """Add poison stacks, clamped by the meta's stack cap. Returns stacks gained."""
+        from src.game.engine.effects import effective_stack_cap
+        cap = effective_stack_cap(self, "DebuffDocTo")
         before = self.poison_stacks
-        self.poison_stacks = min(self.poison_stack_cap, self.poison_stacks + count)
+        self.poison_stacks = min(cap, self.poison_stacks + count)
         return self.poison_stacks - before
 
     def consume_poison_stacks(self) -> int:
@@ -620,14 +969,23 @@ class Combatant:
     def shield_cap(self) -> int:
         """Maximum shield value this combatant can hold.
 
-        Aggregates three sources:
-          * ``shield_max_base``  — flat baseline (equipment implicit)
-          * ``shield_max_flat``  — additive flat (affixes / constitutions)
-          * ``shield_max_pct``   — multiplicative on the base+flat sum
+        Aggregates four sources:
+          * ``shield_max_base``        — flat baseline (equipment implicit)
+          * ``shield_max_flat``        — additive flat (affixes / constitutions)
+          * ``shield_max_per_spd × effective_spd`` — buff-driven flat from
+            spd (Quang Minh Tung Hoành Bộ). Effective spd folds in active
+            ``spd_pct`` mods so the active buff (+20% spd) compounds the
+            passive aura naturally.
+          * ``shield_max_pct``         — multiplicative on the base+flat sum
 
-        Formula: ``(base + flat) * (1 + max_pct)``.
+        Formula: ``(base + flat + per_spd × eff_spd) * (1 + max_pct)``.
         """
-        flat_total = self.shield_max_base + self.shield_max_flat
+        from src.game.engine.effects import get_combat_modifiers
+        mods = get_combat_modifiers(self)
+        per_spd = float(mods.get("shield_max_per_spd", 0.0))
+        effective_spd = max(1, int(round(self.spd * (1.0 + mods.get("spd_pct", 0.0)))))
+        spd_flat = int(per_spd * effective_spd)
+        flat_total = self.shield_max_base + self.shield_max_flat + spd_flat
         return max(0, int(flat_total * (1.0 + self.shield_max_pct)))
 
     def add_shield(self, amount: int) -> int:
@@ -679,12 +1037,32 @@ class Combatant:
         # all remaining stacks are cleared.
         if "DebuffThieuDot" in expired:
             self.burn_stacks = 0
+        if "DebuffChanHoa" in expired:
+            self.chan_hoa_stacks = 0
+        # Nghiệp Hỏa stacks are coupled to BOTH the marker (Hồng Liên) and
+        # the DoT itself — when either expires, the karma-fire stops burning.
+        if "DebuffNghiepHoa" in expired or "DebuffNghiepHoaHongLien" in expired:
+            self.nghiep_hoa_stacks = 0
+        if "DebuffUMinh" in expired:
+            self.u_minh_stacks = 0
+        if "DebuffPhuongHoa" in expired:
+            self.phuong_hoa_stacks = 0
+        if "DebuffHoaVan" in expired:
+            self.hoa_van_stacks = 0
+        if "BuffLuuLyTinhHoa" in expired:
+            self.luu_ly_tinh_hoa_stacks = 0
         if "DebuffChayMau" in expired:
             self.bleed_stacks = 0
         if "DebuffSocDien" in expired:
             self.shock_stacks = 0
         if "DebuffDocTo" in expired:
             self.poison_stacks = 0
+        if "DebuffNhuocThuyAn" in expired:
+            self.thuy_mark_stacks = 0
+        if "DebuffCuuKhuc" in expired:
+            self.cuu_khuc_stacks = 0
+            self.cuu_khuc_atk_reduce_active = 0.0
+            self.cuu_khuc_res_shred_active = 0.0
         return expired
 
     def tick_cooldowns(self) -> None:

@@ -99,12 +99,6 @@ def test_compute_bonuses_grants_threshold_effects():
     assert bonuses_lv3["true_dmg_pct"] == pytest.approx(0.04)
 
 
-def test_compute_bonuses_accepts_legacy_list_at_level_one():
-    legacy = compute_linh_can_bonuses(["hoa"])
-    explicit = compute_linh_can_bonuses({"hoa": 1})
-    assert legacy == explicit
-
-
 def test_compute_bonuses_aggregates_across_elements():
     bonuses = compute_linh_can_bonuses({"kim": 1, "hoa": 1})
     # Both contribute +0.05 final_dmg_bonus
@@ -245,14 +239,16 @@ def test_breadth_multiplier_only_counts_threshold_or_above():
     assert linh_can_breadth_multiplier(below) == 1.0
 
 
-def test_is_khi_tu_requires_strict_qi_dominance():
+def test_is_khi_tu_follows_active_axis():
     from src.game.systems.cultivation import is_khi_tu
-    # Pure qi-only build — gate fires.
-    assert is_khi_tu(body_realm=1, qi_realm=8, formation_realm=4)
-    # Tied with formation — strict inequality means the gate doesn't fire.
-    assert not is_khi_tu(body_realm=0, qi_realm=4, formation_realm=4)
-    # Body cultivator dabbling in qi — gate stays closed.
-    assert not is_khi_tu(body_realm=8, qi_realm=8, formation_realm=0)
+    # Player has chosen the qi axis as their active focus — gate fires.
+    assert is_khi_tu("qi")
+    # Body or formation focus — gate stays closed regardless of realm shape.
+    assert not is_khi_tu("body")
+    assert not is_khi_tu("formation")
+    # Empty / None / unknown axis — defensive default to closed.
+    assert not is_khi_tu(None)
+    assert not is_khi_tu("")
 
 
 def test_compute_combat_stats_applies_breadth_multiplier_when_khi_tu():
@@ -270,6 +266,7 @@ def test_compute_combat_stats_applies_breadth_multiplier_when_khi_tu():
         player_id=1, discord_id=1, name="khi",
         body_realm=1, body_level=1, qi_realm=8, qi_level=9,
         formation_realm=2, formation_level=1,
+        active_axis="qi",
         linh_can=list(ALL_LINH_CAN), linh_can_levels=dict(levels),
         constitution_type="ConstitutionVanTuong", stats=CharacterStats(),
     )
@@ -277,6 +274,7 @@ def test_compute_combat_stats_applies_breadth_multiplier_when_khi_tu():
         player_id=2, discord_id=2, name="the",
         body_realm=8, body_level=9, qi_realm=1, qi_level=1,
         formation_realm=1, formation_level=1,
+        active_axis="body",
         linh_can=list(ALL_LINH_CAN), linh_can_levels=dict(levels),
         constitution_type="ConstitutionVanTuong", stats=CharacterStats(),
     )

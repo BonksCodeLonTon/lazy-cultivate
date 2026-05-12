@@ -3,9 +3,8 @@
 Each Linh Căn an player owns has its own progression level (1..LINH_CAN_MAX_LEVEL).
 The level is hard-capped by the player's qi axis realm — see
 ``max_linh_can_level``. Storage format on ``Player.linh_can`` is a
-comma-separated list, with optional ``:level`` suffix per element:
+comma-separated list with a ``:level`` suffix per element:
 
-    "kim,hoa"        → legacy, treated as level 1 for both
     "kim:3,hoa:2"    → kim at lv3, hoa at lv2
 
 All readers should use ``parse_linh_can_levels`` to get the level dict and
@@ -124,9 +123,9 @@ LINH_CAN_DATA: dict[str, dict] = {
             "thresholds": {
                 3: {"add_passive": {"burn_on_hit_pct": 0.10},
                     "label": "Lv3 — Diễm Trảo: +10% gây Thiêu Đốt khi đánh"},
-                5: {"add_passive": {"burn_dmg_bonus": 0.15},
+                5: {"add_passive": {"dot_dmg_bonus_by_kind": {"burn": 0.15}},
                     "label": "Lv5 — Liệt Hỏa: +15% sát thương Thiêu Đốt"},
-                7: {"add_passive": {"element_pen": {"hoa": 0.15}, "burn_stack_cap_bonus": 1},
+                7: {"add_passive": {"element_pen": {"hoa": 0.15}, "dot_stack_cap_bonus": {"burn": 1}},
                     "label": "Lv7 — Phần Thiên: −15% kháng Hỏa, +1 stack Thiêu Đốt"},
                 9: {"add_passive": {"final_dmg_bonus": 0.15, "dot_can_crit": True},
                     "label": "Lv9 — Thái Dương Đan Tâm: +15% sát thương cuối, DoT có thể bạo kích"},
@@ -194,7 +193,7 @@ LINH_CAN_DATA: dict[str, dict] = {
                     "label": "Lv5 — Truy Hồn: 12% đánh dấu mục tiêu"},
                 7: {"add_passive": {"damage_bonus_from_evasion_pct": 0.20},
                     "label": "Lv7 — Phong Thần: +20% sát thương dựa trên né"},
-                9: {"add_passive": {"spd_pct": 0.15, "crit_rating_vs_marked": 120, "element_pen": {"phong": 0.15}},
+                9: {"add_passive": {"spd_pct": 0.15, "crit_amp_vs": {"marked": {"rating": 120}}, "element_pen": {"phong": 0.15}},
                     "label": "Lv9 — Bàn Cổ Linh Phong: +15% tốc, +120 bạo lên mục tiêu đánh dấu, −15% kháng Phong"},
             },
         },
@@ -261,7 +260,7 @@ LINH_CAN_DATA: dict[str, dict] = {
                     "label": "Lv3 — Phệ Hồn: +10% Hút Hồn"},
                 5: {"add_passive": {"stat_steal_on_hit_pct": 0.08},
                     "label": "Lv5 — Đoạt Linh: +8% Cướp Chỉ Số"},
-                7: {"add_passive": {"crit_rating_vs_drained": 100, "element_pen": {"am": 0.15}},
+                7: {"add_passive": {"crit_amp_vs": {"drained": {"rating": 100}}, "element_pen": {"am": 0.15}},
                     "label": "Lv7 — U Minh: +100 bạo lên mục tiêu bị Phệ Hồn, −15% kháng Ám"},
                 9: {"add_passive": {"evasion_rating": 120, "true_dmg_pct": 0.05},
                     "label": "Lv9 — Hư Vô Âm Đỉnh: +120 né, +5% sát thương xuyên giáp"},
@@ -274,11 +273,12 @@ LINH_CAN_DATA: dict[str, dict] = {
 # ── Storage helpers ─────────────────────────────────────────────────────────
 
 def parse_linh_can_levels(raw: str) -> dict[str, int]:
-    """Parse comma-separated linh_can string into ``{element: level}`` dict.
+    """Parse a ``"kim:3,hoa:2"`` linh_can string into ``{element: level}``.
 
-    Accepts both the legacy ``"kim,hoa"`` (each treated as level 1) and the
-    new ``"kim:3,hoa:2"`` format. Unknown elements are dropped silently.
-    Levels are clamped to ``[LINH_CAN_MIN_LEVEL, LINH_CAN_MAX_LEVEL]``.
+    A bare token without ``:level`` suffix defaults to ``LINH_CAN_MIN_LEVEL``
+    (defensive — every writer in this repo emits the suffix). Unknown elements
+    are dropped silently. Levels are clamped to
+    ``[LINH_CAN_MIN_LEVEL, LINH_CAN_MAX_LEVEL]``.
     """
     if not raw:
         return {}
@@ -306,8 +306,8 @@ def parse_linh_can_levels(raw: str) -> dict[str, int]:
 def parse_linh_can(raw: str) -> list[str]:
     """Return just the list of element keys (no level info).
 
-    Kept for backward compatibility with combat code that only checks
-    membership (``"kim" in actor.linh_can``).
+    Convenience helper for code that only checks membership
+    (``"kim" in actor.linh_can``).
     """
     return list(parse_linh_can_levels(raw).keys())
 
@@ -327,7 +327,11 @@ def format_linh_can_levels(level_map: dict[str, int]) -> str:
 
 
 def format_linh_can(linh_can_list: list[str]) -> str:
-    """Legacy: format a flat list of element keys (each at level 1)."""
+    """Format a flat list of element keys at level 1 each.
+
+    Used by the player-creation path where new accounts start every Linh Căn
+    at the minimum level.
+    """
     return format_linh_can_levels({elem: LINH_CAN_MIN_LEVEL for elem in linh_can_list})
 
 
@@ -374,21 +378,16 @@ def _passive_bonus_for_element(element: str, level: int) -> dict:
     return out
 
 
-def compute_linh_can_bonuses(linh_can: list[str] | dict[str, int]) -> dict:
+def compute_linh_can_bonuses(linh_can: dict[str, int]) -> dict:
     """Return merged passive bonus dict for the player's linh_can.
 
-    Accepts either:
-      - ``list[str]`` (legacy) — every element treated as level 1
-      - ``dict[str, int]`` — explicit per-element levels
-
-    Bonuses scale per element via ``_passive_bonus_for_element``.
+    ``linh_can`` is a ``{element: level}`` dict. Bonuses scale per element
+    via ``_passive_bonus_for_element``. Callers that only have a flat
+    element list should build a level-1 dict via
+    ``{elem: LINH_CAN_MIN_LEVEL for elem in flat_list}``.
     """
-    if isinstance(linh_can, dict):
-        level_map = {elem: int(lvl) for elem, lvl in linh_can.items()
-                     if elem in LINH_CAN_DATA}
-    else:
-        level_map = {elem: LINH_CAN_MIN_LEVEL for elem in linh_can
-                     if elem in LINH_CAN_DATA}
+    level_map = {elem: int(lvl) for elem, lvl in linh_can.items()
+                 if elem in LINH_CAN_DATA}
 
     merged: dict = {}
     for elem, level in level_map.items():

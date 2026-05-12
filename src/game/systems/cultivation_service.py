@@ -13,6 +13,7 @@ from datetime import datetime, timedelta, timezone
 from src.db.repositories.player_repo import _player_to_model
 from src.game.constants.currencies import SECONDS_PER_TURN
 from src.game.engine.tick import compute_offline_ticks
+from src.game.systems.merit import merit_multiplier
 
 
 def pre_breakthrough_realm(player, axis: str) -> int:
@@ -50,7 +51,10 @@ async def apply_offline_ticks(player, repo, axis: str) -> dict:
         return result
 
     char = _player_to_model(player)
-    result = compute_offline_ticks(char, tracker.last_tick_at)
+    result = compute_offline_ticks(
+        char, tracker.last_tick_at,
+        merit_multiplier=merit_multiplier(player),
+    )
 
     player.merit        = char.merit
     player.karma_accum  = char.karma_accum

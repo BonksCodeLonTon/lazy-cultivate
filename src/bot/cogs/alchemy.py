@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from dataclasses import dataclass, field
 from typing import Optional
 
 import discord
@@ -25,7 +26,8 @@ from src.game.systems.alchemy import (
 )
 from src.game.systems.pill_buffs import is_buff_pill
 from src.utils import emojis
-from src.utils.embed_builder import base_embed, error_embed
+from src.utils.discord_safe import safe_defer
+from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
 
 log = logging.getLogger(__name__)
@@ -46,10 +48,17 @@ _QUALITY_KEY_BY_TIER: dict[int, str] = {1: "hoan", 2: "huyen", 3: "dia", 4: "thi
 # bounded and let the player click again for more.
 _BULK_CONSUME_HARD_CAP: int = 999
 
+# Hard cap on a single bulk craft click. Each iteration consumes a fresh
+# set of herbs + Công Đức, so even a "luyện max" power-user click is
+# bounded server-side. Higher than 50 starts producing slow Discord
+# responses — the simulation loop is cheap (in-memory), but the inventory
+# decrement and embed render still scale with N quality buckets.
+_BULK_CRAFT_HARD_CAP: int = 50
+
 # Herbs always stack in inventory at this single grade slot — their
-# intrinsic grade (1-6) is a template attribute, not per-row state.
-# Note: yêu thú materials were merged into the ``herb`` type, so this
-# covers both legacy herb drops and former yêu thú drops.
+# intrinsic grade (1-6) is a template attribute, not per-row state. Yêu thú
+# materials share the ``herb`` type, so this covers both herb drops and
+# yêu thú drops.
 INGREDIENT_GRADE = Grade.HOANG
 
 
@@ -202,6 +211,12 @@ class AlchemyHubView(discord.ui.View):
         herbs_btn.callback = self._open_herbs
         self.add_item(herbs_btn)
 
+        discard_furnace_btn = discord.ui.Button(
+            label="🗑️ Bỏ Đan Lô", style=discord.ButtonStyle.danger, row=1,
+        )
+        discard_furnace_btn.callback = self._open_discard_furnace
+        self.add_item(discard_furnace_btn)
+
         if back_fn:
             back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
             back_btn.callback = self._back_cb
@@ -211,7 +226,8 @@ class AlchemyHubView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
             if not player:
@@ -227,7 +243,8 @@ class AlchemyHubView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
             if not player:
@@ -243,7 +260,8 @@ class AlchemyHubView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
             if not player:
@@ -255,12 +273,178 @@ class AlchemyHubView(discord.ui.View):
         view = _BackOnlyView(self._discord_id, lambda i: _nav_hub(i, self._discord_id, self._back_fn))
         await interaction.edit_original_response(embed=embed, view=view)
 
+    async def _open_discard_furnace(self, interaction: discord.Interaction) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        async with get_session() as session:
+            player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
+            if not player:
+                await interaction.response.send_message(
+                    embed=error_embed("Chưa có nhân vật."), ephemeral=True,
+                )
+                return
+            owned = _owned_furnaces_from_player(player)
+
+        if not owned:
+            await interaction.response.send_message(
+                embed=error_embed("Bạn chưa sở hữu Đan Lô nào để bỏ."),
+                ephemeral=True,
+            )
+            return
+
+        view = FurnaceDiscardSelectView(self._discord_id, owned)
+        await interaction.response.send_message(
+            embed=base_embed(
+                "🗑️ Bỏ Đan Lô",
+                "Chọn Đan Lô muốn bỏ. Hành động này **không thể hoàn tác**.\n"
+                "Nếu bỏ Đan Lô đang được dùng làm mặc định, hệ thống sẽ tự "
+                "chọn lại lò khác cho lần luyện đan tiếp theo.",
+                color=0xC0392B,
+            ),
+            view=view,
+            ephemeral=True,
+        )
+
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
+
+
+# ── Furnace discard flow ────────────────────────────────────────────────────
+
+class FurnaceDiscardSelectView(discord.ui.View):
+    """Ephemeral picker — choose one owned furnace, then confirm."""
+
+    def __init__(self, discord_id: int, owned_keys: list[str]) -> None:
+        super().__init__(timeout=120)
+        self._discord_id = discord_id
+        self.add_item(_FurnaceDiscardSelect(discord_id, owned_keys))
+
+
+class _FurnaceDiscardSelect(discord.ui.Select):
+    def __init__(self, discord_id: int, owned_keys: list[str]) -> None:
+        self._discord_id = discord_id
+        options: list[discord.SelectOption] = []
+        for key in owned_keys[:25]:
+            f = registry.get_furnace(key)
+            if not f:
+                continue
+            tag = "✦" if f.get("is_unique") else "•"
+            tier = int(f.get("furnace_tier", 1))
+            label = f"{tag} {f['vi']}"[:100]
+            options.append(discord.SelectOption(
+                label=label, value=key,
+                description=f"Cấp {tier}"[:100],
+            ))
+        if not options:
+            options = [discord.SelectOption(label="(không có)", value="__none__")]
+        super().__init__(placeholder="🔥 Chọn Đan Lô để bỏ…", options=options)
+
+    async def callback(self, interaction: discord.Interaction) -> None:
+        if not _guard(interaction, self._discord_id):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        picked = self.values[0]
+        if picked == "__none__":
+            if not await safe_defer(interaction):
+                return
+            return
+        f = registry.get_furnace(picked)
+        if not f:
+            await interaction.response.edit_message(
+                embed=error_embed("Đan Lô không hợp lệ."), view=None,
+            )
+            return
+        view = FurnaceDiscardConfirmView(self._discord_id, picked, f["vi"])
+        await interaction.response.edit_message(
+            embed=base_embed(
+                "🗑️ Xác Nhận Bỏ Đan Lô",
+                f"Bạn có chắc muốn **bỏ** **{f['vi']}** (Cấp "
+                f"{int(f.get('furnace_tier', 1))})?\n\n"
+                "_(Hành động này không thể hoàn tác.)_",
+                color=0xC0392B,
+            ),
+            view=view,
+        )
+
+
+class FurnaceDiscardConfirmView(discord.ui.View):
+    """Confirm/cancel prompt for furnace removal. Removes one inventory row
+    and clears ``preferred_furnace_key`` if it pointed to the dropped lò.
+    """
+
+    def __init__(self, discord_id: int, furnace_key: str, furnace_vi: str) -> None:
+        super().__init__(timeout=60)
+        self._discord_id = discord_id
+        self._furnace_key = furnace_key
+        self._furnace_vi = furnace_vi
+
+    @discord.ui.button(label="🗑️ Bỏ", style=discord.ButtonStyle.danger)
+    async def confirm(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button,
+    ) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message(
+                "Đây không phải cửa sổ của bạn.", ephemeral=True,
+            )
+            return
+
+        async with get_session() as session:
+            prepo = PlayerRepository(session)
+            player = await prepo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.response.edit_message(
+                    embed=error_embed("Chưa có nhân vật."), view=None,
+                )
+                return
+
+            irepo = InventoryRepository(session)
+            f = registry.get_item(self._furnace_key) or {}
+            grade = Grade(f.get("grade", 1))
+            ok = await irepo.try_remove_item(
+                player.id, self._furnace_key, grade, 1,
+            )
+
+            if ok and player.preferred_furnace_key == self._furnace_key:
+                player.preferred_furnace_key = None
+                await prepo.save(player)
+
+        if not ok:
+            await interaction.response.edit_message(
+                embed=error_embed(
+                    f"Không tìm thấy **{self._furnace_vi}** trong túi đồ."
+                ),
+                view=None,
+            )
+            return
+
+        await interaction.response.edit_message(
+            embed=success_embed(f"🗑️ Đã bỏ **{self._furnace_vi}**."),
+            view=None,
+        )
+
+    @discord.ui.button(label="Huỷ", style=discord.ButtonStyle.secondary)
+    async def cancel(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button,
+    ) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message(
+                "Đây không phải cửa sổ của bạn.", ephemeral=True,
+            )
+            return
+        await interaction.response.edit_message(
+            embed=base_embed("Đã huỷ", "Đan Lô của bạn vẫn còn nguyên."),
+            view=None,
+        )
 
 
 async def _nav_hub(interaction: discord.Interaction, discord_id: int, back_fn) -> None:
@@ -327,7 +511,8 @@ class RecipeGradeView(discord.ui.View):
             if not _guard(interaction, self._discord_id):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             embed = _recipe_grade_embed(grade, self._qi_realm)
             view = RecipeListView(self._discord_id, grade, self._qi_realm, self._back_fn)
             await interaction.edit_original_response(embed=embed, view=view)
@@ -337,7 +522,8 @@ class RecipeGradeView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_hub(interaction, self._discord_id, self._back_fn)
 
 
@@ -368,7 +554,8 @@ class RecipeListView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         embed = _recipe_list_embed(self._qi_realm)
         view = RecipeGradeView(self._discord_id, self._qi_realm, self._back_fn)
         await interaction.edit_original_response(embed=embed, view=view)
@@ -404,10 +591,11 @@ class RecipeSelect(discord.ui.Select):
             return
         recipe_key = self.values[0]
         if recipe_key == "__none__":
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             return
-        await interaction.response.defer()
-
+        if not await safe_defer(interaction):
+            return
         # Load owned furnaces so the detail view can offer a picker. Default
         # selection is the player's stored preference when it's still valid,
         # otherwise the auto-picked "best" furnace — so users who don't want
@@ -571,9 +759,8 @@ class _FurnaceSelect(discord.ui.Select):
                     player.preferred_furnace_key = new_key
                     await repo.save(player)
 
-        await interaction.response.defer()
-
-
+        if not await safe_defer(interaction):
+            return
 class RecipeDetailView(discord.ui.View):
     def __init__(
         self,
@@ -597,6 +784,25 @@ class RecipeDetailView(discord.ui.View):
         self._required_tier = required_tier
         self._selected_furnace_key: str | None = selected_furnace_key
 
+        # Bulk-craft preset row — ×1 stays first for muscle-memory parity
+        # with the old single-craft button. ×5/×10 cover the common case
+        # (mid-tier grinding), and "Số khác…" opens a modal up to the
+        # _BULK_CRAFT_HARD_CAP. Each button uses the same _do_craft path
+        # so partial-success on resource exhaustion is handled uniformly.
+        for qty in (1, 5, 10):
+            label = "⚗️ Luyện" if qty == 1 else f"⚗️ Luyện ×{qty}"
+            btn = discord.ui.Button(
+                label=label, style=discord.ButtonStyle.success, row=0,
+            )
+            btn.callback = self._make_craft_cb(qty)
+            self.add_item(btn)
+
+        custom_btn = discord.ui.Button(
+            label="⚗️ Số khác…", style=discord.ButtonStyle.primary, row=0,
+        )
+        custom_btn.callback = self._open_qty_modal
+        self.add_item(custom_btn)
+
         # Show a furnace picker when the player has more than one owned
         # furnace — single furnace = no decision to make.
         if len(self._owned_furnaces) >= 2:
@@ -608,33 +814,63 @@ class RecipeDetailView(discord.ui.View):
                 selected_key=selected_furnace_key,
             ))
 
-    @discord.ui.button(label="⚗️ Luyện", style=discord.ButtonStyle.success, row=0)
-    async def craft_btn(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
+        back_btn = discord.ui.Button(
+            label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=2,
+        )
+        back_btn.callback = self._back_cb
+        self.add_item(back_btn)
+
+    def _make_craft_cb(self, qty: int):
+        async def _cb(interaction: discord.Interaction) -> None:
+            if not _guard(interaction, self._discord_id):
+                await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+                return
+            if not await safe_defer(interaction):
+                return
+            await self._run_craft(interaction, qty)
+        return _cb
+
+    async def _open_qty_modal(self, interaction: discord.Interaction) -> None:
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        modal = BulkCraftQuantityModal(self._on_modal_submit)
+        await interaction.response.send_modal(modal)
+
+    async def _on_modal_submit(
+        self, interaction: discord.Interaction, qty: int,
+    ) -> None:
+        if not await safe_defer(interaction):
+            return
+        await self._run_craft(interaction, qty)
+
+    async def _run_craft(self, interaction: discord.Interaction, qty: int) -> None:
         result = await _do_craft(
             interaction, self._recipe_key,
             selected_furnace_key=self._selected_furnace_key,
+            quantity=qty,
         )
         if not result.success:
-            await interaction.edit_original_response(embed=error_embed(result.message), view=self._done_view())
+            await interaction.edit_original_response(
+                embed=error_embed(result.message), view=self._done_view(),
+            )
             return
         embed = _craft_result_embed(result)
         await interaction.edit_original_response(embed=embed, view=self._done_view())
 
-    @discord.ui.button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=0)
-    async def back_btn(self, interaction: discord.Interaction, button: discord.ui.Button) -> None:
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         embed = _recipe_grade_embed(self._grade, self._qi_realm)
         view = RecipeListView(self._discord_id, self._grade, self._qi_realm, self._back_fn)
         await interaction.edit_original_response(embed=embed, view=view)
 
     def _done_view(self) -> discord.ui.View:
+        """Compact post-craft action row: Luyện tiếp (re-renders the
+        recipe detail with all bulk buttons) + ◀ Về Luyện Đan."""
         view = discord.ui.View(timeout=180)
         again_btn = discord.ui.Button(label="⚗️ Luyện tiếp", style=discord.ButtonStyle.success, row=0)
 
@@ -642,7 +878,8 @@ class RecipeDetailView(discord.ui.View):
             if not _guard(i, self._discord_id):
                 await i.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await i.response.defer()
+            if not await safe_defer(i):
+                return
             embed = await _recipe_detail_embed(i, self._recipe_key)
             await i.edit_original_response(embed=embed, view=self)
 
@@ -655,7 +892,8 @@ class RecipeDetailView(discord.ui.View):
             if not _guard(i, self._discord_id):
                 await i.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await i.response.defer()
+            if not await safe_defer(i):
+                return
             await _nav_hub(i, self._discord_id, self._back_fn)
 
         hub_btn.callback = _to_hub
@@ -663,27 +901,90 @@ class RecipeDetailView(discord.ui.View):
         return view
 
 
+class BulkCraftQuantityModal(discord.ui.Modal, title="Số Lượng Luyện"):
+    """Custom-quantity entry for the ⚗️ Số khác… button. Caps to
+    ``_BULK_CRAFT_HARD_CAP`` server-side; values above the cap are
+    clamped silently rather than rejected so a "999" typo still does
+    something useful.
+    """
+
+    qty_input: discord.ui.TextInput = discord.ui.TextInput(
+        label="Số lượng đan dược",
+        placeholder=f"vd: 25 (tối đa {_BULK_CRAFT_HARD_CAP})",
+        max_length=3,
+    )
+
+    def __init__(self, on_submit) -> None:
+        super().__init__()
+        self._on_submit = on_submit
+
+    async def on_submit(self, interaction: discord.Interaction) -> None:
+        raw = self.qty_input.value.strip().replace(",", "")
+        if not raw.isdigit() or int(raw) < 1:
+            await interaction.response.send_message(
+                embed=error_embed("Số lượng phải là số nguyên dương."),
+                ephemeral=True,
+            )
+            return
+        qty = min(int(raw), _BULK_CRAFT_HARD_CAP)
+        await self._on_submit(interaction, qty)
+
+
+@dataclass
+class BulkCraftResult:
+    """Aggregated outcome from one bulk-craft click.
+
+    ``quality_counts`` keys are quality tiers (1=Hoàng, 2=Huyền, 3=Địa,
+    4=Thiên). ``last_failure`` is the message from the iteration that
+    stopped the loop (insufficient herbs / merit / furnace) — surfaced so
+    the user sees *why* a request for ×10 produced fewer pills.
+    """
+
+    success: bool
+    message: str
+    pill_key: str | None = None
+    quality_counts: dict[int, int] = field(default_factory=dict)
+    consumed_totals: dict[str, int] = field(default_factory=dict)
+    total_cost: int = 0
+    total_dan_doc: int = 0
+    crafted: int = 0
+    requested: int = 0
+    furnace_key: str | None = None
+    last_failure: str | None = None
+
+
 async def _do_craft(
     interaction: discord.Interaction,
     recipe_key: str,
     *,
     selected_furnace_key: str | None = None,
-) -> AlchemyResult:
-    """Validate, deduct ingredients/merit, craft pill, and add to inventory.
+    quantity: int = 1,
+) -> BulkCraftResult:
+    """Validate, deduct ingredients/merit, craft N pills, add to inventory.
 
-    If ``selected_furnace_key`` is provided, the craft is constrained to
-    that single furnace (system still rejects under-tier picks). When
-    ``None``, every owned furnace is considered and the system auto-picks
-    the best one — preserves the legacy behavior for callers that don't
-    expose a picker.
+    ``quantity=1`` matches the original single-craft contract. Larger
+    values loop ``craft_pill`` against a freshly loaded in-memory snapshot
+    of the player's bag and merit, applying inventory mutations in one
+    DB pass at the end. Stops early on the first iteration that fails
+    (insufficient resources / under-tier furnace) so a partial bulk craft
+    is reported honestly instead of silently truncated.
+
+    If ``selected_furnace_key`` is provided, every iteration is
+    constrained to that single furnace. When ``None`` the system layer
+    picks the best owned furnace each iteration (which can flip if a
+    unique furnace is consumed mid-bulk — currently impossible since
+    furnaces aren't consumed, but the contract holds).
     """
+    quantity = max(1, min(int(quantity), _BULK_CRAFT_HARD_CAP))
+    requested = quantity
+
     async with get_session() as session:
         player_repo = PlayerRepository(session)
         inv_repo = InventoryRepository(session)
 
         player = await player_repo.get_by_discord_id(interaction.user.id)
         if not player:
-            return AlchemyResult(False, "Không tìm thấy nhân vật.")
+            return BulkCraftResult(False, "Không tìm thấy nhân vật.", requested=requested)
 
         char = _player_to_model(player)
 
@@ -704,52 +1005,155 @@ async def _do_craft(
         # rendered) before passing through.
         if selected_furnace_key:
             if selected_furnace_key not in owned_furnace_keys:
-                return AlchemyResult(False, "Đan Lô đã chọn không còn trong túi.")
+                return BulkCraftResult(
+                    False, "Đan Lô đã chọn không còn trong túi.", requested=requested,
+                )
             furnace_keys: list[str] = [selected_furnace_key]
         else:
             furnace_keys = owned_furnace_keys
 
-        result = craft_pill(char, recipe_key, bag, furnace_keys)
-        if not result.success:
-            return result
-        for pick in result.consumed:
-            ok = await inv_repo.remove_any_grade(player.id, pick.key, pick.qty)
-            if not ok:
-                ing = registry.get_item(pick.key) or {}
-                name = ing.get("vi", pick.key)
-                return AlchemyResult(False, f"Lỗi nội bộ: thiếu {name}.")
+        # ── Loop crafts on the in-memory bag/char snapshot ────────────
+        quality_counts: dict[int, int] = {}
+        consumed_totals: dict[str, int] = {}
+        total_cost = 0
+        total_dan_doc = 0
+        crafted = 0
+        last_failure: str | None = None
+        last_furnace_key: str | None = None
+        last_pill_key: str | None = None
 
-        # Persist merit deduction
+        for _ in range(quantity):
+            iter_result = craft_pill(char, recipe_key, bag, furnace_keys)
+            if not iter_result.success:
+                last_failure = iter_result.message
+                break
+            crafted += 1
+            for pick in iter_result.consumed:
+                bag[pick.key] = bag.get(pick.key, 0) - pick.qty
+                consumed_totals[pick.key] = consumed_totals.get(pick.key, 0) + pick.qty
+            tier = int(iter_result.quality_tier)
+            quality_counts[tier] = quality_counts.get(tier, 0) + 1
+            total_cost += int(iter_result.cost_cong_duc)
+            total_dan_doc += int(iter_result.dan_doc_delta)
+            last_furnace_key = iter_result.furnace_key
+            last_pill_key = iter_result.pill_key
+
+        if crafted == 0:
+            # No iteration succeeded — return the first-iteration failure
+            # verbatim so the user sees the validation error from craft_pill.
+            return BulkCraftResult(
+                False,
+                last_failure or "Không thể luyện đan.",
+                requested=requested,
+            )
+
+        # ── Apply DB mutations once (one merit save, one pill add per
+        # quality bucket, one ingredient remove per item key) ─────────
+        for key, qty in consumed_totals.items():
+            ok = await inv_repo.remove_any_grade(player.id, key, qty)
+            if not ok:
+                ing = registry.get_item(key) or {}
+                name = ing.get("vi", key)
+                return BulkCraftResult(
+                    False, f"Lỗi nội bộ: thiếu {name}.", requested=requested,
+                )
+
+        # Persist merit deduction (char.merit was decremented N times).
         player.merit = char.merit
 
-        # Add pill to inventory keyed by quality tier.
-        pill_grade = Grade(result.quality_tier)
-        await inv_repo.add_item(player.id, result.pill_key, pill_grade, 1)
+        # Add pills to inventory bucketed by quality tier.
+        if last_pill_key:
+            for tier, count in quality_counts.items():
+                if count > 0:
+                    await inv_repo.add_item(
+                        player.id, last_pill_key, Grade(tier), count,
+                    )
 
         await player_repo.save(player)
 
-    return result
+    return BulkCraftResult(
+        success=True,
+        message="",
+        pill_key=last_pill_key,
+        quality_counts=quality_counts,
+        consumed_totals=consumed_totals,
+        total_cost=total_cost,
+        total_dan_doc=total_dan_doc,
+        crafted=crafted,
+        requested=requested,
+        furnace_key=last_furnace_key,
+        last_failure=last_failure if crafted < requested else None,
+    )
 
 
-def _craft_result_embed(result: AlchemyResult) -> discord.Embed:
+def _craft_result_embed(result: BulkCraftResult) -> discord.Embed:
+    """Render a bulk-craft summary. Single crafts (crafted=1) collapse to
+    the simple success layout; multi-craft adds a per-quality breakdown
+    and a partial-success footer when applicable.
+    """
     pill = registry.get_pill(result.pill_key or "")
-    color = QUALITY_COLORS.get(result.quality or "hoan", discord.Color.green())
-    embed = discord.Embed(title="⚗️ Luyện Đan Thành Công!", description=result.message, color=color)
+    # Tint the embed by the highest-quality pill produced — Thiên if any
+    # rolled, otherwise the next tier down. Falls back to Hoàng if the
+    # quality_counts map is empty (shouldn't happen on success path).
+    top_tier = max(result.quality_counts) if result.quality_counts else 1
+    quality_key = _QUALITY_KEY_BY_TIER.get(top_tier, "hoan")
+    color = QUALITY_COLORS.get(quality_key, discord.Color.green())
+
+    if result.crafted == 1 and pill:
+        # Single-craft fast path — match the original message style.
+        only_tier = next(iter(result.quality_counts))
+        quality_label = QUALITY_LABELS.get(_QUALITY_KEY_BY_TIER[only_tier], "?")
+        title = "⚗️ Luyện Đan Thành Công!"
+        description = (
+            f"✅ **{pill['vi']}** [Cấp {pill.get('grade', '?')} — "
+            f"{quality_label} Phẩm]"
+        )
+    else:
+        title = f"⚗️ Luyện Đan ×{result.crafted} Thành Công!"
+        description = (
+            f"Sản xuất **{result.crafted}/{result.requested}** viên "
+            f"**{pill['vi'] if pill else result.pill_key}**."
+        )
+
+    embed = discord.Embed(title=title, description=description, color=color)
+
+    if result.quality_counts:
+        # Render every tier produced, sorted high → low so Thiên shows first.
+        breakdown = []
+        for tier in sorted(result.quality_counts, reverse=True):
+            label = _QUALITY_LABEL_VI.get(tier, "?")
+            breakdown.append(f"**{label}**: {result.quality_counts[tier]}")
+        embed.add_field(
+            name="📦 Phẩm Chất", value=" · ".join(breakdown), inline=False,
+        )
+
     if pill:
         embed.add_field(name="Hiệu ứng", value=pill.get("effect_vi", "?"), inline=True)
-        embed.add_field(name="Đan độc", value=str(result.dan_doc_delta), inline=True)
-    embed.add_field(name="Chi phí", value=f"✨ −{result.cost_cong_duc:,}", inline=True)
+    embed.add_field(name="☠️ Đan độc tổng", value=str(result.total_dan_doc), inline=True)
+    embed.add_field(name="✨ Chi phí", value=f"−{result.total_cost:,}", inline=True)
+
     if result.furnace_key:
         furnace = registry.get_furnace(result.furnace_key)
         if furnace:
             tag = "✦ " if furnace.get("is_unique") else ""
-            embed.add_field(name="🔥 Đan Lô", value=f"{tag}{furnace['vi']}", inline=True)
-    consumed_text = ", ".join(
-        f"{registry.get_item(c.key)['vi'] if registry.get_item(c.key) else c.key}×{c.qty}"
-        for c in result.consumed
-    )
-    if consumed_text:
-        embed.add_field(name="Nguyên liệu đã dùng", value=consumed_text, inline=False)
+            embed.add_field(
+                name="🔥 Đan Lô", value=f"{tag}{furnace['vi']}", inline=True,
+            )
+
+    if result.consumed_totals:
+        consumed_text = ", ".join(
+            f"{(registry.get_item(k) or {}).get('vi', k)}×{q}"
+            for k, q in result.consumed_totals.items()
+        )
+        embed.add_field(name="🌿 Nguyên liệu đã dùng", value=consumed_text, inline=False)
+
+    if result.last_failure and result.crafted < result.requested:
+        # Surface why the bulk run stopped short — most often "không đủ
+        # nguyên liệu" or "không đủ Công Đức".
+        embed.set_footer(
+            text=f"Dừng ở {result.crafted}/{result.requested}: {result.last_failure}",
+        )
+
     return embed
 
 
@@ -810,7 +1214,8 @@ class PillBagView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         view = PillBagView(self._discord_id, self._pills, self._back_fn, page=new_page)
         embed = _pill_bag_embed(self._pills, page=new_page)
         await interaction.edit_original_response(embed=embed, view=view)
@@ -819,7 +1224,8 @@ class PillBagView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _nav_hub(interaction, self._discord_id, self._back_fn)
 
 
@@ -855,9 +1261,11 @@ class PillSelect(discord.ui.Select):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
         if self.values[0] == "__none__":
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         key, grade_str = self.values[0].split("|")
         grade = int(grade_str)
 
@@ -1018,7 +1426,8 @@ class PillDetailView(discord.ui.View):
             if not _guard(interaction, self._discord_id):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             await self._consume_and_render(interaction, quantity)
         return _cb
 
@@ -1028,7 +1437,8 @@ class PillDetailView(discord.ui.View):
             return
 
         async def _on_submit(modal_inter: discord.Interaction, qty: int) -> None:
-            await modal_inter.response.defer()
+            if not await safe_defer(modal_inter):
+                return
             await self._consume_and_render(modal_inter, qty)
 
         await interaction.response.send_modal(
@@ -1039,7 +1449,8 @@ class PillDetailView(discord.ui.View):
         if not _guard(interaction, self._discord_id):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
             pills = await _pills_in_bag(player.id) if player else []
@@ -1190,7 +1601,8 @@ async def _do_consume(
                 if qi_realm is not None:
                     player.qi_level = get_level_from_exp(player.qi_xp, qi_realm)
         if total_merit:
-            player.merit = int(player.merit or 0) + total_merit
+            from src.game.systems.merit import grant_merit
+            grant_merit(player, int(total_merit))
         if total_heal and player.hp_current > 0:
             player.hp_current = player.hp_current + total_heal
         if last_buff_increment:
@@ -1319,7 +1731,8 @@ class _BackOnlyView(discord.ui.View):
             if not _guard(interaction, discord_id):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             await back_cb(interaction)
 
         btn.callback = _cb
@@ -1334,7 +1747,8 @@ class AlchemyCog(commands.Cog, name="Alchemy"):
 
     @app_commands.command(name="luyendan", description="Luyện đan — chế đan từ thảo dược")
     async def luyendan(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
             if not player:

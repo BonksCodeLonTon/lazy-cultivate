@@ -51,6 +51,12 @@ class ItemInstance(Base, TimestampMixin):
     computed_stats: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
 
     grade: Mapped[int] = mapped_column(SmallInteger, nullable=False, default=1)
+    # Forge/loot rarity tier — hoan/huyen/dia/thien. Drives the rarity icon
+    # surfaced in equipment views; column defaults to "hoan" for any
+    # INSERT that omits it.
+    quality: Mapped[str] = mapped_column(
+        String(8), nullable=False, server_default="hoan", default="hoan"
+    )
     display_name: Mapped[str] = mapped_column(String(128), nullable=False, default="")
 
     player: Mapped["Player"] = relationship("Player", back_populates="item_instances")

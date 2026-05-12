@@ -2,7 +2,7 @@
 
 Mirrors the shape of :mod:`src.game.systems.forge`:
 
-* Recipes live as registry data (``src/data/recipes/pill_recipes.json``).
+* Recipes live as registry data (``src/data/pills/pill_recipes.json``).
 * ``check_requirements`` validates realm, merit, and ingredient availability
   but does not mutate state.
 * ``craft_pill`` rolls a quality tier via the shared quality module and
@@ -331,6 +331,13 @@ _GENERIC_BOOST_PCT_OF_PILL: float = 0.25  # share of a dedicated XP pill
 _GENERIC_BOOST_MERIT: int = 50            # flat merit reward per consume
 _GENERIC_BOOST_DAN_DOC_REDUCE: int = 2    # tiny detox to offset accrued tox
 
+# Above-realm consumption rider for XP pills (exp_luyen_the / exp_qi only):
+# pulling cultivation essence meant for a higher realm grants extra EXP at
+# the cost of disproportionately more Đan Độc. Encourages gambling on
+# above-tier pills while keeping toxicity the natural brake.
+_ABOVE_REALM_XP_MULT: float = 2.5
+_ABOVE_REALM_DAN_DOC_MULT: float = 3.0
+
 # Pills-per-realm at Hoàn quality. Quadratic growth (≈ ``10 + 15·R²``) so
 # early realms only need a handful of pills while endgame demands ≈1000 —
 # pills are a viable boost at low cultivation and an expensive supplement
@@ -369,12 +376,15 @@ def _pill_xp_for_grade(axis: str, pill_grade: int) -> int:
     return max(1, realm.level_exp_table[-1] // target_pills)
 
 
-# Effect keys gated by player cultivation grade vs. pill grade. Once the
-# player's matching realm meets/exceeds the pill grade, the consume is
+# Effect keys gated by player cultivation realm vs. pill realm. Once the
+# player's matching realm exceeds the pill's target realm, the consume is
 # refused — the body has surpassed what this pill can offer. ``reduce_toxicity``
 # is treated separately because Đan Độc is global; it checks the highest
 # realm across body + qi (the two axes that accumulate toxicity from pills).
-_GRADE_GATED_AXIS: dict[str, str] = {
+#
+# ``grade`` on the pill is rarity only (Hoàng / Huyền / Địa / Thiên) and is
+# used by drop tables and pricing — never by this gate.
+_REALM_GATED_AXIS: dict[str, str] = {
     "exp_luyen_the": "body",
     "exp_qi":        "qi",
 }
@@ -389,42 +399,74 @@ def _player_axis_realm(char: Character, axis: str) -> int:
     return int(getattr(char, f"{axis}_realm", 0) or 0)
 
 
-def _grade_gated_refusal(
+_PILL_REALM_AXIS_KEY: dict[str, str] = {
+    "body": "the",   # Luyện Thể axis reads ``realm.the``
+    "qi":   "khi",   # Luyện Khí axis reads ``realm.khi``
+}
+
+
+def _pill_realm(pill: dict, axis: str) -> int:
+    """Read the pill's target realm for a given cultivation axis.
+
+    ``realm`` is the dict schema ``{"the": <int>, "khi": <int>}`` so a
+    pill can target Luyện Thể and Luyện Khí independently. Realm is
+    0-indexed (0 = Luyện Khí Cấp 1, …, 8 = Đăng Tiên), matching
+    ``Player.body_realm`` / ``qi_realm``.
+    """
+    r = pill.get("realm") or {}
+    key = _PILL_REALM_AXIS_KEY.get(axis, "the")
+    return int(r.get(key, r.get("the", 0)))
+
+
+def _realm_gated_refusal(
     char: Character,
     pill: dict,
-    pill_grade: int,
     effect_key: str,
 ) -> Optional[PillEffect]:
-    """Refuse consume when the player has surpassed the pill grade.
+    """Refuse consume when the player has surpassed the pill's target realm.
 
-    Returns ``None`` when the pill is at-tier or above the player and the
+    Returns ``None`` when the pill is at-realm or above the player and the
     consume should proceed. The refused ``PillEffect`` carries
     ``applied=False`` so the cog leaves the stack untouched in inventory —
     the player isn't burning a pill on something their body can no longer
     absorb. ``reduce_toxicity`` checks ``max(body_realm, qi_realm)`` since
     Đan Độc is a single global stat with no obvious axis correspondence.
+
+    Combat-buff pills (``buff_speed`` / ``buff_def`` / ``buff_sword_dmg`` /
+    ``buff_element_*``) are intentionally **never** realm-gated — their
+    permanent stat increments are useful at any cultivation level, and the
+    per-key ``PILL_BUFF_CAP`` already bounds total stacking. A late-game
+    player must still be able to spend a low-realm element pill to top up
+    their cap, so we short-circuit the gate here.
     """
-    if effect_key in _GRADE_GATED_AXIS:
-        axis = _GRADE_GATED_AXIS[effect_key]
+    if is_buff_pill(effect_key):
+        return None
+    if effect_key in _REALM_GATED_AXIS:
+        axis = _REALM_GATED_AXIS[effect_key]
         player_realm = _player_axis_realm(char, axis)
         axis_label = _AXIS_LABEL_VI[axis]
+        pill_realm = _pill_realm(pill, axis)
     elif effect_key == "reduce_toxicity":
+        # Đan Độc is global — gate against the higher of the two pill-axis
+        # caps so a Luyện-Khí-specialist pill doesn't block a Thể-tu user
+        # whose body has surpassed it.
         player_realm = max(
             _player_axis_realm(char, "body"),
             _player_axis_realm(char, "qi"),
         )
         axis_label = "tu vi"
+        pill_realm = max(_pill_realm(pill, "body"), _pill_realm(pill, "qi"))
     else:
         return None
 
-    if player_realm < pill_grade:
+    if player_realm <= pill_realm:
         return None
 
     return PillEffect(
         applied=False,
         message=(
             f"❌ Cảnh giới {axis_label} (Cấp {player_realm + 1}) đã vượt qua "
-            f"phẩm cấp đan dược **{pill['vi']}** (Cấp {pill_grade}) — "
+            f"đan dược **{pill['vi']}** (dành cho Cấp {pill_realm + 1}) — "
             f"không còn hấp thu được hiệu quả."
         ),
     )
@@ -523,10 +565,7 @@ def consume_pill(
     base_doc = int(pill.get("dan_doc", 0))
     mult = implicit_multiplier({1: "hoan", 2: "huyen", 3: "dia", 4: "thien"}.get(quality_tier, "hoan"))
 
-    # Refuse pills the player has outgrown — the stack stays in inventory
-    # rather than being burned for zero benefit. Mirrors how the buff-cap
-    # path bails out before any state mutation.
-    refusal = _grade_gated_refusal(char, pill, pill_grade, effect_key)
+    refusal = _realm_gated_refusal(char, pill, effect_key)
     if refusal is not None:
         return refusal
 
@@ -554,7 +593,11 @@ def consume_pill(
     # realm-progression time across every EXP source. Imported lazily to
     # avoid bootstrapping cycles between alchemy and cultivation.
     from src.game.systems.cultivation import compute_constitution_bonuses
-    _const_bonuses = compute_constitution_bonuses(getattr(char, "constitution_type", "") or "")
+    _const_bonuses = compute_constitution_bonuses(
+        getattr(char, "constitution_type", "") or "",
+        getattr(char, "active_axis", None),
+        int(getattr(char, "body_realm", 0) or 0),
+    )
     _speed_bonus = float(_const_bonuses.get("cultivation_speed_bonus", 0.0))
     _speed_mult = 1.0 + _speed_bonus
 
@@ -568,10 +611,24 @@ def consume_pill(
 
     if effect_key == "exp_luyen_the":
         magnitude = _scale_xp(_pill_xp_for_grade("body", pill_grade))
+        if _pill_realm(pill, "body") > _player_axis_realm(char, "body"):
+            magnitude = int(round(magnitude * _ABOVE_REALM_XP_MULT))
+            doc_delta = int(round(doc_delta * _ABOVE_REALM_DAN_DOC_MULT))
+            notes.append(
+                f"⚡ Vượt cảnh giới — EXP ×{_ABOVE_REALM_XP_MULT:g}, "
+                f"Đan Độc ×{_ABOVE_REALM_DAN_DOC_MULT:g}"
+            )
         effect_body_xp = magnitude
         notes.append(f"+{magnitude:,} EXP Luyện Thể")
     elif effect_key == "exp_qi":
         magnitude = _scale_xp(_pill_xp_for_grade("qi", pill_grade))
+        if _pill_realm(pill, "qi") > _player_axis_realm(char, "qi"):
+            magnitude = int(round(magnitude * _ABOVE_REALM_XP_MULT))
+            doc_delta = int(round(doc_delta * _ABOVE_REALM_DAN_DOC_MULT))
+            notes.append(
+                f"⚡ Vượt cảnh giới — EXP ×{_ABOVE_REALM_XP_MULT:g}, "
+                f"Đan Độc ×{_ABOVE_REALM_DAN_DOC_MULT:g}"
+            )
         effect_qi_xp = magnitude
         notes.append(f"+{magnitude:,} EXP Luyện Khí")
     elif effect_key in _EFFECT_BASE_MAGNITUDE:

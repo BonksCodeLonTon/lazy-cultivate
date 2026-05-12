@@ -1,15 +1,21 @@
 """Thể Chất system — path-aware multi-slot logic.
 
 Most cultivation paths (Qi / Formation) keep a single Thể Chất. **Thể Tu**
-(body cultivators — players whose ``body_realm`` ≥ every other axis) unlock
-one additional Thể Chất slot per body realm breakthrough, capped at 8.
+(body cultivators — players whose ``active_axis == "body"``) unlock one
+additional Thể Chất slot per body realm breakthrough, capped at 8.
 
 The Hỗn Độn Đạo Thể is a special *9th* slot that activates only when all 8
 standard slots already hold a Legendary Thể Chất.
 
-Storage: ``player.constitution_type`` is still a single string column, but
-it is now parsed as a **comma-separated list** of Thể Chất keys. A legacy
-single-entry value (e.g. ``"ConstitutionVanTuong"``) works unchanged.
+Storage: ``player.constitution_type`` is a single string column parsed as
+a **comma-separated list** of Thể Chất keys. A single-entry value (e.g.
+``"ConstitutionVanTuong"``) parses as a 1-slot list.
+
+Path identity follows ``Player.active_axis`` directly so a player who
+cultivates body becomes Thể Tu the moment they switch focus, and reverts
+to a single-slot Khí/Trận Tu the instant they pivot away — no realm-comparison
+desync. Bonus pipelines clamp to the current cap automatically; constitutions
+beyond the cap stay persisted but contribute nothing while off-path.
 """
 from __future__ import annotations
 
@@ -41,22 +47,82 @@ def set_constitutions(keys: list[str]) -> str:
     return ",".join(k for k in keys if k)
 
 
-def is_the_tu(body_realm: int, qi_realm: int, formation_realm: int) -> bool:
-    """Thể Tu = body cultivator — body_realm at least as high as every other axis."""
-    return body_realm >= max(qi_realm, formation_realm)
+# ── Tracker (permanent unlocks) ───────────────────────────────────────────────
 
 
-def max_slots(body_realm: int, qi_realm: int, formation_realm: int) -> int:
+def get_tracker(raw: str | None) -> list[str]:
+    """Split ``player.constitution_tracker`` (every activated Thể Chất) into
+    its list form. Returned in storage order (activation order)."""
+    if not raw:
+        return []
+    return [c.strip() for c in raw.split(",") if c.strip()]
+
+
+def set_tracker(keys: list[str]) -> str:
+    """Inverse of ``get_tracker`` — preserves order, drops empties."""
+    return ",".join(k for k in keys if k)
+
+
+def add_to_tracker(raw: str | None, key: str) -> str:
+    """Append ``key`` to the tracker if not already present.
+
+    De-duplication keeps the column from bloating when the same Thể Chất is
+    activated multiple times (re-rolls, edge cases). Activation-order is
+    preserved so the tracker doubles as a discovery log.
+    """
+    keys = get_tracker(raw)
+    if key and key not in keys:
+        keys.append(key)
+    return set_tracker(keys)
+
+
+def remove_from_tracker(raw: str | None, key: str) -> str:
+    """Drop ``key`` from the tracker. Used when a progression chain consumes
+    its predecessor (e.g. Thôn Thiên Ma Tâm → Thôn Thiên Ma Thể).
+    """
+    keys = [k for k in get_tracker(raw) if k != key]
+    return set_tracker(keys)
+
+
+def is_the_tu(active_axis: str | None) -> bool:
+    """Thể Tu = the player has chosen body cultivation as their active axis."""
+    return (active_axis or "") == "body"
+
+
+def max_slots(active_axis: str | None, body_realm: int) -> int:
     """Number of standard Thể Chất slots the player currently owns.
 
-    - Non-Thể Tu: always 1.
-    - Thể Tu: ``1 + body_realm`` (so body 0 → 1 slot, body 7+ → 8 slots),
-      hard-capped at ``MAX_BODY_SLOTS`` (8).
+    - Off-path (qi / formation focus): always 1.
+    - Thể Tu (active_axis == "body"): ``1 + body_realm`` (so body 0 → 1 slot,
+      body 7+ → 8 slots), hard-capped at ``MAX_BODY_SLOTS`` (8).
     - Hỗn Độn is a special *9th* slot on top of these, not counted here.
     """
-    if not is_the_tu(body_realm, qi_realm, formation_realm):
+    if not is_the_tu(active_axis):
         return 1
     return min(MAX_BODY_SLOTS, 1 + body_realm)
+
+
+def effective_constitutions(
+    constitution_type: str | None,
+    active_axis: str | None,
+    body_realm: int,
+) -> list[str]:
+    """Return the slice of equipped constitutions that actually contribute
+    bonuses given the current ``active_axis``.
+
+    Standard slots are clamped to ``max_slots(active_axis, body_realm)`` in
+    storage order. Hỗn Độn (the special 9th slot) is preserved separately —
+    it never counts against the cap and is appended last when present.
+    """
+    keys = get_constitutions(constitution_type)
+    if not keys:
+        return []
+    cap = max_slots(active_axis, body_realm)
+    standard = [k for k in keys if k != HON_DON_KEY]
+    effective = standard[:cap]
+    if HON_DON_KEY in keys:
+        effective.append(HON_DON_KEY)
+    return effective
 
 
 def legendary_equipped_count(equipped: list[str], constitutions_index: dict) -> int:
@@ -69,19 +135,15 @@ def legendary_equipped_count(equipped: list[str], constitutions_index: dict) -> 
     return total
 
 
-def activation_chance(
-    const_data: dict,
-    body_realm: int,
-    qi_realm: int,
-    formation_realm: int,
-) -> float:
+def activation_chance(const_data: dict, active_axis: str | None) -> float:
     """Return the clamped [0.0, 1.0] probability of a successful activation.
 
     Priority:
       1. explicit per-entry ``activation_chance`` field in JSON
       2. rarity-based default from ``_BASE_SUCCESS``
 
-    Thể Tu always adds ``THE_TU_SUCCESS_BONUS`` on top.
+    Thể Tu (``active_axis == "body"``) always adds ``THE_TU_SUCCESS_BONUS``
+    on top.
     """
     explicit = const_data.get("activation_chance")
     if isinstance(explicit, (int, float)):
@@ -89,23 +151,19 @@ def activation_chance(
     else:
         rarity = const_data.get("rarity", "common")
         base = _BASE_SUCCESS.get(rarity, 0.5)
-    if is_the_tu(body_realm, qi_realm, formation_realm):
+    if is_the_tu(active_axis):
         base += THE_TU_SUCCESS_BONUS
     return max(0.0, min(1.0, base))
 
 
 def roll_activation(
     const_data: dict,
-    body_realm: int,
-    qi_realm: int,
-    formation_realm: int,
+    active_axis: str | None,
     rng: random.Random | None = None,
 ) -> bool:
     """Return True if the activation succeeds. Uses ``activation_chance``."""
     rng = rng or random.Random()
-    return rng.random() < activation_chance(
-        const_data, body_realm, qi_realm, formation_realm,
-    )
+    return rng.random() < activation_chance(const_data, active_axis)
 
 
 # ── Requirement checks ────────────────────────────────────────────────────────
@@ -174,12 +232,10 @@ def check_requirements(
                     f"trang bị phải là Truyền Thuyết — hiện có {leg_count}/{need}."
                 )
         elif req == "requires_the_tu":
-            if not is_the_tu(
-                player.body_realm, player.qi_realm, player.formation_realm,
-            ):
+            if not is_the_tu(getattr(player, "active_axis", None)):
                 return (
                     f"**{const_data['vi']}** chỉ dành cho **Thể Tu** — "
-                    f"body_realm phải cao nhất trong ba hướng."
+                    f"phải đang tu luyện theo trục Luyện Thể."
                 )
         elif req == "requires_thon_thien_ma_tam":
             if "ConstitutionThonThienMaTam" not in get_constitutions(player.constitution_type):

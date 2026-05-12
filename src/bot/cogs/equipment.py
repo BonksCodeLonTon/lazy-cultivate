@@ -12,17 +12,33 @@ from src.db.connection import get_session
 from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.player_repo import PlayerRepository
 from src.game.engine.equipment import SLOT_LABELS, SLOT_ORDER, STAT_LABELS, compute_equipment_stats, format_computed_stats, format_stat
+from src.game.engine.quality import QUALITY_LABELS
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
+from src.utils.discord_safe import safe_defer
 
 log = logging.getLogger(__name__)
 
 _SLOT_CHOICES = [app_commands.Choice(name=SLOT_LABELS[s], value=s) for s in SLOT_ORDER]
 
 
-def _grade_label(grade: int) -> str:
-    return f"{emojis.for_grade(grade)} G{grade}"
+def _quality_label(inst) -> str:
+    """Render an item's quality tier with its rarity icon (e.g. '🟢 Huyền Phẩm')."""
+    quality = getattr(inst, "quality", None) or "hoan"
+    return f"{emojis.for_quality(quality)} {QUALITY_LABELS.get(quality, quality)}"
+
+
+def _super_marker(inst) -> str:
+    """Return a ``✨ <super-material-name>`` tag for items forged with a super
+    material; empty string otherwise. Used in gear/bag listings so players can
+    see at a glance which pieces carry a special affix.
+    """
+    key = getattr(inst, "super_material_key", None)
+    if not key:
+        return ""
+    sm = registry.get_super_material(key) or {}
+    return f" ✨ *{sm.get('vi', 'Vật Liệu Đặc Biệt')}*"
 
 
 def _gear_embed(player_name: str, equipped: list) -> discord.Embed:
@@ -34,8 +50,8 @@ def _gear_embed(player_name: str, equipped: list) -> discord.Embed:
         if inst:
             stats_str = format_computed_stats(inst.computed_stats)
             embed.add_field(
-                name=f"{label} [{_grade_label(inst.grade)}]",
-                value=f"**{inst.display_name}**\n{stats_str}",
+                name=f"{label} [{_quality_label(inst)}]",
+                value=f"**{inst.display_name}**{_super_marker(inst)}\n{stats_str}",
                 inline=True,
             )
         else:
@@ -88,7 +104,8 @@ def _bag_embed(
             eq_stats = format_computed_stats(eq_inst.computed_stats)
             header = (
                 f"🟢 **Đang trang bị:** `ID:{eq_inst.id}` "
-                f"{_grade_label(eq_inst.grade)} **{eq_inst.display_name}**\n"
+                f"{_quality_label(eq_inst)} **{eq_inst.display_name}**"
+                f"{_super_marker(eq_inst)}\n"
                 f"　{eq_stats}"
             )
         else:
@@ -100,8 +117,9 @@ def _bag_embed(
             for inst in insts:
                 stats_str = format_computed_stats(inst.computed_stats)
                 bag_lines.append(
-                    f"`ID:{inst.id}` {_grade_label(inst.grade)} "
-                    f"**{inst.display_name}**\n　{stats_str}"
+                    f"`ID:{inst.id}` {_quality_label(inst)} "
+                    f"**{inst.display_name}**{_super_marker(inst)}\n"
+                    f"　{stats_str}"
                 )
             bag_block = "\n".join(bag_lines)
         else:
@@ -189,7 +207,7 @@ class BagView(discord.ui.View):
                 options.append(discord.SelectOption(
                     label=f"{inst.display_name}"[:100],
                     value=str(inst.id),
-                    description=f"{slot_label} · {_grade_label(inst.grade)} · ID {inst.id}"[:100],
+                    description=f"{slot_label} · {_quality_label(inst)} · ID {inst.id}"[:100],
                 ))
             placeholder = f"⚔️ Trang bị từ túi… ({len(visible_bag)} món)"
             if bag_pages > 1:
@@ -216,7 +234,7 @@ class BagView(discord.ui.View):
                 options.append(discord.SelectOption(
                     label=f"{inst.display_name}"[:100],
                     value=inst.slot,
-                    description=f"{slot_label} · {_grade_label(inst.grade)}"[:100],
+                    description=f"{slot_label} · {_quality_label(inst)}"[:100],
                 ))
             unequip_select = discord.ui.Select(
                 placeholder=f"↩️ Tháo trang bị… ({len(visible_eq)} món)",
@@ -238,15 +256,16 @@ class BagView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
-        await self._refresh(interaction, self._slot_filter, page=new_page)
+        if not await safe_defer(interaction):
+            return
+        await self._rerender(interaction, self._slot_filter, page=new_page)
 
     # ── Callbacks ────────────────────────────────────────────────────────
 
     def _guard(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self._discord_id
 
-    async def _refresh(
+    async def _rerender(
         self,
         interaction: discord.Interaction,
         slot_filter: str | None,
@@ -275,10 +294,11 @@ class BagView(discord.ui.View):
             if not self._guard(interaction):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             value = interaction.data["values"][0]
             new_filter: str | None = None if value == "__all__" else value
-            await self._refresh(interaction, new_filter)
+            await self._rerender(interaction, new_filter)
         return _cb
 
     def _make_equip_cb(self):
@@ -286,7 +306,8 @@ class BagView(discord.ui.View):
             if not self._guard(interaction):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             instance_id = int(interaction.data["values"][0])
             async with get_session() as session:
                 prepo = PlayerRepository(session)
@@ -298,7 +319,7 @@ class BagView(discord.ui.View):
                 try:
                     displaced = await erepo.equip(player.id, instance_id)
                 except ValueError as e:
-                    await self._refresh(interaction, self._slot_filter, status=f"❌ {e}")
+                    await self._rerender(interaction, self._slot_filter, status=f"❌ {e}")
                     return
                 inst = await erepo.get_instance(instance_id, player.id)
             slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?") if inst else ""
@@ -310,7 +331,7 @@ class BagView(discord.ui.View):
                 )
             else:
                 msg = f"✅ Đã trang bị **{inst.display_name}** vào {slot_label}."
-            await self._refresh(interaction, self._slot_filter, status=msg)
+            await self._rerender(interaction, self._slot_filter, status=msg)
         return _cb
 
     def _make_unequip_cb(self):
@@ -318,7 +339,8 @@ class BagView(discord.ui.View):
             if not self._guard(interaction):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             slot = interaction.data["values"][0]
             async with get_session() as session:
                 prepo = PlayerRepository(session)
@@ -333,7 +355,7 @@ class BagView(discord.ui.View):
                 f"↩️ Đã tháo **{inst.display_name}** từ {slot_label} về túi đồ."
                 if inst else f"⚪ {slot_label} đang trống."
             )
-            await self._refresh(interaction, self._slot_filter, status=msg)
+            await self._rerender(interaction, self._slot_filter, status=msg)
         return _cb
 
 
@@ -368,7 +390,8 @@ class GearView(discord.ui.View):
             if interaction.user.id != self._discord_id:
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             async with get_session() as session:
                 prepo = PlayerRepository(session)
                 player = await prepo.get_by_discord_id(interaction.user.id)
@@ -395,7 +418,8 @@ class EquipmentCog(commands.Cog):
 
     @app_commands.command(name="gear", description="Xem trang bị hiện tại")
     async def gear(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
@@ -413,7 +437,8 @@ class EquipmentCog(commands.Cog):
     @app_commands.describe(slot="Lọc theo vị trí (để trống = tất cả)")
     @app_commands.choices(slot=[app_commands.Choice(name="Tất cả", value="all")] + _SLOT_CHOICES)
     async def bag(self, interaction: discord.Interaction, slot: str = "all") -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
@@ -434,7 +459,8 @@ class EquipmentCog(commands.Cog):
     @app_commands.command(name="equip", description="Trang bị vật phẩm từ túi đồ theo ID")
     @app_commands.describe(instance_id="ID vật phẩm (xem trong /bag)")
     async def equip(self, interaction: discord.Interaction, instance_id: int) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
@@ -469,7 +495,8 @@ class EquipmentCog(commands.Cog):
     @app_commands.describe(slot="Vị trí trang bị muốn tháo")
     @app_commands.choices(slot=_SLOT_CHOICES)
     async def unequip(self, interaction: discord.Interaction, slot: str) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
@@ -495,7 +522,8 @@ class EquipmentCog(commands.Cog):
     @app_commands.command(name="item_info", description="Xem chi tiết một vật phẩm theo ID")
     @app_commands.describe(instance_id="ID vật phẩm (xem trong /bag hoặc /gear)")
     async def item_info(self, interaction: discord.Interaction, instance_id: int) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
@@ -511,7 +539,8 @@ class EquipmentCog(commands.Cog):
         slot_label = SLOT_LABELS.get(inst.slot or "", inst.slot or "?")
         embed = base_embed(inst.display_name, color=0xFFD700 if inst.unique_key else 0x88AAFF)
         embed.add_field(name="Vị trí", value=slot_label, inline=True)
-        embed.add_field(name="Cấp độ", value=_grade_label(inst.grade), inline=True)
+        embed.add_field(name="Cấp độ", value=f"Cấp {inst.grade}", inline=True)
+        embed.add_field(name="Phẩm chất", value=_quality_label(inst), inline=True)
         loc_str = "🟢 Đang trang bị" if inst.location == "equipped" else "📦 Trong túi"
         embed.add_field(name="Trạng thái", value=loc_str, inline=True)
 
@@ -527,15 +556,42 @@ class EquipmentCog(commands.Cog):
                 implicit_str = format_computed_stats(base.get("implicit_stats", {}))
                 embed.add_field(name=f"Nền ({base['vi']})", value=implicit_str, inline=False)
 
-        # Show affixes
+        # Show affixes — prefix/suffix come from registry.affixes; ``super``
+        # entries are super-material grants stamped at forge time and have
+        # no registry record (the key is synthesized as ``super_<stat>``).
+        super_mat_def = (
+            registry.get_super_material(getattr(inst, "super_material_key", None) or "")
+            or {}
+        )
+        super_label = super_mat_def.get("vi", "Vật Liệu Đặc Biệt")
         for affix_entry in (inst.affixes or []):
+            aff_type = affix_entry.get("type", "prefix")
+            val = affix_entry["value"]
+            stat = affix_entry["stat"]
+            val_str = format_stat(stat, val)
+            if aff_type == "super":
+                embed.add_field(
+                    name=f"✨ Đặc Biệt — {super_label}", value=val_str, inline=True,
+                )
+                continue
             aff = registry.get_affix(affix_entry["key"])
             if aff:
-                val = affix_entry["value"]
-                stat = affix_entry["stat"]
-                val_str = format_stat(stat, val)
-                kind = "🔶 Tiền Tố" if affix_entry["type"] == "prefix" else "🔷 Hậu Tố"
+                kind = "🔶 Tiền Tố" if aff_type == "prefix" else "🔷 Hậu Tố"
                 embed.add_field(name=f"{kind} — {aff['vi']}", value=val_str, inline=True)
+
+        # Bool-flag grants from super materials (e.g. ``barrier_on_cleanse``)
+        # don't get stamped into the affixes list because ``compute_stats``
+        # only sums numerics. Surface them here so the inspect view shows the
+        # full super-material contribution.
+        for stat, val in (super_mat_def.get("granted_passive") or {}).items():
+            if not isinstance(val, bool) or not val:
+                continue
+            label = STAT_LABELS.get(stat, stat)
+            embed.add_field(
+                name=f"✨ Đặc Biệt — {super_label}",
+                value=f"✓ {label}",
+                inline=True,
+            )
 
         # Total stats
         total_str = format_computed_stats(inst.computed_stats)
@@ -543,12 +599,22 @@ class EquipmentCog(commands.Cog):
 
         await interaction.followup.send(embed=embed)
 
-    # ── /discard ──────────────────────────────────────────────────────────────
+    # ── /discard_equip ───────────────────────────────────────────────────────
+    # Renamed from /discard so it doesn't collide with the consumable-stack
+    # /discard in inventory.py (Discord's command tree rejects duplicate
+    # names). Equipment uses instance IDs, not item keys, so the two flows
+    # were never meant to share an entry point — keeping both lets a player
+    # /recycle (preferred) or /discard_equip (one-off) gear without learning
+    # a different pattern for stackable items.
 
-    @app_commands.command(name="discard", description="Hủy vật phẩm trong túi đồ (không thể hoàn tác)")
+    @app_commands.command(
+        name="discard_equip",
+        description="Hủy một trang bị cụ thể trong túi đồ (không thể hoàn tác)",
+    )
     @app_commands.describe(instance_id="ID vật phẩm cần hủy")
-    async def discard(self, interaction: discord.Interaction, instance_id: int) -> None:
-        await interaction.response.defer(ephemeral=True)
+    async def discard_equip(self, interaction: discord.Interaction, instance_id: int) -> None:
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
@@ -593,6 +659,13 @@ def _equip_bag_embed(
         by_slot_bag.setdefault(inst.slot or "unknown", []).append(inst)
     by_slot_eq: dict[str, object] = {i.slot: i for i in equipped if i.slot}
 
+    # Discord enforces a 6000-char total embed cap on top of the 1024-per-field
+    # cap. With 9 slots × 1024 we can't fit them all even though each field
+    # is individually valid — so when no slot filter is active we squeeze each
+    # slot into a smaller budget. With a filter only one slot renders, so
+    # the original generous budget applies.
+    PER_SLOT_BUDGET = 1020 if slot_filter else 600
+
     rendered_any = False
     for slot in SLOT_ORDER:
         if slot_filter and slot != slot_filter:
@@ -607,7 +680,7 @@ def _equip_bag_embed(
             eq_stats = format_computed_stats(eq_inst.computed_stats)
             header = (
                 f"🟢 **Đang trang bị:** `#{eq_inst.id}` "
-                f"{_grade_label(eq_inst.grade)} **{eq_inst.display_name}**\n"
+                f"{_quality_label(eq_inst)} **{eq_inst.display_name}**\n"
                 f"　{eq_stats}"
             )
         else:
@@ -615,17 +688,36 @@ def _equip_bag_embed(
 
         if insts:
             bag_lines = []
+            shown = 0
+            header_len = len(header) + len("\n\n📦 **Trong túi:**\n")
+            running = header_len
             for inst in insts:
                 stats_str = format_computed_stats(inst.computed_stats)
-                bag_lines.append(
-                    f"`#{inst.id}` {_grade_label(inst.grade)} "
+                line = (
+                    f"`#{inst.id}` {_quality_label(inst)} "
                     f"**{inst.display_name}**\n　{stats_str}"
+                )
+                # +1 for the join newline (skipped on the first appended line).
+                added = len(line) + (1 if bag_lines else 0)
+                if running + added > PER_SLOT_BUDGET and bag_lines:
+                    break
+                bag_lines.append(line)
+                running += added
+                shown += 1
+            remaining = len(insts) - shown
+            if remaining > 0:
+                slot_label = SLOT_LABELS.get(slot, slot)
+                bag_lines.append(
+                    f"*… +{remaining} vật phẩm — dùng bộ lọc **{slot_label}** "
+                    f"để xem hết.*"
                 )
             bag_block = "\n".join(bag_lines)
         else:
             bag_block = "*— Không có vật phẩm trong túi —*"
 
         body = f"{header}\n\n📦 **Trong túi:**\n{bag_block}"
+        # Final hard clamp matches Discord's per-field cap; the budget loop
+        # above already keeps us well under it in the all-slots view.
         embed.add_field(
             name=SLOT_LABELS.get(slot, slot),
             value=body[:1020],
@@ -749,7 +841,7 @@ class EquipBagView(discord.ui.View):
                 options.append(discord.SelectOption(
                     label=inst.display_name[:100],
                     value=inst.slot,
-                    description=f"{slot_label} · {_grade_label(inst.grade)}"[:100],
+                    description=f"{slot_label} · {_quality_label(inst)}"[:100],
                 ))
             unequip_select = discord.ui.Select(
                 placeholder=f"↩️ Tháo trang bị… ({len(visible_eq)} món)",
@@ -779,13 +871,14 @@ class EquipBagView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
-        await self._refresh(interaction, self._slot_filter, page=new_page)
+        if not await safe_defer(interaction):
+            return
+        await self._rerender(interaction, self._slot_filter, page=new_page)
 
     def _guard(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self._discord_id
 
-    async def _refresh(
+    async def _rerender(
         self,
         interaction: discord.Interaction,
         slot_filter: str | None,
@@ -812,16 +905,18 @@ class EquipBagView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         value = interaction.data["values"][0]
         new_filter: str | None = None if value == "__all__" else value
-        await self._refresh(interaction, new_filter)
+        await self._rerender(interaction, new_filter)
 
     async def _equip_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         instance_id = int(interaction.data["values"][0])
 
         async with get_session() as session:
@@ -834,7 +929,7 @@ class EquipBagView(discord.ui.View):
             try:
                 displaced = await erepo.equip(player.id, instance_id)
             except ValueError as e:
-                await self._refresh(interaction, self._slot_filter, result_msg=f"❌ {e}")
+                await self._rerender(interaction, self._slot_filter, result_msg=f"❌ {e}")
                 return
             inst = await erepo.get_instance(instance_id, player.id)
 
@@ -843,13 +938,14 @@ class EquipBagView(discord.ui.View):
         if displaced:
             returned = ", ".join(d.display_name for d in displaced)
             msg += f"\n↩️ {returned} trả về túi đồ."
-        await self._refresh(interaction, self._slot_filter, result_msg=msg)
+        await self._rerender(interaction, self._slot_filter, result_msg=msg)
 
     async def _unequip_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         slot = interaction.data["values"][0]
 
         async with get_session() as session:
@@ -866,13 +962,14 @@ class EquipBagView(discord.ui.View):
             f"↩️ Đã tháo **{inst.display_name}** từ {slot_label} về túi đồ."
             if inst else f"⚪ {slot_label} đang trống."
         )
-        await self._refresh(interaction, self._slot_filter, result_msg=msg)
+        await self._rerender(interaction, self._slot_filter, result_msg=msg)
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 

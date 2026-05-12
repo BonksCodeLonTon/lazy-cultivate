@@ -49,8 +49,19 @@ def _make_quang_actor(level: int = 9, force_chance: float = 0.95) -> Combatant:
 
 class TestCleansableDefaults:
     """``EffectMeta.cleansable`` must follow the kind-based rule for every
-    entry in the registry — without any per-effect boilerplate.
+    entry in the registry — without any per-effect boilerplate. Exceptions
+    are intentional opt-outs (e.g. ``DebuffTanDiet`` is permanent by design)
+    and are listed in ``_UNCLEANSABLE_DEBUFF_EXCEPTIONS``.
     """
+
+    # Debuffs / CCs that intentionally set ``cleansable=False`` so they
+    # can't be removed by Quang Thanh Tẩy. Adding to this set requires a
+    # design rationale (i.e. the effect represents a permanent / structural
+    # change rather than a clearable status).
+    _UNCLEANSABLE_DEBUFF_EXCEPTIONS = {
+        EffectKey.DEBUFF_TAN_DIET.value,  # Tận Diệt — irreversible HP-max shrink
+        EffectKey.DEBUFF_THIEN_MA_POST.value,  # Thiên Ma Hậu Di Chứng — locked into the auto-cycle, can't be cleansed away
+    }
 
     def test_every_effect_has_correct_default_for_its_kind(self):
         for key, meta in EFFECTS.items():
@@ -58,9 +69,15 @@ class TestCleansableDefaults:
                 assert meta.cleansable is False, (
                     f"Buff {key} unexpectedly has cleansable=True"
                 )
+            elif key in self._UNCLEANSABLE_DEBUFF_EXCEPTIONS:
+                assert meta.cleansable is False, (
+                    f"{meta.kind.value} {key} listed as exception "
+                    f"but has cleansable=True"
+                )
             else:  # DEBUFF or CC
                 assert meta.cleansable is True, (
-                    f"{meta.kind.value} {key} unexpectedly has cleansable=False"
+                    f"{meta.kind.value} {key} unexpectedly has cleansable=False "
+                    f"(if intentional, add it to _UNCLEANSABLE_DEBUFF_EXCEPTIONS)"
                 )
 
     def test_every_effectkey_enum_entry_has_a_meta(self):

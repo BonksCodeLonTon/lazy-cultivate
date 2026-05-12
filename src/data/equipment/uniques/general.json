@@ -496,8 +496,12 @@
     "passive_bonus": {
       "paralysis_on_crit": true,
       "bleed_on_hit_pct": 0.15,
-      "crit_rating_vs_bleed": 100,
-      "crit_dmg_vs_bleed": 100
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 100,
+          "dmg": 100
+        }
+      }
     },
     "description_vi": "Thanh long kiếm thượng cổ — bạo kích tê liệt; lưỡi kiếm xé toang da thịt gây chảy máu, mỗi vết thương đều bị bạo kích bồi thêm."
   },

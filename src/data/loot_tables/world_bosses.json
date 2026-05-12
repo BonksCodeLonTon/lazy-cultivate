@@ -2,1003 +2,2557 @@
   "LootWorldBossRealm1_Hoa": [
     {
       "item_key": "KiemTamThach",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "DiemThiet",
-      "weight": 900000,
+      "weight": 180000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "CanKim",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatHuyetTinh",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 3,
       "qty_max": 6
     },
     {
       "item_key": "MatBiPhach",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "GemHoa_1",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestHoang",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestHuyen",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiFull",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestWorldBossR1",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThieuHon_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_XichHuyetBaoMenh_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemMoc_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemKim_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemLoi_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemPhong_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemThuy_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemTho_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HanThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HuyenThuyTinh",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MocNguyenThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ThoLinhThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "LoiNgoc",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KhinhPhongThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "UAnhSa",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NhatDieuThach",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm1_Moc": [
     {
       "item_key": "MocNguyenThiet",
-      "weight": 900000,
+      "weight": 180000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "ThoLinhThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "HuyenThuyTinh",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatHuyetTinh",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 3,
       "qty_max": 6
     },
     {
       "item_key": "MatBiPhach",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "GemMoc_1",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestHoang",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestHuyen",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiFull",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestWorldBossR1",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_CuuKhieuHoiXuan_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_CuLongTam_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_VanHoaTuyetDoi_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemHoa_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemKim_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemLoi_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemPhong_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemThuy_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemTho_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KiemTamThach",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HanThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CanKim",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DiemThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "LoiNgoc",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KhinhPhongThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "UAnhSa",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NhatDieuThach",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm1_Thuy": [
     {
       "item_key": "HanThiet",
-      "weight": 900000,
+      "weight": 180000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "HuyenThuyTinh",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "KhinhPhongThiet",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatHuyetTinh",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 3,
       "qty_max": 6
     },
     {
       "item_key": "MatBiPhach",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "GemThuy_1",
-      "weight": 300000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestHoang",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestHuyen",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiFull",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestWorldBossR1",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_TinhLuuKhiHai_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_HanPhongBangCot_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_TuyetLongCamDao_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemHoa_1",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemMoc_1",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemKim_1",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemLoi_1",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemPhong_1",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemTho_1",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KiemTamThach",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CanKim",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MocNguyenThiet",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DiemThiet",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ThoLinhThiet",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "LoiNgoc",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "UAnhSa",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NhatDieuThach",
+      "weight": 125000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm2_Kim": [
     {
       "item_key": "CanKim",
-      "weight": 850000,
+      "weight": 170000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "KiemTamThach",
-      "weight": 750000,
+      "weight": 150000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "HanTamThiet",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "DoanKiemThietTinh",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatCanNguyen",
-      "weight": 650000,
+      "weight": 130000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "GemKim_1",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemKim_2",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestHuyen",
-      "weight": 750000,
+      "weight": 150000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "uniq_dragon_blade",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR2",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_HuyetSat_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_PhaNguyen_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_VoThuongChanThuong_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemHoa_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemMoc_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemLoi_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemPhong_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemThuy_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemTho_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HanThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HuyenThuyTinh",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MocNguyenThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DiemThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ThoLinhThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "LoiNgoc",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KhinhPhongThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "UAnhSa",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NhatDieuThach",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm2_Loi": [
     {
       "item_key": "LoiNgoc",
-      "weight": 900000,
+      "weight": 180000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "KinhLoiThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "SamLangDong",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "KhinhPhongThiet",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatCanNguyen",
-      "weight": 650000,
+      "weight": 130000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "GemLoi_1",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemLoi_2",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestHuyen",
-      "weight": 750000,
+      "weight": 150000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "uniq_thunder_gauntlet",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR2",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_LoiToa_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_SongPhachPhanThan_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemHoa_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemMoc_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemKim_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemPhong_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemThuy_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemTho_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KiemTamThach",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HanThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HuyenThuyTinh",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CanKim",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MocNguyenThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DiemThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ThoLinhThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "UAnhSa",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NhatDieuThach",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm2_Tho": [
     {
       "item_key": "ThoLinhThiet",
-      "weight": 900000,
+      "weight": 180000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "CanLinhKim",
-      "weight": 650000,
+      "weight": 130000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "NguyetLinhThiet",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatCanNguyen",
-      "weight": 650000,
+      "weight": 130000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
-      "item_key": "GemTo_1",
-      "weight": 400000,
+      "item_key": "GemTho_1",
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
-      "item_key": "GemTo_2",
-      "weight": 250000,
+      "item_key": "GemTho_2",
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestHuyen",
-      "weight": 750000,
+      "weight": 150000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "uniq_heavenly_helm",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR2",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_KienThienKhien_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThoDiaThuong_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_DiaHuyenKimCuong_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemHoa_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemMoc_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemKim_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemLoi_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemPhong_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemThuy_1",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KiemTamThach",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HanThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HuyenThuyTinh",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CanKim",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MocNguyenThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DiemThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "LoiNgoc",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KhinhPhongThiet",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "UAnhSa",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NhatDieuThach",
+      "weight": 130000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm3_Phong": [
     {
       "item_key": "KhinhPhongThiet",
-      "weight": 850000,
+      "weight": 170000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "CuangPhongThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "BachNienUAnhThiet",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatCotHoa",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatNguTang",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "GemPhong_2",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemPhong_3",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "ChestHuyen",
-      "weight": 700000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
-      "item_key": "ChestDia",
-      "weight": 300000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "uniq_wind_sash",
       "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
+      "item_key": "ChestHuyen",
+      "weight": 140000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ChestDia",
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "uniq_wind_sash",
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
       "item_key": "ChestWorldBossR3",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_PhongThanToc_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemHoa_2",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemMoc_2",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemKim_2",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemThuy_2",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HanTamThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CanLinhKim",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "TinhVanThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "SamLangDong",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NguyetLinhThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "XichDiemThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DoanKiemThietTinh",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KinhLoiThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HuyenQuangThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm3_Bang": [
     {
       "item_key": "HanTamThiet",
-      "weight": 850000,
+      "weight": 170000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "BachNienHanThiet",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "HuyenThuyTinh",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatCotHoa",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatNguTang",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "ChestHuyen",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestDia",
-      "weight": 300000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_spirit_shield",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR3",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_AmThuc_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThienTamQuyDao_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_AnPhongPhaGioi_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_HonNguyenTinh_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThanhQuangTinhThe_G1",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemHoa_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemMoc_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemKim_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemThuy_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CanLinhKim",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "TinhVanThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "SamLangDong",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NguyetLinhThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "XichDiemThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DoanKiemThietTinh",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KinhLoiThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CuangPhongThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HuyenQuangThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm3_Hoa": [
     {
       "item_key": "XichDiemThiet",
-      "weight": 850000,
+      "weight": 170000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "BachNienDiemThiet",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "DiemThiet",
-      "weight": 650000,
+      "weight": 130000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "MatCotHoa",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatNguTang",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "GemHoa_2",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemHoa_3",
-      "weight": 150000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestHuyen",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestDia",
-      "weight": 300000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_dao_robe",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR3",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThieuHon_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_XichHuyetBaoMenh_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemMoc_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemKim_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemThuy_2",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HanTamThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CanLinhKim",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "TinhVanThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "SamLangDong",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NguyetLinhThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DoanKiemThietTinh",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KinhLoiThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CuangPhongThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HuyenQuangThiet",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm4_Kim": [
     {
       "item_key": "BachNienDoanKiemThiet",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "BachNienKhonKim",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "CanLinhKim",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatPhaTuongKinh",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatNguTang",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "GemKim_2",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemKim_3",
-      "weight": 200000,
+      "weight": 40000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestDia",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_immortal_ring",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ItemTayNghiep",
-      "weight": 100000,
+      "weight": 20000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR4",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_HuyetSat_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_PhaNguyen_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_VoThuongChanThuong_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "ChestHoang",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HanTamThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "TinhVanThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "SamLangDong",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NguyetLinhThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "XichDiemThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DoanKiemThietTinh",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KinhLoiThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CuangPhongThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HuyenQuangThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgKim",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResKim",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgMoc",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResMoc",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgThuy",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResThuy",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgHoa",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResHoa",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgTho",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResTho",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgLoi",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResLoi",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgPhong",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResPhong",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgQuang",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResQuang",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAm",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResAm",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBleedDmg",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBurnDmg",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatPoisonDmg",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatDotDmg",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAll",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatHpRegen",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpRegen",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpMax",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMax",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldRegen",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldDmg",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMaxPct",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatSpd",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatStr",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatThorn",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMatk",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm4_Moc": [
     {
       "item_key": "BachNienNguLinhThiet",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "MocNguyenThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "NhaMocThiet",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatPhaTuongKinh",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatNguTang",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "GemMoc_2",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemMoc_3",
-      "weight": 200000,
+      "weight": 40000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestDia",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_dao_robe",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ItemTayNghiep",
-      "weight": 100000,
+      "weight": 20000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR4",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_CuuKhieuHoiXuan_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_CuLongTam_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_VanHoaTuyetDoi_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "ChestHoang",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HanTamThiet",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CanLinhKim",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "TinhVanThiet",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "SamLangDong",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NguyetLinhThiet",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "XichDiemThiet",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DoanKiemThietTinh",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KinhLoiThiet",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CuangPhongThiet",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HuyenQuangThiet",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgKim",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResKim",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgMoc",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResMoc",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgThuy",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResThuy",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgHoa",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResHoa",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgTho",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResTho",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgLoi",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResLoi",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgPhong",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResPhong",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgQuang",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResQuang",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAm",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResAm",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBleedDmg",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBurnDmg",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatPoisonDmg",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatDotDmg",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAll",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatHpRegen",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpRegen",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpMax",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMax",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldRegen",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldDmg",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMaxPct",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatSpd",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatStr",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatThorn",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMatk",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm4_Thuy": [
     {
       "item_key": "BachNienHanThiet",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "HanTamThiet",
-      "weight": 650000,
+      "weight": 130000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "HuyenThuyTinh",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatPhaTuongKinh",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatNguTang",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "GemThuy_2",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemThuy_3",
-      "weight": 200000,
+      "weight": 40000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestDia",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_spirit_shield",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ItemTayNghiep",
-      "weight": 100000,
+      "weight": 20000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR4",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_TinhLuuKhiHai_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_HanPhongBangCot_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_TuyetLongCamDao_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "ChestHoang",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CanLinhKim",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "TinhVanThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "SamLangDong",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NguyetLinhThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "XichDiemThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "DoanKiemThietTinh",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "KinhLoiThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "CuangPhongThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "HuyenQuangThiet",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgKim",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResKim",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgMoc",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResMoc",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgThuy",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResThuy",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgHoa",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResHoa",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgTho",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResTho",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgLoi",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResLoi",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgPhong",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResPhong",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgQuang",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResQuang",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAm",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResAm",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBleedDmg",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBurnDmg",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatPoisonDmg",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatDotDmg",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAll",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatHpRegen",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpRegen",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpMax",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMax",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldRegen",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldDmg",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMaxPct",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatSpd",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatStr",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatThorn",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMatk",
+      "weight": 115000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm5_Loi": [
     {
       "item_key": "BachNienLoiMinhThiet",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "LoiNgoc",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "ThienNienKiepLoiThiet",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemLoi_2",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemLoi_3",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestDia",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 200000,
+      "weight": 8000,
       "qty_min": 1,
       "qty_max": 1
     },
@@ -1009,70 +2563,76 @@
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 100000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
       "item_key": "ChestWorldBossR5",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_LoiToa_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_SongPhachPhanThan_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "DanHoiHPLarge",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ChestHoang",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm5_Hoa": [
     {
       "item_key": "BachNienDiemThiet",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "XichDiemThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 5
     },
     {
       "item_key": "ThienNienDiemThiet",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemHoa_2",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemHoa_3",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestDia",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 200000,
+      "weight": 8000,
       "qty_min": 1,
       "qty_max": 1
     },
@@ -1083,750 +2643,1584 @@
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 100000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
       "item_key": "ChestWorldBossR5",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThieuHon_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_XichHuyetBaoMenh_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "DanHoiHPLarge",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ChestHoang",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm5_Phong": [
     {
       "item_key": "BachNienUAnhThiet",
-      "weight": 750000,
+      "weight": 150000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "CuangPhongThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "ThienNienPhongNhaiThiet",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemPhong_2",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemPhong_3",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestDia",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 200000,
+      "weight": 8000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_wind_sash",
-      "weight": 80000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "ItemHonNguyen",
-      "weight": 100000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR5",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_PhongThanToc",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_PhongThanToc_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_PhongThanToc_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "DanHoiHPLarge",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ChestHoang",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm6_Bang": [
     {
       "item_key": "ThienNienHanThiet",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "BachNienHanThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "VanTaiHanThiet",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatThaiAmTinh",
-      "weight": 450000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemThuy_3",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestDia",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 400000,
+      "weight": 16000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_spirit_shield",
-      "weight": 80000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "ItemTayNghiep",
-      "weight": 150000,
+      "weight": 30000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR6",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThanhQuangTinhThe_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "ChestHuyen",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgKim",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResKim",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgMoc",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResMoc",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgThuy",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResThuy",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgHoa",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResHoa",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgTho",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResTho",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgLoi",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResLoi",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgPhong",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResPhong",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgQuang",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResQuang",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAm",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResAm",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBleedDmg",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBurnDmg",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatPoisonDmg",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatDotDmg",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAll",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatHpRegen",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpRegen",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpMax",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMax",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldRegen",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldDmg",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMaxPct",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatSpd",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatStr",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatThorn",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMatk",
+      "weight": 85000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm6_Tho": [
     {
       "item_key": "ThienNienKhonKim",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "BachNienKhonKim",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "VanTaiKhonKim",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
-      "item_key": "GemTo_3",
-      "weight": 400000,
+      "item_key": "GemTho_3",
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemKim_3",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestDia",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 400000,
+      "weight": 16000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_heavenly_helm",
-      "weight": 80000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "ChestWorldBossR6",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_KienThienKhien_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_KienThienKhien_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThoDiaThuong_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThoDiaThuong_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_DiaHuyenKimCuong_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_DiaHuyenKimCuong_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "ChestHuyen",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgKim",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResKim",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgMoc",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResMoc",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgThuy",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResThuy",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgHoa",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResHoa",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgTho",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResTho",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgLoi",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResLoi",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgPhong",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResPhong",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgQuang",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResQuang",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAm",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResAm",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBleedDmg",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBurnDmg",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatPoisonDmg",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatDotDmg",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAll",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatHpRegen",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpRegen",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpMax",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMax",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldRegen",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldDmg",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMaxPct",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatSpd",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatStr",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatThorn",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMatk",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm6_Loi": [
     {
       "item_key": "ThienNienKiepLoiThiet",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "BachNienLoiMinhThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "VanTaiLoiDinhThiet",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatThaiDuongTinh",
-      "weight": 450000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemLoi_3",
-      "weight": 450000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemKim_3",
-      "weight": 300000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestDia",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 400000,
+      "weight": 16000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_thunder_gauntlet",
-      "weight": 80000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 150000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "ChestWorldBossR6",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_LoiToa_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_AmThuc_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThienTamQuyDao_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_SongPhachPhanThan_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_AnPhongPhaGioi_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_HonNguyenTinh_G2",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "ChestHuyen",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgKim",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResKim",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgMoc",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResMoc",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgThuy",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResThuy",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgHoa",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResHoa",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgTho",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResTho",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgLoi",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResLoi",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgPhong",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResPhong",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgQuang",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResQuang",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAm",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemResAm",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBleedDmg",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatBurnDmg",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatPoisonDmg",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatDotDmg",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatElemDmgAll",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatHpRegen",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpRegen",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMpMax",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMax",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldRegen",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldDmg",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatShieldMaxPct",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatSpd",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatStr",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatThorn",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatMatk",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm7_Kim": [
     {
       "item_key": "ThienNienDoanKiemThiet",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "VanTaiDoanKiemThiet",
-      "weight": 450000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "CanhKim",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "DuongKimThietTam",
-      "weight": 300000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatDaiThuaKinh",
-      "weight": 450000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatSieuPhamTinh",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
-      "item_key": "GemKim_3",
-      "weight": 450000,
+      "item_key": "GemKim_4",
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 700000,
+      "weight": 28000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "uniq_dragon_blade",
-      "weight": 120000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 200000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "ItemTayNghiep",
-      "weight": 200000,
+      "weight": 40000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR7",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_HuyetSat",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_PhaNguyen",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_HuyetSat_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_PhaNguyen_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_VoThuongChanThuong_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemMoc_4",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemThuy_4",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ChestDia",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienDoanKiemThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NguyetSamThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienHanThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienDiemThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienKhonKim",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "PhuongMinhThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienNguLinhThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienLoiMinhThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienUAnhThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm7_Moc": [
     {
       "item_key": "ThienNienNguLinhThiet",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "VanTaiNguLinhThiet",
-      "weight": 450000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "NhaMocThiet",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "MatDaiThuaKinh",
-      "weight": 450000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatSieuPhamTinh",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
-      "item_key": "GemMoc_3",
-      "weight": 450000,
+      "item_key": "GemMoc_4",
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 700000,
+      "weight": 28000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "uniq_dao_robe",
-      "weight": 120000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 200000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "ChestWorldBossR7",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_CuuKhieuHoiXuan",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_CuLongTam",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_CuuKhieuHoiXuan_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_CuLongTam_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_VanHoaTuyetDoi_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemKim_4",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemThuy_4",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ChestDia",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienDoanKiemThiet",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NguyetSamThiet",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienHanThiet",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienDiemThiet",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienKhonKim",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "PhuongMinhThiet",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienNguLinhThiet",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienLoiMinhThiet",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienUAnhThiet",
+      "weight": 95000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm7_Thuy": [
     {
       "item_key": "ThienNienUTuyenThiet",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "VanTaiUAnhThiet",
-      "weight": 450000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "PhongLinhNhuThiet",
-      "weight": 350000,
+      "weight": 70000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatDaiThuaKinh",
-      "weight": 450000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatThaiAmTinh",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
-      "item_key": "GemThuy_3",
-      "weight": 450000,
+      "item_key": "GemThuy_4",
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 700000,
+      "weight": 28000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "uniq_spirit_shield",
-      "weight": 120000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 200000,
-      "qty_min": 1,
-      "qty_max": 2
-    },
-    {
       "item_key": "ChestWorldBossR7",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_TinhLuuKhiHai_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_HanPhongBangCot_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_TuyetLongCamDao_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "GemKim_4",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "GemMoc_4",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ChestDia",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienDoanKiemThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "NguyetSamThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienHanThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienDiemThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienKhonKim",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "PhuongMinhThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienNguLinhThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienLoiMinhThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "BachNienUAnhThiet",
+      "weight": 90000,
+      "qty_min": 1,
+      "qty_max": 2
     }
   ],
   "LootWorldBossRealm8_HoaLoi": [
     {
       "item_key": "VanTaiDiemThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "VanTaiLoiDinhThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "ThienNienDiemThiet",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "DiemLyDiemThiet",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyenThienLoiKiepThiet",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatThaiDuongTinh",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 800000,
+      "weight": 32000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "uniq_dragon_blade",
-      "weight": 150000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_thunder_gauntlet",
-      "weight": 150000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 300000,
-      "qty_min": 2,
-      "qty_max": 3
-    },
-    {
       "item_key": "ItemTayNghiep",
-      "weight": 200000,
+      "weight": 40000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR8",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThienTamQuyDao_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_AnPhongPhaGioi_G3",
-      "weight": 50000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_HonNguyenTinh_G3",
-      "weight": 50000,
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ChestDia",
+      "weight": 80000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatThienDaoTuy",
+      "weight": 1600,
       "qty_min": 1,
       "qty_max": 1
     }
@@ -1834,73 +4228,91 @@
   "LootWorldBossRealm8_KimMoc": [
     {
       "item_key": "VanTaiKhonKim",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "VanTaiNguLinhThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "DaoQuangKimLyThiet",
-      "weight": 250000,
+      "weight": 50000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ThienMucQuangDong",
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThuyHongMocUanThiet",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyenThienLinhThiet",
-      "weight": 200000,
+      "weight": 40000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatSieuPhamTinh",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 800000,
+      "weight": 32000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "uniq_immortal_ring",
-      "weight": 150000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_dao_robe",
-      "weight": 150000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 300000,
-      "qty_min": 2,
-      "qty_max": 3
-    },
-    {
       "item_key": "ChestWorldBossR8",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_AmThuc_G3",
-      "weight": 50000,
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ChestDia",
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatThienDaoTuy",
+      "weight": 1600,
       "qty_min": 1,
       "qty_max": 1
     }
@@ -1908,73 +4320,91 @@
   "LootWorldBossRealm8_BangPhong": [
     {
       "item_key": "VanTaiHanThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "VanTaiTatPhongThiet",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "TienVanHanThietTinh",
-      "weight": 250000,
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TienVanCuongPhongThiet",
-      "weight": 250000,
+      "weight": 50000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "TienVanBachTrungCham",
+      "weight": 50000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "CuuUMinhVucThiet",
-      "weight": 200000,
+      "weight": 40000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "MatThaiAmTinh",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 800000,
+      "weight": 32000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "uniq_spirit_shield",
-      "weight": 150000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_wind_sash",
-      "weight": 150000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 300000,
-      "qty_min": 2,
-      "qty_max": 3
-    },
-    {
       "item_key": "ChestWorldBossR8",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThanhQuangTinhThe_G3",
-      "weight": 50000,
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "DanHoiFull",
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ChestDia",
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatThienDaoTuy",
+      "weight": 1600,
       "qty_min": 1,
       "qty_max": 1
     }
@@ -1982,73 +4412,85 @@
   "LootWorldBossRealm9_Tien": [
     {
       "item_key": "HuyenThienKiemPhoi",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "HuyenThienLoiKiepThiet",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DiemLyDiemThiet",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "TienVanHanThietTinh",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatThaiDuongTinh",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 900000,
+      "weight": 36000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "uniq_chaos_pendant",
-      "weight": 200000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_dragon_blade",
-      "weight": 200000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 550000,
-      "qty_min": 3,
-      "qty_max": 5
-    },
-    {
       "item_key": "ItemTayNghiep",
-      "weight": 300000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR9",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_VoThuongChanThuong",
-      "weight": 30000,
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatHonNguyenCot",
+      "weight": 1600,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SupremeDuongTinh",
+      "weight": 1200,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SupremeHonDonTinh",
+      "weight": 300,
       "qty_min": 1,
       "qty_max": 1
     }
@@ -2056,67 +4498,103 @@
   "LootWorldBossRealm9_HonNguyen": [
     {
       "item_key": "HuyenThienLinhThiet",
-      "weight": 650000,
+      "weight": 130000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "CuuUMinhVucThiet",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "DaoQuangKimLyThiet",
-      "weight": 500000,
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "ThienMucQuangDong",
+      "weight": 100000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "TienVanBachTrungCham",
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ThuyHongMocUanThiet",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "MatThaiAmTinh",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "ChestThien",
-      "weight": 900000,
+      "weight": 36000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "uniq_chaos_pendant",
-      "weight": 250000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_immortal_ring",
-      "weight": 200000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 550000,
-      "qty_min": 3,
-      "qty_max": 5
-    },
-    {
       "item_key": "ChestWorldBossR9",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_VanHoaTuyetDoi",
-      "weight": 30000,
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatThaiDuongTinh",
+      "weight": 105000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatHonNguyenCot",
+      "weight": 1600,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SupremeDuongTinh",
+      "weight": 800,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SupremeAmTinh",
+      "weight": 800,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SupremeHonDonTinh",
+      "weight": 400,
       "qty_min": 1,
       "qty_max": 1
     }
@@ -2124,79 +4602,97 @@
   "LootWorldBossRealm9_ThoThan": [
     {
       "item_key": "HauThoKhonKim",
-      "weight": 700000,
+      "weight": 140000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "CuuUMinhVucThiet",
-      "weight": 450000,
+      "weight": 90000,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "VanTaiKhonKim",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "ThienNienKhonKim",
-      "weight": 550000,
+      "weight": 110000,
       "qty_min": 1,
       "qty_max": 3
     },
     {
       "item_key": "ChestThien",
-      "weight": 900000,
+      "weight": 36000,
       "qty_min": 2,
       "qty_max": 4
     },
     {
       "item_key": "uniq_heavenly_helm",
-      "weight": 250000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "uniq_chaos_pendant",
-      "weight": 200000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
-      "item_key": "ItemHonNguyen",
-      "weight": 550000,
-      "qty_min": 3,
-      "qty_max": 5
-    },
-    {
       "item_key": "ItemTayNghiep",
-      "weight": 300000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestWorldBossR9",
-      "weight": 800000,
+      "weight": 160000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_KienThienKhien",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_ThoDiaThuong",
-      "weight": 30000,
+      "weight": 60000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemUnique_DiaHuyenKimCuong",
-      "weight": 30000,
+      "weight": 60000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatThaiDuongTinh",
+      "weight": 110000,
+      "qty_min": 1,
+      "qty_max": 2
+    },
+    {
+      "item_key": "MatHonNguyenCot",
+      "weight": 1600,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SupremeAmTinh",
+      "weight": 1200,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SupremeHonDonTinh",
+      "weight": 300,
       "qty_min": 1,
       "qty_max": 1
     }

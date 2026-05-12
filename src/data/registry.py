@@ -39,52 +39,112 @@ class GameRegistry:
             cls._instance.load()
         return cls._instance
 
-    # Danh mục file item nằm trong thư mục con src/data/items/
+    # Item JSON files in src/data/items/. Gem items moved to
+    # ``src/data/gems/``; alchemy items (herbs, pills, furnaces) moved to
+    # ``src/data/pills/``; forge + super materials moved to
+    # ``src/data/equipment/`` — see ``_load_items``.
     _ITEM_FILES = (
-        "chests", "gems", "unique_gems", "scrolls", "specials",
-        "forge_materials", "super_materials",
-        "herbs", "pills", "furnaces",
+        "chests", "scrolls", "specials",
         "constitution_materials",
         "linh_can_material",
         "world_boss_chests",
     )
+    # All gem items (elemental + stat + unique) live in a single file under
+    # ``src/data/gems/gems.json``. Each entry carries its own pre-scaled
+    # ``bonus`` dict — no separate per-prefix base table.
+    _GEM_ITEM_FILES = ("gems",)
+    # Alchemy package — herbs + pill items + furnaces + pill recipes all
+    # under ``src/data/pills/`` so a balance pass on the alchemy economy
+    # touches one directory. ``pill_recipes`` loads via
+    # ``_load_pill_recipes`` (kept as a separate registry dict); ``herbs``,
+    # ``pills``, and ``furnaces`` fold into the generic items dict via
+    # ``_load_items``.
+    _PILL_ITEM_FILES = ("herbs", "pills", "furnaces")
+    # Equipment-crafting items under ``src/data/equipment/`` that fold into
+    # the generic items dict (forge materials + super materials are inventory
+    # drops). ``bases``, ``affixes``, and ``uniques`` are NOT items —
+    # they're equipment definitions consumed by ``_load_equipment_defs``.
+    _EQUIP_ITEM_FILES = ("forge_materials", "super_materials")
     # Equipment definition files in src/data/equipment/
     _EQUIP_FILES = ("bases", "affixes", "uniques")
 
     def load(self) -> None:
         self.items = self._load_items()
         self.skills = self._load_skills()
+        self.formations = self._load_formations()
+        # Scroll synthesis runs after formations so the formation-embedded
+        # skills also get a Scroll_<key> shop/loot entry.
         self._synthesize_skill_scrolls()
         self.enemies = self._load_enemy_dir()
         self.tribulations = self._load_tribulation_dir()
-        self.formations = self._load_keyed("formations.json")
         self.constitutions = self._load_constitution_dir()
-        self.dungeons = self._load_keyed("dungeons.json")
+        self.dungeons = self._load_dungeon_dir()
         self.loot_tables = self._load_loot_table_dir()
         self.bases, self.affixes, self.uniques = self._load_equipment_defs()
         self.forge_recipes = self._load_forge_recipes()
         self.world_bosses = self._load_keyed("world_bosses.json")
         self.pill_recipes = self._load_pill_recipes()
+        # Derived view: per-prefix grade-1 bonus, used by the handbook gem
+        # table. Built after ``_load_items`` already merged gem entries into
+        # ``self.items``.
+        self.gem_bonus = self._derive_gem_bonus()
         self._loaded = True
+
+    def _load_formations(self) -> dict[str, dict]:
+        """Load formations from src/data/formations/ (per-element files) and
+        split out embedded skill blocks.
+
+        Each formation entry may carry a ``skill: {...}`` sub-object — that's
+        the formation's primary channeled skill (the one that fires when the
+        formation is active). The embedded skill is registered into
+        ``self.skills`` here, and ``formation_skill_key`` /
+        ``formation_key`` back-refs are injected so consuming code paths
+        (combat builders, formation_key_for_skill) can navigate either
+        direction (formation → skill or skill → formation).
+
+        The directory layout mirrors ``skills/player/`` — one file per
+        element (``am.json``, ``hoa.json``, …) plus ``general.json`` for
+        non-elemental formations. Drop a new ``<element>.json`` to add
+        formations without touching the registry.
+        """
+        formations: dict[str, dict] = {}
+        base = DATA_DIR / "formations"
+        if not base.is_dir():
+            log.error("GameRegistry: Missing formations/ directory")
+            return {}
+        entries: list[dict] = []
+        for path in sorted(base.glob("*.json")):
+            entries.extend(json.loads(path.read_text(encoding="utf-8")))
+
+        for entry in entries:
+            skill_block = entry.pop("skill", None)
+            if skill_block:
+                skill_key = skill_block["key"]
+                entry["formation_skill_key"] = skill_key
+                skill_block = dict(skill_block)
+                skill_block["formation_key"] = entry["key"]
+                self.skills[skill_key] = skill_block
+            formations[entry["key"]] = entry
+        return formations
 
     # ── Per-skill scroll synthesis ───────────────────────────────────────────
     # One Scroll_<SkillKey> item per learnable player skill, generated at load
     # time so /shop, /inventory, and the learn flow can treat them like any
-    # other registry item. Skips Enemy* and TheChat_* skills (NPC / constitution
-    # only — never learnable by scroll). Existing entries in scrolls.json win
-    # so designers can override pricing or copy on a per-skill basis.
+    # other registry item. NPC-only skills (loaded from ``skills/enemy/`` or
+    # ``skills/boss/``, marked ``_npc_only`` by ``_load_skills``) and constitution
+    # skills (``TheChat_*``) are skipped — never learnable by scroll. Existing
+    # entries in scrolls.json win so designers can override pricing or copy on
+    # a per-skill basis.
     #
-    # ``scroll_grade`` reflects skill *power tier*, not realm. A realm-1 skill
-    # may be grade 4 (rare, drop-only) and a realm-9 skill may be grade 1
-    # (basic, market-buyable). Grade gates *availability* (1-2 in shop, 3-4 in
-    # loot drops) and price; realm gates *usability* (player must reach the
-    # skill's realm to learn it).
+    # ``scroll_grade`` is the only progression axis. Grade gates availability
+    # (1-2 in shop, 3-4 in loot drops) and price; the Linh Căn root the player
+    # carries gates which elemental scrolls they can actually study.
 
     _SCROLL_PRICE_BY_GRADE: dict[int, int] = {1: 1000, 2: 3000}
 
     def _synthesize_skill_scrolls(self) -> None:
         for skill_key, skill in self.skills.items():
-            if skill_key.startswith("Enemy") or skill_key.startswith("TheChat_"):
+            if skill.get("_npc_only") or skill_key.startswith("TheChat_"):
                 continue
             scroll_key = f"Scroll_{skill_key}"
             if scroll_key in self.items:
@@ -119,17 +179,59 @@ class GameRegistry:
         return 1
 
     def _load_pill_recipes(self) -> dict[str, dict]:
-        """Load Luyện Đan recipes from src/data/recipes/pill_recipes.json."""
-        path = DATA_DIR / "recipes" / "pill_recipes.json"
+        """Load Luyện Đan recipes from src/data/pills/pill_recipes.json."""
+        path = DATA_DIR / "pills" / "pill_recipes.json"
         if not path.exists():
-            log.warning("GameRegistry: Missing recipes/pill_recipes.json")
+            log.warning("GameRegistry: Missing pills/pill_recipes.json")
             return {}
         data = json.loads(path.read_text(encoding="utf-8"))
         return {entry["key"]: entry for entry in data}
 
+    def _derive_gem_bonus(self) -> dict[str, dict]:
+        """Build the per-prefix grade-1 bonus view from loaded gem items.
+
+        ``gems.json`` carries each item's bonus inline (already scaled for
+        its own grade). The handbook still wants a "per-grade base" table
+        for the gem-tier reference; we derive it by reading the grade-1
+        entry of each prefix family. Unique gems are skipped — their bonus
+        is item-specific, not prefix-templated.
+        """
+        out: dict[str, dict] = {}
+        for key, item in self.items.items():
+            if not key.startswith("Gem") or item.get("unique"):
+                continue
+            if item.get("grade") != 1:
+                continue
+            body = key[3:]
+            if "_" not in body:
+                continue
+            prefix = body.split("_", 1)[0]
+            bonus = item.get("bonus")
+            if bonus:
+                out[prefix] = bonus
+        return out
+
     def _load_items(self) -> dict[str, dict]:
-        """Merge all per-type item files from src/data/items/ into one dict."""
-        return self._merge_subdir("items", self._ITEM_FILES)
+        """Merge all per-type item files into one dict.
+
+        Pulls from four roots:
+          • ``src/data/items/`` for general item categories
+          • ``src/data/gems/gems.json`` for the unified gem catalogue
+            (elemental + stat + unique, each entry carrying its own
+            pre-scaled ``bonus`` dict)
+          • ``src/data/pills/`` for alchemy items (herbs + pills + furnaces);
+            ``pill_recipes`` from the same directory loads via
+            ``_load_pill_recipes``
+          • ``src/data/equipment/`` for forge materials. The ``bases``,
+            ``affixes``, and ``uniques`` files in the same directory are
+            equipment *definitions*, not items, and load through
+            ``_load_equipment_defs`` separately.
+        """
+        merged = self._merge_subdir("items", self._ITEM_FILES)
+        merged.update(self._merge_subdir("gems", self._GEM_ITEM_FILES))
+        merged.update(self._merge_subdir("pills", self._PILL_ITEM_FILES))
+        merged.update(self._merge_subdir("equipment", self._EQUIP_ITEM_FILES))
+        return merged
 
     def _load_equipment_defs(self) -> tuple[dict, dict, dict]:
         """Load bases, affixes, and uniques from src/data/equipment/.
@@ -137,8 +239,6 @@ class GameRegistry:
         Uniques are split by build element under ``equipment/uniques/`` —
         ``kim.json``, ``moc.json``, ``thuy.json``, ``hoa.json``, ``tho.json``,
         ``general.json`` — and all merged into a single dict keyed by ``key``.
-        The legacy flat ``equipment/uniques.json`` is still picked up if
-        present so callers can fall back to a single-file layout.
         """
         base_dir = DATA_DIR / "equipment"
         if not base_dir.exists():
@@ -152,29 +252,36 @@ class GameRegistry:
         for entry in json.loads((base_dir / "affixes.json").read_text(encoding="utf-8")):
             affixes[entry["key"]] = entry
 
-        # Prefer directory layout (equipment/uniques/*.json); fall back to flat file.
         uniques_dir = base_dir / "uniques"
         if uniques_dir.is_dir():
             for path in sorted(uniques_dir.glob("*.json")):
                 for entry in json.loads(path.read_text(encoding="utf-8")):
                     uniques[entry["key"]] = entry
-        legacy = base_dir / "uniques.json"
-        if legacy.exists():
-            for entry in json.loads(legacy.read_text(encoding="utf-8")):
-                uniques[entry["key"]] = entry
 
         return bases, affixes, uniques
+
+    # Skill subdirectories whose entries are NPC-only — never learnable by
+    # players, never get a Scroll_<key> synthesized item. Anything outside
+    # this set (e.g. ``player/``) is treated as player-facing.
+    _NPC_SKILL_DIRS: frozenset[str] = frozenset({"enemy", "boss"})
 
     def _load_skills(self) -> dict[str, dict]:
         """Merge all JSON files under src/data/skills/** into one dict, keyed by 'key'.
 
-        The directory is split into subfolders (``player/``, ``enemy/``). Player
-        skills are grouped by element (``player/kim.json``, ``player/moc.json``,
-        …), with ``player/general.json`` for non-elemental attacks/defenses and
+        The directory is split into subfolders (``player/``, ``enemy/``,
+        ``boss/``). Player skills are grouped by element
+        (``player/kim.json``, ``player/moc.json``, …), with
+        ``player/general.json`` for non-elemental attacks/defenses and
         ``player/formation.json`` for every formation skill across elements.
         Enemy skills are grouped by realm tier (``enemy/realm_01.json`` …
-        ``enemy/realm_09.json``). Files load in sorted path order, and drop-in
-        files require no registry changes.
+        ``enemy/realm_09.json``). Boss-specific skills live under
+        ``boss/<bossname>.json``. Files load in sorted path order, and
+        drop-in files require no registry changes.
+
+        Entries loaded from NPC-only directories (``enemy/``, ``boss/``)
+        are tagged at load time with ``_npc_only=True`` so scroll
+        synthesis and any future player-facing surfaces can skip them
+        without per-skill prefix bookkeeping.
         """
         merged: dict[str, dict] = {}
         base = DATA_DIR / "skills"
@@ -182,8 +289,18 @@ class GameRegistry:
             log.error("GameRegistry: Missing skills/ directory")
             return {}
         for path in sorted(base.rglob("*.json")):
+            try:
+                top = path.relative_to(base).parts[0]
+            except (ValueError, IndexError):
+                top = ""
+            npc_only = top in self._NPC_SKILL_DIRS
             data = json.loads(path.read_text(encoding="utf-8"))
             for entry in data:
+                if npc_only:
+                    # Annotate at load time — keeps the JSON files free of
+                    # redundant flags while giving downstream code a single
+                    # data-driven check instead of key-prefix heuristics.
+                    entry["_npc_only"] = True
                 merged[entry["key"]] = entry
         return merged
 
@@ -206,23 +323,36 @@ class GameRegistry:
                 merged[entry["key"]] = entry
         return merged
 
+    def _load_dungeon_dir(self) -> dict[str, dict]:
+        """Merge all JSON files under src/data/dungeons/ into one dict.
+
+        Each file holds a single ``dungeon_type`` family (e.g. ``normal.json``,
+        ``duoc_vien.json``, ``the_chat.json``, ``linh_can.json``,
+        ``cam_dia.json``); files are loaded in sorted path order with
+        last-writer-wins on key collision. Drop a new ``<type>.json`` to
+        introduce a dungeon family — no registry change needed.
+        """
+        merged: dict[str, dict] = {}
+        base = DATA_DIR / "dungeons"
+        if not base.is_dir():
+            log.error("GameRegistry: Missing dungeons/ directory")
+            return merged
+        for path in sorted(base.glob("*.json")):
+            data = json.loads(path.read_text(encoding="utf-8"))
+            for entry in data:
+                merged[entry["key"]] = entry
+        return merged
+
     def _load_constitution_dir(self) -> dict[str, dict]:
         """Merge all JSON files under src/data/constitutions/ into one dict.
 
         Files are keyed by the entry's ``key`` field. Drop a new
         ``<element>.json`` to add constitutions without touching the registry.
-        Falls back to the legacy single ``constitutions.json`` file if the
-        directory doesn't exist (lets external forks migrate at their pace).
         """
         merged: dict[str, dict] = {}
         base = DATA_DIR / "constitutions"
         if not base.exists():
-            legacy = DATA_DIR / "constitutions.json"
-            if legacy.exists():
-                for entry in json.loads(legacy.read_text(encoding="utf-8")):
-                    merged[entry["key"]] = entry
-            else:
-                log.error("GameRegistry: Missing constitutions/ directory")
+            log.error("GameRegistry: Missing constitutions/ directory")
             return merged
         for path in sorted(base.glob("*.json")):
             data = json.loads(path.read_text(encoding="utf-8"))
@@ -296,36 +426,21 @@ class GameRegistry:
 
     # ── Getters ──────────────────────────────────────────────────────────────
 
-    _KEY_ALIASES: dict[str, str] = {
-        "DuongLuyenHuyetDan":  "QuangLuyenHuyetDan",
-        "DuongBiCao":          "QuangBiCao",
-        "DuongLuyenCanDich":   "QuangLuyenCanDich",
-        "DuongLuyenCotDich":   "QuangLuyenCotDich",
-        "DuongLuyenTuyDan":    "QuangLuyenTuyDan",
-        "DuongPhapTuongDan":   "QuangPhapTuongDan",
-        "DuongKimThanDan":     "QuangKimThanDan",
-        "DuongSieuPhamDan":    "QuangSieuPhamDan",
-        "DuongNhapThanhDan":   "QuangNhapThanhDan",
-        "DuongHuyetTinh":      "QuangHuyetTinh",
-        "DuongLinhTinh":       "QuangLinhTinh",
-        "DuongYeuDan":         "QuangYeuDan",
-        "GemDuong_1":          "GemQuang_1",
-        "GemDuong_2":          "GemQuang_2",
-        "GemDuong_3":          "GemQuang_3",
-        "GemDuong_4":          "GemQuang_4",
-        "DanPhuongDuongLuyenHuyetDan": "DanPhuongQuangLuyenHuyetDan",
-        "DanPhuongDuongBiCao":         "DanPhuongQuangBiCao",
-        "DanPhuongDuongLuyenCanDich":  "DanPhuongQuangLuyenCanDich",
-        "DanPhuongDuongLuyenCotDich":  "DanPhuongQuangLuyenCotDich",
-        "DanPhuongDuongLuyenTuyDan":   "DanPhuongQuangLuyenTuyDan",
-        "DanPhuongDuongPhapTuongDan":  "DanPhuongQuangPhapTuongDan",
-        "DanPhuongDuongKimThanDan":    "DanPhuongQuangKimThanDan",
-        "DanPhuongDuongSieuPhamDan":   "DanPhuongQuangSieuPhamDan",
-        "DanPhuongDuongNhapThanhDan":  "DanPhuongQuangNhapThanhDan",
-    }
-
     def get_item(self, key: str) -> dict | None:
-        return self.items.get(key) or self.items.get(self._KEY_ALIASES.get(key, ""))
+        item = self.items.get(key)
+        if item is not None:
+            return item
+        # Pill recipes ship as inventory drops (chest loot, world-boss rewards),
+        # so callers like the world-boss embed look them up via ``get_item``
+        # to render a Vietnamese name. The recipe registry is keyed separately,
+        # so without this fallback the embed shows the raw key
+        # (e.g. ``DanPhuongThuyLuyenHuyetDan``) instead of "Đan Phương - Thủy
+        # Luyện Huyết Đan". Inject ``type="pill_recipe"`` so the dict can be
+        # filtered by category like any other inventory item.
+        recipe = self.get_pill_recipe(key)
+        if recipe is not None:
+            return {**recipe, "type": "pill_recipe"}
+        return None
 
     def get_skill(self, key: str) -> dict | None:
         return self.skills.get(key)
@@ -367,9 +482,9 @@ class GameRegistry:
         ``LootZone_<N>`` tables are the realm-N farming zones. Grade 3-4
         skill scrolls are injected via ``game.engine.loot.inject_scroll_drops``
         so adding a new skill or re-grading an existing one flows through
-        to drops without touching the zone JSON files. A scroll appears in
-        zone N iff its underlying skill has ``realm ≤ N`` and its grade is
-        3 or 4 (drop-only tier).
+        to drops without touching the zone JSON files. After the realm-on-
+        skills removal, every grade-3/4 scroll is eligible in every zone —
+        the share-per-grade target keeps the rarity ladder intact.
         """
         static = self.loot_tables.get(key, [])
         if not key.startswith("LootZone_"):
@@ -430,10 +545,7 @@ class GameRegistry:
         return out
 
     def get_pill_recipe(self, key: str) -> dict | None:
-        return (
-            self.pill_recipes.get(key)
-            or self.pill_recipes.get(self._KEY_ALIASES.get(key, ""))
-        )
+        return self.pill_recipes.get(key)
 
     def get_herb(self, key: str) -> dict | None:
         """Return an alchemy ingredient by key (``type == "herb"``)."""
@@ -471,13 +583,10 @@ class GameRegistry:
         return [d for d in self.dungeons.values() if d.get("required_qi_realm", 0) <= qi_realm]
 
     def dungeons_of_type(self, dungeon_type: str) -> list[dict]:
-        """Return all dungeons matching a dungeon_type (``normal`` or ``duoc_vien``).
-
-        Entries without an explicit ``dungeon_type`` field are treated as
-        ``normal`` for backward compatibility with legacy dungeon JSON.
-        """
+        """Return all dungeons matching a dungeon_type (``normal``, ``duoc_vien``,
+        ``the_chat``, ``linh_can``, ``cam_dia``)."""
         return [d for d in self.dungeons.values()
-                if d.get("dungeon_type", "normal") == dungeon_type]
+                if d.get("dungeon_type") == dungeon_type]
 
     def pill_recipes_for_realm(self, qi_realm: int) -> list[dict]:
         """Return Luyện Đan recipes whose min_qi_realm is unlocked."""

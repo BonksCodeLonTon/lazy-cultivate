@@ -50,12 +50,12 @@
       ]
     },
     "passive_bonus": {
-      "stat_steal_on_hit_pct": 0.12,
+      "stat_steal_on_hit_pct": 0.06,
       "element_pen": {
         "am": 0.06
       }
     },
-    "description_vi": "Tâm kiếm nuốt linh hồn — 12% cướp chỉ số kẻ địch khi đánh trúng, xuyên 6% kháng Ám."
+    "description_vi": "Tâm kiếm nuốt linh hồn — 6% cướp chỉ số kẻ địch khi đánh trúng, xuyên 6% kháng Ám."
   },
   {
     "key": "uniq_am_hac_bao",
@@ -80,7 +80,9 @@
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.22,
-      "poison_dmg_bonus": 0.15
+      "dot_dmg_bonus_by_kind": {
+        "poison": 0.15
+      }
     },
     "description_vi": "Ma bào dệt từ bóng tối — 22% hút Sinh Mệnh Tối Đa, +15% sát thương Độc Tố."
   },
@@ -106,10 +108,14 @@
       ]
     },
     "passive_bonus": {
-      "stat_steal_on_hit_pct": 0.2,
-      "crit_rating_vs_drained": 90
+      "stat_steal_on_hit_pct": 0.1,
+      "crit_amp_vs": {
+        "drained": {
+          "rating": 90
+        }
+      }
     },
-    "description_vi": "Bội Huyền Ám — 20% cướp chỉ số on-hit, bạo kích vượt trội với kẻ đã bị Hồn Phệ."
+    "description_vi": "Bội Huyền Ám — 10% cướp chỉ số on-hit, bạo kích vượt trội với kẻ đã bị Hồn Phệ."
   },
   {
     "key": "uniq_am_ma_nhan",
@@ -160,11 +166,11 @@
       ]
     },
     "passive_bonus": {
-      "stat_steal_on_hit_pct": 0.25,
+      "stat_steal_on_hit_pct": 0.13,
       "debuff_immune_pct": 0.1,
       "heal_pct": 0.05
     },
-    "description_vi": "Giáp Hủ Thể — 25% cướp chỉ số on-hit, miễn 10% debuff, lifesteal hồi tốt hơn 5%."
+    "description_vi": "Giáp Hủ Thể — 13% cướp chỉ số on-hit, miễn 10% debuff, lifesteal hồi tốt hơn 5%."
   },
   {
     "key": "uniq_am_hac_quan",
@@ -192,7 +198,11 @@
       "element_pen": {
         "am": 0.12
       },
-      "crit_rating_vs_drained": 150
+      "crit_amp_vs": {
+        "drained": {
+          "rating": 150
+        }
+      }
     },
     "description_vi": "U Minh Quan — 40% Hồn Phệ on-hit, xuyên 12% kháng Ám, bạo kích vs kẻ bị rút hồn."
   },
@@ -218,11 +228,11 @@
       ]
     },
     "passive_bonus": {
-      "stat_steal_on_hit_pct": 0.35,
+      "stat_steal_on_hit_pct": 0.18,
       "bleed_on_hit_pct": 0.2,
       "final_dmg_reduce": 0.06
     },
-    "description_vi": "Giáp Huyết Hải — 35% cướp chỉ số, 20% Chảy Máu on-hit, giảm 6% sát thương cuối."
+    "description_vi": "Giáp Huyết Hải — 18% cướp chỉ số, 20% Chảy Máu on-hit, giảm 6% sát thương cuối."
   },
   {
     "key": "uniq_am_tu_than_truong",
@@ -247,12 +257,12 @@
     },
     "passive_bonus": {
       "soul_drain_on_hit_pct": 0.5,
-      "stat_steal_on_hit_pct": 0.35,
+      "stat_steal_on_hit_pct": 0.18,
       "element_pen": {
         "am": 0.15
       }
     },
-    "description_vi": "Trượng Tử Thần U Minh — 50% Hồn Phệ, 35% cướp chỉ số, xuyên 15% kháng Ám."
+    "description_vi": "Trượng Tử Thần U Minh — 50% Hồn Phệ, 18% cướp chỉ số, xuyên 15% kháng Ám."
   },
   {
     "key": "uniq_am_minh_nhan",
@@ -280,10 +290,14 @@
       ]
     },
     "passive_bonus": {
-      "crit_rating_vs_drained": 220,
-      "stat_steal_on_hit_pct": 0.28
+      "stat_steal_on_hit_pct": 0.14,
+      "crit_amp_vs": {
+        "drained": {
+          "rating": 220
+        }
+      }
     },
-    "description_vi": "Nhẫn Minh Vương — bạo kích cực mạnh vs kẻ bị Hồn Phệ, 28% cướp chỉ số."
+    "description_vi": "Nhẫn Minh Vương — bạo kích cực mạnh vs kẻ bị Hồn Phệ, 14% cướp chỉ số."
   },
   {
     "key": "uniq_am_to_truong",
@@ -311,7 +325,11 @@
       "element_pen": {
         "am": 0.25
       },
-      "crit_rating_vs_drained": 320
+      "crit_amp_vs": {
+        "drained": {
+          "rating": 320
+        }
+      }
     },
     "description_vi": "Trượng Ám Tổ — 75% Hồn Phệ on-hit, xuyên 25% kháng Ám, bạo kích hủy diệt vs linh hồn đã rút."
   },
@@ -341,9 +359,9 @@
       ]
     },
     "passive_bonus": {
-      "stat_steal_on_hit_pct": 0.55,
+      "stat_steal_on_hit_pct": 0.28,
       "soul_drain_on_hit_pct": 0.4
     },
-    "description_vi": "Bội Ám Tổ — 55% cướp chỉ số, 40% Hồn Phệ on-hit. Bộ Ám Tổ 3 mảnh."
+    "description_vi": "Bội Ám Tổ — 28% cướp chỉ số, 40% Hồn Phệ on-hit. Bộ Ám Tổ 3 mảnh."
   }
 ]

@@ -84,10 +84,9 @@ def get_dark_market(seed: int | None = None) -> tuple[ShopSlot, list[ShopSlot]]:
     pool_size = len(DARK_POOL)
     if pool_size == 0:
         return fixed, []
-    # Floor the lower bound at the actual pool size so the legacy
-    # ``randint(5, ...)`` range stays valid after pool trims (the elixir
-    # cleanup dropped DARK_POOL from 8 → 4 entries). Upper bound is the
-    # original 8-cap clamped by what the pool can supply.
+    # Floor the lower bound at the actual pool size so the ``randint(5, ...)``
+    # range stays valid when the pool is smaller than 5. Upper bound caps at
+    # 8 clamped by what the pool can supply.
     lower = min(5, pool_size)
     upper = min(8, pool_size)
     count = rng.randint(lower, upper)
@@ -118,13 +117,8 @@ def get_skill_scroll_shop() -> list[ShopSlot]:
             currency="merit",
             stock=-1,
         ))
-    # Stable sort: grade asc, then by skill realm asc, then key alphabetical.
-    def sort_key(s: ShopSlot) -> tuple:
-        skill_key = s.item_key.removeprefix("Scroll_")
-        skill = registry.get_skill(skill_key)
-        realm = skill.get("realm", 0) if skill else 0
-        return (s.grade, realm, s.item_key)
-    slots.sort(key=sort_key)
+    # Stable sort: grade asc, then key alphabetical (realm field is gone).
+    slots.sort(key=lambda s: (s.grade, s.item_key))
     return slots
 
 

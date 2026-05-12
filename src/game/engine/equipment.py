@@ -17,6 +17,7 @@ STAT_LABELS: dict[str, str] = {
     "crit_dmg_rating": "Bạo Thương",
     "evasion_rating":  "Né Tránh",
     "crit_res_rating": "Kháng Bạo",
+    "accuracy_rating": "Chuẩn Xác",
     "final_dmg_bonus": "Tăng ST",
     "final_dmg_reduce":"Giảm ST",
     "hp_regen_pct":    "Hồi HP %",
@@ -43,6 +44,17 @@ STAT_LABELS: dict[str, str] = {
     "res_phong": "Kháng Phong",
     "res_quang": "Kháng Quang",
     "res_am":    "Kháng Ám",
+    # Per-element max-resist cap lifters — raise the player's soft cap
+    # (75%) toward the hard cap (90%). See effects.effective_res_cap.
+    "kim_max_resist_bonus":   "Cap Kháng Kim",
+    "moc_max_resist_bonus":   "Cap Kháng Mộc",
+    "thuy_max_resist_bonus":  "Cap Kháng Thủy",
+    "hoa_max_resist_bonus":   "Cap Kháng Hỏa",
+    "tho_max_resist_bonus":   "Cap Kháng Thổ",
+    "loi_max_resist_bonus":   "Cap Kháng Lôi",
+    "phong_max_resist_bonus": "Cap Kháng Phong",
+    "quang_max_resist_bonus": "Cap Kháng Quang",
+    "am_max_resist_bonus":    "Cap Kháng Ám",
     # Energy Shield stats — see Combatant.shield_cap() for the formula.
     "shield_max_base":   "Khiên Nền",
     "shield_max_flat":   "Khiên Tối Đa",
@@ -58,6 +70,14 @@ STAT_LABELS: dict[str, str] = {
     "thorn_pct":                    "Phản Đòn",
     "damage_bonus_from_shield_pct": "ST từ Khiên",
     "spd_bonus":                    "Tốc Độ",
+    # Super-material grant stats (forge.py stamps these as ``type="super"``
+    # affixes; bool flags surface in inspect view via the equipment cog).
+    "heal_pct":              "Trị Liệu",
+    "bleed_on_hit_pct":      "Tỉ Lệ Chảy Máu",
+    "bleed_heal_reduce":     "Giảm Hồi Khi Chảy Máu",
+    "silence_on_crit_pct":   "Cấm Phép (Bạo Kích)",
+    "heal_can_crit":         "Trị Liệu Có Thể Bạo Kích",
+    "barrier_on_cleanse":    "Thanh Tẩy Tạo Khiên",
 }
 
 SLOT_LABELS: dict[str, str] = {
@@ -84,12 +104,17 @@ _PCT_STATS = frozenset({
     "element_dmg_quang", "element_dmg_am",
     "res_kim", "res_moc", "res_thuy", "res_hoa", "res_tho",
     "res_loi", "res_phong", "res_quang", "res_am",
+    "kim_max_resist_bonus", "moc_max_resist_bonus", "thuy_max_resist_bonus",
+    "hoa_max_resist_bonus", "tho_max_resist_bonus", "loi_max_resist_bonus",
+    "phong_max_resist_bonus", "quang_max_resist_bonus", "am_max_resist_bonus",
     "shield_max_pct", "shield_regen_pct",
     # DOT-bonus & misc-pct affix stats — rolled as fractions (0.06 = 6%).
     # Without this, format_stat fell through to the int branch and rendered
     # rolled values as "+0 burn_dmg_bonus" etc. on every dropped/forged item.
     "burn_dmg_bonus", "bleed_dmg_bonus", "poison_dmg_bonus", "dot_dmg_bonus",
     "thorn_pct", "damage_bonus_from_shield_pct",
+    # Super-material grant stats — see STAT_LABELS additions for context.
+    "heal_pct", "bleed_on_hit_pct", "bleed_heal_reduce", "silence_on_crit_pct",
 })
 
 
@@ -110,28 +135,29 @@ def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
     """
     from src.data.registry import registry
 
-    def _merge_passive(container: dict[str, float], passive: dict) -> None:
+    def _merge_passive(container: dict, passive: dict) -> None:
+        """Merge ``passive`` into ``container``. Numbers add, bools OR,
+        nested dicts merge recursively (per-sub-key, same rules). Lets a
+        unique JSON declare ``passive_bonus: { dot_dmg_bonus_by_kind:
+        { burn: 0.20 } }`` and have it land in ``totals`` as a nested dict
+        that the denester in build_combat_stats then flattens."""
         for stat, val in passive.items():
             if isinstance(val, bool):
                 container[stat] = bool(container.get(stat)) or val
+            elif isinstance(val, dict):
+                existing = container.setdefault(stat, {})
+                if isinstance(existing, dict):
+                    _merge_passive(existing, val)
+                else:
+                    container[stat] = dict(val)
             else:
                 container[stat] = container.get(stat, 0.0) + float(val)
-
-    # Legacy stat-key aliases — old item_instances baked the affix's stat key
-    # into computed_stats at generation time, so renaming an affix doesn't
-    # reach existing equipment. Map the legacy key to the canonical one as
-    # we accumulate so consumers (character_stats, format_stat) see only the
-    # current name.
-    _STAT_ALIASES: dict[str, str] = {
-        "dmg_reduce": "final_dmg_reduce",
-    }
 
     totals: dict[str, float] = {}
     for inst in equipped:
         if inst.location != "equipped":
             continue
         for stat, val in (inst.computed_stats or {}).items():
-            stat = _STAT_ALIASES.get(stat, stat)
             totals[stat] = totals.get(stat, 0.0) + float(val)
 
         # Merge unique passive bonuses if the item is a unique with passives
@@ -140,11 +166,21 @@ def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
             uniq_def = registry.get_unique(uniq_key) or {}
             _merge_passive(totals, uniq_def.get("passive_bonus") or {})
 
-        # Merge super-rare forge material granted_passive (forged items)
+        # Super-material grants — numeric portions are already baked into
+        # the item's ``computed_stats`` as ``type="super"`` affixes (forge.py),
+        # so we only need to merge bool flags here. Skipping numerics avoids
+        # double-counting; merging bools (e.g. ``barrier_on_cleanse``,
+        # ``heal_can_crit``) keeps the flag-style passives wired up since
+        # ``compute_stats`` only sums numerics and can't carry booleans.
         super_key = getattr(inst, "super_material_key", None)
         if super_key:
             super_def = registry.get_super_material(super_key) or {}
-            _merge_passive(totals, super_def.get("granted_passive") or {})
+            bool_only = {
+                k: v for k, v in (super_def.get("granted_passive") or {}).items()
+                if isinstance(v, bool)
+            }
+            if bool_only:
+                _merge_passive(totals, bool_only)
     return totals
 
 

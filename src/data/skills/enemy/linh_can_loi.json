@@ -3,7 +3,6 @@
     "key": "EnemyLCLoi_T1",
     "vi": "Tử Điện Trảm",
     "en": "Purple Lightning Slash",
-    "realm": 2,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 13,
     "cooldown": 1,
-    "base_dmg": 18,
+    "base_dmg": 36,
     "effects": [
       "DebuffTeLiet"
     ],
@@ -31,7 +30,6 @@
     "key": "EnemyLCLoi_T2",
     "vi": "Cửu Khúc Lôi Đình",
     "en": "Nine-Bend Thunder Court",
-    "realm": 4,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -41,7 +39,7 @@
     },
     "mp_cost": 26,
     "cooldown": 2,
-    "base_dmg": 36,
+    "base_dmg": 144,
     "effects": [
       "DebuffSocDien",
       "DebuffTeLiet"
@@ -61,7 +59,6 @@
     "key": "EnemyLCLoi_T3",
     "vi": "Thiên Lôi Hủy Diệt",
     "en": "Heavenly Thunder Annihilation",
-    "realm": 6,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -71,7 +68,7 @@
     },
     "mp_cost": 44,
     "cooldown": 3,
-    "base_dmg": 84,
+    "base_dmg": 504,
     "effects": [
       "DebuffTeLiet",
       "DebuffSocDien"

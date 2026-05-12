@@ -440,7 +440,11 @@
       "true_dmg_pct": 0.06,
       "armor_pen_pct": 0.08,
       "paralysis_on_crit": true,
-      "crit_dmg_vs_bleed": 150
+      "crit_amp_vs": {
+        "bleed": {
+          "dmg": 150
+        }
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -626,12 +630,14 @@
       "merit": 0,
       "stones": 100000
     },
-    "passive_description_vi": "Thần thể phá thiên, chưởng khống \"Phá\" cùng \"Diệt\". Bạo kích đẩy lên đỉnh cao, nghiền nát mọi phòng ngự.",
+    "passive_description_vi": "Thần thể phá thiên, chưởng khống \"Phá\" cùng \"Diệt\". Bạo kích đẩy lên đỉnh cao, nghiền nát mọi phòng ngự, mỗi đòn nuốt máu nuôi thân, sát ý hóa hình.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.3,
       "crit_rating": 500,
       "crit_dmg_rating": 500,
       "true_dmg_pct": 0.08,
+      "life_steal_pct": 0.1,
+      "crit_dmg_rating_to_dmg_pct": 0.1,
       "paralysis_on_crit": true,
       "hp_pct": 0.2,
       "mp_pct": 0.2,
@@ -662,7 +668,7 @@
       "cooldown_reduce": 0.35,
       "evasion_rating": 500,
       "soul_drain_on_hit_pct": 0.25,
-      "stat_steal_on_hit_pct": 0.15,
+      "stat_steal_on_hit_pct": 0.075,
       "element_pen": {
         "am": 0.15
       },

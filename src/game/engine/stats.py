@@ -35,6 +35,15 @@ class AttackStats:
     # (freeze): the next skill landing on a frozen enemy auto-crits and
     # the freeze is consumed by the hit.
     force_crit: bool = False
+    # Hybrid crit→dmg scaling: ``crit_dmg_rating × crit_dmg_rating_to_dmg_pct``
+    # is added as flat damage to the base roll. Lets a crit-stacked build
+    # turn part of its rating into reliable per-hit floor damage instead
+    # of relying purely on crit RNG. Applied in ``base.roll_base``.
+    crit_dmg_rating_to_dmg_pct: float = 0.0
+    # Counter to the defender's evasion_rating. Subtracted from evasion
+    # chance via the same rating→pct curve (mirrors crit ↔ crit_res),
+    # consumed in ``damage/evasion.check_evasion``.
+    accuracy_rating: int = 0
 
 
 @dataclass(frozen=True)
@@ -44,3 +53,8 @@ class DefenseStats:
     crit_res_rating: int = 0             # reduces incoming crit chance
     def_stat: int = 0                    # physical defense (→ resist formula)
     resistances: dict[str, int] = field(default_factory=dict)  # elemental flat reduction
+    # Per-element damage-taken multiplier (e.g. {"hoa": 0.15} ⇒ +15% fire
+    # damage taken). Sourced from active effects via ``<element>_damage_taken``
+    # stat_bonus keys (see apply_elemental for the consumer). Stacks ADDITIVELY
+    # across sources and is applied AFTER elemental resistance.
+    damage_taken_by_element: dict[str, float] = field(default_factory=dict)

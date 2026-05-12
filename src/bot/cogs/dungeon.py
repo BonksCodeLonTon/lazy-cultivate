@@ -23,11 +23,12 @@ from src.game.systems.combat import (
     build_enemy_combatant, build_player_combatant,
 )
 from src.game.systems.dungeon import (
-    apply_healing_elixir, best_axis_realm, check_can_enter, compute_realm_total,
+    apply_healing_pill, best_axis_realm, check_can_enter, compute_realm_total,
     DungeonResult, merge_loot, qualifying_axis,
     _build_wave_list, _grade_progress, _roll_encounter_grade, _roll_boss_grade, _apply_encounter_grade,
 )
 from src.utils import emojis
+from src.utils.discord_safe import safe_defer
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
 from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
 
@@ -98,6 +99,15 @@ _DUNGEON_TYPE_META: dict[str, dict[str, Any]] = {
         ),
         "color": 0x8E44AD,
     },
+    "cam_dia": {
+        "title": "🌑 Cấm Địa",
+        "intro": (
+            "Cấm địa hỗn nguyên — mỗi cảnh chỉ một **Chí Tôn cấp Boss** từ "
+            "danh sách đặc biệt. Không có đợt thường, không có cứu trợ. "
+            "Phần thưởng cực hậu hĩnh nhưng độ khó vượt xa các bí cảnh thông thường."
+        ),
+        "color": 0x1A1A1A,
+    },
 }
 
 
@@ -122,7 +132,9 @@ def _dungeon_type_embed() -> discord.Embed:
         "🌿 **Dược Viên** — Yêu thú hệ Mộc với khả năng hồi máu, rớt thảo dược luyện đan.\n"
         "🧬 **Thần Cốt Địa** — Chỉ một Đại Boss, rớt **Đạo Cốt Tinh** để chuyển Thể Chất.\n"
         "🌌 **Linh Căn Bí Cảnh** — 9 mạch linh khí theo nguyên tố, rớt nguyên liệu khai mở "
-        "& nâng cấp **Linh Căn** (giảm tỉ lệ ở cảnh giới cao).",
+        "& nâng cấp **Linh Căn** (giảm tỉ lệ ở cảnh giới cao).\n"
+        "🌑 **Cấm Địa** — Boss Chí Tôn từ danh sách đặc biệt. Một trận sinh tử, "
+        "phần thưởng cực hậu hĩnh.",
         color=0x7B2D8B,
     )
 
@@ -388,7 +400,8 @@ class AutoRepeatStopView(discord.ui.View):
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         self.stop_event.set()
 
     async def on_timeout(self) -> None:
@@ -531,7 +544,6 @@ async def _execute_dungeon(
         cs_preview = compute_combat_stats(
             char, gem_count=gem_count, equip_stats=equip_stats,
             gem_keys=gem_keys, gem_keys_by_formation=gem_map,
-            learned_skill_keys=[s.skill_key for s in (player.skills or [])],
         )
         if player.hp_current <= 0:
             player.hp_current = cs_preview.hp_max
@@ -594,12 +606,12 @@ async def _execute_dungeon(
 
         # ── Inter-wave prepare phase (not before first wave) ──────────────────
         # In auto_mode, skip the prep view entirely — the auto-repeat loop owns
-        # pacing and players don't expect to manually elixir between waves.
+        # pacing and players don't expect to manually pop pills between waves.
         if wave_idx > 0 and not auto_mode:
-            elixirs = await _load_elixirs(player_db_id)
+            heal_pills = await _load_healing_pills(player_db_id)
             prep_view = DungeonPrepView(
                 interaction.user.id, player_db_id, player_c,
-                elixirs, wave_idx, total_waves,
+                heal_pills, wave_idx, total_waves,
             )
             await interaction.edit_original_response(
                 embed=_dungeon_prep_embed(wave_idx, total_waves, player_c),
@@ -713,40 +725,36 @@ async def _execute_dungeon(
         repo = PlayerRepository(session)
         player = await repo.get_by_discord_id(interaction.user.id)
         if player:
-            player.merit = min(player.merit + merit_total, CURRENCY_CAP)
+            from src.game.systems.merit import grant_merit
+            grant_merit(player, merit_total)
             if stone_gained:
                 player.primordial_stones = min(player.primordial_stones + stone_gained, CURRENCY_CAP)
-            if dungeon_success:
-                # Apply offline ticks accumulated during the battle so any
-                # pending level-up materializes before we re-cap HP/MP;
-                # otherwise player_c.hp_max (built at dungeon entry from
-                # stale levels) can undershoot the true max.
-                from src.game.systems.cultivation_service import apply_offline_ticks
-                from src.game.systems.character_stats import (
-                    active_formation_gem_keys, active_formation_gem_map, compute_combat_stats,
-                )
-                from src.game.engine.equipment import compute_equipment_stats
+            # Auto-heal HP / MP / shield to max after every dungeon (success
+            # OR failure). Apply offline ticks first so any pending level-up
+            # materializes before we re-cap, otherwise the entry-time
+            # CombatStats (built from stale levels) can undershoot the true max.
+            from src.game.systems.cultivation_service import apply_offline_ticks
+            from src.game.systems.character_stats import (
+                active_formation_gem_keys, active_formation_gem_map, compute_combat_stats,
+            )
+            from src.game.engine.equipment import compute_equipment_stats
 
-                await apply_offline_ticks(player, repo, player.active_axis or "qi")
+            await apply_offline_ticks(player, repo, player.active_axis or "qi")
 
-                fresh_char = _player_to_model(player)
-                fresh_gem_keys = active_formation_gem_keys(player)
-                fresh_gem_map = active_formation_gem_map(player)
-                fresh_equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
-                fresh_cs = compute_combat_stats(
-                    fresh_char,
-                    gem_count=len(fresh_gem_keys),
-                    equip_stats=compute_equipment_stats(fresh_equipped),
-                    gem_keys=fresh_gem_keys,
-                    gem_keys_by_formation=fresh_gem_map,
-                    learned_skill_keys=[s.skill_key for s in (player.skills or [])],
-                )
-                player.hp_current = fresh_cs.hp_max
-                player.mp_current = fresh_cs.mp_max
-            else:
-                # Preserve the HP/MP the player had (minimum 1 HP to avoid dead state)
-                player.hp_current = max(1, player_c.hp)
-                player.mp_current = max(0, player_c.mp)
+            fresh_char = _player_to_model(player)
+            fresh_gem_keys = active_formation_gem_keys(player)
+            fresh_gem_map = active_formation_gem_map(player)
+            fresh_equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
+            fresh_cs = compute_combat_stats(
+                fresh_char,
+                gem_count=len(fresh_gem_keys),
+                equip_stats=compute_equipment_stats(fresh_equipped),
+                gem_keys=fresh_gem_keys,
+                gem_keys_by_formation=fresh_gem_map,
+            )
+            player.hp_current = fresh_cs.hp_max
+            player.mp_current = fresh_cs.mp_max
+            player.shield_current = fresh_cs.shield_max
 
             if all_loot:
                 irepo = InventoryRepository(session)
@@ -771,38 +779,48 @@ async def _execute_dungeon(
 
 # ── Helpers for prep phase ────────────────────────────────────────────────────
 
-async def _load_elixirs(player_db_id: int) -> list[dict[str, Any]]:
-    """Return list of elixir dicts the player currently owns."""
-    elixirs = []
+async def _load_healing_pills(player_db_id: int) -> list[dict[str, Any]]:
+    """Return list of HP/MP healing pill dicts the player currently owns.
+
+    Aggregated by ``item_key`` — the same pill may sit at multiple grade
+    rows but the dungeon prep picker treats grade as fungible: every
+    consume goes through ``remove_any_grade``. Without aggregation, the
+    Discord Select would receive duplicate ``value`` fields and reject the
+    render (HTTPException 50035 "option value already used").
+    """
+    aggregated: dict[str, dict[str, Any]] = {}
     async with get_session() as session:
         irepo = InventoryRepository(session)
         items = await irepo.get_all(player_db_id)
         for inv_item in items:
             item_data = registry.get_item(inv_item.item_key)
-            # Legacy elixirs were merged into the pill type but keep
-            # ``category="elixir"`` as a soft tag — dungeon prep only offers
-            # those HP/MP/karma items, not cultivation pills.
-            if item_data and item_data.get("category") == "elixir":
-                elixirs.append({
-                    "key": inv_item.item_key,
-                    "grade": inv_item.grade,
-                    "qty": inv_item.quantity,
-                    "name": item_data.get("vi", inv_item.item_key),
-                })
-    return elixirs
+            # Healing pills carry ``category="heal"`` — dungeon prep only
+            # offers those HP/MP/karma items, not cultivation pills.
+            if not item_data or item_data.get("category") != "heal":
+                continue
+            existing = aggregated.get(inv_item.item_key)
+            if existing is not None:
+                existing["qty"] += inv_item.quantity
+                continue
+            aggregated[inv_item.item_key] = {
+                "key": inv_item.item_key,
+                "qty": inv_item.quantity,
+                "name": item_data.get("vi", inv_item.item_key),
+            }
+    return list(aggregated.values())
 
 
 # ── Discord UI Components ─────────────────────────────────────────────────────
 
 class DungeonPrepView(discord.ui.View):
-    """Shown between dungeon waves — lets player use elixirs, continue, or abandon."""
+    """Shown between dungeon waves — lets player use healing pills, continue, or abandon."""
 
     def __init__(
         self,
         discord_id: int,
         player_db_id: int,
         player_c: Any,
-        elixirs: list[dict],
+        pills: list[dict],
         wave_idx: int,
         total_waves: int,
     ) -> None:
@@ -810,23 +828,23 @@ class DungeonPrepView(discord.ui.View):
         self.discord_id = discord_id
         self.player_db_id = player_db_id
         self.player_c = player_c
-        self.elixirs = list(elixirs)
+        self.pills = list(pills)
         self.wave_idx = wave_idx
         self.total_waves = total_waves
         self.done_event = asyncio.Event()
         self.abandoned = False
-        # Page index into the elixir list — preserved across re-renders so
+        # Page index into the pill list — preserved across re-renders so
         # the user stays on the same slice after consuming one.
         self._page = 0
         self._build_items()
 
     def _build_items(self) -> None:
         self.clear_items()
-        # Clamp the page if elixirs shrank (e.g. last stack consumed).
-        pages = total_pages(len(self.elixirs), per_page=PAGE_SIZE)
+        # Clamp the page if the pill list shrank (e.g. last stack consumed).
+        pages = total_pages(len(self.pills), per_page=PAGE_SIZE)
         self._page = max(0, min(self._page, pages - 1))
-        if self.elixirs:
-            visible = page_slice(self.elixirs, self._page, per_page=PAGE_SIZE)
+        if self.pills:
+            visible = page_slice(self.pills, self._page, per_page=PAGE_SIZE)
             options = [
                 discord.SelectOption(
                     label=f"{e['name']} × {e['qty']}"[:100],
@@ -843,7 +861,7 @@ class DungeonPrepView(discord.ui.View):
                 options=options,
                 row=0,
             )
-            sel.callback = self._use_elixir_cb
+            sel.callback = self._use_pill_cb
             self.add_item(sel)
 
         continue_btn = discord.ui.Button(
@@ -861,7 +879,7 @@ class DungeonPrepView(discord.ui.View):
         add_page_controls(
             self,
             page=self._page,
-            total=len(self.elixirs),
+            total=len(self.pills),
             on_change=self._on_page_change,
             row=2,
         )
@@ -874,32 +892,35 @@ class DungeonPrepView(discord.ui.View):
         self._build_items()
         await interaction.response.edit_message(view=self)
 
-    async def _use_elixir_cb(self, interaction: discord.Interaction) -> None:
+    async def _use_pill_cb(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
 
         item_key = interaction.data["values"][0]
-        elixir = next((e for e in self.elixirs if e["key"] == item_key), None)
-        if not elixir:
-            await interaction.response.defer()
+        pill = next((e for e in self.pills if e["key"] == item_key), None)
+        if not pill:
+            if not await safe_defer(interaction):
+                return
             return
 
-        # Remove one from DB
+        # Remove one from DB. ``remove_any_grade`` walks ascending-by-grade so
+        # the picker doesn't need to track grade per row — matches the
+        # aggregated view in ``_load_healing_pills``.
         async with get_session() as session:
             irepo = InventoryRepository(session)
-            removed = await irepo.remove_item(self.player_db_id, item_key, Grade(elixir["grade"]))
+            removed = await irepo.remove_any_grade(self.player_db_id, item_key, 1)
             if not removed:
                 await interaction.response.send_message("Không còn vật phẩm này.", ephemeral=True)
                 return
 
         # Apply healing to in-memory combatant
-        effect_msg = apply_healing_elixir(self.player_c, item_key)
+        effect_msg = apply_healing_pill(self.player_c, item_key)
 
-        # Update local elixir count
-        elixir["qty"] -= 1
-        if elixir["qty"] <= 0:
-            self.elixirs = [e for e in self.elixirs if e["key"] != item_key]
+        # Update local pill count
+        pill["qty"] -= 1
+        if pill["qty"] <= 0:
+            self.pills = [e for e in self.pills if e["key"] != item_key]
 
         self._build_items()
         embed = _dungeon_prep_embed(self.wave_idx, self.total_waves, self.player_c, effect_msg)
@@ -909,14 +930,16 @@ class DungeonPrepView(discord.ui.View):
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         self.done_event.set()
 
     async def _abandon_cb(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         self.abandoned = True
         self.done_event.set()
 
@@ -971,7 +994,8 @@ class DungeonSelect(discord.ui.Select):
             return
         dungeon_key = self.values[0]
         if dungeon_key == "__none__":
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             return
         embed = _dungeon_detail_embed(dungeon_key, interaction.user.id, self.player_best_realm, self.player_realm_total)
         view = DungeonDetailView(
@@ -1011,7 +1035,8 @@ class DungeonListView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
     async def on_timeout(self) -> None:
@@ -1019,7 +1044,11 @@ class DungeonListView(discord.ui.View):
 
 
 class DungeonTypeSelectView(discord.ui.View):
-    """Two-button picker: ⚔️ Bí Cảnh Thường vs 🌿 Dược Viên."""
+    """Type picker — one button per dungeon family.
+
+    Currently exposes: ⚔️ Bí Cảnh Thường, 🌿 Dược Viên, 🧬 Thần Cốt Địa,
+    🌌 Linh Căn Bí Cảnh, 🌑 Cấm Địa.
+    """
 
     def __init__(
         self,
@@ -1058,6 +1087,12 @@ class DungeonTypeSelectView(discord.ui.View):
         linh_can_btn.callback = self._pick_linh_can
         self.add_item(linh_can_btn)
 
+        cam_dia_btn = discord.ui.Button(
+            label="🌑 Cấm Địa", style=discord.ButtonStyle.danger, row=1,
+        )
+        cam_dia_btn.callback = self._pick_cam_dia
+        self.add_item(cam_dia_btn)
+
         if back_fn:
             back_btn = discord.ui.Button(
                 label="◀ Trở về", style=discord.ButtonStyle.secondary, row=2,
@@ -1091,11 +1126,17 @@ class DungeonTypeSelectView(discord.ui.View):
     async def _pick_linh_can(self, interaction: discord.Interaction) -> None:
         await self._open_list(interaction, "linh_can")
 
+    async def _pick_cam_dia(self, interaction: discord.Interaction) -> None:
+        await self._open_list(interaction, "cam_dia")
+
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        # ``DungeonTypeSelectView`` has a 120s lifetime, so this button can
+        # easily fire long after the interaction token expired.
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
     async def on_timeout(self) -> None:
@@ -1127,15 +1168,12 @@ class DungeonDetailView(discord.ui.View):
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
-        # Block parallel sessions BEFORE deferring so the rejection lands as a
-        # plain ephemeral response on the original interaction.
         if not _try_acquire_dungeon_session(interaction.user.id):
             await _send_already_running_error(interaction)
             return
-        # Wrap defer() in the try as well — if it raises (interaction expired,
-        # network blip), the finally still runs so we don't leak the lock.
         try:
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             await _execute_dungeon(
                 interaction, self.dungeon_key, self.player_best_realm, self.player_realm_total,
                 back_fn=self._back_fn, dungeon_type=self._dungeon_type,
@@ -1153,11 +1191,9 @@ class DungeonDetailView(discord.ui.View):
         if not _try_acquire_dungeon_session(interaction.user.id):
             await _send_already_running_error(interaction)
             return
-        # See enter_btn for the rationale — defer() must be inside the try so
-        # a transient failure between acquire and the loop start can't leak
-        # the lock.
         try:
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             await _run_dungeon_with_repeat(
                 interaction, self.dungeon_key, self.player_best_realm, self.player_realm_total,
                 back_fn=self._back_fn, dungeon_type=self._dungeon_type,
@@ -1233,7 +1269,8 @@ class DungeonResultView(discord.ui.View):
         if interaction.user.id != self.discord_id:
             await interaction.response.send_message("Đây không phải lệnh của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
     async def on_timeout(self) -> None:
@@ -1248,14 +1285,20 @@ class DungeonCog(commands.Cog, name="Dungeon"):
 
     @app_commands.command(name="dungeon", description="Khám phá Bí Cảnh")
     async def dungeon(self, interaction: discord.Interaction) -> None:
+        # Defer first — the DB query below pulls a heavy ``selectinload``
+        # chain (turn_tracker / inventory / skills / artifacts / formations
+        # / item_instances) that can blow the 3 s interaction window on
+        # cold caches, raising NotFound 10062 from send_message.
+        if not await safe_defer(interaction, ephemeral=True):
+            return
+
         async with get_session() as session:
             repo = PlayerRepository(session)
             player = await repo.get_by_discord_id(interaction.user.id)
 
         if player is None:
-            await interaction.response.send_message(
+            await interaction.edit_original_response(
                 embed=error_embed("Chưa có nhân vật. Dùng `/register` để bắt đầu."),
-                ephemeral=True,
             )
             return
 
@@ -1269,7 +1312,7 @@ class DungeonCog(commands.Cog, name="Dungeon"):
         player_best_realm = best_axis_realm(player)
         embed = _dungeon_type_embed()
         view = DungeonTypeSelectView(interaction.user.id, player_best_realm, player_realm_total)
-        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
+        await interaction.edit_original_response(embed=embed, view=view)
 
 
 async def setup(bot: commands.Bot) -> None:

@@ -1,0 +1,50 @@
+[
+  {
+    "key": "BossChungYen",
+    "vi": "Chung Yên",
+    "en": "Chung Yen",
+    "rank": "chi_ton",
+    "realm_level": 9,
+    "element": null,
+    "base_hp": 300000,
+    "base_spd": 26,
+    "base_atk": 360,
+    "base_matk": 360,
+    "base_def": 300,
+    "hp_scale": 1.4,
+    "mp_regen_pct": 0.18,
+    "skill_keys": [
+      "ChungYen_TanDiet",
+      "ChungYen_HuVo",
+      "ChungYen_TanThe",
+      "ChungYen_VoDao",
+      "ChungYen_HuyDietAura",
+      "ChungYen_DietTan"
+    ],
+    "loot_table_key": "LootBossHonNguyen",
+    "base_crit_rating": 1800,
+    "base_crit_dmg_rating": 1000,
+    "final_dmg_bonus": 0.35,
+    "immune_hard_cc": true,
+    "immune_stat_mutation": true,
+    "hp_regen_pct": 0.0,
+    "base_res": {
+      "kim": 0.5,
+      "moc": 0.5,
+      "thuy": 0.5,
+      "hoa": 0.5,
+      "tho": 0.5,
+      "loi": 0.5,
+      "phong": 0.5,
+      "quang": 0.5,
+      "am": 0.5
+    },
+    "res_cap_pct": 0.9,
+    "phase_lock": {
+      "trigger_hp_pct": 0.5,
+      "duration": 10,
+      "phase_name_vi": "Thập Nhật Chung Yên",
+      "phase_emoji": "☀️"
+    }
+  }
+]

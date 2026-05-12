@@ -1,0 +1,95 @@
+[
+  {
+    "key": "ThienGioiThamPhan",
+    "vi": "Thiên Giới Thẩm Phán Đại Trận",
+    "en": "Heavenly Realm Judgment Great Formation",
+    "element": "quang",
+    "base_stat_bonus": {
+      "element_dmg_bonus": {
+        "quang": 0.20
+      }
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "res_all": 0.02,
+        "heal_pct": 0.05,
+        "element_dmg_bonus": {
+          "quang": 0.05
+        },
+        "note": "Sơ Khai Thiên Giới Trận"
+      },
+      "3": {
+        "res_all": 0.04,
+        "heal_pct": 0.10,
+        "element_dmg_bonus": {
+          "quang": 0.10
+        },
+        "element_pen": {
+          "quang": 0.05
+        },
+        "note": "Kiên Cố Thiên Giới Trận"
+      },
+      "5": {
+        "res_all": 0.06,
+        "heal_pct": 0.15,
+        "element_dmg_bonus": {
+          "quang": 0.15
+        },
+        "note": "Thịnh Vượng Thiên Giới Trận"
+      },
+      "7": {
+        "res_all": 0.08,
+        "heal_pct": 0.20,
+        "element_dmg_bonus": {
+          "quang": 0.25
+        },
+        "element_pen": {
+          "quang": 0.1
+        },
+        "note": "Vô Song Thiên Giới Trận"
+      },
+      "10": {
+        "res_all": 0.12,
+        "heal_pct": 0.25,
+        "element_dmg_bonus": {
+          "quang": 0.30
+        },
+        "element_pen": {
+          "quang": 0.15
+        },
+        "summon_limit_bonus": 1,
+        "note": "Tuyệt Đỉnh Thiên Giới Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmThienGioiThamPhan",
+      "vi": "Thiên Giới Thẩm Phán Thức",
+      "en": "Heavenly Judgment Form",
+      "scroll_grade": 4,
+      "category": "formation",
+      "element": "quang",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 320,
+      "cooldown": 6,
+      "base_dmg": 0,
+      "summon_spec": {
+        "vi": "Đại Thiên Sứ",
+        "emoji": "🪽",
+        "element": "quang",
+        "dmg_pct_of_atk": 3.0,
+        "turns": 5,
+        "limit": 1,
+        "aura_buff": {
+          "key": "BuffDaiThienSuAura",
+          "duration": 1
+        }
+      },
+      "reserved_mp_pct": 0.10,
+      "description_vi": "Thiên Giới Thẩm Phán — triệu hồi **Đại Thiên Sứ** (giới hạn 1, **2 ở ngọc Cấp 10**) trong 5 lượt, mỗi lượt giáng đòn = 3.0 ATK của chủ nhân và tự nhân với toàn bộ +Quang sát thương từ trận pháp. Khi Đại Thiên Sứ hiện diện, chủ nhân nhận hào quang **+10% kháng tất cả** và **+10% hiệu ứng hồi máu**. Ngọc khảm cao càng nhiều cấp, sát thương Đại Thiên Sứ càng tăng (qua bonus Quang) và chủ nhân càng nhận thêm Kháng / Hồi Máu / Xuyên Quang."
+    }
+  }
+]

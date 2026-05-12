@@ -38,9 +38,11 @@
     "passive_description_vi": "Linh khí Hỏa sơ khởi tụ trong thân, mọi thuộc tính lửa chồng lớp đều được khơi dậy.",
     "stat_bonuses": {
       "burn_on_hit_pct": 0.12,
-      "burn_stack_cap_bonus": 1,
       "element_pen": {
         "hoa": 0.05
+      },
+      "dot_stack_cap_bonus": {
+        "burn": 1
       }
     },
     "special_requirements": null,
@@ -90,8 +92,10 @@
       "element_dmg_bonus": {
         "hoa": 0.04
       },
-      "burn_dmg_bonus": 0.08,
-      "burn_on_hit_pct": 0.07
+      "burn_on_hit_pct": 0.07,
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.08
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -138,9 +142,11 @@
     "passive_description_vi": "Linh khí Hỏa đã hậu nhập huyết mạch — sức mạnh lửa chồng lớp vượt trội hơn thường nhân.",
     "stat_bonuses": {
       "burn_on_hit_pct": 0.192,
-      "burn_stack_cap_bonus": 1,
       "element_pen": {
         "hoa": 0.08
+      },
+      "dot_stack_cap_bonus": {
+        "burn": 1
       }
     },
     "special_requirements": null,
@@ -165,8 +171,10 @@
       "element_dmg_bonus": {
         "hoa": 0.064
       },
-      "burn_dmg_bonus": 0.128,
-      "burn_on_hit_pct": 0.112
+      "burn_on_hit_pct": 0.112,
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.128
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -192,7 +200,9 @@
       },
       "burn_on_hit_pct": 0.12,
       "crit_rating": 60,
-      "burn_dmg_bonus": 0.1
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.1
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -240,9 +250,11 @@
     "passive_description_vi": "Thân hóa linh thể Hỏa, lửa chồng lớp mạnh mẽ áp đảo đối thủ cùng cảnh giới.",
     "stat_bonuses": {
       "burn_on_hit_pct": 0.288,
-      "burn_stack_cap_bonus": 2,
       "element_pen": {
         "hoa": 0.12
+      },
+      "dot_stack_cap_bonus": {
+        "burn": 2
       }
     },
     "special_requirements": null,
@@ -268,8 +280,10 @@
       "element_dmg_bonus": {
         "hoa": 0.096
       },
-      "burn_dmg_bonus": 0.192,
-      "burn_on_hit_pct": 0.168
+      "burn_on_hit_pct": 0.168,
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.192
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -299,7 +313,9 @@
         "hoa": 0.12
       },
       "bonus_dmg_vs_burn": 0.15,
-      "burn_dmg_bonus": 0.1
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.1
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -324,10 +340,16 @@
       "final_dmg_bonus": 0.175,
       "burn_on_hit_pct": 0.35,
       "crit_rating": 175,
-      "burn_stack_cap_bonus": 2,
-      "burn_per_stack_pct_bonus": 0.005,
-      "burn_dmg_bonus": 0.15,
-      "dot_can_crit": true
+      "dot_can_crit": true,
+      "dot_stack_cap_bonus": {
+        "burn": 2
+      },
+      "dot_per_stack_pct_bonus": {
+        "burn": 0.005
+      },
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.15
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -350,9 +372,11 @@
     "passive_description_vi": "Thần thể Hỏa cộng hưởng với đại đạo, lửa chồng lớp bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "burn_on_hit_pct": 0.42,
-      "burn_stack_cap_bonus": 3,
       "element_pen": {
         "hoa": 0.175
+      },
+      "dot_stack_cap_bonus": {
+        "burn": 3
       }
     },
     "special_requirements": null,
@@ -376,11 +400,13 @@
     "passive_description_vi": "Thần thể Hỏa cộng hưởng với đại đạo, lửa bùng nổ đến cực hạn.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.14,
-      "burn_dmg_bonus": 0.1,
       "burn_on_hit_pct": 0.245,
       "phoenix_revive_pct": 0.1,
       "phoenix_revive_buff_pct": 0.02,
-      "crit_rating": 150
+      "crit_rating": 150,
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.1
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -404,13 +430,17 @@
     "stat_bonuses": {
       "final_dmg_bonus": 0.1,
       "burn_on_hit_pct": 0.2,
-      "burn_stack_cap_bonus": 1,
       "element_pen": {
         "hoa": 0.1
       },
-      "burn_dmg_bonus": 0.08,
       "phoenix_revive_pct": 0.1,
-      "phoenix_revive_buff_pct": 0.02
+      "phoenix_revive_buff_pct": 0.02,
+      "dot_stack_cap_bonus": {
+        "burn": 1
+      },
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.08
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -434,14 +464,20 @@
     "stat_bonuses": {
       "final_dmg_bonus": 0.15,
       "burn_on_hit_pct": 0.35,
-      "burn_stack_cap_bonus": 3,
-      "burn_per_stack_pct_bonus": 0.01,
-      "burn_dmg_bonus": 0.3,
       "bonus_dmg_vs_burn": 0.25,
       "element_pen": {
         "hoa": 0.2
       },
-      "dot_can_crit": true
+      "dot_can_crit": true,
+      "dot_stack_cap_bonus": {
+        "burn": 3
+      },
+      "dot_per_stack_pct_bonus": {
+        "burn": 0.01
+      },
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.3
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -466,9 +502,6 @@
     "stat_bonuses": {
       "final_dmg_bonus": 0.18,
       "burn_on_hit_pct": 0.5,
-      "burn_stack_cap_bonus": 3,
-      "burn_per_stack_pct_bonus": 0.008,
-      "burn_dmg_bonus": 0.3,
       "dot_can_crit": true,
       "crit_rating": 250,
       "res_hoa": 0.3,
@@ -481,6 +514,15 @@
       },
       "element_pen": {
         "hoa": 0.15
+      },
+      "dot_stack_cap_bonus": {
+        "burn": 3
+      },
+      "dot_per_stack_pct_bonus": {
+        "burn": 0.008
+      },
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.3
       }
     },
     "special_requirements": null,
@@ -505,16 +547,24 @@
     "passive_description_vi": "Đế thể Hỏa — đỉnh cao của lộ trình lửa, vạn cổ truyền tụng. ✨ **Niết Bàn Trùng Sinh:** lần đầu tử vong trong trận, hồi sinh với 70% HP và tăng 20% Sát Thương Cuối / Giảm Sát Thương / ATK / MATK / DEF cho đến hết trận.",
     "stat_bonuses": {
       "final_dmg_bonus": 0.2,
-      "burn_dmg_bonus": 0.4,
       "burn_on_hit_pct": 0.35,
       "phoenix_revive_pct": 0.7,
       "phoenix_revive_buff_pct": 0.2,
-      "burn_stack_cap_bonus": 3,
-      "burn_per_stack_pct_bonus": 0.006,
       "dot_can_crit": true,
       "hp_pct": 0.25,
-      "element_pen": { "hoa": 0.12 },
-      "crit_rating": 250
+      "element_pen": {
+        "hoa": 0.12
+      },
+      "crit_rating": 250,
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.4
+      },
+      "dot_stack_cap_bonus": {
+        "burn": 3
+      },
+      "dot_per_stack_pct_bonus": {
+        "burn": 0.006
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -541,14 +591,16 @@
       "hp_flat_per_realm": 800,
       "hp_pct": 0.4,
       "hp_regen_pct": 0.08,
-      "burn_dmg_bonus": 0.3,
       "bonus_dmg_vs_burn": 0.2,
       "element_pen": {
         "hoa": 0.2
       },
       "burn_on_hit_pct": 0.3,
       "final_dmg_bonus": 0.3,
-      "crit_dmg_rating": 400
+      "crit_dmg_rating": 400,
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.3
+      }
     },
     "special_requirements": null,
     "materials": {

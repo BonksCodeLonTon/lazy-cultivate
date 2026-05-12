@@ -92,12 +92,21 @@ def try_cleanse(
       3) if either of the above landed, restore MP and optionally raise
          a MATK-scaled barrier (``barrier_on_cleanse``).
     """
-    if "quang" not in actor.linh_can:
+    # Active buff contribution (e.g. Thánh Quang Thuẫn's +25% cleanse) lets
+    # non-Quang Linh Căn holders also cleanse while the buff is up.
+    from src.game.engine.effects import get_combat_modifiers
+    buff_bonus = float(get_combat_modifiers(actor).get("cleanse_on_turn_pct", 0.0))
+
+    is_quang = "quang" in actor.linh_can
+    if not is_quang and buff_bonus <= 0:
         return
-    level = actor.linh_can_levels.get("quang", 1) if actor.linh_can_levels else 1
-    level_bonus = max(0, level - 1) * _CLEANSE_PER_LEVEL
-    chance = _BASE_CLEANSE_CHANCE + actor.cleanse_on_turn_pct + level_bonus
-    if rng.random() >= chance:
+
+    chance = actor.cleanse_on_turn_pct + buff_bonus
+    if is_quang:
+        level = actor.linh_can_levels.get("quang", 1) if actor.linh_can_levels else 1
+        level_bonus = max(0, level - 1) * _CLEANSE_PER_LEVEL
+        chance += _BASE_CLEANSE_CHANCE + level_bonus
+    if chance <= 0 or rng.random() >= chance:
         return
 
     did_cleanse = False
@@ -128,10 +137,13 @@ def try_cleanse(
     if not did_cleanse:
         return
 
-    mp_pct = _BASE_MP_RESTORE_PCT + max(0, level - 1) * _MP_RESTORE_PER_LEVEL
-    mp_restore = int(actor.mp_max * mp_pct * (1.0 + actor.heal_pct))
-    actor.mp = min(actor.mp_max, actor.mp + mp_restore)
-    log.append(f"    💙 +{mp_restore} MP")
+    # MP restore is a Quang Linh Căn perk only — non-Quang holders cleansing
+    # via buff layer (Thánh Quang Thuẫn, Phá Ma Chân Ngôn) skip this.
+    if is_quang:
+        mp_pct = _BASE_MP_RESTORE_PCT + max(0, level - 1) * _MP_RESTORE_PER_LEVEL
+        mp_restore = int(actor.mp_max * mp_pct * (1.0 + actor.heal_pct))
+        actor.mp = min(actor.mp_max, actor.mp + mp_restore)
+        log.append(f"    💙 +{mp_restore} MP")
 
     if actor.barrier_on_cleanse and actor.is_alive():
         shield_amt = max(1, int(actor.matk * _BARRIER_MATK_SCALE * (1.0 + actor.heal_pct)))
@@ -142,18 +154,36 @@ def try_cleanse(
         if gained > 0:
             log.append(f"    🛡️ Thánh Quang Hộ Thuẫn: +{gained:,} khiên")
 
-    # Cleanse Heal — Đế Bạch Liên Thể's "Liên Hoa Tịnh Hóa". Each successful
-    # cleanse pulse also restores ``hp_max × cleanse_heal_pct`` HP, modified
+    # Cleanse Heal — Đế Bạch Liên Thể's "Liên Hoa Tịnh Hóa" plus any active-
+    # buff layer (e.g. Phá Ma Chân Ngôn's ``cleanse_heal_pct``). Each
+    # successful cleanse pulse restores ``hp_max × total_pct`` HP, modified
     # by heal_pct. Heals can crit if the actor carries heal_can_crit (the
     # crit roll is local — keeps this helper independent of CombatSession).
-    if actor.cleanse_heal_pct > 0 and actor.is_alive():
-        heal_amt = int(actor.hp_max * actor.cleanse_heal_pct * (1.0 + actor.heal_pct))
+    buff_cleanse_heal = float(get_combat_modifiers(actor).get("cleanse_heal_pct", 0.0))
+    total_cleanse_heal = actor.cleanse_heal_pct + buff_cleanse_heal
+    if total_cleanse_heal > 0 and actor.is_alive():
+        heal_amt = int(actor.hp_max * total_cleanse_heal * (1.0 + actor.heal_pct))
         if actor.heal_can_crit and rng.random() < 0.25:
             heal_amt = int(heal_amt * 1.5)
         applied = min(heal_amt, actor.hp_max - actor.hp)
         if applied > 0:
             actor.hp += applied
             log.append(f"    💚 Liên Hoa Tịnh Hóa: +{applied:,} HP")
+
+    # Cam Lộ Tịnh Hóa post-cleanse proc — when the cleanse aura is the one
+    # driving this pulse, also stamp Cam Lộ Long Lực (+20% thuy dmg for 1
+    # turn). Buff-specific so the amp doesn't free-ride on every cleanse
+    # source (Phá Ma Chân Ngôn / Quang Linh Căn / Thánh Quang Thuẫn).
+    from src.game.constants.effects import EffectKey
+    from src.game.engine.effects import default_duration
+    if actor.has_effect(EffectKey.BUFF_CAM_LO_TINH_HOA) and actor.is_alive():
+        actor.apply_effect(
+            EffectKey.BUFF_CAM_LO_LONG_LUC,
+            default_duration(EffectKey.BUFF_CAM_LO_LONG_LUC),
+        )
+        log.append(
+            f"    🐉 **{actor.name}** Cam Lộ Long Lực [+20% ST Thủy, 1t]"
+        )
 
     # Cleanse Retaliate — Đế Tịnh Quang Thể's "Tịnh Hóa Phản Đòn". Quang-
     # flavored damage = ``matk × pct`` lands on the cleanser's opponent.
@@ -165,9 +195,12 @@ def try_cleanse(
         and opponent.is_alive()
     ):
         retal_dmg = max(1, int(actor.matk * actor.cleanse_retaliate_dmg_pct))
-        # Quang resistance reduces the hit (target's own res clamps it)
-        from src.game.constants.balance import MAX_ELEMENTAL_RES
-        target_res = max(0.0, min(MAX_ELEMENTAL_RES, opponent.resistances.get("quang", 0.0)))
+        # Quang resistance reduces the hit (target's own res capped by their
+        # effective per-element cap — soft cap + bonus for player, hard cap
+        # for enemies).
+        from src.game.engine.effects import effective_res_cap
+        cap = effective_res_cap(opponent, "quang")
+        target_res = max(0.0, min(cap, opponent.resistances.get("quang", 0.0)))
         retal_dmg = max(1, int(retal_dmg * (1.0 - target_res)))
         opponent.take_damage(retal_dmg)
         log.append(f"    ☀️ Tịnh Hóa Phản Đòn → **{opponent.name}** -{retal_dmg:,} HP")

@@ -104,8 +104,12 @@
       ]
     },
     "passive_bonus": {
-      "crit_rating_vs_marked": 80,
-      "crit_dmg_vs_marked": 100
+      "crit_amp_vs": {
+        "marked": {
+          "rating": 80,
+          "dmg": 100
+        }
+      }
     },
     "description_vi": "Bội tâm của gió mưa — bạo kích vượt trội với mục tiêu bị Ấn Phong."
   },
@@ -193,7 +197,11 @@
       "element_pen": {
         "phong": 0.15
       },
-      "crit_rating_vs_marked": 120
+      "crit_amp_vs": {
+        "marked": {
+          "rating": 120
+        }
+      }
     },
     "description_vi": "Mão Phong Long — 40% Ấn Phong on-hit, xuyên 15% kháng Phong, bạo kích vs Ấn Phong."
   },
@@ -251,8 +259,12 @@
       ]
     },
     "passive_bonus": {
-      "crit_rating_vs_marked": 180,
-      "crit_dmg_vs_marked": 220
+      "crit_amp_vs": {
+        "marked": {
+          "rating": 180,
+          "dmg": 220
+        }
+      }
     },
     "description_vi": "Bội Phong Nguyên — bạo kích và sát thương bạo kinh hồn với mục tiêu bị đánh dấu."
   },
@@ -309,10 +321,14 @@
       ]
     },
     "passive_bonus": {
-      "crit_rating_vs_marked": 300,
-      "crit_dmg_vs_marked": 360,
       "element_pen": {
         "phong": 0.3
+      },
+      "crit_amp_vs": {
+        "marked": {
+          "rating": 300,
+          "dmg": 360
+        }
       }
     },
     "description_vi": "Mão Phong Tổ — bạo kích khổng lồ vs mục tiêu đánh dấu, xuyên 30% kháng Phong."

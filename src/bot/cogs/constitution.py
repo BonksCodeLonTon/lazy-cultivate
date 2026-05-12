@@ -33,14 +33,20 @@ from src.game.constants.grades import Grade
 from src.game.systems.the_chat import (
     HON_DON_KEY,
     activation_chance,
+    add_to_tracker,
     check_requirements,
     get_constitutions,
+    get_tracker,
     is_the_tu,
     max_slots,
+    remove_from_tracker,
     roll_activation,
     set_constitutions,
 )
+
+PHAM_THE_KEY = "ConstitutionPhamThe"
 from src.utils.embed_builder import base_embed, error_embed, success_embed
+from src.utils.discord_safe import safe_defer
 
 log = logging.getLogger(__name__)
 
@@ -69,10 +75,10 @@ def _required_materials(const_data: dict) -> dict[str, int]:
 async def _inventory_counts(irepo: InventoryRepository, player_id: int, keys) -> dict[str, int]:
     """Return {item_key: owned_qty} summed across every grade row.
 
-    Constitution materials may sit at the template grade for current
-    drops or at HOANG for legacy rows — so a single-grade lookup misses
-    half the stack. Counting every row keyed by ``item_key`` mirrors how
-    the alchemy/forge consume paths total their stacks before deducting.
+    Constitution materials may sit at multiple grade rows so a single-grade
+    lookup misses partial stacks. Counting every row keyed by ``item_key``
+    mirrors how the alchemy/forge consume paths total their stacks before
+    deducting.
     """
     keyset = set(keys)
     counts: dict[str, int] = {k: 0 for k in keyset}
@@ -134,6 +140,9 @@ _BONUS_FORMATTERS: list[tuple[str, str]] = [
     ("heal_reduce_on_hit_pct",        "🚫 Giảm Hồi {pct:.0f}%"),
     ("cleanse_on_turn_pct",           "✨ Thanh Tẩy +{pct:.0f}%"),
     ("true_dmg_pct",                  "🗡️ ST Chuẩn {pct:.0f}%"),
+    ("life_steal_pct",                "🩸 Hút Máu +{pct:.0f}% ST gây ra"),
+    ("crit_dmg_rating_to_dmg_pct",    "💥 Hủy Diệt Hóa Hình: +{pct:.0f}% Bạo Kích DMG Rating → ST cuối"),
+    ("armor_pen_pct",                 "🗡️ Xuyên Giáp +{pct:.0f}%"),
     ("thorn_pct",                     "🌵 Phản +{pct:.0f}% lại kẻ địch"),
     ("shield_regen_pct",              "🛡️ Hồi Khiên {pct:.1f}% Khiên/lượt"),
     ("shield_regen_flat",             "🛡️ Hồi Khiên +{flat}/lượt"),
@@ -260,8 +269,9 @@ def _render_equipped_lines(equipped: list[str]) -> str:
 
 def _hub_embed(player, key_counts: dict[str, int]) -> discord.Embed:
     equipped = get_constitutions(player.constitution_type)
-    the_tu = is_the_tu(player.body_realm, player.qi_realm, player.formation_realm)
-    slot_cap = max_slots(player.body_realm, player.qi_realm, player.formation_realm)
+    tracker = get_tracker(player.constitution_tracker)
+    the_tu = is_the_tu(player.active_axis)
+    slot_cap = max_slots(player.active_axis, player.body_realm)
 
     mat_lines = []
     for k in _HUB_KEY_MATERIALS:
@@ -279,6 +289,10 @@ def _hub_embed(player, key_counts: dict[str, int]) -> discord.Embed:
         f"🔢 Slot trang bị: **{len(standard_equipped)}/{slot_cap}**"
         + (" + 🌌 Hỗn Độn" if hon_don else "")
     )
+    # Tracker count excludes Phàm Thể (the default "no constitution" state) so
+    # the displayed number matches the player's earned roster.
+    tracker_count = len([k for k in tracker if k != PHAM_THE_KEY])
+    tracker_line = f"📚 Đã lĩnh ngộ: **{tracker_count}** Thể Chất"
     path_hint = (
         "Thể Tu mở khóa thêm 1 slot mỗi khi đột phá Luyện Thể, tối đa 8 slot. "
         "Khi đủ 8 slot đều là Truyền Thuyết có thể khai mở **Hỗn Độn Đạo Thể**."
@@ -286,13 +300,18 @@ def _hub_embed(player, key_counts: dict[str, int]) -> discord.Embed:
         "Chỉ Thể Tu mới có nhiều slot. Con đường Khí Tu / Trận Tu chỉ có thể "
         "mang **1 Thể Chất** duy nhất."
     )
+    swap_hint = (
+        "💡 Đã lĩnh ngộ rồi thì có thể trang bị / gỡ tự do qua dropdown "
+        "**📚 Đã lĩnh ngộ** mà không tốn nguyên liệu."
+    )
 
     desc = (
         f"{path_tag}   ·   {slot_line}\n"
+        f"{tracker_line}   ·   "
         f"{emojis.for_currency('merit')} Công Đức: **{player.merit:,}**\n\n"
         f"**Đang trang bị:**\n{_render_equipped_lines(equipped)}\n\n"
         f"{mat_block}\n\n"
-        f"{path_hint}"
+        f"{path_hint}\n{swap_hint}"
     )
     return base_embed("🧬 Thể Chất Bảng", desc, color=0xB8860B)
 
@@ -321,24 +340,47 @@ def _detail_embed(
 
     desc_parts.append("\n" + " • ".join(tags))
 
-    # ── Success chance preview ────────────────────────────────────────────
-    chance = activation_chance(
-        const_data, player.body_realm, player.qi_realm, player.formation_realm,
-    )
-    the_tu = is_the_tu(player.body_realm, player.qi_realm, player.formation_realm)
-    bonus_tag = " (có +20% Thể Tu)" if the_tu else ""
-    desc_parts.append(f"\n🎲 **Tỉ lệ thành công:** {chance * 100:.0f}%{bonus_tag}")
+    # ── Success chance preview (only meaningful for first-time activation) ──
+    the_tu = is_the_tu(player.active_axis)
+    if const_data["key"] not in get_tracker(player.constitution_tracker):
+        chance = activation_chance(const_data, player.active_axis)
+        bonus_tag = " (có +20% Thể Tu)" if the_tu else ""
+        desc_parts.append(f"\n🎲 **Tỉ lệ thành công:** {chance * 100:.0f}%{bonus_tag}")
 
-    # ── Slot status ──────────────────────────────────────────────────────
+    # ── Slot / ownership status ──────────────────────────────────────────
     equipped = get_constitutions(player.constitution_type)
-    slot_cap = max_slots(player.body_realm, player.qi_realm, player.formation_realm)
+    tracker = get_tracker(player.constitution_tracker)
+    slot_cap = max_slots(player.active_axis, player.body_realm)
     standard_equipped = [k for k in equipped if k != HON_DON_KEY]
     already = const_data["key"] in equipped
+    in_tracker = const_data["key"] in tracker
     is_hon_don = const_data["key"] == HON_DON_KEY
-    if is_hon_don:
+    if already:
+        desc_parts.append("\n✅ *Đang trang bị — bấm **Gỡ Bỏ** để tháo ra.*")
+    elif in_tracker:
+        if is_hon_don:
+            desc_parts.append("\n📚 *Đã lĩnh ngộ — sẽ gắn vào slot đặc biệt thứ 9 (Hỗn Độn).*")
+        elif the_tu:
+            if len(standard_equipped) < slot_cap:
+                desc_parts.append(
+                    "\n📚 *Đã lĩnh ngộ — sẽ trang bị vào slot trống "
+                    f"({len(standard_equipped) + 1}/{slot_cap}). Miễn phí.*"
+                )
+            else:
+                desc_parts.append(
+                    f"\n🚫 *Đã đầy {slot_cap}/{slot_cap} slot — gỡ bớt một Thể Chất trước.*"
+                )
+        else:
+            if standard_equipped:
+                cur = registry.get_constitution(standard_equipped[0]) or {}
+                desc_parts.append(
+                    "\n📚 *Đã lĩnh ngộ — sẽ thay thế Thể Chất hiện tại: "
+                    f"{cur.get('vi', standard_equipped[0])}. Miễn phí.*"
+                )
+            else:
+                desc_parts.append("\n📚 *Đã lĩnh ngộ — sẵn sàng trang bị. Miễn phí.*")
+    elif is_hon_don:
         desc_parts.append("\n🌌 *Kích hoạt vào slot đặc biệt thứ 9 (Hỗn Độn).*")
-    elif already:
-        desc_parts.append("\n✅ *Đang trang bị.*")
     elif the_tu:
         if len(standard_equipped) < slot_cap:
             desc_parts.append(
@@ -355,19 +397,23 @@ def _detail_embed(
                 f"\n🔄 *Sẽ thay thế Thể Chất hiện tại: {cur.get('vi', standard_equipped[0])}.*"
             )
 
-    materials = _required_materials(const_data)
-    desc_parts.append(
-        "\n**Nguyên liệu cần:**\n" + _format_materials(materials, owned_materials)
-    )
-    if cost_stones > 0:
+    # Materials/cost are only relevant for first-time activation. Once a Thể
+    # Chất is in the tracker, equip/unequip is free, so showing the cost block
+    # would be misleading.
+    if not in_tracker:
+        materials = _required_materials(const_data)
         desc_parts.append(
-            f"\n**Hỗn Nguyên Thạch:** {emojis.for_currency('primordial_stones')} "
-            f"{cost_stones:,} (hiện có: {player.primordial_stones:,})"
+            "\n**Nguyên liệu cần:**\n" + _format_materials(materials, owned_materials)
         )
-    if cost_merit > 0 or cost_stones <= 0:
-        desc_parts.append(
-            f"\n**Công Đức:** {emojis.for_currency('merit')} {cost_merit:,} (hiện có: {player.merit:,})"
-        )
+        if cost_stones > 0:
+            desc_parts.append(
+                f"\n**Hỗn Nguyên Thạch:** {emojis.for_currency('primordial_stones')} "
+                f"{cost_stones:,} (hiện có: {player.primordial_stones:,})"
+            )
+        if cost_merit > 0 or cost_stones <= 0:
+            desc_parts.append(
+                f"\n**Công Đức:** {emojis.for_currency('merit')} {cost_merit:,} (hiện có: {player.merit:,})"
+            )
 
     return base_embed(title, "\n".join(p for p in desc_parts if p), color=meta["color"])
 
@@ -417,7 +463,8 @@ class _ElementFilterSelect(discord.ui.Select):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _open_hub(
             interaction, self._discord_id, self._back_fn,
             rarity=self._rarity, element_filter=self.values[0],
@@ -483,36 +530,52 @@ class _RaritySelect(discord.ui.Select):
             return
         key = self.values[0]
         if key == "__none__":
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             return
         await _open_detail(interaction, self._discord_id, key, self._back_fn)
 
 
-class _RemoveSelect(discord.ui.Select):
-    """Remove dropdown — lists currently equipped constitutions (Thể Tu only).
-    The non-Thể-Tu single-slot is forced to replace-on-activate, so removing
-    the sole entry would leave them bare; disabled for that path.
+class _TrackerSelect(discord.ui.Select):
+    """Owned-Thể-Chất dropdown — lists everything in the activation tracker.
+
+    Selecting an entry routes to the detail view, where the action button
+    becomes context-aware (Equip if owned-but-unequipped, Unequip if
+    currently equipped). Capped at 25 options by Discord's Select limit; if
+    the player owns more, the rarity-filtered browse dropdown still surfaces
+    them via the standard navigation.
     """
 
     def __init__(
-        self, discord_id: int, equipped: list[str], back_fn, row: int = 2,
+        self, discord_id: int, tracker: list[str], equipped: list[str],
+        back_fn, row: int = 3,
     ) -> None:
         self._discord_id = discord_id
         self._back_fn = back_fn
+        # Hide Phàm Thể from the tracker — it's the "no constitution" default
+        # and doesn't represent a real unlock.
+        visible = [k for k in tracker if k != PHAM_THE_KEY]
         options: list[discord.SelectOption] = []
-        for k in equipped[:25]:
+        for k in visible[:25]:
             c = registry.get_constitution(k)
             if not c:
                 options.append(discord.SelectOption(label=k[:100], value=k))
                 continue
             meta = _RARITY_META.get(c.get("rarity", "common"), _RARITY_META["common"])
+            is_eq = k in equipped
+            label = c["vi"][:100]
+            description = ("⚙️ Đang trang bị" if is_eq else "📚 Đã lĩnh ngộ")
             options.append(discord.SelectOption(
-                label=c["vi"][:100], value=k,
+                label=label, value=k,
+                description=description,
                 emoji=meta["emoji"],
             ))
         if not options:
-            options = [discord.SelectOption(label="(không có)", value="__none__")]
-        super().__init__(placeholder="🗑️ Gỡ một Thể Chất...", options=options, row=row)
+            options = [discord.SelectOption(label="(chưa lĩnh ngộ Thể Chất nào)", value="__none__")]
+        super().__init__(
+            placeholder="📚 Đã lĩnh ngộ — chọn để trang bị / gỡ...",
+            options=options, row=row,
+        )
 
     async def callback(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self._discord_id:
@@ -520,54 +583,24 @@ class _RemoveSelect(discord.ui.Select):
             return
         key = self.values[0]
         if key == "__none__":
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             return
-        await interaction.response.defer()
-
-        async with get_session() as session:
-            prepo = PlayerRepository(session)
-            player = await prepo.get_by_discord_id(interaction.user.id)
-            if player is None:
-                await interaction.edit_original_response(
-                    embed=error_embed("Chưa có nhân vật."), view=None,
-                )
-                return
-            equipped = get_constitutions(player.constitution_type)
-            if key not in equipped:
-                await interaction.edit_original_response(
-                    embed=error_embed("Thể Chất này không còn được trang bị."),
-                )
-                return
-            if not is_the_tu(
-                player.body_realm, player.qi_realm, player.formation_realm,
-            ):
-                await interaction.edit_original_response(
-                    embed=error_embed(
-                        "Chỉ Thể Tu mới có thể gỡ Thể Chất thủ công — đường "
-                        "Khí Tu / Trận Tu chỉ có 1 slot, hãy kích hoạt cái "
-                        "mới để thay thế."
-                    ),
-                )
-                return
-            equipped.remove(key)
-            if not equipped:
-                equipped = ["ConstitutionPhamThe"]
-            player.constitution_type = set_constitutions(equipped)
-            await prepo.save(player)
-
-        await _open_hub(interaction, self._discord_id, self._back_fn)
+        await _open_detail(interaction, self._discord_id, key, self._back_fn)
 
 
 class TheChatHubView(discord.ui.View):
-    """Main roster — rarity tab buttons + rarity-filtered select + remove.
+    """Main roster — rarity tabs + browse select + tracker select.
 
-    The Remove dropdown is only rendered for Thể Tu with standard slots to
-    unequip; other paths always replace-on-activate.
+    The tracker dropdown surfaces every Thể Chất the player has activated so
+    they can equip / unequip without re-paying. It's hidden when the player
+    has no real unlocks (only the default Phàm Thể).
     """
 
     def __init__(
         self, discord_id: int, rarity: str, back_fn,
-        equipped: list[str] | None = None, show_remove: bool = False,
+        equipped: list[str] | None = None,
+        tracker: list[str] | None = None,
         element_filter: str | None = None,
     ) -> None:
         super().__init__(timeout=300)
@@ -580,7 +613,7 @@ class TheChatHubView(discord.ui.View):
         #   row 0: rarity tabs            (5 buttons)
         #   row 1: element sub-filter     (Select)
         #   row 2: constitution dropdown  (Select)
-        #   row 3: remove (Thể Tu only)   (Select)
+        #   row 3: tracker dropdown       (Select, hidden when no unlocks)
         #   row 4: back button
         for r in ("common", "uncommon", "rare", "epic", "legendary"):
             meta = _RARITY_META[r]
@@ -597,8 +630,15 @@ class TheChatHubView(discord.ui.View):
             element_filter=self._element_filter, row=2,
         ))
 
-        if show_remove and equipped:
-            self.add_item(_RemoveSelect(discord_id, equipped, back_fn, row=3))
+        tracker = tracker or []
+        equipped = equipped or []
+        # Show the tracker dropdown whenever the player has unlocked anything
+        # beyond the default Phàm Thể.
+        has_unlocks = any(k for k in tracker if k != PHAM_THE_KEY)
+        if has_unlocks:
+            self.add_item(_TrackerSelect(
+                discord_id, tracker, equipped, back_fn, row=3,
+            ))
 
         if back_fn:
             back_btn = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=4)
@@ -612,7 +652,8 @@ class TheChatHubView(discord.ui.View):
                 return
             # Must ack the interaction BEFORE _open_hub calls edit_original_response —
             # otherwise the original-response webhook is 404 "Unknown Webhook".
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             # Preserve the element sub-filter across rarity switches so the
             # user doesn't have to re-pick their element each time.
             await _open_hub(
@@ -625,24 +666,44 @@ class TheChatHubView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 
 class ConstitutionDetailView(discord.ui.View):
+    """Detail view — primary action is context-aware:
+
+    - Equipped:         🔻 Gỡ Bỏ (free)
+    - Owned (tracker):  ⚙️ Trang Bị (free)
+    - Otherwise:        ✨ Kích Hoạt (pays cost + rolls activation chance)
+    """
+
     def __init__(
         self, discord_id: int, const_key: str, back_fn,
+        is_equipped: bool = False, in_tracker: bool = False,
     ) -> None:
         super().__init__(timeout=300)
         self._discord_id = discord_id
         self._const_key = const_key
         self._back_fn = back_fn
 
-        activate_btn = discord.ui.Button(
-            label="✨ Kích Hoạt", style=discord.ButtonStyle.success, row=0,
-        )
-        activate_btn.callback = self._activate_cb
-        self.add_item(activate_btn)
+        if is_equipped:
+            primary = discord.ui.Button(
+                label="🔻 Gỡ Bỏ", style=discord.ButtonStyle.danger, row=0,
+            )
+            primary.callback = self._unequip_cb
+        elif in_tracker:
+            primary = discord.ui.Button(
+                label="⚙️ Trang Bị", style=discord.ButtonStyle.success, row=0,
+            )
+            primary.callback = self._equip_cb
+        else:
+            primary = discord.ui.Button(
+                label="✨ Kích Hoạt", style=discord.ButtonStyle.success, row=0,
+            )
+            primary.callback = self._activate_cb
+        self.add_item(primary)
 
         back_btn = discord.ui.Button(
             label="◀ Danh sách", style=discord.ButtonStyle.secondary, row=0,
@@ -650,12 +711,123 @@ class ConstitutionDetailView(discord.ui.View):
         back_btn.callback = self._back_to_hub_cb
         self.add_item(back_btn)
 
+    async def _equip_cb(self, interaction: discord.Interaction) -> None:
+        """Equip an already-unlocked Thể Chất (free, no roll)."""
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        const_data = registry.get_constitution(self._const_key)
+        if not const_data:
+            await interaction.edit_original_response(
+                embed=error_embed("Thể Chất không tồn tại."), view=None,
+            )
+            return
+
+        async with get_session() as session:
+            prepo = PlayerRepository(session)
+            player = await prepo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.edit_original_response(
+                    embed=error_embed("Chưa có nhân vật."), view=None,
+                )
+                return
+
+            tracker = get_tracker(player.constitution_tracker)
+            if self._const_key not in tracker:
+                await interaction.edit_original_response(
+                    embed=error_embed(
+                        "Chưa lĩnh ngộ Thể Chất này — cần kích hoạt trước."
+                    ),
+                )
+                return
+
+            equipped = get_constitutions(player.constitution_type)
+            if self._const_key in equipped:
+                await interaction.edit_original_response(
+                    embed=error_embed("Đã trang bị Thể Chất này rồi."),
+                )
+                return
+
+            the_tu = is_the_tu(player.active_axis)
+            slot_cap = max_slots(player.active_axis, player.body_realm)
+            standard_equipped = [k for k in equipped if k != HON_DON_KEY]
+            is_hon_don = self._const_key == HON_DON_KEY
+
+            if the_tu and not is_hon_don and len(standard_equipped) >= slot_cap:
+                await interaction.edit_original_response(
+                    embed=error_embed(
+                        f"Đã đầy {slot_cap}/{slot_cap} slot Thể Chất. "
+                        "Gỡ một Thể Chất khỏi bảng trước khi trang bị."
+                    ),
+                )
+                return
+
+            if the_tu and not is_hon_don:
+                new_equipped = list(equipped) + [self._const_key]
+            elif is_hon_don:
+                new_equipped = [k for k in equipped if k != HON_DON_KEY] + [HON_DON_KEY]
+            else:
+                # Non-Thể Tu: replace standard slot, preserve Hỗn Độn (9th slot).
+                new_equipped = (
+                    [k for k in equipped if k == HON_DON_KEY] + [self._const_key]
+                )
+            player.constitution_type = set_constitutions(new_equipped)
+            await prepo.save(player)
+
+        await _open_hub(
+            interaction, self._discord_id, self._back_fn,
+            rarity=const_data.get("rarity", "common"),
+            element_filter=const_data.get("element") or "universal",
+        )
+
+    async def _unequip_cb(self, interaction: discord.Interaction) -> None:
+        """Unequip a currently-equipped Thể Chất. Stays in the tracker."""
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        const_data = registry.get_constitution(self._const_key) or {}
+
+        async with get_session() as session:
+            prepo = PlayerRepository(session)
+            player = await prepo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.edit_original_response(
+                    embed=error_embed("Chưa có nhân vật."), view=None,
+                )
+                return
+
+            equipped = get_constitutions(player.constitution_type)
+            if self._const_key not in equipped:
+                await interaction.edit_original_response(
+                    embed=error_embed("Thể Chất này không còn được trang bị."),
+                )
+                return
+
+            equipped.remove(self._const_key)
+            # Phàm Thể is the implicit "no constitution" state. Single-slot
+            # paths fall back to it when fully unequipped so combat code
+            # never sees a nameless slot.
+            if not equipped:
+                equipped = [PHAM_THE_KEY]
+            player.constitution_type = set_constitutions(equipped)
+            await prepo.save(player)
+
+        await _open_hub(
+            interaction, self._discord_id, self._back_fn,
+            rarity=const_data.get("rarity", "common"),
+            element_filter=const_data.get("element") or "universal",
+        )
+
     async def _activate_cb(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
-
+        if not await safe_defer(interaction):
+            return
         const_data = registry.get_constitution(self._const_key)
         if not const_data:
             await interaction.edit_original_response(
@@ -680,16 +852,25 @@ class ConstitutionDetailView(discord.ui.View):
                 return
 
             # ── Slot rules ───────────────────────────────────────────────
-            the_tu = is_the_tu(
-                player.body_realm, player.qi_realm, player.formation_realm,
-            )
-            slot_cap = max_slots(
-                player.body_realm, player.qi_realm, player.formation_realm,
-            )
+            the_tu = is_the_tu(player.active_axis)
+            slot_cap = max_slots(player.active_axis, player.body_realm)
             standard_equipped = [k for k in equipped if k != HON_DON_KEY]
             is_hon_don = self._const_key == HON_DON_KEY
+            # Progression chains (e.g. Hoang Cổ Thánh Thể tier 1 → 2) consume
+            # the predecessor on success, so a full-slot Thể Tu can still
+            # upgrade in place — net slot count is unchanged. Skip the
+            # slot-full guard when the predecessor is currently equipped.
+            progress_from = const_data.get("progresses_from")
+            replaces_in_place = bool(
+                progress_from and progress_from in standard_equipped
+            )
 
-            if the_tu and not is_hon_don and len(standard_equipped) >= slot_cap:
+            if (
+                the_tu
+                and not is_hon_don
+                and not replaces_in_place
+                and len(standard_equipped) >= slot_cap
+            ):
                 await interaction.edit_original_response(
                     embed=error_embed(
                         f"Đã đầy {slot_cap}/{slot_cap} slot Thể Chất. "
@@ -753,19 +934,17 @@ class ConstitutionDetailView(discord.ui.View):
                 player.primordial_stones -= cost_stones
 
             # ── Roll the activation chance ────────────────────────────────
-            chance = activation_chance(
-                const_data, player.body_realm, player.qi_realm, player.formation_realm,
-            )
-            succeeded = roll_activation(
-                const_data, player.body_realm, player.qi_realm, player.formation_realm,
-            )
+            chance = activation_chance(const_data, player.active_axis)
+            succeeded = roll_activation(const_data, player.active_axis)
 
             if succeeded:
                 # Progression chain: a Thể Chất can declare ``progresses_from``
                 # so activation consumes the predecessor (e.g. Thôn Thiên Ma
-                # Tâm → Thôn Thiên Ma Thể). The predecessor is unequipped so
-                # the upgrade doesn't simultaneously occupy two slots.
-                progress_from = const_data.get("progresses_from")
+                # Tâm → Thôn Thiên Ma Thể). The predecessor is unequipped AND
+                # removed from the tracker so the upgrade doesn't leave the
+                # earlier form re-equippable. ``progress_from`` was resolved
+                # in the slot-rules section above so the slot-full guard can
+                # treat in-place upgrades correctly.
                 base_equipped = (
                     [k for k in equipped if k != progress_from]
                     if progress_from else list(equipped)
@@ -782,6 +961,14 @@ class ConstitutionDetailView(discord.ui.View):
                             k for k in base_equipped if k == HON_DON_KEY
                         ] + [self._const_key]
                 player.constitution_type = set_constitutions(new_equipped)
+                # Tracker bookkeeping: record the new unlock; drop the
+                # predecessor since it transformed into this entry.
+                tracker_raw = player.constitution_tracker
+                if progress_from:
+                    tracker_raw = remove_from_tracker(tracker_raw, progress_from)
+                player.constitution_tracker = add_to_tracker(
+                    tracker_raw, self._const_key,
+                )
             await prepo.save(player)
 
         mat_summary_lines = []
@@ -813,10 +1000,15 @@ class ConstitutionDetailView(discord.ui.View):
             )
             embed = error_embed(msg)
 
+        # Pass post-save tracker/equipped so the tracker dropdown immediately
+        # reflects the new unlock without an extra DB roundtrip.
         await interaction.edit_original_response(
             embed=embed,
             view=TheChatHubView(
                 self._discord_id, const_data.get("rarity", "common"), self._back_fn,
+                equipped=get_constitutions(player.constitution_type),
+                tracker=get_tracker(player.constitution_tracker),
+                element_filter=const_data.get("element") or "universal",
             ),
         )
 
@@ -824,7 +1016,8 @@ class ConstitutionDetailView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         const_data = registry.get_constitution(self._const_key) or {}
         rarity = const_data.get("rarity", "common")
         # Land back on the same element bucket the user was browsing — for an
@@ -851,7 +1044,8 @@ async def _open_hub(
     # Defensive ack — if a caller forgot to defer, we self-defer so
     # ``edit_original_response`` below doesn't 404 with "Unknown Webhook".
     if not interaction.response.is_done():
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
     async with get_session() as session:
         prepo = PlayerRepository(session)
         player = await prepo.get_by_discord_id(discord_id)
@@ -872,13 +1066,10 @@ async def _open_hub(
 
     embed = _hub_embed(player, key_counts)
     equipped = get_constitutions(player.constitution_type)
-    the_tu = is_the_tu(player.body_realm, player.qi_realm, player.formation_realm)
-    # Offer the Gỡ dropdown only when Thể Tu has more than one slot worth to
-    # manage (single-entry Thể Tu would be back to empty on remove).
-    show_remove = the_tu and len(equipped) > 1
+    tracker = get_tracker(player.constitution_tracker)
     view = TheChatHubView(
         discord_id, rarity, back_fn,
-        equipped=equipped, show_remove=show_remove,
+        equipped=equipped, tracker=tracker,
         element_filter=element_filter,
     )
     await interaction.edit_original_response(embed=embed, view=view)
@@ -888,8 +1079,8 @@ async def _open_detail(
     interaction: discord.Interaction, discord_id: int, const_key: str, back_fn,
 ) -> None:
     if not interaction.response.is_done():
-        await interaction.response.defer()
-
+        if not await safe_defer(interaction):
+            return
     const_data = registry.get_constitution(const_key)
     if not const_data:
         await interaction.edit_original_response(
@@ -910,8 +1101,14 @@ async def _open_detail(
             irepo, player.id, _required_materials(const_data).keys(),
         )
 
+    equipped = get_constitutions(player.constitution_type)
+    tracker = get_tracker(player.constitution_tracker)
     embed = _detail_embed(player, const_data, owned)
-    view = ConstitutionDetailView(discord_id, const_key, back_fn)
+    view = ConstitutionDetailView(
+        discord_id, const_key, back_fn,
+        is_equipped=(const_key in equipped),
+        in_tracker=(const_key in tracker),
+    )
     await interaction.edit_original_response(embed=embed, view=view)
 
 

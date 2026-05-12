@@ -46,7 +46,7 @@
       "pool_id": "zone8_gem2"
     },
     {
-      "item_key": "GemTo_2",
+      "item_key": "GemTho_2",
       "weight": 120000,
       "qty_min": 1,
       "qty_max": 1,
@@ -74,39 +74,39 @@
       "pool_id": "zone8_gem2"
     },
     {
-      "item_key": "GemKim_3",
+      "item_key": "GemKim_4",
       "weight": 80000,
       "qty_min": 1,
       "qty_max": 1,
-      "pool_id": "zone8_gem3"
+      "pool_id": "zone8_gem4"
     },
     {
-      "item_key": "GemMoc_3",
+      "item_key": "GemMoc_4",
       "weight": 80000,
       "qty_min": 1,
       "qty_max": 1,
-      "pool_id": "zone8_gem3"
+      "pool_id": "zone8_gem4"
     },
     {
-      "item_key": "GemLoi_3",
+      "item_key": "GemLoi_4",
       "weight": 80000,
       "qty_min": 1,
       "qty_max": 1,
-      "pool_id": "zone8_gem3"
+      "pool_id": "zone8_gem4"
     },
     {
-      "item_key": "GemHoa_3",
+      "item_key": "GemHoa_4",
       "weight": 80000,
       "qty_min": 1,
       "qty_max": 1,
-      "pool_id": "zone8_gem3"
+      "pool_id": "zone8_gem4"
     },
     {
-      "item_key": "GemThuy_3",
+      "item_key": "GemThuy_4",
       "weight": 80000,
       "qty_min": 1,
       "qty_max": 1,
-      "pool_id": "zone8_gem3"
+      "pool_id": "zone8_gem4"
     },
     {
       "item_key": "ChestDia",

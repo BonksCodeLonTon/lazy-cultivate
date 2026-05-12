@@ -16,7 +16,7 @@ import pytest
 
 from src.data.registry import registry
 from src.game.constants.elements import ALL_ELEMENTS
-from src.game.systems.forge import _get_affix_bias
+from src.game.systems.forge import _get_affix_bias_weights
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -54,19 +54,19 @@ def test_res_materials_loaded_for_every_element():
 
 def test_get_affix_bias_dmg_material_for_each_element():
     for e in ALL_ELEMENTS:
-        bias = _get_affix_bias([f"MatElemDmg{e.value.capitalize()}"])
-        assert bias == {f"pfx_dmg_{e.value}"}
+        weights = _get_affix_bias_weights([f"MatElemDmg{e.value.capitalize()}"])
+        assert set(weights) == {f"pfx_dmg_{e.value}"}
 
 
 def test_get_affix_bias_res_material_for_each_element():
     for e in ALL_ELEMENTS:
-        bias = _get_affix_bias([f"MatElemRes{e.value.capitalize()}"])
-        assert bias == {f"sfx_res_{e.value}"}
+        weights = _get_affix_bias_weights([f"MatElemRes{e.value.capitalize()}"])
+        assert set(weights) == {f"sfx_res_{e.value}"}
 
 
 def test_mixed_dmg_and_res_materials_union_correctly():
-    bias = _get_affix_bias(["MatElemDmgKim", "MatElemResHoa"])
-    assert bias == {"pfx_dmg_kim", "sfx_res_hoa"}
+    weights = _get_affix_bias_weights(["MatElemDmgKim", "MatElemResHoa"])
+    assert set(weights) == {"pfx_dmg_kim", "sfx_res_hoa"}
 
 
 # ── Zone loot tables ───────────────────────────────────────────────────────

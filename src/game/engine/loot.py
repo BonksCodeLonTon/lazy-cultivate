@@ -46,8 +46,9 @@ def inject_scroll_drops(
     Args:
         items:       Registry's items dict (key → item).
         skills:      Registry's skills dict (key → skill).
-        zone_realm:  Zone number — a scroll qualifies iff its underlying
-                     skill has ``realm ≤ zone_realm``.
+        zone_realm:  Zone number — kept for the call signature, no longer
+                     gates which scrolls are eligible (skills no longer
+                     carry a realm field).
         static:      The zone's static drop entries (used to size injection).
         target_share: Optional override for share targets. Default keeps
                      grade-3 at 5% and grade-4 at 1% per roll.
@@ -56,6 +57,7 @@ def inject_scroll_drops(
         List of drop entries (``item_key``, ``weight``, ``qty_min/max``).
         Empty when the zone has no static weight or no qualifying scrolls.
     """
+    del zone_realm  # accepted for back-compat; ignored after realm removal
     shares = target_share if target_share is not None else SCROLL_DROP_TARGET_SHARE
     leftover = 1.0 - sum(shares.values())
     if leftover <= 0:
@@ -75,10 +77,7 @@ def inject_scroll_drops(
         grade = int(item.get("grade", 0))
         if grade not in by_grade:
             continue
-        skill = skills.get(skill_key)
-        if skill is None:
-            continue
-        if skill.get("realm", 99) > zone_realm:
+        if skill_key not in skills:
             continue
         by_grade[grade].append(item)
 

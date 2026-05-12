@@ -1,0 +1,64 @@
+[
+  {
+    "key": "NhatNguyenKim",
+    "vi": "Nhất Nguyên Kim Trận",
+    "en": "One Origin Metal Formation",
+    "element": "kim",
+    "base_stat_bonus": {
+      "hp_pct": 0.05,
+      "mp_pct": 0.02
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "hp_pct": 0.03,
+        "note": "Sơ Khai Kim Trận"
+      },
+      "3": {
+        "hp_pct": 0.08,
+        "note": "Kiên Cố Kim Trận"
+      },
+      "5": {
+        "hp_pct": 0.15,
+        "note": "Thịnh Vượng Kim Trận"
+      },
+      "7": {
+        "hp_pct": 0.25,
+        "crit_res_rating": 50,
+        "note": "Vô Song Kim Trận"
+      },
+      "10": {
+        "hp_pct": 0.5,
+        "crit_res_rating": 150,
+        "final_dmg_reduce": 0.1,
+        "note": "Tuyệt Đỉnh Kim Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmKim",
+      "vi": "Nhất Nguyên Kim Thức",
+      "en": "One Origin Metal Form",
+      "scroll_grade": 2,
+      "category": "formation",
+      "element": "kim",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 1.0,
+        "matk": 0.0
+      },
+      "mp_cost": 52,
+      "cooldown": 3,
+      "base_dmg": 345,
+      "effects": [
+        "DebuffPhaGiap"
+      ],
+      "effect_overrides": {
+        "DebuffPhaGiap": {
+          "stat_bonus": {
+            "final_dmg_reduce": -0.15
+          }
+        }
+      },
+      "reserved_mp_pct": 0.06
+    }
+  }
+]

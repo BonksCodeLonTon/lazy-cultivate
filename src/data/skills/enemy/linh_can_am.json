@@ -3,7 +3,6 @@
     "key": "EnemyLCAm_T1",
     "vi": "Hắc Diệu Trảm",
     "en": "Black Obsidian Slash",
-    "realm": 2,
     "category": "attack",
     "element": "am",
     "attack_type": "physical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 12,
     "cooldown": 1,
-    "base_dmg": 17,
+    "base_dmg": 34,
     "effects": [
       "DebuffChayMau"
     ],
@@ -26,7 +25,6 @@
     "key": "EnemyLCAm_T2",
     "vi": "U Minh Thực Hồn",
     "en": "Netherworld Soul Devour",
-    "realm": 4,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
@@ -36,7 +34,7 @@
     },
     "mp_cost": 26,
     "cooldown": 2,
-    "base_dmg": 36,
+    "base_dmg": 144,
     "effects": [
       "DebuffXeRach"
     ],
@@ -49,7 +47,6 @@
     "key": "EnemyLCAm_T3",
     "vi": "Tử Khí Hư Linh",
     "en": "Death Aura Hollow Spirit",
-    "realm": 6,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
@@ -59,7 +56,7 @@
     },
     "mp_cost": 44,
     "cooldown": 3,
-    "base_dmg": 80,
+    "base_dmg": 480,
     "effects": [
       "DebuffXeRach",
       "DebuffChayMau"

@@ -126,6 +126,7 @@ def _build_endgame_the_tu() -> Character:
         body_realm=8, body_level=9,              # maxed body
         qi_realm=0,   qi_level=1,                # intentional low — is_the_tu gate
         formation_realm=0, formation_level=1,
+        active_axis="body",                       # Thể Tu path → all 8 + Hỗn Độn slots
         constitution_type=set_constitutions(constitutions),
         dao_ti_unlocked=True,
         linh_can=list(ALL_LINH_CAN),
@@ -183,6 +184,9 @@ def _run_one_session(
         player_skill_keys=skills,
         rng=random.Random(seed),
         max_turns=ATTACK_ROUND_LIMIT,
+        # World-boss attack windows hit the round limit normally — chipping
+        # away across many sessions is the design, not a defeat.
+        max_turns_is_defeat=False,
     )
     result = session.run()
 
@@ -263,14 +267,13 @@ def test_endgame_the_tu_vs_r9_world_boss_is_overtuned(boss_key):
         f"if this starts failing, the body-cultivator power fantasy is broken "
         f"and this test can be relaxed."
     )
-    # 2) The 5 % per-attack cap exists precisely to prevent a single whale
-    # from one-shotting a realm-9 boss. An over-tuned build will routinely
-    # blast past that cap inside the 15-round window. Seeing >= 50 % of
-    # sessions hit the cap is the smoking gun.
-    assert report["cap_hits"] >= report["sessions"] // 2, (
-        f"{boss_key}: only {report['cap_hits']}/{report['sessions']} sessions hit "
-        f"the {PER_ATTACK_DMG_CAP_PCT*100:.0f}% cap — if the Thể Tu rebalance worked, "
-        f"flip this to ``<=``."
+    # 2) Post-rebalance assertion (flipped from `>=`): the Thể Tu should NOT
+    # be smashing past the 5 % per-attack cap in most sessions. Anything
+    # under half-the-sessions hitting the cap means the build sits below
+    # the whale ceiling. Tighten this back if the build ever over-tunes.
+    assert report["cap_hits"] <= report["sessions"] // 2, (
+        f"{boss_key}: {report['cap_hits']}/{report['sessions']} sessions hit "
+        f"the {PER_ATTACK_DMG_CAP_PCT*100:.0f}% cap — Thể Tu may be over-tuned again."
     )
 
 
@@ -300,10 +303,13 @@ def test_endgame_the_tu_cap_spill_across_r9_bosses():
         f"(cap = {PER_ATTACK_DMG_CAP_PCT*100:.0f}%)\n"
         f"  worst case         : {max_pct*100:.2f}% of boss HP"
     )
-    assert avg_pct >= PER_ATTACK_DMG_CAP_PCT, (
+    # Post-rebalance assertion (flipped from `>=`): the Thể Tu's average
+    # uncapped output now sits BELOW the per-attack cap, confirming the
+    # whale ceiling isn't being routinely smashed.
+    assert avg_pct <= PER_ATTACK_DMG_CAP_PCT, (
         f"Average Thể Tu output per attack session = {avg_pct*100:.2f}% of boss HP, "
-        f"below the {PER_ATTACK_DMG_CAP_PCT*100:.0f}% per-attack cap. "
-        f"If the balance pass succeeded, update this snapshot."
+        f"at or above the {PER_ATTACK_DMG_CAP_PCT*100:.0f}% per-attack cap. "
+        f"Build may have re-overtuned — review."
     )
 
 
@@ -380,6 +386,7 @@ def _run_dungeon_boss(
         player=player, enemy=enemy,
         player_skill_keys=skills,
         rng=rng, max_turns=max_turns,
+        max_turns_is_defeat=False,
     )
     result = session.run()
     return DungeonBossOutcome(
@@ -488,9 +495,9 @@ _TRAN_TU_LINH_CAN: tuple[str, ...] = ("kim", "hoa", "loi", "phong", "quang", "am
 _TRAN_TU_ACTIVE_FORMATION: str = "CuuCungBatQua,NhatNguyenHoa,NhatNguyenLoi"
 
 _TRAN_TU_ENDGAME_SKILLS: list[str] = [
-    "SkillFrmHonNguyen_R9",     # 680 base, 1.0×atk + 1.0×matk, silence + armor break
-    "SkillFrmChuThien_R9",      # 700 base, 1.0×atk + 1.0×matk, stun + set damage
-    "SkillFrmThienMa_R8",       # 460 base, 0.8×atk + 0.8×matk, armor break
+    "SkillFrmCuuCung",          # neutral anchor — paired with CuuCungBatQua
+    "SkillFrmHoa",              # Hoa formation skill — paired with NhatNguyenHoa
+    "SkillFrmLoi",              # Loi formation skill — paired with NhatNguyenLoi
     "SkillAtkHoa_R9",           # elemental backup (non-formation)
     "SkillAtkLoi_R9",           # elemental backup
 ]
@@ -504,8 +511,8 @@ _TRAN_TU_ENDGAME_SKILLS: list[str] = [
 _TRAN_TU_GEM_MAP: dict[str, list[str]] = {
     "CuuCungBatQua": [
         "GemKim_3", "GemHoa_3", "GemLoi_3",
-        "GemMoc_3", "GemThuy_3", "GemTo_3",
-        "GemPhong_3", "GemAm_3", "GemDuong_3",
+        "GemMoc_3", "GemThuy_3", "GemTho_3",
+        "GemPhong_3", "GemAm_3", "GemQuang_3",
     ],
     "NhatNguyenHoa": [
         "GemHoa_3", "GemHoa_3", "GemHoa_3",
@@ -530,6 +537,7 @@ def _build_endgame_tran_tu() -> Character:
         body_realm=0, body_level=1,
         qi_realm=6,   qi_level=9,
         formation_realm=8, formation_level=9,
+        active_axis="formation",                  # Trận Tu path → 3 formation slots
         constitution_type=set_constitutions(list(_TRAN_TU_CONSTITUTIONS)),
         dao_ti_unlocked=False,
         linh_can=list(_TRAN_TU_LINH_CAN),

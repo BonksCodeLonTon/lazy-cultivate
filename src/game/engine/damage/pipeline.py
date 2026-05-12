@@ -41,14 +41,21 @@ def calculate_damage(
     """
     rng = rng or random.Random()
 
-    # Defender tries to dodge (evasion is a defender property)
-    if check_evasion(defender.evasion_rating, rng):
+    # Defender tries to dodge (evasion is a defender property), countered by
+    # the attacker's accuracy_rating via the same rating→pct curve as
+    # crit ↔ crit_res. ``skill.bypass_evasion`` short-circuits the roll —
+    # Tận Thế-class skills are guaranteed-hit by design, so even max evasion
+    # won't save the target.
+    if not skill.bypass_evasion and check_evasion(
+        defender.evasion_rating, rng, accuracy_rating=attacker.accuracy_rating,
+    ):
         return DamageResult(raw=0, final=0, is_crit=False, is_evaded=True, element=skill.element)
 
     raw = roll_base(
         skill.base_dmg, skill.mp_cost, rng,
         atk=attacker.atk, matk=attacker.matk, dmg_scale=skill.dmg_scale,
-        skill_realm=skill.realm,
+        crit_dmg_rating=attacker.crit_dmg_rating,
+        crit_dmg_rating_to_dmg_pct=attacker.crit_dmg_rating_to_dmg_pct,
     )
     dmg, is_crit = apply_critical(
         raw, attacker.crit_rating, defender.crit_res_rating, attacker.crit_dmg_rating, rng,
@@ -56,7 +63,10 @@ def calculate_damage(
     )
     # Physical defense — diminishing returns formula, capped at 75%, bypassed by magical/true
     dmg = apply_physical_defense(dmg, str(skill.attack_type), defender.def_stat, pen_pct)
-    dmg = apply_elemental(dmg, skill.element, defender.resistances, pen_pct)
+    dmg = apply_elemental(
+        dmg, skill.element, defender.resistances, pen_pct,
+        damage_taken_by_element=defender.damage_taken_by_element,
+    )
     dmg = apply_final_bonus(dmg, attacker.final_dmg_bonus)
 
     return DamageResult(raw=raw, final=dmg, is_crit=is_crit, is_evaded=False, element=skill.element)

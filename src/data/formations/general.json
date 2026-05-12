@@ -1,0 +1,144 @@
+[
+  {
+    "key": "KiemTran",
+    "vi": "Kiếm Trận",
+    "en": "Sword Formation",
+    "element": null,
+    "base_stat_bonus": {
+      "hp_pct": 0.03,
+      "mp_pct": 0.05
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "crit_dmg_rating": 30,
+        "note": "Sơ Khai Kiếm Trận"
+      },
+      "3": {
+        "crit_dmg_rating": 80,
+        "note": "Kiên Cố Kiếm Trận"
+      },
+      "5": {
+        "crit_dmg_rating": 150,
+        "crit_rating": 50,
+        "note": "Thịnh Vượng Kiếm Trận"
+      },
+      "7": {
+        "crit_dmg_rating": 250,
+        "crit_rating": 100,
+        "note": "Vô Song Kiếm Trận"
+      },
+      "10": {
+        "crit_dmg_rating": 500,
+        "crit_rating": 200,
+        "sword_aura": true,
+        "note": "Tuyệt Đỉnh Kiếm Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmKiem",
+      "vi": "Kiếm Trận Nhất Thức",
+      "en": "Sword Formation First Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": null,
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 1.15,
+        "matk": 0.0
+      },
+      "mp_cost": 125,
+      "cooldown": 4,
+      "base_dmg": 975,
+      "effects": [
+        "DebuffPhaGiap",
+        "DebuffChayMau"
+      ],
+      "effect_overrides": {
+        "DebuffPhaGiap": {
+          "stat_bonus": {
+            "final_dmg_reduce": -0.21
+          },
+          "duration": 4
+        },
+        "DebuffChayMau": {
+          "dot_pct": 0.0429,
+          "duration": 4
+        }
+      },
+      "reserved_mp_pct": 0.1
+    }
+  },
+  {
+    "key": "CuuCungBatQua",
+    "vi": "Cửu Cung Bát Quái Trận",
+    "en": "Nine Palace Bagua Formation",
+    "element": null,
+    "base_stat_bonus": {
+      "hp_pct": 0.05,
+      "mp_pct": 0.05
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "res_all": 0.05,
+        "note": "Sơ Khai Bát Quái Trận"
+      },
+      "3": {
+        "res_all": 0.12,
+        "note": "Kiên Cố Bát Quái Trận"
+      },
+      "5": {
+        "res_all": 0.2,
+        "cooldown_reduce": 0.05,
+        "note": "Thịnh Vượng Bát Quái Trận"
+      },
+      "7": {
+        "res_all": 0.3,
+        "cooldown_reduce": 0.1,
+        "final_dmg_bonus": 0.05,
+        "note": "Vô Song Bát Quái Trận"
+      },
+      "10": {
+        "res_all": 0.4,
+        "cooldown_reduce": 0.2,
+        "final_dmg_bonus": 0.15,
+        "all_element_bonus": 0.1,
+        "note": "Tuyệt Đỉnh Bát Quái Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmCuuCung",
+      "vi": "Cửu Cung Bát Quái Thức",
+      "en": "Nine Palace Bagua Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": null,
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.3,
+        "matk": 1.0
+      },
+      "mp_cost": 138,
+      "cooldown": 4,
+      "base_dmg": 1025,
+      "effects": [
+        "DebuffPhaGiap",
+        "DebuffBaoMon"
+      ],
+      "effect_overrides": {
+        "DebuffPhaGiap": {
+          "stat_bonus": {
+            "final_dmg_reduce": -0.2
+          },
+          "duration": 3
+        },
+        "DebuffBaoMon": {
+          "stat_bonus": {
+            "res_all": -0.065
+          },
+          "duration": 3
+        }
+      },
+      "reserved_mp_pct": 0.1
+    }
+  }
+]

@@ -31,6 +31,11 @@ def on_hit(
     level = actor.linh_can_levels.get("loi", 1) if actor.linh_can_levels else 1
     chance = scaled_proc_chance(level, _BASE_PROC_CHANCE, _PROC_PER_LEVEL)
     if rng.random() < chance:
+        if target.immune_hard_cc:
+            log.append(
+                f"    🛡️ **{target.name}** miễn dịch Tê Liệt — Lôi Linh Căn vô hiệu!"
+            )
+            return
         duration = _BASE_DURATION + max(0, level - 1) // 5
         target.apply_effect(EffectKey.CC_STUN, duration)
         log.append(

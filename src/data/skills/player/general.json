@@ -3,7 +3,6 @@
     "key": "SkillSupMp",
     "vi": "Nhân Linh Hồi Khí",
     "en": "Human Spirit Qi Recovery",
-    "realm": 1,
     "scroll_grade": 1,
     "category": "defense",
     "element": null,
@@ -24,7 +23,6 @@
     "key": "SkillSupRegen_R2",
     "vi": "Nhân Khí Song Tu",
     "en": "Human Twin Cultivation",
-    "realm": 2,
     "scroll_grade": 1,
     "category": "defense",
     "element": null,
@@ -33,7 +31,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 12,
+    "mp_cost": 16,
     "cooldown": 3,
     "base_dmg": 0,
     "effects": [
@@ -47,7 +45,6 @@
     "key": "SkillDefChung",
     "vi": "Địa Hộ Pháp Vô Ngại",
     "en": "Earth Dharma Protection",
-    "realm": 3,
     "scroll_grade": 2,
     "category": "defense",
     "element": null,
@@ -56,7 +53,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 30,
+    "mp_cost": 52,
     "cooldown": 4,
     "base_dmg": 0,
     "effects": [
@@ -76,7 +73,6 @@
     "key": "SkillSupHeal1",
     "vi": "Nhân Sinh Phục Hồi",
     "en": "Human Life Recovery",
-    "realm": 3,
     "scroll_grade": 2,
     "category": "defense",
     "element": null,
@@ -85,7 +81,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 20,
+    "mp_cost": 35,
     "cooldown": 3,
     "base_dmg": 0,
     "effects": [
@@ -97,7 +93,6 @@
     "key": "SkillSupHeal2_R4",
     "vi": "Huyền Sinh Đại Hồi Phục",
     "en": "Mystery Life Major Recovery",
-    "realm": 4,
     "scroll_grade": 2,
     "category": "defense",
     "element": null,
@@ -106,7 +101,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 35,
+    "mp_cost": 74,
     "cooldown": 4,
     "base_dmg": 0,
     "effects": [
@@ -135,7 +130,6 @@
     "key": "SkillSupAll",
     "vi": "Nhân Vạn Tượng Hóa",
     "en": "Human Ten-Thousand Form",
-    "realm": 5,
     "scroll_grade": 3,
     "category": "movement",
     "element": null,
@@ -144,7 +138,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 35,
+    "mp_cost": 88,
     "cooldown": 5,
     "base_dmg": 0,
     "effects": [
@@ -169,7 +163,6 @@
     "key": "SkillDefChung_R6",
     "vi": "Chân Nguyên Hộ Thể",
     "en": "True Origin Body Guard",
-    "realm": 6,
     "scroll_grade": 3,
     "category": "defense",
     "element": null,
@@ -178,7 +171,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 60,
+    "mp_cost": 172,
     "cooldown": 5,
     "base_dmg": 0,
     "effects": [
@@ -205,7 +198,6 @@
     "key": "SkillDefChung_R7",
     "vi": "Thần Nguyên Thiên Cương Hộ",
     "en": "Divine Origin Heaven-Strong Ward",
-    "realm": 7,
     "scroll_grade": 3,
     "category": "defense",
     "element": null,
@@ -214,7 +206,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 80,
+    "mp_cost": 260,
     "cooldown": 6,
     "base_dmg": 0,
     "effects": [
@@ -251,7 +243,6 @@
     "key": "SkillSupNghichThien_R7",
     "vi": "Nghịch Thiên Cải Mệnh",
     "en": "Heaven-Defying Fate Reversal",
-    "realm": 7,
     "scroll_grade": 4,
     "category": "passive",
     "element": null,
@@ -260,7 +251,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 90,
+    "mp_cost": 292,
     "cooldown": 10,
     "base_dmg": 0,
     "effects": [
@@ -289,7 +280,6 @@
     "key": "SkillDefChung_R8",
     "vi": "Thánh Nguyên Vạn Kiếp Hộ",
     "en": "Saint Origin Myriad-Tribulation Ward",
-    "realm": 8,
     "scroll_grade": 4,
     "category": "defense",
     "element": null,
@@ -298,7 +288,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 105,
+    "mp_cost": 381,
     "cooldown": 7,
     "base_dmg": 0,
     "effects": [
@@ -331,7 +321,6 @@
     "key": "SkillDefDangTien_R9",
     "vi": "Đăng Tiên Bất Diệt Thể",
     "en": "Immortal Ascension Undying Body",
-    "realm": 9,
     "scroll_grade": 4,
     "category": "defense",
     "element": null,
@@ -340,7 +329,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 140,
+    "mp_cost": 560,
     "cooldown": 9,
     "base_dmg": 0,
     "effects": [
@@ -381,7 +370,6 @@
     "key": "SkillPasDangTien_R9",
     "vi": "Đăng Tiên Hỗn Nguyên Đạo Ý",
     "en": "Immortal Ascension Primordial Dao Intent",
-    "realm": 9,
     "scroll_grade": 4,
     "category": "passive",
     "element": null,
@@ -390,7 +378,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 150,
+    "mp_cost": 600,
     "cooldown": 15,
     "base_dmg": 0,
     "effects": [

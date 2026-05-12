@@ -18,14 +18,14 @@ from src.game.constants.balance import (
 )
 from src.game.constants.effects import EffectKey
 from src.game.engine.damage import colorize_damage
-from src.game.engine.effects import EFFECTS, default_duration
+from src.game.engine.effects import EFFECTS, default_duration, effective_stack_cap
 from src.game.systems.combatant import Combatant
 
 from .helpers import _ON_HIT_PROCS, _propagate_stack_build
 
-# Mirror multiplier on the explicit freeze_on_skill_chance — preserves the
-# legacy 0.15 cast → 0.25 mirror ratio (≈ 1.67×) for combatants that opt
-# into the new override field instead of the bool flag.
+# Mirror multiplier on freeze_on_skill_chance — reflected freeze fires at
+# 1.67× the cast chance (≈ 25% when cast = 15%) so a defensive freeze build
+# punishes attackers harder via the mirror.
 _FREEZE_MIRROR_BOOST = 1.67
 
 if TYPE_CHECKING:
@@ -54,7 +54,8 @@ def run_on_hit_procs(
     Special cases not driven by the table:
       - stun_on_hit_pct respects target's hard-CC immunity
       - paralysis_on_crit fires only on crit, always lands
-      - freeze_on_skill uses a fixed 0.15 chance independent of any attr
+      - freeze_on_skill_chance gates the freeze proc; mirror version
+        scales by ``_FREEZE_MIRROR_BOOST``
     """
     for spec in _ON_HIT_PROCS:
         chance = getattr(actor, spec["chance_attr"], 0.0)
@@ -69,7 +70,7 @@ def run_on_hit_procs(
             getattr(target, spec["stack_add"])(1)
             session.log.append(spec["log_fmt"].format(
                 stacks=getattr(target, spec["stacks_attr"]),
-                cap=getattr(target, spec["cap_attr"]),
+                cap=effective_stack_cap(target, str(effect_key)),
             ))
         else:
             session.log.append(spec["log_fmt"])
@@ -82,8 +83,13 @@ def run_on_hit_procs(
             target.apply_effect(EffectKey.CC_STUN, default_duration(EffectKey.CC_STUN))
             session.log.append(f"    💫 Choáng kích hoạt!")
     if is_crit and actor.paralysis_on_crit:
-        target.apply_effect(EffectKey.CC_STUN, default_duration(EffectKey.CC_STUN))
-        session.log.append(f"    ⚡ Tê Liệt khi Bạo Kích kích hoạt!")
+        if target.immune_hard_cc:
+            session.log.append(
+                f"    🛡️ **{target.name}** miễn dịch Tê Liệt khi Bạo Kích!"
+            )
+        else:
+            target.apply_effect(EffectKey.CC_STUN, default_duration(EffectKey.CC_STUN))
+            session.log.append(f"    ⚡ Tê Liệt khi Bạo Kích kích hoạt!")
     # Quang build: silence_on_crit — crit-gated CCMuted application.
     # Respects the same hard-CC immunity used by stun_on_hit.
     if is_crit and actor.silence_on_crit_pct > 0 and session.rng.random() < actor.silence_on_crit_pct:
@@ -92,16 +98,19 @@ def run_on_hit_procs(
         else:
             target.apply_effect(EffectKey.CC_MUTED, default_duration(EffectKey.CC_MUTED))
             session.log.append(f"    ✨ Thánh Quang Chế Ngự — câm lặng kích hoạt!")
-    # Freeze proc — explicit ``freeze_on_skill_chance`` overrides the legacy
-    # bool flag's hardcoded 0.15. Mirror version (in apply_reflect) uses the
-    # same chance with a small boost to preserve the legacy 0.15→0.25 ratio.
+    # Freeze proc — chance comes from ``freeze_on_skill_chance``. Mirror
+    # version (in apply_reflect) scales by ``_FREEZE_MIRROR_BOOST`` so the
+    # reflected freeze fires harder than the cast.
     freeze_chance = actor.freeze_on_skill_chance
-    if freeze_chance <= 0 and actor.freeze_on_skill:
-        freeze_chance = 0.15
     if freeze_chance > 0 and session.rng.random() < freeze_chance:
-        dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
-        target.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
-        session.log.append(f"    🧊 Đông Băng kích hoạt!")
+        if target.immune_hard_cc:
+            session.log.append(
+                f"    🛡️ **{target.name}** miễn dịch Đóng Băng!"
+            )
+        else:
+            dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
+            target.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
+            session.log.append(f"    🧊 Đông Băng kích hoạt!")
     # Âm build: Hồn Phệ — permanently drain target.hp_max, transfer half
     # to actor. Capped to avoid trivializing bosses.
     if actor.soul_drain_on_hit_pct > 0 and session.rng.random() < actor.soul_drain_on_hit_pct:
@@ -130,7 +139,14 @@ def run_on_hit_procs(
             aura_dst_meta.skips_turn or aura_dst_meta.prevents_skills
         ):
             continue
-        effective = 1.0 - target.debuff_immune_pct
+        # Fold buff-derived debuff_immune_pct into the target's base value so
+        # passives like Chân Ma Chi Tâm can shrug off aura-on-hit spreads.
+        # Aura procs don't get the actor's apply-bonus — that belongs to
+        # explicit cast paths only.
+        from src.game.engine.effects import get_combat_modifiers
+        immune_mod = float(get_combat_modifiers(target).get("debuff_immune_pct", 0.0))
+        immune = max(0.0, min(1.0, target.debuff_immune_pct + immune_mod))
+        effective = 1.0 - immune
         if effective < 1.0 and session.rng.random() >= effective:
             continue
         aura_duration = int(aura_rest[0]) if aura_rest else default_duration(aura_effect)
@@ -139,6 +155,28 @@ def run_on_hit_procs(
             f"    {aura_meta.emoji} Hào quang **{aura_meta.vi}** "
             f"→ {aura_dst_meta.emoji} {aura_dst_meta.vi}"
         )
+
+
+def apply_life_steal(
+    session: "CombatSession", actor: Combatant, dmg: int
+) -> int:
+    """Heal ``actor`` for ``dmg × actor.life_steal_pct``.
+
+    Routed through ``session._apply_heal`` so bleed-heal-reduction and
+    ``heal_can_crit`` (Mộc/Quang) both apply uniformly. No-ops when the
+    actor has no life-steal, when the hit dealt 0 damage, or when the
+    actor is already dead. Returns the actual HP restored.
+    """
+    if actor.life_steal_pct <= 0 or dmg <= 0 or not actor.is_alive():
+        return 0
+    raw = max(1, int(dmg * actor.life_steal_pct))
+    healed = session._apply_heal(actor, raw)
+    if healed > 0:
+        session.log.append(
+            f"    🩸 **{actor.name}** Hút Máu → +{healed:,} HP "
+            f"({actor.life_steal_pct * 100:.0f}% sát thương)"
+        )
+    return healed
 
 
 def apply_soul_drain(
@@ -152,11 +190,13 @@ def apply_soul_drain(
 
     World bosses are immune: mutating ``hp_max`` on a shared-pool entity
     would double-credit the attacker via the local-sim damage calc.
+    Targets flagged ``immune_stat_mutation`` (chi-tôn bosses such as Chung
+    Yên) are also immune by design — their stat sheet is canon.
     """
-    if target.is_world_boss:
+    if target.is_world_boss or target.immune_stat_mutation:
         session.log.append(
-            f"    🌑 **Hồn Phệ** vô hiệu — **{target.name}** là Boss Thế Giới, "
-            f"HP Max không thể bị xói mòn."
+            f"    🌑 **Hồn Phệ** vô hiệu — **{target.name}** miễn nhiễm "
+            f"xói mòn HP Max."
         )
         return
     start = snapshot_original(target, "hp_max_original", target.hp_max)
@@ -178,40 +218,111 @@ def apply_soul_drain(
 
 
 def apply_stat_steal(
-    session: "CombatSession", actor: Combatant, target: Combatant
+    session: "CombatSession", actor: Combatant, target: Combatant,
+    per_proc_pct: float | None = None,
 ) -> None:
     """Transfer a slice of target's atk/matk/def into the actor.
 
-    Each stat has its own cap (STAT_STEAL_CAP_PCT of the snapshot) so a
-    tank's DEF, a mage's MATK, and a fighter's ATK are all partially
-    stealable without any single axis dominating.
+    Cap and per-proc magnitude are both anchored to the **actor's own**
+    starting stats (snapshotted at first proc), not the target's. This
+    makes Âm growth bounded by the player's investment — a 5,000-ATK boss
+    feeds the actor at the same rate as a 500-ATK trash mob, and the
+    lifetime ceiling is always ``actor_start × STAT_STEAL_CAP_PCT``.
+
+    The target loses exactly what the actor gains, clamped by the target's
+    remaining live stat so they can't be drained below 0.
+
+    ``per_proc_pct`` (optional) overrides the global per-proc magnitude
+    (``STAT_STEAL_PER_PROC_PCT``). Used by signature steal skills like Sưu
+    Hồn Đoạt Phách that take a big chunk in one cast instead of chaining
+    several small procs.
+
+    World bosses and ``immune_stat_mutation`` targets (Chung Yên and other
+    chi-tôn bosses) are immune — same rationale as soul-drain: their stat
+    sheet is authoritative and a player wearing them down across multiple
+    casts would invalidate the encounter's tuning.
     """
+    if target.is_world_boss or target.immune_stat_mutation:
+        session.log.append(
+            f"    🩶 **Đạo Pháp Thôn Phệ** vô hiệu — **{target.name}** "
+            f"miễn nhiễm cướp chỉ số."
+        )
+        return
+    proc_pct = STAT_STEAL_PER_PROC_PCT if per_proc_pct is None else per_proc_pct
     labels = [("atk", "stolen_atk", "atk_original", "Công"),
               ("matk", "stolen_matk", "matk_original", "Pháp"),
               ("def_stat", "stolen_def", "def_stat_original", "Phòng")]
     stolen_parts: list[str] = []
     for live_attr, stolen_attr, snap_attr, label in labels:
-        start = snapshot_original(target, snap_attr, getattr(target, live_attr))
-        if start <= 0:
+        # Anchor cap + per-proc magnitude to the actor's starting stat —
+        # snapshot lazily so the very first proc captures the pre-steal
+        # value, and subsequent procs read it back without compounding.
+        actor_start = snapshot_original(actor, snap_attr, getattr(actor, live_attr))
+        if actor_start <= 0:
             continue
-        cap = int(start * STAT_STEAL_CAP_PCT)
-        already = getattr(target, stolen_attr)
-        remaining = cap - already
+        cap = int(actor_start * STAT_STEAL_CAP_PCT)
+        already_gained = getattr(actor, stolen_attr)
+        remaining = cap - already_gained
         if remaining <= 0:
             continue
-        steal = min(remaining, max(1, int(start * STAT_STEAL_PER_PROC_PCT)))
-        setattr(target, stolen_attr, already + steal)
-        setattr(target, live_attr, max(0, getattr(target, live_attr) - steal))
-        # Mirror: actor grows by the same amount (tracked on the actor as
-        # "stolen_*" for display symmetry; combat math reads live stats).
-        setattr(actor, stolen_attr, getattr(actor, stolen_attr) + steal)
+        target_live = getattr(target, live_attr)
+        if target_live <= 0:
+            continue  # nothing to drain
+        # Snapshot target's start too so Quang's cleanse counter (reads
+        # ``target.<snap_attr>``) still has a reference point if the
+        # target later cleanses what was stolen from them.
+        snapshot_original(target, snap_attr, target_live)
+        steal = min(
+            remaining,
+            max(1, int(actor_start * proc_pct)),
+            target_live,
+        )
+        # Apply: actor grows, target shrinks by the same amount.
+        setattr(actor, stolen_attr, already_gained + steal)
         setattr(actor, live_attr, getattr(actor, live_attr) + steal)
+        setattr(target, stolen_attr, getattr(target, stolen_attr) + steal)
+        setattr(target, live_attr, target_live - steal)
         stolen_parts.append(f"+{steal} {label}")
     if stolen_parts:
         session.log.append(
             f"    🩶 **Đạo Pháp Thôn Phệ** — **{actor.name}** cướp "
             f"{' / '.join(stolen_parts)} từ **{target.name}**"
         )
+
+
+def apply_buff_steal(
+    session: "CombatSession", actor: Combatant, target: Combatant,
+) -> None:
+    """Rip one stealable buff off the target and stamp it on the actor.
+
+    Picks a random ``EffectMeta.stealable`` entry from the target's active
+    effects, removes it (along with any ``effect_overrides`` stamp), and
+    re-applies it on the actor with the same remaining duration + override
+    magnitudes. Re-applying via ``apply_effect`` means refreshing-vs-existing
+    semantics still work: if the actor already carries the same buff, the
+    stronger of the two stat-bonus values wins per stat.
+
+    Random pick (rather than first-in-iteration) so application order on the
+    target can't be gamed to shield the most valuable buff. No-op when the
+    target has no stealable buff.
+    """
+    stealable_keys = [
+        k for k in list(target.effects)
+        if (m := EFFECTS.get(k)) is not None and m.stealable
+    ]
+    if not stealable_keys:
+        return
+    key = session.rng.choice(stealable_keys)
+    dur = target.effects.pop(key)
+    override = target.effect_overrides.pop(key, None)
+    actor.apply_effect(key, dur, overrides=override)
+    meta = EFFECTS.get(key)
+    label = meta.vi if meta else key
+    emoji = meta.emoji if meta else "✨"
+    session.log.append(
+        f"    🩶 **Đoạt Pháp** — **{actor.name}** cướp {emoji}{label} ({dur}t) "
+        f"từ **{target.name}**"
+    )
 
 
 def apply_reactive_damage(
@@ -222,6 +333,35 @@ def apply_reactive_damage(
         apply_reflect(session, actor, target, dmg)
     if target.thorn_pct > 0 and actor.is_alive():
         apply_thorn(session, actor, target, dmg)
+    # Phượng Hoàng Chân Hỏa — defensive aura. When the defender owns the
+    # buff and an attacker lands a damaging hit, stamp Phượng Hỏa stack(s)
+    # on the attacker. Tunables (duration, stack_cap, per_stack_pct,
+    # stacks_per_hit, stat_bonus) live in the skill JSON under
+    # ``effect_overrides.DebuffPhuongHoa`` and were stashed onto the buff's
+    # own override dict at cast time (``_phuong_hoa_emit``). Routed through
+    # ``inflict_debuff`` so hard-CC immunity / debuff_immune_pct still gate
+    # the proc consistently with other applied debuffs.
+    if (
+        dmg > 0
+        and actor.is_alive()
+        and target.has_effect(EffectKey.BUFF_PHUONG_HOANG_CHAN_HOA)
+    ):
+        ph_meta = EFFECTS.get(EffectKey.DEBUFF_PHUONG_HOA)
+        if ph_meta is not None:
+            buff_ovr = target.effect_overrides.get(
+                EffectKey.BUFF_PHUONG_HOANG_CHAN_HOA.value
+            ) or {}
+            emit_ovr = dict(buff_ovr.get("_phuong_hoa_emit") or {})
+            stacks_per_hit = max(1, int(emit_ovr.pop("stacks_per_hit", 1)))
+            inflict_ovr = emit_ovr or None
+            from .casting import inflict_debuff
+            for _ in range(stacks_per_hit):
+                if not actor.is_alive():
+                    break
+                inflict_debuff(
+                    session, EffectKey.DEBUFF_PHUONG_HOA.value, ph_meta,
+                    actor, actor=target, overrides=inflict_ovr,
+                )
 
 
 def apply_reflect(
@@ -230,7 +370,7 @@ def apply_reflect(
     """Reflect a portion of damage dealt to ``defender`` back at ``attacker``.
 
     When ``defender.reflect_applies_effects`` is True, the defender's own
-    on-hit proc flags (freeze_on_skill, slow_on_hit_pct, burn_on_hit_pct,
+    on-hit proc flags (freeze_on_skill_chance, slow_on_hit_pct, burn_on_hit_pct,
     bleed_on_hit_pct) also roll against the attacker — the mirror throws
     the defender's build flavor back at them.
     """
@@ -247,18 +387,18 @@ def apply_reflect(
         return
 
     # Mirror the defender's on-hit effect flags back at the attacker.
-    # Mirror freeze — same override field as the cast trigger, scaled by
-    # _FREEZE_MIRROR_BOOST so a defender with explicit chance has a slightly
-    # higher mirror rate (matches the legacy 0.15 cast → 0.25 mirror feel).
-    freeze_chance = defender.freeze_on_skill_chance
-    if freeze_chance <= 0 and defender.freeze_on_skill:
-        freeze_chance = 0.25  # legacy bool default for mirror
-    else:
-        freeze_chance = min(1.0, freeze_chance * _FREEZE_MIRROR_BOOST)
+    # Mirror freeze fires harder than the cast — defenders with freeze get a
+    # ``_FREEZE_MIRROR_BOOST`` × multiplier on their reflected proc rate.
+    freeze_chance = min(1.0, defender.freeze_on_skill_chance * _FREEZE_MIRROR_BOOST)
     if freeze_chance > 0 and session.rng.random() < freeze_chance:
-        dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
-        attacker.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
-        session.log.append(f"    🧊 Mirror Đóng Băng — **{attacker.name}** bị đông cứng!")
+        if attacker.immune_hard_cc:
+            session.log.append(
+                f"    🛡️ **{attacker.name}** miễn dịch Mirror Đóng Băng!"
+            )
+        else:
+            dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
+            attacker.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
+            session.log.append(f"    🧊 Mirror Đóng Băng — **{attacker.name}** bị đông cứng!")
     if defender.slow_on_hit_pct > 0 and session.rng.random() < defender.slow_on_hit_pct:
         dur = default_duration(EffectKey.DEBUFF_LAM_CHAM)
         attacker.apply_effect(EffectKey.DEBUFF_LAM_CHAM, dur)

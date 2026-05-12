@@ -15,7 +15,7 @@ class ItemType(StrEnum):
     ARTIFACT = "artifact"      # Pháp Bảo
     SPECIAL = "special"        # Special items (Phá Cảnh Đan, Hỗn Nguyên Thạch...)
     HERB = "herb"              # Luyện đan ingredient (Thảo Dược + tinh hoa yêu thú)
-    PILL = "pill"              # Đan Dược — covers crafted pills + legacy elixir consumables
+    PILL = "pill"              # Đan Dược — covers crafted cultivation pills + healing pills (category="heal")
     FURNACE = "furnace"        # Đan Lô — alchemy tool (enables/boosts pill crafting)
 
 

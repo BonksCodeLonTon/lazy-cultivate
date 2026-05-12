@@ -3,7 +3,6 @@
     "key": "EnemyHoa_R4",
     "vi": "Mãnh Hỏa Liệt Diễm",
     "en": "Fierce Fire Raging Flame",
-    "realm": 4,
     "category": "attack",
     "element": "hoa",
     "attack_type": "magical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 30,
     "cooldown": 2,
-    "base_dmg": 75,
+    "base_dmg": 300,
     "effects": [
       "DebuffThieuDot",
       "DebuffDotChay"
@@ -36,7 +35,6 @@
     "key": "EnemyLoi_R4",
     "vi": "Mãnh Lôi Bạo Hống",
     "en": "Fierce Thunder Thunderous Roar",
-    "realm": 4,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -46,7 +44,7 @@
     },
     "mp_cost": 32,
     "cooldown": 2,
-    "base_dmg": 80,
+    "base_dmg": 320,
     "effects": [
       "DebuffTeLiet",
       "DebuffSetDanh"
@@ -69,7 +67,6 @@
     "key": "EnemyBang_R4",
     "vi": "Mãnh Băng Đóng Đất",
     "en": "Fierce Ice Earthfreeze",
-    "realm": 4,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -79,7 +76,7 @@
     },
     "mp_cost": 28,
     "cooldown": 2,
-    "base_dmg": 70,
+    "base_dmg": 280,
     "effects": [
       "DebuffLamCham",
       "DebuffDongBang"
@@ -101,7 +98,6 @@
     "key": "EnemyKim_R4",
     "vi": "Mãnh Kim Phá Giáp Kiếm",
     "en": "Fierce Metal Armor-Break Blade",
-    "realm": 4,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -111,7 +107,7 @@
     },
     "mp_cost": 26,
     "cooldown": 2,
-    "base_dmg": 65,
+    "base_dmg": 260,
     "effects": [
       "DebuffBaoMon"
     ],
@@ -131,7 +127,6 @@
     "key": "EnemyMoc_R4",
     "vi": "Mãnh Mộc Kịch Độc Trảo",
     "en": "Fierce Wood Venom Claw",
-    "realm": 4,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -141,7 +136,7 @@
     },
     "mp_cost": 26,
     "cooldown": 2,
-    "base_dmg": 60,
+    "base_dmg": 240,
     "effects": [
       "DebuffDocTo",
       "DebuffBaoMon"
@@ -166,7 +161,6 @@
     "key": "EnemyPhong_R4",
     "vi": "Mãnh Phong Xuyên Tâm",
     "en": "Fierce Wind Heart-Pierce",
-    "realm": 4,
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
@@ -176,7 +170,7 @@
     },
     "mp_cost": 26,
     "cooldown": 2,
-    "base_dmg": 62,
+    "base_dmg": 248,
     "effects": [
       "DebuffChayMau",
       "DebuffCuonBay"
@@ -196,7 +190,6 @@
     "key": "EnemyTho_R4",
     "vi": "Mãnh Thổ Chấn Sơn",
     "en": "Fierce Earth Mountain Tremor",
-    "realm": 4,
     "category": "attack",
     "element": "tho",
     "attack_type": "physical",
@@ -206,7 +199,7 @@
     },
     "mp_cost": 32,
     "cooldown": 3,
-    "base_dmg": 85,
+    "base_dmg": 340,
     "effects": [
       "DebuffTroBuoc",
       "DebuffLunDat"
@@ -233,7 +226,6 @@
     "key": "EnemyThuy_R4",
     "vi": "Mãnh Thủy Huyết Lưu",
     "en": "Fierce Water Blood Flow",
-    "realm": 4,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -243,7 +235,7 @@
     },
     "mp_cost": 28,
     "cooldown": 2,
-    "base_dmg": 72,
+    "base_dmg": 288,
     "effects": [
       "DebuffLamCham",
       "DebuffChayMau"

@@ -148,13 +148,13 @@ def test_aura_moc_res_shred_recovers_damage():
     assert 20_000 - enemy.hp == 320
 
 
-def test_aura_resistance_capped_at_75_percent():
+def test_aura_resistance_capped_at_max_elemental_res():
     player = make_combatant("p", hp=5_000, wither_aura_pct=0.04)
     enemy = make_combatant("e", hp=20_000, hp_max=20_000, resistances={"moc": 0.99})
     make_session(player, enemy)._process_periodic(player)
 
-    # Cap at 0.75 → 400 × 0.25 = 100
-    assert 20_000 - enemy.hp == 100
+    # Cap at 0.90 → 400 × (1 - 0.90) ≈ 39 (float truncation)
+    assert 20_000 - enemy.hp == 39
 
 
 # ── Heal interactions (bleed reduces leech) ──────────────────────────────────

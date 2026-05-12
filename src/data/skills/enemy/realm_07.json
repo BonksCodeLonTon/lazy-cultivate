@@ -3,7 +3,6 @@
     "key": "EnemyHoa_T4",
     "vi": "Thần Thú Thiên Hỏa Kiếp",
     "en": "Divine Beast Heaven Fire Tribulation",
-    "realm": 7,
     "category": "attack",
     "element": "hoa",
     "attack_type": "magical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 65,
     "cooldown": 5,
-    "base_dmg": 250,
+    "base_dmg": 1750,
     "effects": [
       "DebuffThieuDot",
       "DebuffDotChay"
@@ -38,7 +37,6 @@
     "key": "EnemyLoi_T4",
     "vi": "Thần Long Thiên Lôi Bá",
     "en": "Divine Dragon Heaven Thunder Dominion",
-    "realm": 7,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -48,7 +46,7 @@
     },
     "mp_cost": 70,
     "cooldown": 5,
-    "base_dmg": 280,
+    "base_dmg": 1960,
     "effects": [
       "DebuffTeLiet",
       "DebuffSetDanh",
@@ -77,7 +75,6 @@
     "key": "EnemyBang_T4",
     "vi": "Cổ Thần Vĩnh Hằng Băng",
     "en": "Ancient God Eternal Ice",
-    "realm": 7,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -87,7 +84,7 @@
     },
     "mp_cost": 68,
     "cooldown": 5,
-    "base_dmg": 260,
+    "base_dmg": 1820,
     "effects": [
       "DebuffDongBang",
       "DebuffLamCham"
@@ -113,7 +110,6 @@
     "key": "EnemyApex_R7_Physical",
     "vi": "Thần Thú Phá Nhạc Trảm",
     "en": "Divine Beast Mountain-Breaker Strike",
-    "realm": 7,
     "category": "attack",
     "element": null,
     "attack_type": "physical",
@@ -123,7 +119,7 @@
     },
     "mp_cost": 60,
     "cooldown": 3,
-    "base_dmg": 400,
+    "base_dmg": 2800,
     "effects": [
       "DebuffPhaGiap",
       "DebuffBaoMon"
@@ -152,7 +148,6 @@
     "key": "EnemyApex_R7_Magical",
     "vi": "Thần Pháp Linh Hồn Khốc",
     "en": "Divine Art Soul Lament",
-    "realm": 7,
     "category": "attack",
     "element": null,
     "attack_type": "magical",
@@ -162,7 +157,7 @@
     },
     "mp_cost": 65,
     "cooldown": 3,
-    "base_dmg": 420,
+    "base_dmg": 2940,
     "effects": [
       "DebuffBaoMon",
       "DebuffCatDut",

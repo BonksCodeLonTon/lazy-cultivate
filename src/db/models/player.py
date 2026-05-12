@@ -27,6 +27,14 @@ class Player(Base, TimestampMixin):
     constitution_type: Mapped[str] = mapped_column(
         String(512), default="ConstitutionPhamThe", nullable=False
     )
+    # ── Constitution tracker — every Thể Chất the player has activated, ever.
+    # Comma-separated keys, append-only on activation success. Lets the player
+    # equip/unequip already-unlocked Thể Chất without re-paying the activation
+    # cost. Predecessor of a progression chain is removed when its successor is
+    # activated (the predecessor is consumed). 222 max entries × ~37 chars.
+    constitution_tracker: Mapped[str] = mapped_column(
+        String(8192), default="ConstitutionPhamThe", nullable=False
+    )
     dao_ti_unlocked: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     # ── Currencies ─────────────────────────────────────────────────────────
@@ -41,15 +49,15 @@ class Player(Base, TimestampMixin):
     qi_xp: Mapped[int]        = mapped_column(Integer, default=0, nullable=False)
     formation_xp: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
-    # ── Combat session state (hp/mp persist across sessions) ───────────────
+    # ── Combat session state (hp/mp/shield persist across sessions) ────────
     hp_current: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     mp_current: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    shield_current: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
 
     # ── Active formations ──────────────────────────────────────────────────
-    # Comma-separated list of formation keys in slot order. Single-key legacy
-    # values still parse as a 1-slot list. Parsed via
-    # ``cultivation.get_active_formations``; slot cap enforced by
-    # ``cultivation.max_formation_slots``.
+    # Comma-separated list of formation keys in slot order; a single key
+    # parses as a 1-slot list. Parsed via ``cultivation.get_active_formations``;
+    # slot cap enforced by ``cultivation.max_formation_slots``.
     active_formation: Mapped[str | None] = mapped_column(String(256), nullable=True)
 
     # ── Linh Căn (Spiritual Roots) — comma-separated keys e.g. "kim,hoa" ──────

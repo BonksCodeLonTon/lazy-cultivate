@@ -1,0 +1,190 @@
+[
+  {
+    "key": "ChungYen_TanDiet",
+    "vi": "Tận Diệt",
+    "en": "Annihilation",
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 2.5,
+      "matk": 2.5
+    },
+    "mp_cost": 0,
+    "cooldown": 999,
+    "base_dmg": 9000,
+    "usage_limit": 1,
+    "trigger": "phase_one_start",
+    "description_vi": "Tận Diệt — chỉ thi triển một lần ở giai đoạn đầu trận. Vĩnh viễn (trong trận) giảm 50% HP tối đa và 50% hồi HP của địch.",
+    "effects": [
+      "DebuffTanDiet"
+    ],
+    "effect_chances": {
+      "DebuffTanDiet": 1.0
+    },
+    "effect_overrides": {
+      "DebuffTanDiet": {
+        "duration": 9999,
+        "stat_bonus": {
+          "hp_max_pct": -0.5,
+          "hp_regen_pct": -0.5
+        }
+      }
+    },
+    "formation_key": null
+  },
+  {
+    "key": "ChungYen_HuVo",
+    "vi": "Hư Vô",
+    "en": "Void Annulment",
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 1.5,
+      "matk": 1.5
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 9000,
+    "proc_on_hits_taken": 4,
+    "description_vi": "Hư Vô — Chung Yên thi triển sau mỗi 4 đòn nhận. Tự cộng 2000 Né Tránh.",
+    "effects": [
+      "BuffHuVo"
+    ],
+    "effect_chances": {
+      "BuffHuVo": 1.0
+    },
+    "effect_overrides": {
+      "BuffHuVo": {
+        "duration": 6,
+        "stat_bonus": {
+          "evasion_rating": 2000
+        }
+      }
+    },
+    "formation_key": null
+  },
+  {
+    "key": "ChungYen_TanThe",
+    "vi": "Tận Thế",
+    "en": "Apocalypse",
+    "category": "attack",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 2.5,
+      "matk": 2.5
+    },
+    "mp_cost": 100,
+    "cooldown": 3,
+    "base_dmg": 13500,
+    "bypass_evasion": true,
+    "description_vi": "Tận Thế — đòn không thể né tránh, **luôn gây Choáng** (mất 1 lượt). CD 3 lượt.",
+    "effects": [
+      "CCStun"
+    ],
+    "effect_chances": {
+      "CCStun": 2.0
+    },
+    "effect_overrides": {
+      "CCStun": {
+        "duration": 1
+      }
+    },
+    "formation_key": null
+  },
+  {
+    "key": "ChungYen_VoDao",
+    "vi": "Vô Đạo",
+    "en": "Way Severed",
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 1.2
+    },
+    "mp_cost": 80,
+    "cooldown": 4,
+    "base_dmg": 5400,
+    "bonus_dmg_per_target_regen_flat": 50.0,
+    "bonus_dmg_per_target_regen_pct": 50.0,
+    "description_vi": "Vô Đạo — sát thương cộng thêm dựa trên lượng HP địch hồi mỗi lượt (cả flat lẫn % HP tối đa). Đồng thời niêm phong đạo cơ — đối thủ chịu giảm 90% máu hồi nhận vào trong 3 lượt.",
+    "effects": [
+      "DebuffVoDao"
+    ],
+    "effect_chances": {
+      "DebuffVoDao": 1.0
+    },
+    "effect_overrides": {
+      "DebuffVoDao": {
+        "duration": 3,
+        "stat_bonus": {
+          "heal_taken_reduce": 0.9
+        }
+      }
+    },
+    "formation_key": null
+  },
+  {
+    "key": "ChungYen_HuyDietAura",
+    "vi": "Hủy Diệt",
+    "en": "Annihilation Aura",
+    "category": "passive",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self",
+      "opponent"
+    ],
+    "description_vi": "Hủy Diệt — hào quang đối xứng: cả Chung Yên và đối thủ đều +50% sát thương cuối, đồng thời +50% sát thương phải nhận.",
+    "effects": [
+      "AuraHuyDiet"
+    ],
+    "effect_chances": {
+      "AuraHuyDiet": 1.0
+    },
+    "effect_overrides": {
+      "AuraHuyDiet": {
+        "duration": 9999,
+        "stat_bonus": {
+          "final_dmg_bonus": 0.5,
+          "final_dmg_taken_bonus": 0.5
+        }
+      }
+    },
+    "formation_key": null
+  },
+  {
+    "key": "ChungYen_DietTan",
+    "vi": "Diệt Tận",
+    "en": "Annihilate",
+    "realm": 9,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 3.0,
+      "matk": 6.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 8000,
+    "bypass_evasion": true,
+    "proc_on_target_status": "CCStun",
+    "description_vi": "Diệt Tận — tự thi triển ngay khi địch dính Choáng. Đòn trừng phạt kẻ mất phòng bị, không thể né tránh.",
+    "effects": [],
+    "effect_chances": {},
+    "effect_overrides": {},
+    "formation_key": null
+  }
+]

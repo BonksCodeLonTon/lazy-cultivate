@@ -37,7 +37,6 @@ def build_status_snapshot(player) -> tuple[dict, list[str]]:
         i for i in (player.item_instances or []) if i.location == "equipped"
     ]
     equip_stats = compute_equipment_stats(equipped_instances)
-    learned_skill_keys = [s.skill_key for s in (player.skills or [])]
 
     cs = compute_combat_stats(
         char,
@@ -45,7 +44,6 @@ def build_status_snapshot(player) -> tuple[dict, list[str]]:
         equip_stats=equip_stats,
         gem_keys=gem_keys,
         gem_keys_by_formation=gem_map,
-        learned_skill_keys=learned_skill_keys,
     )
 
     equipped_const_keys = get_constitutions(player.constitution_type)

@@ -324,7 +324,7 @@
     "stat_bonuses": {
       "final_dmg_bonus": 0.14,
       "evasion_rating": 210,
-      "stat_steal_on_hit_pct": 0.175
+      "stat_steal_on_hit_pct": 0.09
     },
     "special_requirements": null,
     "materials": {
@@ -396,7 +396,7 @@
     "stat_bonuses": {
       "final_dmg_bonus": 0.08,
       "soul_drain_on_hit_pct": 0.1,
-      "stat_steal_on_hit_pct": 0.06,
+      "stat_steal_on_hit_pct": 0.03,
       "debuff_immune_pct": 0.15,
       "true_dmg_pct": 0.03
     },
@@ -422,7 +422,7 @@
     "stat_bonuses": {
       "final_dmg_bonus": 0.25,
       "evasion_rating": 450,
-      "stat_steal_on_hit_pct": 0.3,
+      "stat_steal_on_hit_pct": 0.15,
       "crit_rating": 350,
       "crit_dmg_rating": 300,
       "soul_drain_on_hit_pct": 0.2,
@@ -456,8 +456,10 @@
       "true_dmg_pct": 0.1,
       "crit_rating": 300,
       "crit_dmg_rating": 250,
-      "stat_steal_on_hit_pct": 0.25,
-      "element_pen": { "am": 0.15 },
+      "stat_steal_on_hit_pct": 0.13,
+      "element_pen": {
+        "am": 0.15
+      },
       "hp_pct": 0.2,
       "debuff_immune_pct": 0.2
     },
@@ -509,13 +511,19 @@
     "stat_bonuses": {
       "final_dmg_bonus": 0.15,
       "soul_drain_on_hit_pct": 0.35,
-      "stat_steal_on_hit_pct": 0.25,
+      "stat_steal_on_hit_pct": 0.13,
       "element_pen": {
         "am": 0.2
       },
-      "crit_rating_vs_drained": 300,
       "debuff_immune_pct": 0.2,
-      "poison_dmg_bonus": 0.2
+      "dot_dmg_bonus_by_kind": {
+        "poison": 0.2
+      },
+      "crit_amp_vs": {
+        "drained": {
+          "rating": 300
+        }
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -573,7 +581,7 @@
       "crit_rating": 250,
       "crit_dmg_rating": 200,
       "soul_drain_on_hit_pct": 0.2,
-      "stat_steal_on_hit_pct": 0.2,
+      "stat_steal_on_hit_pct": 0.1,
       "element_pen": {
         "am": 0.2
       },

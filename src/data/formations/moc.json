@@ -1,0 +1,59 @@
+[
+  {
+    "key": "NhatNguyenMoc",
+    "vi": "Nhất Nguyên Mộc Trận",
+    "en": "One Origin Wood Formation",
+    "element": "moc",
+    "base_stat_bonus": {
+      "hp_pct": 0.08,
+      "mp_pct": 0.01
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "hp_pct": 0.03,
+        "note": "Sơ Khai Mộc Trận"
+      },
+      "3": {
+        "hp_pct": 0.08,
+        "note": "Kiên Cố Mộc Trận"
+      },
+      "5": {
+        "hp_pct": 0.15,
+        "hp_regen_pct": 0.005,
+        "note": "Thịnh Vượng Mộc Trận"
+      },
+      "7": {
+        "hp_pct": 0.25,
+        "hp_regen_pct": 0.01,
+        "note": "Vô Song Mộc Trận"
+      },
+      "10": {
+        "hp_pct": 0.5,
+        "hp_regen_pct": 0.02,
+        "poison_immunity": true,
+        "heal_can_crit": true,
+        "note": "Tuyệt Đỉnh Mộc Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmMoc",
+      "vi": "Nhất Nguyên Mộc Thức",
+      "en": "One Origin Wood Form",
+      "scroll_grade": 2,
+      "category": "formation",
+      "element": "moc",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 1.0
+      },
+      "mp_cost": 52,
+      "cooldown": 3,
+      "base_dmg": 315,
+      "effects": [
+        "DebuffMocXuyenThau"
+      ],
+      "reserved_mp_pct": 0.06
+    }
+  }
+]

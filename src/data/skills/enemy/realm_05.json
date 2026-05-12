@@ -3,7 +3,6 @@
     "key": "EnemyHoa_T3",
     "vi": "Tinh Anh Hỏa Thiên Kiếp",
     "en": "Elite Fire Tribulation",
-    "realm": 5,
     "category": "attack",
     "element": "hoa",
     "attack_type": "magical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 40,
     "cooldown": 3,
-    "base_dmg": 140,
+    "base_dmg": 700,
     "effects": [
       "DebuffThieuDot",
       "DebuffDotChay"
@@ -36,7 +35,6 @@
     "key": "EnemyLoi_T3",
     "vi": "Tinh Anh Lôi Cửu Thiên",
     "en": "Elite Thunder Nine Skies",
-    "realm": 5,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -46,7 +44,7 @@
     },
     "mp_cost": 45,
     "cooldown": 3,
-    "base_dmg": 160,
+    "base_dmg": 800,
     "effects": [
       "DebuffTeLiet",
       "DebuffSetDanh"
@@ -69,7 +67,6 @@
     "key": "EnemyBang_T3",
     "vi": "Tinh Anh Băng Vĩnh Hằng",
     "en": "Elite Ice Eternal Freeze",
-    "realm": 5,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -79,7 +76,7 @@
     },
     "mp_cost": 42,
     "cooldown": 3,
-    "base_dmg": 150,
+    "base_dmg": 750,
     "effects": [
       "DebuffDongBang",
       "DebuffLamCham"
@@ -101,7 +98,6 @@
     "key": "EnemyKim_T3",
     "vi": "Tinh Anh Kim Tuyệt Sát",
     "en": "Elite Metal Absolute Slay",
-    "realm": 5,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -111,7 +107,7 @@
     },
     "mp_cost": 38,
     "cooldown": 3,
-    "base_dmg": 130,
+    "base_dmg": 650,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -131,7 +127,6 @@
     "key": "EnemyMoc_T3",
     "vi": "Tinh Anh Mộc Vạn Độc",
     "en": "Elite Wood Ten-Thousand Poison",
-    "realm": 5,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -141,7 +136,7 @@
     },
     "mp_cost": 35,
     "cooldown": 3,
-    "base_dmg": 120,
+    "base_dmg": 600,
     "effects": [
       "DebuffDocTo",
       "DebuffBaoMon"
@@ -166,7 +161,6 @@
     "key": "EnemyPhong_T3",
     "vi": "Tinh Anh Phong Hư Không",
     "en": "Elite Wind Void Strike",
-    "realm": 5,
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
@@ -176,7 +170,7 @@
     },
     "mp_cost": 38,
     "cooldown": 3,
-    "base_dmg": 135,
+    "base_dmg": 675,
     "effects": [
       "DebuffChayMau"
     ],
@@ -194,7 +188,6 @@
     "key": "EnemyTho_T3",
     "vi": "Tinh Anh Thổ Địa Long",
     "en": "Elite Earth Dragon Descent",
-    "realm": 5,
     "category": "attack",
     "element": "tho",
     "attack_type": "physical",
@@ -204,7 +197,7 @@
     },
     "mp_cost": 42,
     "cooldown": 4,
-    "base_dmg": 150,
+    "base_dmg": 750,
     "effects": [
       "DebuffTroBuoc",
       "DebuffLunDat"
@@ -231,7 +224,6 @@
     "key": "EnemyThuy_T3",
     "vi": "Tinh Anh Thủy Huyết Hải",
     "en": "Elite Water Blood Sea",
-    "realm": 5,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -241,7 +233,7 @@
     },
     "mp_cost": 40,
     "cooldown": 3,
-    "base_dmg": 140,
+    "base_dmg": 700,
     "effects": [
       "DebuffLamCham",
       "DebuffChayMau"
@@ -266,7 +258,6 @@
     "key": "EnemyQuang_T3",
     "vi": "Tinh Anh Quang Trảm Tà",
     "en": "Elite Light Evil-Sever",
-    "realm": 5,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -276,7 +267,7 @@
     },
     "mp_cost": 40,
     "cooldown": 3,
-    "base_dmg": 140,
+    "base_dmg": 700,
     "effects": [
       "DebuffPhaGiap",
       "DebuffSetDanh"
@@ -291,7 +282,6 @@
     "key": "EnemyAm_T3",
     "vi": "Tinh Anh Âm U Phệ Hồn",
     "en": "Elite Shadow Soul-Devour",
-    "realm": 5,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
@@ -301,7 +291,7 @@
     },
     "mp_cost": 40,
     "cooldown": 3,
-    "base_dmg": 140,
+    "base_dmg": 700,
     "effects": [
       "DebuffLoaMat",
       "DebuffXeRach"
@@ -316,7 +306,6 @@
     "key": "EnemyTribLoi_T3",
     "vi": "Thiên Kiếp Lôi Hậu",
     "en": "Tribulation Thunder — Late",
-    "realm": 5,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -326,7 +315,7 @@
     },
     "mp_cost": 55,
     "cooldown": 4,
-    "base_dmg": 200,
+    "base_dmg": 1000,
     "effects": [
       "CCStun",
       "DebuffSetDanh"

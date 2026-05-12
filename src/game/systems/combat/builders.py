@@ -40,7 +40,6 @@ def build_player_combatant(
     cs = compute_combat_stats(
         char, gem_count=gem_count, equip_stats=equip_stats,
         gem_keys=gem_keys, gem_keys_by_formation=gem_keys_by_formation,
-        learned_skill_keys=list(player_skill_keys),
     )
 
     # Formation skills — every active slot contributes its signature skill
@@ -60,6 +59,11 @@ def build_player_combatant(
 
     hp_current = min(char.hp_current, cs.hp_max) if char.hp_current > 0 else cs.hp_max
     mp_current = min(char.mp_current, cs.mp_max) if char.mp_current > 0 else cs.mp_max
+    # Persistent Energy Shield carry-over. Clamp at the static cap (base+
+    # flat+pct) so a re-equip that lowers shield_max trims the saved value;
+    # runtime-only sources (e.g. shield_max_per_spd buff aura) get layered
+    # on top by ``Combatant.shield_cap`` during play but aren't pre-credited.
+    shield_current = max(0, min(char.shield_current, cs.shield_max))
 
     # Carry every field CombatStats and Combatant share — field names match
     # by construction (see character_stats.CombatStats). Any CombatStats-only
@@ -72,6 +76,7 @@ def build_player_combatant(
         name=char.name,
         hp=hp_current,
         mp=mp_current,
+        shield=shield_current,
         element=None,
         skill_keys=final_skill_keys,
         formation_skill_keys=formation_skill_keys,
@@ -156,6 +161,12 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
     # ``final_dmg_reduce: 0.95`` can't make a mob untouchable.
     enemy_fdr = max(0.0, min(MAX_FINAL_DMG_REDUCE, float(enemy_data.get("final_dmg_reduce", 0.0))))
 
+    # Phase-Lock config — copied (not referenced) so per-fight mutations on
+    # the live combatant don't leak back into the JSON-backed registry dict.
+    phase_lock_cfg = enemy_data.get("phase_lock")
+    if phase_lock_cfg:
+        phase_lock_cfg = dict(phase_lock_cfg)
+
     return Combatant(
         key=enemy_key,
         name=enemy_data["vi"],
@@ -178,6 +189,8 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
         mp_regen_pct=enemy_mp_regen_pct,
         hp_regen_pct=enemy_hp_regen_pct,
         immune_hard_cc=bool(enemy_data.get("immune_hard_cc", False)),
+        immune_stat_mutation=bool(enemy_data.get("immune_stat_mutation", False)),
+        phase_lock_config=phase_lock_cfg,
     )
 
 
@@ -247,5 +260,6 @@ def build_world_boss_combatant(
         mp_regen_pct=0.08,
         immune_hard_cc=True,
         is_world_boss=True,      # blocks hp_max mutations (Âm soul-drain, etc.)
+        immune_stat_mutation=True,  # also blocks Đạo Pháp Thôn Phệ stat-steal
         final_dmg_reduce=boss_fdr,
     )

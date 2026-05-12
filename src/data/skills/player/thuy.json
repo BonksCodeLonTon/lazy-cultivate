@@ -1,1999 +1,325 @@
 [
   {
-    "key": "SkillAtkThuy1",
-    "vi": "Thiên Thủy Xuyên Tâm",
-    "en": "Heaven Water Heart Pierce",
-    "realm": 1,
+    "key": "SkillAtkVongXuyenNhuocThuy_R7",
+    "vi": "Vong Xuyên Nhược Thủy",
+    "en": "Wang-Chuan Weak Water",
     "scroll_grade": 1,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.0
+      "matk": 1.05
     },
-    "mp_cost": 12,
-    "cooldown": 1,
-    "base_dmg": 40,
-    "effects": [],
-    "formation_key": null
-  },
-  {
-    "key": "SkillAtkBang1",
-    "vi": "Thiên Băng Phong Lưỡng",
-    "en": "Heaven Ice Frost Blade",
-    "realm": 1,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 10,
-    "cooldown": 1,
-    "base_dmg": 30,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillSupThuy",
-    "vi": "Nhân Băng Giải Phong",
-    "en": "Human Ice CC Cleanse",
-    "realm": 1,
-    "scroll_grade": 1,
-    "category": "defense",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 15,
-    "cooldown": 2,
-    "base_dmg": 0,
-    "effects": [],
-    "formation_key": null
-  },
-  {
-    "key": "SkillThuyAbyssalDeep_R2",
-    "vi": "Thâm Hải Hàn Lưu",
-    "en": "Abyssal Frost Current",
-    "realm": 2,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.25
-    },
-    "mp_cost": 30,
+    "mp_cost": 240,
     "cooldown": 3,
-    "base_dmg": 95,
+    "base_dmg": 1980,
     "effects": [
-      "DebuffLamCham",
-      "DebuffThuyXuyenThau",
-      "CCInterrupt"
+      "DebuffNhuocThuyAn"
     ],
     "effect_chances": {
-      "DebuffLamCham": 0.6,
-      "DebuffThuyXuyenThau": 0.45,
-      "CCInterrupt": 0.25
+      "DebuffNhuocThuyAn": 1.0
     },
-    "formation_key": null,
-    "description_vi": "Hàn lưu thâm hải — Thiên cấp R2: làm chậm + xuyên kháng Thủy + 25% cắt niệm chiêu.",
     "effect_overrides": {
-      "DebuffThuyXuyenThau": {
-        "stat_bonus": {
-          "res_thuy": -0.13
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkThuy_R2",
-    "vi": "Thủy Nguyên Thác Đổ",
-    "en": "Water Essence Cascade",
-    "realm": 2,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 18,
-    "cooldown": 2,
-    "base_dmg": 60,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillAtkThuy2",
-    "vi": "Thiên Thủy Băng Tâm",
-    "en": "Heaven Water Ice Heart",
-    "realm": 3,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 25,
-    "cooldown": 2,
-    "base_dmg": 90,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.275
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkBang2",
-    "vi": "Thiên Băng Phong Ấn",
-    "en": "Heaven Ice Frost Seal",
-    "realm": 3,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 30,
-    "cooldown": 3,
-    "base_dmg": 85,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillDefBang",
-    "vi": "Địa Băng Giáp Hộ Thể",
-    "en": "Earth Ice Armor Guard",
-    "realm": 3,
-    "scroll_grade": 1,
-    "category": "defense",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 20,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffBangGiap"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffBangGiap": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.22
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillDefThuy",
-    "vi": "Địa Thủy Kính Phản",
-    "en": "Earth Water Mirror Reflect",
-    "realm": 3,
-    "scroll_grade": 2,
-    "category": "defense",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 20,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffThuyKinh"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffThuyKinh": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.165
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillThuyManaStack",
-    "vi": "Thủy Hư Tích Lũy",
-    "en": "Void Water Accumulation",
-    "realm": 4,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.2,
-      "matk": 1.0
-    },
-    "mp_cost": 25,
-    "cooldown": 2,
-    "base_dmg": 80,
-    "effects": [
-      "DebuffLamCham",
-      "DebuffThuyXuyenThau"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.75,
-      "DebuffThuyXuyenThau": 0.6
-    },
-    "formation_key": null,
-    "description_vi": "Làm chậm đối thủ, xuyên Kháng Thủy. Tích Linh Khí stack cho đòn bùng nổ kế.",
-    "effect_overrides": {
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.3
-        }
-      },
-      "DebuffThuyXuyenThau": {
-        "stat_bonus": {
-          "res_thuy": -0.18
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkThuy_R4",
-    "vi": "Huyền Thủy Hải Triều",
-    "en": "Mystery Water Sea Tide",
-    "realm": 4,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.1
-    },
-    "mp_cost": 40,
-    "cooldown": 3,
-    "base_dmg": 150,
-    "effects": [
-      "DebuffLamCham",
-      "DebuffDongBang"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.3
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillThuyTidalGrasp_R4",
-    "vi": "Triều Thủy Khóa Hồn",
-    "en": "Tidal Soul Grasp",
-    "realm": 4,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.2
-    },
-    "mp_cost": 50,
-    "cooldown": 4,
-    "base_dmg": 175,
-    "effects": [
-      "DebuffDongBang",
-      "DebuffThuyXuyenThau",
-      "DebuffLamCham"
-    ],
-    "formation_key": null,
-    "description_vi": "Triều thủy khóa hồn — đóng băng tạm thời, xuyên Kháng Thủy, làm chậm.",
-    "effect_overrides": {
-      "DebuffDongBang": {
-        "duration": 1
-      },
-      "DebuffThuyXuyenThau": {
-        "stat_bonus": {
-          "res_thuy": -0.2
-        },
+      "DebuffNhuocThuyAn": {
         "duration": 4
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.3
-        },
-        "duration": 3
       }
-    }
-  },
-  {
-    "key": "SkillAtkThuy3",
-    "vi": "Thiên Thủy Huyết Hải",
-    "en": "Heaven Water Blood Sea",
-    "realm": 5,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
     },
-    "mp_cost": 55,
-    "cooldown": 4,
-    "base_dmg": 200,
-    "effects": [
-      "DebuffChayMau"
-    ],
     "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0429
-      }
-    }
+    "description_vi": "Vong Xuyên Nhược Thủy — dòng Nhược Thủy âm hàn thấm vào da thịt, in lên địch một **Nhược Thủy Ấn** (mỗi tầng giảm **4% Kháng Thủy**). Khi tích đủ **5 tầng**, ấn ký bùng nổ — gây sát thương bằng **10% lượng HP đã mất** của địch và reset về 0. Mỗi lần niệm chỉ tạo **1 tầng**; ấn ký kéo dài 4 lượt, nếu hết hạn trước khi đủ 5 tầng sẽ tan biến."
   },
   {
-    "key": "SkillAtkBang3",
-    "vi": "Thiên Băng Vĩnh Hằng",
-    "en": "Heaven Ice Eternal Freeze",
-    "realm": 5,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 60,
-    "cooldown": 5,
-    "base_dmg": 210,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillThuyMirror_R5",
-    "vi": "Băng Cảnh Phản Chiếu",
-    "en": "Ice Mirror Reflect",
-    "realm": 5,
-    "scroll_grade": 2,
-    "category": "defense",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 55,
-    "cooldown": 5,
-    "base_dmg": 0,
-    "effects": [
-      "BuffTrongTo",
-      "BuffHoPhap"
-    ],
-    "formation_key": null,
-    "description_vi": "Dệt gương băng hộ thể — nhận Trọng Tố + Hộ Pháp. Trong khi hoạt động, đòn đánh tới đều bị phản chiếu mang theo đông băng/làm chậm.",
-    "effect_overrides": {
-      "BuffTrongTo": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.13,
-          "res_all": 0.065
-        }
-      },
-      "BuffHoPhap": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.325,
-          "crit_res_rating": 130
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkThuy_R6",
-    "vi": "Chân Thủy Huyền Băng Hải",
-    "en": "True Water Profound Ice Sea",
-    "realm": 6,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.2
-    },
-    "mp_cost": 68,
-    "cooldown": 4,
-    "base_dmg": 275,
-    "effects": [
-      "DebuffDongBang",
-      "DebuffLamCham",
-      "DebuffChayMau"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.35
-        }
-      },
-      "DebuffChayMau": {
-        "dot_pct": 0.0462
-      }
-    }
-  },
-  {
-    "key": "SkillThuyFreeze_R6",
-    "vi": "Hàn Tuyết Đóng Băng",
-    "en": "Cold Snow Freeze",
-    "realm": 6,
+    "key": "SkillAtkBacMinhHuuNgu_R7",
+    "vi": "Bắc Minh Hữu Ngư",
+    "en": "Northern Abyss Has Fish",
     "scroll_grade": 3,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.2,
-      "matk": 1.1
-    },
-    "mp_cost": 70,
-    "cooldown": 4,
-    "base_dmg": 260,
-    "effects": [
-      "DebuffDongBang",
-      "DebuffLamCham",
-      "DebuffThuyXuyenThau"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.7,
-      "DebuffLamCham": 1.0,
-      "DebuffThuyXuyenThau": 1.0
-    },
-    "formation_key": null,
-    "description_vi": "Đóng băng đối thủ (70%), làm chậm và xuyên kháng thủy.",
-    "effect_overrides": {
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.35
-        }
-      },
-      "DebuffThuyXuyenThau": {
-        "stat_bonus": {
-          "res_thuy": -0.21
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillThuyDeepFreeze_R6",
-    "vi": "Vực Sâu Hàn Băng",
-    "en": "Abyssal Deep Freeze",
-    "realm": 6,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.25
+      "matk": 1.3
     },
-    "mp_cost": 78,
-    "cooldown": 5,
-    "base_dmg": 310,
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 4200,
+    "bypass_evasion": true,
+    "proc_on_target_evades": 3,
     "effects": [
-      "DebuffDongBang",
-      "DebuffThuyXuyenThau",
-      "DebuffBaoMon",
-      "DebuffLamCham"
-    ],
-    "formation_key": null,
-    "description_vi": "Vực sâu hàn băng — đóng băng 2 lượt, xuyên kháng, bào mòn chỉ số tổng.",
-    "effect_overrides": {
-      "DebuffDongBang": {
-        "duration": 2
-      },
-      "DebuffThuyXuyenThau": {
-        "stat_bonus": {
-          "res_thuy": -0.22
-        },
-        "duration": 4
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.075
-        },
-        "duration": 4
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.4
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillAtkThuy_R7",
-    "vi": "Thần Thủy Thương Hải Nộ",
-    "en": "Divine Water Vast Sea Wrath",
-    "realm": 7,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.4,
-      "matk": 1.0
-    },
-    "mp_cost": 88,
-    "cooldown": 5,
-    "base_dmg": 375,
-    "effects": [
-      "DebuffDongBang",
-      "DebuffLamCham",
-      "DebuffChayMau",
       "CCStun"
     ],
-    "formation_key": null,
+    "effect_chances": {
+      "CCStun": 1.0
+    },
     "effect_overrides": {
-      "DebuffDongBang": {
-        "duration": 3
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.375
-        },
-        "duration": 3
-      },
-      "DebuffChayMau": {
-        "dot_pct": 0.0495,
-        "duration": 4
-      },
       "CCStun": {
         "duration": 2
       }
-    }
+    },
+    "formation_key": null,
+    "description_vi": "Bắc Minh Hữu Ngư — Bắc Minh thâm uyên có cá khổng lồ ngậm sát ý. **Tự kích hoạt khi địch nhân né tránh đủ 3 đòn**, không thể niệm chủ động. Đòn này **không thể né tránh** và **gây Choáng** (2 lượt) — sát thương ma pháp Thủy cực lớn."
   },
   {
-    "key": "SkillPasThuy_R7",
-    "vi": "Thần Thủy Hàn Khí Vực",
-    "en": "Divine Water Frost Domain",
-    "realm": 7,
-    "scroll_grade": 2,
-    "category": "passive",
+    "key": "SkillDefCamLoTinhHoa_R7",
+    "vi": "Cam Lộ Tịnh Hóa",
+    "en": "Sweet Dew Purification",
+    "scroll_grade": 3,
+    "category": "defense",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 80,
-    "cooldown": 10,
+    "mp_cost": 120,
+    "cooldown": 6,
     "base_dmg": 0,
     "effects": [
-      "BuffHanKhi",
-      "BuffThuyKinh"
+      "BuffCamLoTinhHoa"
     ],
     "formation_key": null,
-    "effect_overrides": {
-      "BuffHanKhi": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.15
-        },
-        "duration": 4
-      },
-      "BuffThuyKinh": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.225
-        },
-        "duration": 4
-      }
-    }
+    "description_vi": "Cam Lộ Tịnh Hóa — kết giới cam lộ rưới xuống tẩy uế thân. Mỗi lượt có **50% cơ hội Thanh Tẩy 1 trạng thái xấu** trên thân, và mỗi lần Thanh Tẩy thành công còn **hồi 5% HP tối đa**. Kéo dài 4 lượt."
   },
   {
-    "key": "SkillThuyManaBurst_R8",
-    "vi": "Linh Khí Bùng Nổ",
-    "en": "Mana Eruption",
-    "realm": 8,
-    "scroll_grade": 1,
-    "category": "attack",
+    "key": "SkillMovThuyThuongPhieu_R7",
+    "vi": "Thủy Thượng Phiêu",
+    "en": "Water-Walking Drift",
+    "scroll_grade": 3,
+    "category": "movement",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.3,
-      "matk": 1.3
+      "atk": 0.0,
+      "matk": 0.0
     },
     "mp_cost": 110,
     "cooldown": 5,
-    "base_dmg": 480,
-    "effects": [
-      "DebuffThuyXuyenThau",
-      "DebuffDongBang",
-      "ConsumeManaBurst"
+    "base_dmg": 0,
+    "passive_effects": [
+      "BuffThuyThuongPhieuAura"
     ],
-    "effect_chances": {
-      "DebuffThuyXuyenThau": 1.0,
-      "DebuffDongBang": 0.5
-    },
-    "burst_per_mana_stack_mult": 0.15,
-    "formation_key": null,
-    "description_vi": "Nổ toàn bộ tầng Linh Khí Tích Lũy — mỗi tầng thêm 15% MP tối đa làm ST, xuyên Kháng Thủy, 50% đóng băng.",
+    "effects": [
+      "BuffThuyThuongPhieu"
+    ],
     "effect_overrides": {
-      "DebuffThuyXuyenThau": {
-        "stat_bonus": {
-          "res_thuy": -0.24
-        },
-        "duration": 4
-      },
-      "DebuffDongBang": {
+      "BuffThuyThuongPhieu": {
         "duration": 3
       }
-    }
+    },
+    "formation_key": null,
+    "description_vi": "Thủy Thượng Phiêu — bộ pháp lướt trên mặt nước. **Bị động**: vĩnh viễn +20% Tốc. **Chủ động** (3 lượt): đọc thế trận mà tùy biến — **địch nhanh hơn** thì +20% Tốc cho bản thân (đuổi kịp), **địch chậm hơn** thì +20% Sát Thương Thủy (dứt điểm). Đánh giá lại mỗi đòn niệm theo Tốc thực tế tại thời điểm đó."
   },
   {
-    "key": "SkillAtkThuy_R8",
-    "vi": "Thánh Thủy Bắc Minh Thôn Thiên",
-    "en": "Saint Water Northern Abyss Sky-Devour",
-    "realm": 8,
-    "scroll_grade": 2,
-    "category": "attack",
+    "key": "SkillMovLangBaViBo_R7",
+    "vi": "Lăng Ba Vi Bộ",
+    "en": "Wave-Stepping Microsteps",
+    "scroll_grade": 3,
+    "category": "movement",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.6,
-      "matk": 1.1
-    },
-    "mp_cost": 115,
-    "cooldown": 6,
-    "base_dmg": 495,
-    "effects": [
-      "DebuffDongBang",
-      "DebuffLamCham",
-      "DebuffChayMau",
-      "CCStun",
-      "DebuffBaoMon"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffDongBang": {
-        "duration": 3
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.4
-        },
-        "duration": 3
-      },
-      "DebuffChayMau": {
-        "dot_pct": 0.0528,
-        "duration": 4
-      },
-      "CCStun": {
-        "duration": 2
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.08
-        },
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillThuyOceanKing_R8",
-    "vi": "Hải Vương Thủy Triều",
-    "en": "Ocean King's Tide",
-    "realm": 8,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.4,
-      "matk": 1.25
+      "atk": 0.0,
+      "matk": 0.0
     },
     "mp_cost": 120,
     "cooldown": 6,
-    "base_dmg": 540,
-    "effects": [
-      "DebuffDongBang",
-      "DebuffThuyXuyenThau",
-      "DebuffBaoMon",
-      "DebuffLamCham",
-      "CCMuted"
+    "base_dmg": 0,
+    "passive_effects": [
+      "BuffLangBaViBoAura"
     ],
-    "formation_key": null,
-    "description_vi": "Hải Vương thủy triều — đóng băng + câm lặng, đỉnh sát thương Thủy R8.",
-    "effect_overrides": {
-      "DebuffDongBang": {
-        "duration": 2
-      },
-      "DebuffThuyXuyenThau": {
-        "stat_bonus": {
-          "res_thuy": -0.24
-        },
-        "duration": 4
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.085
-        },
-        "duration": 4
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.5
-        },
-        "duration": 3
-      },
-      "CCMuted": {
-        "duration": 2
-      }
-    }
-  },
-  {
-    "key": "SkillAtkThuy_R9",
-    "vi": "Tiên Thủy Thiên Hà Đảo Quyển",
-    "en": "Immortal Water Milky-Way Reverse-Flow",
-    "realm": 9,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.9,
-      "matk": 1.1
-    },
-    "mp_cost": 160,
-    "cooldown": 7,
-    "base_dmg": 710,
     "effects": [
-      "DebuffDongBang",
-      "DebuffLamCham",
-      "DebuffChayMau",
-      "CCStun",
-      "DebuffBaoMon",
-      "CCMuted"
+      "BuffTuyetDieuVoAnh"
     ],
-    "formation_key": null,
     "effect_overrides": {
-      "DebuffDongBang": {
-        "duration": 3
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.425
-        },
-        "duration": 3
-      },
-      "DebuffChayMau": {
-        "dot_pct": 0.0561,
-        "duration": 4
-      },
-      "CCStun": {
-        "duration": 2
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.085
-        },
-        "duration": 4
-      },
-      "CCMuted": {
+      "BuffTuyetDieuVoAnh": {
         "duration": 3
       }
-    }
-  },
-  {
-    "key": "SkillThuyDaoWorld_R9",
-    "vi": "Thủy Đạo Thiên Hà",
-    "en": "Water Dao Milky Way Reverse",
-    "realm": 9,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.3,
-      "matk": 1.4
-    },
-    "mp_cost": 150,
-    "cooldown": 6,
-    "base_dmg": 680,
-    "true_dmg_pct": 0.06,
-    "effects": [
-      "DebuffDongBang",
-      "DebuffLamCham",
-      "DebuffThuyXuyenThau",
-      "CCInterrupt",
-      "ConsumeManaBurst"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 1.0,
-      "DebuffLamCham": 1.0,
-      "DebuffThuyXuyenThau": 1.0,
-      "CCInterrupt": 0.5
-    },
-    "burst_per_mana_stack_mult": 0.22,
-    "formation_key": null,
-    "description_vi": "Đỉnh cao Thủy Đạo — đóng băng, làm chậm, xuyên Kháng Thủy, ngắt kỹ năng và nổ toàn bộ tầng Linh Khí. Đòn kết thúc của cao thủ kiểm soát.",
-    "effect_overrides": {
-      "DebuffDongBang": {
-        "duration": 3
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.425
-        },
-        "duration": 3
-      },
-      "DebuffThuyXuyenThau": {
-        "stat_bonus": {
-          "res_thuy": -0.255
-        },
-        "duration": 4
-      },
-      "CCInterrupt": {
-        "duration": 2
-      }
-    }
-  },
-  {
-    "key": "SkillThuyDoubleStrike",
-    "vi": "Hàn Băng Liên Hoàn",
-    "en": "Frost Linked Strike",
-    "realm": 3,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.55
-    },
-    "mp_cost": 38,
-    "cooldown": 3,
-    "base_dmg": 95,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.3
-    },
-    "hit_count": 2,
-    "formation_key": null,
-    "description_vi": "Hai luồng băng kế tiếp — mỗi đòn áp Làm Chậm độc lập."
-  },
-  {
-    "key": "SkillThuyTidalCharge",
-    "vi": "Cuộn Triều Tích Lực",
-    "en": "Tidal Charging Surge",
-    "realm": 9,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.2
-    },
-    "mp_cost": 110,
-    "cooldown": 5,
-    "base_dmg": 480,
-    "effects": [
-      "DebuffThuyXuyenThau"
-    ],
-    "effect_chances": {
-      "DebuffThuyXuyenThau": 0.85
-    },
-    "charge_bonus": {
-      "every": 4,
-      "amount": 1500
     },
     "formation_key": null,
-    "description_vi": "Tiên cấp Thủy — niệm liên tiếp 4 lần để tích triều, lần thứ 4 vỡ òa thêm 1500 ST."
+    "description_vi": "Lăng Ba Vi Bộ — bộ pháp truyền kỳ, lướt trên sóng nhẹ như không trọng lượng. **Bị động**: vĩnh viễn +500 Né Tránh và +20% Tốc (cả trận đấu). **Chủ động** (3 lượt): bước vào trạng thái **Tuyệt Diệu Vô Ảnh** — miễn dịch mọi trạng thái giảm Tốc."
   },
   {
-    "key": "SkillFillerThuyR1G2",
-    "vi": "Thủy Huyền Đoạn Thuật",
-    "en": "Thủy Huyền Severing Art",
-    "realm": 1,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 22,
-    "cooldown": 1,
-    "base_dmg": 20,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR2G1",
-    "vi": "Thủy Hoàng Đoạn Thuật",
-    "en": "Thủy Hoàng Severing Art",
-    "realm": 2,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 23,
-    "cooldown": 2,
-    "base_dmg": 30,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR2G4",
-    "vi": "Thủy Thiên Đoạn Thuật",
-    "en": "Thủy Thiên Severing Art",
-    "realm": 2,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 38,
-    "cooldown": 3,
-    "base_dmg": 50,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR3G3",
-    "vi": "Thủy Địa Đoạn Thuật",
-    "en": "Thủy Địa Severing Art",
-    "realm": 3,
+    "key": "SkillMovHaiThiThanLau_R7",
+    "vi": "Hải Thị Thận Lâu",
+    "en": "Sea-Mirage Tower",
     "scroll_grade": 3,
-    "category": "attack",
+    "category": "movement",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.15
+      "matk": 0.0
     },
-    "mp_cost": 43,
-    "cooldown": 3,
-    "base_dmg": 62,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR4G1",
-    "vi": "Thủy Hoàng Đoạn Thuật",
-    "en": "Thủy Hoàng Severing Art",
-    "realm": 4,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 45,
-    "cooldown": 3,
-    "base_dmg": 75,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR4G2",
-    "vi": "Thủy Huyền Đoạn Thuật",
-    "en": "Thủy Huyền Severing Art",
-    "realm": 4,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 50,
-    "cooldown": 3,
-    "base_dmg": 95,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR4G4",
-    "vi": "Thủy Thiên Đoạn Thuật",
-    "en": "Thủy Thiên Severing Art",
-    "realm": 4,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 60,
-    "cooldown": 4,
-    "base_dmg": 128,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR5G1",
-    "vi": "Thủy Hoàng Đoạn Thuật",
-    "en": "Thủy Hoàng Severing Art",
-    "realm": 5,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 60,
-    "cooldown": 3,
-    "base_dmg": 110,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR6G1",
-    "vi": "Thủy Hoàng Đoạn Thuật",
-    "en": "Thủy Hoàng Severing Art",
-    "realm": 6,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 75,
-    "cooldown": 4,
-    "base_dmg": 145,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR6G3",
-    "vi": "Thủy Địa Đoạn Thuật",
-    "en": "Thủy Địa Severing Art",
-    "realm": 6,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 85,
+    "mp_cost": 130,
     "cooldown": 5,
-    "base_dmg": 210,
-    "effects": [
-      "DebuffLamCham"
+    "base_dmg": 0,
+    "passive_effects": [
+      "BuffHaiThiThanLauAura"
     ],
-    "effect_chances": {
-      "DebuffLamCham": 0.4
-    },
-    "formation_key": null
+    "effects": [
+      "BuffHaiThiThanLau"
+    ],
+    "formation_key": null,
+    "description_vi": "Hải Thị Thận Lâu — bộ pháp ảo cảnh nước-trời. **Bị động**: mỗi 1 điểm Tốc cao hơn địch nhân cộng thêm 20 Né Tránh khi đối thủ tấn công vào thân (kích hoạt cả trận). **Chủ động** (4 lượt): +20% Tốc, đồng thời mỗi đòn niệm gây sát thương có **60% cơ hội Làm Chậm địch -20% Tốc**."
   },
   {
-    "key": "SkillFillerThuyR6G4",
-    "vi": "Thủy Thiên Đoạn Thuật",
-    "en": "Thủy Thiên Severing Art",
-    "realm": 6,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 90,
-    "cooldown": 5,
-    "base_dmg": 235,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR7G2",
-    "vi": "Thủy Huyền Đoạn Thuật",
-    "en": "Thủy Huyền Severing Art",
-    "realm": 7,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 100,
-    "cooldown": 4,
-    "base_dmg": 265,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR7G3",
-    "vi": "Thủy Địa Đoạn Thuật",
-    "en": "Thủy Địa Severing Art",
-    "realm": 7,
+    "key": "SkillDefTuLuongBatThienCan_R7",
+    "vi": "Tứ Lạng Bạt Thiên Cân",
+    "en": "Four Liang Move Thousand Catties",
     "scroll_grade": 3,
-    "category": "attack",
+    "category": "defense",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.15
+      "matk": 0.0
     },
     "mp_cost": 105,
-    "cooldown": 5,
-    "base_dmg": 305,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR8G1",
-    "vi": "Thủy Hoàng Đoạn Thuật",
-    "en": "Thủy Hoàng Severing Art",
-    "realm": 8,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 120,
-    "cooldown": 5,
-    "base_dmg": 270,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR8G2",
-    "vi": "Thủy Huyền Đoạn Thuật",
-    "en": "Thủy Huyền Severing Art",
-    "realm": 8,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 125,
-    "cooldown": 5,
-    "base_dmg": 340,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR8G4",
-    "vi": "Thủy Thiên Đoạn Thuật",
-    "en": "Thủy Thiên Severing Art",
-    "realm": 8,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 135,
     "cooldown": 6,
-    "base_dmg": 435,
+    "base_dmg": 0,
     "effects": [
-      "DebuffLamCham"
+      "BuffTuLuongBatThienCan"
     ],
-    "effect_chances": {
-      "DebuffLamCham": 0.45
-    },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Tứ Lạng Bạt Thiên Cân — lấy nhu thắng cương, thân pháp hoán đổi giữa công và thủ. **Khi HP > 50%**: +20% sát thương Thủy. **Khi HP < 50%**: +20% giảm sát thương phải nhận. Hoán đổi tự động theo HP mỗi đòn. Kéo dài 4 lượt."
   },
   {
-    "key": "SkillFillerThuyR9G2",
-    "vi": "Thủy Huyền Đoạn Thuật",
-    "en": "Thủy Huyền Severing Art",
-    "realm": 9,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 155,
-    "cooldown": 5,
-    "base_dmg": 480,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR9G3",
-    "vi": "Thủy Địa Đoạn Thuật",
-    "en": "Thủy Địa Severing Art",
-    "realm": 9,
+    "key": "SkillDefKinhHoaThuyNguyet_R7",
+    "vi": "Kính Hoa Thủy Nguyệt",
+    "en": "Mirror Flower Water Moon",
     "scroll_grade": 3,
-    "category": "attack",
+    "category": "defense",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 160,
-    "cooldown": 6,
-    "base_dmg": 555,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR9G4",
-    "vi": "Thủy Thiên Đoạn Thuật",
-    "en": "Thủy Thiên Severing Art",
-    "realm": 9,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 165,
-    "cooldown": 6,
-    "base_dmg": 625,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR1G3",
-    "vi": "Thủy Địa Đoạn Thuật",
-    "en": "Thủy Địa Severing Art",
-    "realm": 1,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 27,
-    "cooldown": 2,
-    "base_dmg": 24,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR1G3B",
-    "vi": "Thủy Địa Trảm Quyết",
-    "en": "Thủy Địa Cleaving Edict",
-    "realm": 1,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 27,
-    "cooldown": 2,
-    "base_dmg": 24,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR1G4",
-    "vi": "Thủy Thiên Đoạn Thuật",
-    "en": "Thủy Thiên Severing Art",
-    "realm": 1,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 32,
-    "cooldown": 2,
-    "base_dmg": 28,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR1G4B",
-    "vi": "Thủy Thiên Trảm Quyết",
-    "en": "Thủy Thiên Cleaving Edict",
-    "realm": 1,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 32,
-    "cooldown": 2,
-    "base_dmg": 28,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR2G2",
-    "vi": "Thủy Huyền Đoạn Thuật",
-    "en": "Thủy Huyền Severing Art",
-    "realm": 2,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 28,
-    "cooldown": 2,
-    "base_dmg": 38,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR2G2B",
-    "vi": "Thủy Huyền Trảm Quyết",
-    "en": "Thủy Huyền Cleaving Edict",
-    "realm": 2,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 28,
-    "cooldown": 2,
-    "base_dmg": 38,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR2G3",
-    "vi": "Thủy Địa Đoạn Thuật",
-    "en": "Thủy Địa Severing Art",
-    "realm": 2,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 33,
-    "cooldown": 3,
-    "base_dmg": 45,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR2G3B",
-    "vi": "Thủy Địa Trảm Quyết",
-    "en": "Thủy Địa Cleaving Edict",
-    "realm": 2,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 33,
-    "cooldown": 3,
-    "base_dmg": 45,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR3G4",
-    "vi": "Thủy Thiên Đoạn Thuật",
-    "en": "Thủy Thiên Severing Art",
-    "realm": 3,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 48,
-    "cooldown": 3,
-    "base_dmg": 70,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR3G4B",
-    "vi": "Thủy Thiên Trảm Quyết",
-    "en": "Thủy Thiên Cleaving Edict",
-    "realm": 3,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 48,
-    "cooldown": 3,
-    "base_dmg": 70,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR4G3",
-    "vi": "Thủy Địa Đoạn Thuật",
-    "en": "Thủy Địa Severing Art",
-    "realm": 4,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 55,
-    "cooldown": 4,
-    "base_dmg": 110,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR4G3B",
-    "vi": "Thủy Địa Trảm Quyết",
-    "en": "Thủy Địa Cleaving Edict",
-    "realm": 4,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 55,
-    "cooldown": 4,
-    "base_dmg": 110,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR5G3",
-    "vi": "Thủy Địa Đoạn Thuật",
-    "en": "Thủy Địa Severing Art",
-    "realm": 5,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 70,
-    "cooldown": 4,
-    "base_dmg": 160,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR5G3B",
-    "vi": "Thủy Địa Trảm Quyết",
-    "en": "Thủy Địa Cleaving Edict",
-    "realm": 5,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 70,
-    "cooldown": 4,
-    "base_dmg": 160,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR5G4",
-    "vi": "Thủy Thiên Đoạn Thuật",
-    "en": "Thủy Thiên Severing Art",
-    "realm": 5,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 75,
-    "cooldown": 4,
-    "base_dmg": 180,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR5G4B",
-    "vi": "Thủy Thiên Trảm Quyết",
-    "en": "Thủy Thiên Cleaving Edict",
-    "realm": 5,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 75,
-    "cooldown": 4,
-    "base_dmg": 180,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR6G2",
-    "vi": "Thủy Huyền Đoạn Thuật",
-    "en": "Thủy Huyền Severing Art",
-    "realm": 6,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 80,
-    "cooldown": 4,
-    "base_dmg": 180,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR6G2B",
-    "vi": "Thủy Huyền Trảm Quyết",
-    "en": "Thủy Huyền Cleaving Edict",
-    "realm": 6,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 80,
-    "cooldown": 4,
-    "base_dmg": 180,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR7G1",
-    "vi": "Thủy Hoàng Đoạn Thuật",
-    "en": "Thủy Hoàng Severing Art",
-    "realm": 7,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 95,
-    "cooldown": 4,
-    "base_dmg": 210,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR7G1B",
-    "vi": "Thủy Hoàng Trảm Quyết",
-    "en": "Thủy Hoàng Cleaving Edict",
-    "realm": 7,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 95,
-    "cooldown": 4,
-    "base_dmg": 210,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR7G4",
-    "vi": "Thủy Thiên Đoạn Thuật",
-    "en": "Thủy Thiên Severing Art",
-    "realm": 7,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
+      "matk": 0.0
     },
     "mp_cost": 110,
-    "cooldown": 5,
-    "base_dmg": 340,
+    "cooldown": 6,
+    "base_dmg": 0,
     "effects": [
-      "DebuffLamCham"
+      "BuffKinhHoaThuyNguyet"
     ],
-    "effect_chances": {
-      "DebuffLamCham": 0.45
-    },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Kính Hoa Thủy Nguyệt — dệt ảo cảnh nước-trăng quanh thân. **Mỗi lượt trước khi hành động: 50% cơ hội đẩy ngược 1 trạng thái xấu** trên thân về phía địch nhân (giữ nguyên thời gian còn lại + cường độ). Trạng thái dạng tầng (Cháy / Chảy Máu / Sốc / Độc) không thể chuyển. Kéo dài 3 lượt."
   },
   {
-    "key": "SkillFillerThuyR7G4B",
-    "vi": "Thủy Thiên Trảm Quyết",
-    "en": "Thủy Thiên Cleaving Edict",
-    "realm": 7,
-    "scroll_grade": 4,
+    "key": "SkillDefThuyMacThienHoa_R7",
+    "vi": "Thủy Mặc Thiên Hoa",
+    "en": "Water-Ink Heaven Flower",
+    "scroll_grade": 3,
+    "category": "defense",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffThuyMacThienHoa"
+    ],
+    "formation_key": null,
+    "description_vi": "Thủy Mặc Thiên Hoa — kích hoạt trạng thái **Thủy Mặc**: 25% sát thương phải nhận chuyển hóa thành tiêu hao linh lực (MP) thay vì máu, đồng thời +2% hồi linh lực mỗi lượt. Kéo dài 4 lượt. *Lưu ý:* khi MP cạn, phần không chi trả được vẫn rơi lại HP."
+  },
+  {
+    "key": "SkillAtkPhaPhuTramChu_R7",
+    "vi": "Phá Phủ Trầm Chu",
+    "en": "Break Cauldrons Sink Boats",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.15,
+      "matk": 0.0
+    },
+    "mp_cost": 175,
+    "cooldown": 4,
+    "base_dmg": 2100,
+    "bonus_dmg_vs_hp_above": {
+      "hp_pct": 0.70,
+      "dmg_bonus": 0.40
+    },
+    "effects": [],
+    "formation_key": null,
+    "description_vi": "Phá Phủ Trầm Chu — đòn vật lý hệ Thủy mở trận quyết tử, dồn toàn lực phá vỡ phòng tuyến địch khi đối thủ còn sung sức. **Khi HP địch > 70%**, đòn này gây thêm **+40% sát thương**."
+  },
+  {
+    "key": "SkillAtkThuyVi_R7",
+    "vi": "Thủy Vi",
+    "en": "Subtle Water",
+    "scroll_grade": 3,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.3
+      "matk": 0.85
+    },
+    "mp_cost": 145,
+    "cooldown": 5,
+    "base_dmg": 1320,
+    "effects": [
+      "BuffThuyVi"
+    ],
+    "effect_overrides": {
+      "BuffThuyVi": {
+        "stat_bonus": {
+          "thuy_vi_charges": 3,
+          "thuy_vi_bypass_pct": 0.25
+        },
+        "duration": 99
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Thủy Vi — thủy khí âm thầm thấm vào tuyệt học, tự thân gây sát thương vừa phải. Sau khi niệm, **3 đòn niệm tiếp theo xuyên thẳng 25% Hộ Thuẫn** của địch nhân. Niệm lại sẽ làm mới về 3 lần."
+  },
+  {
+    "key": "SkillAtkThuyLongDan_R7",
+    "vi": "Thủy Long Đạn",
+    "en": "Water Dragon Bullet",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.95
     },
     "mp_cost": 110,
-    "cooldown": 5,
-    "base_dmg": 340,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.45
+    "cooldown": 1,
+    "base_dmg": 1080,
+    "chain_skill": {
+      "key": "SkillAtkThuyLongNgam_R7",
+      "pct": 1.0,
+      "cast_on": "every_n_casts",
+      "n": 4
     },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Thủy Long Đạn — bắn liên hoàn long hồn, mỗi đòn 70% xuyên 10% Kháng Thủy. **Cứ 4 lần niệm**, long hồn ngưng tụ phát động **Thủy Long Ngâm** — gầm xé tầng trời, sát thương cực lớn và xuyên 15% Kháng Thủy."
   },
   {
-    "key": "SkillFillerThuyR8G3",
-    "vi": "Thủy Địa Đoạn Thuật",
-    "en": "Thủy Địa Severing Art",
-    "realm": 8,
+    "key": "SkillAtkThuyLongNgam_R7",
+    "vi": "Thủy Long Ngâm",
+    "en": "Water Dragon Roar",
     "scroll_grade": 3,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.15
+      "matk": 1.4
     },
-    "mp_cost": 130,
-    "cooldown": 6,
-    "base_dmg": 395,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR8G3B",
-    "vi": "Thủy Địa Trảm Quyết",
-    "en": "Thủy Địa Cleaving Edict",
-    "realm": 8,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 130,
-    "cooldown": 6,
-    "base_dmg": 395,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR9G1",
-    "vi": "Thủy Hoàng Đoạn Thuật",
-    "en": "Thủy Hoàng Severing Art",
-    "realm": 9,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 150,
-    "cooldown": 5,
-    "base_dmg": 380,
-    "effects": [
-      "DebuffLamCham"
-    ],
-    "effect_chances": {
-      "DebuffLamCham": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerThuyR9G1B",
-    "vi": "Thủy Hoàng Trảm Quyết",
-    "en": "Thủy Hoàng Cleaving Edict",
-    "realm": 9,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "thuy",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 150,
-    "cooldown": 5,
-    "base_dmg": 380,
-    "effects": [
-      "DebuffDongBang"
-    ],
-    "effect_chances": {
-      "DebuffDongBang": 0.3
-    },
-    "formation_key": null
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 5400,
+    "element_pen_self": 0.15,
+    "chain_only": true,
+    "formation_key": null,
+    "description_vi": "Thủy Long Ngâm — Long gầm chấn động cửu thiên. **Không thể niệm trực tiếp** — chỉ kích hoạt khi tích đủ 4 đòn **Thủy Long Đạn**. Sát thương cực lớn — xuyên 15% kháng thủy của kẻ địch"
   }
 ]

@@ -1,11 +1,9 @@
 """Consume-and-burst skill effects.
 
 Each function consumes a resource pool on actor (shield, mana stacks) and
-deals a scaled burst as elemental damage. The legacy ``burst_burn``
-(detonating burn stacks via ``ConsumeBurnBurst``) was removed — fire
-detonates now use the generic ``auto_cast_on_stacks`` mechanic in
-``skill_extras`` instead. Shock stacks remain (separate damage-amplifier
-strategy, not a burst-on-cast).
+deals a scaled burst as elemental damage. Fire detonates use the generic
+``auto_cast_on_stacks`` mechanic in ``skill_extras``; shock stacks are a
+separate damage-amplifier strategy (not a burst-on-cast).
 """
 from __future__ import annotations
 

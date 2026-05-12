@@ -88,14 +88,14 @@ def test_compute_combat_stats_applies_pill_buffs():
 
     # Baseline (no buff)
     char_clean = _char(qi_realm=2, body_realm=2)
-    cs_clean = compute_combat_stats(char_clean, gem_count=0, learned_skill_keys=[])
+    cs_clean = compute_combat_stats(char_clean, gem_count=0)
 
     # Same character + 10 buff_def + 8 buff_speed pills consumed.
     char_buffed = _char(
         qi_realm=2, body_realm=2,
         pill_buff_counts={"buff_def": 10, "buff_speed": 8, "buff_element_kim": 5},
     )
-    cs_buffed = compute_combat_stats(char_buffed, gem_count=0, learned_skill_keys=[])
+    cs_buffed = compute_combat_stats(char_buffed, gem_count=0)
 
     assert cs_buffed.def_stat - cs_clean.def_stat == 100   # 10 × +10
     assert cs_buffed.spd - cs_clean.spd == 4               # 8 × +0.5 = 4

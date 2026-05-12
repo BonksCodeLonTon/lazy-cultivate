@@ -133,30 +133,17 @@ def check_forge_requirements(
     # overridden here to keep code as the single source of truth.
     required_qty = max_affix_total(grade)
 
-    # Check each option — use first satisfiable one
-    for option in recipe["options"]:
-        mats_needed = option["materials"]
-        ok = all(
-            sum(
-                qty
-                for key, qty in materials_in_bag.items()
-                if get_material_grade(key) == req["mat_grade"]
-            ) >= required_qty
-            for req in mats_needed
-        )
-        if ok:
-            # Normalize the returned option so downstream consumption uses the
-            # computed qty rather than the stale JSON value.
-            return True, "", _normalize_option(option, required_qty)
+    # No more per-grade gate — any forge_material counts towards the total.
+    # ``materials_in_bag`` is pre-filtered to ``type == "forge_material"`` by
+    # the cog, so summing all values gives the total available.
+    total_owned = sum(materials_in_bag.values())
+    if total_owned >= required_qty and recipe["options"]:
+        return True, "", _normalize_option(recipe["options"][0], required_qty)
 
-    cheapest = recipe["options"][0]
-    lines = [
-        f"• {required_qty}x Vật liệu luyện khí phẩm {req['mat_grade']}"
-        for req in cheapest["materials"]
-    ]
     return (
         False,
-        "Thiếu nguyên liệu. Cần:\n" + "\n".join(lines),
+        f"Thiếu nguyên liệu. Cần **{required_qty}** vật liệu luyện khí "
+        f"(hiện có {total_owned}).",
         None,
     )
 
@@ -221,7 +208,7 @@ def roll_implicit_stats(base: dict, grade: int, quality: str = "hoan") -> dict[s
     result: dict[str, float] = {}
     mult = QUALITY_SPECIAL[quality]["implicit_mult"]
     idx = grade - 1
-    for stat, ranges in base["implicit_by_grade"].items():
+    for stat, ranges in base["implicit_by_realm"].items():
         lo, hi = ranges[idx]
         if isinstance(lo, float) and lo < 1:
             raw = random.uniform(lo, hi)
@@ -241,24 +228,37 @@ def _eligible_affixes(slot: str, affix_type: str) -> list[dict]:
     ]
 
 
-def _get_affix_bias(material_keys: list[str] | str | None) -> set[str]:
-    """Return the union of biased affix keys across one or more materials.
+def _get_affix_bias_weights(material_keys: list[str] | str | None) -> dict[str, float]:
+    """Return per-affix selection-weight multipliers from picked materials.
 
-    Accepts a single key (legacy) or a list of keys. Mixed-material forges
-    combine biases — every consumed material contributes its full bias set
-    so any one of them is enough to boost a given affix.
+    Higher-grade materials pull harder on their bias affix:
+
+    * Grade 1 → 6×
+    * Grade 2 → 9×
+    * Grade 3 → 12×
+    * Grade 4 → 15×
+
+    Multiple materials biased to the same affix do **not** stack — we keep
+    the strongest pull so a single grade-4 pick beats a stack of grade-1s.
+    Materials with no ``affix_bias`` (the de-duplicated 38) contribute
+    nothing here; total qty still counts toward the recipe gate.
     """
     if not material_keys:
-        return set()
+        return {}
     keys = [material_keys] if isinstance(material_keys, str) else material_keys
-    bias: set[str] = set()
+    weights: dict[str, float] = {}
     for key in keys:
         if not key:
             continue
         item = registry.get_item(key)
-        if item and item.get("type") == "forge_material":
-            bias.update(item.get("affix_bias", []))
-    return bias
+        if not item or item.get("type") != "forge_material":
+            continue
+        grade = int(item.get("grade", 1))
+        mult = float(3 * max(1, grade) + 3)
+        for affix_key in item.get("affix_bias") or []:
+            if mult > weights.get(affix_key, 0.0):
+                weights[affix_key] = mult
+    return weights
 
 
 def roll_affixes(
@@ -270,9 +270,11 @@ def roll_affixes(
 ) -> list[dict]:
     """Roll affixes, applying quality floor and guaranteed-max special effects.
 
-    Biased affixes (the union of every consumed material's ``affix_bias``)
-    receive 3× selection weight. Pass a single key for a single-material
-    forge or a list for mixed-material forges.
+    Biased affixes get a selection-weight multiplier scaling with the
+    biasing material's grade — 6× / 9× / 12× / 15× for grade 1 / 2 / 3 / 4.
+    Pass a single key for a single-material forge or a list for
+    mixed-material forges; same-affix bids from multiple materials don't
+    stack, only the strongest pull wins.
 
     When ``two_handed`` is True, both prefix and suffix counts are doubled —
     this is how 2H weapons earn their slot lockout: twice the customizable
@@ -286,11 +288,11 @@ def roll_affixes(
     floor_frac: float = spec["affix_floor"]
     guaranteed_max: bool = spec["guaranteed_max"]
     idx = grade - 1
-    bias: set[str] = _get_affix_bias(material_keys)
+    bias_weights: dict[str, float] = _get_affix_bias_weights(material_keys)
     rolled: list[dict] = []
 
     def _roll_one(a: dict, force_max: bool = False) -> dict:
-        lo, hi = a["by_grade"][idx]
+        lo, hi = a["by_realm"][idx]
         effective_lo = lo + (hi - lo) * floor_frac
         if force_max:
             val = hi
@@ -301,9 +303,9 @@ def roll_affixes(
         return {"key": a["key"], "stat": a["stat"], "value": val, "type": a["type"]}
 
     def _roll(pool: list[dict], n: int, reserve_max_slot: int = -1) -> list[dict]:
-        if bias:
-            # Biased affixes get 3× selection weight
-            weights = [3.0 if a["key"] in bias else 1.0 for a in pool]
+        if bias_weights:
+            # Biased affixes get a grade-scaled selection weight (6×–15×).
+            weights = [bias_weights.get(a["key"], 1.0) for a in pool]
             chosen: list[dict] = []
             remaining = pool[:]
             remaining_w = weights[:]
@@ -344,7 +346,13 @@ def _roll_quality(recipe: dict, comprehension: int = 0) -> str:
 
 
 def _build_display_name(base: dict, quality: str, affixes: list[dict]) -> str:
-    """Generate a display name like 'Uy Mãnh Trường Kiếm của Trường Thọ'."""
+    """Generate a display name like 'Uy Mãnh Trường Kiếm của Trường Thọ'.
+
+    ``type="super"`` affixes (super-material grants) are excluded — they're
+    not part of the prefix/suffix slot system and have no localized name in
+    ``registry.affixes``; the description belongs in the item's flavor text,
+    not the title.
+    """
     prefix_names = [a["key"] for a in affixes if a["type"] == "prefix"]
     suffix_names = [a["key"] for a in affixes if a["type"] == "suffix"]
 
@@ -385,7 +393,7 @@ def forge_equipment(
     base = registry.get_base(base_key)
     if not base:
         return ForgeResult(False, f"Không tìm thấy loại trang bị '{base_key}'.")
-    if "implicit_by_grade" not in base:
+    if "implicit_by_realm" not in base:
         return ForgeResult(False, f"Trang bị '{base_key}' chưa hỗ trợ hệ thống rèn cấp.")
 
     recipe = get_recipe(grade)
@@ -412,7 +420,7 @@ def forge_equipment(
     char.merit -= recipe["cost_cong_duc"]
 
     # Mixed-material forges union every consumed material's affix_bias so
-    # each one contributes its biased keys to the 3× roll weighting.
+    # each one contributes its biased keys to the 6×–15× roll weighting.
     consumed_keys = [k for k, _ in consumed_materials] if consumed_materials else []
 
     quality = _roll_quality(recipe, char.stats.comprehension)
@@ -423,6 +431,22 @@ def forge_equipment(
         material_keys=consumed_keys,
         two_handed=bool(base.get("two_handed", False)),
     )
+    # Super-material grants are now stamped as ``type="super"`` affix entries
+    # so the bonus is visible in the item's affix list (not just an
+    # equip-time merge). Numeric grants flow through ``compute_stats`` like
+    # any other affix; bool grants stay out of the affix list since
+    # ``compute_stats`` sums numerics only — those are still applied via the
+    # equip-time merge in ``compute_equipment_stats``.
+    if super_mat:
+        for stat, val in (super_mat.get("granted_passive") or {}).items():
+            if isinstance(val, bool):
+                continue
+            affixes.append({
+                "key": f"super_{stat}",
+                "stat": stat,
+                "value": val,
+                "type": "super",
+            })
     computed = compute_stats(implicit, affixes)
     name = _build_display_name(base, quality, affixes)
 
@@ -441,7 +465,18 @@ def forge_equipment(
 
     suffix = f"\n{spec['special_label']}" if spec["special_label"] else ""
     if super_mat:
-        suffix += f"\n✨ Dung hợp **{super_mat['vi']}** — nhận thêm hiệu ứng đặc biệt."
+        # List the super-material's grant inline so the forge result shows
+        # the actual stats picked up, not just the marketing line.
+        from src.game.engine.equipment import format_stat as _fmt_stat, STAT_LABELS as _STAT_LABELS
+        bullets: list[str] = []
+        for stat, val in (super_mat.get("granted_passive") or {}).items():
+            if isinstance(val, bool):
+                if val:
+                    bullets.append(f"✓ {_STAT_LABELS.get(stat, stat)}")
+            else:
+                bullets.append(_fmt_stat(stat, val))
+        bullet_block = ("\n  • " + "\n  • ".join(bullets)) if bullets else ""
+        suffix += f"\n✨ **{super_mat['vi']}** — Đặc Biệt:{bullet_block}"
     return ForgeResult(
         success=True,
         message=(
@@ -464,15 +499,10 @@ def describe_recipe(grade: int) -> str:
         f"• Cảnh giới tối thiểu: Luyện Khí cảnh thứ {recipe['min_qi_realm'] + 1}",
         f"• Chi phí: {recipe['cost_cong_duc']:,} Công Đức ✨",
         "",
-        "**Nguyên liệu (chọn 1 trong các tùy chọn):**",
+        "**Nguyên liệu:**",
     ]
     required_qty = max_affix_total(grade)
-    for i, opt in enumerate(recipe["options"], 1):
-        mat_parts = [
-            f"{required_qty}x Vật liệu luyện khí phẩm {r['mat_grade']}"
-            for r in opt["materials"]
-        ]
-        lines.append(f"  Phương án {i}: " + ", ".join(mat_parts))
+    lines.append(f"  • {required_qty}x Vật liệu luyện khí (bất kỳ phẩm)")
 
     c = recipe["quality_chances"]
     lines += [

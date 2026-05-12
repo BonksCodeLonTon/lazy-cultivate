@@ -122,7 +122,7 @@ def test_aura_scales_with_final_dmg_bonus():
 
 
 def test_aura_scales_with_burn_dmg_bonus():
-    player = make_combatant("p", solar_aura_pct=0.04, burn_dmg_bonus=0.30)
+    player = make_combatant("p", solar_aura_pct=0.04, dot_dmg_bonus_by_kind={"burn": 0.30})
     enemy = make_combatant("e", hp=20_000, hp_max=20_000)
     session = make_session(player, enemy)
 
@@ -170,13 +170,13 @@ def test_aura_fire_res_shred_recovers_damage():
     assert 20_000 - enemy.hp == 320
 
 
-def test_aura_resistance_capped_at_75_percent():
+def test_aura_resistance_capped_at_max_elemental_res():
     player = make_combatant("p", solar_aura_pct=0.04)
     enemy = make_combatant("e", hp=20_000, hp_max=20_000, resistances={"hoa": 0.99})
     make_session(player, enemy)._process_periodic(player)
 
-    # Cap at 0.75 → 400 × 0.25 = 100
-    assert 20_000 - enemy.hp == 100
+    # Cap at 0.90 → 400 × (1 - 0.90) ≈ 39 (float truncation)
+    assert 20_000 - enemy.hp == 39
 
 
 # ── Combined: full Thái Dương kit ───────────────────────────────────────────
@@ -187,7 +187,7 @@ def test_thai_duong_kit_all_stack():
         "p",
         solar_aura_pct=0.04,
         final_dmg_bonus=0.15,
-        burn_dmg_bonus=0.30,
+        dot_dmg_bonus_by_kind={"burn": 0.30},
         bonus_dmg_vs_burn=0.20,
         element_pen={"hoa": 0.15},
     )

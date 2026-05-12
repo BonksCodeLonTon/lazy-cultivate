@@ -1,723 +1,64 @@
 [
   {
-    "key": "SkillAtkAm1",
-    "vi": "Ám Sát Chiêu",
-    "en": "Shadow Assassination",
-    "realm": 1,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 10,
-    "cooldown": 1,
-    "base_dmg": 35,
-    "effects": [
-      "DebuffXeRach"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillAtkAm_R2",
-    "vi": "Ám Nguyên Phá Ảnh",
-    "en": "Dark Essence Shadow Break",
-    "realm": 2,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 18,
-    "cooldown": 2,
-    "base_dmg": 60,
-    "effects": [
-      "DebuffXeRach"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillDefAm_R2",
-    "vi": "Ám Nguyên Hàn Khí Thuẫn",
-    "en": "Dark Essence Cold Shield",
-    "realm": 2,
-    "scroll_grade": 1,
-    "category": "defense",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 20,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffHanKhi"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillSupAm",
-    "vi": "Ám Độc Phong Ấn",
-    "en": "Dark Poison Seal",
-    "realm": 3,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 22,
-    "cooldown": 3,
-    "base_dmg": 15,
-    "effects": [
-      "DebuffDocTo",
-      "DebuffCatDut"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffDocTo": {
-        "dot_pct": 0.044
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.33
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkAm2",
-    "vi": "Hắc Quang Xuyên Tâm",
-    "en": "Dark Ray Heart Pierce",
-    "realm": 3,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 25,
-    "cooldown": 2,
-    "base_dmg": 85,
-    "effects": [
-      "DebuffChayMau"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0363
-      }
-    }
-  },
-  {
-    "key": "SkillDefAm",
-    "vi": "Ám Ảnh Hư Không",
-    "en": "Shadow Void Cloak",
-    "realm": 3,
-    "scroll_grade": 2,
-    "category": "defense",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 20,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffHuKhong"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffHuKhong": {
-        "stat_bonus": {
-          "evasion_rating": 275
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillMovAm_R3",
-    "vi": "Ám Ảnh Di Bộ",
-    "en": "Shadow Step",
-    "realm": 3,
-    "scroll_grade": 2,
-    "category": "movement",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 25,
-    "cooldown": 4,
-    "base_dmg": 0,
-    "effects": [
-      "BuffHuKhong"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffHuKhong": {
-        "stat_bonus": {
-          "evasion_rating": 275
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkAm_R4",
-    "vi": "Huyền Ám Tàn Sát",
-    "en": "Mystery Shadow Massacre",
-    "realm": 4,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.1
-    },
-    "mp_cost": 40,
-    "cooldown": 3,
-    "base_dmg": 150,
-    "effects": [
-      "DebuffDocTo",
-      "DebuffCatDut"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffDocTo": {
-        "dot_pct": 0.048
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.36
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAmSoulCage_R4",
-    "vi": "Hồn Lao U Cấm",
-    "en": "Soul Cage Imprisonment",
-    "realm": 4,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.2
-    },
-    "mp_cost": 52,
-    "cooldown": 4,
-    "base_dmg": 175,
-    "effects": [
-      "ApplySoulDrain",
-      "DebuffXeRach",
-      "DebuffCatDut"
-    ],
-    "formation_key": null,
-    "description_vi": "Hồn lao u cấm — Hồn Phệ giảm HP max, Xé Rách + Cắt Đứt linh khí.",
-    "effect_overrides": {
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.13
-        },
-        "duration": 3
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.42
-        },
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillAtkAm3",
-    "vi": "Hủ Diệt Linh Hồn",
-    "en": "Soul Corruption Blast",
-    "realm": 5,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 55,
-    "cooldown": 4,
-    "base_dmg": 195,
-    "effects": [
-      "DebuffDocTo",
-      "DebuffBaoMon"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffDocTo": {
-        "dot_pct": 0.052
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.065
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkAm_R5v2",
-    "vi": "Hồn Phệ Chi Thuật",
-    "en": "Soul Devour Art",
-    "realm": 5,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 60,
-    "cooldown": 5,
-    "base_dmg": 210,
-    "effects": [
-      "DebuffCatDut",
-      "DebuffXeRach",
-      "ApplySoulDrain",
-      "ApplyStatSteal"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.39
-        }
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.104
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkAm_R6",
-    "vi": "Chân Ám Nuốt Linh",
-    "en": "True Shadow Soul Devour",
-    "realm": 6,
+    "key": "SkillAmNineHellsChain",
+    "vi": "Cửu U Liên Trảm",
+    "en": "Nine-Hells Chain Strike",
     "scroll_grade": 3,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.2
+      "matk": 1.3
     },
-    "mp_cost": 65,
-    "cooldown": 4,
-    "base_dmg": 260,
-    "effects": [
-      "DebuffDocTo",
-      "DebuffBaoMon",
-      "CCMuted"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffDocTo": {
-        "dot_pct": 0.056
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.07
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillMovAm_R6",
-    "vi": "Ám Ảnh Thoán Vị",
-    "en": "Shadow Phase Shift",
-    "realm": 6,
-    "scroll_grade": 2,
-    "category": "movement",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 55,
-    "cooldown": 5,
-    "base_dmg": 0,
-    "effects": [
-      "BuffHuKhong",
-      "BuffTangToc"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffHuKhong": {
-        "stat_bonus": {
-          "evasion_rating": 350
-        }
-      },
-      "BuffTangToc": {
-        "stat_bonus": {
-          "spd_pct": 0.42
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkAm_R7v2",
-    "vi": "Vạn Hồn Thôn Phệ",
-    "en": "Ten-Thousand Souls Devour",
-    "realm": 7,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.2,
-      "matk": 1.2
-    },
-    "mp_cost": 95,
+    "mp_cost": 520,
     "cooldown": 6,
-    "base_dmg": 380,
+    "base_dmg": 4860,
     "effects": [
-      "DebuffCatDut",
-      "DebuffDocTo",
-      "ApplySoulDrain",
-      "ApplyStatSteal",
-      "ApplyStatSteal"
+      "DebuffXeRach",
+      "DebuffLoaMat"
     ],
-    "soul_drain_procs": 3,
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.45
-        },
-        "duration": 4
-      },
-      "DebuffDocTo": {
-        "dot_pct": 0.06,
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillAtkAm_R7",
-    "vi": "Thần Ám Tử Thủ",
-    "en": "Divine Shadow Death Hand",
-    "realm": 7,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.4,
-      "matk": 1.0
+    "effect_chances": {
+      "DebuffXeRach": 0.8,
+      "DebuffLoaMat": 0.5
     },
-    "mp_cost": 85,
-    "cooldown": 5,
-    "base_dmg": 360,
-    "effects": [
-      "DebuffDocTo",
-      "DebuffCatDut",
-      "DebuffBaoMon",
-      "CCMuted"
-    ],
+    "chain_skill": {
+      "key": "SkillAmShadowChainFollowup",
+      "pct": 0.55
+    },
     "formation_key": null,
-    "effect_overrides": {
-      "DebuffDocTo": {
-        "dot_pct": 0.06,
-        "duration": 4
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.45
-        },
-        "duration": 4
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.075
-        },
-        "duration": 4
-      },
-      "CCMuted": {
-        "duration": 3
-      }
-    }
+    "description_vi": "Đỉnh cấp Ám — niệm 1 chiêu phát động 2 đòn liên hoàn: chính + U Ảnh Đoạt Hồn 55% ST."
   },
   {
-    "key": "SkillAtkAm_R8",
-    "vi": "Thánh Ám Diệt Thế",
-    "en": "Saint Shadow World Destruction",
-    "realm": 8,
+    "key": "SkillAmSummonWraith",
+    "vi": "Triệu Hồi Âm Linh Quỷ",
+    "en": "Summon Shadow Wraith",
     "scroll_grade": 3,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.6,
-      "matk": 1.1
+      "atk": 0.0,
+      "matk": 0.55
     },
-    "mp_cost": 110,
-    "cooldown": 6,
-    "base_dmg": 480,
-    "effects": [
-      "DebuffDocTo",
-      "DebuffCatDut",
-      "DebuffBaoMon",
-      "CCMuted",
-      "DebuffXeRach"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffDocTo": {
-        "dot_pct": 0.064,
-        "duration": 4
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.48
-        },
-        "duration": 4
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.08
-        },
-        "duration": 4
-      },
-      "CCMuted": {
-        "duration": 3
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.128
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillAmGhostKing_R8",
-    "vi": "Quỷ Vương Hồn Phệ",
-    "en": "Ghost King's Devouring",
-    "realm": 8,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.4,
-      "matk": 1.2
+    "mp_cost": 244,
+    "cooldown": 5,
+    "base_dmg": 1320,
+    "effects": [],
+    "summon_spec": {
+      "vi": "Âm Linh Quỷ",
+      "emoji": "👻",
+      "element": "am",
+      "dmg_pct_of_matk": 0.5,
+      "turns": 4
     },
-    "mp_cost": 122,
-    "cooldown": 6,
-    "base_dmg": 525,
-    "effects": [
-      "ApplySoulDrain",
-      "ApplyStatSteal",
-      "DebuffXeRach",
-      "DebuffCatDut",
-      "DebuffBaoMon"
-    ],
     "formation_key": null,
-    "description_vi": "Quỷ vương hồn phệ — đỉnh Âm R8, Hồn Phệ + Đạo Pháp cướp chỉ số.",
-    "effect_overrides": {
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.135
-        },
-        "duration": 3
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.55
-        },
-        "duration": 4
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.085
-        },
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillAtkAm_R9v2",
-    "vi": "Thiên Ma Đại Thôn Phệ",
-    "en": "Heavenly Demon Grand Devour",
-    "realm": 9,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.5,
-      "matk": 1.3
-    },
-    "mp_cost": 160,
-    "cooldown": 8,
-    "base_dmg": 720,
-    "effects": [
-      "DebuffCatDut",
-      "DebuffBaoMon",
-      "CCMuted",
-      "ApplySoulDrain",
-      "ApplyStatSteal"
-    ],
-    "soul_drain_procs": 5,
-    "stat_steal_procs": 3,
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.51
-        },
-        "duration": 4
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.085
-        },
-        "duration": 4
-      },
-      "CCMuted": {
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillAtkAm_R9",
-    "vi": "Tiên Ám Quy Hư Diệt Đạo",
-    "en": "Immortal Shadow Return-Void Dao-Kill",
-    "realm": 9,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.9,
-      "matk": 1.1
-    },
-    "mp_cost": 150,
-    "cooldown": 7,
-    "base_dmg": 680,
-    "effects": [
-      "DebuffDocTo",
-      "DebuffCatDut",
-      "DebuffBaoMon",
-      "CCMuted",
-      "DebuffXeRach",
-      "CCInterrupt"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffDocTo": {
-        "dot_pct": 0.068,
-        "duration": 4
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.51
-        },
-        "duration": 4
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.085
-        },
-        "duration": 4
-      },
-      "CCMuted": {
-        "duration": 3
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.136
-        },
-        "duration": 3
-      },
-      "CCInterrupt": {
-        "duration": 2
-      }
-    }
-  },
-  {
-    "key": "SkillAmVoidLord_R9",
-    "vi": "Hư Vô Ma Tôn",
-    "en": "Void Demon Sovereign",
-    "realm": 9,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.5,
-      "matk": 1.3
-    },
-    "mp_cost": 158,
-    "cooldown": 7,
-    "base_dmg": 700,
-    "true_dmg_pct": 0.07,
-    "effects": [
-      "ApplySoulDrain",
-      "ApplyStatSteal",
-      "DebuffXeRach",
-      "DebuffCatDut",
-      "DebuffBaoMon",
-      "CCMuted"
-    ],
-    "formation_key": null,
-    "description_vi": "Hư vô ma tôn — sát thương chuẩn 7%, Hồn Phệ + Đạo Pháp + câm lặng.",
-    "effect_overrides": {
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.14
-        },
-        "duration": 3
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.6
-        },
-        "duration": 4
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.09
-        },
-        "duration": 4
-      },
-      "CCMuted": {
-        "duration": 2
-      }
-    }
+    "description_vi": "Cú đánh chính + triệu hồi Âm Linh Quỷ tự đánh kèm 4 lượt, ST = 50% MATK chủ nhân (chịu kháng Ám)."
   },
   {
     "key": "SkillMaThanCong_R9",
     "vi": "Ma Thần Công",
     "en": "Demon God Art",
-    "realm": 9,
     "scroll_grade": 4,
     "category": "attack",
     "element": "am",
@@ -726,9 +67,9 @@
       "atk": 0.4,
       "matk": 1.4
     },
-    "mp_cost": 160,
+    "mp_cost": 640,
     "cooldown": 7,
-    "base_dmg": 720,
+    "base_dmg": 6480,
     "true_dmg_pct": 0.08,
     "effects": [
       "ApplySoulDrain",
@@ -747,37 +88,9 @@
     }
   },
   {
-    "key": "SkillAmSummonWraith",
-    "vi": "Triệu Hồi Âm Linh Quỷ",
-    "en": "Summon Shadow Wraith",
-    "realm": 6,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.55
-    },
-    "mp_cost": 85,
-    "cooldown": 5,
-    "base_dmg": 220,
-    "effects": [],
-    "summon_spec": {
-      "vi": "Âm Linh Quỷ",
-      "emoji": "👻",
-      "element": "am",
-      "dmg_pct_of_matk": 0.5,
-      "turns": 4
-    },
-    "formation_key": null,
-    "description_vi": "Cú đánh chính + triệu hồi Âm Linh Quỷ tự đánh kèm 4 lượt, ST = 50% MATK chủ nhân (chịu kháng Ám)."
-  },
-  {
     "key": "SkillAmShadowChainFollowup",
     "vi": "U Ảnh Đoạt Hồn",
     "en": "Shadow Soul-Snatch",
-    "realm": 9,
     "scroll_grade": 4,
     "category": "attack",
     "element": "am",
@@ -788,7 +101,7 @@
     },
     "mp_cost": 0,
     "cooldown": 1,
-    "base_dmg": 380,
+    "base_dmg": 3420,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -800,1234 +113,430 @@
     "internal_only": true
   },
   {
-    "key": "SkillAmNineHellsChain_R9",
-    "vi": "Cửu U Liên Trảm",
-    "en": "Nine-Hells Chain Strike",
-    "realm": 9,
-    "scroll_grade": 3,
+    "key": "SkillAmThatTinhDoanTuyet",
+    "vi": "Thất Tình Đoạn Tuyệt",
+    "en": "Severance of Seven Emotions",
+    "scroll_grade": 4,
     "category": "attack",
     "element": "am",
-    "attack_type": "magical",
+    "attack_type": "physical",
     "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
+      "atk": 1.2,
+      "matk": 0.3
     },
-    "mp_cost": 130,
-    "cooldown": 6,
-    "base_dmg": 540,
+    "mp_cost": 720,
+    "cooldown": 7,
+    "base_dmg": 520,
+    "hit_count": 7,
     "effects": [
       "DebuffXeRach",
-      "DebuffLoaMat"
+      "DebuffPhaGiap",
+      "DebuffCatDut",
+      "DebuffBaoMon",
+      "DebuffLamCham",
+      "DebuffSuyKhi",
+      "DebuffPhapNhuoc",
+      "BuffDoanTuyet"
     ],
     "effect_chances": {
-      "DebuffXeRach": 0.8,
-      "DebuffLoaMat": 0.5
-    },
-    "chain_skill": {
-      "key": "SkillAmShadowChainFollowup",
-      "pct": 0.55
+      "DebuffXeRach": 1.0,
+      "DebuffPhaGiap": 1.0,
+      "DebuffCatDut": 1.0,
+      "DebuffBaoMon": 1.0,
+      "DebuffLamCham": 1.0,
+      "DebuffSuyKhi": 1.0,
+      "DebuffPhapNhuoc": 1.0
     },
     "formation_key": null,
-    "description_vi": "Đỉnh cấp Ám — niệm 1 chiêu phát động 2 đòn liên hoàn: chính + U Ảnh Đoạt Hồn 55% ST."
+    "description_vi": "Thất Tình Đoạn Tuyệt — bảy đòn ứng với Hỷ Nộ Ai Cụ Ố Dục Lạc, mỗi đòn khắc một vết thương khác nhau lên đối thủ. Người niệm tâm cảnh đoạn tuyệt thất tình, sát thương tăng theo số trạng thái bất lợi đang đè trên địch.",
+    "effect_overrides": {
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.04
+        }
+      },
+      "DebuffPhaGiap": {
+        "stat_bonus": {
+          "final_dmg_reduce": -0.07
+        }
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.15
+        }
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.025
+        }
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.12
+        }
+      },
+      "DebuffSuyKhi": {
+        "stat_bonus": {
+          "atk_pct": -0.10
+        }
+      },
+      "DebuffPhapNhuoc": {
+        "stat_bonus": {
+          "matk_pct": -0.10
+        }
+      },
+      "BuffDoanTuyet": {
+        "duration": 3,
+        "dmg_per_debuff_pct": 0.05
+      }
+    }
   },
   {
-    "key": "SkillFillerAmR1G1",
-    "vi": "Ám Hoàng Đoạn Thuật",
-    "en": "Ám Hoàng Severing Art",
-    "realm": 1,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 17,
-    "cooldown": 1,
-    "base_dmg": 15,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR3G1",
-    "vi": "Ám Hoàng Đoạn Thuật",
-    "en": "Ám Hoàng Severing Art",
-    "realm": 3,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 33,
-    "cooldown": 2,
-    "base_dmg": 42,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR4G2",
-    "vi": "Ám Huyền Đoạn Thuật",
-    "en": "Ám Huyền Severing Art",
-    "realm": 4,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 50,
-    "cooldown": 3,
-    "base_dmg": 95,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR4G4",
-    "vi": "Ám Thiên Đoạn Thuật",
-    "en": "Ám Thiên Severing Art",
-    "realm": 4,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 60,
-    "cooldown": 4,
-    "base_dmg": 128,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR5G1",
-    "vi": "Ám Hoàng Đoạn Thuật",
-    "en": "Ám Hoàng Severing Art",
-    "realm": 5,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 60,
-    "cooldown": 3,
-    "base_dmg": 110,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR5G2",
-    "vi": "Ám Huyền Đoạn Thuật",
-    "en": "Ám Huyền Severing Art",
-    "realm": 5,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 65,
-    "cooldown": 3,
-    "base_dmg": 140,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR6G2",
-    "vi": "Ám Huyền Đoạn Thuật",
-    "en": "Ám Huyền Severing Art",
-    "realm": 6,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 80,
-    "cooldown": 4,
-    "base_dmg": 180,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR7G1",
-    "vi": "Ám Hoàng Đoạn Thuật",
-    "en": "Ám Hoàng Severing Art",
-    "realm": 7,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 95,
-    "cooldown": 4,
-    "base_dmg": 210,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR7G2",
-    "vi": "Ám Huyền Đoạn Thuật",
-    "en": "Ám Huyền Severing Art",
-    "realm": 7,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 100,
-    "cooldown": 4,
-    "base_dmg": 265,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR8G3",
-    "vi": "Ám Địa Đoạn Thuật",
-    "en": "Ám Địa Severing Art",
-    "realm": 8,
+    "key": "SkillAmLucHonChu",
+    "vi": "Lục Hồn Chú",
+    "en": "Six-Soul Curse",
     "scroll_grade": 3,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.15
+      "matk": 0.0
     },
-    "mp_cost": 130,
+    "mp_cost": 320,
     "cooldown": 6,
-    "base_dmg": 395,
+    "base_dmg": 0,
     "effects": [
-      "DebuffLoaMat"
+      "DebuffLucHonChu"
     ],
     "effect_chances": {
-      "DebuffLoaMat": 0.4
+      "DebuffLucHonChu": 1.0
     },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Lục Hồn Chú — sáu hồn ma quấn xác đối thủ. Không gây sát thương trực tiếp, nhưng mỗi lượt rút máu theo Âm Khí, đồng thời giảm 20% kháng Âm và khiến mục tiêu chịu thêm 20% mọi sát thương DoT. 50% sát thương DoT của bùa này còn xuyên qua khiên, mỗi lượt còn bào mòn 5% linh lực tối đa của đối thủ."
   },
   {
-    "key": "SkillFillerAmR8G4",
-    "vi": "Ám Thiên Đoạn Thuật",
-    "en": "Ám Thiên Severing Art",
-    "realm": 8,
+    "key": "SkillAmQuyHuDietDao",
+    "vi": "Quy Hư Diệt Đạo",
+    "en": "Return-Void Dao Destruction",
     "scroll_grade": 4,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
+      "atk": 0.2,
+      "matk": 1.5
     },
-    "mp_cost": 135,
+    "mp_cost": 600,
     "cooldown": 6,
-    "base_dmg": 435,
+    "base_dmg": 5400,
     "effects": [
-      "DebuffLoaMat"
+      "DebuffPhapNhuoc",
+      "DebuffLinhLucKiet"
     ],
     "effect_chances": {
-      "DebuffLoaMat": 0.45
+      "DebuffPhapNhuoc": 1.0,
+      "DebuffLinhLucKiet": 1.0
     },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Quy Hư Diệt Đạo — đạo pháp về cõi hư vô, đè ép linh đài đối thủ. Sát thương lớn theo MATK, đồng thời cắt giảm pháp lực và khô kiệt nguồn linh khí của địch.",
+    "effect_overrides": {
+      "DebuffPhapNhuoc": {
+        "stat_bonus": {
+          "matk_pct": -0.20
+        },
+        "duration": 4
+      },
+      "DebuffLinhLucKiet": {
+        "stat_bonus": {
+          "mp_regen_pct": -0.20
+        },
+        "duration": 4
+      }
+    }
   },
   {
-    "key": "SkillFillerAmR9G1",
-    "vi": "Ám Hoàng Đoạn Thuật",
-    "en": "Ám Hoàng Severing Art",
-    "realm": 9,
-    "scroll_grade": 1,
+    "key": "SkillAmVanQuyPheTam",
+    "vi": "Vạn Quỷ Phệ Tâm",
+    "en": "Ten-Thousand Demons Devour Heart",
+    "scroll_grade": 4,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 0.85
+      "matk": 0.0
     },
-    "mp_cost": 150,
-    "cooldown": 5,
-    "base_dmg": 380,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.3
+    "mp_cost": 580,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "effects": [],
+    "formation_key": null,
+    "summon_spec": {
+      "vi": "Tiểu Quỷ",
+      "emoji": "👹",
+      "element": "am",
+      "count": 3,
+      "turns": 3,
+      "dmg_pct_of_atk": 0.40,
+      "on_hit_debuff": {
+        "key": "DebuffAmThucKy",
+        "overrides": {
+          "duration": 3
+        }
+      }
     },
-    "formation_key": null
+    "description_vi": "Vạn Quỷ Phệ Tâm — không gây sát thương khi niệm, nhưng triệu hồi 3 Tiểu Quỷ hầu hạ. Mỗi Tiểu Quỷ đánh đối thủ 40% ATK của chủ nhân và để lại Âm Thực Ký, giảm tối đa 25% kháng Âm trên mục tiêu."
   },
   {
-    "key": "SkillFillerAmR9G2",
-    "vi": "Ám Huyền Đoạn Thuật",
-    "en": "Ám Huyền Severing Art",
-    "realm": 9,
-    "scroll_grade": 2,
+    "key": "SkillAmSuuHonDoatPhach_R9",
+    "vi": "Sưu Hồn Đoạt Phách",
+    "en": "Soul-Search Spirit-Snatch",
+    "scroll_grade": 4,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.0
+      "matk": 0.0
     },
-    "mp_cost": 155,
-    "cooldown": 5,
-    "base_dmg": 480,
+    "mp_cost": 540,
+    "cooldown": 7,
+    "base_dmg": 0,
     "effects": [
-      "DebuffLoaMat"
+      "ApplyStatSteal"
     ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.35
-    },
-    "formation_key": null
+    "stat_steal_pct": 0.10,
+    "stat_steal_procs": 1,
+    "formation_key": null,
+    "description_vi": "Sưu Hồn Đoạt Phách — không gây sát thương trực tiếp, nhưng cộng cho bản thân **10% chỉ số gốc** của mình (Công / Pháp / Phòng) bằng cách rút trực tiếp từ đối thủ. Trần vĩnh viễn = 10% chỉ số gốc của bản thân — chiêu này ăn trọn cap trong một lần phát."
   },
   {
-    "key": "SkillFillerAmR9G3",
-    "vi": "Ám Địa Đoạn Thuật",
-    "en": "Ám Địa Severing Art",
-    "realm": 9,
-    "scroll_grade": 3,
+    "key": "SkillAmDietTheChuong",
+    "vi": "Diệt Thế Chưởng",
+    "en": "World-Destroying Palm",
+    "scroll_grade": 4,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.15
+      "matk": 1.6
     },
-    "mp_cost": 160,
+    "mp_cost": 640,
+    "cooldown": 7,
+    "base_dmg": 6800,
+    "effects": [
+      "CCStun"
+    ],
+    "effect_chances": {
+      "CCStun": 0.7
+    },
+    "formation_key": null,
+    "effect_overrides": {
+      "CCStun": {
+        "duration": 1
+      }
+    },
+    "description_vi": "Diệt Thế Chưởng — chưởng phong tan thiên diệt địa, gây sát thương khổng lồ và choáng đối thủ."
+  },
+  {
+    "key": "SkillAmCuuUThanTrao_R9",
+    "vi": "Cửu U Đoạt Hồn Trảo",
+    "en": "Nine-Hells Divine Claw",
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.5,
+      "matk": 0.2
+    },
+    "mp_cost": 480,
+    "cooldown": 0,
+    "base_dmg": 7000,
+    "effects": [
+      "ApplySoulDrain"
+    ],
+    "soul_drain_procs": 5,
+    "requires_target_debuff_count": 5,
+    "consume_target_debuffs": 5,
+    "formation_key": null,
+    "description_vi": "Cửu U Thần Trảo — chỉ thi triển khi đối thủ đang gánh từ 5 trạng thái bất lợi trở lên. Móng vuốt Cửu U xé toạc linh hồn, nuốt sống 5 debuff đang đè trên địch và Hồn Phệ 5 lần. Không có hồi chiêu."
+  },
+  {
+    "key": "SkillAmThienMaGiaiThe_R9",
+    "vi": "Thiên Ma Giải Thể",
+    "en": "Demon-Body Disintegration",
+    "scroll_grade": 4,
+    "category": "passive",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self"
+    ],
+    "effects": [
+      "BuffThienMa"
+    ],
+    "formation_key": null,
+    "description_vi": "Thiên Ma Giải Thể — bị động, kích hoạt từ lượt 1. Người niệm bước vào trạng thái Thiên Ma 2 lượt (+30% Tốc, +40% ST Âm, +20% giảm hồi chiêu), sau đó chịu 2 lượt Thiên Ma Hậu Di Chứng (+30% sát thương phải nhận). Vòng lặp tự động xoay không ngừng."
+  },
+  {
+    "key": "SkillAmLucDucThienMaVu_R9",
+    "vi": "Lục Dục Thiên Ma Vũ",
+    "en": "Six-Desires Demon Dance",
+    "scroll_grade": 4,
+    "category": "passive",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "effects": [],
+    "formation_key": null,
+    "description_vi": "Lục Dục Thiên Ma Vũ — bị động. Mỗi lượt người niệm khoác lên thân 2 Lục Dục (Sắc, Thanh, Hương, Vị, Xúc, Pháp). Khi đủ 6 Lục Dục, Lục Dục Cộng Minh hiện thân, khuếch đại toàn bộ buff thêm 20%. Sau đó cả Lục Dục lẫn Cộng Minh đều tan biến — yên lặng 2 lượt rồi vòng lặp khởi động lại."
+  },
+  {
+    "key": "SkillAmVoTuongThienMa_R9",
+    "vi": "Vô Tướng Thiên Ma",
+    "en": "Formless Heavenly Demon",
+    "scroll_grade": 4,
+    "category": "defense",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 280,
     "cooldown": 6,
-    "base_dmg": 555,
+    "base_dmg": 0,
     "effects": [
-      "DebuffLoaMat"
+      "BuffHuKhong",
+      "BuffVoTuongThienMa"
     ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.4
+    "effect_overrides": {
+      "BuffVoTuongThienMa": {
+        "stat_bonus": {
+          "damage_convert_am": 0.40,
+          "res_am": 0.50,
+          "am_max_resist_bonus": 0.10
+        }
+      }
     },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Vô Tướng Thiên Ma — thân hóa hư không, kích Hư Không Thân (+250 Né Tránh) và đồng thời chuyển 40% sát thương phải nhận thành thuộc tính Âm, kèm **+50% Kháng Âm** và **+10% Cap Kháng Âm** (giới hạn nâng lên 85%) trong 4 lượt."
   },
   {
-    "key": "SkillFillerAmR1G2",
-    "vi": "Ám Huyền Đoạn Thuật",
-    "en": "Ám Huyền Severing Art",
-    "realm": 1,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 22,
-    "cooldown": 1,
-    "base_dmg": 20,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR1G2B",
-    "vi": "Ám Huyền Trảm Quyết",
-    "en": "Ám Huyền Cleaving Edict",
-    "realm": 1,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 22,
-    "cooldown": 1,
-    "base_dmg": 20,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR1G3",
-    "vi": "Ám Địa Đoạn Thuật",
-    "en": "Ám Địa Severing Art",
-    "realm": 1,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 27,
-    "cooldown": 2,
-    "base_dmg": 24,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR1G3B",
-    "vi": "Ám Địa Trảm Quyết",
-    "en": "Ám Địa Cleaving Edict",
-    "realm": 1,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 27,
-    "cooldown": 2,
-    "base_dmg": 24,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR1G4",
-    "vi": "Ám Thiên Đoạn Thuật",
-    "en": "Ám Thiên Severing Art",
-    "realm": 1,
+    "key": "SkillAmMaKhiHoThe_R9",
+    "vi": "Ma Khí Hộ Thể",
+    "en": "Demon-Aura Bodyguard",
     "scroll_grade": 4,
-    "category": "attack",
+    "category": "passive",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.3
+      "matk": 0.0
     },
-    "mp_cost": 32,
-    "cooldown": 2,
-    "base_dmg": 28,
-    "effects": [
-      "DebuffLoaMat"
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self"
     ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.45
-    },
-    "formation_key": null
+    "effects": [
+      "BuffMaKhiHoThe"
+    ],
+    "formation_key": null,
+    "description_vi": "Ma Khí Hộ Thể — bị động. Ma khí bao bọc thân, mỗi đòn Âm đánh trúng đối thủ chuyển 30% sát thương đã gây thành khiên cho người niệm."
   },
   {
-    "key": "SkillFillerAmR1G4B",
-    "vi": "Ám Thiên Trảm Quyết",
-    "en": "Ám Thiên Cleaving Edict",
-    "realm": 1,
+    "key": "SkillAmChanMaChiTam_R9",
+    "vi": "Chân Ma Chi Tâm",
+    "en": "True Demon Heart",
     "scroll_grade": 4,
-    "category": "attack",
+    "category": "passive",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.3
+      "matk": 0.0
     },
-    "mp_cost": 32,
-    "cooldown": 2,
-    "base_dmg": 28,
-    "effects": [
-      "DebuffBaoMon"
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self"
     ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.45
-    },
-    "formation_key": null
+    "effects": [
+      "BuffChanMaChiTam"
+    ],
+    "formation_key": null,
+    "description_vi": "Chân Ma Chi Tâm — bị động. Tâm cảnh chân ma bất khuất, +30% kháng mọi trạng thái bất lợi và +10% xác suất khi bản thân gây debuff lên đối thủ."
   },
   {
-    "key": "SkillFillerAmR2G2",
-    "vi": "Ám Huyền Đoạn Thuật",
-    "en": "Ám Huyền Severing Art",
-    "realm": 2,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 28,
-    "cooldown": 2,
-    "base_dmg": 38,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR2G2B",
-    "vi": "Ám Huyền Trảm Quyết",
-    "en": "Ám Huyền Cleaving Edict",
-    "realm": 2,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 28,
-    "cooldown": 2,
-    "base_dmg": 38,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR2G3",
-    "vi": "Ám Địa Đoạn Thuật",
-    "en": "Ám Địa Severing Art",
-    "realm": 2,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 33,
-    "cooldown": 3,
-    "base_dmg": 45,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR2G3B",
-    "vi": "Ám Địa Trảm Quyết",
-    "en": "Ám Địa Cleaving Edict",
-    "realm": 2,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 33,
-    "cooldown": 3,
-    "base_dmg": 45,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR2G4",
-    "vi": "Ám Thiên Đoạn Thuật",
-    "en": "Ám Thiên Severing Art",
-    "realm": 2,
+    "key": "SkillAmQuyAnhMeTung_R9",
+    "vi": "Quỷ Ảnh Mê Tung",
+    "en": "Demon-Shadow Phantom Step",
     "scroll_grade": 4,
-    "category": "attack",
+    "category": "movement",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.3
+      "matk": 0.0
     },
-    "mp_cost": 38,
-    "cooldown": 3,
-    "base_dmg": 50,
-    "effects": [
-      "DebuffLoaMat"
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self"
     ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.45
-    },
-    "formation_key": null
+    "effects": [
+      "BuffQuyAnhMeTung"
+    ],
+    "formation_key": null,
+    "description_vi": "Quỷ Ảnh Mê Tung — bị động. Mỗi lần né thành công cộng dồn 1 tầng (tối đa 3 tầng), mỗi tầng cho +200 Né Tránh và +10% Tốc cho người niệm."
   },
   {
-    "key": "SkillFillerAmR2G4B",
-    "vi": "Ám Thiên Trảm Quyết",
-    "en": "Ám Thiên Cleaving Edict",
-    "realm": 2,
+    "key": "SkillAmMaLongXuatUyen_R9",
+    "vi": "Ma Long Xuất Uyên",
+    "en": "Demon-Dragon Emerges",
     "scroll_grade": 4,
-    "category": "attack",
+    "category": "movement",
     "element": "am",
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.3
+      "matk": 0.0
     },
-    "mp_cost": 38,
-    "cooldown": 3,
-    "base_dmg": 50,
-    "effects": [
-      "DebuffBaoMon"
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self"
     ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR3G3",
-    "vi": "Ám Địa Đoạn Thuật",
-    "en": "Ám Địa Severing Art",
-    "realm": 3,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 43,
-    "cooldown": 3,
-    "base_dmg": 62,
     "effects": [
-      "DebuffLoaMat"
+      "BuffMaLongXuatUyen"
     ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR3G3B",
-    "vi": "Ám Địa Trảm Quyết",
-    "en": "Ám Địa Cleaving Edict",
-    "realm": 3,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 43,
-    "cooldown": 3,
-    "base_dmg": 62,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR3G4",
-    "vi": "Ám Thiên Đoạn Thuật",
-    "en": "Ám Thiên Severing Art",
-    "realm": 3,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 48,
-    "cooldown": 3,
-    "base_dmg": 70,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR3G4B",
-    "vi": "Ám Thiên Trảm Quyết",
-    "en": "Ám Thiên Cleaving Edict",
-    "realm": 3,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 48,
-    "cooldown": 3,
-    "base_dmg": 70,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR4G1",
-    "vi": "Ám Hoàng Đoạn Thuật",
-    "en": "Ám Hoàng Severing Art",
-    "realm": 4,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 45,
-    "cooldown": 3,
-    "base_dmg": 75,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR4G1B",
-    "vi": "Ám Hoàng Trảm Quyết",
-    "en": "Ám Hoàng Cleaving Edict",
-    "realm": 4,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 45,
-    "cooldown": 3,
-    "base_dmg": 75,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR4G3",
-    "vi": "Ám Địa Đoạn Thuật",
-    "en": "Ám Địa Severing Art",
-    "realm": 4,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 55,
-    "cooldown": 4,
-    "base_dmg": 110,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR4G3B",
-    "vi": "Ám Địa Trảm Quyết",
-    "en": "Ám Địa Cleaving Edict",
-    "realm": 4,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 55,
-    "cooldown": 4,
-    "base_dmg": 110,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR5G3",
-    "vi": "Ám Địa Đoạn Thuật",
-    "en": "Ám Địa Severing Art",
-    "realm": 5,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 70,
-    "cooldown": 4,
-    "base_dmg": 160,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR5G3B",
-    "vi": "Ám Địa Trảm Quyết",
-    "en": "Ám Địa Cleaving Edict",
-    "realm": 5,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 70,
-    "cooldown": 4,
-    "base_dmg": 160,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR5G4",
-    "vi": "Ám Thiên Đoạn Thuật",
-    "en": "Ám Thiên Severing Art",
-    "realm": 5,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 75,
-    "cooldown": 4,
-    "base_dmg": 180,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR5G4B",
-    "vi": "Ám Thiên Trảm Quyết",
-    "en": "Ám Thiên Cleaving Edict",
-    "realm": 5,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 75,
-    "cooldown": 4,
-    "base_dmg": 180,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR6G1",
-    "vi": "Ám Hoàng Đoạn Thuật",
-    "en": "Ám Hoàng Severing Art",
-    "realm": 6,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 75,
-    "cooldown": 4,
-    "base_dmg": 145,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR6G1B",
-    "vi": "Ám Hoàng Trảm Quyết",
-    "en": "Ám Hoàng Cleaving Edict",
-    "realm": 6,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 75,
-    "cooldown": 4,
-    "base_dmg": 145,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR6G4",
-    "vi": "Ám Thiên Đoạn Thuật",
-    "en": "Ám Thiên Severing Art",
-    "realm": 6,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 90,
-    "cooldown": 5,
-    "base_dmg": 235,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR6G4B",
-    "vi": "Ám Thiên Trảm Quyết",
-    "en": "Ám Thiên Cleaving Edict",
-    "realm": 6,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 90,
-    "cooldown": 5,
-    "base_dmg": 235,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR7G3",
-    "vi": "Ám Địa Đoạn Thuật",
-    "en": "Ám Địa Severing Art",
-    "realm": 7,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 105,
-    "cooldown": 5,
-    "base_dmg": 305,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR7G3B",
-    "vi": "Ám Địa Trảm Quyết",
-    "en": "Ám Địa Cleaving Edict",
-    "realm": 7,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.15
-    },
-    "mp_cost": 105,
-    "cooldown": 5,
-    "base_dmg": 305,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR7G4",
-    "vi": "Ám Thiên Đoạn Thuật",
-    "en": "Ám Thiên Severing Art",
-    "realm": 7,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 110,
-    "cooldown": 5,
-    "base_dmg": 340,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR7G4B",
-    "vi": "Ám Thiên Trảm Quyết",
-    "en": "Ám Thiên Cleaving Edict",
-    "realm": 7,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.3
-    },
-    "mp_cost": 110,
-    "cooldown": 5,
-    "base_dmg": 340,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR8G1",
-    "vi": "Ám Hoàng Đoạn Thuật",
-    "en": "Ám Hoàng Severing Art",
-    "realm": 8,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 120,
-    "cooldown": 5,
-    "base_dmg": 270,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR8G1B",
-    "vi": "Ám Hoàng Trảm Quyết",
-    "en": "Ám Hoàng Cleaving Edict",
-    "realm": 8,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.85
-    },
-    "mp_cost": 120,
-    "cooldown": 5,
-    "base_dmg": 270,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR8G2",
-    "vi": "Ám Huyền Đoạn Thuật",
-    "en": "Ám Huyền Severing Art",
-    "realm": 8,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 125,
-    "cooldown": 5,
-    "base_dmg": 340,
-    "effects": [
-      "DebuffLoaMat"
-    ],
-    "effect_chances": {
-      "DebuffLoaMat": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerAmR8G2B",
-    "vi": "Ám Huyền Trảm Quyết",
-    "en": "Ám Huyền Cleaving Edict",
-    "realm": 8,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 1.0
-    },
-    "mp_cost": 125,
-    "cooldown": 5,
-    "base_dmg": 340,
-    "effects": [
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffBaoMon": 0.35
-    },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Ma Long Xuất Uyên — thân pháp tà đạo. Mỗi lần né thành công, hoá Ma Long phản kích đối thủ: gây sát thương Âm nhỏ (= 600 + 40% MATK) và 60% xác suất đính Cắt Đứt Linh Khí lên kẻ tấn công."
   }
 ]

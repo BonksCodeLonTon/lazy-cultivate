@@ -25,6 +25,7 @@ BASE_CRIT_CHANCE: float = 0.05   # 5 % base crit before crit_rating
 MAX_CRIT_CHANCE: float = 0.75    # crit chance hard cap
 BASE_CRIT_DMG_MULT: float = 1.5  # 150 % crit damage multiplier at 0 crit_dmg_rating
 BASE_EVASION: float = 0.0        # 0 % base evasion before evasion_rating
+MAX_EVASION_CHANCE: float = 0.75  # evasion chance hard cap (mirrors MAX_CRIT_CHANCE)
 
 # ── Physical defense ──────────────────────────────────────────────────────────
 # Formula: reduction = min(MAX_PHYS_REDUCTION, def / (def + PHYS_DEF_K))
@@ -96,13 +97,19 @@ ENEMY_REALM_LEVEL_STAT_MULT: dict[int, float] = {
 # ── Player defaults ───────────────────────────────────────────────────────────
 BASE_MP_REGEN_PCT: float = 0.03   # 1 % MP per turn baseline (before bonuses)
 MAX_FINAL_DMG_REDUCE: float = 0.90  # damage-reduction hard cap (buffs + debuffs)
-MAX_ELEMENTAL_RES: float = 0.75     # per-element resistance hard cap (post-shred, post-stack)
+MAX_ELEMENTAL_RES: float = 0.90     # per-element resistance hard cap (post-shred, post-stack)
+# Player-side soft cap on per-element resistance. Without an
+# ``<element>_max_resist_bonus`` stat, the player's effective res caps here.
+# Bonuses lift the soft cap one-for-one (up to MAX_ELEMENTAL_RES). Enemies
+# are not subject to this — their cap stays at MAX_ELEMENTAL_RES (or whatever
+# their ``res_cap_pct`` JSON declares).
+RES_SOFT_CAP: float = 0.75
 
 # ── Auto-repeat loot gate ────────────────────────────────────────────────────
 # Fraction of auto-repeat kills that actually roll loot. The remainder yield
 # nothing — the gate fires before the drop table so afk grinding pays out at a
 # small fraction of manual play. 0.10 = 10 % of auto kills drop normal loot.
-AUTO_LOOT_DROP_RATE: float = 0.20
+AUTO_LOOT_DROP_RATE: float = 0.90
 
 # ── SPD → combat impact ───────────────────────────────────────────────────────
 # Every SPD point above baseline adds evasion rating (always-on defensive edge).
@@ -145,19 +152,11 @@ FORMATION_RESERVE_REDUCE_PER_STAGE: float = 0.0085
 FORMATION_RESERVE_FLOOR_MULT: float = 0.30
 
 # ── Build-system defaults (base values before bonuses) ───────────────────────
-# Baseline stack caps and per-stack damage fractions for each build's DoT
-# mechanic. compute_combat_stats adds the item/formation bonus on top of these.
-DEFAULT_BURN_STACK_CAP: int = 5
-DEFAULT_BURN_PER_STACK_PCT: float = 0.008
-DEFAULT_BLEED_STACK_CAP: int = 5
-DEFAULT_BLEED_PER_STACK_PCT: float = 0.008
-DEFAULT_SHOCK_STACK_CAP: int = 5
-DEFAULT_SHOCK_PER_STACK_PCT: float = 0.04
-# Poison stacks (Mộc / Âm DoT mirror of burn/bleed). Each stack adds one
-# instance of ``poison_per_stack_pct`` to the DebuffDocTo tick. Re-applying
-# poison adds a stack instead of merely refreshing duration.
-DEFAULT_POISON_STACK_CAP: int = 5
-DEFAULT_POISON_PER_STACK_PCT: float = 0.008
+# Per-DoT stack caps and per-stack damage fractions now live on each
+# EffectMeta in ``src/game/engine/effects.py`` (``stack_cap`` /
+# ``per_stack_pct`` fields). Designers tune them at the meta entry; the
+# Combatant-side gear/item bonuses (``burn_stack_cap_bonus`` etc.) still
+# stack additively on top via ``compute_combat_stats``.
 DEFAULT_MANA_STACK_CAP: int = 10
 # Turn-based combat regenerates shield every turn — ``DEFAULT_SHIELD_RECHARGE_DELAY``
 # of 0 means there is no "no-regen" pause after a hit (the PoE-style recharge
@@ -171,30 +170,44 @@ DEFAULT_SHIELD_RECHARGE_DELAY: int = 0
 # ``max_source_power`` = max(atk, matk) at DoT-apply time.
 # Higher COEF makes DoTs hit harder per power unit. Tune upward if DoT builds
 # feel too weak compared to direct damage, downward if too strong.
-# The legacy %HP-max model still exists but is gated behind the rare
-# ``dot_scales_hp_pct`` flag (granted only by R9 late-game uniques).
+# An opt-in %HP-max model (gated by the ``dot_scales_hp_pct`` flag, granted
+# only by R9 late-game uniques) ignores this coefficient entirely.
 DOT_POWER_COEF: float = 4.0
 
 # ── Skill damage scaling ──────────────────────────────────────────────────────
-# Multipliers applied inside ``engine/damage/base.py`` to inflate skill output
-# without rewriting every skill JSON. Affects players and enemies symmetrically
-# (any combatant using a skill object goes through the same pipeline).
-#   final_base_dmg = skill.base_dmg × max(1, skill.realm) × SKILL_BASE_DMG_REALM_MULT
-#   final_scaled   = (atk × scale.atk + matk × scale.matk) × SKILL_STAT_SCALE_MULT
-# At realm 9 the base flat damage becomes 9× current; ATK/MATK contribution is
-# 4× current at every realm. Tune here when rebalancing globally.
-SKILL_BASE_DMG_REALM_MULT: float = 1.0
+# Multiplier applied inside ``engine/damage/base.py`` to ATK/MATK contribution.
+# Affects players and enemies symmetrically (any combatant using a skill object
+# goes through the same pipeline).
+#   final_scaled = (atk × scale.atk + matk × scale.matk) × SKILL_STAT_SCALE_MULT
+# Power-tier scaling is baked into ``skill.base_dmg`` at design time — higher
+# grade scrolls have larger base_dmg — rather than derived from a multiplier.
 SKILL_STAT_SCALE_MULT: float = 4.0
 
 # ── True damage cap ───────────────────────────────────────────────────────────
-# Per-hit cap on the Sát Thương Chuẩn mechanic. The pct now scales the *hit's*
-# damage (post-mitigation), not the target's hp_max — so a 0.50 cap means
-# at most +50 % bonus on top of the regular damage. Combines skill +
-# passive contributions. The world-boss-specific carve-out from the legacy
-# %HP model is gone: with a damage-based scalar, true damage is naturally
-# bounded by the per-attack damage cap that already gates world-boss
-# contributions, so no extra clamp is needed.
-TRUE_DMG_PCT_CAP: float = 0.50
+# Per-hit cap on the Sát Thương Chuẩn mechanic. The pct scales the *hit's*
+# damage (post-mitigation), so a 0.65 cap means at most +65 % bonus on top
+# of the regular damage. Combines skill + passive contributions. World-boss
+# damage is naturally bounded by the per-attack damage cap that already
+# gates world-boss contributions, so no extra clamp is needed.
+TRUE_DMG_PCT_CAP: float = 0.65
+
+# Hard ceiling on cumulative cooldown reduction. Constitutions, equipment
+# uniques, gems, and formations can stack well past 200 % for end-game Thể Tu;
+# at very high CDR the per-cast accumulator approaches "refund every cast",
+# which combined with low base cooldowns trivializes resource management.
+# 200 % keeps the build investment meaningful without the runaway. The 1-turn
+# floor in ``Combatant.set_cooldown`` still applies after the cap.
+COOLDOWN_REDUCE_CAP: float = 2.0
+
+# Flat multiplier applied to the computed true-damage bonus before the
+# crit boost. 1.5× makes stacked true-dmg builds feel impactful without
+# rewriting per-source pct contributions or raising the cap further.
+# Tune here when rebalancing the mechanic globally.
+TRUE_DMG_OUTPUT_MULT: float = 1.5
+
+# Crit multiplier on the true-damage bonus. Crits should feel meaningfully
+# bigger than non-crits in this mechanic since true-dmg already ignores defense.
+TRUE_DMG_CRIT_MULT: float = 2.0
 
 # ── Âm (Shadow) soul-drain / stat-steal caps ─────────────────────────────────
 # Soul Drain (Hồn Phệ): each successful on-hit proc permanently removes
@@ -206,11 +219,15 @@ SOUL_DRAIN_PER_PROC_PCT: float = 0.015     # 1.5 % of original hp_max per proc
 SOUL_DRAIN_CAP_PCT: float = 0.40           # 40 % lifetime drain ceiling
 SOUL_DRAIN_SELF_GAIN_PCT: float = 0.50     # half the drain becomes actor hp_max
 # Stat Steal (Đạo Pháp Thôn Phệ): mirror of soul-drain but on atk/matk/def.
-# Each proc subtracts STAT_STEAL_PER_PROC_PCT of the target's *original* stat
-# from the target and adds the same amount to the actor. Stolen totals are
-# capped at STAT_STEAL_CAP_PCT per source stat.
-STAT_STEAL_PER_PROC_PCT: float = 0.04      # 4 % per proc
-STAT_STEAL_CAP_PCT: float = 0.30           # 30 % lifetime cap per stat
+# Both per-proc magnitude and lifetime cap are anchored to the **actor's
+# own starting stat** (snapshotted at first proc), NOT the target's. So
+# growth is bounded by the player's investment — a 5,000-ATK boss feeds
+# the actor at the same rate as a 500-ATK trash mob. Each proc adds
+# ``actor_start × PER_PROC_PCT`` to the actor and removes the same amount
+# from the target (clamped by target's remaining live stat). Lifetime
+# ceiling per axis is ``actor_start × CAP_PCT``.
+STAT_STEAL_PER_PROC_PCT: float = 0.02      # 2 % of actor's start per proc
+STAT_STEAL_CAP_PCT: float = 0.10           # 10 % of actor's start as lifetime cap per stat
 # Quang's Thanh Tẩy can partially undo Âm mutations — per successful cleanse it
 # reclaims a slice of drained hp_max and stolen atk/matk/def. Stolen stats
 # return to the target only (the attacker keeps what they took so the tug-of-
@@ -221,20 +238,10 @@ QUANG_CLEANSE_AM_STAT_RESTORE_PCT: float = 0.05  # 5 % of original stat
 # ── Gem element → per-gem stat bonus ──────────────────────────────────────────
 # Each inlaid gem grants its base bonus multiplied by its grade (1–4).
 # Bonus is additive across all gems, so 10 grade-2 gems ≈ 20× base.
-# Bonus is ON TOP of the formation's existing gem_threshold_bonuses.
-# NOTE: slot count was reduced from 81 → 10; per-gem values were scaled up ~8×
-# to preserve endgame balance (10 gems × 8 ≈ old 81 gems).
-GEM_ELEMENT_BASE_BONUS: dict[str, dict[str, float]] = {
-    "kim":   {"crit_rating":      8.0},
-    "moc":   {"hp_regen_pct":     0.0024},
-    "thuy":  {"mp_regen_pct":     0.0024},
-    "hoa":   {"final_dmg_bonus":  0.0064},
-    "tho":   {"def_bonus":        8.0},
-    "loi":   {"crit_dmg_rating":  12.0},
-    "phong": {"spd_bonus":        0.64},
-    "quang": {"heal_pct":         0.016},
-    "am":    {"debuff_immune_pct":0.012, "poison_dmg_bonus": 0.016},
-}
+# Per-element gem base bonuses now live in ``src/data/gems/element_bonus.json``
+# and are loaded by ``GameRegistry._load_gem_element_bonus``. Read them via
+# ``registry.gem_element_bonus[element]`` (also surfaced through
+# ``compute_gem_bonuses`` in ``cultivation.py``).
 
 # ── Linh Căn breadth (Khí Tu archetype synergy) ──────────────────────────────
 # Khí Tu archetype gets a multiplier on most Linh Căn passive bonuses based on

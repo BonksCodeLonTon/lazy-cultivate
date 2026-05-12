@@ -100,6 +100,8 @@ def test_charge_bonus_isolated_per_skill():
 
 def test_chain_skill_casts_follow_up_at_scaled_damage():
     actor = make_combatant("a")
+    # Chain target must be in actor.skill_keys per the equipping gate.
+    actor.skill_keys = ["Parent", "Followup"]
     target = make_combatant("t", hp=100_000, hp_max=100_000)
     fake_chain = {
         "key": "Followup", "vi": "Followup", "element": None,
@@ -110,7 +112,7 @@ def test_chain_skill_casts_follow_up_at_scaled_damage():
     skill_data = {"chain_skill": {"key": "Followup", "pct": 0.5}}
     session = make_session(actor, target)
     with patch.object(registry, "get_skill", return_value=fake_chain):
-        cast_chain_skill(session, actor, target, skill_data)
+        cast_chain_skill(session, actor, target, "Parent", skill_data)
     # Followup logged with 50% damage tag
     assert any("Followup" in line and "50%" in line for line in session.log), session.log
 
@@ -118,6 +120,7 @@ def test_chain_skill_casts_follow_up_at_scaled_damage():
 def test_chain_skill_one_step_only():
     """A chained skill must not chain again (no infinite recursion)."""
     actor = make_combatant("a")
+    actor.skill_keys = ["Parent", "LoopChain"]
     target = make_combatant("t", hp=50_000, hp_max=50_000)
     # The chain target has its OWN chain spec — it should be stripped.
     looping_chain = {
@@ -130,7 +133,7 @@ def test_chain_skill_one_step_only():
     skill_data = {"chain_skill": {"key": "LoopChain", "pct": 1.0}}
     session = make_session(actor, target)
     with patch.object(registry, "get_skill", return_value=looping_chain):
-        cast_chain_skill(session, actor, target, skill_data)
+        cast_chain_skill(session, actor, target, "Parent", skill_data)
     # Exactly one chain announcement (🔗 prefix); the inner cast wouldn't
     # re-announce because its chain_skill was stripped.
     chain_announcements = [l for l in session.log if "🔗" in l]
@@ -139,12 +142,32 @@ def test_chain_skill_one_step_only():
     )
 
 
+def test_chain_skill_skipped_when_target_not_equipped():
+    """Equipping gate — chain target must be in actor.skill_keys."""
+    actor = make_combatant("a")
+    actor.skill_keys = ["Parent"]  # NO "Followup" — chain target missing
+    target = make_combatant("t", hp=100_000, hp_max=100_000)
+    fake_chain = {
+        "key": "Followup", "vi": "Followup", "element": None,
+        "attack_type": "physical", "base_dmg": 1000, "mp_cost": 0,
+        "cooldown": 1, "dmg_scale": {"atk": 0.0, "matk": 0.0},
+        "effects": [], "effect_chances": {},
+    }
+    skill_data = {"chain_skill": {"key": "Followup", "pct": 0.5}}
+    session = make_session(actor, target)
+    with patch.object(registry, "get_skill", return_value=fake_chain):
+        cast_chain_skill(session, actor, target, "Parent", skill_data)
+    # Chain did NOT fire — no 🔗 log line, no damage to target.
+    assert not any("🔗" in line for line in session.log), session.log
+    assert target.hp == target.hp_max
+
+
 # ── 4. Auto-cast on stacks ───────────────────────────────────────────────────
 
 def test_auto_cast_finds_skill_when_threshold_met():
     actor = make_combatant("a")
     actor.skill_keys = ["FinisherKey"]
-    target = make_combatant("t", burn_stacks=5, burn_stack_cap=10)
+    target = make_combatant("t", burn_stacks=5)
     finisher = {
         "auto_cast_on_stacks": {"stack": "burn", "threshold": 5, "consume": True},
     }
@@ -157,7 +180,7 @@ def test_auto_cast_finds_skill_when_threshold_met():
 def test_auto_cast_returns_none_below_threshold():
     actor = make_combatant("a")
     actor.skill_keys = ["FinisherKey"]
-    target = make_combatant("t", burn_stacks=2, burn_stack_cap=10)
+    target = make_combatant("t", burn_stacks=2)
     finisher = {"auto_cast_on_stacks": {"stack": "burn", "threshold": 5}}
     with patch.object(registry, "get_skill", return_value=finisher):
         key, data = find_auto_cast_skill(actor, target)
@@ -166,7 +189,7 @@ def test_auto_cast_returns_none_below_threshold():
 
 def test_auto_cast_consume_clears_stacks():
     actor = make_combatant("a")
-    target = make_combatant("t", burn_stacks=8, burn_stack_cap=10)
+    target = make_combatant("t", burn_stacks=8)
     skill_data = {"auto_cast_on_stacks": {"stack": "burn", "consume": True}}
     session = make_session(actor, target)
     consume_auto_cast_stacks(session, actor, target, skill_data)
@@ -177,7 +200,7 @@ def test_auto_cast_picks_highest_threshold():
     """Two qualifying skills → the one with the higher threshold wins."""
     actor = make_combatant("a")
     actor.skill_keys = ["Low", "High"]
-    target = make_combatant("t", burn_stacks=9, burn_stack_cap=10)
+    target = make_combatant("t", burn_stacks=9)
     skills = {
         "Low":  {"auto_cast_on_stacks": {"stack": "burn", "threshold": 3}},
         "High": {"auto_cast_on_stacks": {"stack": "burn", "threshold": 7}},

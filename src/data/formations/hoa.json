@@ -1,0 +1,145 @@
+[
+  {
+    "key": "NhatNguyenHoa",
+    "vi": "Nhất Nguyên Hỏa Trận",
+    "en": "One Origin Fire Formation",
+    "element": "hoa",
+    "base_stat_bonus": {
+      "hp_pct": 0.02,
+      "mp_pct": 0.07
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "mp_pct": 0.03,
+        "note": "Sơ Khai Hỏa Trận"
+      },
+      "3": {
+        "mp_pct": 0.08,
+        "note": "Kiên Cố Hỏa Trận"
+      },
+      "5": {
+        "mp_pct": 0.15,
+        "final_dmg_bonus": 0.05,
+        "note": "Thịnh Vượng Hỏa Trận"
+      },
+      "7": {
+        "mp_pct": 0.25,
+        "final_dmg_bonus": 0.1,
+        "note": "Vô Song Hỏa Trận"
+      },
+      "10": {
+        "mp_pct": 0.5,
+        "final_dmg_bonus": 0.2,
+        "burn_on_hit_pct": 0.15,
+        "note": "Tuyệt Đỉnh Hỏa Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmHoa",
+      "vi": "Nhất Nguyên Hỏa Thức",
+      "en": "One Origin Fire Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "hoa",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 1.1
+      },
+      "mp_cost": 112,
+      "cooldown": 4,
+      "base_dmg": 875,
+      "effects": [
+        "DebuffThieuDot",
+        "DebuffDotChay"
+      ],
+      "effect_overrides": {
+        "DebuffDotChay": {
+          "dot_pct": 0.05,
+          "duration": 3
+        }
+      },
+      "reserved_mp_pct": 0.09
+    }
+  },
+  {
+    "key": "XichLuyenToaHonTran",
+    "vi": "Xích Luyện Tỏa Hồn Trận",
+    "en": "Red-Refining Soul-Locking Formation",
+    "element": "hoa",
+    "base_stat_bonus": {
+      "hp_pct": 0.03,
+      "mp_pct": 0.04
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "toa_hon_amp": {
+          "evasion_rating_pct": -0.05,
+          "mp_regen_pct": -0.05,
+          "hp_regen_pct": -0.05
+        },
+        "note": "Sơ Khai Tỏa Hồn (-15% mỗi chỉ số)"
+      },
+      "3": {
+        "toa_hon_amp": {
+          "evasion_rating_pct": -0.07,
+          "mp_regen_pct": -0.07,
+          "hp_regen_pct": -0.07
+        },
+        "note": "Kiên Cố Tỏa Hồn (-22% mỗi chỉ số)"
+      },
+      "5": {
+        "toa_hon_amp": {
+          "evasion_rating_pct": -0.10,
+          "mp_regen_pct": -0.10,
+          "hp_regen_pct": -0.10
+        },
+        "note": "Thịnh Vượng Tỏa Hồn (-32% mỗi chỉ số)"
+      },
+      "7": {
+        "toa_hon_amp": {
+          "evasion_rating_pct": -0.10,
+          "mp_regen_pct": -0.10,
+          "hp_regen_pct": -0.10
+        },
+        "dmg_taken": {
+          "hoa": 0.05
+        },
+        "note": "Vô Song Tỏa Hồn (-42% mỗi chỉ số; +5% sát thương Hỏa địch phải nhận)"
+      },
+      "10": {
+        "toa_hon_amp": {
+          "evasion_rating_pct": -0.08,
+          "mp_regen_pct": -0.08,
+          "hp_regen_pct": -0.08
+        },
+        "dmg_taken": {
+          "hoa": 0.10
+        },
+        "note": "Tuyệt Đỉnh Xích Luyện Tỏa Hồn (-50% mỗi chỉ số; +15% sát thương Hỏa địch phải nhận)"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmXichLuyenToaHon",
+      "vi": "Xích Luyện Tỏa Hồn Thức",
+      "en": "Red-Refining Soul-Locking Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "hoa",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 0,
+      "debuff_only": true,
+      "effects": [
+        "DebuffXichLuyenToaHon"
+      ],
+      "reserved_mp_pct": 0.30,
+      "description_vi": "Trận pháp thụ động — không gây sát thương trực tiếp. Mỗi lượt phủ lên kẻ địch dấu **Xích Luyện Tỏa Hồn**: né tránh, tốc hồi linh lực, tốc hồi sinh lực đều sụt **10%** (giá trị cơ bản). Khảm ngọc cộng dồn % sụt giảm theo từng ngưỡng — tổng cộng **15% / 22% / 32% / 42% / 50%** ở mức 1/3/5/7/10 ngọc. Từ **7 ngọc** địch phải nhận thêm **+5% sát thương Hỏa**; **10 ngọc** nâng lên **+15% sát thương Hỏa phải nhận** (nhân vào sau bước trừ kháng nguyên tố). Chi phí duy trì: 30% MP trấn giữ khi kích hoạt trận."
+    }
+  }
+]

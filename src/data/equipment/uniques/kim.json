@@ -52,8 +52,12 @@
       ]
     },
     "passive_bonus": {
-      "crit_rating_vs_bleed": 150,
-      "bleed_on_hit_pct": 0.2
+      "bleed_on_hit_pct": 0.2,
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 150
+        }
+      }
     },
     "description_vi": "Đoản đao đi kèm Huyết Nhận Kiếm — tăng bạo kích lên mục tiêu chảy máu."
   },
@@ -80,7 +84,9 @@
     },
     "passive_bonus": {
       "bleed_on_hit_pct": 0.45,
-      "bleed_stack_cap_bonus": 2
+      "dot_stack_cap_bonus": {
+        "bleed": 2
+      }
     },
     "description_vi": "Kiếm chuyên cắt thịt — 45% Chảy Máu on-hit, +2 tầng tối đa."
   },
@@ -107,8 +113,10 @@
     },
     "passive_bonus": {
       "bleed_on_hit_pct": 0.6,
-      "bleed_per_stack_pct_bonus": 0.006,
-      "bleed_heal_reduce": 0.3
+      "bleed_heal_reduce": 0.3,
+      "dot_per_stack_pct_bonus": {
+        "bleed": 0.006
+      }
     },
     "description_vi": "Áo bào dệt từ sợi máu — 60% Chảy Máu on-hit, mỗi tầng nặng hơn, 30% heal-reduce."
   },
@@ -139,7 +147,11 @@
     },
     "passive_bonus": {
       "dot_can_crit": true,
-      "crit_rating_vs_bleed": 120
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 120
+        }
+      }
     },
     "description_vi": "Mũ Huyết Ý — DoT bạo kích, tăng bạo kích vs chảy máu."
   },
@@ -165,9 +177,13 @@
       ]
     },
     "passive_bonus": {
-      "crit_rating_vs_bleed": 280,
-      "crit_dmg_vs_bleed": 350,
-      "bleed_heal_reduce": 0.35
+      "bleed_heal_reduce": 0.35,
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 280,
+          "dmg": 350
+        }
+      }
     },
     "description_vi": "Bội Huyết Nguyệt — bạo kích/sát thương bạo khổng lồ vs chảy máu, 35% heal-reduce."
   },
@@ -193,9 +209,15 @@
       ]
     },
     "passive_bonus": {
-      "crit_rating_vs_bleed": 350,
-      "crit_dmg_vs_bleed": 420,
-      "bleed_stack_cap_bonus": 2
+      "dot_stack_cap_bonus": {
+        "bleed": 2
+      },
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 350,
+          "dmg": 420
+        }
+      }
     },
     "description_vi": "Ống tên Huyết Tiên — bạo kích cực cao vs chảy máu, +2 tầng."
   },
@@ -223,7 +245,9 @@
     "passive_bonus": {
       "bleed_on_hit_pct": 0.8,
       "true_dmg_pct": 0.05,
-      "bleed_per_stack_pct_bonus": 0.008
+      "dot_per_stack_pct_bonus": {
+        "bleed": 0.008
+      }
     },
     "description_vi": "Thần cung Huyết Ẩn — 80% Chảy Máu on-hit, +5% Sát Thương Chuẩn, mỗi tầng nặng hơn."
   },
@@ -250,8 +274,10 @@
     },
     "passive_bonus": {
       "bleed_on_hit_pct": 0.8,
-      "bleed_stack_cap_bonus": 3,
-      "true_dmg_pct": 0.04
+      "true_dmg_pct": 0.04,
+      "dot_stack_cap_bonus": {
+        "bleed": 3
+      }
     },
     "description_vi": "Trường thương 2H — 80% Chảy Máu on-hit, +3 tầng, +4% Sát Thương Chuẩn."
   },
@@ -278,8 +304,10 @@
     },
     "passive_bonus": {
       "bleed_heal_reduce": 0.5,
-      "bleed_per_stack_pct_bonus": 0.012,
-      "dot_can_crit": true
+      "dot_can_crit": true,
+      "dot_per_stack_pct_bonus": {
+        "bleed": 0.012
+      }
     },
     "description_vi": "Bội Kim Tổ — 50% heal-reduce, +1.2% ST mỗi tầng, DoT bạo kích."
   },
@@ -301,10 +329,14 @@
       ]
     },
     "passive_bonus": {
-      "bleed_stack_cap_bonus": 5,
-      "bleed_per_stack_pct_bonus": 0.008,
       "bleed_heal_reduce": 0.42,
-      "true_dmg_pct": 0.05
+      "true_dmg_pct": 0.05,
+      "dot_stack_cap_bonus": {
+        "bleed": 5
+      },
+      "dot_per_stack_pct_bonus": {
+        "bleed": 0.008
+      }
     },
     "description_vi": "Quan Huyết Đạo — +5 tầng, mỗi tầng +0.8% ST, 42% heal-reduce, +5% Sát Thương Chuẩn."
   },
@@ -334,8 +366,12 @@
       ]
     },
     "passive_bonus": {
-      "crit_rating_vs_bleed": 450,
-      "crit_dmg_vs_bleed": 580
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 450,
+          "dmg": 580
+        }
+      }
     },
     "description_vi": "Nhẫn Kim Tổ — bạo kích khổng lồ vs chảy máu. Bộ Kim Tổ 3 mảnh."
   },
@@ -390,8 +426,10 @@
     },
     "passive_bonus": {
       "bleed_on_hit_pct": 1.0,
-      "bleed_stack_cap_bonus": 5,
-      "true_dmg_pct": 0.08
+      "true_dmg_pct": 0.08,
+      "dot_stack_cap_bonus": {
+        "bleed": 5
+      }
     },
     "description_vi": "Tổ kiếm Kim Đạo — mọi đòn gây Chảy Máu, +5 tầng (max 10), +8% Sát Thương Chuẩn."
   }

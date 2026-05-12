@@ -1,0 +1,17 @@
+[
+  {
+    "key": "DungeonCamDia_ChungYen",
+    "vi": "Cấm Địa — Thập Nhật Chung Yên",
+    "en": "Forbidden Land — Ten Suns of Chung Yen",
+    "description": "Nơi mọi thứ kết thúc",
+    "dungeon_type": "cam_dia",
+    "required_qi_realm": 1,
+    "wave_count": 1,
+    "boss_min_grade_idx": 4,
+    "enemy_pool": [
+      "BossChungYen"
+    ],
+    "merit_reward": 80000,
+    "stone_reward": 800
+  }
+]

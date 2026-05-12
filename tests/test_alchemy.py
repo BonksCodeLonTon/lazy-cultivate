@@ -282,18 +282,18 @@ def _find_pill(effect_key: str, grade: int) -> str | None:
     return None
 
 
-def test_consume_exp_luyen_the_refused_when_body_realm_exceeds_pill_grade():
-    """A Grade-1 body XP pill must not absorb into a Cấp-2 (body_realm=1)
+def test_consume_exp_luyen_the_refused_when_body_realm_exceeds_pill_realm():
+    """A realm-0 body XP pill must not absorb into a Cấp-2 (body_realm=1)
     player — the body has surpassed what the pill can offer."""
     pill_key = _find_pill("exp_luyen_the", 1)
     assert pill_key, "expected a Grade-1 exp_luyen_the pill"
 
     char = _make_char()
-    char.body_realm = 1   # one tier above the pill
+    char.body_realm = 1   # one tier above the pill's realm (grade 1 → realm 0)
     effect = consume_pill(char, pill_key, 1)
     assert not effect.applied
     assert effect.body_xp_delta == 0
-    assert "phẩm cấp" in effect.message  # gated message wording
+    assert "vượt qua" in effect.message  # gated message wording
 
 
 def test_consume_exp_qi_refused_when_qi_realm_exceeds_pill_grade():

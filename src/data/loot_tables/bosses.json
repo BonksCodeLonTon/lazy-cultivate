@@ -2,31 +2,25 @@
   "LootBossHoaLinh": [
     {
       "item_key": "MatThaiDuongTinh",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemHoa_3",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestDia",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiFull",
-      "weight": 600000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "ItemHonNguyen",
-      "weight": 80000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 1
     },
@@ -46,31 +40,25 @@
   "LootBossLoiLong": [
     {
       "item_key": "MatThaiDuongTinh",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "GemLoi_3",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestDia",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiFull",
-      "weight": 600000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "ItemHonNguyen",
-      "weight": 80000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 1
     },
@@ -90,25 +78,19 @@
   "LootBossBangHon": [
     {
       "item_key": "MatThaiAmTinh",
-      "weight": 400000,
+      "weight": 80000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestDia",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "DanHoiFull",
-      "weight": 600000,
-      "qty_min": 1,
-      "qty_max": 1
-    },
-    {
-      "item_key": "ItemHonNguyen",
-      "weight": 80000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 1
     },
@@ -140,21 +122,15 @@
   "LootBossHonNguyen": [
     {
       "item_key": "MatDaiThuaKinh",
-      "weight": 600000,
+      "weight": 120000,
       "qty_min": 1,
       "qty_max": 1
     },
     {
       "item_key": "ChestThien",
-      "weight": 500000,
+      "weight": 100000,
       "qty_min": 1,
       "qty_max": 1
-    },
-    {
-      "item_key": "ItemHonNguyen",
-      "weight": 800000,
-      "qty_min": 1,
-      "qty_max": 3
     },
     {
       "item_key": "GemUnique_AmThuc",
@@ -177,6 +153,36 @@
     {
       "item_key": "GemUnique_AnPhongPhaGioi",
       "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SuperCuuChuanLinhTinh",
+      "weight": 2000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SuperHuyetLongCot",
+      "weight": 2000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SuperThienThuKiep",
+      "weight": 2000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SuperThanhQuangXaLoi",
+      "weight": 2000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "SuperHonDonChiNguyen",
+      "weight": 2000,
       "qty_min": 1,
       "qty_max": 1
     }

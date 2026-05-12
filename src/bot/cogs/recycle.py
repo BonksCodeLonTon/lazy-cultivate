@@ -27,6 +27,7 @@ from src.game.systems.recycle import get_recycle_material_grade, recycle_equipme
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed
 from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
+from src.utils.discord_safe import safe_defer
 
 log = logging.getLogger(__name__)
 
@@ -236,7 +237,7 @@ class RecycleView(discord.ui.View):
     def _guard(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self._discord_id
 
-    async def _refresh(
+    async def _rebuild(
         self,
         interaction: discord.Interaction,
         slot_filter: str | None,
@@ -244,6 +245,14 @@ class RecycleView(discord.ui.View):
         page: int = 0,
         selected_ids: list[int] | None = None,
     ) -> None:
+        """Re-fetch the player's bag and re-render the view.
+
+        Named ``_rebuild`` (not ``_refresh``) on purpose — discord.py's
+        ``View._refresh(components)`` is an internal hook the gateway calls on
+        message-update events to sync the view from the inbound component
+        payload. Shadowing it with our own signature crashed the gateway with
+        ``TypeError: _refresh() missing 1 required positional argument``.
+        """
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(self._discord_id)
@@ -274,10 +283,11 @@ class RecycleView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         # Page flips clear the picker selection (Discord re-renders the
         # Select options anyway, so prior values become invalid).
-        await self._refresh(
+        await self._rebuild(
             interaction, self._slot_filter, page=new_page, selected_ids=[],
         )
 
@@ -287,10 +297,11 @@ class RecycleView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         value = interaction.data["values"][0]
         new_filter: str | None = None if value == "__all__" else value
-        await self._refresh(interaction, new_filter, selected_ids=[])
+        await self._rebuild(interaction, new_filter, selected_ids=[])
 
     async def _pick_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
@@ -298,12 +309,13 @@ class RecycleView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         try:
             new_ids = [int(v) for v in interaction.data["values"]]
         except (KeyError, ValueError):
             new_ids = []
-        await self._refresh(
+        await self._rebuild(
             interaction, self._slot_filter, page=self._page, selected_ids=new_ids,
         )
 
@@ -313,8 +325,9 @@ class RecycleView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
-        await self._refresh(
+        if not await safe_defer(interaction):
+            return
+        await self._rebuild(
             interaction, self._slot_filter, page=self._page, selected_ids=[],
         )
 
@@ -324,10 +337,10 @@ class RecycleView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
-
+        if not await safe_defer(interaction):
+            return
         if not self._selected_ids:
-            await self._refresh(
+            await self._rebuild(
                 interaction, self._slot_filter, page=self._page,
                 result_msg="❌ Chưa chọn món nào để phân giải.",
                 selected_ids=[],
@@ -383,7 +396,7 @@ class RecycleView(discord.ui.View):
         if skipped:
             msg += f"\n⚠️ Bỏ qua {len(skipped)} món không hợp lệ."
 
-        await self._refresh(
+        await self._rebuild(
             interaction, self._slot_filter, page=0, result_msg=msg, selected_ids=[],
         )
 
@@ -400,7 +413,8 @@ class RecycleCog(commands.Cog):
         description="Phân giải trang bị trong túi → vật liệu rèn ngẫu nhiên",
     )
     async def recycle_cmd(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)

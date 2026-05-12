@@ -1,475 +1,8 @@
 [
   {
-    "key": "SkillPhongStorm_R1",
-    "vi": "Cuồng Phong Kích",
-    "en": "Gale Strike",
-    "realm": 1,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.0
-    },
-    "mp_cost": 18,
-    "cooldown": 2,
-    "base_dmg": 50,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillAtkPhong1",
-    "vi": "Thiên Phong Liệt Kiếm",
-    "en": "Heaven Wind Fierce Sword",
-    "realm": 1,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 8,
-    "cooldown": 1,
-    "base_dmg": 28,
-    "effects": [],
-    "formation_key": null
-  },
-  {
-    "key": "SkillAtkPhong_R2",
-    "vi": "Phong Nguyên Tức Kiếm",
-    "en": "Wind Essence Swift Blade",
-    "realm": 2,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 15,
-    "cooldown": 2,
-    "base_dmg": 50,
-    "effects": [
-      "DebuffChayMau"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillAtkPhongMarkR2",
-    "vi": "Phong Ấn Trảm",
-    "en": "Wind Mark Cleave",
-    "realm": 2,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.9,
-      "matk": 0.0
-    },
-    "mp_cost": 18,
-    "cooldown": 2,
-    "base_dmg": 55,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillDefPhong_R2",
-    "vi": "Phong Nguyên Ngự Khí",
-    "en": "Wind Essence Guard",
-    "realm": 2,
-    "scroll_grade": 1,
-    "category": "defense",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 20,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffNguPhong"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillMovPhong_R2",
-    "vi": "Phong Nguyên Tốc Bộ",
-    "en": "Wind Essence Swift Step",
-    "realm": 2,
-    "scroll_grade": 1,
-    "category": "movement",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 16,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffTangToc"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillAtkPhong2",
-    "vi": "Thiên Phong Cắt Mạch",
-    "en": "Heaven Wind Vein Cut",
-    "realm": 3,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 20,
-    "cooldown": 2,
-    "base_dmg": 75,
-    "effects": [
-      "DebuffChayMau"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0363
-      }
-    }
-  },
-  {
-    "key": "SkillPhongVortex_R3",
-    "vi": "Phong Toàn Cuồng Vũ",
-    "en": "Wind Vortex",
-    "realm": 3,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.0
-    },
-    "mp_cost": 36,
-    "cooldown": 4,
-    "base_dmg": 110,
-    "effects": [
-      "DebuffCuonBay",
-      "DebuffAnPhong",
-      "DebuffLamCham"
-    ],
-    "formation_key": null,
-    "description_vi": "Phong toàn cuồng vũ — cuốn bay, phong ấn né tránh, làm chậm địch.",
-    "effect_overrides": {
-      "DebuffCuonBay": {
-        "duration": 1
-      },
-      "DebuffAnPhong": {
-        "stat_bonus": {
-          "evasion_rating": -180
-        },
-        "duration": 4
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.32
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillDefPhongEva",
-    "vi": "Phong Vũ Hộ Thể",
-    "en": "Storm Body Guard",
-    "realm": 3,
-    "scroll_grade": 2,
-    "category": "defense",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 25,
-    "cooldown": 4,
-    "base_dmg": 0,
-    "effects": [
-      "BuffNguPhong",
-      "BuffPhongVu"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffNguPhong": {
-        "stat_bonus": {
-          "evasion_rating": 220
-        }
-      },
-      "BuffPhongVu": {
-        "stat_bonus": {
-          "evasion_rating": 110,
-          "crit_rating": 110
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillSupPhong",
-    "vi": "Nhân Phong Tăng Tốc",
-    "en": "Human Wind Haste",
-    "realm": 3,
-    "scroll_grade": 2,
-    "category": "movement",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 18,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffTangToc"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffTangToc": {
-        "stat_bonus": {
-          "spd_pct": 0.33
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhong_R4",
-    "vi": "Huyền Phong Thiên Vũ",
-    "en": "Mystery Wind Heaven Dance",
-    "realm": 4,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.0
-    },
-    "mp_cost": 32,
-    "cooldown": 3,
-    "base_dmg": 130,
-    "effects": [
-      "DebuffChayMau",
-      "DebuffCuonBay"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0396
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhongMarkR4",
-    "vi": "Huyền Phong Vô Ảnh Ấn",
-    "en": "Mystery Wind Shadowless Mark",
-    "realm": 4,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.05,
-      "matk": 0.0
-    },
-    "mp_cost": 40,
-    "cooldown": 3,
-    "base_dmg": 165,
-    "effects": [
-      "DebuffAnPhong",
-      "DebuffLamCham"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffAnPhong": {
-        "stat_bonus": {
-          "evasion_rating": -180
-        }
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.3
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhong3",
-    "vi": "Thiên Phong Hư Không",
-    "en": "Heaven Wind Void",
-    "realm": 5,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 45,
-    "cooldown": 3,
-    "base_dmg": 160,
-    "effects": [],
-    "formation_key": null
-  },
-  {
-    "key": "SkillMovPhongR5",
-    "vi": "Phong Thần Huyễn Bộ",
-    "en": "Wind God Phantom Step",
-    "realm": 5,
-    "scroll_grade": 2,
-    "category": "movement",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 40,
-    "cooldown": 5,
-    "base_dmg": 0,
-    "effects": [
-      "BuffTangToc",
-      "BuffHuKhong"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffTangToc": {
-        "stat_bonus": {
-          "spd_pct": 0.39
-        }
-      },
-      "BuffHuKhong": {
-        "stat_bonus": {
-          "evasion_rating": 325
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhong_R6",
-    "vi": "Chân Phong Phá Lãng",
-    "en": "True Wind Wave Breaker",
-    "realm": 6,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.2,
-      "matk": 0.0
-    },
-    "mp_cost": 58,
-    "cooldown": 4,
-    "base_dmg": 255,
-    "effects": [
-      "DebuffChayMau",
-      "DebuffCuonBay",
-      "DebuffLamCham"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0462
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.35
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhongBurstR6",
-    "vi": "Phong Ấn Cửu Đạo",
-    "en": "Wind Mark Nine Strikes",
-    "realm": 6,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.2,
-      "matk": 0.0
-    },
-    "mp_cost": 70,
-    "cooldown": 5,
-    "base_dmg": 290,
-    "effects": [
-      "DebuffAnPhong",
-      "DebuffLamCham",
-      "DebuffChayMau"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffAnPhong": {
-        "stat_bonus": {
-          "evasion_rating": -210
-        }
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.35
-        }
-      },
-      "DebuffChayMau": {
-        "dot_pct": 0.0462
-      }
-    }
-  },
-  {
-    "key": "SkillPassivePhongEva",
-    "vi": "Phong Nguyên Thể",
-    "en": "Wind Origin Body",
-    "realm": 6,
-    "scroll_grade": 1,
-    "category": "passive",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 0,
-    "cooldown": 0,
-    "base_dmg": 0,
-    "effects": [],
-    "passive_bonus": {
-      "mark_on_hit_pct": 0.2,
-      "damage_bonus_from_evasion_pct": 0.08,
-      "evasion_rating": 80
-    },
-    "formation_key": null
-  },
-  {
     "key": "SkillAtkPhong_R7",
     "vi": "Thần Phong Vạn Liệt",
     "en": "Divine Wind Myriad Rends",
-    "realm": 7,
     "scroll_grade": 1,
     "category": "attack",
     "element": "phong",
@@ -478,9 +11,9 @@
       "atk": 1.0,
       "matk": 0.4
     },
-    "mp_cost": 78,
+    "mp_cost": 254,
     "cooldown": 5,
-    "base_dmg": 355,
+    "base_dmg": 2485,
     "effects": [
       "DebuffChayMau",
       "DebuffCuonBay",
@@ -511,10 +44,148 @@
     }
   },
   {
+    "key": "SkillAtkPhong_R6",
+    "vi": "Chân Phong Phá Lãng",
+    "en": "True Wind Wave Breaker",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.2,
+      "matk": 0.0
+    },
+    "mp_cost": 167,
+    "cooldown": 4,
+    "base_dmg": 1530,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay",
+      "DebuffLamCham"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0462
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.35
+        }
+      }
+    }
+  },
+  {
+    "key": "SkillAtkPhong3",
+    "vi": "Thiên Phong Hư Không",
+    "en": "Heaven Wind Void",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 112,
+    "cooldown": 3,
+    "base_dmg": 800,
+    "effects": [],
+    "formation_key": null
+  },
+  {
+    "key": "SkillAtkPhong_R4",
+    "vi": "Huyền Phong Thiên Vũ",
+    "en": "Mystery Wind Heaven Dance",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.0
+    },
+    "mp_cost": 68,
+    "cooldown": 3,
+    "base_dmg": 520,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0396
+      }
+    }
+  },
+  {
+    "key": "SkillDefPhong_R2",
+    "vi": "Phong Nguyên Ngự Khí",
+    "en": "Wind Essence Guard",
+    "scroll_grade": 1,
+    "category": "defense",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 28,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffNguPhong"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovPhong_R2",
+    "vi": "Phong Nguyên Tốc Bộ",
+    "en": "Wind Essence Swift Step",
+    "scroll_grade": 1,
+    "category": "movement",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 22,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTangToc"
+    ],
+    "formation_key": null
+  },
+  {
+    "key": "SkillPassivePhongEva",
+    "vi": "Phong Nguyên Thể",
+    "en": "Wind Origin Body",
+    "scroll_grade": 1,
+    "category": "passive",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "effects": [],
+    "passive_bonus": {
+      "mark_on_hit_pct": 0.2,
+      "damage_bonus_from_evasion_pct": 0.08,
+      "evasion_rating": 80
+    },
+    "formation_key": null
+  },
+  {
     "key": "SkillAtkPhongEvaR7",
     "vi": "Thần Phong Huyễn Ảnh Trảm",
     "en": "Divine Wind Phantom Slash",
-    "realm": 7,
     "scroll_grade": 2,
     "category": "attack",
     "element": "phong",
@@ -523,9 +194,9 @@
       "atk": 1.1,
       "matk": 0.4
     },
-    "mp_cost": 95,
+    "mp_cost": 309,
     "cooldown": 5,
-    "base_dmg": 410,
+    "base_dmg": 2870,
     "effects": [
       "DebuffAnPhong",
       "DebuffLamCham",
@@ -551,59 +222,139 @@
     }
   },
   {
-    "key": "SkillPhongStormGod_R7",
-    "vi": "Phong Bão Thần Thoại",
-    "en": "Storm God Mythic",
-    "realm": 7,
-    "scroll_grade": 4,
+    "key": "SkillAtkPhongBurstR6",
+    "vi": "Phong Ấn Cửu Đạo",
+    "en": "Wind Mark Nine Strikes",
+    "scroll_grade": 2,
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.25,
-      "matk": 0.2
+      "atk": 1.2,
+      "matk": 0.0
     },
-    "mp_cost": 90,
+    "mp_cost": 201,
     "cooldown": 5,
-    "base_dmg": 395,
+    "base_dmg": 1740,
     "effects": [
-      "DebuffCuonBay",
       "DebuffAnPhong",
       "DebuffLamCham",
-      "DebuffBaoMon"
+      "DebuffChayMau"
     ],
     "formation_key": null,
-    "description_vi": "Phong bão thần thoại — đỉnh Phong R7, cuốn bay liên hoàn, bào mòn kháng tính.",
     "effect_overrides": {
-      "DebuffCuonBay": {
-        "duration": 2
-      },
       "DebuffAnPhong": {
         "stat_bonus": {
-          "evasion_rating": -260
-        },
-        "duration": 4
+          "evasion_rating": -210
+        }
       },
       "DebuffLamCham": {
         "stat_bonus": {
-          "spd_pct": -0.55
-        },
-        "duration": 3
+          "spd_pct": -0.35
+        }
       },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.075
-        },
-        "duration": 4
+      "DebuffChayMau": {
+        "dot_pct": 0.0462
       }
     }
   },
   {
-    "key": "SkillMovPhong_R7",
-    "vi": "Thần Phong Phong Vũ Bộ",
-    "en": "Divine Wind Storm Step",
-    "realm": 7,
-    "scroll_grade": 3,
+    "key": "SkillAtkPhongMarkR4",
+    "vi": "Huyền Phong Vô Ảnh Ấn",
+    "en": "Mystery Wind Shadowless Mark",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.05,
+      "matk": 0.0
+    },
+    "mp_cost": 85,
+    "cooldown": 3,
+    "base_dmg": 660,
+    "effects": [
+      "DebuffAnPhong",
+      "DebuffLamCham"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffAnPhong": {
+        "stat_bonus": {
+          "evasion_rating": -180
+        }
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.3
+        }
+      }
+    }
+  },
+  {
+    "key": "SkillAtkPhong2",
+    "vi": "Thiên Phong Cắt Mạch",
+    "en": "Heaven Wind Vein Cut",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 35,
+    "cooldown": 2,
+    "base_dmg": 225,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0363
+      }
+    }
+  },
+  {
+    "key": "SkillDefPhongEva",
+    "vi": "Phong Vũ Hộ Thể",
+    "en": "Storm Body Guard",
+    "scroll_grade": 2,
+    "category": "defense",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 44,
+    "cooldown": 4,
+    "base_dmg": 0,
+    "effects": [
+      "BuffNguPhong",
+      "BuffPhongVu"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffNguPhong": {
+        "stat_bonus": {
+          "evasion_rating": 220
+        }
+      },
+      "BuffPhongVu": {
+        "stat_bonus": {
+          "evasion_rating": 110,
+          "crit_rating": 110
+        }
+      }
+    }
+  },
+  {
+    "key": "SkillSupPhong",
+    "vi": "Nhân Phong Tăng Tốc",
+    "en": "Human Wind Haste",
+    "scroll_grade": 2,
     "category": "movement",
     "element": "phong",
     "attack_type": "physical",
@@ -611,141 +362,51 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 75,
-    "cooldown": 6,
+    "mp_cost": 32,
+    "cooldown": 3,
     "base_dmg": 0,
     "effects": [
-      "BuffPhongVu",
+      "BuffTangToc"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.33
+        }
+      }
+    }
+  },
+  {
+    "key": "SkillMovPhongR5",
+    "vi": "Phong Thần Huyễn Bộ",
+    "en": "Wind God Phantom Step",
+    "scroll_grade": 2,
+    "category": "movement",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 100,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
       "BuffTangToc",
       "BuffHuKhong"
     ],
     "formation_key": null,
     "effect_overrides": {
-      "BuffPhongVu": {
-        "stat_bonus": {
-          "evasion_rating": 150,
-          "crit_rating": 150
-        },
-        "duration": 4
-      },
       "BuffTangToc": {
         "stat_bonus": {
-          "spd_pct": 0.45
-        },
-        "duration": 4
+          "spd_pct": 0.39
+        }
       },
       "BuffHuKhong": {
         "stat_bonus": {
-          "evasion_rating": 375
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhong_R8",
-    "vi": "Thánh Phong Hư Không Trảm",
-    "en": "Saint Wind Void Slash",
-    "realm": 8,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.6
-    },
-    "mp_cost": 100,
-    "cooldown": 6,
-    "base_dmg": 465,
-    "effects": [
-      "DebuffChayMau",
-      "DebuffCuonBay",
-      "DebuffLamCham",
-      "DebuffCatDut",
-      "DebuffXeRach"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0528,
-        "duration": 4
-      },
-      "DebuffCuonBay": {
-        "duration": 2
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.4
-        },
-        "duration": 3
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.48
-        },
-        "duration": 4
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.128
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillPhongTempest_R8",
-    "vi": "Cuồng Phong Hủy Diệt",
-    "en": "Annihilating Tempest",
-    "realm": 8,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.3
-    },
-    "mp_cost": 120,
-    "cooldown": 6,
-    "base_dmg": 525,
-    "effects": [
-      "DebuffCuonBay",
-      "DebuffAnPhong",
-      "DebuffLamCham",
-      "DebuffBaoMon",
-      "DebuffXeRach"
-    ],
-    "formation_key": null,
-    "description_vi": "Cuồng phong hủy diệt — đỉnh Phong R8, kết hợp 5 hiệu ứng quét sạch chiến trường.",
-    "effect_overrides": {
-      "DebuffCuonBay": {
-        "duration": 2
-      },
-      "DebuffAnPhong": {
-        "stat_bonus": {
-          "evasion_rating": -300
-        },
-        "duration": 4
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.65
-        },
-        "duration": 3
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.085
-        },
-        "duration": 4
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.135
-        },
-        "duration": 3
+          "evasion_rating": 325
+        }
       }
     }
   },
@@ -753,7 +414,6 @@
     "key": "SkillAtkPhong_R9",
     "vi": "Tiên Phong Hỗn Độn Đoạn Hư",
     "en": "Immortal Wind Chaos Void-Sever",
-    "realm": 9,
     "scroll_grade": 3,
     "category": "attack",
     "element": "phong",
@@ -762,9 +422,9 @@
       "atk": 1.1,
       "matk": 0.9
     },
-    "mp_cost": 140,
+    "mp_cost": 560,
     "cooldown": 7,
-    "base_dmg": 660,
+    "base_dmg": 5940,
     "effects": [
       "DebuffChayMau",
       "DebuffCuonBay",
@@ -806,10 +466,111 @@
     }
   },
   {
-    "key": "SkillMovDangTien_R9",
-    "vi": "Đăng Tiên Súc Địa Thành Thốn",
-    "en": "Immortal Ascension Shrink-Earth",
-    "realm": 9,
+    "key": "SkillAtkPhong_R8",
+    "vi": "Thánh Phong Hư Không Trảm",
+    "en": "Saint Wind Void Slash",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.6
+    },
+    "mp_cost": 362,
+    "cooldown": 6,
+    "base_dmg": 3720,
+    "effects": [
+      "DebuffChayMau",
+      "DebuffCuonBay",
+      "DebuffLamCham",
+      "DebuffCatDut",
+      "DebuffXeRach"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffChayMau": {
+        "dot_pct": 0.0528,
+        "duration": 4
+      },
+      "DebuffCuonBay": {
+        "duration": 2
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.4
+        },
+        "duration": 3
+      },
+      "DebuffCatDut": {
+        "stat_bonus": {
+          "hp_regen_pct": -0.48
+        },
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.128
+        },
+        "duration": 3
+      }
+    }
+  },
+  {
+    "key": "SkillPhongCombo",
+    "vi": "Phong Liên Hoàn Trảm",
+    "en": "Wind Combo Strike",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.85,
+      "matk": 0.0
+    },
+    "mp_cost": 138,
+    "cooldown": 3,
+    "base_dmg": 1000,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.55
+    },
+    "chain_skill": {
+      "key": "SkillPhongComboFollowup",
+      "pct": 0.6
+    },
+    "formation_key": null,
+    "description_vi": "Niệm 1 chiêu nhưng phát động 2 đòn: cú chính + Phong Truy Trảm với 60% ST gốc, mỗi đòn có thể áp Ấn Phong riêng."
+  },
+  {
+    "key": "SkillPhongStorm_R1",
+    "vi": "Cuồng Phong Kích",
+    "en": "Gale Strike",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.1,
+      "matk": 0.0
+    },
+    "mp_cost": 18,
+    "cooldown": 2,
+    "base_dmg": 50,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.3
+    },
+    "formation_key": null
+  },
+  {
+    "key": "SkillMovPhong_R7",
+    "vi": "Thần Phong Phong Vũ Bộ",
+    "en": "Divine Wind Storm Step",
     "scroll_grade": 3,
     "category": "movement",
     "element": "phong",
@@ -818,7 +579,50 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 130,
+    "mp_cost": 244,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "BuffPhongVu",
+      "BuffTangToc",
+      "BuffHuKhong"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffPhongVu": {
+        "stat_bonus": {
+          "evasion_rating": 150,
+          "crit_rating": 150
+        },
+        "duration": 4
+      },
+      "BuffTangToc": {
+        "stat_bonus": {
+          "spd_pct": 0.45
+        },
+        "duration": 4
+      },
+      "BuffHuKhong": {
+        "stat_bonus": {
+          "evasion_rating": 375
+        },
+        "duration": 3
+      }
+    }
+  },
+  {
+    "key": "SkillMovDangTien_R9",
+    "vi": "Đăng Tiên Súc Địa Thành Thốn",
+    "en": "Immortal Ascension Shrink-Earth",
+    "scroll_grade": 3,
+    "category": "movement",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 520,
     "cooldown": 8,
     "base_dmg": 0,
     "effects": [
@@ -857,65 +661,9 @@
     }
   },
   {
-    "key": "SkillPhongComboFollowup",
-    "vi": "Phong Truy Trảm",
-    "en": "Wind-Chase Slash",
-    "realm": 5,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.7,
-      "matk": 0.0
-    },
-    "mp_cost": 0,
-    "cooldown": 1,
-    "base_dmg": 240,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.45
-    },
-    "formation_key": null,
-    "description_vi": "Đòn nối tiếp Phong Liên Hoàn Trảm — không thể niệm độc lập (chỉ kích hoạt qua chain_skill).",
-    "internal_only": true
-  },
-  {
-    "key": "SkillPhongCombo",
-    "vi": "Phong Liên Hoàn Trảm",
-    "en": "Wind Combo Strike",
-    "realm": 5,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 55,
-    "cooldown": 3,
-    "base_dmg": 200,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.55
-    },
-    "chain_skill": {
-      "key": "SkillPhongComboFollowup",
-      "pct": 0.6
-    },
-    "formation_key": null,
-    "description_vi": "Niệm 1 chiêu nhưng phát động 2 đòn: cú chính + Phong Truy Trảm với 60% ST gốc, mỗi đòn có thể áp Ấn Phong riêng."
-  },
-  {
     "key": "SkillPhongHurricaneStorm_R9",
     "vi": "Cuồng Phong Bão Loạn",
     "en": "Hurricane Maelstrom",
-    "realm": 9,
     "scroll_grade": 4,
     "category": "attack",
     "element": "phong",
@@ -924,9 +672,9 @@
       "atk": 0.7,
       "matk": 0.0
     },
-    "mp_cost": 130,
+    "mp_cost": 520,
     "cooldown": 6,
-    "base_dmg": 320,
+    "base_dmg": 2880,
     "effects": [
       "DebuffAnPhong",
       "DebuffLamCham"
@@ -944,1107 +692,129 @@
     "description_vi": "Đỉnh cấp Phong — gió lốc 5 đòn liên tục; mỗi 2 lần niệm bùng nổ thêm 1200 ST tích lũy."
   },
   {
-    "key": "SkillFillerPhongR1G1",
-    "vi": "Phong Hoàng Đoạn Thuật",
-    "en": "Phong Hoàng Severing Art",
-    "realm": 1,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 17,
-    "cooldown": 1,
-    "base_dmg": 15,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR1G3",
-    "vi": "Phong Địa Đoạn Thuật",
-    "en": "Phong Địa Severing Art",
-    "realm": 1,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 27,
-    "cooldown": 2,
-    "base_dmg": 24,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR2G2",
-    "vi": "Phong Huyền Đoạn Thuật",
-    "en": "Phong Huyền Severing Art",
-    "realm": 2,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 28,
-    "cooldown": 2,
-    "base_dmg": 38,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR3G4",
-    "vi": "Phong Thiên Đoạn Thuật",
-    "en": "Phong Thiên Severing Art",
-    "realm": 3,
+    "key": "SkillPhongTempest_R8",
+    "vi": "Cuồng Phong Hủy Diệt",
+    "en": "Annihilating Tempest",
     "scroll_grade": 4,
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
     "dmg_scale": {
       "atk": 1.3,
-      "matk": 0.0
+      "matk": 0.3
     },
-    "mp_cost": 48,
-    "cooldown": 3,
-    "base_dmg": 70,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR4G1",
-    "vi": "Phong Hoàng Đoạn Thuật",
-    "en": "Phong Hoàng Severing Art",
-    "realm": 4,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 45,
-    "cooldown": 3,
-    "base_dmg": 75,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR4G2",
-    "vi": "Phong Huyền Đoạn Thuật",
-    "en": "Phong Huyền Severing Art",
-    "realm": 4,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 50,
-    "cooldown": 3,
-    "base_dmg": 95,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR5G1",
-    "vi": "Phong Hoàng Đoạn Thuật",
-    "en": "Phong Hoàng Severing Art",
-    "realm": 5,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 60,
-    "cooldown": 3,
-    "base_dmg": 110,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR5G2",
-    "vi": "Phong Huyền Đoạn Thuật",
-    "en": "Phong Huyền Severing Art",
-    "realm": 5,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 65,
-    "cooldown": 3,
-    "base_dmg": 140,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR5G3",
-    "vi": "Phong Địa Đoạn Thuật",
-    "en": "Phong Địa Severing Art",
-    "realm": 5,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 70,
-    "cooldown": 4,
-    "base_dmg": 160,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR5G4",
-    "vi": "Phong Thiên Đoạn Thuật",
-    "en": "Phong Thiên Severing Art",
-    "realm": 5,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
-    },
-    "mp_cost": 75,
-    "cooldown": 4,
-    "base_dmg": 180,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR6G2",
-    "vi": "Phong Huyền Đoạn Thuật",
-    "en": "Phong Huyền Severing Art",
-    "realm": 6,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 80,
-    "cooldown": 4,
-    "base_dmg": 180,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR7G1",
-    "vi": "Phong Hoàng Đoạn Thuật",
-    "en": "Phong Hoàng Severing Art",
-    "realm": 7,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 95,
-    "cooldown": 4,
-    "base_dmg": 210,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR7G2",
-    "vi": "Phong Huyền Đoạn Thuật",
-    "en": "Phong Huyền Severing Art",
-    "realm": 7,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 100,
-    "cooldown": 4,
-    "base_dmg": 265,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR7G3",
-    "vi": "Phong Địa Đoạn Thuật",
-    "en": "Phong Địa Severing Art",
-    "realm": 7,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 105,
-    "cooldown": 5,
-    "base_dmg": 305,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR7G4",
-    "vi": "Phong Thiên Đoạn Thuật",
-    "en": "Phong Thiên Severing Art",
-    "realm": 7,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
-    },
-    "mp_cost": 110,
-    "cooldown": 5,
-    "base_dmg": 340,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR8G3",
-    "vi": "Phong Địa Đoạn Thuật",
-    "en": "Phong Địa Severing Art",
-    "realm": 8,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 130,
+    "mp_cost": 435,
     "cooldown": 6,
-    "base_dmg": 395,
+    "base_dmg": 4200,
     "effects": [
-      "DebuffAnPhong"
+      "DebuffCuonBay",
+      "DebuffAnPhong",
+      "DebuffLamCham",
+      "DebuffBaoMon",
+      "DebuffXeRach"
     ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.4
-    },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Cuồng phong hủy diệt — đỉnh Phong R8, kết hợp 5 hiệu ứng quét sạch chiến trường.",
+    "effect_overrides": {
+      "DebuffCuonBay": {
+        "duration": 2
+      },
+      "DebuffAnPhong": {
+        "stat_bonus": {
+          "evasion_rating": -300
+        },
+        "duration": 4
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.65
+        },
+        "duration": 3
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.085
+        },
+        "duration": 4
+      },
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.135
+        },
+        "duration": 3
+      }
+    }
   },
   {
-    "key": "SkillFillerPhongR8G4",
-    "vi": "Phong Thiên Đoạn Thuật",
-    "en": "Phong Thiên Severing Art",
-    "realm": 8,
+    "key": "SkillPhongStormGod_R7",
+    "vi": "Phong Bão Thần Thoại",
+    "en": "Storm God Mythic",
     "scroll_grade": 4,
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
+      "atk": 1.25,
+      "matk": 0.2
     },
-    "mp_cost": 135,
-    "cooldown": 6,
-    "base_dmg": 435,
+    "mp_cost": 292,
+    "cooldown": 5,
+    "base_dmg": 2765,
     "effects": [
-      "DebuffAnPhong"
+      "DebuffCuonBay",
+      "DebuffAnPhong",
+      "DebuffLamCham",
+      "DebuffBaoMon"
     ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.45
-    },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Phong bão thần thoại — đỉnh Phong R7, cuốn bay liên hoàn, bào mòn kháng tính.",
+    "effect_overrides": {
+      "DebuffCuonBay": {
+        "duration": 2
+      },
+      "DebuffAnPhong": {
+        "stat_bonus": {
+          "evasion_rating": -260
+        },
+        "duration": 4
+      },
+      "DebuffLamCham": {
+        "stat_bonus": {
+          "spd_pct": -0.55
+        },
+        "duration": 3
+      },
+      "DebuffBaoMon": {
+        "stat_bonus": {
+          "res_all": -0.075
+        },
+        "duration": 4
+      }
+    }
   },
   {
-    "key": "SkillFillerPhongR9G4",
-    "vi": "Phong Thiên Đoạn Thuật",
-    "en": "Phong Thiên Severing Art",
-    "realm": 9,
+    "key": "SkillPhongComboFollowup",
+    "vi": "Phong Truy Trảm",
+    "en": "Wind-Chase Slash",
     "scroll_grade": 4,
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.3,
+      "atk": 0.7,
       "matk": 0.0
     },
-    "mp_cost": 165,
-    "cooldown": 6,
-    "base_dmg": 625,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR1G2",
-    "vi": "Phong Huyền Đoạn Thuật",
-    "en": "Phong Huyền Severing Art",
-    "realm": 1,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 22,
+    "mp_cost": 0,
     "cooldown": 1,
-    "base_dmg": 20,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR1G2B",
-    "vi": "Phong Huyền Trảm Quyết",
-    "en": "Phong Huyền Cleaving Edict",
-    "realm": 1,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 22,
-    "cooldown": 1,
-    "base_dmg": 20,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR1G4",
-    "vi": "Phong Thiên Đoạn Thuật",
-    "en": "Phong Thiên Severing Art",
-    "realm": 1,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
-    },
-    "mp_cost": 32,
-    "cooldown": 2,
-    "base_dmg": 28,
+    "base_dmg": 1200,
     "effects": [
       "DebuffAnPhong"
     ],
     "effect_chances": {
       "DebuffAnPhong": 0.45
     },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR1G4B",
-    "vi": "Phong Thiên Trảm Quyết",
-    "en": "Phong Thiên Cleaving Edict",
-    "realm": 1,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
-    },
-    "mp_cost": 32,
-    "cooldown": 2,
-    "base_dmg": 28,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR2G3",
-    "vi": "Phong Địa Đoạn Thuật",
-    "en": "Phong Địa Severing Art",
-    "realm": 2,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 33,
-    "cooldown": 3,
-    "base_dmg": 45,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR2G3B",
-    "vi": "Phong Địa Trảm Quyết",
-    "en": "Phong Địa Cleaving Edict",
-    "realm": 2,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 33,
-    "cooldown": 3,
-    "base_dmg": 45,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR2G4",
-    "vi": "Phong Thiên Đoạn Thuật",
-    "en": "Phong Thiên Severing Art",
-    "realm": 2,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
-    },
-    "mp_cost": 38,
-    "cooldown": 3,
-    "base_dmg": 50,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR2G4B",
-    "vi": "Phong Thiên Trảm Quyết",
-    "en": "Phong Thiên Cleaving Edict",
-    "realm": 2,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
-    },
-    "mp_cost": 38,
-    "cooldown": 3,
-    "base_dmg": 50,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR3G1",
-    "vi": "Phong Hoàng Đoạn Thuật",
-    "en": "Phong Hoàng Severing Art",
-    "realm": 3,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 33,
-    "cooldown": 2,
-    "base_dmg": 42,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR3G1B",
-    "vi": "Phong Hoàng Trảm Quyết",
-    "en": "Phong Hoàng Cleaving Edict",
-    "realm": 3,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 33,
-    "cooldown": 2,
-    "base_dmg": 42,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR3G3",
-    "vi": "Phong Địa Đoạn Thuật",
-    "en": "Phong Địa Severing Art",
-    "realm": 3,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 43,
-    "cooldown": 3,
-    "base_dmg": 62,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR3G3B",
-    "vi": "Phong Địa Trảm Quyết",
-    "en": "Phong Địa Cleaving Edict",
-    "realm": 3,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 43,
-    "cooldown": 3,
-    "base_dmg": 62,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR4G3",
-    "vi": "Phong Địa Đoạn Thuật",
-    "en": "Phong Địa Severing Art",
-    "realm": 4,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 55,
-    "cooldown": 4,
-    "base_dmg": 110,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR4G3B",
-    "vi": "Phong Địa Trảm Quyết",
-    "en": "Phong Địa Cleaving Edict",
-    "realm": 4,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 55,
-    "cooldown": 4,
-    "base_dmg": 110,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR4G4",
-    "vi": "Phong Thiên Đoạn Thuật",
-    "en": "Phong Thiên Severing Art",
-    "realm": 4,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
-    },
-    "mp_cost": 60,
-    "cooldown": 4,
-    "base_dmg": 128,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR4G4B",
-    "vi": "Phong Thiên Trảm Quyết",
-    "en": "Phong Thiên Cleaving Edict",
-    "realm": 4,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
-    },
-    "mp_cost": 60,
-    "cooldown": 4,
-    "base_dmg": 128,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR6G3",
-    "vi": "Phong Địa Đoạn Thuật",
-    "en": "Phong Địa Severing Art",
-    "realm": 6,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 85,
-    "cooldown": 5,
-    "base_dmg": 210,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR6G3B",
-    "vi": "Phong Địa Trảm Quyết",
-    "en": "Phong Địa Cleaving Edict",
-    "realm": 6,
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.15,
-      "matk": 0.0
-    },
-    "mp_cost": 85,
-    "cooldown": 5,
-    "base_dmg": 210,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.4
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR6G4",
-    "vi": "Phong Thiên Đoạn Thuật",
-    "en": "Phong Thiên Severing Art",
-    "realm": 6,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
-    },
-    "mp_cost": 90,
-    "cooldown": 5,
-    "base_dmg": 235,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR6G4B",
-    "vi": "Phong Thiên Trảm Quyết",
-    "en": "Phong Thiên Cleaving Edict",
-    "realm": 6,
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.0
-    },
-    "mp_cost": 90,
-    "cooldown": 5,
-    "base_dmg": 235,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.45
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR8G1",
-    "vi": "Phong Hoàng Đoạn Thuật",
-    "en": "Phong Hoàng Severing Art",
-    "realm": 8,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 120,
-    "cooldown": 5,
-    "base_dmg": 270,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR8G1B",
-    "vi": "Phong Hoàng Trảm Quyết",
-    "en": "Phong Hoàng Cleaving Edict",
-    "realm": 8,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 120,
-    "cooldown": 5,
-    "base_dmg": 270,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR8G2",
-    "vi": "Phong Huyền Đoạn Thuật",
-    "en": "Phong Huyền Severing Art",
-    "realm": 8,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 125,
-    "cooldown": 5,
-    "base_dmg": 340,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR8G2B",
-    "vi": "Phong Huyền Trảm Quyết",
-    "en": "Phong Huyền Cleaving Edict",
-    "realm": 8,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 125,
-    "cooldown": 5,
-    "base_dmg": 340,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR9G1",
-    "vi": "Phong Hoàng Đoạn Thuật",
-    "en": "Phong Hoàng Severing Art",
-    "realm": 9,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 150,
-    "cooldown": 5,
-    "base_dmg": 380,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR9G1B",
-    "vi": "Phong Hoàng Trảm Quyết",
-    "en": "Phong Hoàng Cleaving Edict",
-    "realm": 9,
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.85,
-      "matk": 0.0
-    },
-    "mp_cost": 150,
-    "cooldown": 5,
-    "base_dmg": 380,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.3
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR9G2",
-    "vi": "Phong Huyền Đoạn Thuật",
-    "en": "Phong Huyền Severing Art",
-    "realm": 9,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 155,
-    "cooldown": 5,
-    "base_dmg": 480,
-    "effects": [
-      "DebuffAnPhong"
-    ],
-    "effect_chances": {
-      "DebuffAnPhong": 0.35
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillFillerPhongR9G2B",
-    "vi": "Phong Huyền Trảm Quyết",
-    "en": "Phong Huyền Cleaving Edict",
-    "realm": 9,
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 155,
-    "cooldown": 5,
-    "base_dmg": 480,
-    "effects": [
-      "DebuffCuonBay"
-    ],
-    "effect_chances": {
-      "DebuffCuonBay": 0.35
-    },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Đòn nối tiếp Phong Liên Hoàn Trảm — không thể niệm độc lập (chỉ kích hoạt qua chain_skill).",
+    "internal_only": true
   }
 ]

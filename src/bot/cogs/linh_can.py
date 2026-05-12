@@ -30,6 +30,7 @@ from src.game.systems.linh_can import (
 )
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
+from src.utils.discord_safe import safe_defer
 
 
 # Slash-command Choice names render as plain text (no custom-emoji parsing),
@@ -110,7 +111,7 @@ def build_overview_embed(
 
     # Khí Tu breadth multiplier preview — visible to everyone so non-Khí-Tu
     # players see what they'd earn if they pivot the qi axis. The actual
-    # bonus only fires when ``is_khi_tu`` (qi > body and qi > formation).
+    # bonus only fires when ``is_khi_tu`` (active_axis == "qi").
     qualifying = sum(1 for lvl in levels.values() if lvl >= LINH_CAN_BREADTH_MIN_LEVEL)
     mult = linh_can_breadth_multiplier(levels)
     embed.add_field(
@@ -119,7 +120,7 @@ def build_overview_embed(
             f"Linh Căn ≥ Lv{LINH_CAN_BREADTH_MIN_LEVEL}: **{qualifying}/9**\n"
             f"Hệ số khuếch đại passive: **×{mult:.2f}** "
             f"(trần ×{LINH_CAN_BREADTH_MAX_MULT:.2f}).\n"
-            "_Chỉ kích hoạt khi Luyện Khí > Luyện Thể & Trận Đạo._"
+            "_Chỉ kích hoạt khi đang tu luyện trục Luyện Khí._"
         ),
         inline=False,
     )
@@ -285,7 +286,8 @@ class LinhCanHubView(discord.ui.View):
                     "Đây không phải cửa sổ của bạn.", ephemeral=True,
                 )
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             await _render_detail(
                 interaction, self._discord_id, element, back_fn=self._back_fn,
             )
@@ -297,7 +299,8 @@ class LinhCanHubView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         if self._back_fn is not None:
             await self._back_fn(interaction)
 
@@ -385,8 +388,8 @@ class LinhCanDetailView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
-
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             repo = PlayerRepository(session)
             player = await repo.get_by_discord_id(self._discord_id)
@@ -422,8 +425,8 @@ class LinhCanDetailView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
-
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             repo = PlayerRepository(session)
             player = await repo.get_by_discord_id(self._discord_id)
@@ -466,7 +469,8 @@ class LinhCanDetailView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await render_linh_can_hub(interaction, self._discord_id, back_fn=self._back_fn)
 
 
@@ -481,8 +485,8 @@ class LinhCanCog(commands.Cog, name="LinhCan"):
         description="Mở bảng Linh Căn — xem, khai mở, nâng cấp",
     )
     async def linh_can(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
-
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             repo = PlayerRepository(session)
             player = await repo.get_by_discord_id(interaction.user.id)
@@ -511,8 +515,8 @@ class LinhCanCog(commands.Cog, name="LinhCan"):
         interaction: discord.Interaction,
         element: Choice[str],
     ) -> None:
-        await interaction.response.defer(ephemeral=True)
-
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             repo = PlayerRepository(session)
             player = await repo.get_by_discord_id(interaction.user.id)
@@ -551,8 +555,8 @@ class LinhCanCog(commands.Cog, name="LinhCan"):
         interaction: discord.Interaction,
         element: Choice[str],
     ) -> None:
-        await interaction.response.defer(ephemeral=True)
-
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             repo = PlayerRepository(session)
             player = await repo.get_by_discord_id(interaction.user.id)

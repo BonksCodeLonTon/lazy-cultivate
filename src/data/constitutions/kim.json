@@ -201,7 +201,9 @@
       "crit_rating": 150,
       "bleed_on_hit_pct": 0.1,
       "true_dmg_pct": 0.04,
-      "bleed_dmg_bonus": 0.1
+      "dot_dmg_bonus_by_kind": {
+        "bleed": 0.1
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -388,7 +390,11 @@
       "armor_pen_pct": 0.08,
       "kill_buff_per_kill_pct": 0.025,
       "kill_buff_cap": 4,
-      "crit_rating_vs_bleed": 100
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 100
+        }
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -450,11 +456,17 @@
       "bleed_on_hit_pct": 0.3,
       "armor_pen_pct": 0.18,
       "final_dmg_bonus": 0.2,
-      "bleed_dmg_bonus": 0.2,
       "true_dmg_pct": 0.06,
       "kill_buff_per_kill_pct": 0.05,
       "kill_buff_cap": 6,
-      "crit_rating_vs_bleed": 150
+      "dot_dmg_bonus_by_kind": {
+        "bleed": 0.2
+      },
+      "crit_amp_vs": {
+        "bleed": {
+          "rating": 150
+        }
+      }
     },
     "special_requirements": null,
     "materials": {

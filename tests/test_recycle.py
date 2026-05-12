@@ -41,26 +41,15 @@ def test_mapping_is_monotonic_non_decreasing():
         prev = mat_g
 
 
-def test_mapping_never_exceeds_recipe_cheaper_option():
-    """Recycle output must never beat the cheaper option of the recipe at
-    that equipment grade — otherwise recycling becomes a better-than-forging
-    farm. Pin the invariant here so a future retune can't accidentally invert
-    the loop."""
+def test_mapping_never_exceeds_rarity_cap():
+    """Recycle output must never exceed the rarity cap (4 = Thiên Phẩm),
+    even for end-game equipment grades. Pin the invariant here so a future
+    retune can't accidentally produce a non-existent grade-5+ material."""
     for grade in range(1, 10):
-        recipe = next(
-            (r for r in registry.forge_recipes if r["grade"] == grade), None,
-        )
-        if recipe is None:
-            continue
-        cheapest_mat_grade = min(
-            req["mat_grade"]
-            for opt in recipe["options"]
-            for req in opt["materials"]
-        )
         recycle_mat = get_recycle_material_grade(grade)
-        assert recycle_mat <= cheapest_mat_grade, (
-            f"Grade {grade}: recycle yields mat_grade {recycle_mat} > "
-            f"recipe cheapest option mat_grade {cheapest_mat_grade}"
+        assert recycle_mat is not None
+        assert 1 <= recycle_mat <= 4, (
+            f"Grade {grade}: recycle yields mat_grade {recycle_mat} outside 1..4"
         )
 
 

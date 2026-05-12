@@ -4,8 +4,8 @@ from src.game.engine.rating import crit_chance, evasion_chance, crit_dmg_multipl
 
 
 def test_rating_to_pct_example():
-    # 300 CritRating, K=1300 → 18.75%
-    assert abs(rating_to_pct(300) - 0.1875) < 0.001
+    # 300 rating, K=3000 → 300 / (300 + 3000) ≈ 9.09%
+    assert abs(rating_to_pct(300) - (300 / 3300)) < 0.001
 
 
 def test_crit_chance_with_zero_rating():
@@ -25,6 +25,10 @@ def test_crit_chance_capped_at_75():
 
 def test_evasion_zero():
     assert evasion_chance(0) == 0.0
+
+
+def test_evasion_chance_capped_at_75():
+    assert evasion_chance(100_000) <= 0.75
 
 
 def test_crit_dmg_base():

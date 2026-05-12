@@ -95,19 +95,44 @@ def battle_embed(
     if enemy_shield > 0:
         cap = max(enemy_shield, enemy_shield_cap)
         lines.append(f"🛡️ `{progress_bar(enemy_shield, cap, 10)}` {enemy_shield:,}/{cap:,}")
-    # if turn:
-    #     lines.append(f"\n*Lượt {turn}*")
 
     # Wrap the per-turn log lines in an ``ansi`` code block so the ANSI
     # escape sequences inserted by ``colorize_damage`` actually render as
     # color. The status lines above (bars, names) stay in markdown because
     # they use backtick spans and bold that Discord only parses outside
-    # code blocks.
+    # code blocks. The turn header lives INSIDE the block as the first line
+    # so it sits visually attached to the log it describes; ``to_ansi_block``
+    # turns the surrounding ``*…*`` into ANSI underline so it still reads
+    # as a header inside the code block.
     from src.game.engine.damage import to_ansi_block
 
-    raw_log = "\n".join(turn_log[-10:]) if turn_log else ""
-    log_section = to_ansi_block(raw_log) if raw_log.strip() else ""
-    description = "\n".join(lines) + ("\n\n" + log_section if log_section else "")
+    # Show the FULL turn log (every proc / cast / debuff / DoT / etc.)
+    # — players need to see everything that happened in the round, not
+    # just the tail. When the embed would breach Discord's 4096-char cap,
+    # we drop oldest lines from the FRONT until it fits, so the latest
+    # action stays visible.
+    body_lines = list(turn_log) if turn_log else []
+    header = f"*── Lượt {turn} ──*" if turn else ""
+    status_section = "\n".join(lines)
+
+    def _build_description(buf: list[str]) -> tuple[str, str]:
+        log_body = "\n".join(buf)
+        if header and log_body.strip():
+            raw_log = f"{header}\n{log_body}"
+        elif header:
+            raw_log = header
+        else:
+            raw_log = log_body
+        log_section = to_ansi_block(raw_log) if raw_log.strip() else ""
+        desc = status_section + ("\n\n" + log_section if log_section else "")
+        return desc, log_section
+
+    description, log_section = _build_description(body_lines)
+    while len(description) > 4090 and body_lines:
+        body_lines.pop(0)
+        description, log_section = _build_description(body_lines)
+    # Status block alone is always under the cap (a few hundred chars at most),
+    # so the loop terminates safely without losing the bars.
 
     return discord.Embed(title="⚔️ Chiến Đấu", description=description, color=0x3498DB)
 

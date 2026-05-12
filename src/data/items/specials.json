@@ -9,15 +9,6 @@
     "description_vi": "Đan dược tẩy nghiệp, thanh trừ nghiệp chướng tích tụ."
   },
   {
-    "key": "ItemHonNguyen",
-    "vi": "Hỗn Nguyên Thạch",
-    "en": "Primordial Stone",
-    "type": "special",
-    "grade": 4,
-    "shop_price_merit": 0,
-    "description_vi": "Đá hỗn nguyên, vật liệu siêu phàm vô giá."
-  },
-  {
     "key": "BuffMeritX2_30days",
     "vi": "Thiên Đạo Phù Nghịch",
     "en": "Celestial Dao Reverse Talisman",

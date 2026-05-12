@@ -75,8 +75,10 @@
     },
     "passive_bonus": {
       "burn_on_hit_pct": 0.35,
-      "burn_stack_cap_bonus": 2,
-      "bonus_dmg_vs_burn": 0.2
+      "bonus_dmg_vs_burn": 0.2,
+      "dot_stack_cap_bonus": {
+        "burn": 2
+      }
     },
     "description_vi": "Bội ngọc tâm lửa — 35% Thiêu Đốt on-hit, +2 tầng, +20% ST lên mục tiêu cháy."
   },
@@ -188,8 +190,10 @@
     },
     "passive_bonus": {
       "burn_on_hit_pct": 0.5,
-      "burn_per_stack_pct_bonus": 0.005,
-      "dot_can_crit": true
+      "dot_can_crit": true,
+      "dot_per_stack_pct_bonus": {
+        "burn": 0.005
+      }
     },
     "description_vi": "Giáp dệt vảy hỏa long — 50% Thiêu Đốt on-hit, mỗi tầng +0.5% ST, DoT bạo kích."
   },
@@ -249,8 +253,10 @@
       ]
     },
     "passive_bonus": {
-      "burn_per_stack_pct_bonus": 0.008,
-      "dot_can_crit": true
+      "dot_can_crit": true,
+      "dot_per_stack_pct_bonus": {
+        "burn": 0.008
+      }
     },
     "description_vi": "Châu rồng lửa — +0.8% ST mỗi tầng, DoT bạo kích."
   },
@@ -279,8 +285,10 @@
       "element_pen": {
         "hoa": 0.15
       },
-      "burn_stack_cap_bonus": 3,
-      "bonus_dmg_vs_burn": 0.25
+      "bonus_dmg_vs_burn": 0.25,
+      "dot_stack_cap_bonus": {
+        "burn": 3
+      }
     },
     "description_vi": "Trượng rồng lửa — xuyên 15% kháng hỏa, +3 tầng, +25% ST vs cháy."
   },
@@ -398,8 +406,10 @@
       ]
     },
     "passive_bonus": {
-      "burn_per_stack_pct_bonus": 0.012,
-      "bonus_dmg_vs_burn": 0.45
+      "bonus_dmg_vs_burn": 0.45,
+      "dot_per_stack_pct_bonus": {
+        "burn": 0.012
+      }
     },
     "description_vi": "Bội Hỏa Tổ — +1.2% ST mỗi tầng, +45% vs cháy"
   },
@@ -461,8 +471,10 @@
       "element_pen": {
         "hoa": 0.25
       },
-      "burn_stack_cap_bonus": 5,
-      "dot_can_crit": true
+      "dot_can_crit": true,
+      "dot_stack_cap_bonus": {
+        "burn": 5
+      }
     },
     "description_vi": "Mão Hỏa Tổ — xuyên 25% kháng hỏa, +5 tầng (max 10), DoT bạo kích."
   },
@@ -489,8 +501,12 @@
     },
     "passive_bonus": {
       "burn_on_hit_pct": 0.25,
-      "burn_dmg_bonus": 0.2,
-      "burn_stack_cap_bonus": 5
+      "dot_dmg_bonus_by_kind": {
+        "burn": 0.2
+      },
+      "dot_stack_cap_bonus": {
+        "burn": 5
+      }
     },
     "description_vi": "Kiếm Thái Thượng — đỉnh cao Hỏa đạo: lưỡi kiếm thiêu đốt vạn vật, mỗi tầng Thiêu Đốt nặng hơn và kéo dài hơn, kẻ địch bốc cháy chịu sát thương cực hạn."
   }

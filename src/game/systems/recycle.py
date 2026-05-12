@@ -2,7 +2,7 @@
 a single ``forge_material`` keyed to the item's grade.
 
 Each recycle yields **one** random forge_material whose ``grade`` matches
-the equipment's tier via ``_RECYCLE_MAT_GRADE_BY_EQUIP_GRADE`` — the same
+the equipment's tier via ``_RECYCLE_MAT_GRADE_BY_EQUIP_REALM`` — the same
 mapping the cheaper option of each ``forge_recipes`` entry uses, so a
 recycled Grade-N item can never produce a higher-tier material than the
 recipe accepts at that grade. That asymmetry (forge takes 5–6, recycle
@@ -25,10 +25,12 @@ from src.data.registry import registry
 # each entry in ``src/data/equipment/forge_recipes.json`` — recycling
 # never returns a higher-tier material than the recipe accepts at that
 # grade, preventing players from farming better materials by recycling
-# than by forging fresh.
-_RECYCLE_MAT_GRADE_BY_EQUIP_GRADE: dict[int, int] = {
+# than by forging fresh. Material grade caps at 4 (Thiên Phẩm) since
+# rarity is a 1–4 system; equipment grades 8 and 9 still recycle, they
+# just saturate at the Thiên material tier.
+_RECYCLE_MAT_GRADE_BY_EQUIP_REALM: dict[int, int] = {
     1: 1, 2: 1, 3: 2, 4: 2, 5: 3,
-    6: 3, 7: 4, 8: 5, 9: 6,
+    6: 3, 7: 4, 8: 4, 9: 4,
 }
 
 
@@ -38,7 +40,7 @@ def get_recycle_material_grade(item_grade: int) -> int | None:
     UI-side preview helper — pairs with ``recycle_equipment`` which actually
     performs the random pick. Returns ``None`` for grades outside 1..9.
     """
-    return _RECYCLE_MAT_GRADE_BY_EQUIP_GRADE.get(int(item_grade))
+    return _RECYCLE_MAT_GRADE_BY_EQUIP_REALM.get(int(item_grade))
 
 
 def recycle_equipment(item_grade: int) -> str | None:

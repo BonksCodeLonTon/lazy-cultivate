@@ -226,8 +226,8 @@ async def _consume(session, player, cost: LinhCanCost) -> None:
         )
 
     irepo = InventoryRepository(session)
-    # Pre-flight: total each material across every grade row so legacy
-    # stacks (HOANG-stored) and current-template-grade stacks both count.
+    # Pre-flight: total each material across every grade row so split stacks
+    # at different grades all count toward the requirement.
     needed = set(cost.materials)
     owned: dict[str, int] = {k: 0 for k in needed}
     for row in await irepo.get_all(player.id):

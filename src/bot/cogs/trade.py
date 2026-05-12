@@ -21,6 +21,8 @@ from src.game.engine.equipment import format_computed_stats
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
+from src.utils.discord_safe import safe_defer
+from src.utils.search import SearchModal, matches
 
 _PAGE_SIZE = 5
 
@@ -192,7 +194,8 @@ class MarketHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             mrepo = MarketRepository(session)
             listings = await mrepo.browse(limit=_PAGE_SIZE, offset=0)
@@ -205,7 +208,8 @@ class MarketHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
@@ -232,7 +236,8 @@ class MarketHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
@@ -254,7 +259,8 @@ class MarketHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         if self._back_fn:
             await self._back_fn(interaction)
 
@@ -309,14 +315,16 @@ class MarketBrowseView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._reload(interaction, max(0, self._page - 1))
 
     async def _next_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         total_pages = max(1, math.ceil(self._total / _PAGE_SIZE))
         await self._reload(interaction, min(self._page + 1, total_pages - 1))
 
@@ -325,7 +333,8 @@ class MarketBrowseView(discord.ui.View):
             if not self._guard(interaction):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             result_msg = await _execute_buy(interaction.user.id, listing_id)
             # Reload browse after purchase
             async with get_session() as session:
@@ -342,7 +351,8 @@ class MarketBrowseView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         if self._back_fn:
             await self._back_fn(interaction)
 
@@ -406,7 +416,8 @@ class MarketListMenuView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         if self._back_fn:
             await self._back_fn(interaction)
 
@@ -414,44 +425,74 @@ class MarketListMenuView(discord.ui.View):
 class _InvSelectView(discord.ui.View):
     """Paginated inventory picker. Discord caps each Select at 25 options,
     so longer bags need page controls — without them, items past index 24
-    were silently unreachable."""
+    were silently unreachable. ``search`` is a Vietnamese-diacritic
+    insensitive substring filter applied to the item name; pagination
+    operates on the filtered list, and an empty search restores the full
+    bag.
+    """
 
-    def __init__(self, discord_id: int, inv_items: list, back_fn=None, page: int = 0) -> None:
+    def __init__(
+        self, discord_id: int, inv_items: list,
+        back_fn=None, page: int = 0, search: str = "",
+    ) -> None:
         super().__init__(timeout=300)
         self._discord_id = discord_id
         self._inv_items = inv_items
         self._back_fn = back_fn
-        self._page = max(0, min(page, total_pages(len(inv_items), per_page=PAGE_SIZE) - 1))
+        self._search = search
+        self._filtered = [
+            i for i in inv_items
+            if matches(search, _item_name(i.item_key))
+        ]
+        pages = max(1, total_pages(len(self._filtered), per_page=PAGE_SIZE))
+        self._page = max(0, min(page, pages - 1))
         self._build()
 
     def _build(self) -> None:
-        visible = page_slice(self._inv_items, self._page, per_page=PAGE_SIZE)
-        options = [
-            discord.SelectOption(
-                label=f"{_item_name(i.item_key)} × {i.quantity}"[:100],
-                description=f"Phẩm {_grade_label(i.grade)}"[:100],
-                value=f"{i.item_key}|{i.grade}",
-            )
-            for i in visible
-        ]
-        pages = total_pages(len(self._inv_items), per_page=PAGE_SIZE)
-        placeholder = "Chọn vật phẩm..."
+        visible = page_slice(self._filtered, self._page, per_page=PAGE_SIZE)
+        if visible:
+            options = [
+                discord.SelectOption(
+                    label=f"{_item_name(i.item_key)} × {i.quantity}"[:100],
+                    description=f"Phẩm {_grade_label(i.grade)}"[:100],
+                    value=f"{i.item_key}|{i.grade}",
+                )
+                for i in visible
+            ]
+        else:
+            options = [discord.SelectOption(label="(không có kết quả)", value="__noop")]
+        pages = total_pages(len(self._filtered), per_page=PAGE_SIZE)
+        prefix = f"🔎 [{self._search[:20]}] " if self._search else ""
+        placeholder = f"{prefix}Chọn vật phẩm..."
         if pages > 1:
-            placeholder = f"Chọn vật phẩm... (Trang {self._page + 1}/{pages})"
+            placeholder = f"{prefix}Chọn vật phẩm... (Trang {self._page + 1}/{pages})"
 
         sel = discord.ui.Select(
             placeholder=placeholder, options=options, min_values=1, max_values=1, row=0,
+            disabled=not visible,
         )
         sel.callback = self._sel_cb
         self.add_item(sel)
 
+        search_btn = discord.ui.Button(
+            label=f"🔎 Tìm: {self._search[:18]}" if self._search else "🔎 Tìm Kiếm",
+            style=discord.ButtonStyle.primary, row=1,
+        )
+        search_btn.callback = self._search_cb
+        self.add_item(search_btn)
+        if self._search:
+            clear_btn = discord.ui.Button(
+                label="✖ Xoá Lọc", style=discord.ButtonStyle.secondary, row=1,
+            )
+            clear_btn.callback = self._clear_cb
+            self.add_item(clear_btn)
         if self._back_fn:
             back = discord.ui.Button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=1)
             back.callback = self._back_cb
             self.add_item(back)
 
         add_page_controls(
-            self, page=self._page, total=len(self._inv_items),
+            self, page=self._page, total=len(self._filtered),
             on_change=self._on_page_change, row=2,
         )
 
@@ -462,7 +503,10 @@ class _InvSelectView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        view = _InvSelectView(self._discord_id, self._inv_items, self._back_fn, page=new_page)
+        view = _InvSelectView(
+            self._discord_id, self._inv_items, self._back_fn,
+            page=new_page, search=self._search,
+        )
         await interaction.response.edit_message(view=view)
 
     async def _sel_cb(self, interaction: discord.Interaction) -> None:
@@ -470,6 +514,9 @@ class _InvSelectView(discord.ui.View):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
         val = interaction.data["values"][0]
+        if val == "__noop":
+            await interaction.response.defer()
+            return
         item_key, grade_str = val.split("|")
 
         async def _on_submit(inter: discord.Interaction, qty: int, price: int) -> None:
@@ -477,56 +524,111 @@ class _InvSelectView(discord.ui.View):
 
         await interaction.response.send_modal(InvQtyPriceModal(_on_submit))
 
+    async def _search_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+
+        async def _on_query(inter: discord.Interaction, query: str) -> None:
+            view = _InvSelectView(
+                self._discord_id, self._inv_items, self._back_fn,
+                page=0, search=query,
+            )
+            await inter.response.edit_message(view=view)
+
+        await interaction.response.send_modal(
+            SearchModal("Tìm Vật Phẩm", _on_query, default=self._search)
+        )
+
+    async def _clear_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        view = _InvSelectView(
+            self._discord_id, self._inv_items, self._back_fn,
+            page=0, search="",
+        )
+        await interaction.response.edit_message(view=view)
+
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         if self._back_fn:
             await self._back_fn(interaction)
 
 
 class _GearSelectView(discord.ui.View):
     """Paginated equipment picker — same 25-option Discord cap workaround
-    as ``_InvSelectView``, but for gear instances."""
+    as ``_InvSelectView``, but for gear instances. ``search`` filters by
+    the equipment's display name (which already bakes in affix prefix /
+    suffix), Vietnamese-diacritic insensitive.
+    """
 
-    def __init__(self, discord_id: int, bag_items: list, back_fn=None, page: int = 0) -> None:
+    def __init__(
+        self, discord_id: int, bag_items: list,
+        back_fn=None, page: int = 0, search: str = "",
+    ) -> None:
         super().__init__(timeout=300)
         self._discord_id = discord_id
         self._bag_items = bag_items
         self._bag_lookup = {str(i.id): i for i in bag_items}
         self._back_fn = back_fn
-        self._page = max(0, min(page, total_pages(len(bag_items), per_page=PAGE_SIZE) - 1))
+        self._search = search
+        self._filtered = [
+            i for i in bag_items if matches(search, i.display_name)
+        ]
+        pages = max(1, total_pages(len(self._filtered), per_page=PAGE_SIZE))
+        self._page = max(0, min(page, pages - 1))
         self._build()
 
     def _build(self) -> None:
-        visible = page_slice(self._bag_items, self._page, per_page=PAGE_SIZE)
-        options = [
-            discord.SelectOption(
-                label=f"[ID:{i.id}] {i.display_name}"[:100],
-                description=(format_computed_stats(i.computed_stats) or "—")[:100],
-                value=str(i.id),
-            )
-            for i in visible
-        ]
-        pages = total_pages(len(self._bag_items), per_page=PAGE_SIZE)
-        placeholder = "Chọn trang bị..."
+        visible = page_slice(self._filtered, self._page, per_page=PAGE_SIZE)
+        if visible:
+            options = [
+                discord.SelectOption(
+                    label=f"[ID:{i.id}] {i.display_name}"[:100],
+                    description=(format_computed_stats(i.computed_stats) or "—")[:100],
+                    value=str(i.id),
+                )
+                for i in visible
+            ]
+        else:
+            options = [discord.SelectOption(label="(không có kết quả)", value="__noop")]
+        pages = total_pages(len(self._filtered), per_page=PAGE_SIZE)
+        prefix = f"🔎 [{self._search[:20]}] " if self._search else ""
+        placeholder = f"{prefix}Chọn trang bị..."
         if pages > 1:
-            placeholder = f"Chọn trang bị... (Trang {self._page + 1}/{pages})"
+            placeholder = f"{prefix}Chọn trang bị... (Trang {self._page + 1}/{pages})"
 
         sel = discord.ui.Select(
             placeholder=placeholder, options=options, min_values=1, max_values=1, row=0,
+            disabled=not visible,
         )
         sel.callback = self._sel_cb
         self.add_item(sel)
 
+        search_btn = discord.ui.Button(
+            label=f"🔎 Tìm: {self._search[:18]}" if self._search else "🔎 Tìm Kiếm",
+            style=discord.ButtonStyle.primary, row=1,
+        )
+        search_btn.callback = self._search_cb
+        self.add_item(search_btn)
+        if self._search:
+            clear_btn = discord.ui.Button(
+                label="✖ Xoá Lọc", style=discord.ButtonStyle.secondary, row=1,
+            )
+            clear_btn.callback = self._clear_cb
+            self.add_item(clear_btn)
         if self._back_fn:
             back = discord.ui.Button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=1)
             back.callback = self._back_cb
             self.add_item(back)
 
         add_page_controls(
-            self, page=self._page, total=len(self._bag_items),
+            self, page=self._page, total=len(self._filtered),
             on_change=self._on_page_change, row=2,
         )
 
@@ -537,14 +639,21 @@ class _GearSelectView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        view = _GearSelectView(self._discord_id, self._bag_items, self._back_fn, page=new_page)
+        view = _GearSelectView(
+            self._discord_id, self._bag_items, self._back_fn,
+            page=new_page, search=self._search,
+        )
         await interaction.response.edit_message(view=view)
 
     async def _sel_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        instance_id = int(interaction.data["values"][0])
+        val = interaction.data["values"][0]
+        if val == "__noop":
+            await interaction.response.defer()
+            return
+        instance_id = int(val)
         inst = self._bag_lookup.get(str(instance_id))
         if not inst:
             await interaction.response.send_message(embed=error_embed("Không tìm thấy trang bị."), ephemeral=True)
@@ -555,11 +664,38 @@ class _GearSelectView(discord.ui.View):
 
         await interaction.response.send_modal(PriceModal(_on_submit))
 
+    async def _search_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+
+        async def _on_query(inter: discord.Interaction, query: str) -> None:
+            view = _GearSelectView(
+                self._discord_id, self._bag_items, self._back_fn,
+                page=0, search=query,
+            )
+            await inter.response.edit_message(view=view)
+
+        await interaction.response.send_modal(
+            SearchModal("Tìm Trang Bị", _on_query, default=self._search)
+        )
+
+    async def _clear_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        view = _GearSelectView(
+            self._discord_id, self._bag_items, self._back_fn,
+            page=0, search="",
+        )
+        await interaction.response.edit_message(view=view)
+
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         if self._back_fn:
             await self._back_fn(interaction)
 
@@ -589,7 +725,8 @@ class MarketMyListingsView(discord.ui.View):
             if not self._guard(interaction):
                 await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             result_msg = await _execute_cancel(interaction.user.id, listing_id)
 
             async with get_session() as session:
@@ -611,7 +748,8 @@ class MarketMyListingsView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         if self._back_fn:
             await self._back_fn(interaction)
 
@@ -872,14 +1010,16 @@ class TradeCog(commands.Cog, name="Trade"):
 
     @app_commands.command(name="market", description="Mở chợ người chơi P2P")
     async def market(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         embed = _hub_embed()
         view = MarketHubView(interaction.user.id)
         await interaction.followup.send(embed=embed, view=view, ephemeral=True)
 
     @app_commands.command(name="my_listings", description="Xem đơn hàng đang niêm yết của bạn")
     async def my_listings(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)

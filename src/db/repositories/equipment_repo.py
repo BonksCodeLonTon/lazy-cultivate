@@ -96,6 +96,7 @@ class EquipmentRepository:
             affixes=item_data.get("affixes", []),
             computed_stats=item_data.get("computed_stats", {}),
             grade=item_data.get("grade", 1),
+            quality=item_data.get("quality", "hoan"),
             display_name=item_data.get("display_name", ""),
         )
         self._session.add(inst)

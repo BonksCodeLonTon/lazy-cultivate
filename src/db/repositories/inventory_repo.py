@@ -107,9 +107,7 @@ class InventoryRepository:
         write so concurrent ``try_remove_item`` calls serialize on it.
         Two simultaneous market-listing submissions for the same stack
         can no longer both pass: one decrements (rowcount=1, returns True),
-        the other matches no rows (rowcount=0, returns False). Replaces
-        the legacy ``has_item`` + ``remove_item`` two-step which had a
-        race window between the SELECT and the UPDATE.
+        the other matches no rows (rowcount=0, returns False).
         """
         if quantity <= 0:
             return False

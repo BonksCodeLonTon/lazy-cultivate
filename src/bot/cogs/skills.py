@@ -11,13 +11,11 @@ from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository
 from src.game.constants.grades import Grade, GRADE_LABELS
 from src.game.constants.linh_can import parse_linh_can
-from src.game.constants.realms import QI_REALMS
 from src.game.engine.effects import EFFECTS
 from src.game.systems.skills import (
-    LearnError,
     filtered_skills,
     find_skill_scroll,
-    formation_reservation_would_exceed_cap,
+    formation_key_for_skill,
     is_formation_skill,
     next_formation_slot,
     scroll_key_for_skill,
@@ -25,6 +23,7 @@ from src.game.systems.skills import (
 )
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
+from src.utils.discord_safe import safe_defer
 _TYPE_LABEL = {
     "attack":    "Công Kích",
     "defense":   "Phòng Thủ",
@@ -48,23 +47,15 @@ _NUMBER_EMOJI = ["①", "②", "③", "④", "⑤", "⑥"]
 async def _player_skill_state(discord_id: int) -> dict:
     """Snapshot what the browser needs to highlight rows + paint Học buttons.
 
-    Returns ``{owned_scrolls, learned, max_realm_idx, linh_can}`` so the same
-    data carries through page/filter changes without re-querying every render.
+    Returns ``{owned_scrolls, learned, linh_can}`` so the same data carries
+    through page/filter changes without re-querying every render.
     """
     async with get_session() as session:
         prepo = PlayerRepository(session)
         player = await prepo.get_by_discord_id(discord_id)
         if player is None:
-            return {
-                "owned_scrolls": set(), "learned": set(),
-                "max_realm_idx": 0, "linh_can": [],
-            }
+            return {"owned_scrolls": set(), "learned": set(), "linh_can": []}
         learned = {s.skill_key for s in (player.skills or [])}
-        max_realm_idx = max(
-            player.body_realm or 0,
-            player.qi_realm or 0,
-            player.formation_realm or 0,
-        )
         linh_can = parse_linh_can(player.linh_can or "")
         irepo = InventoryRepository(session)
         all_inv = await irepo.get_all(player.id)
@@ -73,18 +64,13 @@ async def _player_skill_state(discord_id: int) -> dict:
     for inv in all_inv:
         if inv.item_key.startswith(prefix) and inv.quantity > 0:
             owned.add(inv.item_key[len(prefix):])
-    return {
-        "owned_scrolls": owned,
-        "learned": learned,
-        "max_realm_idx": max_realm_idx,
-        "linh_can": linh_can,
-    }
+    return {"owned_scrolls": owned, "learned": learned, "linh_can": linh_can}
 
 
 def _learn_status(skill: dict, state: dict) -> str:
     """One-letter status for the row prefix.
 
-    ``✨`` ready (scroll + realm + element fits) | ``📜`` scroll only (gated)
+    ``✨`` ready (scroll + Linh Căn fits) | ``📜`` scroll only (Linh Căn gated)
     | ``✓`` learned | ``""`` no scroll.
     """
     key = skill["key"]
@@ -92,10 +78,6 @@ def _learn_status(skill: dict, state: dict) -> str:
         return "✓"
     if key not in state["owned_scrolls"]:
         return ""
-    # Has scroll — check if realm + Linh Căn make it learnable right now.
-    skill_realm = skill.get("realm", 1)
-    if state["max_realm_idx"] + 1 < skill_realm:
-        return "📜"
     skill_elem = skill.get("element")
     if (
         skill_elem is not None
@@ -212,6 +194,29 @@ def _describe_effect(key: str) -> str:
     return f"{tag}({', '.join(details)})" if details else tag
 
 
+def _format_skill_dmg(skill_data: dict) -> str:
+    """Render a skill's flat damage plus its ATK / MATK scaling coefficients.
+
+    Returns ``"<base_dmg>"`` for skills with no stat scaling, otherwise
+    appends ``+ATK×<s_atk>`` and/or ``+MATK×<s_matk>`` so players can see
+    how much the actual rolled damage will lean on their stats. Zero
+    coefficients are omitted to keep the line compact.
+    """
+    base = int(skill_data.get("base_dmg", 0) or 0)
+    scale = skill_data.get("dmg_scale") or {}
+    if isinstance(scale, dict):
+        s_atk = float(scale.get("atk", 0.0) or 0.0)
+        s_matk = float(scale.get("matk", 0.0) or 0.0)
+    else:
+        s_atk = s_matk = float(scale or 0.0)
+    parts: list[str] = [str(base)]
+    if s_atk:
+        parts.append(f"ATK×{s_atk:g}")
+    if s_matk:
+        parts.append(f"MATK×{s_matk:g}")
+    return " + ".join(parts)
+
+
 def _format_skill_effects(effect_keys: list[str]) -> str:
     """Join a skill's effect list into a readable summary.
 
@@ -252,7 +257,7 @@ def _build_skilllist(
 
     # Owned-scroll / learned snapshot for row badges + Học button styling.
     # Falls back to an empty state so the cog still renders if state load fails.
-    state = state or {"owned_scrolls": set(), "learned": set(), "max_realm_idx": 0, "linh_can": linh_can or []}
+    state = state or {"owned_scrolls": set(), "learned": set(), "linh_can": linh_can or []}
 
     if not page_skills:
         embed = base_embed(title, "Không tìm thấy kỹ năng phù hợp với Linh Căn của bạn.", color=0x9B59B6)
@@ -265,12 +270,13 @@ def _build_skilllist(
             el_tag = f" {emojis.for_element(el)}" if el else ""
             cd = s.get("cooldown", 1)
             effects = _format_skill_effects(s.get("effects", []))
-            realm = s.get("realm", 1)
+            grade = int(s.get("scroll_grade", 1))
+            grade_label = GRADE_LABELS.get(Grade(grade), (str(grade),))[0]
             badge = _learn_status(s, state)
             badge_tag = f"{badge} " if badge else ""
             lines.append(
                 f"{num} {badge_tag}{t_e}{el_tag} **{s['vi']}** `{s['key']}`\n"
-                f"  Cảnh Giới: **{realm}** | MP: **{s.get('mp_cost', 0)}** | DMG: **{s.get('base_dmg', 0)}** | "
+                f"  Phẩm: **{grade_label}** | MP: **{s.get('mp_cost', 0)}** | DMG: **{_format_skill_dmg(s)}** | "
                 f"CD: **{cd}t**\n"
                 f"  {effects}"
             )
@@ -330,7 +336,7 @@ class SkillListView(discord.ui.View):
         self._linh_can = linh_can
         self._state = state or {
             "owned_scrolls": set(), "learned": set(),
-            "max_realm_idx": 0, "linh_can": linh_can or [],
+            "linh_can": linh_can or [],
         }
 
         for typ, label, style in _SKILL_TYPE_BUTTONS:
@@ -430,20 +436,13 @@ class SkillListView(discord.ui.View):
 
                 gate = validate_learn_eligibility(player, skill_data)
                 if not gate.ok:
-                    if gate.error is LearnError.REALM_TOO_LOW:
-                        idx = min(gate.needed_realm_index, len(QI_REALMS) - 1)
-                        needed_name = QI_REALMS[idx].vi
-                        msg = (
-                            f"Cần đạt cảnh giới **{needed_name}** trở lên để học "
-                            f"**{skill_data['vi']}**."
-                        )
-                    else:  # WRONG_LINH_CAN
-                        elem = gate.missing_element or ""
-                        elem_emoji = emojis.for_element(elem) if elem else ""
-                        msg = (
-                            f"Linh Căn của bạn không có {elem_emoji} **{elem.capitalize()}** — "
-                            f"không thể học **{skill_data['vi']}**."
-                        )
+                    # Only WRONG_LINH_CAN remains — realm gating was removed.
+                    elem = gate.missing_element or ""
+                    elem_emoji = emojis.for_element(elem) if elem else ""
+                    msg = (
+                        f"Linh Căn của bạn không có {elem_emoji} **{elem.capitalize()}** — "
+                        f"không thể học **{skill_data['vi']}**."
+                    )
                     await interaction.response.send_message(
                         embed=error_embed(msg), ephemeral=True,
                     )
@@ -515,26 +514,16 @@ class SkillListView(discord.ui.View):
                 )
                 await ia.edit_original_response(embed=emb, view=v)
 
-            # Formation skills bypass the slot picker — they live in an
-            # open-ended bar past MAX_SKILL_SLOTS, capped only by total MP
-            # reservation. Pre-check the cap so the player learns *why* we
-            # block instead of silently failing on equip.
+            # Formation skills no longer occupy a chosen skill slot — learning
+            # the scroll unlocks the matching formation (CharacterFormation row)
+            # so it becomes selectable in /formation_hub. The CharacterSkill row
+            # is still recorded as a "learned" marker (slot ≥ MAX_SKILL_SLOTS,
+            # invisible in the equipped bar) so the browser can paint ✓ on
+            # repeat visits and migration paths can audit prior learns.
             if is_formation_skill(skill_data):
-                exceeds, projected = formation_reservation_would_exceed_cap(
-                    player, skill_data["key"]
-                )
-                if exceeds:
-                    from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
-                    await interaction.response.send_message(
-                        embed=error_embed(
-                            f"Không đủ Linh Khí để Trấn Trận **{skill_data['vi']}**.\n"
-                            f"Sau khi trang bị: **{projected * 100:.1f}%** MP bị trấn — "
-                            f"vượt mức tối đa **{FORMATION_MAX_RESERVE_PCT * 100:.0f}%**.\n"
-                            f"Tu luyện Trận Đạo để giảm chi phí, hoặc xoá một trận pháp khác."
-                        ),
-                        ephemeral=True,
-                    )
-                    return
+                from src.db.repositories.formation_repo import FormationRepository
+
+                target_formation = formation_key_for_skill(skill_data)
                 target_slot = next_formation_slot(player)
                 async with get_session() as session:
                     prepo = PlayerRepository(session)
@@ -552,6 +541,9 @@ class SkillListView(discord.ui.View):
                         slot_index=target_slot,
                     ))
                     await irepo.remove_item(player2.id, scroll_key, Grade(scroll_grade))
+                    if target_formation:
+                        frepo = FormationRepository(session)
+                        await frepo.get_or_create(player2.id, target_formation)
                     rem = await session.execute(
                         sa_select(CharacterSkill).where(CharacterSkill.player_id == player2.id)
                     )
@@ -563,10 +555,12 @@ class SkillListView(discord.ui.View):
                     remaining, interaction.user.id, back_fn=back_to_list,
                 )
                 emb_after.color = 0x2ECC71
+                form_data = registry.get_formation(target_formation) if target_formation else None
+                form_label = form_data.get("vi", target_formation) if form_data else "—"
                 emb_after.description = (
                     (emb_after.description or "")
-                    + f"\n✅ Trấn Trận **{skill_data['vi']}** thành công!"
-                    + f" (MP trấn: **{projected * 100:.1f}%**)"
+                    + f"\n✅ Đã học **{skill_data['vi']}** và mở khoá trận **{form_label}**."
+                    + "\nDùng `/formation_hub` để kích hoạt trận pháp."
                 )
                 await interaction.response.edit_message(embed=emb_after, view=v_after)
                 return
@@ -581,7 +575,7 @@ class SkillListView(discord.ui.View):
                 name="Kỹ Năng",
                 value=(
                     f"{t_e}{el_tag} **{skill_data['vi']}** `{skill_data['key']}`\n"
-                    f"MP: **{skill_data.get('mp_cost', 0)}** | DMG: **{skill_data.get('base_dmg', 0)}** | "
+                    f"MP: **{skill_data.get('mp_cost', 0)}** | DMG: **{_format_skill_dmg(skill_data)}** | "
                     f"CD: **{skill_data.get('cooldown', 1)}t**\n"
                     f"Hiệu ứng: {effects}"
                 ),
@@ -674,7 +668,8 @@ class SkillListView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 
@@ -788,21 +783,31 @@ class SkillLearnView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 
 def _build_skills_embed_view(
     equipped: list, discord_id: int, back_fn=None
 ) -> tuple[discord.Embed, "SkillsView"]:
+    # Formation skills are learned but no longer occupy the active bar — they
+    # fire from /formation_hub when the matching formation is active. Strip
+    # them here so the UI only renders combat skills the player actually
+    # picked into a slot.
+    bar_slots = [
+        s for s in equipped
+        if not is_formation_skill(registry.get_skill(s.skill_key))
+    ]
+
     embed = base_embed("🎯 Kỹ Năng Trang Bị", color=0x9B59B6)
-    if not equipped:
+    if not bar_slots:
         embed.description = (
             "Chưa trang bị kỹ năng nào.\n"
             "Nhấn **📚 Tàng Kinh Các** để xem và học kỹ năng phù hợp Linh Căn."
         )
     else:
-        for s in equipped:
+        for s in bar_slots:
             skill_data = registry.get_skill(s.skill_key)
             if not skill_data:
                 continue
@@ -820,7 +825,7 @@ def _build_skills_embed_view(
                 value=(
                     f"*{t_label}{elem_tag}*\n"
                     f"💙 MP **{skill_data.get('mp_cost', 0)}** · "
-                    f"⚔️ ST **{skill_data.get('base_dmg', 0)}** · "
+                    f"⚔️ ST **{_format_skill_dmg(skill_data)}** · "
                     f"⏱️ CD **{skill_data.get('cooldown', 1)}t**\n"
                     f"**Hiệu ứng:** {effects}"
                 ),
@@ -830,7 +835,7 @@ def _build_skills_embed_view(
     if back_fn:
         footer += " • ◀ để trở về danh sách."
     embed.set_footer(text=footer)
-    return embed, SkillsView(equipped, discord_id, back_fn=back_fn)
+    return embed, SkillsView(bar_slots, discord_id, back_fn=back_fn)
 
 
 class SkillsView(discord.ui.View):
@@ -912,7 +917,8 @@ class SkillsView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 

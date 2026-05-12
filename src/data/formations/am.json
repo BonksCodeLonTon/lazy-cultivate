@@ -1,0 +1,128 @@
+[
+  {
+    "key": "ThapNhiDoThienThanSat",
+    "vi": "Thập Nhị Đô Thiên Thần Sát Trận",
+    "en": "Twelve Capital Heaven Slaughter Formation",
+    "element": "am",
+    "base_stat_bonus": {
+      "hp_pct": 0.05,
+      "mp_pct": 0.05
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "formation_skill_dmg_bonus": 0.05,
+        "note": "Sơ Khai Sát Trận"
+      },
+      "3": {
+        "formation_skill_dmg_bonus": 0.12,
+        "note": "Kiên Cố Sát Trận"
+      },
+      "5": {
+        "formation_skill_dmg_bonus": 0.22,
+        "note": "Thịnh Vượng Sát Trận"
+      },
+      "7": {
+        "formation_skill_dmg_bonus": 0.35,
+        "element_pen": {
+          "am": 0.1
+        },
+        "note": "Vô Song Sát Trận"
+      },
+      "10": {
+        "formation_skill_dmg_bonus": 0.55,
+        "element_pen": {
+          "am": 0.15
+        },
+        "formation_echo_bonus": 1,
+        "note": "Tuyệt Đỉnh Thập Nhị Đô Thiên Thần Sát"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmThapNhiDoThienThanSat",
+      "vi": "Thập Nhị Đô Thiên Thần Sát Thức",
+      "en": "Twelve Capital Heaven Slaughter Form",
+      "scroll_grade": 4,
+      "category": "formation",
+      "element": "am",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 0.85,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 820,
+      "effects": [],
+      "per_hit_followup": true,
+      "description_vi": "Trận pháp thụ động — không thể phát chiêu chủ động. Mỗi đòn đánh của chủ trận lập tức kích hoạt một đòn ám sát theo. Kỹ năng đa kích (ví dụ Thất Tình Đoạn Tuyệt 7 đòn) sẽ kích hoạt 7 lần bồi sát. Chi phí duy trì: 18% MP trấn giữ khi kích hoạt trận.",
+      "reserved_mp_pct": 0.18
+    }
+  },
+  {
+    "key": "PhongDoMaTran",
+    "vi": "Phong Đô Ma Trận",
+    "en": "Fengdu Demon Formation",
+    "element": "am",
+    "base_stat_bonus": {
+      "hp_pct": 0.04,
+      "mp_pct": 0.04
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "dmg_bonus_am": 0.05,
+        "note": "Sơ Khai Phong Đô"
+      },
+      "3": {
+        "dmg_bonus_am": 0.12,
+        "element_pen": {
+          "am": 0.04
+        },
+        "note": "Kiên Cố Phong Đô"
+      },
+      "5": {
+        "dmg_bonus_am": 0.2,
+        "element_pen": {
+          "am": 0.08
+        },
+        "note": "Thịnh Vượng Phong Đô"
+      },
+      "7": {
+        "dmg_bonus_am": 0.3,
+        "element_pen": {
+          "am": 0.12
+        },
+        "note": "Vô Song Phong Đô"
+      },
+      "10": {
+        "dmg_bonus_am": 0.45,
+        "element_pen": {
+          "am": 0.18
+        },
+        "final_dmg_reduce": 0.1,
+        "note": "Tuyệt Đỉnh Phong Đô"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmPhongDoMa",
+      "vi": "Phong Đô Ma Khí",
+      "en": "Fengdu Demonic Aura",
+      "scroll_grade": 4,
+      "category": "formation",
+      "element": "am",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 0,
+      "debuff_only": true,
+      "effects": [
+        "DebuffPhongDoMa"
+      ],
+      "description_vi": "Trận pháp thụ động — không gây sát thương trực tiếp. Mỗi lượt phủ lên kẻ địch dấu **Phong Đô Ma Khí**: kháng Âm sụt **5%** (cơ bản), sát thương Âm phải nhận tăng tương ứng. Khảm ngọc để cộng dồn % sát thương Âm và xuyên kháng Âm; ngưỡng 10 ngọc còn giảm thêm 10% sát thương phải nhận. Chi phí duy trì: 12% MP trấn giữ khi kích hoạt trận.",
+      "reserved_mp_pct": 0.12
+    }
+  }
+]

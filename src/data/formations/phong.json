@@ -1,0 +1,105 @@
+[
+  {
+    "key": "NhatNguyenPhong",
+    "vi": "Nhất Nguyên Phong Trận",
+    "en": "One Origin Wind Formation",
+    "element": "phong",
+    "base_stat_bonus": {
+      "hp_pct": 0.02,
+      "mp_pct": 0.04,
+      "evasion_rating": 40
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "mp_pct": 0.03,
+        "mark_on_hit_pct": 0.08,
+        "note": "Sơ Khai Phong Trận"
+      },
+      "3": {
+        "mp_pct": 0.08,
+        "mark_on_hit_pct": 0.18,
+        "slow_on_hit_pct": 0.08,
+        "note": "Kiên Cố Phong Trận"
+      },
+      "5": {
+        "mp_pct": 0.15,
+        "spd_bonus": 2,
+        "evasion_rating": 80,
+        "mark_on_hit_pct": 0.3,
+        "damage_bonus_from_evasion_pct": 0.05,
+        "element_pen": {
+          "phong": 0.08
+        },
+        "note": "Thịnh Vượng Phong Trận"
+      },
+      "7": {
+        "mp_pct": 0.25,
+        "spd_bonus": 4,
+        "evasion_rating": 150,
+        "mark_on_hit_pct": 0.45,
+        "damage_bonus_from_evasion_pct": 0.1,
+        "element_pen": {
+          "phong": 0.15
+        },
+        "note": "Vô Song Phong Trận",
+        "crit_amp_vs": {
+          "marked": {
+            "rating": 120,
+            "dmg": 150
+          }
+        }
+      },
+      "10": {
+        "mp_pct": 0.5,
+        "spd_bonus": 8,
+        "evasion_rating": 300,
+        "mark_on_hit_pct": 0.7,
+        "damage_bonus_from_evasion_pct": 0.18,
+        "element_pen": {
+          "phong": 0.25
+        },
+        "slow_on_hit_pct": 0.2,
+        "note": "Tuyệt Đỉnh Phong Trận",
+        "crit_amp_vs": {
+          "marked": {
+            "rating": 280,
+            "dmg": 350
+          }
+        }
+      }
+    },
+    "skill": {
+      "key": "SkillFrmPhong",
+      "vi": "Nhất Nguyên Phong Thức",
+      "en": "One Origin Wind Form",
+      "scroll_grade": 2,
+      "category": "formation",
+      "element": "phong",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 1.0,
+        "matk": 0.0
+      },
+      "mp_cost": 44,
+      "cooldown": 3,
+      "base_dmg": 285,
+      "effects": [
+        "DebuffAnPhong",
+        "DebuffLamCham"
+      ],
+      "effect_overrides": {
+        "DebuffAnPhong": {
+          "stat_bonus": {
+            "evasion_rating": -180
+          }
+        },
+        "DebuffLamCham": {
+          "stat_bonus": {
+            "spd_pct": -0.3
+          }
+        }
+      },
+      "reserved_mp_pct": 0.06
+    }
+  }
+]

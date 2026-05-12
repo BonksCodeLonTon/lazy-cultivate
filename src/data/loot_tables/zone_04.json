@@ -79,7 +79,7 @@
       "pool_id": "zone4_gem1"
     },
     {
-      "item_key": "GemTo_1",
+      "item_key": "GemTho_1",
       "weight": 100000,
       "qty_min": 1,
       "qty_max": 1,
@@ -128,7 +128,7 @@
       "pool_id": "zone4_gem2"
     },
     {
-      "item_key": "GemTo_2",
+      "item_key": "GemTho_2",
       "weight": 50000,
       "qty_min": 1,
       "qty_max": 1,
@@ -457,6 +457,12 @@
     },
     {
       "item_key": "MatShieldDmg",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MatShieldMaxPct",
       "weight": 30000,
       "qty_min": 1,
       "qty_max": 1

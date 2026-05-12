@@ -214,6 +214,10 @@ def test_res_hoa_bonus_pickup_through_compute_combat_stats():
 
 
 def test_res_hoa_pickup_clamped_at_max_elemental_res():
+    """Without ``hoa_max_resist_bonus``, the player's hoa res caps at
+    ``RES_SOFT_CAP`` (0.75). The hard cap ``MAX_ELEMENTAL_RES`` (0.90)
+    can only be reached by stacking ``<elem>_max_resist_bonus``."""
+    from src.game.constants.balance import RES_SOFT_CAP
     from src.game.models.character import Character
     from src.game.systems.character_stats import compute_combat_stats
 
@@ -223,5 +227,12 @@ def test_res_hoa_pickup_clamped_at_max_elemental_res():
         constitution_type="",
     )
     char.stats.res_hoa = 0.50
+    # No cap-lifter — clamps at the soft cap (0.75).
     cs = compute_combat_stats(char, equip_stats={"res_hoa": 0.50})
-    assert cs.resistances["hoa"] == pytest.approx(MAX_ELEMENTAL_RES)
+    assert cs.resistances["hoa"] == pytest.approx(RES_SOFT_CAP)
+
+    # With cap-lifter sufficient to reach hard cap.
+    cs2 = compute_combat_stats(
+        char, equip_stats={"res_hoa": 0.50, "hoa_max_resist_bonus": 0.20}
+    )
+    assert cs2.resistances["hoa"] == pytest.approx(MAX_ELEMENTAL_RES)

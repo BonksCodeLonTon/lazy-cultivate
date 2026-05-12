@@ -3,7 +3,6 @@
     "key": "EnemyLCTho_T1",
     "vi": "Cương Thổ Trảm",
     "en": "Steel Earth Slash",
-    "realm": 2,
     "category": "attack",
     "element": "tho",
     "attack_type": "physical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 12,
     "cooldown": 1,
-    "base_dmg": 18,
+    "base_dmg": 36,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -26,7 +25,6 @@
     "key": "EnemyLCTho_T2",
     "vi": "Hậu Thổ Trấn Sơn",
     "en": "Sovereign Earth Mountain-Press",
-    "realm": 4,
     "category": "defense",
     "element": "tho",
     "attack_type": "physical",
@@ -36,7 +34,7 @@
     },
     "mp_cost": 22,
     "cooldown": 3,
-    "base_dmg": 24,
+    "base_dmg": 96,
     "effects": [
       "BuffKimCuong"
     ],
@@ -49,7 +47,6 @@
     "key": "EnemyLCTho_T3",
     "vi": "Bàn Cổ Thiên Trùy",
     "en": "Pangu Heaven Hammer",
-    "realm": 6,
     "category": "attack",
     "element": "tho",
     "attack_type": "physical",
@@ -59,7 +56,7 @@
     },
     "mp_cost": 42,
     "cooldown": 3,
-    "base_dmg": 80,
+    "base_dmg": 480,
     "effects": [
       "CCStun",
       "DebuffLunDat"

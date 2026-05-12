@@ -16,7 +16,11 @@ from __future__ import annotations
 
 import pytest
 
-from src.game.constants.balance import TRUE_DMG_PCT_CAP
+from src.game.constants.balance import (
+    TRUE_DMG_CRIT_MULT,
+    TRUE_DMG_OUTPUT_MULT,
+    TRUE_DMG_PCT_CAP,
+)
 from src.game.engine.damage.true_damage import apply_true_damage
 from src.game.systems.combatant import Combatant
 
@@ -43,8 +47,8 @@ class TestFormulaScalesWithHitDamage:
         applied = apply_true_damage(
             attacker, target, base_damage=5_000, is_crit=False, log=[],
         )
-        # 5_000 × 0.20 = 1_000 (legacy model would be 100_000 × 0.20 = 20_000)
-        assert applied == 1_000
+        # 5_000 × 0.20 × TRUE_DMG_OUTPUT_MULT
+        assert applied == int(5_000 * 0.20 * TRUE_DMG_OUTPUT_MULT)
 
     def test_target_hp_is_decremented_by_the_returned_amount(self):
         attacker = _make("A")
@@ -54,7 +58,7 @@ class TestFormulaScalesWithHitDamage:
         applied = apply_true_damage(
             attacker, target, base_damage=10_000, is_crit=False, log=[],
         )
-        assert applied == 1_000
+        assert applied == int(10_000 * 0.10 * TRUE_DMG_OUTPUT_MULT)
         assert target.hp == hp_before - applied
 
     def test_bigger_hit_yields_proportionally_bigger_bonus(self):
@@ -91,18 +95,19 @@ class TestPctStackingAndCap:
             attacker, target, base_damage=10_000, is_crit=False, log=[],
             skill_pct=0.05,  # +5 % from the skill itself
         )
-        # 10_000 × (0.10 + 0.05) = 1_500
-        assert applied == 1_500
+        # 10_000 × (0.10 + 0.05) × TRUE_DMG_OUTPUT_MULT
+        assert applied == int(10_000 * 0.15 * TRUE_DMG_OUTPUT_MULT)
 
-    def test_crit_multiplies_the_bonus_by_1_5(self):
+    def test_crit_multiplies_the_bonus(self):
         attacker = _make("A")
         attacker.true_dmg_pct = 0.20
         target = _make("T", hp=100_000)
         applied = apply_true_damage(
             attacker, target, base_damage=5_000, is_crit=True, log=[],
         )
-        # 5_000 × 0.20 = 1_000, × 1.5 crit = 1_500
-        assert applied == 1_500
+        # 5_000 × 0.20 × TRUE_DMG_OUTPUT_MULT × TRUE_DMG_CRIT_MULT
+        base_bonus = int(5_000 * 0.20 * TRUE_DMG_OUTPUT_MULT)
+        assert applied == int(base_bonus * TRUE_DMG_CRIT_MULT)
 
     def test_combined_pct_is_capped_at_TRUE_DMG_PCT_CAP(self):
         attacker = _make("A")
@@ -112,8 +117,8 @@ class TestPctStackingAndCap:
             attacker, target, base_damage=10_000, is_crit=False, log=[],
             skill_pct=0.30,
         )
-        # raw 0.70 → clamped to TRUE_DMG_PCT_CAP (0.50)
-        assert applied == int(10_000 * TRUE_DMG_PCT_CAP)
+        # raw 0.70 → clamped to TRUE_DMG_PCT_CAP, then × output mult
+        assert applied == int(10_000 * TRUE_DMG_PCT_CAP * TRUE_DMG_OUTPUT_MULT)
 
 
 # ── No-op / safety branches ──────────────────────────────────────────────────

@@ -7,7 +7,7 @@
       "physical",
       "melee"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "atk": [
         [
           14,
@@ -56,7 +56,7 @@
       "magic",
       "staff"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "matk": [
         [
           16,
@@ -105,7 +105,7 @@
       "balanced",
       "melee"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "atk": [
         [
           9,
@@ -192,7 +192,7 @@
       "tank",
       "shield"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "def_stat": [
         [
           12,
@@ -317,7 +317,7 @@
       "magic",
       "talisman"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "matk": [
         [
           8,
@@ -404,7 +404,7 @@
       "magic",
       "orb"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "matk": [
         [
           9,
@@ -491,7 +491,7 @@
       "magic",
       "light"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "mp_max": [
         [
           96,
@@ -578,7 +578,7 @@
       "tank",
       "heavy"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "def_stat": [
         [
           18,
@@ -665,7 +665,7 @@
       "physical",
       "light"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "def_stat": [
         [
           11,
@@ -751,7 +751,7 @@
     "tags": [
       "tank"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "def_stat": [
         [
           8,
@@ -837,7 +837,7 @@
     "tags": [
       "magic"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "matk": [
         [
           6,
@@ -924,7 +924,7 @@
       "tank",
       "physical"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "atk": [
         [
           8,
@@ -1010,7 +1010,7 @@
     "tags": [
       "magic"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "matk": [
         [
           8,
@@ -1096,7 +1096,7 @@
     "tags": [
       "balanced"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "hp_max": [
         [
           80,
@@ -1182,7 +1182,7 @@
     "tags": [
       "agile"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "evasion_rating": [
         [
           44,
@@ -1268,7 +1268,7 @@
     "tags": [
       "physical"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "atk": [
         [
           6,
@@ -1316,7 +1316,7 @@
     "tags": [
       "magic"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "matk": [
         [
           6,
@@ -1364,7 +1364,7 @@
     "tags": [
       "balanced"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "hp_max": [
         [
           48,
@@ -1450,7 +1450,7 @@
     "tags": [
       "defensive"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "hp_max": [
         [
           64,
@@ -1537,7 +1537,7 @@
       "magic",
       "elemental"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "matk": [
         [
           4,
@@ -1626,7 +1626,7 @@
       "two_handed"
     ],
     "two_handed": true,
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "atk": [
         [
           28,
@@ -1716,7 +1716,7 @@
       "two_handed"
     ],
     "two_handed": true,
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "atk": [
         [
           24,
@@ -1806,7 +1806,7 @@
       "two_handed"
     ],
     "two_handed": true,
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "atk": [
         [
           26,
@@ -1894,7 +1894,7 @@
       "ranged",
       "quiver"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "crit_rating": [
         [
           18,
@@ -1982,7 +1982,7 @@
       "melee",
       "tank"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "atk": [
         [
           12,
@@ -2107,7 +2107,7 @@
       "tank",
       "shield"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "def_stat": [
         [
           14,
@@ -2232,7 +2232,7 @@
       "tank",
       "shield"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "def_stat": [
         [
           6,
@@ -2357,7 +2357,7 @@
       "tank",
       "shield"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "hp_max": [
         [
           68,
@@ -2482,7 +2482,7 @@
       "tank",
       "shield"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "def_stat": [
         [
           6,
@@ -2606,7 +2606,7 @@
     "tags": [
       "agile"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "evasion_rating": [
         [
           28,
@@ -2693,7 +2693,7 @@
       "tank",
       "shield"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "def_stat": [
         [
           8,
@@ -2818,7 +2818,7 @@
       "ward",
       "energy_shield"
     ],
-    "implicit_by_grade": {
+    "implicit_by_realm": {
       "shield_max_base": [
         [
           40,

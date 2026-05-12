@@ -19,11 +19,13 @@ from src.db.repositories.formation_repo import FormationRepository
 from src.game.constants.grades import Grade
 from src.game.systems.chest import open_chest
 from src.game.systems.inventory import (
-    apply_elixir, scroll_skill_type, skill_tier_from_mp,
+    apply_pill, scroll_skill_type, skill_tier_from_mp,
 )
+from src.bot.cogs.skills import _format_skill_dmg
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.pagination import add_page_controls, page_slice, total_pages
+from src.utils.discord_safe import safe_defer
 
 log = logging.getLogger(__name__)
 
@@ -134,6 +136,9 @@ DISCARDABLE_ITEM_TYPES: frozenset[str] = frozenset({
     "pill", "scroll", "special",
     "forge_material", "constitution_material",
     "gem", "chest", "material",
+    # Furnaces are stack_max=1 unique-by-key items. Discarding clears
+    # ``preferred_furnace_key`` if the dropped item was the active default.
+    "furnace",
 })
 
 
@@ -205,7 +210,8 @@ class CategoryView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         embed = _build_category_embed(
             self._cat, self._label, self._emoji,
             self._inv_items, self._equip_bag, page=new_page,
@@ -221,7 +227,8 @@ class CategoryView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         embed = _build_hub_embed(self._inv_items, self._equip_bag)
         view = InventoryView(
             self._discord_id, self._inv_items, self._equip_bag,
@@ -431,7 +438,8 @@ class DiscardQuantityModal(discord.ui.Modal, title="Vứt vật phẩm"):
             )
             return
 
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             player = await prepo.get_by_discord_id(interaction.user.id)
@@ -547,8 +555,8 @@ class InventoryView(discord.ui.View):
             if interaction.user.id != self._discord_id:
                 await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
-
+            if not await safe_defer(interaction):
+                return
             if cat == "chest":
                 # Chest category swaps in an interactive open-chest hub —
                 # reload from DB so the list reflects any changes since
@@ -585,8 +593,8 @@ class InventoryView(discord.ui.View):
             if interaction.user.id != self._discord_id:
                 await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
-
+            if not await safe_defer(interaction):
+                return
             from src.bot.cogs.equipment import EquipBagView, _equip_bag_embed
 
             # Reload fresh bag + equipped data so we always show current state.
@@ -625,14 +633,16 @@ class InventoryView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
     async def _overview_cb(self, interaction: discord.Interaction) -> None:
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await interaction.edit_original_response(embed=_build_hub_embed(self._inv_items, self._equip_bag))
 
 
@@ -843,9 +853,11 @@ class ChestSelect(discord.ui.Select):
             await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
             return
         if self.values[0] == "__none__":
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         key, grade_str = self.values[0].split("|")
         grade = int(grade_str)
         embed = _build_chest_embed(self._view_owner._inv_items, selected=(key, grade))
@@ -983,7 +995,8 @@ class ChestHubView(discord.ui.View):
             if interaction.user.id != self._discord_id:
                 await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
                 return
-            await interaction.response.defer()
+            if not await safe_defer(interaction):
+                return
             await self._open_and_render(interaction, quantity)
         return _cb
 
@@ -1000,7 +1013,8 @@ class ChestHubView(discord.ui.View):
         owned = self._selected_owned()
 
         async def _on_submit(modal_inter: discord.Interaction, qty: int) -> None:
-            await modal_inter.response.defer()
+            if not await safe_defer(modal_inter):
+                return
             await self._open_and_render(modal_inter, qty)
 
         await interaction.response.send_modal(
@@ -1044,7 +1058,8 @@ class ChestHubView(discord.ui.View):
         if interaction.user.id != self._discord_id:
             await interaction.response.send_message("Đây không phải túi đồ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             player = await PlayerRepository(session).get_by_discord_id(interaction.user.id)
             if player is None:
@@ -1108,6 +1123,17 @@ class DiscardConfirmView(discord.ui.View):
             ok = await irepo.try_remove_item(
                 player.id, self._item_key, self._grade, self._quantity,
             )
+
+            # Clear the alchemy default if the player just dropped the
+            # furnace it pointed to — otherwise the next ``/alchemy`` flow
+            # would try to auto-select a furnace the player no longer
+            # owns and force them to re-pick on every recipe view.
+            if (
+                ok
+                and player.preferred_furnace_key == self._item_key
+            ):
+                player.preferred_furnace_key = None
+                await prepo.save(player)
 
         if not ok:
             await interaction.response.edit_message(
@@ -1178,15 +1204,15 @@ class InventoryCog(commands.Cog, name="Inventory"):
             )
             return
 
-        # ``apply_elixir`` only knows about HP/MP/karma item-key substrings —
+        # ``apply_pill`` only knows about HP/MP/karma item-key substrings —
         # cultivation pills go through alchemy.consume_pill, not /use.
-        # Gate on category=="elixir" (soft tag preserved across the type
-        # merge) plus the legacy "special" bucket.
-        is_legacy_elixir = (
+        # Gate on category=="heal" (HP/MP/karma pills) plus the "special"
+        # bucket (Phá Cảnh Đan, Hỗn Nguyên Thạch, …).
+        is_heal_pill = (
             item_data.get("type") == "pill"
-            and item_data.get("category") == "elixir"
+            and item_data.get("category") == "heal"
         )
-        if not (is_legacy_elixir or item_data.get("type") == "special"):
+        if not (is_heal_pill or item_data.get("type") == "special"):
             await interaction.response.send_message(
                 embed=error_embed("Chỉ có thể sử dụng Đan Dược hoặc vật phẩm đặc biệt."), ephemeral=True
             )
@@ -1207,7 +1233,7 @@ class InventoryCog(commands.Cog, name="Inventory"):
                 )
                 return
 
-            effects = apply_elixir(player, item_key, quantity)
+            effects = apply_pill(player, item_key, quantity)
             await irepo.remove_item(player.id, item_key, grade, quantity)
             await prepo.save(player)
 
@@ -1254,8 +1280,8 @@ class InventoryCog(commands.Cog, name="Inventory"):
             await interaction.response.send_message(
                 embed=error_embed(
                     "Chỉ có thể vứt đan dược / ngọc giản / nguyên liệu / "
-                    "ngọc / rương / đặc biệt. Trang bị dùng hệ thống "
-                    "phân giải riêng."
+                    "ngọc / rương / đặc biệt / Đan Lô. Trang bị dùng "
+                    "hệ thống phân giải riêng."
                 ),
                 ephemeral=True,
             )
@@ -1320,10 +1346,19 @@ class InventoryCog(commands.Cog, name="Inventory"):
                 await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
 
-            frepo = FormationRepository(session)
-            await frepo.get_or_create(player.id, formation_key)
-            # Legacy CLI: single-formation assignment. The new formation hub
-            # UI is where multi-slot Trận Tu manages multiple slots.
+            unlocked = {f.formation_key for f in (player.formations or []) if f.formation_key}
+            if formation_key not in unlocked:
+                await interaction.response.send_message(
+                    embed=error_embed(
+                        f"Chưa mở khoá **{form_data['vi']}** — học kỹ năng trận tương ứng "
+                        f"trong `/skilllist` trước."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
+            # CLI single-formation assignment. Multi-slot Trận Tu management
+            # lives in the formation hub UI.
             player.active_formation = formation_key
             await prepo.save(player)
 
@@ -1500,26 +1535,21 @@ class InventoryCog(commands.Cog, name="Inventory"):
             )
             used_slots = set(row[0] for row in used_slots_result.fetchall())
 
-            # Formation skills: open-ended slot bar (≥ MAX_SKILL_SLOTS), capped
-            # only by total MP reservation. Pre-check the cap before assigning.
+            # Formation skills no longer occupy a chosen slot — learning the
+            # scroll unlocks the matching formation (CharacterFormation row)
+            # so it becomes selectable in /formation_hub. The CharacterSkill
+            # row stays as a "learned" marker at slot ≥ MAX_SKILL_SLOTS.
             is_formation = skill_data.get("category") == "formation"
             if is_formation:
                 from src.game.systems.skills import (
-                    formation_reservation_would_exceed_cap, next_formation_slot,
+                    formation_key_for_skill, next_formation_slot,
                 )
-                exceeds, projected = formation_reservation_would_exceed_cap(player, skill_key)
-                if exceeds:
-                    from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
-                    await interaction.response.send_message(
-                        embed=error_embed(
-                            f"Không đủ Linh Khí để Trấn Trận **{skill_data['vi']}**.\n"
-                            f"Sau khi trang bị: **{projected * 100:.1f}%** MP bị trấn — "
-                            f"vượt mức tối đa **{FORMATION_MAX_RESERVE_PCT * 100:.0f}%**."
-                        ),
-                        ephemeral=True,
-                    )
-                    return
                 target_slot = next_formation_slot(player)
+                target_formation = formation_key_for_skill(skill_data)
+                if target_formation:
+                    await FormationRepository(session).get_or_create(
+                        player.id, target_formation,
+                    )
             elif slot == -1:
                 free = next((i for i in range(MAX_SKILL_SLOTS) if i not in used_slots), None)
                 if free is None:
@@ -1561,11 +1591,20 @@ class InventoryCog(commands.Cog, name="Inventory"):
             "formation": "Trận Pháp",
         }
         type_label = type_labels.get(skill_data.get("category", ""), skill_data.get("category", ""))
-        embed = success_embed(
-            f"Học **{skill_data['vi']}** thành công!\n"
-            f"Loại: **{type_label}** | Slot: **{target_slot}**\n"
-            f"MP: **{skill_data.get('mp_cost', 0)}** | DMG: **{skill_data.get('base_dmg', 0)}** | CD: {skill_data.get('cooldown', 1)}t"
-        )
+        if is_formation:
+            form_data = registry.get_formation(target_formation) if target_formation else None
+            form_label = form_data.get("vi", target_formation) if form_data else "—"
+            embed = success_embed(
+                f"Học **{skill_data['vi']}** thành công!\n"
+                f"Loại: **{type_label}** — đã mở khoá trận **{form_label}**.\n"
+                f"Dùng `/formation_hub` để kích hoạt trận pháp."
+            )
+        else:
+            embed = success_embed(
+                f"Học **{skill_data['vi']}** thành công!\n"
+                f"Loại: **{type_label}** | Slot: **{target_slot}**\n"
+                f"MP: **{skill_data.get('mp_cost', 0)}** | DMG: **{_format_skill_dmg(skill_data)}** | CD: {skill_data.get('cooldown', 1)}t"
+            )
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 

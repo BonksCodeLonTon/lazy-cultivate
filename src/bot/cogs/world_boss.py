@@ -31,6 +31,7 @@ from src.game.systems.world_boss import (
     grant_loot_from_tables, scheduler_tick,
 )
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
+from src.utils.discord_safe import safe_defer
 
 log = logging.getLogger(__name__)
 
@@ -210,7 +211,6 @@ async def _execute_boss_attack_inner(
         cs = compute_combat_stats(
             char, gem_count=len(gem_keys), equip_stats=equip_stats,
             gem_keys=gem_keys, gem_keys_by_formation=gem_map,
-            learned_skill_keys=[s.skill_key for s in (player.skills or [])],
         )
         if player.hp_current <= 0:
             player.hp_current = cs.hp_max
@@ -340,8 +340,12 @@ async def _execute_boss_attack_inner(
                 if applied_damage > 0:
                     await wrepo.upsert_damage(instance_id, player.id, applied_damage)
 
-            player.hp_current = max(1, player_c.hp)
-            player.mp_current = max(0, player_c.mp)
+            # Auto-heal HP / MP / shield to max after each world-boss attack
+            # (mirror of the post-dungeon heal). Players walk away ready for
+            # the next engagement instead of needing a /healup detour.
+            player.hp_current = cs.hp_max
+            player.mp_current = cs.mp_max
+            player.shield_current = cs.shield_max
             await prepo.save(player)
 
     # Build post-attack embed — report damage actually credited to the shared pool.
@@ -519,6 +523,63 @@ async def _refresh_hub(interaction: discord.Interaction, discord_id: int, back_f
     await interaction.edit_original_response(embeds=[embed] + extra_embeds, view=view)
 
 
+async def _show_leaderboard(
+    interaction: discord.Interaction, discord_id: int, back_fn=None,
+) -> None:
+    """Render top-damage leaderboards for every currently-active boss.
+
+    Pulls participations and player names in a single DB session so the
+    embed can show real character names instead of raw player_ids. Any
+    boss with no attackers yet still appears so users can see the full
+    active set.
+    """
+    async with get_session() as session:
+        wrepo = WorldBossRepository(session)
+        prepo = PlayerRepository(session)
+        active = await wrepo.list_active()
+        boards: list[tuple[WorldBossInstance, list]] = []
+        all_player_ids: set[int] = set()
+        for inst in active:
+            parts = await wrepo.list_participations(inst.id)
+            boards.append((inst, parts))
+            all_player_ids.update(p.player_id for p in parts)
+        names = await prepo.get_names_by_ids(list(all_player_ids))
+
+    if not boards:
+        intro = base_embed(
+            "📊 Bảng Xếp Hạng Sát Thương",
+            "Hiện tại chưa có boss thế giới nào xuất hiện.",
+            color=0x7B2D8B,
+        )
+        await interaction.edit_original_response(
+            embeds=[intro],
+            view=WorldBossLeaderboardView(discord_id, back_fn=back_fn),
+        )
+        return
+
+    intro = base_embed(
+        "📊 Bảng Xếp Hạng Sát Thương",
+        "Top sát thương trên từng Boss Thế Giới đang hoạt động. Tu sĩ "
+        "đứng top vẫn nhận được phần thưởng dù hết giờ chưa hạ được Boss.",
+        color=0x7B2D8B,
+    )
+
+    embeds: list[discord.Embed] = [intro]
+    # Discord caps replies at 10 embeds — intro + up to 9 boss boards.
+    for inst, parts in boards[:9]:
+        boss_data = registry.get_world_boss(inst.boss_key)
+        title = f"📊 {boss_data['vi'] if boss_data else inst.boss_key}"
+        body = format_leaderboard(
+            parts, name_lookup=names, boss_hp_max=inst.hp_max,
+        )
+        embeds.append(base_embed(title, body, color=0x7B2D8B))
+
+    await interaction.edit_original_response(
+        embeds=embeds,
+        view=WorldBossLeaderboardView(discord_id, back_fn=back_fn),
+    )
+
+
 class WorldBossHubView(discord.ui.View):
     """Interactive hub listing live world bosses — attack / claim / refresh / back."""
 
@@ -553,6 +614,12 @@ class WorldBossHubView(discord.ui.View):
         refresh_btn.callback = self._on_refresh
         self.add_item(refresh_btn)
 
+        leaderboard_btn = discord.ui.Button(
+            label="📊 Bảng Xếp Hạng", style=discord.ButtonStyle.primary, row=1,
+        )
+        leaderboard_btn.callback = self._on_leaderboard
+        self.add_item(leaderboard_btn)
+
         claim_btn = discord.ui.Button(label="🎁 Nhận Thưởng", style=discord.ButtonStyle.blurple, row=1)
         claim_btn.callback = self._on_claim
         self.add_item(claim_btn)
@@ -569,7 +636,8 @@ class WorldBossHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         boss_key = interaction.data["values"][0]
         await _execute_boss_attack(interaction, boss_key, back_fn=self._back_fn)
 
@@ -577,21 +645,85 @@ class WorldBossHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _refresh_hub(interaction, self.discord_id, back_fn=self._back_fn)
+
+    async def _on_leaderboard(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _show_leaderboard(interaction, self.discord_id, back_fn=self._back_fn)
 
     async def _on_claim(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer(ephemeral=True, thinking=True)
+        if not await safe_defer(interaction, ephemeral=True, thinking=True):
+            return
         await _claim_rewards(interaction)
 
     async def _on_back(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
+        await self._back_fn(interaction)
+
+
+class WorldBossLeaderboardView(discord.ui.View):
+    """Shown alongside the per-boss leaderboard embeds — refresh + back to hub."""
+
+    def __init__(self, discord_id: int, back_fn=None) -> None:
+        super().__init__(timeout=300)
+        self.discord_id = discord_id
+        self._back_fn = back_fn
+
+        refresh_btn = discord.ui.Button(label="🔄 Làm Mới", style=discord.ButtonStyle.secondary, row=0)
+        refresh_btn.callback = self._on_refresh
+        self.add_item(refresh_btn)
+
+        hub_btn = discord.ui.Button(
+            label="🌌 Danh Sách Boss", style=discord.ButtonStyle.blurple, row=0,
+        )
+        hub_btn.callback = self._on_hub
+        self.add_item(hub_btn)
+
+        if back_fn is not None:
+            back_btn = discord.ui.Button(
+                label="◀ Trở Về", style=discord.ButtonStyle.secondary, row=0,
+            )
+            back_btn.callback = self._on_back
+            self.add_item(back_btn)
+
+    def _guard(self, interaction: discord.Interaction) -> bool:
+        return interaction.user.id == self.discord_id
+
+    async def _on_refresh(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _show_leaderboard(interaction, self.discord_id, back_fn=self._back_fn)
+
+    async def _on_hub(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _refresh_hub(interaction, self.discord_id, back_fn=self._back_fn)
+
+    async def _on_back(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 
@@ -619,14 +751,16 @@ class PostAttackView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _refresh_hub(interaction, self.discord_id, back_fn=self._back_fn)
 
     async def _on_back(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 
@@ -660,7 +794,8 @@ class WorldBossCog(commands.Cog, name="WorldBoss"):
 
     @group.command(name="list", description="Xem các boss thế giới đang xuất hiện")
     async def list_cmd(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         await _refresh_hub(interaction, interaction.user.id, back_fn=None)
 
     @group.command(name="attack", description="Tấn công một boss thế giới")
@@ -668,7 +803,8 @@ class WorldBossCog(commands.Cog, name="WorldBoss"):
     async def attack_cmd(
         self, interaction: discord.Interaction, boss_key: str
     ) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         await _execute_boss_attack(interaction, boss_key)
 
     @attack_cmd.autocomplete("boss_key")
@@ -690,7 +826,8 @@ class WorldBossCog(commands.Cog, name="WorldBoss"):
 
     @group.command(name="rewards", description="Nhận phần thưởng từ các boss thế giới đã hạ")
     async def rewards_cmd(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         await _claim_rewards(interaction)
 
     @group.command(name="leaderboard", description="Xem bảng xếp hạng sát thương của một boss")
@@ -700,6 +837,7 @@ class WorldBossCog(commands.Cog, name="WorldBoss"):
     ) -> None:
         async with get_session() as session:
             wrepo = WorldBossRepository(session)
+            prepo = PlayerRepository(session)
             instance = await wrepo.get_active(boss_key)
             if instance is None:
                 await interaction.response.send_message(
@@ -708,8 +846,11 @@ class WorldBossCog(commands.Cog, name="WorldBoss"):
                 )
                 return
             parts = await wrepo.list_participations(instance.id)
+            names = await prepo.get_names_by_ids([p.player_id for p in parts])
 
-        board = format_leaderboard(parts)
+        board = format_leaderboard(
+            parts, name_lookup=names, boss_hp_max=instance.hp_max,
+        )
         boss_data = registry.get_world_boss(boss_key)
         title = f"📊 Bảng Xếp Hạng — {boss_data['vi'] if boss_data else boss_key}"
         await interaction.response.send_message(

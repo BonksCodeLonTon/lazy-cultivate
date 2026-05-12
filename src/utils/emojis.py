@@ -112,6 +112,15 @@ GRADE_EMOJI_BY_KEY: dict[str, str] = {
     "thien": EMOJI_RARITY_LEGENDARY,
 }
 
+# Item-level quality (forge / loot roll outcome) reuses the rarity palette,
+# keyed by the quality keys used in src/game/engine/quality.py.
+QUALITY_EMOJI: dict[str, str] = {
+    "hoan":  EMOJI_RARITY_COMMON,
+    "huyen": EMOJI_RARITY_UNCOMMON,
+    "dia":   EMOJI_RARITY_RARE,
+    "thien": EMOJI_RARITY_LEGENDARY,
+}
+
 CURRENCY_EMOJI: dict[str, str] = {
     "merit":             EMOJI_CONG_DUC,
     "karma_accum":       EMOJI_NGHIEP_LUC,
@@ -246,6 +255,11 @@ def for_grade(grade: int | str) -> str:
     if isinstance(grade, int):
         return GRADE_EMOJI.get(grade, _FALLBACK)
     return GRADE_EMOJI_BY_KEY.get(grade, _FALLBACK)
+
+
+def for_quality(quality: str | None) -> str:
+    """Resolve emoji for an item quality tier (hoan/huyen/dia/thien)."""
+    return QUALITY_EMOJI.get(quality or "hoan", _FALLBACK)
 
 
 def for_currency(currency: str) -> str:

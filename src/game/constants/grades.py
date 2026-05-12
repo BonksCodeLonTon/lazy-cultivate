@@ -5,10 +5,10 @@ from enum import IntEnum
 
 
 class Grade(IntEnum):
-    HOANG = 1   
-    HUYEN = 2   
-    DIA = 3     
-    THIEN = 4 
+    HOANG = 1
+    HUYEN = 2
+    DIA = 3
+    THIEN = 4
 
 
 GRADE_LABELS: dict[Grade, tuple[str, str]] = {

@@ -9,6 +9,7 @@ from src.game.constants.balance import (
     MAX_CRIT_CHANCE,
     BASE_CRIT_DMG_MULT,
     BASE_EVASION,
+    MAX_EVASION_CHANCE,
 )
 
 
@@ -23,7 +24,7 @@ def crit_chance(crit_rating: int, crit_res_rating: int = 0) -> float:
 
 
 def evasion_chance(evasion_rating: int) -> float:
-    return BASE_EVASION + rating_to_pct(evasion_rating)
+    return min(MAX_EVASION_CHANCE, BASE_EVASION + rating_to_pct(evasion_rating))
 
 
 def crit_dmg_multiplier(crit_dmg_rating: int) -> float:

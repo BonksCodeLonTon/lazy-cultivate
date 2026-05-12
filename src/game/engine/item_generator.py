@@ -126,8 +126,11 @@ _INT_STATS = frozenset({
     "atk", "matk", "def_stat", "hp_max", "mp_max",
     "crit_rating", "crit_dmg_rating", "evasion_rating", "crit_res_rating",
     "hp_regen_flat", "mp_regen_flat", "shield_regen_flat",
-    "spd_bonus", "crit_rating_vs_bleed", "crit_dmg_vs_bleed",
-    "crit_rating_vs_marked", "crit_dmg_vs_marked",
+    "spd_bonus",
+    # ``crit_rating_vs_*`` / ``crit_dmg_vs_*`` rolled-int keys collapsed
+    # into ``crit_amp_vs`` (see character_stats._denest_grouped_bonuses).
+    # Kept out of this set so a future rolled-stat author writing flat
+    # keys still gets float values — they'd be caught at denest time.
 })
 
 
@@ -173,6 +176,7 @@ def generate_unique(unique_key: str, rng: random.Random | None = None) -> dict:
         "base_key": uniq.get("base"),
         "unique_key": unique_key,
         "grade": uniq["grade"],
+        "quality": uniq.get("quality", "thien"),
         "slot": uniq["slot"],
         "affixes": [],
         "computed_stats": computed_stats,

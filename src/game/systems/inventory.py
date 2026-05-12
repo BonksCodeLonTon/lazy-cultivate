@@ -1,12 +1,14 @@
-"""Inventory-side game logic — scroll classification and elixir effects.
+"""Inventory-side game logic — scroll classification and pill effects.
 
 Operates on the ORM ``Player`` object directly (mutates ``hp_current``,
 ``mp_current``, karma fields). The dungeon-prep counterpart in
-``src.game.systems.dungeon.apply_healing_elixir`` does the same shape of
+``src.game.systems.dungeon.apply_healing_pill`` does the same shape of
 heal but on a runtime ``Combatant`` — they're intentionally separate
 because the two contexts use different data models.
 """
 from __future__ import annotations
+
+from datetime import datetime, timedelta, timezone
 
 from src.db.repositories.player_repo import _player_to_model
 from src.game.engine.equipment import compute_equipment_stats
@@ -51,8 +53,8 @@ def skill_tier_from_mp(skill_data: dict) -> int:
     return 4
 
 
-def apply_elixir(player, item_key: str, quantity: int) -> list[str]:
-    """Apply ``quantity`` uses of the elixir to ``player`` in place.
+def apply_pill(player, item_key: str, quantity: int) -> list[str]:
+    """Apply ``quantity`` uses of the pill to ``player`` in place.
 
     Mutates ``player.hp_current`` / ``player.mp_current`` / karma fields
     and returns user-facing effect description lines. Unknown keys fall
@@ -74,7 +76,6 @@ def apply_elixir(player, item_key: str, quantity: int) -> list[str]:
         equip_stats=compute_equipment_stats(equipped),
         gem_keys=gem_keys,
         gem_keys_by_formation=gem_map,
-        learned_skill_keys=[s.skill_key for s in (player.skills or [])],
     )
     hp_max = cs.hp_max
     mp_max = cs.mp_max
@@ -130,6 +131,24 @@ def apply_elixir(player, item_key: str, quantity: int) -> list[str]:
         reduce = min(player.karma_usable, 5000 * quantity)
         player.karma_usable = max(0, player.karma_usable - reduce)
         effects.append(f"☯️ Nghiệp Lực Khả Dụng -{reduce:,} (đã tiêu thụ)")
+    elif item_key == "BuffMeritX2_30days":
+        # Thiên Đạo Phù Nghịch — 30-day Công Đức ×2 buff. Stacking uses:
+        # extend the existing expiry instead of resetting it (so 2 talismans
+        # = 60 days). The ×2 multiplier itself is applied wherever merit is
+        # earned via ``src.game.systems.merit.grant_merit``.
+        tt = getattr(player, "turn_tracker", None)
+        if tt is None:
+            effects.append("⚠️ Không thể kích hoạt buff (thiếu turn_tracker).")
+        else:
+            now = datetime.now(timezone.utc)
+            current = tt.merit_bonus_expires_at
+            base = current if (current and current > now) else now
+            tt.merit_bonus_expires_at = base + timedelta(days=30 * quantity)
+            days_total = 30 * quantity
+            effects.append(
+                f"✨ Công Đức ×2 thêm **{days_total}** ngày "
+                f"(hết hạn: {tt.merit_bonus_expires_at:%Y-%m-%d %H:%M} UTC)"
+            )
     else:
         effects.append("✨ Hiệu ứng đã được áp dụng.")
 

@@ -17,7 +17,6 @@ from src.game.constants.realms import (
     QI_REALMS,
     FORMATION_REALMS,
     LEVELS_PER_REALM,
-    MERIT_TO_FORMATION_EXP_RATIO,
     get_level_from_exp,
     get_realm,
 )
@@ -91,6 +90,7 @@ def compute_hp_max(character: Character, bonuses: dict | None = None) -> int:
     result = max(1, int(base))
     if bonuses:
         result = int(result * (1.0 + bonuses.get("hp_pct", 0.0)))
+        result += int(bonuses.get("hp_max_bonus", 0))
         flat_per_realm = int(bonuses.get("hp_flat_per_realm", 0))
         if flat_per_realm:
             max_realm = max(
@@ -175,86 +175,48 @@ def compute_def_stat(character: Character, bonuses: dict | None = None) -> int:
 def compute_gem_bonuses(gem_keys: list[str]) -> dict:
     """Merge per-gem bonuses from a list of inlaid gem keys.
 
-    Two gem flavours:
+    Every gem item in ``src/data/gems/gems.json`` carries its own
+    pre-scaled ``bonus`` dict — the same field on standard gems
+    (element + stat) and unique gems alike. This function just reads
+    each item's ``bonus`` and additively merges across the input list:
+      • Numeric leaves sum.
+      • Nested dicts (``element_dmg_bonus``, ``element_pen``) merge
+        per-sub-key.
+      • Booleans OR together (unique-gem special-effect flags).
 
-    1. Elemental gems (``Gem<Element>_<grade>``, e.g. ``GemKim_2``): flat
-       stat bonus = ``GEM_ELEMENT_BASE_BONUS[element] × grade``, summed.
-    2. Unique gems (``GemUnique_<Name>`` — loaded from
-       ``items/unique_gems.json``): the registry entry carries an explicit
-       ``unique_bonus`` dict with stats AND special-effect flags. The dict
-       merges as-is (no grade multiplier — uniques are tuned directly).
-
-    Stats across both flavours additively combine. Bool flags OR together.
-    Special keys ``*_stack_cap_bonus`` merge additively; they're consumed by
-    ``compute_combat_stats`` to bump the base stack cap of burn/bleed/shock/
-    mana / shield without overwriting the floor.
+    Three gem flavours coexist transparently via the same path:
+      1. Element gems (``GemKim_3``) — bonus = ``{element_dmg_bonus: {kim: <n>}}``
+      2. Stat gems (``GemSat_2``) — bonus = ``{crit_rating: <n>}`` etc.
+      3. Unique gems (``GemUnique_<Name>``) — designer-tuned bonus dict
+         that may include bool flags and stat steals.
     """
-    from src.game.constants.balance import GEM_ELEMENT_BASE_BONUS
     from src.data.registry import registry
     merged: dict = {}
     if not gem_keys:
         return merged
 
-    # Element aliases: gem key uses capitalised segment that must map to element key.
-    # ``To`` and ``Duong`` are legacy spellings (pre-rename: GemTo_* → tho,
-    # GemDuong_* → quang). Current data files use ``Tho``/``Quang`` directly,
-    # but kept here so legacy player-inventory rows continue to grant stats.
-    elem_map = {
-        "Kim": "kim",
-        "Moc": "moc",
-        "Thuy": "thuy",
-        "Hoa": "hoa",
-        "Tho": "tho", "To": "tho",
-        "Loi": "loi",
-        "Phong": "phong",
-        "Quang": "quang", "Duong": "quang",
-        "Am": "am",
-    }
-
     for key in gem_keys:
         if not key or not key.startswith("Gem"):
             continue
-
-        # ── Unique gem path — stats + special effects from registry JSON ───
         item = registry.get_item(key)
-        if item and item.get("unique"):
-            for stat, value in (item.get("unique_bonus") or {}).items():
-                if isinstance(value, bool):
-                    merged[stat] = merged.get(stat, False) or value
-                elif isinstance(value, dict):
-                    # Nested dict (e.g. element_pen: {hoa: 0.05}) — merge additively per key.
-                    bucket = merged.setdefault(stat, {})
-                    for sub_k, sub_v in value.items():
-                        bucket[sub_k] = bucket.get(sub_k, 0) + sub_v
-                else:
-                    merged[stat] = merged.get(stat, 0) + value
+        if item is None:
             continue
-
-        # ── Standard elemental gem path ────────────────────────────────────
-        body = key[3:]  # strip "Gem" prefix
-        # Split element vs grade: "Kim_2" → ("Kim", "2")
-        if "_" in body:
-            elem_part, grade_part = body.split("_", 1)
-            try:
-                grade = int(grade_part)
-            except ValueError:
-                grade = 1
-        else:
-            elem_part, grade = body, 1
-        elem = elem_map.get(elem_part)
-        if not elem:
-            continue
-        base = GEM_ELEMENT_BASE_BONUS.get(elem, {})
-        for stat, value in base.items():
-            merged[stat] = merged.get(stat, 0) + value * grade
+        for stat, value in (item.get("bonus") or {}).items():
+            if isinstance(value, bool):
+                merged[stat] = merged.get(stat, False) or value
+            elif isinstance(value, dict):
+                bucket = merged.setdefault(stat, {})
+                for sub_k, sub_v in value.items():
+                    bucket[sub_k] = bucket.get(sub_k, 0) + sub_v
+            else:
+                merged[stat] = merged.get(stat, 0) + value
     return merged
 
 
 # ── Multi-formation helpers ─────────────────────────────────────────────────
 # Mirrors ``the_chat.get_constitutions`` / ``set_constitutions``. Player
 # ``active_formation`` column is a comma-separated list of formation keys in
-# slot order; single-entry values (legacy "CuuCungBatQua") parse as a 1-slot
-# list unchanged.
+# slot order; a single key (e.g. "CuuCungBatQua") parses as a 1-slot list.
 
 MAX_FORMATION_SLOT_CEILING: int = 6
 
@@ -272,40 +234,56 @@ def set_active_formations(keys: list[str]) -> str | None:
     return joined or None
 
 
-def is_tran_tu(body_realm: int, qi_realm: int, formation_realm: int) -> bool:
-    """Trận Tu = formation path dominant — formation_realm ≥ every other axis."""
-    return formation_realm >= max(body_realm, qi_realm)
+def is_tran_tu(active_axis: str | None) -> bool:
+    """Trận Tu = the player has chosen the formation axis as their active path."""
+    return (active_axis or "") == "formation"
 
 
-def is_khi_tu(body_realm: int, qi_realm: int, formation_realm: int) -> bool:
-    """Khí Tu = qi axis dominant.
+def is_khi_tu(active_axis: str | None) -> bool:
+    """Khí Tu = the player has chosen the qi axis as their active path.
 
-    Mirror of ``is_the_tu`` / ``is_tran_tu``: the qi realm must be strictly
-    greater than every other axis. The strict inequality (vs Trận Tu's
-    ``>=``) keeps tied 0/0/0 starters out of the archetype until the
-    player commits to qi. Used to gate the Linh Căn breadth multiplier so
-    body-leaning players can't dip into the bonus by maxing qi later.
+    Used to gate the Linh Căn breadth multiplier so off-path players can't
+    dip into the bonus by stacking many high-level Linh Căn while focusing
+    body or formation cultivation.
     """
-    return qi_realm > max(body_realm, formation_realm)
+    return (active_axis or "") == "qi"
 
 
-def max_formation_slots(body_realm: int, qi_realm: int, formation_realm: int) -> int:
+def max_formation_slots(active_axis: str | None, formation_realm: int) -> int:
     """How many formations the player can run simultaneously.
 
-    - Non-Trận-Tu: 1 slot (the classic single-formation behavior).
-    - Trận Tu: unlocks extra slots as Trận Đạo progresses, capped at
-      ``MAX_FORMATION_SLOT_CEILING`` (3) — matches the design intent where the
-      50 % MP-reservation ceiling becomes load-bearing because multiple
-      formations actually stack.
+    - Off-path (body / qi focus): 1 slot (single-formation behavior).
+    - Trận Tu (active_axis == "formation"): unlocks extra slots as Trận Đạo
+      progresses, capped at ``MAX_FORMATION_SLOT_CEILING`` (3) — matches the
+      design intent where the 50 % MP-reservation ceiling becomes load-bearing
+      because multiple formations actually stack.
 
     Slot curve (Trận Tu):
         formation_realm 0-2 → 1 slot
         formation_realm 3-5 → 2 slots
         formation_realm 6-8 → 3 slots
     """
-    if not is_tran_tu(body_realm, qi_realm, formation_realm):
+    if not is_tran_tu(active_axis):
         return 1
     return min(MAX_FORMATION_SLOT_CEILING, 1 + formation_realm // 2)
+
+
+def effective_active_formations(
+    active_formation: str | None,
+    active_axis: str | None,
+    formation_realm: int,
+) -> list[str]:
+    """Slice the player's stored formation list down to what the current
+    path actually supports.
+
+    Past-cap entries stay persisted (so switching back to the formation axis
+    instantly restores them) but contribute nothing while off-path.
+    """
+    keys = get_active_formations(active_formation)
+    if not keys:
+        return []
+    cap = max_formation_slots(active_axis, formation_realm)
+    return keys[:cap]
 
 
 def max_unlocked_gem_slots(formation_realm: int) -> int:
@@ -386,22 +364,28 @@ def compute_formation_reserve_pct(
 
 
 def compute_formation_skill_reserve_pct(
-    learned_skill_keys: list[str] | None,
+    active_formation_keys: list[str] | None,
     formation_stages: int = 0,
 ) -> float:
-    """How much of max MP is locked by formation skills in the player's bar.
+    """How much of max MP is locked by the formation skills tied to active formations.
 
-    Sums ``reserved_mp_pct`` across every formation-category skill currently
-    equipped in a slot, scaled by Trận Đạo reduction and capped at MAX. This
-    replaces the old flat ``FORMATION_BASE_RESERVE_PCT`` — bigger formations
-    cost more MP to channel; smaller ones cost less.
+    Each active formation contributes the ``reserved_mp_pct`` of its
+    ``formation_skill_key`` (looked up in formations.json → skills registry).
+    Inactive but unlocked formations cost nothing — reservation only matters
+    while a formation is channeling.
     """
-    if not learned_skill_keys:
+    if not active_formation_keys:
         return 0.0
     from src.data.registry import registry
     from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
     total = 0.0
-    for skill_key in learned_skill_keys:
+    for formation_key in active_formation_keys:
+        form = registry.get_formation(formation_key)
+        if not form:
+            continue
+        skill_key = form.get("formation_skill_key")
+        if not skill_key:
+            continue
         skill = registry.get_skill(skill_key)
         if not skill or skill.get("category") != "formation":
             continue
@@ -419,6 +403,15 @@ def formation_path_multiplier(formation_stages: int) -> float:
     stronger than a beginner's.
     """
     return 1.0 + max(0, formation_stages) * FORMATION_PATH_MULT_PER_STAGE
+
+
+# Discrete-count bonus keys whose value is a literal "+N" rather than a
+# magnitude that should grow with Trận Đạo. These skip the path multiplier
+# in ``compute_formation_bonuses`` so a "+1 echo" threshold stays at +1 even
+# at peak Trận Đạo.
+_FORMATION_PATH_NO_SCALE: frozenset[str] = frozenset({
+    "formation_echo_bonus",
+})
 
 
 def compute_formation_bonuses(
@@ -460,11 +453,16 @@ def compute_formation_bonuses(
         _merge_bonus_dict(merged, compute_gem_bonuses(gem_keys))
 
     # Scale all numeric bonuses by formation-path multiplier. Bool flags
-    # (poison_immunity, freeze_on_skill, etc.) and meta fields stay untouched.
+    # (poison_immunity, etc.) and meta fields stay untouched.
+    # Discrete count bonuses listed in ``_FORMATION_PATH_NO_SCALE`` also skip
+    # the multiplier so a "+1 echo" threshold always means exactly +1
+    # regardless of Trận Đạo progression.
     mult = formation_path_multiplier(formation_stages)
     if mult != 1.0:
         for k, v in list(merged.items()):
             if isinstance(v, bool) or k.startswith("_") or k == "note":
+                continue
+            if k in _FORMATION_PATH_NO_SCALE:
                 continue
             if isinstance(v, (int, float)):
                 merged[k] = type(v)(v * mult) if isinstance(v, int) else v * mult
@@ -482,14 +480,22 @@ def compute_formation_bonuses(
 
 def compute_formations_bonuses(
     formation_keys: list[str],
+    active_axis: str | None,
+    formation_realm: int,
     gem_keys_by_formation: dict[str, list[str]] | None = None,
     formation_stages: int = 0,
 ) -> dict:
-    """Multi-slot variant — sum bonuses from every active formation.
+    """Multi-slot variant — sum bonuses from every active formation that
+    the current path actually has slots for.
 
-    Each entry in ``formation_keys`` contributes its own base + threshold +
-    per-gem bonuses (via ``compute_formation_bonuses``). Numeric stats
-    combine additively; meta fields resolve as follows:
+    ``formation_keys`` is the raw stored list; entries past
+    ``max_formation_slots(active_axis, formation_realm)`` are silently
+    ignored so a player who switches off the formation axis can't keep
+    cashing in on previously-equipped extra slots.
+
+    Each surviving entry contributes its own base + threshold + per-gem
+    bonuses (via ``compute_formation_bonuses``). Numeric stats combine
+    additively; meta fields resolve as follows:
 
         ``_mp_reserve_pct``        — sum across all active formations,
                                       capped at FORMATION_MAX_RESERVE_PCT
@@ -506,6 +512,11 @@ def compute_formations_bonuses(
     if not formation_keys:
         return {}
     from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
+
+    cap = max_formation_slots(active_axis, formation_realm)
+    formation_keys = formation_keys[:cap]
+    if not formation_keys:
+        return {}
 
     gem_map = gem_keys_by_formation or {}
     merged: dict = {}
@@ -555,33 +566,39 @@ _AMP_EXCLUDED_STATS: frozenset[str] = frozenset({
 })
 
 
-def compute_constitution_bonuses(constitution_type: str) -> dict:
-    """Merge ``stat_bonuses`` from every equipped Thể Chất.
+def compute_constitution_bonuses(
+    constitution_type: str,
+    active_axis: str | None,
+    body_realm: int,
+) -> dict:
+    """Merge ``stat_bonuses`` from every Thể Chất the active path can host.
 
-    ``constitution_type`` is a comma-separated list of keys (legacy
-    single-key strings work unchanged). Bonuses from each equipped entry
-    are additively combined.
+    Standard slots are clamped to ``max_slots(active_axis, body_realm)`` via
+    ``effective_constitutions`` — past-cap entries stay persisted but
+    contribute nothing while the player is off the body axis. Hỗn Độn
+    occupies its dedicated 9th slot regardless of the standard cap.
 
-    Special handling: any equipped Thể Chất that carries
+    Special handling: any active Thể Chất that carries
     ``all_passives_multiplier > 0`` (currently only Hỗn Độn Đạo Thể) scales
-    the numeric stat_bonuses from every *other* equipped entry by that
-    factor. The carrier's own stats merge un-scaled — matching the lore
-    "passives of the OTHER divine bodies are amplified". When multiple
-    carriers are present, the highest multiplier wins. The control key
-    itself is never merged as a stat so it can't leak into the merged dict.
-    Bool flags (``dot_can_crit``, ``poison_immunity``, ...) are never scaled,
-    and stats in ``_AMP_EXCLUDED_STATS`` merge at base — they compound
-    multiplicatively elsewhere and amplifying them produced one-shot damage
-    against world bosses.
+    the numeric stat_bonuses from every *other* active entry by that factor.
+    The carrier's own stats merge un-scaled — matching the lore "passives of
+    the OTHER divine bodies are amplified". When multiple carriers are
+    present, the highest multiplier wins. The control key itself is never
+    merged as a stat so it can't leak into the merged dict. Bool flags
+    (``dot_can_crit``, ``poison_immunity``, ...) are never scaled, and stats
+    in ``_AMP_EXCLUDED_STATS`` merge at base — they compound multiplicatively
+    elsewhere and amplifying them produced one-shot damage against world bosses.
     """
     if not constitution_type:
         return {}
     from src.data.registry import registry
-    from src.game.systems.the_chat import get_constitutions
+    from src.game.systems.the_chat import effective_constitutions
 
-    keys = get_constitutions(constitution_type)
+    keys = effective_constitutions(constitution_type, active_axis, body_realm)
+    if not keys:
+        return {}
 
-    # First pass — find the highest multiplier among equipped entries and
+    # First pass — find the highest multiplier among active entries and
     # remember which constitution(s) provide it.
     mult = 1.0
     carriers: set[str] = set()
@@ -834,9 +851,14 @@ def advance_cultivation_xp(character: Character, turns: int) -> dict:
 
     raw_exp = turns * realm.base_exp_rate
     # Constitution cultivation_speed_bonus is a multiplicative EXP modifier
-    # (e.g. 1.0 = +100% / ×2 EXP per turn). Stacks additively across multiple
-    # equipped Thể Chất via ``compute_constitution_bonuses``.
-    const_bonuses = compute_constitution_bonuses(character.constitution_type)
+    # (e.g. 1.0 = +100% / ×2 EXP per turn). Stacks additively across the
+    # constitutions the active path actually has slots for — see
+    # ``compute_constitution_bonuses`` for the slot-cap clamp.
+    const_bonuses = compute_constitution_bonuses(
+        character.constitution_type,
+        getattr(character, "active_axis", None),
+        character.body_realm,
+    )
     speed_mult = 1.0 + float(const_bonuses.get("cultivation_speed_bonus", 0.0))
     # Đan Độc penalty — pill toxicity drags down EXP gain. Floored at
     # MIN_CULT_SPEED_MULT so a fully-poisoned player still earns *some*
@@ -871,7 +893,11 @@ def cultivation_speed_mult(character: Character) -> float:
     UI can display the real rate the player will receive (otherwise the
     placeholder shows "1:1" but the spend awards less due to penalties).
     """
-    const_bonuses = compute_constitution_bonuses(character.constitution_type)
+    const_bonuses = compute_constitution_bonuses(
+        character.constitution_type,
+        getattr(character, "active_axis", None),
+        character.body_realm,
+    )
     speed = 1.0 + float(const_bonuses.get("cultivation_speed_bonus", 0.0))
     return max(MIN_CULT_SPEED_MULT, speed - cult_speed_penalty(character.dan_doc))
 
@@ -887,9 +913,7 @@ def study_formation_with_merit(character: Character, merits: int) -> dict:
 
     EXP-per-merit scales with the player's current ``formation_realm`` via
     ``formation_exp_per_merit`` — Khai Huyền insights are cheap, Đế Trận
-    codifications are heavy. The flat ``MERIT_TO_FORMATION_EXP_RATIO`` is
-    no longer used for new spends; it remains exported for tests and
-    legacy importers.
+    codifications are heavy.
     """
     if merits <= 0:
         return {"success": False, "error": "Số lượng Công Đức không hợp lệ."}

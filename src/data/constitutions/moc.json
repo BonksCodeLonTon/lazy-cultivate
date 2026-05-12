@@ -329,7 +329,9 @@
       "wither_aura_pct": 0.006,
       "heal_can_crit": true,
       "dot_dmg_bonus": 0.15,
-      "poison_dmg_bonus": 0.18
+      "dot_dmg_bonus_by_kind": {
+        "poison": 0.18
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -417,9 +419,11 @@
       "heal_can_crit": true,
       "mp_pct": 0.2,
       "dot_dmg_bonus": 0.15,
-      "poison_dmg_bonus": 0.2,
       "final_dmg_bonus": 0.15,
-      "wither_aura_pct": 0.02
+      "wither_aura_pct": 0.02,
+      "dot_dmg_bonus_by_kind": {
+        "poison": 0.2
+      }
     },
     "special_requirements": null,
     "materials": {
@@ -447,11 +451,13 @@
       "dot_leech_pct": 0.3,
       "hp_pct": 0.3,
       "dot_dmg_bonus": 0.2,
-      "poison_dmg_bonus": 0.25,
       "mp_regen_pct": 0.04,
       "wither_aura_pct": 0.012,
       "heal_can_crit": true,
-      "heal_pct": 0.2
+      "heal_pct": 0.2,
+      "dot_dmg_bonus_by_kind": {
+        "poison": 0.25
+      }
     },
     "special_requirements": null,
     "materials": {

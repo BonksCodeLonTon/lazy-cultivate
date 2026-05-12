@@ -1,0 +1,264 @@
+[
+  {
+    "key": "NhatNguyenThuy",
+    "vi": "Nhất Nguyên Thủy Trận",
+    "en": "One Origin Water Formation",
+    "element": "thuy",
+    "base_stat_bonus": {
+      "hp_pct": 0.03,
+      "mp_pct": 0.06
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "mp_pct": 0.03,
+        "note": "Sơ Khai Thủy Trận"
+      },
+      "3": {
+        "mp_pct": 0.08,
+        "note": "Kiên Cố Thủy Trận"
+      },
+      "5": {
+        "mp_pct": 0.15,
+        "cooldown_reduce": 0.05,
+        "note": "Thịnh Vượng Thủy Trận"
+      },
+      "7": {
+        "mp_pct": 0.25,
+        "cooldown_reduce": 0.1,
+        "note": "Vô Song Thủy Trận"
+      },
+      "10": {
+        "mp_pct": 0.5,
+        "cooldown_reduce": 0.2,
+        "reflect_pct": 0.1,
+        "note": "Tuyệt Đỉnh Thủy Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmThuy",
+      "vi": "Nhất Nguyên Thủy Thức",
+      "en": "One Origin Water Form",
+      "scroll_grade": 2,
+      "category": "formation",
+      "element": "thuy",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 1.0
+      },
+      "mp_cost": 52,
+      "cooldown": 3,
+      "base_dmg": 330,
+      "effects": [
+        "DebuffThuyXuyenThau"
+      ],
+      "reserved_mp_pct": 0.06
+    }
+  },
+  {
+    "key": "NhatNguyenBang",
+    "vi": "Nhất Nguyên Băng Trận",
+    "en": "One Origin Ice Formation",
+    "element": "thuy",
+    "base_stat_bonus": {
+      "hp_pct": 0.04,
+      "mp_pct": 0.05
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "hp_pct": 0.03,
+        "note": "Sơ Khai Băng Trận"
+      },
+      "3": {
+        "hp_pct": 0.08,
+        "note": "Kiên Cố Băng Trận"
+      },
+      "5": {
+        "hp_pct": 0.15,
+        "slow_on_hit_pct": 0.1,
+        "note": "Thịnh Vượng Băng Trận"
+      },
+      "7": {
+        "hp_pct": 0.25,
+        "slow_on_hit_pct": 0.2,
+        "note": "Vô Song Băng Trận"
+      },
+      "10": {
+        "hp_pct": 0.5,
+        "slow_on_hit_pct": 0.3,
+        "freeze_on_skill_chance": 0.15,
+        "note": "Tuyệt Đỉnh Băng Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmBang",
+      "vi": "Nhất Nguyên Băng Thức",
+      "en": "One Origin Ice Form",
+      "scroll_grade": 2,
+      "category": "formation",
+      "element": "thuy",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 1.0
+      },
+      "mp_cost": 52,
+      "cooldown": 3,
+      "base_dmg": 330,
+      "effects": [
+        "DebuffDongBang"
+      ],
+      "reserved_mp_pct": 0.06
+    }
+  },
+  {
+    "key": "ThienNhatSinhThuy",
+    "vi": "Thiên Nhất Sinh Thủy Trận",
+    "en": "Heaven-One Birthing Water Formation",
+    "element": "thuy",
+    "base_stat_bonus": {
+      "mp_pct": 0.05,
+      "element_dmg_bonus": {
+        "thuy": 0.10
+      },
+      "element_mp_cost_mult": {
+        "thuy": 2.0
+      }
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "mp_pct": 0.05,
+        "mp_regen_pct": 0.01,
+        "note": "Sơ Khai Thiên Nhất Trận"
+      },
+      "3": {
+        "mp_pct": 0.10,
+        "mp_regen_pct": 0.02,
+        "note": "Kiên Cố Thiên Nhất Trận"
+      },
+      "5": {
+        "mp_pct": 0.20,
+        "mp_regen_pct": 0.03,
+        "note": "Thịnh Vượng Thiên Nhất Trận"
+      },
+      "7": {
+        "mp_pct": 0.35,
+        "mp_regen_pct": 0.05,
+        "note": "Vô Song Thiên Nhất Trận"
+      },
+      "10": {
+        "mp_pct": 0.60,
+        "mp_regen_pct": 0.08,
+        "element_dmg_bonus": {
+          "thuy": 0.10
+        },
+        "element_mp_cost_mult": {
+          "thuy": 2.0
+        },
+        "note": "Tuyệt Đỉnh Thiên Nhất Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmThienNhatThuy",
+      "vi": "Thiên Nhất Sinh Thủy Thức",
+      "en": "Heaven-One Birthing Water Form",
+      "scroll_grade": 2,
+      "category": "formation",
+      "element": "thuy",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 60,
+      "cooldown": 3,
+      "base_dmg": 0,
+      "debuff_only": true,
+      "effects": [],
+      "reserved_mp_pct": 0.20,
+      "description_vi": "Thiên Nhất Sinh Thủy Thức — bản thân không gây sát thương. Toàn bộ giá trị nằm ở passive trận pháp: +10% Sát Thương Thủy và khuếch đại MP cost của thủy lên ×3 (→ ×5 ở 10 ngọc), từ đó khuếch đại sát thương đòn niệm Thủy theo công thức `DMG = base + mp_cost`."
+    }
+  },
+  {
+    "key": "CuuKhucHoangHa",
+    "vi": "Cửu Khúc Hoàng Hà",
+    "en": "Nine-Bend Yellow River",
+    "element": "thuy",
+    "base_stat_bonus": {
+      "matk": 30,
+      "atk": 20,
+      "cuu_khuc": {
+        "per_hit": 1,
+        "atk_reduce_pct": 0.10,
+        "res_shred_pct": 0.10,
+        "followup_pct": 0.40,
+        "followup_skill_key": "SkillAtkThuyLongDan_R7"
+      }
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "matk": 20,
+        "atk": 15,
+        "note": "Sơ Khai Cửu Khúc Trận"
+      },
+      "3": {
+        "matk": 40,
+        "atk": 30,
+        "cuu_khuc": {
+          "atk_reduce_pct": 0.03
+        },
+        "note": "Kiên Cố Cửu Khúc Trận"
+      },
+      "5": {
+        "matk": 80,
+        "atk": 60,
+        "cuu_khuc": {
+          "atk_reduce_pct": 0.05,
+          "res_shred_pct": 0.03
+        },
+        "note": "Thịnh Vượng Cửu Khúc Trận"
+      },
+      "7": {
+        "matk": 140,
+        "atk": 110,
+        "cuu_khuc": {
+          "atk_reduce_pct": 0.08,
+          "res_shred_pct": 0.05
+        },
+        "note": "Vô Song Cửu Khúc Trận"
+      },
+      "10": {
+        "matk": 240,
+        "atk": 200,
+        "cuu_khuc": {
+          "atk_reduce_pct": 0.10,
+          "res_shred_pct": 0.10,
+          "followup_pct": 0.60
+        },
+        "note": "Tuyệt Đỉnh Cửu Khúc Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmCuuKhuc",
+      "vi": "Cửu Khúc Hoàng Hà Thức",
+      "en": "Nine-Bend Yellow River Form",
+      "scroll_grade": 2,
+      "category": "formation",
+      "element": "thuy",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 55,
+      "cooldown": 3,
+      "base_dmg": 0,
+      "debuff_only": true,
+      "effects": [
+        "DebuffCuuKhuc"
+      ],
+      "reserved_mp_pct": 0.08,
+      "description_vi": "Cửu Khúc Hoàng Hà Thức — bản thân không gây sát thương; chỉ in thêm 1 tầng Cửu Khúc Ấn khi song-phát. Hiệu ứng chính nằm ở passive: mỗi đòn niệm gây sát thương của thí chủ tự động in 1 tầng. **3 ấn**: -atk/-matk; **6 ấn**: thêm -kháng Thủy; **9 ấn**: mỗi đòn tấn công đều khởi động Thủy Long Đạn (40% phổ thông → 100% ở 10 ngọc)."
+    }
+  }
+]

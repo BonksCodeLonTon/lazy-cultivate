@@ -12,21 +12,24 @@ from src.game.models.character import Character
 from src.game.constants.balance import (
     REALM_POWER_BONUS_PER_STAGE,
     BASE_MP_REGEN_PCT,
+    COOLDOWN_REDUCE_CAP,
     MAX_FINAL_DMG_REDUCE,
     MAX_ELEMENTAL_RES,
-    DEFAULT_BURN_STACK_CAP,
-    DEFAULT_BURN_PER_STACK_PCT,
-    DEFAULT_BLEED_STACK_CAP,
-    DEFAULT_BLEED_PER_STACK_PCT,
-    DEFAULT_SHOCK_STACK_CAP,
-    DEFAULT_SHOCK_PER_STACK_PCT,
-    DEFAULT_POISON_STACK_CAP,
-    DEFAULT_POISON_PER_STACK_PCT,
     DEFAULT_MANA_STACK_CAP,
     DEFAULT_SHIELD_RECHARGE_DELAY,
 )
 from src.game.constants.elements import ALL_ELEMENTS, RESISTANCE_KEYS
 from src.game.engine import linh_can_effects as lc_effects
+from src.game.systems.combat.helpers import meta_per_stack_pct, meta_stack_cap
+
+# Stack-DoT per-stack damage defaults sourced from EffectMeta entries in
+# effects.py — designers tune the values there; this module just reflects
+# them. Stack caps no longer flow through here — they're read at runtime via
+# ``effective_stack_cap`` (meta.stack_cap + ``stack_cap_bonuses``).
+_BURN_PCT_DEFAULT   = meta_per_stack_pct("burn")
+_BLEED_PCT_DEFAULT  = meta_per_stack_pct("bleed")
+_SHOCK_PCT_DEFAULT  = meta_per_stack_pct("shock")
+_POISON_PCT_DEFAULT = meta_per_stack_pct("poison")
 
 
 def active_formation_gem_keys(player) -> list[str]:
@@ -34,8 +37,8 @@ def active_formation_gem_keys(player) -> list[str]:
 
     ``player.active_formation`` holds a comma-separated list of formation keys
     (one per active slot); this returns the concatenation of each active
-    formation's inlaid gems. Preserves the legacy single-slot return shape
-    when the player has only one formation equipped.
+    formation's inlaid gems. Returns the single-slot list when the player has
+    only one formation equipped.
     """
     from src.game.systems.cultivation import get_active_formations
 
@@ -88,6 +91,8 @@ class CombatStats:
     crit_dmg_rating: int
     evasion_rating: int
     crit_res_rating: int
+    # Counter to the defender's evasion_rating — see engine/damage/evasion.py.
+    accuracy_rating: int
     final_dmg_bonus: float      # includes realm_power_bonus
     final_dmg_reduce: float
     hp_regen_pct: float
@@ -99,23 +104,33 @@ class CombatStats:
     burn_on_hit_pct: float
     slow_on_hit_pct: float
     paralysis_on_crit: bool
-    freeze_on_skill: bool
     freeze_on_skill_chance: float
     poison_immunity: bool
     debuff_immune_pct: float
     # ── Fire-DoT build ────────────────────────────────────────────────────
-    burn_stack_cap: int = DEFAULT_BURN_STACK_CAP
-    burn_per_stack_pct: float = DEFAULT_BURN_PER_STACK_PCT
+    # Stack cap routed through ``Combatant.stack_cap_bonuses`` (gear adds
+    # ``burn_stack_cap_bonus``); ``effective_stack_cap`` folds it on top of
+    # ``EffectMeta.stack_cap``.
+    burn_per_stack_pct: float = _BURN_PCT_DEFAULT
     bonus_dmg_vs_burn: float = 0.0
     dot_can_crit: bool = False
     # ── Kim (bleed) build ─────────────────────────────────────────────────
-    bleed_stack_cap: int = DEFAULT_BLEED_STACK_CAP
-    bleed_per_stack_pct: float = DEFAULT_BLEED_PER_STACK_PCT
+    bleed_per_stack_pct: float = _BLEED_PCT_DEFAULT
     bleed_on_hit_pct: float = 0.0
     bleed_heal_reduce: float = 0.0
-    crit_rating_vs_bleed: int = 0
-    crit_dmg_vs_bleed: int = 0
     true_dmg_pct: float = 0.0
+    # Generic life-steal — heal actor for X% of damage dealt on each hit.
+    # Distinct from ``dot_leech_pct`` (DoT-only) and ``soul_drain_on_hit_pct``
+    # (chance-gated, drains target hp_max). Routed through ``_apply_heal``
+    # so bleed-heal-reduction and heal_can_crit still apply.
+    life_steal_pct: float = 0.0
+    # Hybrid scaling: ``crit_dmg_rating_to_dmg_pct × crit_dmg_rating`` is
+    # added as flat damage to the base roll (engine/damage/base.py). Lets
+    # crit-damage stacking double-dip: rating still controls crit-spike
+    # multiplier AND adds reliable per-hit floor damage. Crucial for the
+    # Phá Thiên-style burst constitutions where crit stat is the primary
+    # offensive investment.
+    crit_dmg_rating_to_dmg_pct: float = 0.0
     # ── Moc (wood/poison-leech/heal) build ────────────────────────────────
     dot_leech_pct: float = 0.0
     damage_from_heal_pct: float = 0.0
@@ -171,24 +186,39 @@ class CombatStats:
     # 50% damage on the second strike. Fits speed/lightning/wind/sword themes.
     multi_strike_pct: float = 0.0
     multi_strike_dmg_pct: float = 0.50
+    # Extra echoes added to ``per_hit_followup`` formation skills (e.g. the
+    # 10-gem Thập Nhị Đô Thiên Thần Sát threshold). Read in
+    # ``fire_formation_skills``; integer count.
+    formation_echo_bonus: int = 0
+    # Multiplier on a ``per_hit_followup`` formation skill's ``base_dmg``.
+    # 0.55 = +55%. Sourced from gem thresholds on the matching formation;
+    # applied in ``cast_skill`` before damage roll. Skill-agnostic on its
+    # own — gated on ``per_hit_followup: true`` so it only amps passive
+    # echo formations and never leaks to standard skill casts.
+    formation_skill_dmg_bonus: float = 0.0
+    # Bumps the effective ``limit`` of summon_spec'd skills by N — used by
+    # Thiên Giới Thẩm Phán's tier-10 gem threshold to allow 2 Đại Thiên Sứ
+    # at once instead of the spec's default 1. Shared field, so any future
+    # singleton-summon skill that wants to elevate its cap can read it.
+    summon_limit_bonus: int = 0
     shield_recharge_delay: int = DEFAULT_SHIELD_RECHARGE_DELAY
     damage_bonus_from_shield_pct: float = 0.0
     thorn_pct: float = 0.0
     thorn_from_shield: bool = False
     stun_on_hit_pct: float = 0.0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
-    shock_stack_cap: int = DEFAULT_SHOCK_STACK_CAP
-    shock_per_stack_pct: float = DEFAULT_SHOCK_PER_STACK_PCT
+    # Stack cap routed through ``stack_cap_bonuses`` (gear adds
+    # ``shock_stack_cap_bonus``).
+    shock_per_stack_pct: float = _SHOCK_PCT_DEFAULT
     shock_on_hit_pct: float = 0.0
     turn_steal_pct: float = 0.0
     # ── Poison stacks (Mộc / Âm) ──────────────────────────────────────────
-    poison_stack_cap: int = DEFAULT_POISON_STACK_CAP
-    poison_per_stack_pct: float = DEFAULT_POISON_PER_STACK_PCT
+    # Stack cap routed through ``stack_cap_bonuses`` (gear adds
+    # ``poison_stack_cap_bonus``).
+    poison_per_stack_pct: float = _POISON_PCT_DEFAULT
     # ── Phong (wind/evasion/mark) build ───────────────────────────────────
     mark_on_hit_pct: float = 0.0
     damage_bonus_from_evasion_pct: float = 0.0
-    crit_rating_vs_marked: int = 0
-    crit_dmg_vs_marked: int = 0
     # ── Quang (light/silence/anti-heal) build ─────────────────────────────
     silence_on_crit_pct: float = 0.0
     heal_reduce_on_hit_pct: float = 0.0
@@ -197,7 +227,13 @@ class CombatStats:
     # ── Âm (shadow/soul-devour) build ─────────────────────────────────────
     soul_drain_on_hit_pct: float = 0.0
     stat_steal_on_hit_pct: float = 0.0
-    crit_rating_vs_drained: int = 0
+    # Conditional crit amps vs targets in specific debuff states — single
+    # nested dict (mirrors element_pen). Outer key = state name ("bleed",
+    # "marked", "drained"); inner keys = "rating" / "dmg". JSON keeps flat
+    # ``crit_rating_vs_<state>`` / ``crit_dmg_vs_<state>`` keys for backwards
+    # compat with equipment/constitution data; translated into this dict in
+    # build_combat_stats. Read at hit-time in damage/combat_hit.py.
+    crit_amp_vs: dict[str, dict[str, int]] = field(default_factory=dict)
     # ── Cross-element penetration — single dict source of truth ───────────
     # Passive attacker-side stat. Stacks additively with target debuffs
     # (DebuffXuyenThau<Elem>, DebuffXeRach via res_all).
@@ -206,10 +242,13 @@ class CombatStats:
     heal_can_crit: bool = False
     # ── DoT damage amplifiers (cross-build) ───────────────────────────────
     dot_dmg_bonus: float = 0.0
-    burn_dmg_bonus: float = 0.0
-    bleed_dmg_bonus: float = 0.0
-    poison_dmg_bonus: float = 0.0
-    # Rare late-game flag: reverts DoTs to the legacy %HP model.
+    # Per-DoT-kind damage amps (additive on top of the cross-kind
+    # ``dot_dmg_bonus``). Keyed by stack_kind (``burn`` / ``bleed`` /
+    # ``poison``). JSON / equipment / linh_can keep flat keys
+    # ``<kind>_dmg_bonus`` — translated into this dict in build_combat_stats.
+    dot_dmg_bonus_by_kind: dict[str, float] = field(default_factory=dict)
+    # Rare late-game flag: switch DoTs from the standard atk/matk-power model
+    # to a %HP-of-target model on this combatant's outgoing DoTs.
     dot_scales_hp_pct: bool = False
     # Per-turn fire aura — deals hp_max × pct to opponent each turn.
     solar_aura_pct: float = 0.0
@@ -243,9 +282,101 @@ class CombatStats:
     # Generic per-element bonus dicts (constitutions / equipment).
     damage_taken_convert_pct: dict[str, float] = field(default_factory=dict)
     element_dmg_bonus: dict[str, float] = field(default_factory=dict)
+    # Per-element max-res cap lifter — see Combatant.element_max_resist_bonus
+    # and effects.effective_res_cap for the consumer side.
+    element_max_resist_bonus: dict[str, float] = field(default_factory=dict)
+    # Per-element MP cost multiplier (extra cost on top of base 1.0×) — see
+    # combatant.element_mp_cost_mult for the read side.
+    element_mp_cost_mult: dict[str, float] = field(default_factory=dict)
+    # Cửu Khúc Hoàng Hà formation tunables — single dict (mirrors element_pen
+    # / dmg_taken / toa_hon_amp). JSON declares
+    # ``cuu_khuc: {per_hit, atk_reduce_pct, res_shred_pct, followup_pct,
+    # followup_skill_key}``. Numbers merge additively across gem thresholds
+    # (per ``_merge_bonus_dict``); ``followup_skill_key`` is last-write-wins.
+    # ``per_hit`` > 0 enables the per-skill auto-stamp; the three pcts carry
+    # the threshold-tier magnitudes that get snapshotted onto the target on
+    # apply; ``followup_skill_key`` is the chain target at full Cửu Khúc.
+    cuu_khuc: dict = field(default_factory=dict)
+    # Xích Luyện Tỏa Hồn Trận tunables — extra stat_bonus deltas layered on
+    # top of DebuffXichLuyenToaHon's base values at apply time. Mirrors
+    # ``element_pen`` / ``dmg_taken``: JSON declares
+    # ``toa_hon_amp: {"evasion_rating_pct": -0.05, "mp_regen_pct": -0.05, ...}``
+    # and the apply-time merge in casting.py adds each entry directly to the
+    # debuff's stat_bonus. Keys MUST match the debuff's stat keys verbatim
+    # (no translation step).
+    toa_hon_amp: dict[str, float] = field(default_factory=dict)
+    # Reusable per-element "damage taken" amps the holder contributes to its
+    # debuffs. Mirrors ``element_pen`` — JSON declares the bonus as
+    # ``dmg_taken: {"hoa": 0.15}`` and any source (formation, equipment,
+    # constitution) can write to any element. At apply time the relevant
+    # entry is stamped onto a target debuff's stat_bonus under the flat
+    # ``<name>_dmg_taken`` key (see ELEMENT_DMG_TAKEN_KEYS), then consumed by
+    # the damage pipeline's apply_elemental step.
+    dmg_taken: dict[str, float] = field(default_factory=dict)
     mp_reserved: int = 0          # MP locked by active formation
     mp_reserve_pct: float = 0.0   # fraction of raw mp_max that's reserved
     resistances: dict[str, float] = field(default_factory=dict)
+    # Generic stack-cap bonuses keyed by effect_key — gear/constitution/Linh
+    # Căn ``<kind>_stack_cap_bonus`` keys are routed here at build time.
+    # ``effective_stack_cap`` reads from ``combatant.stack_cap_bonuses``.
+    stack_cap_bonuses: dict[str, int] = field(default_factory=dict)
+
+    @property
+    def shield_max(self) -> int:
+        """Persistent shield cap from base + flat + pct contributions.
+
+        Mirrors ``Combatant.shield_cap`` but excludes runtime-only sources
+        (active buffs, ``shield_max_per_spd``) — used to seed the player's
+        ``shield_current`` column post-battle and at character creation.
+        """
+        flat = self.shield_max_base + self.shield_max_flat
+        return max(0, int(flat * (1.0 + self.shield_max_pct)))
+
+
+# ── Grouped-key denesting ────────────────────────────────────────────────
+# JSON authors prefer the nested ``element_pen`` / ``dmg_taken`` shape
+# (single key with a sub-dict per element/kind/state). The legacy bonus reads
+# in build_combat_stats use flat keys (``burn_dmg_bonus``, ``crit_rating_vs_<state>``,
+# …). This pass flattens grouped → flat in-place so authors get the clean
+# nested JSON without forcing every read site to switch. Existing flat keys
+# in older data continue to work — the denester only *adds* flat keys when a
+# nested counterpart is present.
+
+# Nested-key → ``(suffix_template, value_converter)`` describing how each
+# inner key maps to a flat key. ``{}`` placeholder is replaced by the inner
+# key. ``crit_amp_vs`` is special-cased below because its inner value is a
+# dict, not a scalar.
+_GROUPED_FLAT_KEYS: dict[str, tuple[str, type]] = {
+    "dot_dmg_bonus_by_kind":   ("{}_dmg_bonus",            float),
+    "dot_stack_cap_bonus":     ("{}_stack_cap_bonus",      int),
+    "dot_per_stack_pct_bonus": ("{}_per_stack_pct_bonus",  float),
+}
+
+
+def _denest_grouped_bonuses(bonuses: dict) -> None:
+    """Flatten author-friendly nested keys into the flat read-site keys.
+
+    Mutates ``bonuses`` in place. Safe to call multiple times — pops the
+    nested entry after fanning it out so a second call is a no-op.
+    """
+    for grouped_key, (template, conv) in _GROUPED_FLAT_KEYS.items():
+        nested = bonuses.pop(grouped_key, None)
+        if not nested:
+            continue
+        for inner_key, val in nested.items():
+            flat_key = template.format(inner_key)
+            bonuses[flat_key] = conv(bonuses.get(flat_key, conv(0)) + conv(val))
+    crit_amp = bonuses.pop("crit_amp_vs", None)
+    if crit_amp:
+        for state, amps in crit_amp.items():
+            if not isinstance(amps, dict):
+                continue
+            r = int(amps.get("rating", 0))
+            d = int(amps.get("dmg", 0))
+            if r:
+                bonuses[f"crit_rating_vs_{state}"] = int(bonuses.get(f"crit_rating_vs_{state}", 0)) + r
+            if d:
+                bonuses[f"crit_dmg_vs_{state}"] = int(bonuses.get(f"crit_dmg_vs_{state}", 0)) + d
 
 
 # ── Finalization helpers ─────────────────────────────────────────────────
@@ -257,16 +388,16 @@ class CombatStats:
 def _apply_formation_mp_reserve(
     mp_max: int,
     form_bonuses: dict,
-    learned_skill_keys: list[str] | None,
+    active_formation_keys: list[str] | None,
     formation_stages: int,
 ) -> tuple[int, int, float]:
     """Lock part of mp_max behind active formations. Two reservation
     sources stack here, both bound by the same MAX cap:
       1. Per-formation gem reservation (from active formation slots' gems)
-      2. Per-skill reservation (from formation skills in the player's bar)
-    The skill reservation replaces the old flat 8% base — bigger formations
-    cost more MP to channel, smaller ones less. Trận Đạo path reduction is
-    already applied inside each helper, so we just sum and re-cap.
+      2. Per-formation channeling cost (the ``formation_skill_key`` tied to
+         each active formation contributes its ``reserved_mp_pct``)
+    Trận Đạo path reduction is already applied inside each helper, so we
+    just sum and re-cap.
 
     Returns: (remaining mp_max, mp_reserved, reserve_pct).
     """
@@ -274,7 +405,7 @@ def _apply_formation_mp_reserve(
     from src.game.systems.cultivation import compute_formation_skill_reserve_pct
 
     skill_reserve_pct = compute_formation_skill_reserve_pct(
-        learned_skill_keys, formation_stages=formation_stages,
+        active_formation_keys, formation_stages=formation_stages,
     )
     raw_reserve = float(form_bonuses.get("_mp_reserve_pct", 0.0)) + skill_reserve_pct
     reserve_pct = max(0.0, min(FORMATION_MAX_RESERVE_PCT, raw_reserve))
@@ -363,7 +494,6 @@ def compute_combat_stats(
     equip_stats: dict | None = None,
     gem_keys: list[str] | None = None,
     gem_keys_by_formation: dict[str, list[str]] | None = None,
-    learned_skill_keys: list[str] | None = None,
 ) -> CombatStats:
     """Compute all derived combat stats for a player character.
 
@@ -402,10 +532,11 @@ def compute_combat_stats(
     # Trận Đạo cultivation progress scales formation bonuses: late-game
     # formation cultivators get meaningfully stronger formation effects.
     formation_stages = char.formation_realm * 9 + char.formation_level
+    active_axis = getattr(char, "active_axis", "qi") or "qi"
     active_formations = get_active_formations(char.active_formation)
 
     # Build a per-formation gem map. Callers that only have a flat gem list
-    # (legacy single-formation flow) still work because a single active
+    # (single-formation contexts) still work because a single active
     # formation always owns all the gems.
     if gem_keys_by_formation is None:
         if len(active_formations) == 1 and gem_keys:
@@ -413,15 +544,23 @@ def compute_combat_stats(
         else:
             gem_keys_by_formation = {}
 
+    # Pass active_axis + relevant realms through so the bonus pipeline can
+    # clamp past-cap entries to whatever the current path supports — a
+    # player who switches off body/formation focus stops cashing in on
+    # extra slots until they switch back.
     form_bonuses = compute_formations_bonuses(
         active_formations,
+        active_axis,
+        char.formation_realm,
         gem_keys_by_formation=gem_keys_by_formation,
         formation_stages=formation_stages,
     )
-    const_bonuses = compute_constitution_bonuses(char.constitution_type)
-    # Per-element levels drive the linh_can stat scaling. Falls back to the
-    # legacy list (treated as level 1 each) when ``linh_can_levels`` isn't set
-    # — keeps NPC-style Characters that never went through the DB working.
+    const_bonuses = compute_constitution_bonuses(
+        char.constitution_type, active_axis, char.body_realm,
+    )
+    # Per-element levels drive the linh_can stat scaling. NPC-style Characters
+    # that don't carry ``linh_can_levels`` (built outside the DB pipeline) fall
+    # back to level 1 per element from the bare ``linh_can`` list.
     lc_levels = dict(getattr(char, "linh_can_levels", {}) or {})
     if not lc_levels:
         lc_levels = {elem: 1 for elem in char.linh_can}
@@ -429,17 +568,17 @@ def compute_combat_stats(
 
     # Khí Tu archetype payoff — rewards breadth (many high-level Linh Căn)
     # in the same data-driven shape as Hỗn Độn's all_passives_multiplier.
-    # Gated on is_khi_tu so a Thể-leaning player can't dip into the bonus
-    # by maxing qi later. Compound-offensive stats are excluded for the
-    # same reason they're excluded from Hỗn Độn — preventing one-shot
-    # damage against world bosses.
+    # Gated on is_khi_tu (active_axis == "qi") so off-path players can't
+    # dip into the bonus while focusing body or formation. Compound-offensive
+    # stats are excluded for the same reason they're excluded from Hỗn Độn —
+    # preventing one-shot damage against world bosses.
     from src.game.systems.cultivation import is_khi_tu
     from src.game.constants.balance import LINH_CAN_BREADTH_MAX_MULT
     from src.game.constants.linh_can import linh_can_breadth_multiplier
     _BREADTH_EXCLUDED_STATS: frozenset[str] = frozenset({
         "final_dmg_bonus", "true_dmg_pct", "cooldown_reduce", "final_dmg_reduce",
     })
-    if is_khi_tu(char.body_realm, char.qi_realm, char.formation_realm):
+    if is_khi_tu(active_axis):
         breadth_mult = linh_can_breadth_multiplier(lc_levels)
         if breadth_mult > 1.0:
             scaled: dict = {}
@@ -458,6 +597,12 @@ def compute_combat_stats(
         lc_bonuses["hp_regen_pct"] = lc_bonuses.get("hp_regen_pct", 0.0) + moc_regen
 
     bonuses = merge_bonuses(form_bonuses, const_bonuses, lc_bonuses)
+    # Flatten grouped author-friendly nested keys into the flat keys the
+    # rest of this function already reads. Authors can declare:
+    #   ``dot_dmg_bonus_by_kind: {"burn": 0.15}``
+    # in JSON / passive_bonus / gem thresholds and it lands here as
+    # ``burn_dmg_bonus: 0.15`` — same data, no churn on the read sites.
+    _denest_grouped_bonuses(bonuses)
 
     # ── Base stats from cultivation ───────────────────────────────────────────
     hp_max   = compute_hp_max(char, bonuses)
@@ -484,6 +629,7 @@ def compute_combat_stats(
     crit_dmg_rating = char.stats.crit_dmg_rating + bonuses.get("crit_dmg_rating", 0)
     evasion_rating  = char.stats.evasion_rating  + bonuses.get("evasion_rating", 0)
     crit_res_rating = char.stats.crit_res_rating + bonuses.get("crit_res_rating", 0)
+    accuracy_rating = bonuses.get("accuracy_rating", 0)
 
     final_dmg_bonus  = char.stats.final_dmg_bonus + bonuses.get("final_dmg_bonus", 0.0) + realm_power_bonus
     final_dmg_reduce = bonuses.get("final_dmg_reduce", 0.0)
@@ -496,8 +642,19 @@ def compute_combat_stats(
 
     # On-hit / on-crit procs from formation thresholds
     burn_on_hit_pct   = bonuses.get("burn_on_hit_pct", 0.0)
-    burn_stack_cap_bonus = int(bonuses.get("burn_stack_cap_bonus", 0))
-    burn_per_stack_pct_bonus = float(bonuses.get("burn_per_stack_pct_bonus", 0.0))
+    # Per-DoT-kind stack bonuses (burn/bleed/poison). JSON / equipment /
+    # constitution data keep flat ``<kind>_stack_cap_bonus`` and
+    # ``<kind>_per_stack_pct_bonus`` keys; aggregated into kind-keyed dicts
+    # below so the equip merge / Combatant wiring stays a single loop. Final
+    # ``stack_cap_bonuses`` (debuff-keyed) is built further down; per-stack
+    # pcts feed the engine's scalar Combatant fields at construction.
+    _STACK_DOT_KINDS = ("burn", "bleed", "poison")
+    _stack_cap_bonus_by_kind: dict[str, int] = {
+        k: int(bonuses.get(f"{k}_stack_cap_bonus", 0)) for k in _STACK_DOT_KINDS
+    }
+    _per_stack_pct_bonus_by_kind: dict[str, float] = {
+        k: float(bonuses.get(f"{k}_per_stack_pct_bonus", 0.0)) for k in _STACK_DOT_KINDS
+    }
     bonus_dmg_vs_burn = float(bonuses.get("bonus_dmg_vs_burn", 0.0))
     dot_can_crit      = bool(bonuses.get("dot_can_crit", False))
     # Per-element penetration — single dict-of-dicts pulled from bonuses.
@@ -506,14 +663,23 @@ def compute_combat_stats(
     element_pen: dict[str, float] = {
         e: float(v) for e, v in (bonuses.get("element_pen") or {}).items()
     }
-    # Kim-build fields
+    # Kim-build fields (bleed stack/per-stack pcts consolidated above in
+    # ``_stack_cap_bonus_by_kind`` / ``_per_stack_pct_bonus_by_kind``)
     bleed_on_hit_pct        = float(bonuses.get("bleed_on_hit_pct", 0.0))
-    bleed_stack_cap_bonus   = int(bonuses.get("bleed_stack_cap_bonus", 0))
-    bleed_per_stack_pct_bonus = float(bonuses.get("bleed_per_stack_pct_bonus", 0.0))
     bleed_heal_reduce       = float(bonuses.get("bleed_heal_reduce", 0.0))
-    crit_rating_vs_bleed    = int(bonuses.get("crit_rating_vs_bleed", 0))
-    crit_dmg_vs_bleed       = int(bonuses.get("crit_dmg_vs_bleed", 0))
+    # Conditional crit amps consolidated into ``crit_amp_vs`` (see CombatStats).
+    # JSON keeps flat ``crit_rating_vs_<state>`` / ``crit_dmg_vs_<state>``
+    # keys for backwards compat; translated into the nested dict here.
+    _CRIT_AMP_STATES = ("bleed", "marked", "drained")
+    crit_amp_vs: dict[str, dict[str, int]] = {}
+    for _state in _CRIT_AMP_STATES:
+        _r = int(bonuses.get(f"crit_rating_vs_{_state}", 0))
+        _d = int(bonuses.get(f"crit_dmg_vs_{_state}", 0))
+        if _r or _d:
+            crit_amp_vs[_state] = {"rating": _r, "dmg": _d}
     true_dmg_pct            = float(bonuses.get("true_dmg_pct", 0.0))
+    life_steal_pct           = float(bonuses.get("life_steal_pct", 0.0))
+    crit_dmg_rating_to_dmg_pct = float(bonuses.get("crit_dmg_rating_to_dmg_pct", 0.0))
     # Moc-build fields
     dot_leech_pct            = float(bonuses.get("dot_leech_pct", 0.0))
     damage_from_heal_pct     = float(bonuses.get("damage_from_heal_pct", 0.0))
@@ -550,6 +716,9 @@ def compute_combat_stats(
     kill_buff_cap                = int(bonuses.get("kill_buff_cap", 0))
     multi_strike_pct             = float(bonuses.get("multi_strike_pct", 0.0))
     multi_strike_dmg_pct         = float(bonuses.get("multi_strike_dmg_pct", 0.50))
+    formation_echo_bonus         = max(0, int(bonuses.get("formation_echo_bonus", 0)))
+    formation_skill_dmg_bonus    = max(0.0, float(bonuses.get("formation_skill_dmg_bonus", 0.0)))
+    summon_limit_bonus           = max(0, int(bonuses.get("summon_limit_bonus", 0)))
     # Negative bonus shortens the recharge pause; clamp at 0 (instant regen).
     shield_recharge_delay_bonus  = int(bonuses.get("shield_recharge_delay_bonus", 0))
     damage_bonus_from_shield_pct = float(bonuses.get("damage_bonus_from_shield_pct", 0.0))
@@ -561,14 +730,13 @@ def compute_combat_stats(
     shock_per_stack_pct_bonus    = float(bonuses.get("shock_per_stack_pct_bonus", 0.0))
     shock_on_hit_pct             = float(bonuses.get("shock_on_hit_pct", 0.0))
     turn_steal_pct               = float(bonuses.get("turn_steal_pct", 0.0))
-    # Poison-stack build fields (Mộc / Âm)
-    poison_stack_cap_bonus       = int(bonuses.get("poison_stack_cap_bonus", 0))
-    poison_per_stack_pct_bonus   = float(bonuses.get("poison_per_stack_pct_bonus", 0.0))
+    # Poison-stack build fields (Mộc / Âm) — stack cap & per-stack pct
+    # consolidated above in ``_stack_cap_bonus_by_kind`` / ``_per_stack_pct_bonus_by_kind``.
     # Phong-build fields
     mark_on_hit_pct              = float(bonuses.get("mark_on_hit_pct", 0.0))
     damage_bonus_from_evasion_pct= float(bonuses.get("damage_bonus_from_evasion_pct", 0.0))
-    crit_rating_vs_marked        = int(bonuses.get("crit_rating_vs_marked", 0))
-    crit_dmg_vs_marked           = int(bonuses.get("crit_dmg_vs_marked", 0))
+    # ``crit_rating_vs_marked`` / ``crit_dmg_vs_marked`` and the Âm variants
+    # are now consolidated into ``crit_amp_vs`` above.
     # Quang-build fields
     silence_on_crit_pct          = float(bonuses.get("silence_on_crit_pct", 0.0))
     heal_reduce_on_hit_pct       = float(bonuses.get("heal_reduce_on_hit_pct", 0.0))
@@ -578,12 +746,17 @@ def compute_combat_stats(
     # Âm-build fields
     soul_drain_on_hit_pct        = float(bonuses.get("soul_drain_on_hit_pct", 0.0))
     stat_steal_on_hit_pct        = float(bonuses.get("stat_steal_on_hit_pct", 0.0))
-    crit_rating_vs_drained       = int(bonuses.get("crit_rating_vs_drained", 0))
-    # DoT-amplifier fields (cross-build)
+    # DoT-amplifier fields (cross-build). Per-kind amps consolidate into one
+    # dict (mirrors element_pen / dmg_taken); flat JSON keys
+    # ``burn_dmg_bonus`` / ``bleed_dmg_bonus`` / ``poison_dmg_bonus`` stay
+    # the data-side convention so equipment affixes / linh_can passives /
+    # constitution display strings don't need migration.
     dot_dmg_bonus                = float(bonuses.get("dot_dmg_bonus", 0.0))
-    burn_dmg_bonus               = float(bonuses.get("burn_dmg_bonus", 0.0))
-    bleed_dmg_bonus              = float(bonuses.get("bleed_dmg_bonus", 0.0))
-    poison_dmg_bonus             = float(bonuses.get("poison_dmg_bonus", 0.0))
+    dot_dmg_bonus_by_kind: dict[str, float] = {}
+    for _kind in ("burn", "bleed", "poison"):
+        _v = float(bonuses.get(f"{_kind}_dmg_bonus", 0.0))
+        if _v:
+            dot_dmg_bonus_by_kind[_kind] = _v
     dot_scales_hp_pct            = bool(bonuses.get("dot_scales_hp_pct", False))
     solar_aura_pct               = float(bonuses.get("solar_aura_pct", 0.0))
     wither_aura_pct              = float(bonuses.get("wither_aura_pct", 0.0))
@@ -599,9 +772,51 @@ def compute_combat_stats(
     loot_luck_bonus              = float(bonuses.get("loot_luck_bonus", 0.0))
     damage_taken_convert_pct: dict[str, float] = dict(bonuses.get("damage_taken_convert_pct", {}) or {})
     element_dmg_bonus: dict[str, float] = dict(bonuses.get("element_dmg_bonus", {}) or {})
+    # Per-element max-res cap lifters. Two JSON shapes are accepted:
+    #   "element_max_resist_bonus": {"hoa": 0.10, "kim": 0.05}     (preferred dict)
+    #   "hoa_max_resist_bonus": 0.10, "kim_max_resist_bonus": 0.05  (flat keys)
+    # Both flow into the same dict; combined at build time via additive merge.
+    element_max_resist_bonus: dict[str, float] = dict(
+        bonuses.get("element_max_resist_bonus", {}) or {}
+    )
+    for _elem in ALL_ELEMENTS:
+        _ek = _elem.value
+        _flat = float(bonuses.get(f"{_ek}_max_resist_bonus", 0.0))
+        if _flat:
+            element_max_resist_bonus[_ek] = (
+                element_max_resist_bonus.get(_ek, 0.0) + _flat
+            )
+    # Per-element MP cost multiplier (extra cost on top of base 1.0×). Comes
+    # from formations like Thiên Nhất Sinh Thủy Trận that amplify a single
+    # element's MP outlay (and damage, via the base + mp_cost formula).
+    element_mp_cost_mult: dict[str, float] = dict(bonuses.get("element_mp_cost_mult", {}) or {})
+    # Cửu Khúc Hoàng Hà formation tunables — single dict (see CombatStats).
+    # Followup chain power capped at 1.0 so misconfigured stacks can't push
+    # past 100 % and double-trigger the formula.
+    _ck_raw = bonuses.get("cuu_khuc") or {}
+    cuu_khuc: dict = {
+        "per_hit":            max(0, int(_ck_raw.get("per_hit", 0))),
+        "atk_reduce_pct":     max(0.0, float(_ck_raw.get("atk_reduce_pct", 0.0))),
+        "res_shred_pct":      max(0.0, float(_ck_raw.get("res_shred_pct", 0.0))),
+        "followup_pct":       max(0.0, min(1.0, float(_ck_raw.get("followup_pct", 0.0)))),
+        "followup_skill_key": str(_ck_raw.get("followup_skill_key", "")),
+    }
+    # Xích Luyện Tỏa Hồn Trận — single dict pulled from bonuses (mirrors
+    # element_pen / dmg_taken). Clamp each delta to (-1.0, +∞) so a
+    # misconfigured negative stack can't drive a debuff past 100% reduction.
+    toa_hon_amp: dict[str, float] = {
+        k: max(-1.0, float(v))
+        for k, v in (bonuses.get("toa_hon_amp") or {}).items()
+    }
+    # Per-element "damage taken" amps — single dict pulled from bonuses
+    # (mirrors element_pen). Floor each entry at 0 so a misconfigured
+    # negative gem stack can't end up healing a target on the amp step.
+    dmg_taken: dict[str, float] = {
+        e: max(0.0, float(v))
+        for e, v in (bonuses.get("dmg_taken") or {}).items()
+    }
     slow_on_hit_pct   = bonuses.get("slow_on_hit_pct", 0.0)
     paralysis_on_crit = bonuses.get("paralysis_on_crit", False)
-    freeze_on_skill   = bonuses.get("freeze_on_skill", False)
     freeze_on_skill_chance = float(bonuses.get("freeze_on_skill_chance", 0.0))
     poison_immunity   = bonuses.get("poison_immunity", False)
     debuff_immune_pct = bonuses.get("debuff_immune_pct", 0.0)
@@ -630,6 +845,10 @@ def compute_combat_stats(
 
     # ── Equipment bonuses (applied last) ──────────────────────────────────────
     if equip_stats:
+        # Unique items declare ``passive_bonus`` with nested grouped keys
+        # (dot_dmg_bonus_by_kind, crit_amp_vs, …). Denest in place so the
+        # flat ``.get("burn_dmg_bonus", 0.0)`` reads below pick them up.
+        _denest_grouped_bonuses(equip_stats)
         atk             += int(equip_stats.get("atk", 0))
         matk            += int(equip_stats.get("matk", 0))
         def_stat        += int(equip_stats.get("def_stat", 0))
@@ -637,6 +856,7 @@ def compute_combat_stats(
         crit_dmg_rating += int(equip_stats.get("crit_dmg_rating", 0))
         evasion_rating  += int(equip_stats.get("evasion_rating", 0))
         crit_res_rating += int(equip_stats.get("crit_res_rating", 0))
+        accuracy_rating += int(equip_stats.get("accuracy_rating", 0))
         final_dmg_bonus  += equip_stats.get("final_dmg_bonus", 0.0)
         final_dmg_reduce  = min(
             MAX_FINAL_DMG_REDUCE,
@@ -660,21 +880,37 @@ def compute_combat_stats(
 
         # Passive bonuses from unique items (on-hit procs, immunities, etc.)
         burn_on_hit_pct   += equip_stats.get("burn_on_hit_pct", 0.0)
-        burn_stack_cap_bonus    += int(equip_stats.get("burn_stack_cap_bonus", 0))
-        burn_per_stack_pct_bonus+= float(equip_stats.get("burn_per_stack_pct_bonus", 0.0))
+        # Per-kind stack cap / per-stack pct equip merges — single loop over
+        # the burn/bleed/poison kinds.
+        for _kind in _STACK_DOT_KINDS:
+            _stack_cap_bonus_by_kind[_kind] += int(
+                equip_stats.get(f"{_kind}_stack_cap_bonus", 0)
+            )
+            _per_stack_pct_bonus_by_kind[_kind] += float(
+                equip_stats.get(f"{_kind}_per_stack_pct_bonus", 0.0)
+            )
         bonus_dmg_vs_burn += float(equip_stats.get("bonus_dmg_vs_burn", 0.0))
         dot_can_crit       = dot_can_crit or bool(equip_stats.get("dot_can_crit", False))
         # Per-element penetration dict from equip — additive merge.
         for _e, _v in (equip_stats.get("element_pen") or {}).items():
             element_pen[_e] = element_pen.get(_e, 0.0) + float(_v)
-        # Kim-build fields
+        # Kim-build fields (bleed stack cap / per-stack pct merged above
+        # via ``_stack_cap_bonus_by_kind`` / ``_per_stack_pct_bonus_by_kind``)
         bleed_on_hit_pct        += float(equip_stats.get("bleed_on_hit_pct", 0.0))
-        bleed_stack_cap_bonus   += int(equip_stats.get("bleed_stack_cap_bonus", 0))
-        bleed_per_stack_pct_bonus += float(equip_stats.get("bleed_per_stack_pct_bonus", 0.0))
         bleed_heal_reduce       += float(equip_stats.get("bleed_heal_reduce", 0.0))
-        crit_rating_vs_bleed    += int(equip_stats.get("crit_rating_vs_bleed", 0))
-        crit_dmg_vs_bleed       += int(equip_stats.get("crit_dmg_vs_bleed", 0))
+        # Conditional crit amps — merge bleed/marked/drained from equip into
+        # the consolidated crit_amp_vs dict (see CombatStats). Equipment
+        # affixes keep flat keys; translated here.
+        for _state in _CRIT_AMP_STATES:
+            _r = int(equip_stats.get(f"crit_rating_vs_{_state}", 0))
+            _d = int(equip_stats.get(f"crit_dmg_vs_{_state}", 0))
+            if _r or _d:
+                _existing = crit_amp_vs.setdefault(_state, {"rating": 0, "dmg": 0})
+                _existing["rating"] = _existing.get("rating", 0) + _r
+                _existing["dmg"]    = _existing.get("dmg", 0) + _d
         true_dmg_pct            += float(equip_stats.get("true_dmg_pct", 0.0))
+        life_steal_pct           += float(equip_stats.get("life_steal_pct", 0.0))
+        crit_dmg_rating_to_dmg_pct += float(equip_stats.get("crit_dmg_rating_to_dmg_pct", 0.0))
         # Moc-build fields
         dot_leech_pct            += float(equip_stats.get("dot_leech_pct", 0.0))
         damage_from_heal_pct     += float(equip_stats.get("damage_from_heal_pct", 0.0))
@@ -717,14 +953,12 @@ def compute_combat_stats(
         shock_per_stack_pct_bonus    += float(equip_stats.get("shock_per_stack_pct_bonus", 0.0))
         shock_on_hit_pct             += float(equip_stats.get("shock_on_hit_pct", 0.0))
         turn_steal_pct               += float(equip_stats.get("turn_steal_pct", 0.0))
-        # Poison-stack build fields (Mộc / Âm)
-        poison_stack_cap_bonus       += int(equip_stats.get("poison_stack_cap_bonus", 0))
-        poison_per_stack_pct_bonus   += float(equip_stats.get("poison_per_stack_pct_bonus", 0.0))
+        # Poison-stack build fields — stack cap / per-stack pct merged above
+        # in the per-kind loop.
         # Phong-build fields
         mark_on_hit_pct              += float(equip_stats.get("mark_on_hit_pct", 0.0))
         damage_bonus_from_evasion_pct+= float(equip_stats.get("damage_bonus_from_evasion_pct", 0.0))
-        crit_rating_vs_marked        += int(equip_stats.get("crit_rating_vs_marked", 0))
-        crit_dmg_vs_marked           += int(equip_stats.get("crit_dmg_vs_marked", 0))
+        # crit_rating_vs_marked / crit_dmg_vs_marked merged into crit_amp_vs above.
         # Quang-build fields
         silence_on_crit_pct          += float(equip_stats.get("silence_on_crit_pct", 0.0))
         heal_reduce_on_hit_pct       += float(equip_stats.get("heal_reduce_on_hit_pct", 0.0))
@@ -734,12 +968,14 @@ def compute_combat_stats(
         # Âm-build fields
         soul_drain_on_hit_pct        += float(equip_stats.get("soul_drain_on_hit_pct", 0.0))
         stat_steal_on_hit_pct        += float(equip_stats.get("stat_steal_on_hit_pct", 0.0))
-        crit_rating_vs_drained       += int(equip_stats.get("crit_rating_vs_drained", 0))
-        # DoT-amplifier fields
+        # crit_rating_vs_drained merged into crit_amp_vs above.
+        # DoT-amplifier fields. Equipment affixes keep the flat ``<kind>_dmg_bonus``
+        # key convention; merged into the per-kind dict here.
         dot_dmg_bonus                += float(equip_stats.get("dot_dmg_bonus", 0.0))
-        burn_dmg_bonus               += float(equip_stats.get("burn_dmg_bonus", 0.0))
-        bleed_dmg_bonus              += float(equip_stats.get("bleed_dmg_bonus", 0.0))
-        poison_dmg_bonus             += float(equip_stats.get("poison_dmg_bonus", 0.0))
+        for _kind in ("burn", "bleed", "poison"):
+            _v = float(equip_stats.get(f"{_kind}_dmg_bonus", 0.0))
+            if _v:
+                dot_dmg_bonus_by_kind[_kind] = dot_dmg_bonus_by_kind.get(_kind, 0.0) + _v
         dot_scales_hp_pct             = dot_scales_hp_pct or bool(equip_stats.get("dot_scales_hp_pct", False))
         solar_aura_pct               += float(equip_stats.get("solar_aura_pct", 0.0))
         wither_aura_pct              += float(equip_stats.get("wither_aura_pct", 0.0))
@@ -757,6 +993,17 @@ def compute_combat_stats(
             damage_taken_convert_pct[elem] = damage_taken_convert_pct.get(elem, 0.0) + float(val)
         for elem, val in (equip_stats.get("element_dmg_bonus") or {}).items():
             element_dmg_bonus[elem] = element_dmg_bonus.get(elem, 0.0) + float(val)
+        # ``element_max_resist_bonus`` from equipment — dict form merges per-
+        # element; flat ``<elem>_max_resist_bonus`` keys roll up to the same dict.
+        for elem, val in (equip_stats.get("element_max_resist_bonus") or {}).items():
+            element_max_resist_bonus[elem] = element_max_resist_bonus.get(elem, 0.0) + float(val)
+        for _elem in ALL_ELEMENTS:
+            _ek = _elem.value
+            _flat = float(equip_stats.get(f"{_ek}_max_resist_bonus", 0.0))
+            if _flat:
+                element_max_resist_bonus[_ek] = (
+                    element_max_resist_bonus.get(_ek, 0.0) + _flat
+                )
         # Affixes contribute via flat keys: ``element_dmg_all`` adds to every
         # element; ``element_dmg_<elem>`` adds to that one element only.
         # Both fold into the same ``element_dmg_bonus`` dict the combat
@@ -771,15 +1018,20 @@ def compute_combat_stats(
                 element_dmg_bonus[_e.value] = element_dmg_bonus.get(_e.value, 0.0) + bump
         slow_on_hit_pct   += equip_stats.get("slow_on_hit_pct", 0.0)
         paralysis_on_crit  = paralysis_on_crit or bool(equip_stats.get("paralysis_on_crit", False))
-        freeze_on_skill    = freeze_on_skill   or bool(equip_stats.get("freeze_on_skill", False))
         freeze_on_skill_chance += float(equip_stats.get("freeze_on_skill_chance", 0.0))
         poison_immunity    = poison_immunity   or bool(equip_stats.get("poison_immunity", False))
         debuff_immune_pct += equip_stats.get("debuff_immune_pct", 0.0)
         heal_pct          += equip_stats.get("heal_pct", 0.0)
         cooldown_reduce   += equip_stats.get("cooldown_reduce", 0.0)
 
+    # Clamp cumulative CDR after every source has contributed. Constitution +
+    # equipment + gem stacks can push past 200 % on end-game Thể Tu builds;
+    # the cap keeps the per-cast accumulator from refunding faster than the
+    # economy intends.
+    cooldown_reduce = min(cooldown_reduce, COOLDOWN_REDUCE_CAP)
+
     mp_max, mp_reserved, reserve_pct = _apply_formation_mp_reserve(
-        mp_max, form_bonuses, learned_skill_keys, formation_stages,
+        mp_max, form_bonuses, active_formations, formation_stages,
     )
     hp_max, shield_max_base, hp_to_shield_pct = _apply_hp_to_shield(
         hp_max, shield_max_base, hp_to_shield_pct,
@@ -790,6 +1042,37 @@ def compute_combat_stats(
     final_dmg_bonus, hp_regen_pct = _apply_toxicity_penalty(
         char, final_dmg_bonus, hp_regen_pct,
     )
+
+    # ── Player soft-cap pass ──────────────────────────────────────────────
+    # After all gear / constitution / Linh Căn contributions have folded in,
+    # clamp each element's static resistance to the player's effective cap:
+    #   cap = min(MAX_ELEMENTAL_RES, RES_SOFT_CAP + element_max_resist_bonus[elem])
+    # Buff-driven additions at runtime are clamped by the same formula via
+    # ``effective_res_cap``.
+    from src.game.constants.balance import RES_SOFT_CAP
+    for elem in resistances:
+        soft = RES_SOFT_CAP + float(element_max_resist_bonus.get(elem, 0.0))
+        cap = min(MAX_ELEMENTAL_RES, soft)
+        if resistances[elem] > cap:
+            resistances[elem] = cap
+
+    # Stack-cap bonuses dict — gear/constitution/Linh Căn flat caps route
+    # through the same generic ``stack_cap_bonuses`` channel keyed by debuff
+    # effect key. burn/bleed/poison feed in from the consolidated
+    # ``_stack_cap_bonus_by_kind`` dict above; shock keeps its own scalar
+    # since its build path differs from the burn/bleed/poison family.
+    _STACK_KIND_TO_DEBUFF: dict[str, str] = {
+        "burn":   "DebuffThieuDot",
+        "bleed":  "DebuffChayMau",
+        "poison": "DebuffDocTo",
+    }
+    stack_cap_bonuses: dict[str, int] = {}
+    for _kind, _debuff_key in _STACK_KIND_TO_DEBUFF.items():
+        _v = _stack_cap_bonus_by_kind.get(_kind, 0)
+        if _v:
+            stack_cap_bonuses[_debuff_key] = _v
+    if shock_stack_cap_bonus:
+        stack_cap_bonuses["DebuffSocDien"] = shock_stack_cap_bonus
 
     return CombatStats(
         hp_max=hp_max,
@@ -802,6 +1085,7 @@ def compute_combat_stats(
         crit_dmg_rating=crit_dmg_rating,
         evasion_rating=evasion_rating,
         crit_res_rating=crit_res_rating,
+        accuracy_rating=accuracy_rating,
         final_dmg_bonus=final_dmg_bonus,
         final_dmg_reduce=final_dmg_reduce,
         hp_regen_pct=hp_regen_pct,
@@ -813,21 +1097,19 @@ def compute_combat_stats(
         burn_on_hit_pct=burn_on_hit_pct,
         slow_on_hit_pct=slow_on_hit_pct,
         paralysis_on_crit=paralysis_on_crit,
-        freeze_on_skill=freeze_on_skill,
         freeze_on_skill_chance=freeze_on_skill_chance,
         poison_immunity=poison_immunity,
         debuff_immune_pct=debuff_immune_pct,
-        burn_stack_cap=DEFAULT_BURN_STACK_CAP + burn_stack_cap_bonus,
-        burn_per_stack_pct=DEFAULT_BURN_PER_STACK_PCT + burn_per_stack_pct_bonus,
+        burn_per_stack_pct=_BURN_PCT_DEFAULT + _per_stack_pct_bonus_by_kind.get("burn", 0.0),
         bonus_dmg_vs_burn=bonus_dmg_vs_burn,
         dot_can_crit=dot_can_crit,
-        bleed_stack_cap=DEFAULT_BLEED_STACK_CAP + bleed_stack_cap_bonus,
-        bleed_per_stack_pct=DEFAULT_BLEED_PER_STACK_PCT + bleed_per_stack_pct_bonus,
+        bleed_per_stack_pct=_BLEED_PCT_DEFAULT + _per_stack_pct_bonus_by_kind.get("bleed", 0.0),
         bleed_on_hit_pct=bleed_on_hit_pct,
         bleed_heal_reduce=bleed_heal_reduce,
-        crit_rating_vs_bleed=crit_rating_vs_bleed,
-        crit_dmg_vs_bleed=crit_dmg_vs_bleed,
+        crit_amp_vs=crit_amp_vs,
         true_dmg_pct=true_dmg_pct,
+        life_steal_pct=life_steal_pct,
+        crit_dmg_rating_to_dmg_pct=crit_dmg_rating_to_dmg_pct,
         dot_leech_pct=dot_leech_pct,
         damage_from_heal_pct=damage_from_heal_pct,
         damage_bonus_from_hp_pct=damage_bonus_from_hp_pct,
@@ -854,21 +1136,20 @@ def compute_combat_stats(
         kill_buff_cap=max(0, kill_buff_cap),
         multi_strike_pct=max(0.0, min(1.0, multi_strike_pct)),
         multi_strike_dmg_pct=max(0.0, min(2.0, multi_strike_dmg_pct)),
+        formation_echo_bonus=formation_echo_bonus,
+        formation_skill_dmg_bonus=formation_skill_dmg_bonus,
+        summon_limit_bonus=summon_limit_bonus,
         shield_recharge_delay=max(0, DEFAULT_SHIELD_RECHARGE_DELAY + shield_recharge_delay_bonus),
         damage_bonus_from_shield_pct=damage_bonus_from_shield_pct,
         thorn_pct=thorn_pct,
         thorn_from_shield=thorn_from_shield,
         stun_on_hit_pct=stun_on_hit_pct,
-        shock_stack_cap=DEFAULT_SHOCK_STACK_CAP + shock_stack_cap_bonus,
-        shock_per_stack_pct=DEFAULT_SHOCK_PER_STACK_PCT + shock_per_stack_pct_bonus,
+        shock_per_stack_pct=_SHOCK_PCT_DEFAULT + shock_per_stack_pct_bonus,
         shock_on_hit_pct=shock_on_hit_pct,
         turn_steal_pct=turn_steal_pct,
-        poison_stack_cap=DEFAULT_POISON_STACK_CAP + poison_stack_cap_bonus,
-        poison_per_stack_pct=DEFAULT_POISON_PER_STACK_PCT + poison_per_stack_pct_bonus,
+        poison_per_stack_pct=_POISON_PCT_DEFAULT + _per_stack_pct_bonus_by_kind.get("poison", 0.0),
         mark_on_hit_pct=mark_on_hit_pct,
         damage_bonus_from_evasion_pct=damage_bonus_from_evasion_pct,
-        crit_rating_vs_marked=crit_rating_vs_marked,
-        crit_dmg_vs_marked=crit_dmg_vs_marked,
         silence_on_crit_pct=silence_on_crit_pct,
         heal_reduce_on_hit_pct=heal_reduce_on_hit_pct,
         cleanse_on_turn_pct=cleanse_on_turn_pct,
@@ -876,11 +1157,8 @@ def compute_combat_stats(
         heal_can_crit=heal_can_crit,
         soul_drain_on_hit_pct=soul_drain_on_hit_pct,
         stat_steal_on_hit_pct=stat_steal_on_hit_pct,
-        crit_rating_vs_drained=crit_rating_vs_drained,
         dot_dmg_bonus=dot_dmg_bonus,
-        burn_dmg_bonus=burn_dmg_bonus,
-        bleed_dmg_bonus=bleed_dmg_bonus,
-        poison_dmg_bonus=poison_dmg_bonus,
+        dot_dmg_bonus_by_kind=dot_dmg_bonus_by_kind,
         dot_scales_hp_pct=dot_scales_hp_pct,
         solar_aura_pct=solar_aura_pct,
         wither_aura_pct=wither_aura_pct,
@@ -896,8 +1174,14 @@ def compute_combat_stats(
         loot_luck_bonus=loot_luck_bonus,
         damage_taken_convert_pct=damage_taken_convert_pct,
         element_dmg_bonus=element_dmg_bonus,
+        element_mp_cost_mult=element_mp_cost_mult,
+        cuu_khuc=cuu_khuc,
+        toa_hon_amp=toa_hon_amp,
+        dmg_taken=dmg_taken,
         element_pen=element_pen,
         mp_reserved=mp_reserved,
         mp_reserve_pct=reserve_pct,
         resistances=resistances,
+        stack_cap_bonuses=stack_cap_bonuses,
+        element_max_resist_bonus=element_max_resist_bonus,
     )

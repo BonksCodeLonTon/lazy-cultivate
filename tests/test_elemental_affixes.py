@@ -58,9 +58,9 @@ def test_specific_resistance_suffixes_loaded_for_every_element():
 # ── Specific = 2× general ─────────────────────────────────────────────────
 
 def test_specific_damage_is_double_general_at_every_grade():
-    general = registry.affixes["pfx_dmg_elem_all"]["by_grade"]
+    general = registry.affixes["pfx_dmg_elem_all"]["by_realm"]
     for e in ALL_ELEMENTS:
-        spec = registry.affixes[f"pfx_dmg_{e.value}"]["by_grade"]
+        spec = registry.affixes[f"pfx_dmg_{e.value}"]["by_realm"]
         for i, ((g_lo, g_hi), (s_lo, s_hi)) in enumerate(zip(general, spec)):
             assert s_lo == pytest.approx(g_lo * 2.0, rel=1e-3), (
                 f"{e.value} grade {i+1} lo drift"
@@ -71,9 +71,9 @@ def test_specific_damage_is_double_general_at_every_grade():
 
 
 def test_specific_resistance_is_double_general_at_every_grade():
-    general = registry.affixes["sfx_res_all"]["by_grade"]
+    general = registry.affixes["sfx_res_all"]["by_realm"]
     for e in ALL_ELEMENTS:
-        spec = registry.affixes[f"sfx_res_{e.value}"]["by_grade"]
+        spec = registry.affixes[f"sfx_res_{e.value}"]["by_realm"]
         for i, ((g_lo, g_hi), (s_lo, s_hi)) in enumerate(zip(general, spec)):
             assert s_lo == pytest.approx(g_lo * 2.0, rel=1e-3), (
                 f"{e.value} grade {i+1} lo drift"

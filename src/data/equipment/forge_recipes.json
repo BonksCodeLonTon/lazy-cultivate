@@ -4,92 +4,215 @@
     "min_qi_realm": 0,
     "cost_cong_duc": 500,
     "options": [
-      {"materials": [{"mat_grade": 1, "qty": 5}]}
+      {
+        "materials": [
+          {
+            "qty": 5
+          }
+        ]
+      }
     ],
-    "affix_pool": {"prefix": 1, "suffix": 0},
-    "quality_chances": {"hoan": 0.75, "huyen": 0.20, "dia": 0.045, "thien": 0.005}
+    "affix_pool": {
+      "prefix": 1,
+      "suffix": 0
+    },
+    "quality_chances": {
+      "hoan": 0.75,
+      "huyen": 0.2,
+      "dia": 0.045,
+      "thien": 0.005
+    }
   },
   {
     "grade": 2,
     "min_qi_realm": 1,
     "cost_cong_duc": 1500,
     "options": [
-      {"materials": [{"mat_grade": 1, "qty": 5}]},
-      {"materials": [{"mat_grade": 2, "qty": 5}]}
+      {
+        "materials": [
+          {
+            "qty": 5
+          }
+        ]
+      }
     ],
-    "affix_pool": {"prefix": 1, "suffix": 1},
-    "quality_chances": {"hoan": 0.65, "huyen": 0.25, "dia": 0.093, "thien": 0.007}
+    "affix_pool": {
+      "prefix": 1,
+      "suffix": 1
+    },
+    "quality_chances": {
+      "hoan": 0.65,
+      "huyen": 0.25,
+      "dia": 0.093,
+      "thien": 0.007
+    }
   },
   {
     "grade": 3,
     "min_qi_realm": 2,
     "cost_cong_duc": 4000,
     "options": [
-      {"materials": [{"mat_grade": 2, "qty": 5}]}
+      {
+        "materials": [
+          {
+            "qty": 5
+          }
+        ]
+      }
     ],
-    "affix_pool": {"prefix": 1, "suffix": 1},
-    "quality_chances": {"hoan": 0.55, "huyen": 0.30, "dia": 0.141, "thien": 0.009}
+    "affix_pool": {
+      "prefix": 1,
+      "suffix": 1
+    },
+    "quality_chances": {
+      "hoan": 0.55,
+      "huyen": 0.3,
+      "dia": 0.141,
+      "thien": 0.009
+    }
   },
   {
     "grade": 4,
     "min_qi_realm": 3,
     "cost_cong_duc": 12000,
     "options": [
-      {"materials": [{"mat_grade": 2, "qty": 5}]},
-      {"materials": [{"mat_grade": 3, "qty": 5}]}
+      {
+        "materials": [
+          {
+            "qty": 5
+          }
+        ]
+      }
     ],
-    "affix_pool": {"prefix": 2, "suffix": 1},
-    "quality_chances": {"hoan": 0.45, "huyen": 0.35, "dia": 0.1895, "thien": 0.0105}
+    "affix_pool": {
+      "prefix": 2,
+      "suffix": 1
+    },
+    "quality_chances": {
+      "hoan": 0.45,
+      "huyen": 0.35,
+      "dia": 0.1895,
+      "thien": 0.0105
+    }
   },
   {
     "grade": 5,
     "min_qi_realm": 4,
     "cost_cong_duc": 30000,
     "options": [
-      {"materials": [{"mat_grade": 3, "qty": 5}]}
+      {
+        "materials": [
+          {
+            "qty": 5
+          }
+        ]
+      }
     ],
-    "affix_pool": {"prefix": 2, "suffix": 1},
-    "quality_chances": {"hoan": 0.35, "huyen": 0.38, "dia": 0.2575, "thien": 0.0125}
+    "affix_pool": {
+      "prefix": 2,
+      "suffix": 1
+    },
+    "quality_chances": {
+      "hoan": 0.35,
+      "huyen": 0.38,
+      "dia": 0.2575,
+      "thien": 0.0125
+    }
   },
   {
     "grade": 6,
     "min_qi_realm": 5,
     "cost_cong_duc": 80000,
     "options": [
-      {"materials": [{"mat_grade": 3, "qty": 5}]},
-      {"materials": [{"mat_grade": 4, "qty": 5}]}
+      {
+        "materials": [
+          {
+            "qty": 5
+          }
+        ]
+      }
     ],
-    "affix_pool": {"prefix": 2, "suffix": 2},
-    "quality_chances": {"hoan": 0.25, "huyen": 0.40, "dia": 0.3355, "thien": 0.0145}
+    "affix_pool": {
+      "prefix": 2,
+      "suffix": 2
+    },
+    "quality_chances": {
+      "hoan": 0.25,
+      "huyen": 0.4,
+      "dia": 0.3355,
+      "thien": 0.0145
+    }
   },
   {
     "grade": 7,
     "min_qi_realm": 6,
     "cost_cong_duc": 200000,
     "options": [
-      {"materials": [{"mat_grade": 4, "qty": 5}]}
+      {
+        "materials": [
+          {
+            "qty": 5
+          }
+        ]
+      }
     ],
-    "affix_pool": {"prefix": 2, "suffix": 2},
-    "quality_chances": {"hoan": 0.15, "huyen": 0.38, "dia": 0.4535, "thien": 0.0165}
+    "affix_pool": {
+      "prefix": 2,
+      "suffix": 2
+    },
+    "quality_chances": {
+      "hoan": 0.15,
+      "huyen": 0.38,
+      "dia": 0.4535,
+      "thien": 0.0165
+    }
   },
   {
     "grade": 8,
     "min_qi_realm": 7,
     "cost_cong_duc": 500000,
     "options": [
-      {"materials": [{"mat_grade": 5, "qty": 5}]}
+      {
+        "materials": [
+          {
+            "qty": 5
+          }
+        ]
+      }
     ],
-    "affix_pool": {"prefix": 3, "suffix": 2},
-    "quality_chances": {"hoan": 0.08, "huyen": 0.32, "dia": 0.5815, "thien": 0.0185}
+    "affix_pool": {
+      "prefix": 3,
+      "suffix": 2
+    },
+    "quality_chances": {
+      "hoan": 0.08,
+      "huyen": 0.32,
+      "dia": 0.5815,
+      "thien": 0.0185
+    }
   },
   {
     "grade": 9,
     "min_qi_realm": 8,
     "cost_cong_duc": 1500000,
     "options": [
-      {"materials": [{"mat_grade": 6, "qty": 6}]}
+      {
+        "materials": [
+          {
+            "qty": 6
+          }
+        ]
+      }
     ],
-    "affix_pool": {"prefix": 3, "suffix": 3},
-    "quality_chances": {"hoan": 0.03, "huyen": 0.22, "dia": 0.73, "thien": 0.02}
+    "affix_pool": {
+      "prefix": 3,
+      "suffix": 3
+    },
+    "quality_chances": {
+      "hoan": 0.03,
+      "huyen": 0.22,
+      "dia": 0.73,
+      "thien": 0.02
+    }
   }
 ]

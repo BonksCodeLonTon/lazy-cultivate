@@ -18,9 +18,10 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
+from src.data.registry import registry
+
 from src.game.constants.balance import (
     FORMATION_MAX_RESERVE_PCT,
-    GEM_ELEMENT_BASE_BONUS,
     HEAL_CRIT_CHANCE,
     HEAL_CRIT_MULT,
     MAX_CRIT_CHANCE,
@@ -57,6 +58,7 @@ from src.game.constants.realms import (
 )
 from src.utils import emojis
 from src.utils.embed_builder import base_embed
+from src.utils.discord_safe import safe_defer
 
 BackFn = Callable[[discord.Interaction], Awaitable[None]]
 
@@ -92,7 +94,7 @@ def _chapter_overview() -> discord.Embed:
         value=(
             "1. `/cultivate` — Tu luyện AFK để dồn EXP & Công Đức.\n"
             "2. `/breakthrough` — Đột phá khi đạt Bậc 9 của một cảnh giới.\n"
-            "3. `/fight` & `/dungeon` — Tham chiến, săn rơi vật phẩm.\n"
+            "3. `/dungeon` — Tham chiến, săn rơi vật phẩm.\n"
             "4. `/equip`, `/inlay`, `/learn` — Trang bị, khảm ngọc, học kỹ năng.\n"
             "5. `/shop`, `/market` — Mua bán nguyên liệu hiếm."
         ),
@@ -222,7 +224,7 @@ def _chapter_combat() -> discord.Embed:
             f"• Giảm Sát Thương Vật Lý (DEF) tối đa: **{MAX_PHYS_REDUCTION * 100:.0f}%**\n"
             f"• Sát Thương Chuẩn / đòn: **+{TRUE_DMG_PCT_CAP * 100:.0f}%** sát thương đòn (xuyên kháng)\n"
             f"• Hồn Phệ (Âm) / trận: **{SOUL_DRAIN_CAP_PCT * 100:.0f}%** HP gốc\n"
-            f"• Cướp Chỉ Số (Âm) / chỉ số: **{STAT_STEAL_CAP_PCT * 100:.0f}%**\n"
+            f"• Cướp Chỉ Số (Âm) / chỉ số: **{STAT_STEAL_CAP_PCT * 100:.0f}%** chỉ số gốc của bản thân\n"
             f"• Bạo Kích Hồi Máu (Mộc/Quang): **{HEAL_CRIT_CHANCE * 100:.0f}%** chance, "
             f"x{HEAL_CRIT_MULT}"
         ),
@@ -387,7 +389,7 @@ def _chapter_formation() -> discord.Embed:
     )
 
     gem_lines = []
-    for elem, bonuses in GEM_ELEMENT_BASE_BONUS.items():
+    for elem, bonuses in registry.gem_bonus.items():
         d = LINH_CAN_DATA.get(elem, {})
         emoji = d.get("emoji", "💎")
         vi = d.get("vi", elem.title())
@@ -498,7 +500,7 @@ def _chapter_items() -> discord.Embed:
         value=(
             "📜 **Ngọc Giản (Scrolls)** — duy nhất để học kỹ năng (`/learn`).\n"
             "🗡️ **Pháp Bảo (Artifacts)** — 3 slot: Kiếm / Giáp / Pháp Bảo.\n"
-            "💊 **Đan Dược (Elixirs)** — hồi HP/MP, buff, giảm Nghiệp.\n"
+            "💊 **Đan Dược (Pills)** — hồi HP/MP, buff, giảm Nghiệp.\n"
             "💎 **Ngọc Khảm** — 9 hệ + đặc biệt, gắn vào trận pháp.\n"
             "🪨 **Nguyên Liệu** — Đạo Cốt Tinh, Linh Mạch, ore, herb…\n"
             "🎁 **Rương** — `/use` để mở, ra vật phẩm random."
@@ -639,7 +641,8 @@ class HandbookView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         # Select.values is the chosen list — we set max_values=1 so take first.
         chosen = interaction.data["values"][0] if interaction.data else self._current  # type: ignore[index]
         embed = _build_chapter_embed(chosen)
@@ -652,7 +655,8 @@ class HandbookView(discord.ui.View):
                 "Đây không phải cửa sổ của bạn.", ephemeral=True,
             )
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         if self._back_fn is not None:
             await self._back_fn(interaction)
 
@@ -686,7 +690,8 @@ class HandbookCog(commands.Cog, name="Handbook"):
         description="Mở Cẩm Nang — hướng dẫn cơ chế và tính năng",
     )
     async def camnang(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         embed = _build_chapter_embed("overview")
         view = HandbookView(interaction.user.id, "overview", back_fn=None)
         await interaction.followup.send(embed=embed, view=view, ephemeral=True)

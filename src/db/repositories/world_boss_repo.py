@@ -77,8 +77,17 @@ class WorldBossRepository:
         instance.finisher_player_id = finisher_player_id
 
     async def expire_instance(self, instance: WorldBossInstance) -> None:
-        """Mark a boss instance expired without a finisher (time ran out)."""
+        """Mark a boss instance expired without a finisher (time ran out).
+
+        Also flips ``rewards_distributed`` so participants (and top-damage
+        ranks) can claim the leftover rewards via ``/world_boss rewards``.
+        ``finisher_player_id`` stays NULL — ``compute_rewards`` already
+        handles that path: nobody gets the finisher tier, but top-3 still
+        receive the primary chest and the participation tier still pays
+        out.
+        """
         instance.is_active = False
+        instance.rewards_distributed = True
 
     async def apply_damage_atomic(
         self, instance_id: int, damage: int, player_id: int,
@@ -245,7 +254,14 @@ class WorldBossRepository:
     async def list_pending_rewards_for_player(
         self, player_id: int
     ) -> list[WorldBossParticipation]:
-        """Return participations on *killed* bosses the player has not yet claimed."""
+        """Return participations on *finished* bosses the player has not yet claimed.
+
+        ``rewards_distributed=True`` is the single source of truth for
+        "this fight is over and rewards are claimable". It is set both on
+        kill (via ``flag_rewards_distributed``) and on timeout (via
+        ``expire_instance``) so timed-out bosses still pay out top and
+        participation tiers.
+        """
         result = await self._session.execute(
             select(WorldBossParticipation)
             .join(WorldBossInstance)
@@ -253,9 +269,8 @@ class WorldBossRepository:
                 WorldBossParticipation.player_id == player_id,
                 WorldBossParticipation.reward_claimed.is_(False),
                 WorldBossInstance.is_active.is_(False),
-                WorldBossInstance.killed_at.isnot(None),
                 WorldBossInstance.rewards_distributed.is_(True),
             )
-            .order_by(desc(WorldBossInstance.killed_at))
+            .order_by(desc(WorldBossInstance.expires_at))
         )
         return list(result.scalars().all())

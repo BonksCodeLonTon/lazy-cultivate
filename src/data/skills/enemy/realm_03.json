@@ -3,7 +3,6 @@
     "key": "EnemyHoa_T2",
     "vi": "Cường Hỏa Hồng Diệm",
     "en": "Strong Fire Crimson Flame",
-    "realm": 3,
     "category": "attack",
     "element": "hoa",
     "attack_type": "magical",
@@ -13,7 +12,7 @@
     },
     "mp_cost": 20,
     "cooldown": 2,
-    "base_dmg": 35,
+    "base_dmg": 105,
     "effects": [
       "DebuffThieuDot"
     ],
@@ -31,7 +30,6 @@
     "key": "EnemyLoi_T2",
     "vi": "Cường Lôi Xuyên Vân",
     "en": "Strong Thunder Cloud Pierce",
-    "realm": 3,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -41,7 +39,7 @@
     },
     "mp_cost": 22,
     "cooldown": 2,
-    "base_dmg": 40,
+    "base_dmg": 120,
     "effects": [
       "DebuffTeLiet"
     ],
@@ -59,7 +57,6 @@
     "key": "EnemyBang_T2",
     "vi": "Cường Băng Đóng Tâm",
     "en": "Strong Ice Heart Freeze",
-    "realm": 3,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -69,7 +66,7 @@
     },
     "mp_cost": 20,
     "cooldown": 2,
-    "base_dmg": 35,
+    "base_dmg": 105,
     "effects": [
       "DebuffLamCham"
     ],
@@ -89,7 +86,6 @@
     "key": "EnemyKim_T2",
     "vi": "Cường Kim Phá Giáp",
     "en": "Strong Metal Armor Pierce",
-    "realm": 3,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
@@ -99,7 +95,7 @@
     },
     "mp_cost": 18,
     "cooldown": 2,
-    "base_dmg": 30,
+    "base_dmg": 90,
     "effects": [],
     "effect_chances": {},
     "formation_key": null
@@ -108,7 +104,6 @@
     "key": "EnemyMoc_T2",
     "vi": "Cường Mộc Kịch Độc",
     "en": "Strong Wood Lethal Poison",
-    "realm": 3,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -118,7 +113,7 @@
     },
     "mp_cost": 18,
     "cooldown": 2,
-    "base_dmg": 28,
+    "base_dmg": 84,
     "effects": [
       "DebuffDocTo"
     ],
@@ -136,7 +131,6 @@
     "key": "EnemyPhong_T2",
     "vi": "Cường Phong Cắt Mạch",
     "en": "Strong Wind Vein Cut",
-    "realm": 3,
     "category": "attack",
     "element": "phong",
     "attack_type": "physical",
@@ -146,7 +140,7 @@
     },
     "mp_cost": 18,
     "cooldown": 2,
-    "base_dmg": 30,
+    "base_dmg": 90,
     "effects": [
       "DebuffChayMau"
     ],
@@ -164,7 +158,6 @@
     "key": "EnemyTho_T2",
     "vi": "Cường Thổ Nham Thạch",
     "en": "Strong Earth Magma Strike",
-    "realm": 3,
     "category": "attack",
     "element": "tho",
     "attack_type": "physical",
@@ -174,7 +167,7 @@
     },
     "mp_cost": 22,
     "cooldown": 3,
-    "base_dmg": 35,
+    "base_dmg": 105,
     "effects": [
       "DebuffTroBuoc"
     ],
@@ -194,7 +187,6 @@
     "key": "EnemyThuy_T2",
     "vi": "Cường Thủy Băng Tâm",
     "en": "Strong Water Ice Heart",
-    "realm": 3,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -204,7 +196,7 @@
     },
     "mp_cost": 20,
     "cooldown": 2,
-    "base_dmg": 35,
+    "base_dmg": 105,
     "effects": [
       "DebuffLamCham"
     ],
@@ -224,7 +216,6 @@
     "key": "EnemyQuang_T2",
     "vi": "Cường Quang Tịnh Hỏa",
     "en": "Strong Light Cleansing Flame",
-    "realm": 3,
     "category": "attack",
     "element": "quang",
     "attack_type": "magical",
@@ -234,7 +225,7 @@
     },
     "mp_cost": 22,
     "cooldown": 2,
-    "base_dmg": 35,
+    "base_dmg": 105,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -247,7 +238,6 @@
     "key": "EnemyAm_T2",
     "vi": "Cường Âm U Tịch",
     "en": "Strong Shadow Silence",
-    "realm": 3,
     "category": "attack",
     "element": "am",
     "attack_type": "magical",
@@ -257,7 +247,7 @@
     },
     "mp_cost": 22,
     "cooldown": 2,
-    "base_dmg": 35,
+    "base_dmg": 105,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -270,7 +260,6 @@
     "key": "EnemyTribLoi_T2",
     "vi": "Thiên Kiếp Lôi Trung",
     "en": "Tribulation Thunder — Mid",
-    "realm": 3,
     "category": "attack",
     "element": "loi",
     "attack_type": "magical",
@@ -280,7 +269,7 @@
     },
     "mp_cost": 30,
     "cooldown": 2,
-    "base_dmg": 100,
+    "base_dmg": 300,
     "effects": [
       "DebuffTeLiet",
       "DebuffSetDanh"

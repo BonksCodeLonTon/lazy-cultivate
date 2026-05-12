@@ -13,7 +13,7 @@ from src.db.models.formation import FORMATION_GEM_SLOTS
 from src.db.repositories.formation_repo import FormationRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository
-from src.game.constants.grades import Grade
+from src.game.constants.grades import GRADE_LABELS, Grade
 from src.game.constants.realms import FORMATION_REALMS, realm_label
 from src.game.systems.character_stats import active_formation_gem_map
 from src.game.systems.cultivation import (
@@ -29,8 +29,10 @@ from src.game.systems.formation import (
     compute_active_formation_bonuses,
     gem_element,
 )
+from src.game.systems.skills import formation_activation_would_exceed_cap
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.pagination import PAGE_SIZE, add_page_controls, page_slice, total_pages
+from src.utils.discord_safe import safe_defer
 
 log = logging.getLogger(__name__)
 
@@ -47,44 +49,141 @@ _GEM_EMOJI = {
 # Stat keys whose value is a fraction (0.18 → "18.0%"). Anything not listed is
 # treated as a flat integer rating (formatted as "+1,234").
 _PCT_STAT_KEYS = frozenset({
+    # Core damage / defense
     "hp_pct", "mp_pct", "final_dmg_bonus", "final_dmg_reduce",
     "hp_regen_pct", "mp_regen_pct", "cooldown_reduce",
-    "burn_on_hit_pct", "slow_on_hit_pct",
-    "mark_on_hit_pct", "damage_bonus_from_evasion_pct",
+    "heal_pct", "true_dmg_pct", "debuff_immune_pct",
+    "all_element_bonus", "res_all",
+    # On-hit / proc chances
+    "burn_on_hit_pct", "slow_on_hit_pct", "mark_on_hit_pct",
+    "bleed_on_hit_pct", "shock_on_hit_pct", "stun_on_hit_pct",
+    "soul_drain_on_hit_pct", "stat_steal_on_hit_pct",
+    "silence_on_crit_pct", "cleanse_on_turn_pct", "heal_reduce_on_hit_pct",
+    "freeze_on_skill_chance",
+    # Damage-of-DoT scaling
+    "burn_dmg_bonus", "dot_dmg_bonus", "poison_dmg_bonus",
+    # Stack / shield modifiers
+    "shock_per_stack_pct_bonus", "shield_regen_pct", "shield_max_pct",
+    # Thorn / reflect / leech
+    "thorn_pct", "reflect_pct", "mp_leech_pct",
+    # Phong build (mark / evasion synergy)
+    "damage_bonus_from_evasion_pct",
+    "damage_bonus_from_hp_pct", "damage_bonus_from_mp_pct",
+    # Misc
+    "turn_steal_pct",
 })
 
-# Vietnamese labels used by both the per-formation detail and aggregated views.
+# Vietnamese labels for every stat formations (or sockets) can emit. Keys not
+# in this map fall through ``_STAT_NAME_VI.get(k, k)`` to the raw key — that
+# was the source of the "raw text" rows the user saw.
 _STAT_NAME_VI = {
+    # Core
     "hp_pct": "HP", "mp_pct": "MP",
     "final_dmg_bonus": "Tăng ST", "final_dmg_reduce": "Giảm ST",
     "hp_regen_pct": "Hồi HP%", "mp_regen_pct": "Hồi MP%",
+    "hp_regen_flat": "Hồi HP", "mp_regen_flat": "Hồi MP",
     "cooldown_reduce": "Hồi Chiêu-",
+    "heal_pct": "Trị Liệu", "true_dmg_pct": "ST Chuẩn",
+    "debuff_immune_pct": "Miễn Debuff",
+    # Combat ratings
     "crit_rating": "Bạo Kích",
     "crit_dmg_rating": "Bạo Thương",
     "crit_res_rating": "Kháng Bạo",
     "evasion_rating": "Né",
+    "spd_bonus": "Tốc Độ",
+    "dmg_reduce_flat": "Giảm ST Cố Định",
+    # Resistances
     "res_element": "Kháng Hệ",
     "res_all": "Kháng TN",
-    "spd_bonus": "Tốc Độ",
+    "all_element_bonus": "ST Mọi Hệ",
+    # On-hit / proc chances
     "burn_on_hit_pct": "Thiêu Đốt",
     "slow_on_hit_pct": "Làm Chậm",
+    "mark_on_hit_pct": "Tỉ Lệ Đánh Dấu",
+    "bleed_on_hit_pct": "Chảy Máu",
+    "shock_on_hit_pct": "Sốc Điện",
+    "stun_on_hit_pct": "Choáng",
+    "soul_drain_on_hit_pct": "Hút Hồn",
+    "stat_steal_on_hit_pct": "Cướp Chỉ Số",
+    "silence_on_crit_pct": "Cấm Phép (BK)",
+    "cleanse_on_turn_pct": "Thanh Tẩy",
+    "heal_reduce_on_hit_pct": "Giảm Hồi Phục",
+    "freeze_on_skill_chance": "Đóng Băng (Skill)",
+    # DoT damage modifiers
+    "burn_dmg_bonus": "ST Thiêu Đốt",
+    "dot_dmg_bonus": "ST DoT",
+    "poison_dmg_bonus": "ST Độc",
+    # Stacks / cap bumps
+    "shock_per_stack_pct_bonus": "Sốc Điện/Stack",
+    "shock_stack_cap_bonus": "Cap Sốc Điện",
+    "bleed_stack_cap_bonus": "Cap Chảy Máu",
+    # Shield / barrier
+    "shield_regen_pct": "Hồi Khiên%",
+    "shield_regen_flat": "Hồi Khiên",
+    "shield_max_pct": "Khiên Tối Đa",
+    # Defensive procs
+    "thorn_pct": "Phản Sát Thương",
+    "reflect_pct": "Phản Đòn",
+    "mp_leech_pct": "Hút MP",
     # Phong build (mark / evasion synergy)
-    "mark_on_hit_pct":              "Tỉ Lệ Đánh Dấu",
-    "damage_bonus_from_evasion_pct": "ST Dựa Trên Né",
-    "crit_rating_vs_marked":        "Bạo Kích vs Đ.Dấu",
-    "crit_dmg_vs_marked":           "Bạo Thương vs Đ.Dấu",
+    "damage_bonus_from_evasion_pct": "ST Theo Né",
+    "damage_bonus_from_hp_pct": "ST Theo HP",
+    "damage_bonus_from_mp_pct": "ST Theo MP",
+    "crit_rating_vs_marked": "Bạo Kích vs Đ.Dấu",
+    "crit_dmg_vs_marked": "Bạo Thương vs Đ.Dấu",
+    "crit_rating_vs_bleed": "Bạo Kích vs Chảy Máu",
+    "crit_dmg_vs_bleed": "Bạo Thương vs Chảy Máu",
+    "crit_rating_vs_drained": "Bạo Kích vs Hút Hồn",
+    "crit_dmg_vs_drained": "Bạo Thương vs Hút Hồn",
+    # Misc
+    "turn_steal_pct": "Cướp Lượt",
+}
+
+# Bool-style flags — emitted by formations and unique gems alike. Rendered as
+# "✨ Label" lines (no value), skipped silently when False.
+_BOOL_STAT_LABELS = {
+    "dot_can_crit":       "🔥 DoT Có Thể Bạo Kích",
+    "heal_can_crit":      "💚 Trị Liệu Có Thể Bạo Kích",
+    "barrier_on_cleanse": "🛡️ Thanh Tẩy Tạo Khiên",
+    "thorn_from_shield":  "🌵 Phản Đòn Từ Khiên",
+    "paralysis_on_crit":  "⚡ Bạo Kích Gây Tê Liệt",
+    "poison_immunity":    "🪬 Miễn Nhiễm Độc",
+    "sword_aura":         "🗡️ Kiếm Khí",
 }
 
 
 def _format_bonus_lines(bonuses: dict) -> list[str]:
-    """Render a formation bonus dict as ``"• Label: **+value**"`` lines."""
+    """Render a formation bonus dict as ``"• Label: **+value**"`` lines.
+
+    Handles three value shapes:
+      • numeric (int/float) — formatted as percent if key is in
+        ``_PCT_STAT_KEYS``, otherwise as a flat ``+1,234`` rating.
+      • bool — rendered as ``_BOOL_STAT_LABELS[k]`` when True.
+      • dict — only ``element_pen`` is supported (per-element penetration);
+        each non-zero entry becomes one line.
+
+    Underscore-prefixed keys (``_mp_reserve_pct``) and ``note`` are private
+    metadata and never rendered. Values that round to zero are also skipped
+    so the embed doesn't carry "+0%" filler rows.
+    """
     lines: list[str] = []
     for k, v in bonuses.items():
         if k.startswith("_") or k == "note":
             continue
+        # Per-element penetration: dict-of-element → one labelled line each.
+        if k == "element_pen" and isinstance(v, dict):
+            for elem, pct in v.items():
+                if not isinstance(pct, (int, float)) or abs(pct) < 0.0005:
+                    continue
+                elem_vi = _GEM_ELEMENT_VI.get(elem, str(elem).title())
+                lines.append(f"• Xuyên Kháng {elem_vi}: **+{pct * 100:.1f}%**")
+            continue
         if isinstance(v, bool):
             if v:
-                lines.append(f"✨ **{_STAT_NAME_VI.get(k, k)}**")
+                # Prefer the rich bool label table; fall back to the regular
+                # Vietnamese map so unmapped keys still get a non-raw label.
+                label = _BOOL_STAT_LABELS.get(k) or f"✨ **{_STAT_NAME_VI.get(k, k)}**"
+                lines.append(label)
             continue
         if not isinstance(v, (int, float)):
             continue
@@ -116,16 +215,13 @@ def _formation_hub_embed(player, active_forms: list[dict], form_bonuses: dict, g
     """Hub embed — renders every active formation slot plus aggregate bonuses.
 
     - When no formations are active: zero-state card.
-    - When one is active: legacy single-formation detail view (unchanged shape
-      for existing users).
+    - When one is active: single-formation detail view.
     - When multiple are active: multi-slot summary card listing each slot.
     """
     stages = player.formation_realm * 9 + player.formation_level
     path_mult = formation_path_multiplier(stages)
     path_label = realm_label("formation", player.formation_realm, player.formation_xp)
-    slot_cap = max_formation_slots(
-        player.body_realm, player.qi_realm, player.formation_realm,
-    )
+    slot_cap = max_formation_slots(player.active_axis, player.formation_realm)
 
     if not active_forms:
         desc = (
@@ -281,6 +377,11 @@ async def _load_formation_view_state(discord_id: int):
     return player, active_form_data, form_bonuses, gem_map
 
 
+def _unlocked_formation_keys(player) -> set[str]:
+    """Set of formation keys the player has unlocked (one CharacterFormation row each)."""
+    return {f.formation_key for f in (player.formations or []) if f.formation_key}
+
+
 async def _find_unique_gem_socket(
     frepo: FormationRepository,
     player_id: int,
@@ -313,22 +414,38 @@ async def _find_unique_gem_socket(
 
 
 async def _player_gem_inventory(player_db_id: int) -> list[dict]:
-    """Return a list of gem items from the player's inventory with metadata."""
+    """Return gem entries from inventory, one per ``(item_key, grade)`` pair.
+
+    Unique gems can land at different grades — players need to pick the
+    specific grade they want to socket, and the picker must show each
+    grade as a separate option. The select option ``value`` encodes both
+    key and grade as ``key|grade`` so Discord's unique-value requirement
+    holds even when two rows share an ``item_key``.
+    """
     async with get_session() as session:
         irepo = InventoryRepository(session)
         items = await irepo.get_all(player_db_id)
-    gems: list[dict] = []
+    aggregated: dict[tuple[str, int], dict] = {}
     for inv in items:
         data = registry.get_item(inv.item_key)
-        if data and data.get("type") == "gem":
-            gems.append({
-                "key": inv.item_key,
-                "grade": inv.grade,
-                "qty": inv.quantity,
-                "name": data.get("vi", inv.item_key),
-                "element": gem_element(inv.item_key),
-            })
-    return gems
+        if not data or data.get("type") != "gem":
+            continue
+        bucket_key = (inv.item_key, inv.grade)
+        existing = aggregated.get(bucket_key)
+        if existing is not None:
+            existing["qty"] += inv.quantity
+            continue
+        aggregated[bucket_key] = {
+            "key": inv.item_key,
+            "grade": inv.grade,
+            "qty": inv.quantity,
+            "name": data.get("vi", inv.item_key),
+            "element": gem_element(inv.item_key),
+        }
+    return sorted(
+        aggregated.values(),
+        key=lambda g: (g["key"], -g["grade"]),
+    )
 
 
 # ── Views ─────────────────────────────────────────────────────────────────────
@@ -385,46 +502,73 @@ class FormationHubView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _render_formation_picker(interaction, self.discord_id, back_fn=self._back_fn)
 
     async def _on_sockets(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _render_socket_manager(interaction, self.discord_id, back_fn=self._back_fn)
 
     async def _on_refresh(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _render_hub(interaction, self.discord_id, back_fn=self._back_fn)
 
     async def _on_back(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await self._back_fn(interaction)
 
 
 # ── Formation picker ──────────────────────────────────────────────────────────
 
 async def _render_formation_picker(interaction: discord.Interaction, discord_id: int, back_fn=None) -> None:
-    all_forms = sorted(registry.formations.values(), key=lambda f: f.get("vi", ""))
     player, _, _, _ = await _load_formation_view_state(discord_id)
-    active_keys = set(get_active_formations(player.active_formation)) if player else set()
-    slot_cap = (
-        max_formation_slots(player.body_realm, player.qi_realm, player.formation_realm)
-        if player else 1
+    if player is None:
+        await interaction.edit_original_response(
+            embed=error_embed("Chưa có nhân vật."), view=None,
+        )
+        return
+
+    unlocked = _unlocked_formation_keys(player)
+    unlocked_forms = sorted(
+        (registry.get_formation(k) for k in unlocked),
+        key=lambda f: (f or {}).get("vi", ""),
     )
+    unlocked_forms = [f for f in unlocked_forms if f]
+    active_keys = set(get_active_formations(player.active_formation))
+    slot_cap = max_formation_slots(player.active_axis, player.formation_realm)
+
+    if not unlocked_forms:
+        embed = base_embed(
+            "🔯 Chọn Trận Pháp",
+            "Bạn chưa mở khoá trận pháp nào.\n"
+            "Học **kỹ năng trận pháp** trong `/skilllist` để mở khoá trận tương ứng.",
+            color=0x9B59B6,
+        )
+        view = FormationPickerView(
+            discord_id, [], active_keys=set(),
+            slot_cap=slot_cap, back_fn=back_fn,
+        )
+        await interaction.edit_original_response(embed=embed, view=view)
+        return
 
     desc_lines = [
         f"Chọn **tới {slot_cap} trận pháp** muốn kích hoạt đồng thời. "
         f"Mỗi trận chiếm một ổ và cộng MP trấn giữ (tổng cap 50%).",
         f"Trận đã chọn: **{len(active_keys)}/{slot_cap}**.",
+        f"Đã mở khoá: **{len(unlocked_forms)}** trận.",
     ]
     if active_keys:
         names = [registry.get_formation(k) or {} for k in active_keys]
@@ -432,7 +576,7 @@ async def _render_formation_picker(interaction: discord.Interaction, discord_id:
         desc_lines.append(f"\n🔯 Hiện đang dùng: **{names_str}**")
     embed = base_embed("🔯 Chọn Trận Pháp", "\n".join(desc_lines), color=0x9B59B6)
 
-    for f in all_forms[:10]:
+    for f in unlocked_forms[:10]:
         elem = f.get("element") or "—"
         elem_vi = _GEM_ELEMENT_VI.get(elem, elem.title())
         marker = " ◀ Đang dùng" if f["key"] in active_keys else ""
@@ -443,7 +587,7 @@ async def _render_formation_picker(interaction: discord.Interaction, discord_id:
         )
 
     view = FormationPickerView(
-        discord_id, all_forms, active_keys=active_keys,
+        discord_id, unlocked_forms, active_keys=active_keys,
         slot_cap=slot_cap, back_fn=back_fn,
     )
     await interaction.edit_original_response(embed=embed, view=view)
@@ -462,25 +606,26 @@ class FormationPickerView(discord.ui.View):
         self._back_fn = back_fn
         self._slot_cap = slot_cap
 
-        options = [
-            discord.SelectOption(
-                label=f["vi"][:100],
-                value=f["key"],
-                description=f"Hệ: {_GEM_ELEMENT_VI.get(f.get('element') or '', '—')}"[:100],
-                emoji="🔯",
-                default=f["key"] in active_keys,
+        if forms:
+            options = [
+                discord.SelectOption(
+                    label=f["vi"][:100],
+                    value=f["key"],
+                    description=f"Hệ: {_GEM_ELEMENT_VI.get(f.get('element') or '', '—')}"[:100],
+                    emoji="🔯",
+                    default=f["key"] in active_keys,
+                )
+                for f in forms[:25]
+            ]
+            select = discord.ui.Select(
+                placeholder=f"Chọn tối đa {slot_cap} trận pháp...",
+                options=options,
+                min_values=0,
+                max_values=min(slot_cap, len(options)),
+                row=0,
             )
-            for f in forms[:25]
-        ]
-        select = discord.ui.Select(
-            placeholder=f"Chọn tối đa {slot_cap} trận pháp...",
-            options=options,
-            min_values=0,
-            max_values=min(slot_cap, len(options)),
-            row=0,
-        )
-        select.callback = self._on_pick
-        self.add_item(select)
+            select.callback = self._on_pick
+            self.add_item(select)
 
         back_btn = discord.ui.Button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=1)
         back_btn.callback = self._on_back
@@ -501,20 +646,52 @@ class FormationPickerView(discord.ui.View):
             if player is None:
                 await interaction.response.send_message(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
                 return
-            # Ensure a PlayerFormation row exists for every newly selected slot
-            # so gem state is preserved across activate/deactivate cycles.
+
+            # Reject any formation key the player hasn't unlocked — guards
+            # against stale / tampered selections since formations now flow
+            # from learned skills only.
+            unlocked = _unlocked_formation_keys(player)
+            unauthorized = [k for k in picked if k not in unlocked]
+            if unauthorized:
+                names = ", ".join(
+                    (registry.get_formation(k) or {}).get("vi", k) for k in unauthorized
+                )
+                await interaction.response.send_message(
+                    embed=error_embed(f"Chưa mở khoá trận pháp: **{names}**."),
+                    ephemeral=True,
+                )
+                return
+
+            # Reservation cap moved from learn time to activation time —
+            # only active formations cost MP now, so the player can learn
+            # freely but must keep their active set under the cap.
+            exceeds, projected = formation_activation_would_exceed_cap(player, picked)
+            if exceeds:
+                from src.game.constants.balance import FORMATION_MAX_RESERVE_PCT
+                await interaction.response.send_message(
+                    embed=error_embed(
+                        f"Tổ hợp này khoá **{projected * 100:.1f}%** MP — vượt mức tối đa "
+                        f"**{FORMATION_MAX_RESERVE_PCT * 100:.0f}%**.\n"
+                        "Tu luyện Trận Đạo để giảm chi phí, hoặc bỏ bớt một trận pháp."
+                    ),
+                    ephemeral=True,
+                )
+                return
+
             for k in picked:
                 await frepo.get_or_create(player.id, k)
             player.active_formation = set_active_formations(picked)
             await prepo.save(player)
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _render_hub(interaction, self.discord_id, back_fn=self._back_fn)
 
     async def _on_back(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _render_hub(interaction, self.discord_id, back_fn=self._back_fn)
 
 
@@ -577,7 +754,14 @@ async def _render_socket_manager(
     if gems_inv:
         lines.append("\n**Ngọc có trong túi đồ:**")
         for g in gems_inv[:15]:
-            lines.append(f"  {_GEM_EMOJI.get(g['element'] or '', '💠')} `{g['name']}` ×{g['qty']}")
+            try:
+                grade_vi = GRADE_LABELS[Grade(g["grade"])][0]
+            except (KeyError, ValueError):
+                grade_vi = "—"
+            lines.append(
+                f"  {_GEM_EMOJI.get(g['element'] or '', '💠')} "
+                f"`[{grade_vi}] {g['name']}` ×{g['qty']}"
+            )
     else:
         lines.append("\n*(Không có ngọc nào trong túi)*")
 
@@ -621,6 +805,7 @@ class SocketManagerView(discord.ui.View):
         self._back_fn = back_fn
         self._selected_slot: int | None = None
         self._selected_gem_key: str | None = None
+        self._selected_gem_grade: Grade | None = None
         self._target_formation_key = target_formation_key
         self._active_forms = active_forms or []
         self._unlocked_slot_count = max(1, min(FORMATION_GEM_SLOTS, int(unlocked_slot_count)))
@@ -692,10 +877,15 @@ class SocketManagerView(discord.ui.View):
             for g in page_slice(self._gems_inv, self._gem_page, per_page=PAGE_SIZE):
                 elem = g["element"] or ""
                 emoji = _GEM_EMOJI.get(elem, "💠")
+                try:
+                    grade_vi = GRADE_LABELS[Grade(g["grade"])][0]
+                except (KeyError, ValueError):
+                    grade_vi = "—"
+                elem_vi = _GEM_ELEMENT_VI.get(elem, "—")
                 gem_opts.append(discord.SelectOption(
-                    label=f"{g['name']} ×{g['qty']}"[:100],
-                    value=g["key"],
-                    description=f"Hệ: {_GEM_ELEMENT_VI.get(elem, '—')}"[:100],
+                    label=f"[{grade_vi}] {g['name']} ×{g['qty']}"[:100],
+                    value=f"{g['key']}|{int(g['grade'])}",
+                    description=f"Hệ: {elem_vi}"[:100],
                     emoji=emoji,
                 ))
             placeholder = "💠 Chọn ngọc để khảm..."
@@ -741,7 +931,8 @@ class SocketManagerView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         view = SocketManagerView(
             self.discord_id, self._gem_slots, self._gems_inv,
             back_fn=self._back_fn,
@@ -756,7 +947,8 @@ class SocketManagerView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         picked = interaction.data["values"][0]
         await _render_socket_manager(
             interaction, self.discord_id, back_fn=self._back_fn,
@@ -771,15 +963,23 @@ class SocketManagerView(discord.ui.View):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
         self._selected_slot = int(interaction.data["values"][0])
-        await interaction.response.defer()
-
+        if not await safe_defer(interaction):
+            return
     async def _on_gem_pick(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        self._selected_gem_key = interaction.data["values"][0]
-        await interaction.response.defer()
-
+        raw = interaction.data["values"][0]
+        key, sep, grade_str = raw.partition("|")
+        self._selected_gem_key = key
+        self._selected_gem_grade = None
+        if sep and grade_str:
+            try:
+                self._selected_gem_grade = Grade(int(grade_str))
+            except ValueError:
+                self._selected_gem_grade = None
+        if not await safe_defer(interaction):
+            return
     async def _on_inlay(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
@@ -795,8 +995,8 @@ class SocketManagerView(discord.ui.View):
             )
             return
 
-        await interaction.response.defer()
-
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             frepo = FormationRepository(session)
@@ -826,17 +1026,19 @@ class SocketManagerView(discord.ui.View):
                 return
 
             gem_data = registry.get_item(self._selected_gem_key) or {}
-            # Total the gem across every grade row — legacy stacks may sit at
-            # a grade that differs from the registry template (e.g. unique
-            # gems landed at HOANG before drops normalised to template grade).
-            # A grade-pinned has_item miss made the inlay refuse a gem the
-            # player visibly owned in the dropdown.
-            owned_qty = sum(
-                row.quantity
-                for row in await irepo.get_all(player.id)
-                if row.item_key == self._selected_gem_key
+            if self._selected_gem_grade is None:
+                await interaction.followup.send(
+                    embed=error_embed("Chọn ngọc cần khảm trước."), ephemeral=True,
+                )
+                return
+            # Grade is part of the picker selection now — the dropdown emits
+            # one option per (key, grade) so we consume the exact row the
+            # player saw, not whichever grade ``remove_any_grade`` happens
+            # to drain first.
+            picked_row = await irepo.get_item(
+                player.id, self._selected_gem_key, self._selected_gem_grade,
             )
-            if owned_qty < 1:
+            if picked_row is None or picked_row.quantity < 1:
                 await interaction.followup.send(
                     embed=error_embed(f"Không đủ **{gem_data.get('vi', self._selected_gem_key)}** trong túi đồ."),
                     ephemeral=True,
@@ -883,7 +1085,9 @@ class SocketManagerView(discord.ui.View):
                 player.id, target,
                 self._selected_slot, self._selected_gem_key,
             )
-            await irepo.remove_any_grade(player.id, self._selected_gem_key, 1)
+            await irepo.remove_item(
+                player.id, self._selected_gem_key, self._selected_gem_grade, 1,
+            )
 
         await _render_socket_manager(
             interaction, self.discord_id, back_fn=self._back_fn,
@@ -900,8 +1104,8 @@ class SocketManagerView(discord.ui.View):
             )
             return
 
-        await interaction.response.defer()
-
+        if not await safe_defer(interaction):
+            return
         async with get_session() as session:
             prepo = PlayerRepository(session)
             frepo = FormationRepository(session)
@@ -936,7 +1140,8 @@ class SocketManagerView(discord.ui.View):
         if not self._guard(interaction):
             await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
             return
-        await interaction.response.defer()
+        if not await safe_defer(interaction):
+            return
         await _render_hub(interaction, self.discord_id, back_fn=self._back_fn)
 
 
@@ -948,7 +1153,8 @@ class FormationCog(commands.Cog, name="Formation"):
 
     @app_commands.command(name="formation_hub", description="Quản lý trận pháp và khảm ngọc (UI)")
     async def formation_hub(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not await safe_defer(interaction, ephemeral=True):
+            return
         await _render_hub(interaction, interaction.user.id, back_fn=None)
 
 
