@@ -86,6 +86,24 @@ def _stack_target_with_debuffs(target: Combatant, keys: Iterable[str]) -> None:
         target.apply_effect(k, 3)
 
 
+def _am_attack() -> dict:
+    """A minimal single-hit Âm attack used purely to drive on-hit / on-evade
+    reactions (Ma Khí Hộ Thể, Quỷ Ảnh Mê Tung, Ma Long Xuất Uyên).
+
+    Built locally rather than fetched from the registry: the realm-tier
+    basic-attack keys were renamed in the skill rework, and these tests
+    only need *an* Âm-element damaging swing to react to — not any
+    specific skill. Carrying no effects/chain keeps RNG draw count minimal
+    and stable for the seed-sensitive evade tests.
+    """
+    return {
+        "key": "TestAmBasic", "vi": "Thử Âm Kích", "en": "Test Am Strike",
+        "element": "am", "category": "attack", "attack_type": "magical",
+        "dmg_scale": {"atk": 0.0, "matk": 1.0},
+        "base_dmg": 1000, "mp_cost": 100, "cooldown": 0, "effects": [],
+    }
+
+
 # ── 1. Thất Tình Đoạn Tuyệt — 7-hit + per-debuff scaling ───────────────────
 
 def test_that_tinh_doan_tuyet_carries_hit_count_and_self_buff():
@@ -306,17 +324,19 @@ def test_diet_the_chuong_carries_stun_chance_and_heavy_matk_scaling():
 
 def test_cuu_u_skill_filtered_when_target_lacks_5_debuffs():
     """``requires_target_debuff_count`` gates the skill picker."""
-    actor = _attacker(skill_keys=["SkillAtkAm_R2", "SkillAmCuuUThanTrao_R9"])
+    actor = _attacker(skill_keys=["SkillAmQuyHuDietDao", "SkillAmCuuUThanTrao_R9"])
     target = _target()
     session = _session(actor, target)
 
     chosen, reason = session._choose_skill(actor)
     assert reason == "ok"
-    assert chosen == "SkillAtkAm_R2"  # gated → fall back to the basic pick
+    # CuuU is gated out (target lacks 5 debuffs) → picker falls back to the
+    # only ungated attack in the kit.
+    assert chosen == "SkillAmQuyHuDietDao"
 
 
 def test_cuu_u_skill_chosen_once_target_has_5_debuffs():
-    actor = _attacker(skill_keys=["SkillAtkAm_R2", "SkillAmCuuUThanTrao_R9"])
+    actor = _attacker(skill_keys=["SkillAmQuyHuDietDao", "SkillAmCuuUThanTrao_R9"])
     target = _target()
     _stack_target_with_debuffs(target, [
         "DebuffXeRach", "DebuffPhaGiap", "DebuffCatDut",
@@ -487,7 +507,7 @@ def test_vo_tuong_thien_ma_stacks_with_base_am_res():
 # ── 11. Ma Khí Hộ Thể — Âm hit → shield ────────────────────────────────────
 
 def test_ma_khi_ho_the_grants_shield_on_am_hit():
-    actor = _attacker(skill_keys=["SkillAtkAm_R2", "SkillAmMaKhiHoThe_R9"],
+    actor = _attacker(skill_keys=["SkillAmMaKhiHoThe_R9"],
                       shield_max_base=5_000)
     target = _target()
     session = _session(actor, target)
@@ -495,9 +515,9 @@ def test_ma_khi_ho_the_grants_shield_on_am_hit():
     session._apply_passive_auras(actor, target)
     assert actor.has_effect(EffectKey.BUFF_MA_KHI_HO_THE)
 
-    skill = registry.get_skill("SkillAtkAm_R2")
+    skill = _am_attack()
     target_hp_before = target.hp
-    cast_skill(session, actor, target, "SkillAtkAm_R2", skill,
+    cast_skill(session, actor, target, skill["key"], skill,
                mp_cost=skill["mp_cost"])
     dmg_dealt = target_hp_before - target.hp
 
@@ -606,11 +626,11 @@ def test_quy_anh_evade_increments_stack_capped_at_three():
     session = _session(attacker, target)
     session._apply_passive_auras(target, attacker)
 
-    attack_skill = registry.get_skill("SkillAtkAm_R2")
+    attack_skill = _am_attack()
     for _ in range(5):
         attacker.mp = attacker.mp_max
         attacker.cooldowns.clear()
-        cast_skill(session, attacker, target, "SkillAtkAm_R2", attack_skill,
+        cast_skill(session, attacker, target, attack_skill["key"], attack_skill,
                    mp_cost=attack_skill["mp_cost"])
 
     assert target.quy_anh_stacks == 3  # capped
@@ -622,8 +642,8 @@ def test_quy_anh_does_not_stack_without_buff_marker():
     target = _target(evasion_rating=999_999)  # buff NOT applied
     session = _session(attacker, target)
 
-    attack_skill = registry.get_skill("SkillAtkAm_R2")
-    cast_skill(session, attacker, target, "SkillAtkAm_R2", attack_skill,
+    attack_skill = _am_attack()
+    cast_skill(session, attacker, target, attack_skill["key"], attack_skill,
                mp_cost=attack_skill["mp_cost"])
     assert target.quy_anh_stacks == 0
 
@@ -631,22 +651,30 @@ def test_quy_anh_does_not_stack_without_buff_marker():
 # ── 14. Ma Long Xuất Uyên — on-evade counter strike ───────────────────────
 
 def test_ma_long_counter_strike_dmg_uses_base_plus_matk_pct():
-    """Counter damage = base + matk_pct × defender.matk."""
-    attacker = _attacker(hp=10_000, hp_max=10_000)
-    # defender's matk drives the counter — set explicit
-    target = _target(matk=500, evasion_rating=999_999)
-    target.skill_keys = ["SkillAmMaLongXuatUyen_R9"]
-    # seed=1: first rng roll 0.13 < MAX_EVASION_CHANCE (0.75) so the dodge fires
-    session = _session(attacker, target, seed=1)
-    session._apply_passive_auras(target, attacker)
+    """Counter damage = base + matk_pct × defender.matk (on evade).
 
-    attack_skill = registry.get_skill("SkillAtkAm_R2")
-    hp_before = attacker.hp
-    cast_skill(session, attacker, target, "SkillAtkAm_R2", attack_skill,
-               mp_cost=attack_skill["mp_cost"])
+    Evasion is capped at MAX_EVASION_CHANCE (0.75) so a single cast can
+    miss the dodge; iterate seeds until the counter fires, then assert the
+    exact damage — which is deterministic once it triggers.
+    """
+    attack_skill = _am_attack()
+    for seed in range(20):
+        attacker = _attacker(hp=10_000, hp_max=10_000)
+        # defender's matk drives the counter — set explicit
+        target = _target(matk=500, evasion_rating=999_999)
+        target.skill_keys = ["SkillAmMaLongXuatUyen_R9"]
+        session = _session(attacker, target, seed=seed)
+        session._apply_passive_auras(target, attacker)
 
-    # 600 base + 0.40 × 500 matk = 800 counter damage
-    assert hp_before - attacker.hp == 800
+        hp_before = attacker.hp
+        cast_skill(session, attacker, target, attack_skill["key"], attack_skill,
+                   mp_cost=attack_skill["mp_cost"])
+
+        if attacker.hp < hp_before:  # the on-evade counter fired this seed
+            # 600 base + 0.40 × 500 matk = 800 counter damage
+            assert hp_before - attacker.hp == 800
+            return
+    pytest.fail("Ma Long counter never fired across 20 seeds")
 
 
 def test_ma_long_does_not_fire_when_attack_lands():
@@ -657,9 +685,9 @@ def test_ma_long_does_not_fire_when_attack_lands():
     session = _session(attacker, target)
     session._apply_passive_auras(target, attacker)
 
-    attack_skill = registry.get_skill("SkillAtkAm_R2")
+    attack_skill = _am_attack()
     hp_before = attacker.hp
-    cast_skill(session, attacker, target, "SkillAtkAm_R2", attack_skill,
+    cast_skill(session, attacker, target, attack_skill["key"], attack_skill,
                mp_cost=attack_skill["mp_cost"])
 
     # Attacker shouldn't have lost HP (didn't take a counter) — only the
@@ -676,21 +704,32 @@ def test_ma_long_config_keys_do_not_leak_into_modifier_dict():
 
 
 def test_ma_long_debuff_lands_within_chance_band():
-    """60% debuff chance: ~30/50 trials should land Cắt Đứt Linh Khí."""
-    attack_skill = registry.get_skill("SkillAtkAm_R2")
+    """When Ma Long counters on evade, Cắt Đứt Linh Khí lands ~60 % of the
+    time. Conditioned on the counter actually firing (evasion is capped at
+    0.75 so not every cast triggers it) — keeps the assertion about the
+    debuff chance, not the evade cap, and stays robust to RNG alignment.
+    """
+    attack_skill = _am_attack()
+    counters = 0
     landed = 0
-    for seed in range(50):
+    for seed in range(120):
         attacker = _attacker(hp=10_000, hp_max=10_000)
         target = _target(matk=500, evasion_rating=999_999)
         target.skill_keys = ["SkillAmMaLongXuatUyen_R9"]
         session = _session(attacker, target, seed=seed)
         session._apply_passive_auras(target, attacker)
-        cast_skill(session, attacker, target, "SkillAtkAm_R2", attack_skill,
+        hp_before = attacker.hp
+        cast_skill(session, attacker, target, attack_skill["key"], attack_skill,
                    mp_cost=attack_skill["mp_cost"])
-        if EffectKey.DEBUFF_CAT_DUT.value in attacker.effects:
-            landed += 1
-    # Expected mean ≈ 30; allow ±10 wiggle for sampling noise.
-    assert 20 <= landed <= 40, f"debuff land rate {landed}/50 out of band"
+        if attacker.hp < hp_before:  # counter fired this seed
+            counters += 1
+            if EffectKey.DEBUFF_CAT_DUT.value in attacker.effects:
+                landed += 1
+    assert counters >= 30, f"too few counters fired to sample: {counters}/120"
+    rate = landed / counters
+    assert 0.45 <= rate <= 0.75, (
+        f"Cắt Đứt land rate {rate:.2f} ({landed}/{counters}) out of band"
+    )
 
 
 # ── 15. Stealable flag + ApplyBuffSteal ────────────────────────────────────
