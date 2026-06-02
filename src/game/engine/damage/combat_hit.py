@@ -91,8 +91,8 @@ def build_attack_stats(
       - ``bonus_dmg_vs_burn`` when the target has burn stacks
       - shock stacks on the target amplify final_dmg_bonus per stack, but only
         for Lôi-element hits (lightning payload resonates with the shock)
-      - ``crit_rating_vs_bleed`` / ``crit_dmg_vs_bleed`` vs bleeding targets
-      - ``crit_rating_vs_marked`` / ``crit_dmg_vs_marked`` vs Phong-Ấn targets
+      - ``crit_amp_vs[bleed|marked|drained]`` adds rating/dmg vs targets in
+        those debuff states (bleed stacks / Ấn Phong mark / soul-drain mark)
       - frozen target (DEBUFF_DONG_BANG): force_crit = True. The pipeline
         skips the crit roll and the freeze is consumed by the hit's caller.
       - ``dmg_bonus_<elem>`` from effects only counts when the outgoing skill
@@ -114,6 +114,13 @@ def build_attack_stats(
         # Permanent per-element dmg bonus from constitutions / equipment
         # (generic dict pickup — replaces per-element flat fields).
         final_dmg_bonus += float(actor.element_dmg_bonus.get(skill_element, 0.0))
+    # Vạn Kiếm Quy Tông Sword-Heart stacks — +5% kim damage per stack,
+    # routed through ``element_dmg_amp`` (applied at the elemental step)
+    # so it amps ONLY kim damage and never feeds the generic
+    # ``final_dmg_bonus`` pool. Stacks cap at 10 (max +50% kim damage).
+    element_dmg_amp: dict[str, float] = {}
+    if actor.sword_heart_stacks > 0:
+        element_dmg_amp["kim"] = element_dmg_amp.get("kim", 0.0) + 0.05 * actor.sword_heart_stacks
     if target.burn_stacks > 0 and actor.bonus_dmg_vs_burn > 0:
         final_dmg_bonus += actor.bonus_dmg_vs_burn
     if (
@@ -155,6 +162,17 @@ def build_attack_stats(
     effective_matk = actor.matk
     if actor.matk_from_shield_pct > 0 and actor.shield > 0:
         effective_matk += int(actor.shield * actor.matk_from_shield_pct)
+    # Địa Mạch Quy Chân — armor-to-power conversion. While stacks are
+    # active on the actor (each stack representing one absorbed enemy
+    # hit, capped at 5 by the bump hook), 10% of def_stat per stack folds
+    # into BOTH atk and matk. Max conversion at 5 stacks = +50% of armor
+    # to each offensive stat. The passive's ownership gates the increment
+    # (see ``_bump_dia_mach_stack``), so a non-zero stack here always
+    # implies the holder owns the skill.
+    if actor.dia_mach_stacks > 0 and actor.def_stat > 0:
+        _dm_bonus = int(actor.def_stat * 0.10 * actor.dia_mach_stacks)
+        effective_atk += _dm_bonus
+        effective_matk += _dm_bonus
     # Active-effect ATK/MATK percent modifiers (e.g. DebuffSuyKhi reducing atk,
     # DebuffPhapNhuoc reducing matk). Floor at 1 so a heavy stack can't
     # zero out the swing — also keeps ``effective_atk × dmg_scale`` honest.
@@ -165,7 +183,17 @@ def build_attack_stats(
     if matk_pct_mod:
         effective_matk = max(1, int(effective_matk * (1.0 + matk_pct_mod)))
 
-    accuracy_rating = actor.accuracy_rating + int(actor_mods.get("accuracy_rating", 0))
+    # ``accuracy_rating_pct`` mirrors ``evasion_rating_pct`` on the defender
+    # side — multiplies the attacker's base ``accuracy_rating`` before flat
+    # mods stack. A debuff like Già Thiên Mạn can stamp -0.30 to shave 30%
+    # off the attacker's accuracy without touching the flat-rating bonuses
+    # they earn from gear/passives.
+    acc_pct_mod = float(actor_mods.get("accuracy_rating_pct", 0.0))
+    acc_pct_bonus = int(actor.accuracy_rating * acc_pct_mod) if acc_pct_mod else 0
+    accuracy_rating = max(
+        0,
+        actor.accuracy_rating + acc_pct_bonus + int(actor_mods.get("accuracy_rating", 0)),
+    )
 
     return AttackStats(
         crit_rating=crit_rating,
@@ -176,6 +204,7 @@ def build_attack_stats(
         force_crit=force_crit,
         accuracy_rating=accuracy_rating,
         crit_dmg_rating_to_dmg_pct=actor.crit_dmg_rating_to_dmg_pct,
+        element_dmg_amp=element_dmg_amp,
     )
 
 
@@ -216,6 +245,20 @@ def build_defense_stats(
         amp = float(target_mods.get(key, 0.0))
         if amp:
             damage_taken_by_element[elem] = amp
+    # Hộ Pháp armor-extension lane — sums two surfaces: active-effect
+    # aggregation via target_mods (e.g. BuffThoNguyenHoPhap) AND the permanent
+    # actor field (formation gem ladder folds here). Pipeline applies via
+    # ``apply_armor_to_elemental`` on non-physical hits.
+    def_applies_to_elemental_pct = (
+        float(target_mods.get("def_applies_to_elemental_pct", 0.0))
+        + float(getattr(target, "def_applies_to_elemental_pct", 0.0))
+    )
+    # Active-effect ``def_pct`` lane — scales the defender's def_stat at hit
+    # time. Permanent def_pct (formations / equipment / constitutions) is
+    # already baked into ``target.def_stat`` at session start; this picks up
+    # buff-driven temporary armor boosts so a future "Stone-Skin" buff with
+    # ``def_pct: 0.30`` actually affects mitigation.
+    effective_def_stat = int(target.def_stat * (1.0 + float(target_mods.get("def_pct", 0.0))))
     return DefenseStats(
         evasion_rating=(
             target.evasion_rating
@@ -224,9 +267,10 @@ def build_defense_stats(
             + evasion_pct_bonus
         ),
         crit_res_rating=target.crit_res_rating + int(target_mods.get("crit_res_rating", 0)),
-        def_stat=target.def_stat,
+        def_stat=effective_def_stat,
         resistances=effective_res,
         damage_taken_by_element=damage_taken_by_element,
+        def_applies_to_elemental_pct=def_applies_to_elemental_pct,
     )
 
 
@@ -244,6 +288,11 @@ def effective_damage_reduction(target: "Combatant", target_mods: dict) -> float:
         reduce += target.fortify_per_turn_pct * target.fortify_stacks
     if target.fortify_braced_turns > 0 and target.fortify_post_hit_dr_pct > 0:
         reduce += target.fortify_post_hit_dr_pct
+    # Hộ Thể Kiếm Cương passive — Kiếm Tâm stacks contribute flat DR per stack
+    # (e.g. 3 % × 10 stacks = +30 % DR at max). Gated on both the passive being
+    # equipped (sword_heart_per_stack_dr > 0) and at least one stack present.
+    if target.sword_heart_per_stack_dr > 0 and target.sword_heart_stacks > 0:
+        reduce += target.sword_heart_per_stack_dr * target.sword_heart_stacks
     return min(MAX_FINAL_DMG_REDUCE, max(0.0, reduce))
 
 

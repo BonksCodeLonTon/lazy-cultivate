@@ -185,6 +185,12 @@
       "weight": 2000,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "MasteryDinhDaoChau",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
     }
   ]
 }

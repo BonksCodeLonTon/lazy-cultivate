@@ -45,15 +45,143 @@
       "attack_type": "magical",
       "dmg_scale": {
         "atk": 0.0,
-        "matk": 1.0
+        "matk": 1.5
       },
-      "mp_cost": 52,
+      "mp_cost": 17,
       "cooldown": 3,
-      "base_dmg": 315,
+      "base_dmg": 32,
       "effects": [
         "DebuffMocXuyenThau"
       ],
       "reserved_mp_pct": 0.06
+    }
+  },
+  {
+    "key": "BachHoa",
+    "vi": "Bách Hoa Trận",
+    "en": "Hundred Flowers Formation",
+    "element": "moc",
+    "base_stat_bonus": {
+      "dmg_bonus_moc": 0.1,
+      "dot_dmg_bonus": 0.1,
+      "hp_regen_pct": 0.01
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "dmg_bonus_moc": 0.03,
+        "note": "Sơ Khai Bách Hoa Trận"
+      },
+      "3": {
+        "dmg_bonus_moc": 0.06,
+        "note": "Kiên Cố Bách Hoa Trận"
+      },
+      "5": {
+        "dmg_bonus_moc": 0.12,
+        "note": "Thịnh Vượng Bách Hoa Trận"
+      },
+      "7": {
+        "dmg_bonus_moc": 0.2,
+        "hp_regen_pct": 0.01,
+        "note": "Vô Song Bách Hoa Trận"
+      },
+      "10": {
+        "dmg_bonus_moc": 0.35,
+        "hp_regen_pct": 0.02,
+        "note": "Tuyệt Đỉnh Bách Hoa Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmBachHoa",
+      "vi": "Bách Hoa Tề Phóng",
+      "en": "Hundred Flowers Bloom in Unison",
+      "scroll_grade": 2,
+      "category": "formation",
+      "element": "moc",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 1.05
+      },
+      "mp_cost": 20,
+      "cooldown": 4,
+      "base_dmg": 38,
+      "effects": [
+        "DebuffBachHoa"
+      ],
+      "effect_chances": {
+        "DebuffBachHoa": 1.0
+      },
+      "reserved_mp_pct": 0.06,
+      "description_vi": "Bách Hoa Tề Phóng — trăm hoa đồng nở phong ấn địch: gây sát thương Mộc và in **Bách Hoa Ấn** (4 lượt) — phấn hoa trấn áp sát khí, **địch gây ra ít hơn 20% sát thương**. Trận Bách Hoa khuếch đại sát thương Mộc và mọi DoT."
+    }
+  },
+  {
+    "key": "ThaiAtMocLong",
+    "vi": "Thái Ất Mộc Long Trận",
+    "en": "Supreme-Unity Wood Dragon Formation",
+    "element": "moc",
+    "base_stat_bonus": {
+      "dmg_bonus_moc": 0.1,
+      "hp_regen_pct": 0.01,
+      "hp_pct": 0.05
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "dmg_bonus_moc": 0.04,
+        "note": "Sơ Khai Thái Ất Mộc Long Trận"
+      },
+      "3": {
+        "dmg_bonus_moc": 0.08,
+        "hp_regen_pct": 0.01,
+        "note": "Kiên Cố Thái Ất Mộc Long Trận"
+      },
+      "5": {
+        "dmg_bonus_moc": 0.15,
+        "hp_regen_pct": 0.01,
+        "note": "Thịnh Vượng Thái Ất Mộc Long Trận"
+      },
+      "7": {
+        "dmg_bonus_moc": 0.25,
+        "hp_regen_pct": 0.02,
+        "summon_limit_bonus": 1,
+        "note": "Vô Song Thái Ất Mộc Long Trận"
+      },
+      "10": {
+        "dmg_bonus_moc": 0.4,
+        "hp_regen_pct": 0.03,
+        "summon_limit_bonus": 2,
+        "note": "Tuyệt Đỉnh Thái Ất Mộc Long Trận"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmThaiAtMocLong",
+      "vi": "Thái Ất Mộc Long Triệu",
+      "en": "Summon the Supreme Wood Dragon",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "moc",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 80,
+      "cooldown": 5,
+      "base_dmg": 0,
+      "summon_spec": {
+        "vi": "Thái Ất Mộc Long",
+        "emoji": "🐲",
+        "element": "moc",
+        "dmg_pct_of_matk": 0.6,
+        "turns": 5,
+        "limit": 1,
+        "aura_buff": {
+          "key": "BuffThaiAtMocLong"
+        },
+        "respect_target_res": true
+      },
+      "reserved_mp_pct": 0.08,
+      "description_vi": "Thái Ất Mộc Long Triệu — trận pháp không tự gây sát thương; triệu **Thái Ất Mộc Long** trấn trận (5 lượt, tối đa 1; gem cao mở thêm). Mỗi lượt Long quật địch **60% MATK** sát thương hệ Mộc; chừng nào Long còn hiện diện, chủ trận được **+20% sát thương Mộc, +3% hồi HP/lượt**. Trận tăng **+5% HP tối đa** và sát thương của Long ăn theo toàn bộ tăng ích Mộc của trận."
     }
   }
 ]

@@ -25,6 +25,8 @@ from sqlalchemy import select
 from src.db.connection import get_session
 from src.db.models.player import Player
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
+from src.db.repositories.skill_mastery import get_mastery_map
+from src.utils.config import settings
 from src.game.engine.equipment import compute_equipment_stats
 from src.game.systems.character_stats import (
     active_formation_gem_keys,
@@ -81,6 +83,7 @@ class _PlayerLoadout:
     equip_stats: dict
     hp_max: int
     mp_max: int
+    skill_mastery: dict[str, int] | None = None
 
 
 async def _load_player_state(discord_id: int) -> _PlayerLoadout | None:
@@ -109,6 +112,11 @@ async def _load_player_state(discord_id: int) -> _PlayerLoadout | None:
             gem_keys_by_formation=gem_map,
         )
 
+        # Skill Mastery — flag-gated. OFF → no DB read, None → inert in combat.
+        skill_mastery: dict[str, int] | None = None
+        if settings.skill_mastery_enabled:
+            skill_mastery = await get_mastery_map(session, player.id)
+
         return _PlayerLoadout(
             name=player.name,
             char=char,
@@ -119,10 +127,13 @@ async def _load_player_state(discord_id: int) -> _PlayerLoadout | None:
             equip_stats=equip_stats,
             hp_max=cs.hp_max,
             mp_max=cs.mp_max,
+            skill_mastery=skill_mastery,
         )
 
 
 def _build_combatant(loadout: _PlayerLoadout) -> Combatant:
+    # Arena (PvP / dummy): mastery is PASSED for the combat effect, but XP is
+    # intentionally NOT awarded here — XP earning is a PvE-farm reward only.
     c = build_player_combatant(
         loadout.char,
         loadout.skill_keys,
@@ -130,6 +141,7 @@ def _build_combatant(loadout: _PlayerLoadout) -> Combatant:
         equip_stats=loadout.equip_stats,
         gem_keys=loadout.gem_keys,
         gem_keys_by_formation=loadout.gem_map,
+        skill_mastery=loadout.skill_mastery,
     )
     c.hp = loadout.hp_max
     c.mp = loadout.mp_max

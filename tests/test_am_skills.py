@@ -313,11 +313,15 @@ def test_diet_the_chuong_carries_stun_chance_and_heavy_matk_scaling():
     skill = registry.get_skill("SkillAmDietTheChuong")
     assert skill["effects"] == ["CCStun"]
     assert skill["effect_chances"]["CCStun"] == pytest.approx(0.70)
-    # Mainly MATK
+    # Mainly MATK — post reshape (base÷10, dmg_scale×10 then ÷6 re-tune for ~5k
+    # peak stats) the intended matk coefficient settled at 1.6 (highest single-
+    # MATK scale among Âm attacks, paired with the highest base_dmg). The old
+    # ≥2.5 threshold predated the ÷6 correction; keep a margin below 1.6 so a
+    # future down-tune still trips this.
     assert skill["dmg_scale"]["matk"] >= 1.5
     assert skill["dmg_scale"]["atk"] == 0
-    # Heavy single-cast
-    assert skill["base_dmg"] >= 5_000
+    # Meaningful base floor (was ≥5000 before the 10× base nerf)
+    assert skill["base_dmg"] >= 500
 
 
 # ── 7. Cửu U Thần Trảo — gated + consume + soul drain ──────────────────────

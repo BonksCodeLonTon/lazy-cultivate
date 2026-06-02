@@ -691,5 +691,460 @@
         "duration": 5
       }
     }
+  },
+  {
+    "key": "SkillAtkMocTrichDiepPhiHoa_R7",
+    "vi": "Trích Diệp Phi Hoa",
+    "en": "Plucking Leaves Flying Petals",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.92
+    },
+    "mp_cost": 77,
+    "cooldown": 4,
+    "base_dmg": 95,
+    "hit_count": 5,
+    "effects": [
+      "DebuffDocTo"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.45
+    },
+    "per_hit_specs": [
+      {},
+      {},
+      {},
+      {},
+      {
+        "label": "Phi Hoa Tận",
+        "effects": [
+          "DebuffDocTo",
+          "DebuffMocXuyenThau"
+        ],
+        "effect_chances": {
+          "DebuffDocTo": 0.45,
+          "DebuffMocXuyenThau": 1.0
+        }
+      }
+    ],
+    "formation_key": null,
+    "description_vi": "Trích Diệp Phi Hoa — vạn lá tích thành đao, hoa tán hóa độc đan. Niệm 1 chiêu, **5 đòn liên hoàn** lá-hoa bay tới; mỗi đòn riêng có thể bạo và **45% in 1 tầng Độc Tố**. Đòn thứ 5 (**Phi Hoa Tận**) còn **chắc chắn áp Mộc Xuyên Thấu** (−15% Kháng Mộc, 3 lượt)."
+  },
+  {
+    "key": "SkillAtkMocPheHuyetMaDang_R7",
+    "vi": "Phệ Huyết Ma Đằng",
+    "en": "Blood-Devouring Demon Vine",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 93,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "DebuffPheHuyetThuc"
+    ],
+    "effect_chances": {
+      "DebuffPheHuyetThuc": 1.0
+    },
+    "summon_spec": {
+      "vi": "Phệ Huyết Ma Đằng",
+      "emoji": "🩸",
+      "element": "moc",
+      "dmg_pct_of_matk": 0.4,
+      "turns": 3,
+      "aura_buff": {
+        "key": "BuffPheHuyetLien"
+      },
+      "respect_target_res": true
+    },
+    "formation_key": null,
+    "description_vi": "Phệ Huyết Ma Đằng — triệu hồi quái đằng hút máu **3 lượt**, mỗi lượt cắn địch gây **40% MATK** sát thương hệ Mộc. Đồng thời khi niệm in **Phệ Huyết Thực** lên địch — đằng yêu hút máu, mỗi lượt **mất 5% HP tối đa** (3 lượt, không phụ thuộc chỉ số người niệm). Chừng nào đằng còn sống, chủ nhân nhận **+20% Hút Máu** trên đòn niệm và **+30% Hút DoT** (sát thương DoT trên thân địch quy đổi thành HP + một nửa MP)."
+  },
+  {
+    "key": "SkillAtkMocHuMocThuat_R7",
+    "vi": "Hủ Mộc Thuật",
+    "en": "Rotwood Art",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 90,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "debuff_only": true,
+    "effects": [
+      "DebuffHuMoc"
+    ],
+    "effect_chances": {
+      "DebuffHuMoc": 1.0
+    },
+    "formation_key": null,
+    "description_vi": "Hủ Mộc Thuật — không gây sát thương trực tiếp; gieo khí mục ruỗng khiến thân địch hóa gỗ mục. In **Hủ Mộc** lên địch (4 lượt): mỗi lượt **mất 3% HP tối đa** (hệ Mộc, không phụ thuộc chỉ số người niệm), **−50% máu hồi nhận vào** và **−10% hồi HP**. Khắc chế cứng các đối thủ dựa vào hồi máu/hút máu. Cộng hưởng với **Mộc Xuyên Thấu** (−Kháng Mộc khuếch đại sát thương Hủ Mộc)."
+  },
+  {
+    "key": "SkillAtkMocDaoHoaChuong_R7",
+    "vi": "Đào Hoa Chướng",
+    "en": "Peach-Blossom Miasma",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.92
+    },
+    "mp_cost": 97,
+    "cooldown": 5,
+    "base_dmg": 220,
+    "effects": [
+      "DebuffDaoHoaMe"
+    ],
+    "effect_chances": {
+      "DebuffDaoHoaMe": 0.75
+    },
+    "formation_key": null,
+    "description_vi": "Đào Hoa Chướng — bủa sương đào mê hoặc, gây **115% MATK + 2200** sát thương hệ Mộc và **75% in Đào Hoa Mê** (3 lượt): địch **30%/lượt đứng hình** vì mê man và **−15% Tốc Độ**."
+  },
+  {
+    "key": "SkillMovMocLieuNhuTuyPhong_R7",
+    "vi": "Liễu Nhứ Tùy Phong",
+    "en": "Willow Catkin Drifts on the Wind",
+    "scroll_grade": 3,
+    "category": "movement",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 40,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "passive_effects": [
+      "BuffLieuNhuTuyPhongAura"
+    ],
+    "effects": [
+      "BuffLieuNhuTuyPhong"
+    ],
+    "formation_key": null,
+    "description_vi": "Liễu Nhứ Tùy Phong — bộ pháp nhẹ tựa nhành liễu tan vào gió. **Bị động**: vĩnh viễn **+3% hồi HP/lượt**; khi địch đang dính DoT hệ Mộc, thêm **+15% Tốc Độ và +400 Né Tránh** (cập nhật mỗi lượt). **Chủ động** (3 lượt): **nhân đôi toàn bộ hiệu lực** — hồi HP **+6%/lượt**; nếu địch dính DoT Mộc thì **+30% Tốc Độ, +800 Né Tránh**. Cộng hưởng với Độc Tố / Phệ Huyết Thực / Hủ Mộc."
+  },
+  {
+    "key": "SkillMovMocBoBoSinhLien_R7",
+    "vi": "Bộ Bộ Sinh Liên",
+    "en": "Lotus Blooms with Every Step",
+    "scroll_grade": 3,
+    "category": "movement",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 43,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "passive_effects": [
+      "BuffBoBoSinhLienAura"
+    ],
+    "summon_spec": {
+      "vi": "Liên Hoa",
+      "emoji": "🪷",
+      "element": "moc",
+      "dmg": 0,
+      "turns": 3,
+      "limit": 1,
+      "aura_buff": {
+        "key": "BuffLienHoa"
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Bộ Bộ Sinh Liên — mỗi bước chân nở một đóa kim liên. **Bị động**: cứ **1% Tăng Hiệu Quả Hồi Phục** đổi lấy **+1% Tốc Độ và +25 Né Tránh** (tối đa +30% Tốc / +750 Né Tránh). **Chủ động**: triệu hồi **Liên Hoa** 3 lượt (tối đa 1) — mỗi lượt hồi **4% HP tối đa** và **50% Thanh Tẩy 1 trạng thái xấu** (mỗi lần +5% HP). Cộng hưởng mạnh với Sinh Mệnh Chi Nguyên và trang bị Hồi Phục."
+  },
+  {
+    "key": "SkillAtkMocThienDiepGiaThienChuong_R7",
+    "vi": "Thiên Diệp Già Thiên Chưởng",
+    "en": "Thousand-Leaf Sky-Covering Palm",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.83
+    },
+    "mp_cost": 100,
+    "cooldown": 5,
+    "base_dmg": 250,
+    "mp_burn_pct_of_dmg": 0.05,
+    "mp_burn_self_heal_ratio": 1.0,
+    "effects": [
+      "DebuffGiaThienMan"
+    ],
+    "effect_chances": {
+      "DebuffGiaThienMan": 1.0
+    },
+    "formation_key": null,
+    "description_vi": "Thiên Diệp Già Thiên Chưởng — vạn lá vạn bóng che kín trời cao, một chưởng phong tỏa nhãn giới địch. In **Già Thiên Mạn** lên địch (−30% Chỉ Số Chính Xác, 3 lượt). Đòn này còn rút thêm sát thương = **5% sát thương đòn** từ MP của địch, và **toàn bộ lượng MP đó** chuyển hóa thành HP cho chủ nhân."
+  },
+  {
+    "key": "SkillDefMocThanhLongHoPhap",
+    "vi": "Thanh Long Hộ Pháp",
+    "en": "Azure Dragon Dharma Guardian",
+    "scroll_grade": 4,
+    "category": "defense",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 100,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "effects": [],
+    "summon_spec": {
+      "vi": "Thanh Long Hộ Pháp",
+      "emoji": "🐉",
+      "element": "moc",
+      "dmg_pct_of_matk": 0.3,
+      "turns": 5,
+      "limit": 1,
+      "aura_buff": {
+        "key": "BuffThanhLongHoPhap"
+      },
+      "respect_target_res": true
+    },
+    "formation_key": null,
+    "description_vi": "Thanh Long Hộ Pháp — phòng thủ hệ Mộc, dòng hộ vệ thuần túy. Triệu hồi **Thanh Long** cuộn quanh thân làm hộ pháp **5 lượt** (tối đa 1 con). Khi nào Thanh Long còn hiện diện: **40% sát thương phải nhận chuyển hóa thành hệ Mộc** rồi bị **Kháng Mộc +50%** (trần Kháng Mộc nâng lên **0.85**) gọt sạch; **giảm thêm 12% sát thương** phần chưa chuyển hóa; **hồi 3% HP tối đa mỗi lượt**; và mỗi lượt Thanh Long phản kích địch **30% MATK** sát thương hệ Mộc. Ward gắn với vòng đời triệu hồi — Thanh Long tan thì hào quang biến mất."
+  },
+  {
+    "key": "SkillDefMocKhoMocPhungXuan",
+    "vi": "Khô Mộc Phùng Xuân",
+    "en": "Dead Wood Meets Spring",
+    "scroll_grade": 4,
+    "category": "defense",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 87,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "effects": [
+      "BuffKhoMocPhungXuan"
+    ],
+    "formation_key": null,
+    "description_vi": "Khô Mộc Phùng Xuân — phòng thủ hệ Mộc, dòng sinh tồn thuần túy.**Chủ động (4 lượt)**: cội nguồn bùng xuân — **hồi tức thì 18% HP tối đa**, **50%/lượt Thanh Tẩy 1 trạng thái bất lợi** (mỗi lần Thanh Tẩy **+5% HP tối đa**), và **hồi 4% HP tối đa mỗi lượt** — **càng mất HP bùng nở càng mạnh**: mỗi 5% HP đã mất cộng thêm **+0.6% hồi sinh lực/lượt**. Hào quang không thể bị cướp hay tẩy."
+  },
+  {
+    "key": "SkillPasMocSinhMenhChiNguyen",
+    "vi": "Sinh Mệnh Chi Nguyên",
+    "en": "Source of Life",
+    "scroll_grade": 4,
+    "category": "passive",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self"
+    ],
+    "effects": [
+      "BuffSinhMenhChiNguyen"
+    ],
+    "formation_key": null,
+    "description_vi": "Sinh Mệnh Chi Nguyên — **bị động**, vào trận tự động kích hoạt. Cội nguồn sinh mệnh hệ Mộc cuộn quanh thân: **+15% HP tối đa** và **+20% lượng hồi phục từ mọi nguồn** (hồi máu mỗi lượt, hút máu, hút DoT, rút máu...). Hào quang không thể bị cướp hay tẩy."
+  },
+  {
+    "key": "SkillMocLinhCongSinh",
+    "vi": "Mộc Linh Cộng Sinh",
+    "en": "Symbiotic Grove",
+    "scroll_grade": 3,
+    "category": "defense",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 95,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "effects": [
+      "BuffMocLinhCongSinh"
+    ],
+    "effect_chances": {
+      "BuffMocLinhCongSinh": 1.0
+    },
+    "effect_overrides": {
+      "BuffMocLinhCongSinh": {
+        "overheal_reservoir": {
+          "capture_pct": 1.0,
+          "release_pct": 0.5,
+          "reservoir_cap_matk_scale": 3.0,
+          "element": "moc"
+        }
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Mộc Linh Cộng Sinh — trồng Mộc Linh cộng sinh trong 4 lượt. Mọi lượng **hồi máu tràn** (vượt HP tối đa) được tích vào **Nhựa Linh** (trần 3× MATK); cuối mỗi lượt, **giải phóng 50% Nhựa** thành một đòn Mộc giáng xuống địch. Sinh cơ dư thừa không phí hoài — hoá thành đòn phản kích của tự nhiên."
+  },
+  {
+    "key": "SkillAtkMoc2Basic",
+    "vi": "Độc Đằng Triền",
+    "en": "Venom-Vine Coil",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.67
+    },
+    "mp_cost": 88,
+    "cooldown": 3,
+    "base_dmg": 235,
+    "effects": [
+      "DebuffDocTo"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.45
+    },
+    "formation_key": null,
+    "description_vi": "Độc đằng triền thân — 45% chồng 1 tầng Độc Tố."
+  },
+  {
+    "key": "SkillDefMoc1",
+    "vi": "Sinh Cơ Hộ Thân",
+    "en": "Verdant Mending",
+    "scroll_grade": 1,
+    "category": "defense",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 5,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffSinhCo"
+    ],
+    "formation_key": null,
+    "description_vi": "Sinh cơ cuộn quanh thân — hồi 5% HP tối đa mỗi lượt (4 lượt)."
+  },
+  {
+    "key": "SkillAtkMocDocTo2",
+    "vi": "Vạn Độc Phún Xạ",
+    "en": "Myriad-Venom Spray",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 105,
+    "hit_count": 2,
+    "effects": [
+      "DebuffDocTo"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 0.75
+    },
+    "formation_key": null,
+    "description_vi": "Hai luồng độc phun liên tiếp — mỗi đòn 75% chồng 1 tầng Độc Tố."
+  },
+  {
+    "key": "SkillAtkMocXuyenThau2",
+    "vi": "Triền Căn Phá",
+    "en": "Root-Rend Bloom",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 2.0
+    },
+    "mp_cost": 92,
+    "cooldown": 4,
+    "base_dmg": 248,
+    "effects": [
+      "DebuffDocTo",
+      "DebuffMocXuyenThau"
+    ],
+    "effect_chances": {
+      "DebuffDocTo": 1.0,
+      "DebuffMocXuyenThau": 0.7
+    },
+    "effect_overrides": {
+      "DebuffMocXuyenThau": {
+        "stat_bonus": {
+          "res_moc": -0.15
+        },
+        "duration": 3
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Rễ độc xuyên cốt — áp Độc Tố và 70% Mộc Xuyên Thấu (−15% Kháng Mộc)."
+  },
+  {
+    "key": "SkillPasMocCongSinhLuanHoi",
+    "vi": "Cộng Sinh Luân Hồi",
+    "en": "Symbiotic Cycle",
+    "scroll_grade": 4,
+    "category": "passive",
+    "element": "moc",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self"
+    ],
+    "effects": [],
+    "dot_siphon": {
+      "elements": [
+        "moc"
+      ],
+      "heal_pct_of_dot_dmg": 0.4,
+      "mp_pct_of_dot_dmg": 0.15,
+      "bonus_dot_pct_per_distinct_dot": 0.06,
+      "max_bonus_dot_pct": 0.3
+    },
+    "formation_key": null,
+    "description_vi": "Cộng Sinh Luân Hồi — bị động. Mỗi lượt, với mỗi đòn DoT hệ Mộc đang gặm địch: người niệm hồi HP = 40% và MP = 15% lượng sát thương DoT đó. Đồng thời mỗi LOẠI DoT Mộc trên địch +6% sát thương cho mọi DoT Mộc (tối đa +30%)."
   }
 ]

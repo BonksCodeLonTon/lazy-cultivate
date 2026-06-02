@@ -9,7 +9,6 @@ from discord.ext import commands
 
 from src.db.connection import get_session
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
-from src.game.systems.cultivation import can_breakthrough
 from src.game.systems.cultivation_service import apply_offline_ticks
 from src.game.systems.dungeon import best_axis_realm, compute_realm_total
 from src.game.systems.status import build_status_snapshot
@@ -18,9 +17,7 @@ from src.utils.discord_safe import safe_defer
 from src.utils.embed_builder import character_embed, error_embed
 from src.bot.cogs.cultivation import (
     _cultivate_embed,
-    _breakthrough_overview_embed,
     CultivateView,
-    BreakthroughView,
 )
 
 log = logging.getLogger(__name__)
@@ -93,7 +90,6 @@ class StatusView(discord.ui.View):
 
         configs = [
             ("🌀 Tu Luyện",          discord.ButtonStyle.secondary, self._cultivate_cb,     0),
-            ("⚡ Đột Phá",           discord.ButtonStyle.secondary, self._breakthrough_cb,  0),
             ("🗺️ Bí Cảnh",           discord.ButtonStyle.secondary, self._dungeon_cb,       0),
             ("🌌 Boss Thế Giới",     discord.ButtonStyle.secondary, self._world_boss_cb,    0),
             ("🏯 Thí Luyện Đài",     discord.ButtonStyle.secondary, self._arena_cb,         0),
@@ -102,7 +98,6 @@ class StatusView(discord.ui.View):
             ("🧬 Thể Chất Bảng",     discord.ButtonStyle.secondary, self._the_chat_cb,      1),
             ("🌿 Linh Căn Bảng",     discord.ButtonStyle.secondary, self._linh_can_cb,      1),
             ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     2),
-            ("📚 Tàng Kinh Các",     discord.ButtonStyle.secondary, self._tang_kinh_cac_cb, 2),
             ("⚒️ Thiên Công Phường", discord.ButtonStyle.secondary, self._forge_cb,         2),
             ("⚗️ Luyện Đan",         discord.ButtonStyle.secondary, self._alchemy_cb,       2),
             ("🏪 Phường Thị",        discord.ButtonStyle.secondary, self._shop_cb,          3),
@@ -134,33 +129,6 @@ class StatusView(discord.ui.View):
 
         embed = _cultivate_embed(active, result)
         view = CultivateView(self._discord_id, active, back_fn=_show_status)
-        await interaction.edit_original_response(embed=embed, view=view)
-
-    async def _breakthrough_cb(self, interaction: discord.Interaction) -> None:
-        if not self._guard(interaction):
-            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
-            return
-        if not await safe_defer(interaction):
-            return
-        async with get_session() as session:
-            repo = PlayerRepository(session)
-            player = await repo.get_by_discord_id(interaction.user.id)
-            if player is None:
-                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
-                return
-            inventory_map: dict[str, int] = {}
-            for inv_item in player.inventory:
-                inventory_map[inv_item.item_key] = (
-                    inventory_map.get(inv_item.item_key, 0) + inv_item.quantity
-                )
-            char = _player_to_model(player)
-            readiness: dict[str, bool] = {}
-            for ax in ("body", "qi", "formation"):
-                ok, _ = can_breakthrough(char, ax, inventory=inventory_map)
-                readiness[ax] = ok
-
-        embed = _breakthrough_overview_embed(player, readiness)
-        view = BreakthroughView(self._discord_id, readiness, back_fn=_show_status)
         await interaction.edit_original_response(embed=embed, view=view)
 
     async def _inventory_cb(self, interaction: discord.Interaction) -> None:
@@ -302,28 +270,6 @@ class StatusView(discord.ui.View):
             return
         from src.bot.cogs.linh_can import render_linh_can_hub
         await render_linh_can_hub(interaction, self._discord_id, back_fn=_show_status)
-
-    async def _tang_kinh_cac_cb(self, interaction: discord.Interaction) -> None:
-        if not self._guard(interaction):
-            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
-            return
-        if not await safe_defer(interaction):
-            return
-        from src.bot.cogs.skills import _build_skilllist, _player_skill_state
-        state = await _player_skill_state(interaction.user.id)
-        if not state["linh_can"] and not state["learned"] and not state["owned_scrolls"]:
-            async with get_session() as session:
-                repo = PlayerRepository(session)
-                if await repo.get_by_discord_id(interaction.user.id) is None:
-                    await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
-                    return
-        embed, view = _build_skilllist(
-            discord_id=self._discord_id,
-            back_fn=_show_status,
-            linh_can=state["linh_can"],
-            state=state,
-        )
-        await interaction.edit_original_response(embed=embed, view=view)
 
     async def _forge_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
@@ -469,7 +415,7 @@ def _make_full_stats_embed(player) -> discord.Embed:
     ]
     if cs.shield_max_base or cs.shield_max_flat or cs.shield_max_pct:
         defense_lines.append(
-            f"🛡️ Khiên: nền **{cs.shield_max_base:,}** + cộng thêm "
+            f"🛡️ Khiên: gốc **{cs.shield_max_base:,}** + cộng thêm "
             f"**{cs.shield_max_flat:,}** + **{cs.shield_max_pct * 100:.0f}%** HP"
         )
     if cs.thorn_pct:

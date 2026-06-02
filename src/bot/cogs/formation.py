@@ -60,8 +60,10 @@ _PCT_STAT_KEYS = frozenset({
     "soul_drain_on_hit_pct", "stat_steal_on_hit_pct",
     "silence_on_crit_pct", "cleanse_on_turn_pct", "heal_reduce_on_hit_pct",
     "freeze_on_skill_chance",
-    # Damage-of-DoT scaling
-    "burn_dmg_bonus", "dot_dmg_bonus", "poison_dmg_bonus",
+    # Damage-of-DoT scaling. The per-kind ``dot_dmg_bonus_by_kind`` dict
+    # fans out into separate lines via _format_bonus_lines; only the
+    # cross-kind ``dot_dmg_bonus`` scalar lives in this set.
+    "dot_dmg_bonus",
     # Stack / shield modifiers
     "shock_per_stack_pct_bonus", "shield_regen_pct", "shield_max_pct",
     # Thorn / reflect / leech
@@ -109,14 +111,13 @@ _STAT_NAME_VI = {
     "cleanse_on_turn_pct": "Thanh Tẩy",
     "heal_reduce_on_hit_pct": "Giảm Hồi Phục",
     "freeze_on_skill_chance": "Đóng Băng (Skill)",
-    # DoT damage modifiers
-    "burn_dmg_bonus": "ST Thiêu Đốt",
+    # DoT damage modifiers (per-kind ``dot_dmg_bonus_by_kind`` /
+    # ``dot_stack_cap_bonus`` / ``dot_per_stack_pct_bonus`` dicts are
+    # rendered by their own grouped-dict handlers in _format_bonus_lines).
     "dot_dmg_bonus": "ST DoT",
-    "poison_dmg_bonus": "ST Độc",
     # Stacks / cap bumps
     "shock_per_stack_pct_bonus": "Sốc Điện/Stack",
     "shock_stack_cap_bonus": "Cap Sốc Điện",
-    "bleed_stack_cap_bonus": "Cap Chảy Máu",
     # Shield / barrier
     "shield_regen_pct": "Hồi Khiên%",
     "shield_regen_flat": "Hồi Khiên",
@@ -125,16 +126,11 @@ _STAT_NAME_VI = {
     "thorn_pct": "Phản Sát Thương",
     "reflect_pct": "Phản Đòn",
     "mp_leech_pct": "Hút MP",
-    # Phong build (mark / evasion synergy)
+    # Phong build (mark / evasion synergy) — per-state crit amps now flow
+    # through ``crit_amp_vs`` and render via the grouped-dict handler.
     "damage_bonus_from_evasion_pct": "ST Theo Né",
     "damage_bonus_from_hp_pct": "ST Theo HP",
     "damage_bonus_from_mp_pct": "ST Theo MP",
-    "crit_rating_vs_marked": "Bạo Kích vs Đ.Dấu",
-    "crit_dmg_vs_marked": "Bạo Thương vs Đ.Dấu",
-    "crit_rating_vs_bleed": "Bạo Kích vs Chảy Máu",
-    "crit_dmg_vs_bleed": "Bạo Thương vs Chảy Máu",
-    "crit_rating_vs_drained": "Bạo Kích vs Hút Hồn",
-    "crit_dmg_vs_drained": "Bạo Thương vs Hút Hồn",
     # Misc
     "turn_steal_pct": "Cướp Lượt",
 }
@@ -166,6 +162,11 @@ def _format_bonus_lines(bonuses: dict) -> list[str]:
     metadata and never rendered. Values that round to zero are also skipped
     so the embed doesn't carry "+0%" filler rows.
     """
+    # Grouped per-kind / per-state dicts that fan out into multiple labelled
+    # lines. Each handler emits ``"• <label>: **+value**"`` for non-zero entries.
+    _DOT_KIND_VI = {"burn": "Thiêu Đốt", "bleed": "Chảy Máu", "poison": "Độc"}
+    _CRIT_STATE_VI = {"bleed": "Chảy Máu", "marked": "Đ.Dấu", "drained": "Hút Hồn"}
+
     lines: list[str] = []
     for k, v in bonuses.items():
         if k.startswith("_") or k == "note":
@@ -177,6 +178,45 @@ def _format_bonus_lines(bonuses: dict) -> list[str]:
                     continue
                 elem_vi = _GEM_ELEMENT_VI.get(elem, str(elem).title())
                 lines.append(f"• Xuyên Kháng {elem_vi}: **+{pct * 100:.1f}%**")
+            continue
+        # Per-element ``<elem>_dmg_taken`` amp dict (Xích Luyện-style).
+        if k == "dmg_taken" and isinstance(v, dict):
+            for elem, pct in v.items():
+                if not isinstance(pct, (int, float)) or abs(pct) < 0.0005:
+                    continue
+                elem_vi = _GEM_ELEMENT_VI.get(elem, str(elem).title())
+                lines.append(f"• ST {elem_vi} Địch Chịu: **+{pct * 100:.1f}%**")
+            continue
+        # Per-DoT-kind damage / stack-cap / per-stack-pct grouped dicts.
+        if k == "dot_dmg_bonus_by_kind" and isinstance(v, dict):
+            for kind, pct in v.items():
+                if not isinstance(pct, (int, float)) or abs(pct) < 0.0005:
+                    continue
+                lines.append(f"• ST {_DOT_KIND_VI.get(kind, kind)}: **+{pct * 100:.1f}%**")
+            continue
+        if k == "dot_stack_cap_bonus" and isinstance(v, dict):
+            for kind, n in v.items():
+                n = int(n or 0)
+                if not n:
+                    continue
+                lines.append(f"• Cap {_DOT_KIND_VI.get(kind, kind)}: **+{n}**")
+            continue
+        if k == "dot_per_stack_pct_bonus" and isinstance(v, dict):
+            for kind, pct in v.items():
+                if not isinstance(pct, (int, float)) or abs(pct) < 0.0005:
+                    continue
+                lines.append(f"• {_DOT_KIND_VI.get(kind, kind)}/Stack: **+{pct * 100:.2f}%**")
+            continue
+        # Crit amps vs targets in specific debuff states.
+        if k == "crit_amp_vs" and isinstance(v, dict):
+            for state, amps in v.items():
+                if not isinstance(amps, dict):
+                    continue
+                state_vi = _CRIT_STATE_VI.get(state, state)
+                if (r := int(amps.get("rating", 0) or 0)):
+                    lines.append(f"• Bạo Kích vs {state_vi}: **+{r:,}**")
+                if (d := int(amps.get("dmg", 0) or 0)):
+                    lines.append(f"• Bạo Thương vs {state_vi}: **+{d:,}**")
             continue
         if isinstance(v, bool):
             if v:

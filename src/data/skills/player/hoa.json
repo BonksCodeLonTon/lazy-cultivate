@@ -11,7 +11,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 240,
+    "mp_cost": 80,
     "cooldown": 5,
     "base_dmg": 0,
     "debuff_only": true,
@@ -33,11 +33,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.05
+      "matk": 1.75
     },
-    "mp_cost": 285,
+    "mp_cost": 95,
     "cooldown": 5,
-    "base_dmg": 2400,
+    "base_dmg": 240,
     "bonus_dmg_per_fire_dot_pct": 0.15,
     "effects": [],
     "formation_key": null,
@@ -55,7 +55,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 260,
+    "mp_cost": 87,
     "cooldown": 6,
     "base_dmg": 0,
     "debuff_only": true,
@@ -80,11 +80,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 0.85
+      "matk": 1.42
     },
-    "mp_cost": 220,
+    "mp_cost": 73,
     "cooldown": 4,
-    "base_dmg": 1320,
+    "base_dmg": 132,
     "hit_count": 3,
     "effects": [
       "DebuffChanHoa"
@@ -105,12 +105,12 @@
     "element": "hoa",
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.3,
-      "matk": 1.0
+      "atk": 0.5,
+      "matk": 1.67
     },
-    "mp_cost": 138,
+    "mp_cost": 46,
     "cooldown": 4,
-    "base_dmg": 600,
+    "base_dmg": 60,
     "auto_cast_on_stacks": {
       "stack": "burn",
       "threshold": 4,
@@ -142,7 +142,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 130,
+    "mp_cost": 43,
     "cooldown": 6,
     "base_dmg": 0,
     "effects": [
@@ -161,7 +161,7 @@
         "per_stack_pct": 0.02,
         "stacks_per_hit": 1,
         "stat_bonus": {
-          "phuong_hoa_per_stack_heal_reduce": 0.10
+          "phuong_hoa_per_stack_heal_reduce": 0.1
         }
       }
     },
@@ -180,7 +180,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 145,
+    "mp_cost": 48,
     "cooldown": 6,
     "base_dmg": 0,
     "effects": [
@@ -190,7 +190,7 @@
       "BuffLuuLyTinhHoa": {
         "duration": 4,
         "stat_bonus": {
-          "luu_ly_cleanse_chance": 0.30,
+          "luu_ly_cleanse_chance": 0.3,
           "luu_ly_per_stack_crit_res": 200
         }
       }
@@ -210,7 +210,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 165,
+    "mp_cost": 55,
     "cooldown": 6,
     "base_dmg": 0,
     "effects": [
@@ -220,10 +220,10 @@
       "BuffCuuDuong": {
         "duration": 4,
         "stat_bonus": {
-          "res_hoa": 0.60,
-          "hoa_max_resist_bonus": 0.10,
-          "damage_convert_hoa": 0.40,
-          "effect_resist:DebuffDongBang": 0.90
+          "res_hoa": 0.6,
+          "hoa_max_resist_bonus": 0.1,
+          "damage_convert_hoa": 0.4,
+          "effect_resist:DebuffDongBang": 0.9
         }
       }
     },
@@ -239,12 +239,12 @@
     "element": "hoa",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 0.9,
+      "atk": 1.5,
       "matk": 0.0
     },
     "mp_cost": 0,
     "cooldown": 0,
-    "base_dmg": 1200,
+    "base_dmg": 120,
     "proc_on_self_evade": true,
     "chain_only": true,
     "effects": [
@@ -262,12 +262,12 @@
     "element": "hoa",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 0.9,
+      "atk": 1.5,
       "matk": 0.0
     },
     "mp_cost": 0,
     "cooldown": 0,
-    "base_dmg": 1200,
+    "base_dmg": 120,
     "proc_on_target_evades": 1,
     "chain_only": true,
     "effects": [
@@ -285,12 +285,12 @@
     "element": "hoa",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.2,
+      "atk": 2.0,
       "matk": 0.0
     },
-    "mp_cost": 240,
+    "mp_cost": 80,
     "cooldown": 0,
-    "base_dmg": 2400,
+    "base_dmg": 240,
     "auto_cast_on_stacks": {
       "stack": "hoa_van",
       "threshold": 5,
@@ -320,7 +320,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 95,
+    "mp_cost": 32,
     "cooldown": 5,
     "base_dmg": 0,
     "effects": [
@@ -333,12 +333,12 @@
         "duration": 4,
         "stat_bonus": {
           "crit_dmg_rating": 500,
-          "evasion_rating_pct": 0.20
+          "evasion_rating_pct": 0.2
         }
       }
     },
     "formation_key": null,
-    "description_vi": "Phượng Hoàng Triển Sí — phượng cánh chấn hỏa vũ. **Bị động**: mỗi khi né tránh được đòn, tự động phát động **Phượng Hoàng Chân Hỏa** (nếu đang trang bị) để hộ thân. **Active (4 lượt)**: **+500 Bạo Kích Sát Thương** và **+20% Né Tránh** (theo % của Né Tránh nền)."
+    "description_vi": "Phượng Hoàng Triển Sí — phượng cánh chấn hỏa vũ. **Bị động**: mỗi khi né tránh được đòn, tự động phát động **Phượng Hoàng Chân Hỏa** (nếu đang trang bị) để hộ thân. **Active (4 lượt)**: **+500 Bạo Kích Sát Thương** và **+20% Né Tránh** (theo % của Né Tránh)."
   },
   {
     "key": "SkillMovLuuTinhCanNguyet_R7",
@@ -365,7 +365,7 @@
     "effect_overrides": {
       "BuffLuuTinhCanNguyet": {
         "stat_bonus": {
-          "_lt_base_spd_pct": 0.20,
+          "_lt_base_spd_pct": 0.2,
           "_lt_per_dot_evasion": 150,
           "_lt_per_dot_spd_pct": 0.05
         }
@@ -392,12 +392,12 @@
     "effects": [],
     "passive_dmg_per_elem_dot_pct": {
       "element": "hoa",
-      "pct": 0.10
+      "pct": 0.1
     },
     "passive_pen_at_elem_dot_count": {
       "element": "hoa",
       "count": 5,
-      "pen": 0.20
+      "pen": 0.2
     },
     "formation_key": null,
     "description_vi": "Dung Linh Chân Quyết (Bị Động) — chân quyết dung linh thiêu thiên. Khi địch mang Hỏa DoT: **mỗi loại Hỏa DoT** cộng thêm **+10% sát thương Hỏa** cho mỗi đòn (1 loại = +10%, 5 loại = +50%). Khi đạt **≥ 5 loại DoT Hỏa** trên địch, đòn Hỏa còn nhận **+20% Xuyên Kháng Hỏa**."
@@ -418,7 +418,7 @@
     "cooldown": 6,
     "base_dmg": 0,
     "effects": [],
-    "proc_on_heavy_hit_pct": 0.30,
+    "proc_on_heavy_hit_pct": 0.3,
     "retaliate_dmg_pct_max_hp": 0.15,
     "retaliate_stun_turns": 1,
     "formation_key": null,
@@ -433,12 +433,12 @@
     "element": "hoa",
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.4,
-      "matk": 1.2
+      "atk": 0.67,
+      "matk": 2.0
     },
-    "mp_cost": 480,
+    "mp_cost": 160,
     "cooldown": 6,
-    "base_dmg": 4680,
+    "base_dmg": 468,
     "effects": [
       "DebuffHoaXuyenThau",
       "DebuffPhaGiap"
@@ -469,5 +469,73 @@
         "duration": 4
       }
     }
+  },
+  {
+    "key": "SkillAtkHoa1",
+    "vi": "Hỏa Cầu",
+    "en": "Fireball",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.67
+    },
+    "mp_cost": 40,
+    "cooldown": 4,
+    "base_dmg": 95,
+    "effects": [],
+    "formation_key": null,
+    "description_vi": "Hỏa Cầu — một quả cầu lửa cơ bản, gây sát thương Hỏa theo MATK."
+  },
+  {
+    "key": "SkillAtkHoa2Basic",
+    "vi": "Viêm Ba Thuật",
+    "en": "Ember Wave",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.67
+    },
+    "mp_cost": 88,
+    "cooldown": 3,
+    "base_dmg": 235,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.45
+    },
+    "formation_key": null,
+    "description_vi": "Viêm ba thuật — 45% chồng 1 tầng Thiêu Đốt, nuôi stack cho Hỏa Bạo."
+  },
+  {
+    "key": "SkillAtkHoaThieuDot2",
+    "vi": "Liệt Diễm Song Phún",
+    "en": "Twin-Flame Burst",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 110,
+    "hit_count": 2,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.75
+    },
+    "formation_key": null,
+    "description_vi": "Hai luồng liệt diễm — mỗi đòn 75% chồng 1 tầng Thiêu Đốt (feeder cho Hỏa Bạo)."
   }
 ]

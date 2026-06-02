@@ -97,6 +97,12 @@ class Player(Base, TimestampMixin):
     skills: Mapped[list[CharacterSkill]] = relationship(
         "CharacterSkill", back_populates="player", cascade="all, delete-orphan"
     )
+    learned_skills: Mapped[list["CharacterLearnedSkill"]] = relationship(
+        "CharacterLearnedSkill", back_populates="player", cascade="all, delete-orphan"
+    )
+    skill_masteries: Mapped[list["CharacterSkillMastery"]] = relationship(
+        "CharacterSkillMastery", back_populates="player", cascade="all, delete-orphan"
+    )
     artifacts: Mapped[list[CharacterArtifact]] = relationship(
         "CharacterArtifact", back_populates="player", cascade="all, delete-orphan"
     )
@@ -117,7 +123,8 @@ class Player(Base, TimestampMixin):
 # Avoid circular import — import at module level after all models are defined
 from src.db.models.turn_tracker import TurnTracker  # noqa: E402
 from src.db.models.inventory import InventoryItem  # noqa: E402
-from src.db.models.skill import CharacterSkill  # noqa: E402
+from src.db.models.skill import CharacterSkill, CharacterLearnedSkill  # noqa: E402
+from src.db.models.skill_mastery import CharacterSkillMastery  # noqa: E402
 from src.db.models.artifact import CharacterArtifact  # noqa: E402
 from src.db.models.formation import CharacterFormation  # noqa: E402
 from src.db.models.market import MarketListing  # noqa: E402

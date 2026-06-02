@@ -21,22 +21,48 @@ def effective_mp_cost(actor: Combatant, skill_data: dict) -> int:
     ``DMG = base + mp_cost`` reads the same value, so the extra MP also
     boosts damage proportionally — a deliberate tradeoff.
 
-    Returns base ``mp_cost`` unchanged when the skill has no element or
-    no multiplier is set, so vanilla casts pay zero overhead.
+    A second multiplier stacks on top: **Skill Mastery** raises mp_cost with
+    the actor's mastery level on this skill (player-only, flag-gated via
+    ``settings.skill_mastery_enabled``) — so a mastered skill costs more MP and,
+    through the same ``DMG = base + mp_cost`` term, hits harder.
+
+    Returns base ``mp_cost`` unchanged when no multiplier applies, so vanilla
+    casts pay zero overhead.
     """
     base = int(skill_data.get("mp_cost", 0))
     if base <= 0:
         return base
+    cost = float(base)
     elem = skill_data.get("element")
-    if not elem:
+    if elem:
+        extra = float(actor.element_mp_cost_mult.get(elem, 0.0))
+        if extra > 0:
+            cost *= (1.0 + extra)
+    cost *= _mastery_mp_mult(actor, skill_data)
+    if cost == base:
         return base
-    extra = float(actor.element_mp_cost_mult.get(elem, 0.0))
-    if extra <= 0:
-        return base
-    # Round up so a 5 % multiplier on a 7-MP skill costs 8, not 7 — keeps
-    # the player from squeezing a "free" pip out of fractional rounding.
+    # Round up so a fractional multiplier never lets the player squeeze a
+    # "free" pip out of rounding.
     from math import ceil
-    return int(ceil(base * (1.0 + extra)))
+    return int(ceil(cost))
+
+
+def _mastery_mp_mult(actor: Combatant, skill_data: dict) -> float:
+    """Skill-mastery mp-cost multiplier for this actor + skill (1.0 when off).
+
+    Gated so it's inert until rollout and never touches enemies: flag off,
+    non-player actor, or no mastery on this skill all return 1.0.
+    """
+    from src.utils.config import settings
+    if not settings.skill_mastery_enabled:
+        return 1.0
+    if getattr(actor, "key", None) != "player":
+        return 1.0
+    level = actor.skill_mastery.get(skill_data.get("key", ""), 0)
+    if not level:
+        return 1.0
+    from src.game.systems.skill_mastery import mp_cost_mult
+    return mp_cost_mult(level)
 
 
 def _propagate_dot_bonuses(actor: Combatant, target: Combatant) -> None:
@@ -88,6 +114,9 @@ _STACK_BUILD_FIELDS: dict[str, tuple[str, ...]] = {
     "poison":     ("poison_per_stack_pct",),
     "chan_hoa":   ("chan_hoa_per_stack_pct", "chan_hoa_per_stack_fire_amp"),
     "nghiep_hoa": ("nghiep_hoa_per_stack_pct",),
+    # Pure-marker stacks (no DoT, no per-stack scaling) declare an empty
+    # tuple — they only need _STACK_EFFECT_KEY membership for cap lookup.
+    "sat_an":     (),
 }
 
 
@@ -209,28 +238,30 @@ def _build_skill_obj(
 #   stack_kind : optional key into _STACK_BUILD_FIELDS — when set, the
 #                attacker's build flags propagate and a stack is added
 #                (stack_add_fn is looked up on Combatant by name).
-#   stack_add  : Combatant method name that adds a stack (returns stacks gained)
 #   stacks_attr: attribute name read from target to format the log. Stack
 #                cap is computed via ``effective_stack_cap(target, effect_key)``.
+#                Adding the stack itself goes through ``Combatant.add_stack``
+#                using ``stack_kind`` as the dispatch key — no per-kind method
+#                name needed.
 #   log_fmt    : Vietnamese message template, positional or keyword placeholders
 # Special cases (immune_hard_cc for stun, freeze_on_skill_chance for freeze)
 # are kept as plain inline branches below the loop.
 _ON_HIT_PROCS: tuple[dict, ...] = (
     {
         "chance_attr": "burn_on_hit_pct", "effect_key": EffectKey.DEBUFF_THIEU_DOT,
-        "stack_kind":  "burn",  "stack_add": "add_burn_stack",
+        "stack_kind":  "burn",
         "stacks_attr": "burn_stacks",
         "log_fmt": "    🔥 Thiêu Đốt kích hoạt! [×{stacks}/{cap}]",
     },
     {
         "chance_attr": "bleed_on_hit_pct", "effect_key": EffectKey.DEBUFF_CHAY_MAU,
-        "stack_kind":  "bleed", "stack_add": "add_bleed_stack",
+        "stack_kind":  "bleed",
         "stacks_attr": "bleed_stacks",
         "log_fmt": "    🩸 Chảy Máu kích hoạt! [×{stacks}/{cap}]",
     },
     {
         "chance_attr": "shock_on_hit_pct", "effect_key": EffectKey.DEBUFF_SOC_DIEN,
-        "stack_kind":  "shock", "stack_add": "add_shock_stack",
+        "stack_kind":  "shock",
         "stacks_attr": "shock_stacks",
         "log_fmt": "    ⚡ Sốc Điện kích hoạt! [×{stacks}/{cap}]",
     },

@@ -15,10 +15,14 @@ class Settings(BaseSettings):
     db_port: int = 5432
     db_user: str = "isoma"
     db_password: str = "isoma@2026!@#"
-    db_name: str = "cultivation_db"
+    db_name: str = "cultivation_db_2"
 
     debug: bool = False
     log_level: str = "INFO"
+
+    # Skill Mastery — gates the per-skill power_mult read path in combat.
+    # Default OFF keeps the feature provably inert until rollout.
+    skill_mastery_enabled: bool = False
 
     @property
     def database_url(self) -> str:

@@ -55,10 +55,40 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Callable
 
+from src.game.engine.damage.elemental import apply_elemental
+from src.game.engine.effects import get_combat_modifiers
 from src.game.systems.combatant import Combatant
 
 if TYPE_CHECKING:
     from .session import CombatSession
+
+
+def _apply_defender_elemental(
+    actor: Combatant, target: Combatant, element: str | None, dmg: int,
+) -> int:
+    """Run a frozen attacker-baked summon hit through the element pipeline.
+
+    Routes through ``apply_elemental`` so defender ``res_<elem>`` (base +
+    debuff shred), defender ``dmg_taken_bonus_<elem>`` (per-stack amps),
+    attacker ``element_pen[<elem>]``, and the ``MAX_ELEMENTAL_RES`` clamp
+    all apply. Does NOT pass ``attacker_element_amp`` because summon dmg
+    was already amped at spawn time (``maybe_spawn_summon`` folds in
+    ``element_dmg_bonus`` + ``dmg_bonus_<elem>`` + dmg_amp_field). Passing
+    them again here would double-amp.
+    """
+    if not element:
+        return dmg
+    target_mods = get_combat_modifiers(target)
+    defender_res = {
+        element: float(target.resistances.get(element, 0.0))
+        + float(target_mods.get(f"res_{element}", 0.0)),
+    }
+    defender_amp = float(target_mods.get(f"dmg_taken_bonus_{element}", 0.0))
+    pen = float(actor.element_pen.get(element, 0.0))
+    return apply_elemental(
+        dmg, element, defender_res, pen_pct=pen,
+        damage_taken_by_element={element: defender_amp} if defender_amp else None,
+    )
 
 
 # ── 2. Charge bonus ──────────────────────────────────────────────────────────
@@ -151,6 +181,41 @@ def _trigger_on_shield_break(actor, target, parent_key, spec, ctx) -> bool:
     return bool(ctx.get("shield_broken"))
 
 
+@_register_cast_on("target_stacks_at_least")
+def _trigger_target_stacks(actor, target, parent_key, spec, ctx) -> bool:
+    """Fires when the target carries ≥ ``threshold`` of the named ``stack``.
+
+    Optionally consumes ALL stacks when ``consume`` is true; the consumed
+    count is written to ``ctx["consumed_stacks"]`` so the chain handler can
+    scale the follow-up cast per-stack (e.g. Ngũ Lôi Oanh Đỉnh → Lôi Đình
+    Chấn Thiên Sát: +10% loi dmg, +3% loi pen, +500 base per consumed
+    Sốc Điện stack).
+
+    Spec shape:
+        "chain_skill": {
+            "key": "SkillLoiDinhChanThienSat",
+            "cast_on": "target_stacks_at_least",
+            "stack": "shock", "threshold": 5, "consume": true,
+            "per_stack_base_dmg_bonus": 500,
+            "per_stack_element_pen_pct": 0.03,
+            "per_stack_element_dmg_pct": 0.10
+        }
+    """
+    stack_name = spec.get("stack")
+    threshold = int(spec.get("threshold", 0))
+    if not stack_name or threshold <= 0:
+        return False
+    count = _stack_count(target, stack_name)
+    if count < threshold:
+        return False
+    if spec.get("consume", False):
+        consumed = _consume_stacks(target, stack_name)
+        ctx["consumed_stacks"] = consumed
+    else:
+        ctx["consumed_stacks"] = count
+    return True
+
+
 def cast_chain_skill(
     session: "CombatSession", actor: Combatant, target: Combatant,
     parent_skill_key: str, skill_data: dict,
@@ -196,7 +261,10 @@ def cast_chain_skill(
     trigger = _CAST_ON_TRIGGERS.get(cast_on)
     if trigger is None:
         return  # unknown trigger — silently skip rather than crash
-    if not trigger(actor, target, parent_skill_key, spec, ctx or {}):
+    # Use a stable ctx dict so triggers can write back into it
+    # (e.g. target_stacks_at_least stores consumed_stacks for scaling).
+    trigger_ctx = ctx if ctx is not None else {}
+    if not trigger(actor, target, parent_skill_key, spec, trigger_ctx):
         return
     from src.data.registry import registry
     chain_data = registry.get_skill(chain_key)
@@ -208,38 +276,90 @@ def cast_chain_skill(
     scaled["base_dmg"] = max(1, int(chain_data.get("base_dmg", 0) * pct))
     scaled.pop("chain_skill", None)
     scaled.pop("auto_cast_on_stacks", None)  # don't loop the auto-cast guard
+
+    # Per-stack scaling — when the trigger stored ``consumed_stacks`` (e.g.
+    # target_stacks_at_least with consume=true), scale the chain cast per
+    # consumed unit. Three lanes supported, all optional:
+    #   * per_stack_base_dmg_bonus    — flat add to scaled base_dmg
+    #   * per_stack_element_pen_pct   — folds into scaled.element_pen_self
+    #   * per_stack_element_dmg_pct   — stamps a 1-turn transient buff on
+    #     the actor carrying ``dmg_bonus_<element>`` so the chain cast
+    #     reads it through normal actor_mods aggregation
+    consumed = int(trigger_ctx.get("consumed_stacks", 0))
+    transient_buff_key: str | None = None
+    if consumed > 0:
+        base_bonus = consumed * int(spec.get("per_stack_base_dmg_bonus", 0))
+        if base_bonus > 0:
+            scaled["base_dmg"] = scaled["base_dmg"] + base_bonus
+        pen_bonus = consumed * float(spec.get("per_stack_element_pen_pct", 0.0))
+        if pen_bonus > 0:
+            scaled["element_pen_self"] = (
+                float(scaled.get("element_pen_self", 0.0)) + pen_bonus
+            )
+        dmg_bonus_pct = consumed * float(spec.get("per_stack_element_dmg_pct", 0.0))
+        chain_element = chain_data.get("element")
+        if dmg_bonus_pct > 0 and chain_element:
+            transient_buff_key = str(
+                spec.get("per_stack_buff_key", "BuffNguLoiCharged")
+            )
+            actor.apply_effect(
+                transient_buff_key,
+                duration=1,
+                overrides={
+                    "stat_bonus": {f"dmg_bonus_{chain_element}": dmg_bonus_pct}
+                },
+            )
+        if base_bonus > 0 or pen_bonus > 0 or dmg_bonus_pct > 0:
+            session.log.append(
+                f"    ⚡ **{actor.name}** dồn nén {consumed} tầng "
+                f"→ +{base_bonus:,} ST nền / +{pen_bonus * 100:.0f}% xuyên "
+                f"/ +{dmg_bonus_pct * 100:.0f}% ST {chain_element or 'nguyên tố'}"
+            )
+
     session.log.append(
         f"    🔗 **{actor.name}** liên hoàn → **{chain_data.get('vi', chain_key)}** "
         f"({pct * 100:.0f}% ST)"
     )
     # Lazy import to break the cycle: skill_extras ← casting ← skill_extras.
     from .casting import cast_skill
-    cast_skill(session, actor, target, chain_key, scaled, mp_cost=0)
+    try:
+        cast_skill(session, actor, target, chain_key, scaled, mp_cost=0)
+    finally:
+        # Clean up the transient buff so it can't carry into next turn.
+        # Engine duration=1 also expires it at periodic phase, but the
+        # explicit removal makes the consume-on-cast intent obvious and
+        # avoids edge cases when the chain skill itself reads/refreshes
+        # actor effects.
+        if transient_buff_key:
+            actor.effects.pop(transient_buff_key, None)
+            actor.effect_overrides.pop(transient_buff_key, None)
 
 
 # ── 4. Auto-cast on stacks ───────────────────────────────────────────────────
 
-_STACK_FIELD: dict[str, str] = {
-    "burn": "burn_stacks",
-    "bleed": "bleed_stacks",
-    "shock": "shock_stacks",
-    "hoa_van": "hoa_van_stacks",
-}
+# Whitelist of stack kinds that skill JSON ``auto_cast_on_stacks.stack``
+# may reference. Acts as a gate so a typo in the JSON doesn't silently
+# read an unrelated combatant attribute. New stack kinds get one line here.
+_STACK_KINDS: frozenset[str] = frozenset({"burn", "bleed", "shock", "hoa_van"})
 
 
 def _stack_count(target: Combatant, stack_name: str) -> int:
-    field = _STACK_FIELD.get(stack_name)
-    return int(getattr(target, field, 0)) if field else 0
+    if stack_name not in _STACK_KINDS:
+        return 0
+    return int(getattr(target, f"{stack_name}_stacks", 0))
 
 
 def _consume_stacks(target: Combatant, stack_name: str) -> int:
-    """Zero the stack counter and return the count that was consumed."""
-    field = _STACK_FIELD.get(stack_name)
-    if not field:
+    """Zero the stack counter and return the count that was consumed.
+
+    Thin gate around ``Combatant.consume_stacks`` that restricts the
+    skill-JSON-reachable stack kinds to the ``_STACK_KINDS`` whitelist.
+    Engine code that already knows the kind can call
+    ``combatant.consume_stacks(kind)`` directly.
+    """
+    if stack_name not in _STACK_KINDS:
         return 0
-    n = int(getattr(target, field, 0))
-    setattr(target, field, 0)
-    return n
+    return target.consume_stacks(stack_name)
 
 
 def find_auto_cast_skill(
@@ -362,6 +482,17 @@ def maybe_spawn_summon(
         dmg += int(actor.matk * pct_matk)
     if pct_atk > 0:
         dmg += int(actor.atk * pct_atk)
+    # ``dmg_amp_field`` (optional) names a Combatant float attribute whose
+    # value multiplicatively amps this summon's damage (× 1+amp). Applied
+    # AFTER base+pct so the bonus rides through the element-amp step too.
+    # Data-driven replacement for the old ``vi == "Vạn Kiếm"`` name check —
+    # Vạn Kiếm summons set it to ``sword_summon_dmg_amp`` (Kiếm Tâm Thông
+    # Minh). Absent / zero amp → no change for every other summon kind.
+    amp_field = spec.get("dmg_amp_field")
+    if amp_field:
+        _amp = float(getattr(actor, amp_field, 0.0))
+        if _amp > 0:
+            dmg = int(dmg * (1.0 + _amp))
     # Element-bonus folding — a quang summon should benefit from the
     # caster's ``dmg_bonus_quang`` (formation passive) and permanent
     # ``element_dmg_bonus`` (constitutions / equipment) the same way a
@@ -383,6 +514,18 @@ def maybe_spawn_summon(
     count = max(1, int(spec.get("count", 1)))
     aura = spec.get("aura_buff")
     on_hit_debuff = spec.get("on_hit_debuff")
+    # Optional actor-attribute name to read for per-summon overrides (e.g.
+    # ``cuu_long``). Lets a formation declare a static summon spec while the
+    # gem-threshold-driven actor dict tunes crit_rating / stun_chance /
+    # expire_finisher_pct / dmg_pct_bonus at spawn time. Apply BEFORE the
+    # summon list is filled so all ``count`` copies share the same overrides.
+    override_key = spec.get("actor_overrides")
+    actor_ov = getattr(actor, override_key, None) if override_key else None
+    if isinstance(actor_ov, dict):
+        # dmg_pct_bonus — extra fraction multiplier on top of the spawn dmg.
+        _pct_bonus = float(actor_ov.get("dmg_pct_bonus", 0.0))
+        if _pct_bonus:
+            dmg = max(1, int(dmg * (1.0 + _pct_bonus)))
     for _ in range(count):
         summon = {
             "vi": spec.get("vi", "Triệu Hồi Vật"),
@@ -391,6 +534,16 @@ def maybe_spawn_summon(
             "dmg": dmg,
             "turns": turns,
         }
+        # Carry the amp field forward so the consume-at-count burst can
+        # apply the same multiplier the per-tick swing got at spawn.
+        if amp_field:
+            summon["dmg_amp_field"] = amp_field
+        # Opt-in: per-tick swing routes through the elemental pipeline so
+        # defender ``res_<elem>`` + ``dmg_taken_bonus_<elem>`` apply. Vanilla
+        # summons (Cửu Long, curse-class) keep the legacy raw-take_damage path
+        # so this flag stays purely additive — no existing balance change.
+        if spec.get("respect_target_res"):
+            summon["respect_target_res"] = True
         if aura and aura.get("key"):
             summon["aura_buff_key"] = aura["key"]
             summon["aura_buff_overrides"] = aura.get("overrides")
@@ -399,6 +552,37 @@ def maybe_spawn_summon(
         # flavor is "the demon marks you" rather than "the demon hits you".
         if on_hit_debuff and on_hit_debuff.get("key"):
             summon["on_hit_debuff"] = on_hit_debuff
+        # Optional ``consume_spec`` — when the swarm count for this ``vi``
+        # reaches ``at_count``, every copy is consumed and the spec's
+        # damage / stack-gain fires (see consume-at-count pass in
+        # ``tick_summons``). Stamped per-summon so each carries the same
+        # spec; the consume pass reads it once per group.
+        _consume = spec.get("consume_spec")
+        if _consume and int(_consume.get("at_count", 0)) > 0:
+            summon["consume_spec"] = _consume
+        # Per-summon crit / stun / on-expire finisher — populated from the
+        # actor's override dict (e.g. cuu_long). Optional; absent fields stay
+        # at zero so the tick path treats the summon as a vanilla swarm.
+        if isinstance(actor_ov, dict):
+            _cr = int(actor_ov.get("crit_rating", 0))
+            _cdr = int(actor_ov.get("crit_dmg_rating", 0))
+            if _cr or _cdr:
+                summon["crit_rating"] = _cr
+                summon["crit_dmg_rating"] = _cdr
+            _stun = float(actor_ov.get("stun_chance", 0.0))
+            if _stun:
+                summon["stun_chance"] = _stun
+            _fin_pct = float(actor_ov.get("finisher_pct", 0.0))
+            if _fin_pct:
+                summon["expire_finisher"] = {
+                    "pct": _fin_pct,
+                    "element": spec.get("element"),
+                    "emoji": spec.get("finisher_emoji", "💥"),
+                    "vi": spec.get("finisher_vi", spec.get("vi", "Hỏa Long") + " Tận Sát"),
+                }
+        # Reset the per-batch damage accumulator on the first spawn of a new
+        # batch. Idempotent across the swarm — popping a missing key is fine.
+        actor.summon_dmg_dealt.pop(summon["vi"], None)
         actor.summons.append(summon)
     aura_tag = f" + Aura {aura['key']}" if aura and aura.get("key") else ""
     swarm_tag = f"×{count} " if count > 1 else ""
@@ -469,12 +653,41 @@ def tick_summons(
     from src.game.engine.effects import EFFECTS
 
     logged_auras: set[str] = set()
+    # Track finishers to fire ONCE after the loop, keyed by summon ``vi``
+    # so multi-copy swarms (e.g. 9 Cửu Long) burst as one combined hit
+    # instead of each dragon nuking a freshly-popped accumulator.
+    pending_finishers: dict[str, dict] = {}
     for s in actor.summons:
         if target.is_alive():
-            target.take_damage(s["dmg"])
-            tag = colorize_damage(f"-{s['dmg']:,} HP", s.get("element"))
+            # Per-tick crit roll when the summon carries ``crit_rating`` (set
+            # at spawn by an ``actor_overrides`` source, e.g. Cửu Long Thần
+            # Hỏa Trận). Uses the same rating→pct curve as the main damage
+            # pipeline. Skipped silently when crit_rating is 0.
+            hit_dmg = int(s["dmg"])
+            is_crit = False
+            _cr = int(s.get("crit_rating", 0))
+            if _cr > 0:
+                crit_chance = _cr / (_cr + target.crit_res_rating + 3000)
+                if session.rng.random() < crit_chance:
+                    is_crit = True
+                    _cdr = int(s.get("crit_dmg_rating", 0))
+                    crit_mult = 1.5 + _cdr / (_cdr + 3000)
+                    hit_dmg = max(1, int(hit_dmg * crit_mult))
+            # Opt-in defender-side elemental pipeline (set via summon_spec's
+            # ``respect_target_res``). Today: Vạn Kiếm (so Kim res / Phá Giáp
+            # / per-stack debuff shred all apply to each sword swing).
+            if s.get("respect_target_res"):
+                hit_dmg = _apply_defender_elemental(
+                    actor, target, s.get("element"), hit_dmg,
+                )
+            target.take_damage(hit_dmg)
+            actor.summon_dmg_dealt[s["vi"]] = (
+                actor.summon_dmg_dealt.get(s["vi"], 0) + hit_dmg
+            )
+            tag = colorize_damage(f"-{hit_dmg:,} HP", s.get("element"))
+            crit_tag = " 💥" if is_crit else ""
             session.log.append(
-                f"    {s['emoji']} **{s['vi']}** đánh **{target.name}** {tag}"
+                f"    {s['emoji']} **{s['vi']}** đánh **{target.name}** {tag}{crit_tag}"
             )
             # Curse-class summons stamp a debuff on the target each tick.
             # Re-application refreshes duration; the debuff's stat_bonus
@@ -483,15 +696,29 @@ def tick_summons(
             on_hit = s.get("on_hit_debuff") or {}
             on_hit_key = on_hit.get("key")
             if on_hit_key and EFFECTS.get(on_hit_key):
+                # Optional ``chance`` gate — when omitted the debuff always
+                # applies (back-compat with existing curse summons).
+                _chance = float(on_hit.get("chance", 1.0))
+                if _chance >= 1.0 or session.rng.random() < _chance:
+                    from src.game.systems.combat.casting import inflict_debuff
+                    inflict_debuff(
+                        session,
+                        on_hit_key,
+                        EFFECTS[on_hit_key],
+                        target,
+                        actor=actor,
+                        overrides=on_hit.get("overrides"),
+                    )
+            # Per-hit CCStun roll — independent of on_hit_debuff so a summon
+            # can stamp both a flavor debuff (e.g. burn) and a CC roll.
+            _stun_chance = float(s.get("stun_chance", 0.0))
+            if _stun_chance > 0 and (
+                _stun_chance >= 1.0 or session.rng.random() < _stun_chance
+            ):
                 from src.game.systems.combat.casting import inflict_debuff
-                inflict_debuff(
-                    session,
-                    on_hit_key,
-                    EFFECTS[on_hit_key],
-                    target,
-                    actor=actor,
-                    overrides=on_hit.get("overrides"),
-                )
+                _stun_meta = EFFECTS.get("CCStun")
+                if _stun_meta is not None:
+                    inflict_debuff(session, "CCStun", _stun_meta, target, actor=actor)
         # Log each distinct aura once per tick. Duplicate auras (same key
         # from multiple summons) don't stack — see ``aura_stat_bonus``.
         aura_key = s.get("aura_buff_key")
@@ -509,4 +736,130 @@ def tick_summons(
             session.log.append(
                 f"    {s['emoji']} **{s['vi']}** kết thúc triệu hồi."
             )
+            # Stash the finisher spec; firing happens after the loop so the
+            # burst sees the FULL batch accumulator (every dragon's tick this
+            # turn included) and pops it exactly once per group.
+            finisher = s.get("expire_finisher") or {}
+            if finisher:
+                pending_finishers.setdefault(s["vi"], finisher)
     actor.summons = survivors
+
+    # ── On-expire finisher pass ────────────────────────────────────────────
+    # Fire one burst per summon-group whose last copy expired this tick.
+    # Survivors with the same ``vi`` cancel the burst (a partial expiry
+    # leaves the batch alive). Accumulator popped so a re-summon starts fresh.
+    surviving_vis = {s["vi"] for s in survivors}
+    for vi, finisher in pending_finishers.items():
+        if vi in surviving_vis:
+            continue
+        if not target.is_alive():
+            actor.summon_dmg_dealt.pop(vi, None)
+            continue
+        accum = actor.summon_dmg_dealt.pop(vi, 0)
+        burst = max(0, int(accum * float(finisher.get("pct", 0.0))))
+        if burst <= 0:
+            continue
+        target.take_damage(burst)
+        tag = colorize_damage(f"-{burst:,} HP", finisher.get("element"))
+        session.log.append(
+            f"    {finisher.get('emoji', '💥')} "
+            f"**{finisher.get('vi', vi + ' Tận Sát')}** "
+            f"bùng nổ trên **{target.name}** {tag}"
+        )
+
+    # ── Consume-at-count pass ──────────────────────────────────────────────
+    # Some swarms (e.g. Vạn Kiếm Quy Tông's 10 swords) opt into a "consume
+    # when the group is full" burst: every summon in the group is removed,
+    # a scaled hit lands on the target, and an optional Combatant counter
+    # field (Sword Heart stacks) gets incremented. The trigger is data-only
+    # via the ``consume`` sub-dict on the summon spec — vanilla summons
+    # without ``consume_at_count`` are untouched.
+    if not actor.summons or not target.is_alive():
+        return
+    consume_by_vi: dict[str, dict] = {}
+    counts_by_vi: dict[str, int] = {}
+    amp_field_by_vi: dict[str, str] = {}
+    for s in actor.summons:
+        cs = s.get("consume_spec")
+        if cs and cs.get("at_count"):
+            consume_by_vi.setdefault(s["vi"], cs)
+            counts_by_vi[s["vi"]] = counts_by_vi.get(s["vi"], 0) + 1
+            if s.get("dmg_amp_field"):
+                amp_field_by_vi.setdefault(s["vi"], s["dmg_amp_field"])
+    fired_vis: set[str] = set()
+    for vi, cs in consume_by_vi.items():
+        threshold = int(cs.get("at_count", 0))
+        if counts_by_vi.get(vi, 0) < threshold:
+            continue
+        # Optional gate: when the spec sets ``requires_formation_skill``,
+        # the burst only fires if the actor carries that formation skill
+        # in ``formation_skill_keys`` (set at build time from the active
+        # formation's ``formation_skill_key``). Lets a defensive skill
+        # spawn the same summon swarm without auto-granting the formation's
+        # signature burst — e.g. Hộ Thể Kiếm Cương stacks Vạn Kiếm but the
+        # 600 % ATK Quy Tông burst requires the Vạn Kiếm Quy Tông formation
+        # to actually be running. Vanilla consume_specs without this field
+        # always fire (back-compat).
+        req_formation = cs.get("requires_formation_skill")
+        if req_formation and req_formation not in getattr(actor, "formation_skill_keys", []):
+            continue
+        # Compute the burst — scales off the actor's current stats so it
+        # tracks buffs in play at consume time.
+        burst = int(cs.get("dmg", 0))
+        burst += int(actor.atk * float(cs.get("dmg_pct_of_atk", 0.0)))
+        burst += int(actor.matk * float(cs.get("dmg_pct_of_matk", 0.0)))
+        # Same ``dmg_amp_field`` the per-turn swing used (carried on the
+        # summon at spawn), applied to the burst so the consume payoff
+        # scales identically with the passive — e.g. Kiếm Tâm Thông Minh.
+        _amp_field = amp_field_by_vi.get(vi)
+        if _amp_field:
+            _amp = float(getattr(actor, _amp_field, 0.0))
+            if _amp > 0:
+                burst = int(burst * (1.0 + _amp))
+        # Optional ``element`` bonus (folds element_dmg_bonus + buff dmg)
+        # so a Kim burst sees the actor's full kim build-up.
+        _elem = cs.get("element")
+        if _elem:
+            _bonus = float(get_combat_modifiers(actor).get(f"dmg_bonus_{_elem}", 0.0))
+            _bonus += float(actor.element_dmg_bonus.get(_elem, 0.0))
+            # Sword-Heart kim amp folds in too so the consume already
+            # benefits from the stacks it's about to top up.
+            if _elem == "kim" and actor.sword_heart_stacks > 0:
+                _bonus += 0.05 * actor.sword_heart_stacks
+            if _bonus:
+                burst = int(burst * (1.0 + _bonus))
+        burst = max(1, burst)
+        # Opt-in defender-side elemental pipeline for the consume burst —
+        # same gate as the per-tick swing (set via consume_spec's
+        # ``respect_target_res``). Today: Vạn Kiếm Quy Tông's 10-stack burst.
+        if cs.get("respect_target_res"):
+            burst = _apply_defender_elemental(actor, target, _elem, burst)
+        target.take_damage(burst)
+        tag = colorize_damage(f"-{burst:,} HP", _elem)
+        session.log.append(
+            f"    {cs.get('emoji', '⚔️')} "
+            f"**{cs.get('vi', vi + ' Quy Tông')}** "
+            f"thi triển trên **{target.name}** {tag}"
+        )
+        # Stack-gain: bump a named Combatant counter (Sword Heart etc.) by
+        # ``gain``, clamped to ``cap``. Safe no-op when the field is missing.
+        stack_field = cs.get("stack_field")
+        stack_gain = int(cs.get("stack_gain", 0))
+        stack_cap = int(cs.get("stack_cap", 0))
+        if stack_field and stack_gain and hasattr(actor, stack_field):
+            current = int(getattr(actor, stack_field, 0))
+            new_val = current + stack_gain
+            if stack_cap > 0:
+                new_val = min(new_val, stack_cap)
+            setattr(actor, stack_field, new_val)
+            session.log.append(
+                f"    ✨ **{actor.name}** đạt **{new_val}** "
+                f"{cs.get('stack_vi', stack_field)}."
+            )
+        fired_vis.add(vi)
+    if fired_vis:
+        actor.summons = [s for s in actor.summons if s["vi"] not in fired_vis]
+        # Reset accumulators for fired groups so a re-summon next turn
+        # starts fresh.
+        for vi in fired_vis:
+            actor.summon_dmg_dealt.pop(vi, None)

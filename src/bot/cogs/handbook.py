@@ -559,7 +559,7 @@ def _chapter_skills() -> discord.Embed:
         name="🌿 Linh Căn Là Gating",
         value=(
             "Mỗi skill có **yêu cầu Linh Căn** (ví dụ skill Hỏa cần Hỏa Linh Căn ≥ Lv2). "
-            "Mở Tàng Kinh Các (`/status` → 📚) để xem **mọi skill bạn đủ điều kiện học**, "
+            "Mở Tàng Kinh Các (`/status` → 🎯 Kỹ Năng → 📚, hoặc `/skilllist`) để xem **mọi skill bạn đủ điều kiện học**, "
             "tô sáng những skill có scroll trong túi."
         ),
         inline=False,

@@ -1,0 +1,57 @@
+[
+  {
+    "key": "MasteryLinhNgoPhu",
+    "vi": "Lĩnh Ngộ Phù",
+    "en": "Comprehension Talisman",
+    "type": "mastery_material",
+    "grade": 1,
+    "shop_price_merit": 0,
+    "description_vi": "Phù lục sơ giai dùng để Đột Phá kỹ năng từ Tầng 5 lên Tầng 6 (Tiểu Thành). Tỉ lệ thành công gốc 90%."
+  },
+  {
+    "key": "MasteryTamDacNgoc",
+    "vi": "Tâm Đắc Ngọc",
+    "en": "Insight Jade",
+    "type": "mastery_material",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Ngọc tâm đắc dùng để Đột Phá kỹ năng từ Tầng 10 lên Tầng 11 (Đại Thành). Tỉ lệ thành công gốc 70%."
+  },
+  {
+    "key": "MasteryDaoVanTinh",
+    "vi": "Đạo Vận Tinh",
+    "en": "Dao-Rhyme Essence",
+    "type": "mastery_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hoa đạo vận dùng để Đột Phá kỹ năng từ Tầng 15 lên Tầng 16 (Viên Mãn). Tỉ lệ thành công gốc 50%."
+  },
+  {
+    "key": "MasteryThongThienDaoQua",
+    "vi": "Thông Thiên Đạo Quả",
+    "en": "Heaven-Reaching Dao Fruit",
+    "type": "mastery_material",
+    "grade": 4,
+    "hidden": true,
+    "shop_price_merit": 0,
+    "description_vi": "Đạo quả vạn cổ khó cầu. Khi sở hữu, kỹ năng đã Viên Mãn (Tầng 20) hé lộ con đường Đăng Phong Tạo Cực — đột phá tới Tầng 21, thượng hạn Tầng 25. Cực hiếm, chỉ rơi từ Đại Boss Thế Giới và tầng sâu bí cảnh. Tỉ lệ thành công gốc 35%."
+  },
+  {
+    "key": "MasteryHoDaoPhu",
+    "vi": "Hộ Đạo Phù",
+    "en": "Dao-Guarding Talisman",
+    "type": "mastery_material",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Dùng kèm khi Đột Phá kỹ năng: +20% tỉ lệ thành công. Tiêu hao dù thành công hay thất bại."
+  },
+  {
+    "key": "MasteryDinhDaoChau",
+    "vi": "Định Đạo Châu",
+    "en": "Dao-Anchoring Pearl",
+    "type": "mastery_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Dùng kèm khi Đột Phá kỹ năng: nếu THẤT BẠI, vật phẩm Đột Phá không bị tiêu hao (được hoàn lại). Riêng Định Đạo Châu vẫn tiêu hao."
+  }
+]

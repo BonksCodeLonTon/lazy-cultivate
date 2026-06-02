@@ -1,0 +1,1576 @@
+[
+  {
+    "key": "BuffKiemKhi",
+    "vi": "Kiếm Khí",
+    "en": "Sword Qi",
+    "kind": "buff",
+    "description_vi": "Tụ kiếm khí, tăng sát thương và tỉ lệ bạo kích.",
+    "stat_bonus": {
+      "final_dmg_bonus": 0.15,
+      "crit_rating": 150
+    },
+    "emoji": "⚔️",
+    "duration": 3
+  },
+  {
+    "key": "BuffKiemY",
+    "vi": "Kiếm Ý",
+    "en": "Sword Intent",
+    "kind": "buff",
+    "description_vi": "Kiếm ý sung mãn, tăng mạnh sát thương.",
+    "stat_bonus": {
+      "final_dmg_bonus": 0.25
+    },
+    "emoji": "🗡️",
+    "duration": 4
+  },
+  {
+    "key": "BuffVoNgaKiemTam",
+    "vi": "Vô Ngã Kiếm Tâm",
+    "en": "Selfless Sword Heart",
+    "kind": "buff",
+    "description_vi": "Đạt cảnh giới vô ngã, tăng tối đa sát thương kiếm.",
+    "stat_bonus": {
+      "final_dmg_bonus": 0.4
+    },
+    "duration": 3
+  },
+  {
+    "key": "BuffNhietTinh",
+    "vi": "Nhiệt Tình",
+    "en": "Blazing Passion",
+    "kind": "buff",
+    "description_vi": "Chiến ý bùng cháy, tăng sát thương và sát thương bạo kích.",
+    "stat_bonus": {
+      "final_dmg_bonus": 0.2,
+      "crit_dmg_rating": 200
+    },
+    "emoji": "🔥",
+    "duration": 3
+  },
+  {
+    "key": "BuffHoaThan",
+    "vi": "Hỏa Thần Giáng Lâm",
+    "en": "Fire God Descent",
+    "kind": "buff",
+    "description_vi": "Hỏa thần tạm hạ phàm, tăng sát thương kỹ năng Hỏa và đánh trúng có xác suất gây Thiêu Đốt 4 lượt.",
+    "stat_bonus": {
+      "dmg_bonus_hoa": 0.2
+    },
+    "aura_on_hit": [
+      "DebuffThieuDot",
+      0.35,
+      4
+    ],
+    "emoji": "🔥",
+    "duration": 3
+  },
+  {
+    "key": "BuffPhuongHoangChanHoa",
+    "vi": "Phượng Hoàng Chân Hỏa",
+    "en": "Phoenix True Fire",
+    "kind": "buff",
+    "description_vi": "Chân hỏa Phượng Hoàng quấn quanh thân — passive: mỗi 5% HP đã mất tăng 0.2% hồi sinh lực. Khi địch đánh trúng, in 1 tầng **Phượng Hỏa** lên địch (tối đa 3 tầng): mỗi tầng đốt 2% HP mỗi lượt và **giảm 10% hồi máu nhận vào** từ mọi nguồn.",
+    "stat_bonus": {
+      "phuong_hoang_per_5pct_hp_lost_regen": 0.002
+    },
+    "scaling_rules": [
+      {
+        "key": "phuong_hoang_per_5pct_hp_lost_regen",
+        "source": "hp_missing_pct",
+        "bucket": 0.05,
+        "output": "hp_regen_pct"
+      }
+    ],
+    "emoji": "🦅",
+    "duration": 4
+  },
+  {
+    "key": "BuffLuuLyTinhHoa",
+    "vi": "Lưu Ly Tịnh Hỏa",
+    "en": "Lapis Pure Fire",
+    "kind": "buff",
+    "description_vi": "Lưu ly tịnh hỏa hộ thân — mỗi lượt, với **mỗi loại Hỏa DoT** đang cháy trên địch, có **30% cơ hội Thanh Tẩy 1 trạng thái xấu** trên thân. Mỗi lần Thanh Tẩy thành công cộng dồn **+200 Kháng Bạo** (tối đa 3 tầng, hết khi buff tan).",
+    "stat_bonus": {
+      "luu_ly_cleanse_chance": 0.3,
+      "luu_ly_per_stack_crit_res": 200
+    },
+    "stack_cap": 3,
+    "stealable": false,
+    "scaling_rules": [
+      {
+        "key": "luu_ly_per_stack_crit_res",
+        "source": "stack:luu_ly_tinh_hoa",
+        "output": "crit_res_rating"
+      }
+    ],
+    "emoji": "🔮",
+    "duration": 4
+  },
+  {
+    "key": "BuffCuuDuong",
+    "vi": "Cửu Dương Hộ Thể",
+    "en": "Nine-Sun Body Guard",
+    "kind": "buff",
+    "description_vi": "Cửu dương chân khí cuộn quanh thân — **kháng 90% Đóng Băng**; **+60% Kháng Hỏa** kèm **+10% Cap Kháng Hỏa** (tối đa 85%); **40% sát thương phải nhận** được chuyển hóa thành Hỏa trước khi đè lên thân (mitigation qua res Hỏa đã được tăng cường).",
+    "stat_bonus": {
+      "res_hoa": 0.6,
+      "hoa_max_resist_bonus": 0.1,
+      "damage_convert_hoa": 0.4,
+      "effect_resist:DebuffDongBang": 0.9
+    },
+    "stealable": false,
+    "emoji": "🌞",
+    "duration": 4
+  },
+  {
+    "key": "BuffPhuongHoangTrienSi",
+    "vi": "Phượng Hoàng Triển Sí",
+    "en": "Phoenix Wing Spread",
+    "kind": "buff",
+    "description_vi": "Phượng hoàng triển sí — chấn cánh hỏa vũ, **+500 Bạo Kích Sát Thương** và **+20% Né Tránh** (theo % của Né Tránh). Khi né được đòn, tự động phát động **Phượng Hoàng Chân Hỏa** (nếu đang trang bị) để hộ thân.",
+    "stat_bonus": {
+      "crit_dmg_rating": 500,
+      "evasion_rating_pct": 0.2
+    },
+    "stealable": false,
+    "emoji": "🦅",
+    "duration": 4
+  },
+  {
+    "key": "BuffLuuTinhCanNguyet",
+    "vi": "Lưu Tinh Cản Nguyệt",
+    "en": "Shooting Star Blocking Moon",
+    "kind": "buff",
+    "description_vi": "Lưu tinh thân pháp — **+20% tốc độ** vĩnh viễn. Khi địch mang Hỏa DoT: mỗi loại Hỏa DoT cộng thêm **+150 Né Tránh** và **+5% Tốc Độ** cho người niệm (cập nhật mỗi lượt). Aura — không thể giải trừ / cướp.",
+    "stat_bonus": {
+      "spd_pct": 0.2
+    },
+    "stealable": false,
+    "emoji": "🌠",
+    "duration": 99
+  },
+  {
+    "key": "BuffBatDietHoaChung",
+    "vi": "Bất Diệt Hỏa Chủng",
+    "en": "Immortal Fire Seed",
+    "kind": "buff",
+    "description_vi": "Hỏa chủng bất diệt cuộn quanh chân khí — **+70% giảm sát thương phải nhận** trong lúc thân hóa hỏa chủng, đồng thời **không thể hành động 1 lượt**. Khi buff tan, bùng nổ trả đòn: gây sát thương Hỏa = 15% HP tối đa và choáng địch 1 lượt.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.7
+    },
+    "skips_turn": true,
+    "stealable": false,
+    "emoji": "🔥",
+    "duration": 2
+  },
+  {
+    "key": "BuffLietDiem",
+    "vi": "Liệt Diệm Hộ Thể",
+    "en": "Blazing Flame Guard",
+    "kind": "buff",
+    "description_vi": "Lửa thiêu đốt bảo vệ cơ thể, giảm sát thương nhận vào.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.1
+    },
+    "emoji": "🛡️",
+    "duration": 3
+  },
+  {
+    "key": "BuffBangGiap",
+    "vi": "Băng Giáp",
+    "en": "Ice Armor",
+    "kind": "buff",
+    "description_vi": "Băng giáp bao phủ, giảm đáng kể sát thương nhận vào.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.2
+    },
+    "emoji": "🧊",
+    "duration": 4
+  },
+  {
+    "key": "BuffThuyKinh",
+    "vi": "Thủy Kính Thân",
+    "en": "Water Mirror Body",
+    "kind": "buff",
+    "description_vi": "Thân như gương nước, giảm đáng kể sát thương nhận vào.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.15
+    },
+    "emoji": "💧",
+    "duration": 3
+  },
+  {
+    "key": "BuffHanKhi",
+    "vi": "Hàn Khí Tỏa Thân",
+    "en": "Cold Aura",
+    "kind": "buff",
+    "description_vi": "Hàn khí tỏa ra, giảm sát thương nhận và làm chậm 4 lượt mọi kẻ địch bị đánh trúng.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.1
+    },
+    "aura_on_hit": [
+      "DebuffLamCham",
+      1.0,
+      4
+    ],
+    "emoji": "❄️",
+    "duration": 3
+  },
+  {
+    "key": "BuffLoiThan",
+    "vi": "Lôi Thần Giáng",
+    "en": "Thunder God Strike",
+    "kind": "buff",
+    "description_vi": "Lôi thần gia hộ, tăng tỉ lệ bạo kích và đánh trúng có xác suất gây Tê Liệt 2 lượt.",
+    "stat_bonus": {
+      "crit_rating": 100
+    },
+    "aura_on_hit": [
+      "DebuffTeLiet",
+      0.2,
+      2
+    ],
+    "emoji": "⚡",
+    "duration": 3
+  },
+  {
+    "key": "BuffTocLoi",
+    "vi": "Tốc Lôi",
+    "en": "Speed Lightning",
+    "kind": "buff",
+    "description_vi": "Tốc độ như sét đánh, tăng mạnh tốc độ hành động.",
+    "stat_bonus": {
+      "spd_pct": 0.5
+    },
+    "emoji": "⚡",
+    "duration": 2
+  },
+  {
+    "key": "BuffNguPhong",
+    "vi": "Ngự Phong",
+    "en": "Wind Mastery",
+    "kind": "buff",
+    "description_vi": "Điều khiển gió, tăng cao khả năng né tránh.",
+    "stat_bonus": {
+      "evasion_rating": 200
+    },
+    "emoji": "🌬️",
+    "duration": 3
+  },
+  {
+    "key": "BuffPhongVu",
+    "vi": "Phong Vũ Tương Hòa",
+    "en": "Wind Rain Harmony",
+    "kind": "buff",
+    "description_vi": "Phong vũ hòa quyện, tăng cả né tránh lẫn bạo kích.",
+    "stat_bonus": {
+      "evasion_rating": 100,
+      "crit_rating": 100
+    },
+    "emoji": "🌧️",
+    "duration": 3
+  },
+  {
+    "key": "BuffSinhCo",
+    "vi": "Sinh Cơ Sung Mãn",
+    "en": "Vitality Overflow",
+    "kind": "buff",
+    "description_vi": "Sinh cơ dồi dào, hồi phục HP mỗi lượt.",
+    "stat_bonus": {
+      "hp_regen_pct": 0.05
+    },
+    "emoji": "💚",
+    "duration": 4
+  },
+  {
+    "key": "BuffCanCo",
+    "vi": "Căn Cơ Bất Động",
+    "en": "Immovable Foundation",
+    "kind": "buff",
+    "description_vi": "Căn cơ vững chắc như núi, giảm sát thương nhận vào.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.15
+    },
+    "emoji": "🪨",
+    "duration": 3
+  },
+  {
+    "key": "BuffKhoMocPhungXuan",
+    "vi": "Khô Mộc Phùng Xuân",
+    "en": "Dead Wood Meets Spring",
+    "kind": "buff",
+    "description_vi": "Khô mộc gặp xuân — sinh cơ bùng nở khi cận kề tử vong. Khi niệm hồi tức thì 18% HP tối đa. Trong thời gian hiệu lực: 50%/lượt Thanh Tẩy 1 trạng thái bất lợi (mỗi lần Thanh Tẩy hồi 5% HP tối đa), và hồi 4% HP tối đa mỗi lượt — càng mất nhiều HP bùng nở càng mạnh: ``scaling_rules`` cộng thêm 0.6% hồi sinh lực cho mỗi 5% HP đã mất (đi qua ``_apply_heal`` nên cộng hưởng với heal_taken_bonus). Cội Nguồn Bất Tận (sống sót khi tử vong) nằm ở khối ``passive`` của kỹ năng, luôn thường trực.",
+    "stat_bonus": {
+      "hp_regen_pct": 0.04,
+      "cleanse_on_turn_pct": 0.5,
+      "cleanse_heal_pct": 0.05,
+      "khomoc_per_5pct_hp_lost_regen": 0.006
+    },
+    "instant_heal_pct": 0.18,
+    "stealable": false,
+    "scaling_rules": [
+      {
+        "key": "khomoc_per_5pct_hp_lost_regen",
+        "source": "hp_missing_pct",
+        "bucket": 0.05,
+        "output": "hp_regen_pct"
+      }
+    ],
+    "emoji": "🌱",
+    "duration": 4
+  },
+  {
+    "key": "BuffThanhLongHoPhap",
+    "vi": "Thanh Long Hộ Pháp",
+    "en": "Azure Dragon Dharma Guardian",
+    "kind": "buff",
+    "description_vi": "Thanh Long cuộn quanh thân làm hộ pháp — chừng nào Thanh Long còn hiện diện: 40% sát thương phải nhận chuyển hóa thành hệ Mộc rồi bị Kháng Mộc cường hóa gọt sạch (``damage_convert_moc`` + ``res_moc`` +50%, ``moc_max_resist_bonus`` nâng trần Kháng Mộc lên 0.85), giảm thêm 12% sát thương phần chưa chuyển hóa, và hồi 3% HP tối đa mỗi lượt (qua ``_apply_heal``). Aura gắn với vòng đời triệu hồi — Thanh Long tan thì ward biến mất.",
+    "stat_bonus": {
+      "damage_convert_moc": 0.4,
+      "res_moc": 0.5,
+      "moc_max_resist_bonus": 0.1,
+      "final_dmg_reduce": 0.12,
+      "hp_regen_pct": 0.03
+    },
+    "emoji": "🐉",
+    "duration": 5
+  },
+  {
+    "key": "BuffKimCuong",
+    "vi": "Kim Cương Thể",
+    "en": "Diamond Body",
+    "kind": "buff",
+    "description_vi": "Thân như kim cương, giảm mạnh sát thương nhận vào.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.2
+    },
+    "emoji": "💎",
+    "duration": 3
+  },
+  {
+    "key": "BuffKimChungTrao",
+    "vi": "Kim Chung Tráo",
+    "en": "Golden Bell Hood",
+    "kind": "buff",
+    "description_vi": "Kim Chung Tráo khai phát — phản 30% sát thương về mọi kẻ tấn công.",
+    "stat_bonus": {
+      "reflect_pct": 0.3
+    },
+    "emoji": "🔔",
+    "duration": 4
+  },
+  {
+    "key": "BuffHoTheKiemCuong",
+    "vi": "Hộ Thể Kiếm Cương",
+    "en": "Sword-Steel Body Guard",
+    "kind": "buff",
+    "description_vi": "Hộ Thể Kiếm Cương khai phát — mỗi lần chịu sát thương, triệu hồi 2 thanh Vạn Kiếm bảo hộ chủ nhân.",
+    "emoji": "🗡️",
+    "duration": 4
+  },
+  {
+    "key": "BuffHoangKim",
+    "vi": "Hoàng Kim Hộ",
+    "en": "Golden Guard",
+    "kind": "buff",
+    "description_vi": "Khiên vàng bảo hộ, giảm sát thương và tăng kháng cự toàn nguyên tố.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.15,
+      "res_all": 0.1
+    },
+    "emoji": "🟡",
+    "duration": 3
+  },
+  {
+    "key": "BuffDaiDia",
+    "vi": "Đại Địa Thần Hộ",
+    "en": "Great Earth Divine Guard",
+    "kind": "buff",
+    "description_vi": "Đại địa thần hộ trì, giảm tối đa sát thương nhận vào.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.25
+    },
+    "emoji": "🌍",
+    "duration": 3
+  },
+  {
+    "key": "BuffTrongTo",
+    "vi": "Trọng Thổ",
+    "en": "Heavy Earth",
+    "kind": "buff",
+    "description_vi": "Thổ khí nặng trịch, tăng phòng thủ và kháng cự.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.1,
+      "res_all": 0.05
+    },
+    "emoji": "🪨",
+    "duration": 4
+  },
+  {
+    "key": "BuffBatTu",
+    "vi": "Bất Tử",
+    "en": "Immortality",
+    "kind": "buff",
+    "description_vi": "Nhận lấy bất tử nhất thời, ngăn cái chết một lần.",
+    "emoji": "💫",
+    "duration": 1
+  },
+  {
+    "key": "BuffTangToc",
+    "vi": "Tăng Tốc",
+    "en": "Haste",
+    "kind": "buff",
+    "description_vi": "Tốc độ hành động tăng mạnh.",
+    "stat_bonus": {
+      "spd_pct": 0.3
+    },
+    "emoji": "⚡",
+    "duration": 3
+  },
+  {
+    "key": "BuffBachHoThiem",
+    "vi": "Bạch Hổ Thiểm",
+    "en": "White-Tiger Flash",
+    "kind": "buff",
+    "description_vi": "Bạch Hổ Thiểm khai phát — +500 Né Tránh; mỗi lần né được đòn tấn công, giáng đòn lên kẻ tấn công giảm 10% ATK và 10% MATK.",
+    "stat_bonus": {
+      "evasion_rating": 500
+    },
+    "emoji": "🐅",
+    "duration": 4
+  },
+  {
+    "key": "BuffVanLyTruyPhong",
+    "vi": "Vạn Lý Truy Phong",
+    "en": "Ten-Thousand-Mile Wind-Chase",
+    "kind": "buff",
+    "description_vi": "Vạn Lý Truy Phong khai phát — mỗi điểm Tốc Độ chênh lệch hơn địch cộng +20 Chính Xác và +10 Bạo Kích cho mọi đòn niệm.",
+    "emoji": "🌪️",
+    "duration": 4
+  },
+  {
+    "key": "BuffHoPhap",
+    "vi": "Hộ Pháp",
+    "en": "Dharma Protection",
+    "kind": "buff",
+    "description_vi": "Hộ pháp bảo vệ toàn diện, giảm sát thương và tăng kháng bạo kích.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.25,
+      "crit_res_rating": 100
+    },
+    "emoji": "🔮",
+    "duration": 4
+  },
+  {
+    "key": "BuffHuKhong",
+    "vi": "Hư Không Thân",
+    "en": "Void Body",
+    "kind": "buff",
+    "description_vi": "Thân nhập hư không, né tránh cực cao.",
+    "stat_bonus": {
+      "evasion_rating": 250
+    },
+    "emoji": "👻",
+    "duration": 2
+  },
+  {
+    "key": "BuffCuongPhongDaiTran",
+    "vi": "Cuồng Phong Đại Trận",
+    "en": "Hurricane Combo",
+    "kind": "buff",
+    "description_vi": "Mỗi đòn Phong liên tiếp gom thành 1 chuỗi Cuồng Phong (tối đa 5 chuỗi): mỗi chuỗi cộng +8% sát thương Phong và +50 Bạo Kích. Niệm khác hệ hoặc bị câm (đánh thường) phá chuỗi. Mỗi 5 đòn Phong tích lũy tự bùng nổ Cuồng Phong Bùng Nổ. Aura — không thể giải trừ / cướp.",
+    "stat_bonus": {
+      "_cpdt_dmg_phong_per_combo": 0.08,
+      "_cpdt_crit_per_combo": 50,
+      "spd_pct": 0.05
+    },
+    "scaling_rules": [
+      {
+        "key": "_cpdt_dmg_phong_per_combo",
+        "source": "stat:consecutive_phong_casts",
+        "output": "dmg_bonus_phong",
+        "max_output": 0.4
+      },
+      {
+        "key": "_cpdt_crit_per_combo",
+        "source": "stat:consecutive_phong_casts",
+        "output": "crit_rating",
+        "max_output": 250
+      }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 999
+  },
+  {
+    "key": "BuffTieuDaoDu",
+    "vi": "Tiêu Dao Du",
+    "en": "Carefree Wandering",
+    "kind": "buff",
+    "description_vi": "Phong tu tiêu dao trên đỉnh gió — +5% Tốc Độ + 100 Né; mỗi lần né cộng dồn +2.5% Tốc Độ và +125 Né (cap 10 né); và mỗi 1 Tốc Độ vượt trên đối thủ cộng +1% sát thương Phong.",
+    "stat_bonus": {
+      "_tdd_spd_per_evade": 0.025,
+      "_tdd_eva_per_evade": 125,
+      "evasion_rating": 100,
+      "spd_pct": 0.05,
+      "dmg_bonus_phong_per_spd_diff": 0.01
+    },
+    "scaling_rules": [
+      {
+        "key": "_tdd_spd_per_evade",
+        "source": "stat:evades_count",
+        "output": "spd_pct",
+        "max_output": 0.25
+      },
+      {
+        "key": "_tdd_eva_per_evade",
+        "source": "stat:evades_count",
+        "output": "evasion_rating",
+        "max_output": 500
+      }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🍃",
+    "duration": 999
+  },
+  {
+    "key": "BuffPhongThanThoi",
+    "vi": "Phong Thần Thối Bộ",
+    "en": "Wind God's Withdrawal",
+    "kind": "buff",
+    "description_vi": "Bước thoái thần phong — Né Tránh và Tốc Độ tăng vọt trong lúc rút lui. Magnitude is supplied per-cast via ``effect_overrides``.",
+    "stealable": false,
+    "emoji": "🍃",
+    "duration": 2
+  },
+  {
+    "key": "BuffCuongPhongHoThe",
+    "vi": "Cương Phong Hộ Thể",
+    "en": "Hard Wind Body Guard",
+    "kind": "buff",
+    "description_vi": "Cuồng phong cô đặc bao quanh thân — Chỉ Số Né Tránh trực tiếp biến thành Giảm Sát Thương, mỗi 100 Né cộng +1% Giảm Sát Thương (tối đa 30%).",
+    "stat_bonus": {
+      "_cph_dr_per_eva_unit": 0.01,
+      "evasion_rating": 300,
+      "spd_pct": 0.15
+    },
+    "scaling_rules": [
+      {
+        "key": "_cph_dr_per_eva_unit",
+        "source": "stat:evasion_rating",
+        "output": "final_dmg_reduce",
+        "bucket": 100,
+        "max_output": 0.3
+      }
+    ],
+    "stealable": false,
+    "emoji": "🌀",
+    "duration": 5
+  },
+  {
+    "key": "BuffVoTuongPhong",
+    "vi": "Vô Tướng Phong",
+    "en": "Formless Wind",
+    "kind": "buff",
+    "description_vi": "Thân hóa cuồng phong vô hình — N lần đầu chịu khống chế / suy yếu đều bị thổi tan, mỗi lần thổi tan tăng spd vĩnh viễn (trong lúc buff còn). Magnitude is supplied per-cast via ``effect_overrides`` (``formless_charges``, ``spd_per_consume``).",
+    "stealable": false,
+    "emoji": "🌬️",
+    "duration": 5
+  },
+  {
+    "key": "BuffPhuDao",
+    "vi": "Phù Dao Cao Độ",
+    "en": "Whirlwind Altitude",
+    "kind": "buff",
+    "description_vi": "Cưỡi cuồng phong bay thẳng lên — mỗi lượt tăng 1 tầng Cao Độ; lần ra chiêu tấn công kế tiếp tiêu hao toàn bộ tầng để bùng nổ Đại Bằng Phá Vân Trảm. Bị khống chế (skips_turn / prevents_skills) sẽ rơi mất Cao Độ. Magnitude is supplied per-cast via ``effect_overrides`` (``altitude_max``, ``per_stack_pct``, ``rider_on_descent``, ``rider_chance_per_stack``, ``reset_on_cc``).",
+    "stealable": false,
+    "emoji": "🪁",
+    "duration": 4
+  },
+  {
+    "key": "BuffHuVo",
+    "vi": "Hư Vô",
+    "en": "Void Annulment",
+    "kind": "buff",
+    "description_vi": "Hư vô thân ảnh — Né Tránh tăng vọt sau khi phản kích. Magnitude is supplied per-cast via ``effect_overrides`` (e.g. evasion_rating: 2000).",
+    "stealable": false,
+    "emoji": "🌌"
+  },
+  {
+    "key": "AuraHuyDiet",
+    "vi": "Hủy Diệt",
+    "en": "Annihilation Aura",
+    "kind": "buff",
+    "description_vi": "Hào quang Hủy Diệt — đối xứng cộng sát thương đánh ra và sát thương phải nhận. Magnitude is supplied per-cast via ``effect_overrides`` (``final_dmg_bonus`` for outgoing, ``final_dmg_taken_bonus`` for incoming).",
+    "stealable": false,
+    "emoji": "☄️"
+  },
+  {
+    "key": "BuffDoanTuyet",
+    "vi": "Đoạn Tuyệt",
+    "en": "Severance",
+    "kind": "buff",
+    "description_vi": "Tâm cảnh đoạn tuyệt thất tình — sát thương tăng theo số trạng thái bất lợi đang đè trên đối thủ. Magnitude per-debuff supplied via ``effect_overrides`` key ``dmg_per_debuff_pct`` (read by ``build_attack_stats``).",
+    "stealable": false,
+    "emoji": "🌒",
+    "duration": 4
+  },
+  {
+    "key": "BuffThienMa",
+    "vi": "Thiên Ma",
+    "en": "Heavenly Demon Mode",
+    "kind": "buff",
+    "description_vi": "Hóa thân Thiên Ma — tốc độ, sát thương Âm và tốc hồi chiêu đều bùng nổ. Khi tan biến tự động chuyển sang Thiên Ma Hậu Di Chứng (yếu thân).",
+    "stat_bonus": {
+      "spd_pct": 0.5,
+      "dmg_bonus_am": 0.5,
+      "cooldown_reduce": 0.5
+    },
+    "stealable": false,
+    "on_expire_apply": [
+      "DebuffThienMaPost",
+      {
+        "duration": 2
+      }
+    ],
+    "emoji": "👹",
+    "duration": 2
+  },
+  {
+    "key": "BuffLucDucSac",
+    "vi": "Sắc Dục",
+    "en": "Desire of Sight",
+    "kind": "buff",
+    "description_vi": "Sắc — mắt thấy đạo, tăng tỉ lệ bạo kích.",
+    "stat_bonus": {
+      "crit_rating": 500
+    },
+    "emoji": "👁️",
+    "duration": 99
+  },
+  {
+    "key": "BuffLucDucThanh",
+    "vi": "Thanh Dục",
+    "en": "Desire of Sound",
+    "kind": "buff",
+    "description_vi": "Thanh — tai nghe gió động, tăng tốc độ.",
+    "stat_bonus": {
+      "spd_pct": 0.3
+    },
+    "emoji": "👂",
+    "duration": 99
+  },
+  {
+    "key": "BuffLucDucHuong",
+    "vi": "Hương Dục",
+    "en": "Desire of Smell",
+    "kind": "buff",
+    "description_vi": "Hương — mũi đánh hơi sát khí, tăng né tránh.",
+    "stat_bonus": {
+      "evasion_rating": 500
+    },
+    "emoji": "👃",
+    "duration": 99
+  },
+  {
+    "key": "BuffLucDucVi",
+    "vi": "Vị Dục",
+    "en": "Desire of Taste",
+    "kind": "buff",
+    "description_vi": "Vị — lưỡi nếm tinh huyết, hồi sinh lực mỗi lượt.",
+    "stat_bonus": {
+      "hp_regen_pct": 0.1
+    },
+    "emoji": "👅",
+    "duration": 99
+  },
+  {
+    "key": "BuffLucDucXuc",
+    "vi": "Xúc Dục",
+    "en": "Desire of Touch",
+    "kind": "buff",
+    "description_vi": "Xúc — thân tiếp đại đạo, tăng sát thương cuối.",
+    "stat_bonus": {
+      "final_dmg_bonus": 0.1
+    },
+    "emoji": "✋",
+    "duration": 99
+  },
+  {
+    "key": "BuffLucDucPhap",
+    "vi": "Pháp Dục",
+    "en": "Desire of Thought",
+    "kind": "buff",
+    "description_vi": "Pháp — ý nắm Âm Khí, tăng sát thương Âm.",
+    "stat_bonus": {
+      "dmg_bonus_am": 0.2
+    },
+    "emoji": "🧠",
+    "duration": 99
+  },
+  {
+    "key": "BuffLucDucCongMinh",
+    "vi": "Lục Dục Cộng Minh",
+    "en": "Six-Desires Resonance",
+    "kind": "buff",
+    "description_vi": "Lục dục cộng hưởng — toàn bộ Lục Dục đang đè trên thân được khuếch đại 20%.",
+    "stat_bonus": {
+      "crit_rating": 40,
+      "spd_pct": 0.03,
+      "evasion_rating": 40,
+      "hp_regen_pct": 0.01,
+      "final_dmg_bonus": 0.03,
+      "dmg_bonus_am": 0.04
+    },
+    "stealable": false,
+    "emoji": "🌌",
+    "duration": 99
+  },
+  {
+    "key": "BuffVoTuongThienMa",
+    "vi": "Vô Tướng Thiên Ma",
+    "en": "Formless Heavenly Demon",
+    "kind": "buff",
+    "description_vi": "Vô tướng vô hình — 40% sát thương phải nhận được chuyển hóa thành Âm trước khi đè lên thân, **+50% Kháng Âm** kèm **+15% Cap Kháng Âm** (giới hạn nâng lên 90%) để đảm bảo buff có đủ room ngấm vào res sàn.",
+    "stat_bonus": {
+      "damage_convert_am": 0.4,
+      "res_am": 0.5,
+      "am_max_resist_bonus": 0.15
+    },
+    "stealable": false,
+    "emoji": "🌑",
+    "duration": 4
+  },
+  {
+    "key": "BuffMaKhiHoThe",
+    "vi": "Ma Khí Hộ Thể",
+    "en": "Demon-Aura Bodyguard",
+    "kind": "buff",
+    "description_vi": "Ma khí cuộn quanh thân — mỗi đòn Âm đánh ra chuyển hóa một phần sát thương thành khiên cho người niệm. Magnitude per cast read from ``stat_bonus.am_hit_to_shield_pct`` (folded into shield gain in cast_skill's on-hit hook).",
+    "stat_bonus": {
+      "am_hit_to_shield_pct": 0.3
+    },
+    "stealable": false,
+    "emoji": "🩻",
+    "duration": 99
+  },
+  {
+    "key": "BuffChanMaChiTam",
+    "vi": "Chân Ma Chi Tâm",
+    "en": "True Demon Heart",
+    "kind": "buff",
+    "description_vi": "Tâm hóa Chân Ma — kháng debuff +30% và mọi đòn của người niệm có thêm 10% xác suất gây trạng thái bất lợi.",
+    "stat_bonus": {
+      "debuff_immune_pct": 0.3,
+      "debuff_apply_bonus": 0.1
+    },
+    "stealable": false,
+    "emoji": "🪬",
+    "duration": 99
+  },
+  {
+    "key": "BuffQuyAnhMeTung",
+    "vi": "Quỷ Ảnh Mê Tung",
+    "en": "Demon-Shadow Phantom Step",
+    "kind": "buff",
+    "description_vi": "Mỗi lần né thành công cộng dồn 1 tầng (tối đa 3): +10% Tốc và Né Tránh tăng theo tầng. Per-stack values driven by ``scaling_rules`` keyed on ``combatant.quy_anh_stacks``.",
+    "stat_bonus": {
+      "quy_anh_per_stack_evasion": 200,
+      "quy_anh_per_stack_spd_pct": 0.1,
+      "quy_anh_max_stacks": 3
+    },
+    "stealable": false,
+    "scaling_rules": [
+      {
+        "key": "quy_anh_per_stack_evasion",
+        "source": "stack:quy_anh",
+        "output": "evasion_rating"
+      },
+      {
+        "key": "quy_anh_per_stack_spd_pct",
+        "source": "stack:quy_anh",
+        "output": "spd_pct"
+      }
+    ],
+    "emoji": "👤",
+    "duration": 99
+  },
+  {
+    "key": "BuffMaLongXuatUyen",
+    "vi": "Ma Long Xuất Uyên",
+    "en": "Demon-Dragon Emerges",
+    "kind": "buff",
+    "description_vi": "Mỗi lần né thành công, hoá Ma Long phản kích — gây sát thương Âm nhỏ + đính Cắt Đứt Linh Khí lên đối thủ. Counter-strike + debuff tunables live in ``evade_react`` and run through the generic on-evade dispatcher in ``evade_reactive``.",
+    "stat_bonus": {},
+    "evade_react": {
+      "counter": {
+        "element": "am",
+        "base_dmg": 600,
+        "matk_scale": 0.4,
+        "log_emoji": "🐉",
+        "log_name": "Ma Long Xuất Uyên phản kích"
+      },
+      "inflict": {
+        "debuff": "DebuffCatDut",
+        "chance": 0.6
+      }
+    },
+    "stealable": false,
+    "emoji": "🐉",
+    "duration": 99
+  },
+  {
+    "key": "BuffPheHuyetLien",
+    "vi": "Phệ Huyết Liên",
+    "en": "Devour-Blood Link",
+    "kind": "buff",
+    "description_vi": "Quái đằng liên kết — chừng nào Phệ Huyết Ma Đằng còn sống, chủ nhân hút thêm sinh khí từ đòn niệm và DoT trên thân địch.",
+    "stat_bonus": {
+      "life_steal_pct": 0.2,
+      "dot_leech_pct": 0.3
+    },
+    "emoji": "🩸",
+    "duration": 1
+  },
+  {
+    "key": "BuffPhatQuangPhoChieu",
+    "vi": "Phật Quang Phổ Chiếu",
+    "en": "Buddha Light Universal Shine",
+    "kind": "buff",
+    "description_vi": "Phật quang phổ chiếu khắp thân — mọi nguồn hồi máu nhận được tăng thêm 30% trong 3 lượt.",
+    "stat_bonus": {
+      "heal_taken_bonus": 0.3
+    },
+    "emoji": "🌟",
+    "duration": 3
+  },
+  {
+    "key": "BuffThamPhanChiNo",
+    "vi": "Thẩm Phán Chi Nộ",
+    "en": "Wrath of Judgment",
+    "kind": "buff",
+    "description_vi": "Cơn thịnh nộ phán quyết bùng cháy — sức tấn công pháp thuật (MATK) tăng 20% trong 3 lượt.",
+    "stat_bonus": {
+      "matk_pct": 0.2
+    },
+    "emoji": "⚖️",
+    "duration": 3
+  },
+  {
+    "key": "BuffCamLoLongLuc",
+    "vi": "Cam Lộ Long Lực",
+    "en": "Sweet Dew Dragon Power",
+    "kind": "buff",
+    "description_vi": "Cam lộ tẩy uế hóa thành long lực — sát thương Thủy +20% trong 1 lượt sau khi Thanh Tẩy thành công.",
+    "stat_bonus": {
+      "dmg_bonus_thuy": 0.2
+    },
+    "stealable": false,
+    "emoji": "🐉",
+    "duration": 1
+  },
+  {
+    "key": "BuffCamLoTinhHoa",
+    "vi": "Cam Lộ Tịnh Hóa",
+    "en": "Sweet Dew Purification",
+    "kind": "buff",
+    "description_vi": "Cam lộ rưới xuống tẩy uế thân — mỗi lượt có 50% cơ hội Thanh Tẩy 1 trạng thái xấu, và mỗi lần Thanh Tẩy thành công còn hồi 5% HP tối đa và nhận **Cam Lộ Long Lực** (+20% sát thương Thủy trong 1 lượt). Kéo dài 4 lượt.",
+    "stat_bonus": {
+      "cleanse_on_turn_pct": 0.5,
+      "cleanse_heal_pct": 0.05
+    },
+    "stealable": false,
+    "emoji": "💧",
+    "duration": 4
+  },
+  {
+    "key": "BuffPhaMaChanNgon",
+    "vi": "Phá Ma Chân Ngôn",
+    "en": "Demon-Breaking True Mantra",
+    "kind": "buff",
+    "description_vi": "Chân ngôn phá ma vang vọng — mỗi lượt có 40% cơ hội Thanh Tẩy 1 trạng thái xấu, và mỗi lần Thanh Tẩy thành công còn hồi 5% HP tối đa. Hiệu ứng kéo dài 4 lượt.",
+    "stat_bonus": {
+      "cleanse_on_turn_pct": 0.4,
+      "cleanse_heal_pct": 0.05
+    },
+    "emoji": "🔔",
+    "duration": 4
+  },
+  {
+    "key": "BuffLuuQuangHuyenAnh",
+    "vi": "Lưu Quang Huyễn Ảnh",
+    "en": "Flowing Light Phantom",
+    "kind": "buff",
+    "description_vi": "Hóa thân thành ảo ảnh dòng quang — mỗi lần chịu sát thương cộng thêm 10% tốc độ (tối đa +30%), và mỗi lần né tránh thành công lập tức phản công bằng **Cực Quang Trảm**. Hiệu ứng kéo dài 5 lượt.",
+    "duration": 5
+  },
+  {
+    "key": "BuffQuangMinhTungHoanhAura",
+    "vi": "Quang Minh Tung Hoành Bộ — Hào Quang",
+    "en": "Bright Light Free-Step Aura",
+    "kind": "buff",
+    "description_vi": "Hào quang bị động — mỗi 1 điểm Tốc cộng thêm 10 Khiên tối đa. Tự kích hoạt khi vào trận, kéo dài cả trận đấu.",
+    "stat_bonus": {
+      "shield_max_per_spd": 10.0
+    },
+    "stealable": false,
+    "emoji": "🌅",
+    "duration": 99
+  },
+  {
+    "key": "BuffQuangMinhTungHoanh",
+    "vi": "Quang Minh Tung Hoành Bộ",
+    "en": "Bright Light Free-Step",
+    "kind": "buff",
+    "description_vi": "Cước pháp tung hoành — +20% Tốc và +0.5% hồi Khiên/lượt trong 4 lượt.",
+    "stat_bonus": {
+      "spd_pct": 0.2,
+      "shield_regen_pct": 0.005
+    },
+    "duration": 4
+  },
+  {
+    "key": "BuffDaiThienSuAura",
+    "vi": "Đại Thiên Sứ — Hào Quang",
+    "en": "Great Angel Aura",
+    "kind": "buff",
+    "description_vi": "Đại Thiên Sứ tỏa hào quang — +10% kháng tất cả nguyên tố và +10% hiệu ứng hồi máu nhận được. Tồn tại khi Đại Thiên Sứ còn hiện diện.",
+    "stat_bonus": {
+      "res_all": 0.1,
+      "heal_taken_bonus": 0.1
+    },
+    "stealable": false,
+    "emoji": "🪽",
+    "duration": 1
+  },
+  {
+    "key": "BuffHaiThiThanLauAura",
+    "vi": "Hải Thị Thận Lâu — Hào Quang",
+    "en": "Sea-Mirage Tower Aura",
+    "kind": "buff",
+    "description_vi": "Hào quang bị động — thân pháp ảo cảnh: mỗi 1 điểm Tốc cao hơn địch nhân cộng thêm 20 Né Tránh khi đối thủ tấn công vào thân. Tự kích hoạt khi vào trận, kéo dài cả trận đấu.",
+    "stat_bonus": {
+      "evasion_rating_per_spd_diff": 20.0
+    },
+    "stealable": false,
+    "emoji": "🌊",
+    "duration": 99
+  },
+  {
+    "key": "BuffHaiThiThanLau",
+    "vi": "Hải Thị Thận Lâu",
+    "en": "Sea-Mirage Tower",
+    "kind": "buff",
+    "description_vi": "Bộ pháp Hải Thị — +20% Tốc, đồng thời mỗi đòn niệm gây sát thương có 60% cơ hội Làm Chậm địch nhân -20% Tốc. Kéo dài 4 lượt.",
+    "stat_bonus": {
+      "spd_pct": 0.2,
+      "hai_thi_slow_chance": 0.6,
+      "hai_thi_slow_magnitude": -0.2
+    },
+    "stealable": false,
+    "emoji": "🏯",
+    "duration": 4
+  },
+  {
+    "key": "BuffLangBaViBoAura",
+    "vi": "Lăng Ba Vi Bộ — Hào Quang",
+    "en": "Wave-Stepping Microsteps Aura",
+    "kind": "buff",
+    "description_vi": "Hào quang bị động — bộ pháp Lăng Ba: lướt trên sóng nhẹ như không trọng lượng. **+500 Né Tránh** và **+20% Tốc** vĩnh viễn (cả trận đấu).",
+    "stat_bonus": {
+      "evasion_rating": 500.0,
+      "spd_pct": 0.2
+    },
+    "stealable": false,
+    "emoji": "🌊"
+  },
+  {
+    "key": "BuffThuyThuongPhieuAura",
+    "vi": "Thủy Thượng Phiêu — Hào Quang",
+    "en": "Water-Walking Drift Aura",
+    "kind": "buff",
+    "description_vi": "Hào quang bị động — bộ pháp Thủy Thượng Phiêu: lướt trên mặt nước, vĩnh viễn **+20% Tốc** (cả trận đấu).",
+    "stat_bonus": {
+      "spd_pct": 0.2
+    },
+    "stealable": false,
+    "emoji": "🌊"
+  },
+  {
+    "key": "BuffThuyThuongPhieu",
+    "vi": "Thủy Thượng Phiêu",
+    "en": "Water-Walking Drift",
+    "kind": "buff",
+    "description_vi": "Trạng thái Thủy Thượng Phiêu — đọc thế trận mà tùy biến: **khi địch nhân nhanh hơn**, gia tốc bản thân **+20% Tốc** để đuổi kịp; **khi địch nhân chậm hơn**, dồn lực vào đòn niệm **+20% Sát Thương Thủy**. Kéo dài 3 lượt.",
+    "stat_bonus": {
+      "spd_pct_if_spd_lower": 0.2,
+      "dmg_bonus_thuy_if_spd_higher": 0.2
+    },
+    "stealable": false,
+    "emoji": "💨"
+  },
+  {
+    "key": "BuffTuyetDieuVoAnh",
+    "vi": "Tuyệt Diệu Vô Ảnh",
+    "en": "Sublime Shadowless",
+    "kind": "buff",
+    "description_vi": "Trạng thái Tuyệt Diệu Vô Ảnh — thân pháp hư ảo, không một thủ đoạn giảm Tốc nào có thể chạm tới. **Miễn dịch mọi trạng thái giảm Tốc** trong 3 lượt.",
+    "stat_bonus": {
+      "slow_immune": 1.0
+    },
+    "stealable": false,
+    "emoji": "👣"
+  },
+  {
+    "key": "BuffThachAnh",
+    "vi": "Thạch Ảnh",
+    "en": "Stone Shadow",
+    "kind": "buff",
+    "description_vi": "Tư thế Thạch Ảnh — thân Đạo gia hoá đá ảnh, lướt qua mọi sự trói buộc. **Miễn dịch mọi trạng thái giảm Tốc**, +30% Tốc Độ, +200 Né Tránh trong 3 lượt.",
+    "stat_bonus": {
+      "slow_immune": 1.0,
+      "spd_pct": 0.3,
+      "evasion_rating": 200
+    },
+    "stealable": false,
+    "emoji": "🪨"
+  },
+  {
+    "key": "BuffBanThachKimThan",
+    "vi": "Bàn Thạch Kim Thân",
+    "en": "Bedrock Golden Body",
+    "kind": "buff",
+    "description_vi": "Thân thể hoá Bàn Thạch Kim Cương — bất khả phá. **Mọi đòn riêng lẻ đánh vào không thể gây quá 5% HP tối đa**. Núi không cong, dù sấm sét cũng chỉ bóc được lớp ngoài.",
+    "stat_bonus": {
+      "max_dmg_per_hit_pct_hp_max": 0.05
+    },
+    "stealable": false,
+    "emoji": "🗿",
+    "duration": 3
+  },
+  {
+    "key": "BuffThoNguyenHoPhap",
+    "vi": "Thổ Nguyên Hộ Pháp",
+    "en": "Earth-Origin Dharma-Protector Aura",
+    "kind": "buff",
+    "description_vi": "Hộ Pháp trấn thân — công thức giảm sát thương từ giáp **cũng áp dụng cho sát thương nguyên tố** ở mức **10%** (riêng biệt với kháng nguyên tố, tầng ngọc trận pháp cộng thêm). Cộng thêm +10% Phòng Ngự. Aura — không thể giải trừ / cướp.",
+    "stat_bonus": {
+      "def_applies_to_elemental_pct": 0.1,
+      "def_pct": 0.1
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🛡️",
+    "duration": 999
+  },
+  {
+    "key": "BuffNguLoiCharged",
+    "vi": "Ngũ Lôi Dồn Nén",
+    "en": "Five-Thunder Charged Strike",
+    "kind": "buff",
+    "description_vi": "Năm tầng Lôi Khí dồn nén — đòn Lôi Đình Chấn Thiên Sát kế tiếp được khuếch đại theo số tầng Sốc Điện đã tiêu hao (mỗi tầng +10% ST Lôi). Tự tan sau khi Lôi Đình phát động.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚡",
+    "duration": 1
+  },
+  {
+    "key": "BuffTamLoiCong",
+    "vi": "Tâm Lôi",
+    "en": "Heart-Thunder Resonance",
+    "kind": "buff",
+    "description_vi": "Mỗi đòn Chưởng Tâm Lôi liên tiếp cộng dồn 1 tầng cộng hưởng (tối đa 5). Mỗi tầng tăng **+50 Bạo Kích** và **+3% sát thương Lôi**. Niệm khác hệ hoặc đánh thường phá tầng. Tồn tại đến khi mất tầng.",
+    "stat_bonus": {
+      "_tlcong_crit_per": 50,
+      "_tlcong_dmg_loi_per": 0.03
+    },
+    "scaling_rules": [
+      {
+        "key": "_tlcong_crit_per",
+        "source": "stat:consecutive_loi_casts",
+        "output": "crit_rating",
+        "max_output": 250
+      },
+      {
+        "key": "_tlcong_dmg_loi_per",
+        "source": "stat:consecutive_loi_casts",
+        "output": "dmg_bonus_loi",
+        "max_output": 0.15
+      }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚡",
+    "duration": 999
+  },
+  {
+    "key": "BuffTuLoiHoThan",
+    "vi": "Tử Lôi Hộ Thân",
+    "en": "Purple Thunder Body Guard",
+    "kind": "buff",
+    "description_vi": "Tử lôi quấn quanh thân — phản 30% sát thương về mọi kẻ tấn công (flavor Lôi), và 40% cơ hội chồng 1 tầng Sốc Điện lên attacker mỗi lần bị đánh trúng.",
+    "stat_bonus": {
+      "reflect_pct": 0.3
+    },
+    "stealable": false,
+    "emoji": "🟣",
+    "duration": 4
+  },
+  {
+    "key": "BuffCuuThienLoiGiap",
+    "vi": "Cửu Thiên Lôi Giáp",
+    "en": "Nine-Heavens Thunder Armor",
+    "kind": "buff",
+    "description_vi": "Chín tầng lôi giáp quấn quanh thân — **giảm 15% sát thương phải nhận**; mỗi đòn đánh vào thân, **25% sát thương** được dẫn qua kinh mạch hóa thành **MP hồi cho bản thân** (cap tại MP tối đa). Mỗi lượt thêm **+3% hồi MP**. Mỗi đòn nhận vào: **100% chồng 1 tầng Sốc Điện** lên attacker. Khi giáp tan tự nhiên: phát nổ **Lôi Hồi Quang** lên đối thủ — gây ST Lôi + 60% Tê Liệt 1 lượt.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.15,
+      "dmg_taken_mp_gain_pct": 0.25,
+      "mp_regen_pct": 0.03
+    },
+    "stealable": false,
+    "emoji": "⚡",
+    "duration": 4
+  },
+  {
+    "key": "BuffBonLoiThuat",
+    "vi": "Bôn Lôi Thuật",
+    "en": "Galloping Thunder Technique",
+    "kind": "buff",
+    "description_vi": "Bôn Lôi Thuật — bộ pháp xông trận hệ Lôi: **+30% Tốc Độ** trong lúc kích hoạt. Mỗi đòn niệm hệ Lôi: nếu địch đang mang **≥1 tầng Sốc Điện** thì **nuốt 1 tầng** để đòn đó nhận **+15% sát thương cuối**. Chỉ tiêu tầng 1 lần / niệm (multi-hit không bóc thêm). Là chiêu mở mặt cho lộ trình tu Lôi tốc đánh — chạy nhanh, gặm sạch điện ảnh địch, dứt điểm bằng đòn lôi đậm hơn.",
+    "stat_bonus": {
+      "spd_pct": 0.3,
+      "bon_loi_consume_amp": 0.15
+    },
+    "stealable": false,
+    "emoji": "🏃",
+    "duration": 3
+  },
+  {
+    "key": "BuffLoiQuangDienAnh",
+    "vi": "Lôi Quang Điện Ảnh",
+    "en": "Lightning-Light Electric Phantom",
+    "kind": "buff",
+    "description_vi": "Lôi Quang Điện Ảnh — bộ pháp như sấm chớp, thân hoá điện ảnh: **+30% Tốc Độ** và **+300 Né Tránh**. Mỗi lần né được đòn: lập tức phản đòn bằng **Lôi Quang Phản Kích** (500 + 0.5·matk ST Lôi), **40% cơ hội** chồng 1 tầng Sốc Điện (3 lượt), và **kéo dài thêm 1 lượt** trạng thái (cap tối đa 6 lượt) — càng né nhiều, điện ảnh càng kéo dài.",
+    "stat_bonus": {
+      "spd_pct": 0.3,
+      "evasion_rating": 300
+    },
+    "evade_react": {
+      "counter": {
+        "element": "loi",
+        "base_dmg": 500,
+        "matk_scale": 0.5,
+        "log_emoji": "⚡",
+        "log_name": "Lôi Quang Phản Kích"
+      },
+      "inflict": {
+        "debuff": "DebuffSocDien",
+        "chance": 0.4,
+        "duration": 3
+      },
+      "extend_self": {
+        "cap": 6
+      }
+    },
+    "stealable": false,
+    "emoji": "⚡",
+    "duration": 3
+  },
+  {
+    "key": "BuffLoiThanKhai",
+    "vi": "Lôi Thần Khải",
+    "en": "Thunder God Aegis",
+    "kind": "buff",
+    "description_vi": "Lôi Thần Khải — thiên lôi kết khải bao quanh thân (4 lượt). Triệu hồi **Lôi Khải Chắn** (Khiên = 500 + 4.0·matk, cap theo shield_cap), giảm thêm **10% ST phải nhận**. **30% sát thương phải nhận (HP + Khiên bị bào)** được nén lại thành **Lôi Điện Trữ** (cap = 5.0·matk). Khi khải tan tự nhiên: bùng nổ **Lôi Thần Phán** — phóng toàn bộ Lôi Điện Trữ ×1.5 + 600 + 0.5·matk lên đối thủ, **100% Tê Liệt 1 lượt**.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.1
+    },
+    "stealable": false,
+    "emoji": "🌩️",
+    "duration": 4
+  },
+  {
+    "key": "BuffTuLoiQuyet",
+    "vi": "Tụ Lôi",
+    "en": "Thunder-Gathering Aura",
+    "kind": "buff",
+    "description_vi": "Tụ Lôi Quyết — bị động tụ lôi khí. Mỗi lần niệm 1 kỹ năng hệ Lôi cộng dồn 1 tầng **Tụ Lôi** (tối đa 10). Mỗi tầng: **+2% Pháp Công** và **+2% sát thương Lôi**. Niệm khác hệ hoặc đánh thường phá toàn bộ tầng.",
+    "stat_bonus": {
+      "_tlq_matk_per": 0.02,
+      "_tlq_dmg_loi_per": 0.02
+    },
+    "scaling_rules": [
+      {
+        "key": "_tlq_matk_per",
+        "source": "stat:consecutive_loi_casts",
+        "output": "matk_pct",
+        "max_output": 0.2
+      },
+      {
+        "key": "_tlq_dmg_loi_per",
+        "source": "stat:consecutive_loi_casts",
+        "output": "dmg_bonus_loi",
+        "max_output": 0.2
+      }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚡",
+    "duration": 999
+  },
+  {
+    "key": "BuffCuuThienNguLoi",
+    "vi": "Ngự Lôi",
+    "en": "Thunder-Commanding Stance",
+    "kind": "buff",
+    "description_vi": "Cửu Thiên Ngự Lôi Chân Quyết khởi xuất — bản thân nhập trạng thái **Ngự Lôi**, mọi đòn Lôi gia tăng **+20% sát thương** trong 3 lượt.",
+    "stat_bonus": {
+      "dmg_bonus_loi": 0.2
+    },
+    "stealable": false,
+    "emoji": "🌩️",
+    "duration": 3
+  },
+  {
+    "key": "BuffHauThoPhongMa",
+    "vi": "Hậu Thổ Phong Ma",
+    "en": "Earth-Empress Demon-Sealing Aura",
+    "kind": "buff",
+    "description_vi": "Hậu Thổ trấn hồn — mỗi đòn tấn công cộng thêm sát thương gốc bằng **0.5% HP tối đa + 0.5% Khiên hiện tại + 0.5% Phòng Ngự** của bản thân (tầng ngọc trận pháp cộng thêm). Càng dày càng nặng tay. Aura — không thể giải trừ / cướp.",
+    "stat_bonus": {
+      "bonus_base_dmg_per_self_hp_pct": 0.005,
+      "bonus_base_dmg_per_self_shield_pct": 0.005,
+      "bonus_base_dmg_per_self_def_pct": 0.005
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🗿",
+    "duration": 999
+  },
+  {
+    "key": "BuffTuLuongBatThienCan",
+    "vi": "Tứ Lạng Bạt Thiên Cân",
+    "en": "Four Liang Move Thousand Catties",
+    "kind": "buff",
+    "description_vi": "Lấy nhu thắng cương — khi HP > 50% chuyển sang thế công, +20% sát thương Thủy; khi HP < 50% chuyển sang thế thủ, +20% giảm sát thương phải nhận. Hoán đổi tự động theo HP mỗi đòn. Kéo dài 4 lượt.",
+    "stat_bonus": {
+      "tu_luong_thuy_amp": 0.2,
+      "tu_luong_dr": 0.2
+    },
+    "stealable": false,
+    "scaling_rules": [
+      {
+        "key": "tu_luong_thuy_amp",
+        "source": "constant",
+        "gate_source": "hp_pct",
+        "min": 0.5001,
+        "output": "dmg_bonus_thuy"
+      },
+      {
+        "key": "tu_luong_dr",
+        "source": "constant",
+        "gate_source": "hp_pct",
+        "max": 0.4999,
+        "output": "final_dmg_reduce"
+      }
+    ],
+    "emoji": "☯️",
+    "duration": 4
+  },
+  {
+    "key": "BuffKinhHoaThuyNguyet",
+    "vi": "Kính Hoa Thủy Nguyệt",
+    "en": "Mirror Flower Water Moon",
+    "kind": "buff",
+    "description_vi": "Ảo cảnh kính hoa — mỗi lượt trước khi hành động có 50% cơ hội đẩy ngược một trạng thái xấu trên thân về phía địch nhân (giữ nguyên thời gian + cường độ). Trạng thái dạng tầng (Cháy/Chảy Máu/Sốc/Độc) không thể chuyển. Kéo dài 3 lượt.",
+    "stat_bonus": {
+      "debuff_transfer_on_turn_pct": 0.5
+    },
+    "stealable": false,
+    "emoji": "🪞",
+    "duration": 3
+  },
+  {
+    "key": "BuffThuyMacThienHoa",
+    "vi": "Thủy Mặc Thiên Hoa",
+    "en": "Water-Ink Heaven Flower",
+    "kind": "buff",
+    "description_vi": "Thủy Mặc — 25% sát thương phải nhận sẽ chuyển hóa thành mất linh lực (MP) thay vì máu. Phần MP không đủ chi trả vẫn rơi lại HP như thường. Đồng thời +2% hồi linh lực mỗi lượt.",
+    "stat_bonus": {
+      "dmg_to_mp_pct": 0.25,
+      "mp_regen_pct": 0.02
+    },
+    "stealable": false,
+    "emoji": "🌊",
+    "duration": 4
+  },
+  {
+    "key": "BuffThuyVi",
+    "vi": "Thủy Vi",
+    "en": "Subtle Water",
+    "kind": "buff",
+    "description_vi": "Thủy khí tinh tế thấm vào kỹ năng — N đòn niệm tiếp theo xuyên thẳng X% Hộ Thuẫn của địch nhân. Tự tan khi cạn linh khí.",
+    "stealable": false,
+    "emoji": "💧",
+    "duration": 99
+  },
+  {
+    "key": "BuffThanhQuangThuan",
+    "vi": "Thánh Quang Thuẫn",
+    "en": "Holy Light Shield",
+    "kind": "buff",
+    "description_vi": "Thuẫn quang thánh khiết bao quanh thân — miễn dịch trạng thái xấu +40%, mỗi lượt có 25% cơ hội Thanh Tẩy 1 trạng thái xấu, và giảm 10% sát thương phải nhận trong 3 lượt.",
+    "stat_bonus": {
+      "debuff_immune_pct": 0.4,
+      "cleanse_on_turn_pct": 0.25,
+      "final_dmg_reduce": 0.1
+    },
+    "emoji": "🛡️",
+    "duration": 3
+  },
+  {
+    "key": "BuffThienSuHoMenh",
+    "vi": "Thiên Sứ Hộ Mệnh",
+    "en": "Angel Guardian",
+    "kind": "buff",
+    "description_vi": "Hào quang thiên sứ phù hộ — tăng kháng tất cả nguyên tố, HP tối đa, và giảm sát thương phải nhận. Khi nhận đòn chí mạng, hào quang vỡ tan và hồi sinh chủ nhân với 50% HP (1 lần/trận). Không thể bị cướp.",
+    "stat_bonus": {
+      "res_all": 0.15,
+      "hp_max_pct": 0.2,
+      "final_dmg_reduce": 0.15,
+      "revive_hp_pct": 0.5
+    },
+    "stealable": false,
+    "emoji": "👼",
+    "duration": 99
+  },
+  {
+    "key": "BuffSinhMenhChiNguyen",
+    "vi": "Sinh Mệnh Chi Nguyên",
+    "en": "Source of Life",
+    "kind": "buff",
+    "description_vi": "Cội nguồn sinh mệnh hệ Mộc — vào trận tự kích hoạt. ``hp_max_pct`` là một lần nới HP tối đa +15% (xử lý lúc đóng dấu hào quang trong ``_apply_passive_auras``); ``heal_taken_bonus`` khuếch đại mọi nguồn hồi phục đi qua ``_apply_heal`` (hồi máu, hút máu, hút DoT, rút máu) thêm 20%. Không thể bị cướp hay tẩy.",
+    "stat_bonus": {
+      "hp_max_pct": 0.15,
+      "heal_taken_bonus": 0.2
+    },
+    "stealable": false,
+    "emoji": "🌿",
+    "duration": 99
+  },
+  {
+    "key": "BuffLieuNhuTuyPhongAura",
+    "vi": "Liễu Nhứ Tùy Phong (Bị Động)",
+    "en": "Willow Catkin Drift (Passive)",
+    "kind": "buff",
+    "description_vi": "Thân nhẹ tựa liễu nhứ — vĩnh viễn **+3% hồi HP/lượt**. Khi địch đang dính DoT hệ Mộc: thêm **+15% Tốc Độ** và **+400 Né Tránh** (gấp đôi khi Liễu Nhứ Tùy Phong chủ động; cập nhật mỗi lượt). Hào quang — không thể giải trừ / cướp.",
+    "stat_bonus": {
+      "hp_regen_pct": 0.03
+    },
+    "stealable": false,
+    "emoji": "🌿",
+    "duration": 99
+  },
+  {
+    "key": "BuffLieuNhuTuyPhong",
+    "vi": "Liễu Nhứ Tùy Phong",
+    "en": "Willow Catkin Drift",
+    "kind": "buff",
+    "description_vi": "Hóa liễu nhứ tan vào gió 3 lượt — **nhân đôi** hiệu lực Liễu Nhứ Tùy Phong: hồi HP cộng dồn thành **+6%/lượt**, và khi địch dính DoT hệ Mộc thì Tốc Độ / Né Tránh từ bộ pháp được nhân đôi.",
+    "stat_bonus": {
+      "hp_regen_pct": 0.03
+    },
+    "stealable": false,
+    "emoji": "🍃",
+    "duration": 3
+  },
+  {
+    "key": "BuffBoBoSinhLienAura",
+    "vi": "Bộ Bộ Sinh Liên (Bị Động)",
+    "en": "Lotus-Step (Passive)",
+    "kind": "buff",
+    "description_vi": "Mỗi bước nở một đóa sen — cứ mỗi **1% Tăng Hiệu Quả Hồi Phục** thì được **+1% Tốc Độ** và **+25 Né Tránh** (tối đa +30% Tốc / +750 Né Tránh; cập nhật mỗi lượt). Hào quang — không thể giải trừ / cướp.",
+    "stealable": false,
+    "emoji": "🪷",
+    "duration": 99
+  },
+  {
+    "key": "BuffLienHoa",
+    "vi": "Liên Hoa",
+    "en": "Lotus Bloom",
+    "kind": "buff",
+    "description_vi": "Kim liên nở quanh thân — mỗi lượt hồi **4% HP tối đa** và **50% Thanh Tẩy 1 trạng thái xấu** (mỗi lần Thanh Tẩy thêm **+5% HP tối đa**). Hào quang gắn với vòng đời Liên Hoa — không thể giải trừ / cướp.",
+    "stat_bonus": {
+      "hp_regen_pct": 0.04,
+      "cleanse_on_turn_pct": 0.5,
+      "cleanse_heal_pct": 0.05
+    },
+    "stealable": false,
+    "emoji": "🪷",
+    "duration": 99
+  },
+  {
+    "key": "BuffThaiAtMocLong",
+    "vi": "Thái Ất Mộc Long",
+    "en": "Supreme Wood Dragon",
+    "kind": "buff",
+    "description_vi": "Thái Ất Mộc Long cuộn quanh thân — chừng nào Mộc Long còn hiện diện: **+20% sát thương hệ Mộc** và **+3% hồi HP/lượt**. Hào quang gắn vòng đời triệu hồi — không thể giải trừ / cướp.",
+    "stat_bonus": {
+      "dmg_bonus_moc": 0.2,
+      "hp_regen_pct": 0.03
+    },
+    "stealable": false,
+    "emoji": "🐲",
+    "duration": 99
+  },
+  {
+    "key": "BuffXuanThuLuanChuyen",
+    "vi": "Xuân Thu Luân Chuyển",
+    "en": "Spring-Autumn Rotation",
+    "kind": "buff",
+    "description_vi": "Xuân-Thu luân chuyển — mỗi lượt đổi mùa. Mùa Xuân (lượt 1, 3): hồi 6% HP tối đa, hồi 1.5% Khiên/lượt và giảm 10% sát thương nhận. Mùa Thu (lượt 2, 4): +12% sát thương gây ra, +150 Bạo Kích và +200 Bạo Kích Sát Thương. Khởi đầu là Xuân.",
+    "stat_bonus": {
+      "_xt_spring_hp_regen_pct": 0.06,
+      "_xt_spring_final_dmg_reduce": 0.1,
+      "_xt_spring_shield_regen_pct": 0.015,
+      "_xt_autumn_final_dmg_bonus": 0.12,
+      "_xt_autumn_crit_dmg_rating": 200,
+      "_xt_autumn_crit_rating": 150
+    },
+    "stealable": true,
+    "emoji": "🍂",
+    "duration": 4
+  },
+  {
+    "key": "BuffHaoNhienChinhKhi",
+    "vi": "Hạo Nhiên Chính Khí",
+    "en": "Boundless Righteous Qi",
+    "kind": "buff",
+    "description_vi": "Hạo nhiên chính khí lan tỏa khắp thân — miễn nhiễm 20% trạng thái xấu, mỗi lượt 30% Thanh Tẩy 1 trạng thái bất lợi (hồi 4% HP tối đa mỗi lần Thanh Tẩy), và +30% Kháng Âm. Hào quang vĩnh viễn — không thể giải trừ / cướp.",
+    "stat_bonus": {
+      "debuff_immune_pct": 0.2,
+      "cleanse_on_turn_pct": 0.3,
+      "cleanse_heal_pct": 0.04,
+      "res_am": 0.3
+    },
+    "stealable": false,
+    "emoji": "🕊️",
+    "duration": 99
+  },
+  {
+    "key": "BuffChinhKhiCa",
+    "vi": "Chính Khí Ca",
+    "en": "Ballad of Righteous Qi",
+    "kind": "buff",
+    "description_vi": "Cất cao khúc chính khí ca — 3 lượt hùng hồn: +15% sát thương mọi hệ nguyên tố, +180 Bạo Kích Sát Thương, hồi 4% HP tối đa và 1% Khiên mỗi lượt. Khí phách ngân vang nhưng có thể bị giải trừ / cướp đoạt.",
+    "stat_bonus": {
+      "dmg_bonus_kim": 0.15,
+      "dmg_bonus_moc": 0.15,
+      "dmg_bonus_thuy": 0.15,
+      "dmg_bonus_hoa": 0.15,
+      "dmg_bonus_tho": 0.15,
+      "dmg_bonus_loi": 0.15,
+      "dmg_bonus_phong": 0.15,
+      "dmg_bonus_quang": 0.15,
+      "dmg_bonus_am": 0.15,
+      "crit_dmg_rating": 180,
+      "hp_regen_pct": 0.04,
+      "shield_regen_pct": 0.01
+    },
+    "stealable": true,
+    "emoji": "🎵",
+    "duration": 3
+  },
+  {
+    "key": "BuffThienMenhQuyNhat",
+    "vi": "Thiên Mệnh Quy Nhất",
+    "en": "Mandate of Heaven United",
+    "kind": "buff",
+    "description_vi": "Vạn mệnh quy nhất — càng cận tử thiên mệnh càng hộ thân: mỗi 10% HP đã mất cộng +4% giảm sát thương nhận (trần 30%) và +2% kháng toàn hệ (trần 15%). Tích trữ sát thương phải nhận rồi hồi quy khi hào quang tan.",
+    "stat_bonus": {
+      "tmqn_per_10pct_hp_lost_dr": 0.04,
+      "tmqn_per_10pct_hp_lost_res": 0.02
+    },
+    "scaling_rules": [
+      {
+        "key": "tmqn_per_10pct_hp_lost_dr",
+        "source": "hp_missing_pct",
+        "bucket": 0.1,
+        "output": "final_dmg_reduce",
+        "max_output": 0.3
+      },
+      {
+        "key": "tmqn_per_10pct_hp_lost_res",
+        "source": "hp_missing_pct",
+        "bucket": 0.1,
+        "output": "res_all",
+        "max_output": 0.15
+      }
+    ],
+    "emoji": "☯️",
+    "duration": 3
+  },
+  {
+    "key": "BuffQuanTuChiPhong",
+    "vi": "Quân Tử Chi Phong",
+    "en": "Gentleman's Bearing",
+    "kind": "buff",
+    "description_vi": "Phong thái quân tử ung dung — +20% Tốc Độ, +350 Né Tránh và +250 Kháng Bạo; lấy nhu chế cương, lâm nguy bất loạn.",
+    "stat_bonus": {
+      "spd_pct": 0.2,
+      "evasion_rating": 350,
+      "crit_res_rating": 250
+    },
+    "emoji": "🍃",
+    "duration": 3
+  },
+  {
+    "key": "BuffTriHanhHopNhat",
+    "vi": "Tri Hành Hợp Nhất",
+    "en": "Unity of Knowledge and Action",
+    "kind": "buff",
+    "description_vi": "Tri hành hợp nhất — phòng ngự thích ứng theo hệ: mỗi đòn nguyên tố hứng chịu thích nghi thêm +8% kháng đúng hệ đó (trần 40%); trúng hệ khác thì kháng đã tích đặt lại, học lại từ đầu.",
+    "emoji": "📖",
+    "duration": 5
+  },
+  {
+    "key": "BuffThoDon",
+    "vi": "Thổ Độn",
+    "en": "Burrowed",
+    "kind": "buff",
+    "description_vi": "Ẩn dưới đất — giảm mạnh ST nhận, tích ST đã chặn để trồi lên phản kích.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.70
+    },
+    "stealable": false,
+    "emoji": "🌋",
+    "duration": 1
+  },
+  {
+    "key": "BuffNghichLuu",
+    "vi": "Nghịch Lưu",
+    "en": "Backflow",
+    "kind": "buff",
+    "description_vi": "Khí huyết nghịch chuyển — tăng ST theo lượng hồi chiêu đã quy đổi.",
+    "stat_bonus": {
+      "final_dmg_bonus": 0.0
+    },
+    "emoji": "🔄",
+    "duration": 3
+  },
+  {
+    "key": "BuffMocLinhCongSinh",
+    "vi": "Mộc Linh Cộng Sinh",
+    "en": "Symbiotic Grove",
+    "kind": "buff",
+    "description_vi": "Hồi máu tràn tích thành Nhựa Linh, cuối lượt nổ thành ST Mộc.",
+    "stat_bonus": {},
+    "stealable": false,
+    "emoji": "🌿",
+    "duration": 4
+  }
+]

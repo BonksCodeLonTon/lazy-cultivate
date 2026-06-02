@@ -27,6 +27,7 @@ def build_player_combatant(
     equip_stats: dict | None = None,
     gem_keys: list[str] | None = None,
     gem_keys_by_formation: dict[str, list[str]] | None = None,
+    skill_mastery: dict[str, int] | None = None,
 ) -> Combatant:
     """Build a Combatant from a Character dataclass.
 
@@ -34,8 +35,22 @@ def build_player_combatant(
     Multi-slot Trận Tu callers should pass ``gem_keys_by_formation`` so each
     formation's threshold bonuses attach to the right gem set.
     """
+    from src.game.engine.equipment import (
+        compute_skill_passive_stats, merge_passive_dict,
+    )
     from src.game.systems.character_stats import compute_combat_stats
     from src.game.systems.cultivation import get_active_formations
+
+    # Skill-level passives — any equipped skill declaring a ``passive`` block
+    # contributes its stats here. Merged into equip_stats BEFORE
+    # ``compute_combat_stats`` so the same denest / cap / read pipeline that
+    # handles unique-item passives picks them up. No-op when the player has
+    # no skills carrying a passive block.
+    skill_passive_stats = compute_skill_passive_stats(player_skill_keys)
+    if skill_passive_stats:
+        merged_equip = dict(equip_stats or {})
+        merge_passive_dict(merged_equip, skill_passive_stats)
+        equip_stats = merged_equip
 
     cs = compute_combat_stats(
         char, gem_count=gem_count, equip_stats=equip_stats,
@@ -82,6 +97,7 @@ def build_player_combatant(
         formation_skill_keys=formation_skill_keys,
         linh_can=list(char.linh_can),
         linh_can_levels=dict(getattr(char, "linh_can_levels", {}) or {}),
+        skill_mastery=dict(skill_mastery or {}),
         **cs_kwargs,
     )
 

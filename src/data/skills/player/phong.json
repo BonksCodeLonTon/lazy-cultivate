@@ -1,522 +1,5 @@
 [
   {
-    "key": "SkillAtkPhong_R7",
-    "vi": "Thần Phong Vạn Liệt",
-    "en": "Divine Wind Myriad Rends",
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.4
-    },
-    "mp_cost": 254,
-    "cooldown": 5,
-    "base_dmg": 2485,
-    "effects": [
-      "DebuffChayMau",
-      "DebuffCuonBay",
-      "DebuffLamCham",
-      "DebuffCatDut"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0495,
-        "duration": 4
-      },
-      "DebuffCuonBay": {
-        "duration": 2
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.375
-        },
-        "duration": 3
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.45
-        },
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhong_R6",
-    "vi": "Chân Phong Phá Lãng",
-    "en": "True Wind Wave Breaker",
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.2,
-      "matk": 0.0
-    },
-    "mp_cost": 167,
-    "cooldown": 4,
-    "base_dmg": 1530,
-    "effects": [
-      "DebuffChayMau",
-      "DebuffCuonBay",
-      "DebuffLamCham"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0462
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.35
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhong3",
-    "vi": "Thiên Phong Hư Không",
-    "en": "Heaven Wind Void",
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 112,
-    "cooldown": 3,
-    "base_dmg": 800,
-    "effects": [],
-    "formation_key": null
-  },
-  {
-    "key": "SkillAtkPhong_R4",
-    "vi": "Huyền Phong Thiên Vũ",
-    "en": "Mystery Wind Heaven Dance",
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.0
-    },
-    "mp_cost": 68,
-    "cooldown": 3,
-    "base_dmg": 520,
-    "effects": [
-      "DebuffChayMau",
-      "DebuffCuonBay"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0396
-      }
-    }
-  },
-  {
-    "key": "SkillDefPhong_R2",
-    "vi": "Phong Nguyên Ngự Khí",
-    "en": "Wind Essence Guard",
-    "scroll_grade": 1,
-    "category": "defense",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 28,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffNguPhong"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillMovPhong_R2",
-    "vi": "Phong Nguyên Tốc Bộ",
-    "en": "Wind Essence Swift Step",
-    "scroll_grade": 1,
-    "category": "movement",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 22,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffTangToc"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillPassivePhongEva",
-    "vi": "Phong Nguyên Thể",
-    "en": "Wind Origin Body",
-    "scroll_grade": 1,
-    "category": "passive",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 0,
-    "cooldown": 0,
-    "base_dmg": 0,
-    "effects": [],
-    "passive_bonus": {
-      "mark_on_hit_pct": 0.2,
-      "damage_bonus_from_evasion_pct": 0.08,
-      "evasion_rating": 80
-    },
-    "formation_key": null
-  },
-  {
-    "key": "SkillAtkPhongEvaR7",
-    "vi": "Thần Phong Huyễn Ảnh Trảm",
-    "en": "Divine Wind Phantom Slash",
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.4
-    },
-    "mp_cost": 309,
-    "cooldown": 5,
-    "base_dmg": 2870,
-    "effects": [
-      "DebuffAnPhong",
-      "DebuffLamCham",
-      "DebuffCuonBay"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffAnPhong": {
-        "stat_bonus": {
-          "evasion_rating": -225
-        },
-        "duration": 4
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.375
-        },
-        "duration": 3
-      },
-      "DebuffCuonBay": {
-        "duration": 2
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhongBurstR6",
-    "vi": "Phong Ấn Cửu Đạo",
-    "en": "Wind Mark Nine Strikes",
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.2,
-      "matk": 0.0
-    },
-    "mp_cost": 201,
-    "cooldown": 5,
-    "base_dmg": 1740,
-    "effects": [
-      "DebuffAnPhong",
-      "DebuffLamCham",
-      "DebuffChayMau"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffAnPhong": {
-        "stat_bonus": {
-          "evasion_rating": -210
-        }
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.35
-        }
-      },
-      "DebuffChayMau": {
-        "dot_pct": 0.0462
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhongMarkR4",
-    "vi": "Huyền Phong Vô Ảnh Ấn",
-    "en": "Mystery Wind Shadowless Mark",
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.05,
-      "matk": 0.0
-    },
-    "mp_cost": 85,
-    "cooldown": 3,
-    "base_dmg": 660,
-    "effects": [
-      "DebuffAnPhong",
-      "DebuffLamCham"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffAnPhong": {
-        "stat_bonus": {
-          "evasion_rating": -180
-        }
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.3
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhong2",
-    "vi": "Thiên Phong Cắt Mạch",
-    "en": "Heaven Wind Vein Cut",
-    "scroll_grade": 2,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.0
-    },
-    "mp_cost": 35,
-    "cooldown": 2,
-    "base_dmg": 225,
-    "effects": [
-      "DebuffChayMau"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0363
-      }
-    }
-  },
-  {
-    "key": "SkillDefPhongEva",
-    "vi": "Phong Vũ Hộ Thể",
-    "en": "Storm Body Guard",
-    "scroll_grade": 2,
-    "category": "defense",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 44,
-    "cooldown": 4,
-    "base_dmg": 0,
-    "effects": [
-      "BuffNguPhong",
-      "BuffPhongVu"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffNguPhong": {
-        "stat_bonus": {
-          "evasion_rating": 220
-        }
-      },
-      "BuffPhongVu": {
-        "stat_bonus": {
-          "evasion_rating": 110,
-          "crit_rating": 110
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillSupPhong",
-    "vi": "Nhân Phong Tăng Tốc",
-    "en": "Human Wind Haste",
-    "scroll_grade": 2,
-    "category": "movement",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 32,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffTangToc"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffTangToc": {
-        "stat_bonus": {
-          "spd_pct": 0.33
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillMovPhongR5",
-    "vi": "Phong Thần Huyễn Bộ",
-    "en": "Wind God Phantom Step",
-    "scroll_grade": 2,
-    "category": "movement",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 100,
-    "cooldown": 5,
-    "base_dmg": 0,
-    "effects": [
-      "BuffTangToc",
-      "BuffHuKhong"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffTangToc": {
-        "stat_bonus": {
-          "spd_pct": 0.39
-        }
-      },
-      "BuffHuKhong": {
-        "stat_bonus": {
-          "evasion_rating": 325
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhong_R9",
-    "vi": "Tiên Phong Hỗn Độn Đoạn Hư",
-    "en": "Immortal Wind Chaos Void-Sever",
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.9
-    },
-    "mp_cost": 560,
-    "cooldown": 7,
-    "base_dmg": 5940,
-    "effects": [
-      "DebuffChayMau",
-      "DebuffCuonBay",
-      "DebuffLamCham",
-      "DebuffCatDut",
-      "DebuffXeRach",
-      "CCInterrupt"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0561,
-        "duration": 4
-      },
-      "DebuffCuonBay": {
-        "duration": 2
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.425
-        },
-        "duration": 3
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.51
-        },
-        "duration": 4
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.136
-        },
-        "duration": 3
-      },
-      "CCInterrupt": {
-        "duration": 2
-      }
-    }
-  },
-  {
-    "key": "SkillAtkPhong_R8",
-    "vi": "Thánh Phong Hư Không Trảm",
-    "en": "Saint Wind Void Slash",
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.6
-    },
-    "mp_cost": 362,
-    "cooldown": 6,
-    "base_dmg": 3720,
-    "effects": [
-      "DebuffChayMau",
-      "DebuffCuonBay",
-      "DebuffLamCham",
-      "DebuffCatDut",
-      "DebuffXeRach"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0528,
-        "duration": 4
-      },
-      "DebuffCuonBay": {
-        "duration": 2
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.4
-        },
-        "duration": 3
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.48
-        },
-        "duration": 4
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.128
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
     "key": "SkillPhongCombo",
     "vi": "Phong Liên Hoàn Trảm",
     "en": "Wind Combo Strike",
@@ -568,99 +51,6 @@
     "formation_key": null
   },
   {
-    "key": "SkillMovPhong_R7",
-    "vi": "Thần Phong Phong Vũ Bộ",
-    "en": "Divine Wind Storm Step",
-    "scroll_grade": 3,
-    "category": "movement",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 244,
-    "cooldown": 6,
-    "base_dmg": 0,
-    "effects": [
-      "BuffPhongVu",
-      "BuffTangToc",
-      "BuffHuKhong"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffPhongVu": {
-        "stat_bonus": {
-          "evasion_rating": 150,
-          "crit_rating": 150
-        },
-        "duration": 4
-      },
-      "BuffTangToc": {
-        "stat_bonus": {
-          "spd_pct": 0.45
-        },
-        "duration": 4
-      },
-      "BuffHuKhong": {
-        "stat_bonus": {
-          "evasion_rating": 375
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillMovDangTien_R9",
-    "vi": "Đăng Tiên Súc Địa Thành Thốn",
-    "en": "Immortal Ascension Shrink-Earth",
-    "scroll_grade": 3,
-    "category": "movement",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 520,
-    "cooldown": 8,
-    "base_dmg": 0,
-    "effects": [
-      "BuffPhongVu",
-      "BuffTocLoi",
-      "BuffTangToc",
-      "BuffHuKhong"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffPhongVu": {
-        "stat_bonus": {
-          "evasion_rating": 170,
-          "crit_rating": 170
-        },
-        "duration": 4
-      },
-      "BuffTocLoi": {
-        "stat_bonus": {
-          "spd_pct": 0.85
-        },
-        "duration": 3
-      },
-      "BuffTangToc": {
-        "stat_bonus": {
-          "spd_pct": 0.51
-        },
-        "duration": 4
-      },
-      "BuffHuKhong": {
-        "stat_bonus": {
-          "evasion_rating": 425
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
     "key": "SkillPhongHurricaneStorm_R9",
     "vi": "Cuồng Phong Bão Loạn",
     "en": "Hurricane Maelstrom",
@@ -692,107 +82,6 @@
     "description_vi": "Đỉnh cấp Phong — gió lốc 5 đòn liên tục; mỗi 2 lần niệm bùng nổ thêm 1200 ST tích lũy."
   },
   {
-    "key": "SkillPhongTempest_R8",
-    "vi": "Cuồng Phong Hủy Diệt",
-    "en": "Annihilating Tempest",
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.3
-    },
-    "mp_cost": 435,
-    "cooldown": 6,
-    "base_dmg": 4200,
-    "effects": [
-      "DebuffCuonBay",
-      "DebuffAnPhong",
-      "DebuffLamCham",
-      "DebuffBaoMon",
-      "DebuffXeRach"
-    ],
-    "formation_key": null,
-    "description_vi": "Cuồng phong hủy diệt — đỉnh Phong R8, kết hợp 5 hiệu ứng quét sạch chiến trường.",
-    "effect_overrides": {
-      "DebuffCuonBay": {
-        "duration": 2
-      },
-      "DebuffAnPhong": {
-        "stat_bonus": {
-          "evasion_rating": -300
-        },
-        "duration": 4
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.65
-        },
-        "duration": 3
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.085
-        },
-        "duration": 4
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.135
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillPhongStormGod_R7",
-    "vi": "Phong Bão Thần Thoại",
-    "en": "Storm God Mythic",
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "phong",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.25,
-      "matk": 0.2
-    },
-    "mp_cost": 292,
-    "cooldown": 5,
-    "base_dmg": 2765,
-    "effects": [
-      "DebuffCuonBay",
-      "DebuffAnPhong",
-      "DebuffLamCham",
-      "DebuffBaoMon"
-    ],
-    "formation_key": null,
-    "description_vi": "Phong bão thần thoại — đỉnh Phong R7, cuốn bay liên hoàn, bào mòn kháng tính.",
-    "effect_overrides": {
-      "DebuffCuonBay": {
-        "duration": 2
-      },
-      "DebuffAnPhong": {
-        "stat_bonus": {
-          "evasion_rating": -260
-        },
-        "duration": 4
-      },
-      "DebuffLamCham": {
-        "stat_bonus": {
-          "spd_pct": -0.55
-        },
-        "duration": 3
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.075
-        },
-        "duration": 4
-      }
-    }
-  },
-  {
     "key": "SkillPhongComboFollowup",
     "vi": "Phong Truy Trảm",
     "en": "Wind-Chase Slash",
@@ -816,5 +105,488 @@
     "formation_key": null,
     "description_vi": "Đòn nối tiếp Phong Liên Hoàn Trảm — không thể niệm độc lập (chỉ kích hoạt qua chain_skill).",
     "internal_only": true
+  },
+  {
+    "key": "SkillFrmCuongPhongBurst",
+    "vi": "Phong Bạo",
+    "en": "Hurricane Burst",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.67,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 250,
+    "base_dmg_caster_scaling": {
+      "spd": 2.0
+    },
+    "effects": [
+      "DebuffPhongNhanThuc"
+    ],
+    "effect_chances": {
+      "DebuffPhongNhanThuc": 1.0
+    },
+    "internal_only": true,
+    "formation_key": null,
+    "description_vi": "Phong Bạo— chỉ kích hoạt từ Cuồng Phong Đại Trận mỗi 5 đòn Phong tích lũy. Sát thương 2500 + 100% CÔNG + 2× Tốc Độ, áp 1 tầng Phong Nhận Thực."
+  },
+  {
+    "key": "SkillPassiveTieuDaoDu",
+    "vi": "Tiêu Dao Du",
+    "en": "Carefree Wandering",
+    "scroll_grade": 3,
+    "category": "passive",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self"
+    ],
+    "effects": [
+      "BuffTieuDaoDu"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTieuDaoDu": {
+        "duration": 999
+      }
+    },
+    "description_vi": "Tiêu Dao Du — **Bị động (luôn kích hoạt khi trang bị)**: +5% Tốc Độ + 100 Né; mỗi lần né tránh thành công cộng dồn +2.5% Tốc Độ và +50 Né (cap 10 né); và mỗi 1 Tốc Độ vượt trên đối thủ cộng +1% sát thương kỹ năng Phong."
+  },
+  {
+    "key": "SkillMovPhuDao_R8",
+    "vi": "Phù Dao Trực Thượng",
+    "en": "Whirlwind Ascent",
+    "scroll_grade": 3,
+    "category": "movement",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 107,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "effects": [
+      "BuffPhuDao"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffPhuDao": {
+        "duration": 4,
+        "altitude_max": 4,
+        "per_stack_pct": 0.1,
+        "rider_on_descent": "DebuffCuonBay",
+        "rider_chance_per_stack": 0.15,
+        "reset_on_cc": true
+      }
+    },
+    "description_vi": "Cưỡi cuồng phong bay thẳng lên — mỗi lượt tăng 1 tầng Cao Độ (tối đa 4). Lần ra chiêu tấn công kế tiếp bùng nổ thành Đại Bằng Phá Vân Trảm: +10% ST gốc mỗi tầng và 15% cơ hội Cuốn Bay mỗi tầng. Bị khống chế thì rơi mất Cao Độ."
+  },
+  {
+    "key": "SkillMovPhongThanThoi_R8",
+    "vi": "Phong Thần Thối",
+    "en": "Wind God Withdrawal",
+    "scroll_grade": 3,
+    "category": "movement",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 77,
+    "cooldown": 9,
+    "base_dmg": 0,
+    "reduce_self_cooldowns_by": 2,
+    "effects": [
+      "BuffPhongThanThoi"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffPhongThanThoi": {
+        "duration": 2,
+        "stat_bonus": {
+          "evasion_rating": 400,
+          "spd_pct": 0.25
+        }
+      }
+    },
+    "description_vi": "Phong Thần thoái lui khỏi chiến trận — lập tức giảm 2 lượt hồi chiêu cho mọi kỹ năng khác đang chờ, kèm tăng +400 Né Tránh và +25% Tốc Độ trong 2 lượt."
+  },
+  {
+    "key": "SkillAtkPhongHacPhongQuySat_R8",
+    "vi": "Hắc Phong Quỷ Sát",
+    "en": "Black Wind Demon Reaper",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 2.08,
+      "matk": 0.0
+    },
+    "mp_cost": 97,
+    "cooldown": 5,
+    "base_dmg": 280,
+    "final_dmg_bonus_per_target_hp_lost_bucket": {
+      "bucket": 0.005,
+      "per_bucket": 0.01,
+      "max_bonus": 0.0,
+      "label": "Hắc Phong Quỷ Sát",
+      "emoji": "🌑"
+    },
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffAnPhong": {
+        "stat_bonus": {
+          "evasion_rating": -240
+        },
+        "duration": 4
+      }
+    },
+    "description_vi": "Hắc Phong nuốt chửng kẻ sắp tận số — mỗi 1% HP địch đã mất cộng thêm 0.5% sát thương cuối. Càng kiệt máu, cú trảm càng nặng."
+  },
+  {
+    "key": "SkillAtkPhongCuongPhongThauCot_R8",
+    "vi": "Cương Phong Thấu Cốt",
+    "en": "Hard Wind Bone-Piercer",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 2.17,
+      "matk": 0.0
+    },
+    "mp_cost": 113,
+    "cooldown": 5,
+    "base_dmg": 340,
+    "element_pen_self": 0.12,
+    "bonus_dmg_vs_shielded": 0.3,
+    "effects": [
+      "DebuffPhongSang"
+    ],
+    "formation_key": null,
+    "description_vi": "Cương Phong tụ thành một mũi cốt khí xuyên qua giáp, khiên, xương — đòn này tự mang 12% xuyên Phong, +30% sát thương nếu địch còn khiên, và để lại vết Phong Sang (+12% sát thương Phong địch phải nhận, 4 lượt) để các đòn Phong tiếp theo cũng đi sâu hơn."
+  },
+  {
+    "key": "SkillAtkPhongThuaPhongPhaLang_R8",
+    "vi": "Thừa Phong Phá Lãng",
+    "en": "Wind-Rider Wave-Breaker",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 2.0,
+      "matk": 0.0
+    },
+    "mp_cost": 103,
+    "cooldown": 5,
+    "base_dmg": 220,
+    "base_dmg_caster_scaling": {
+      "spd": 8.0
+    },
+    "final_dmg_bonus_per_target_debuff_count": {
+      "per_debuff": 0.08,
+      "max_bonus": 0.3,
+      "label": "Phá Lãng",
+      "emoji": "🌊"
+    },
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "DebuffAnPhong": {
+        "stat_bonus": {
+          "evasion_rating": -200
+        },
+        "duration": 4
+      }
+    },
+    "description_vi": "Cưỡi cuồng phong lao thẳng vào địch — chiêu này cộng +8 ST gốc trên mỗi điểm Tốc Độ của người niệm, và cộng +6% sát thương cuối cho mỗi suy yếu địch đang gánh (tối đa +30%)."
+  },
+  {
+    "key": "SkillDefPhongCuongPhongHoThe_R8",
+    "vi": "Cương Phong Hộ Thể",
+    "en": "Hard Wind Body Guard",
+    "scroll_grade": 3,
+    "category": "defense",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 77,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "BuffCuongPhongHoThe"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffCuongPhongHoThe": {
+        "duration": 5
+      }
+    },
+    "description_vi": "Cương phong tụ thành lớp giáp khí vô hình — Chỉ Số Né Tránh trực tiếp biến thành Giảm Sát Thương: mỗi 100 Né cộng +1% Giảm Sát Thương (tối đa 30%). Duy trì 5 lượt."
+  },
+  {
+    "key": "SkillDefPhongVoTuong_R8",
+    "vi": "Vô Tướng Phong",
+    "en": "Formless Wind",
+    "scroll_grade": 3,
+    "category": "defense",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 80,
+    "cooldown": 8,
+    "base_dmg": 0,
+    "effects": [
+      "BuffVoTuongPhong"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffVoTuongPhong": {
+        "duration": 5,
+        "formless_charges": 3,
+        "spd_per_consume": 0.05
+      }
+    },
+    "description_vi": "Thân hóa cuồng phong vô hình trong 5 lượt — 3 lần đầu chịu khống chế / suy yếu đều bị gió thổi tan, mỗi lần thổi tan tăng vĩnh viễn 5% Tốc Độ trong lúc buff còn hiệu lực. Hết 3 lần hoặc hết 5 lượt thì buff tan biến. (DoT như Chảy Máu / Thiêu Đốt không tiêu tốn lần dùng.)"
+  },
+  {
+    "key": "SkillAtkPhongVanNhan_R8",
+    "vi": "Thiên Phong Vạn Nhận",
+    "en": "Heavenly Wind Ten Thousand Blades",
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.5,
+      "matk": 0.0
+    },
+    "mp_cost": 157,
+    "cooldown": 6,
+    "base_dmg": 90,
+    "hit_count": 7,
+    "effects": [
+      "DebuffPhongNhanThuc"
+    ],
+    "effect_chances": {
+      "DebuffPhongNhanThuc": 1.0
+    },
+    "formation_key": null,
+    "description_vi": "Thiên Phong tụ thành vạn lưỡi kiếm — 7 nhát vung lia liên tiếp, mỗi nhát khắc thêm một tầng Phong Nhận Thực. Tích đủ 7 tầng: −35% trị liệu, −35% khiên nhận, +14% sát thương Phong phải nhận trong 5 lượt."
+  },
+  {
+    "key": "SkillAtkPhongPhiKiemVu_R8",
+    "vi": "Phi Phong Kiếm Vũ",
+    "en": "Flying Wind Sword Rain",
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.33,
+      "matk": 0.0
+    },
+    "mp_cost": 127,
+    "cooldown": 7,
+    "base_dmg": 60,
+    "effects": [],
+    "summon_spec": {
+      "vi": "Kiếm Ảnh",
+      "emoji": "🗡️",
+      "element": "phong",
+      "count": 3,
+      "limit": 3,
+      "turns": 4,
+      "dmg_pct_of_atk": 0.45,
+      "on_hit_debuff": {
+        "key": "DebuffPhongNhanThuc"
+      },
+      "respect_target_res": true
+    },
+    "formation_key": null,
+    "description_vi": "Tụ kiếm khí thành 3 thanh **Kiếm Ảnh** lượn quanh — mỗi lượt mỗi thanh chém địch 45% CÔNG sát thương Phong vật lý và khắc thêm một tầng Phong Nhận Thực. Bám 4 lượt; chỉ tồn tại tối đa 3 thanh cùng lúc, niệm lại trước khi hết chỉ làm mới."
+  },
+  {
+    "key": "SkillAtkPhong1",
+    "vi": "Phong Nhận",
+    "en": "Gale Cut",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.67,
+      "matk": 0.0
+    },
+    "mp_cost": 37,
+    "cooldown": 4,
+    "base_dmg": 90,
+    "effects": [],
+    "formation_key": null,
+    "description_vi": "Phong Nhận — một nhát gió cơ bản, gây sát thương Phong theo CÔNG."
+  },
+  {
+    "key": "SkillAtkPhong2Basic",
+    "vi": "Liệt Phong Trảm",
+    "en": "Razor-Wind Slash",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.67,
+      "matk": 0.0
+    },
+    "mp_cost": 91,
+    "cooldown": 3,
+    "base_dmg": 240,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 0.4
+    },
+    "formation_key": null,
+    "description_vi": "Liệt phong trảm — 40% in Ấn Phong (−150 Né Tránh)."
+  },
+  {
+    "key": "SkillDefPhong1",
+    "vi": "Ngự Phong Quyết",
+    "en": "Wind-Riding Stance",
+    "scroll_grade": 1,
+    "category": "defense",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 5,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffNguPhong"
+    ],
+    "formation_key": null,
+    "description_vi": "Ngự phong — +200 Né Tránh trong 3 lượt."
+  },
+  {
+    "key": "SkillAtkPhongNhanThuc2",
+    "vi": "Cuồng Phong Loạn Vũ",
+    "en": "Tempest Flurry",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 0.0
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 90,
+    "hit_count": 2,
+    "effects": [
+      "DebuffPhongNhanThuc"
+    ],
+    "effect_chances": {
+      "DebuffPhongNhanThuc": 1.0
+    },
+    "formation_key": null,
+    "description_vi": "Hai nhát gió loạn vũ — mỗi nhát khắc 1 tầng Phong Nhận Thực."
+  },
+  {
+    "key": "SkillAtkPhongLamCham2",
+    "vi": "Toàn Phong Tỏa",
+    "en": "Whirlwind Snare",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 2.0,
+      "matk": 0.0
+    },
+    "mp_cost": 92,
+    "cooldown": 4,
+    "base_dmg": 248,
+    "effects": [
+      "DebuffAnPhong",
+      "DebuffLamCham"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 1.0,
+      "DebuffLamCham": 0.6
+    },
+    "effect_overrides": {
+      "DebuffAnPhong": {
+        "stat_bonus": {
+          "evasion_rating": -240
+        },
+        "duration": 4
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Lốc xoáy ghì chân địch — Ấn Phong (−240 Né) kèm 60% Làm Chậm."
+  },
+  {
+    "key": "SkillAtkPhongTruyKichLuyenVu",
+    "vi": "Truy Kích Liên Vũ",
+    "en": "Relentless Pursuit Dance",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.83,
+      "matk": 0.0
+    },
+    "mp_cost": 70,
+    "cooldown": 3,
+    "base_dmg": 160,
+    "effects": [
+      "DebuffAnPhong"
+    ],
+    "effect_chances": {
+      "DebuffAnPhong": 1.0
+    },
+    "combo_counter_scaling": {
+      "stack_field": "phong_combo",
+      "per_consecutive_base_dmg": 220,
+      "per_consecutive_final_dmg_pct": 0.04,
+      "combo_cap": 6,
+      "break_on_other_element": true,
+      "break_on_cc_taken": true
+    },
+    "formation_key": null,
+    "description_vi": "Truy Kích Liên Vũ — mỗi lần niệm liên tiếp KHÔNG bị khống chế cộng dồn 1 tầng Liên Vũ (tối đa 6): mỗi tầng +220 ST gốc và +4% sát thương cuối cho đòn này. Bị khống chế hoặc niệm hệ khác thì chuỗi gãy."
   }
 ]

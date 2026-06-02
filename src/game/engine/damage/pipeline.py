@@ -24,7 +24,7 @@ from .critical import apply_critical
 from .elemental import apply_elemental
 from .evasion import check_evasion
 from .final_bonus import apply_final_bonus
-from .physical import apply_physical_defense
+from .physical import apply_armor_to_elemental, apply_physical_defense
 from .result import DamageResult
 
 
@@ -63,9 +63,17 @@ def calculate_damage(
     )
     # Physical defense — diminishing returns formula, capped at 75%, bypassed by magical/true
     dmg = apply_physical_defense(dmg, str(skill.attack_type), defender.def_stat, pen_pct)
+    # Hộ Pháp armor-extension — same formula applied to non-physical hits when
+    # the defender carries the formation flag. Runs BEFORE elemental resist so
+    # armor and resist stack multiplicatively (separate lanes by design).
+    dmg = apply_armor_to_elemental(
+        dmg, str(skill.attack_type), defender.def_stat,
+        defender.def_applies_to_elemental_pct, pen_pct,
+    )
     dmg = apply_elemental(
         dmg, skill.element, defender.resistances, pen_pct,
         damage_taken_by_element=defender.damage_taken_by_element,
+        attacker_element_amp=attacker.element_dmg_amp,
     )
     dmg = apply_final_bonus(dmg, attacker.final_dmg_bonus)
 

@@ -44,11 +44,14 @@ def filtered_skills(
 ) -> list[dict]:
     """All player-learnable skills matching the given filters.
 
-    Hides Enemy_* skills. When ``linh_can`` is given, restricts elemental
-    skills to the player's roots (formations and non-elemental skills are
-    always allowed).
+    Hides NPC-only skills — both enemy and boss skills, which the registry
+    tags with ``_npc_only`` (loaded from ``skills/enemy/`` and ``skills/boss/``).
+    A boss skill key (e.g. ``ChungYen_TanThe``) doesn't start with ``Enemy``, so
+    the flag is the only reliable filter. When ``linh_can`` is given, restricts
+    elemental skills to the player's roots (formations and non-elemental skills
+    are always allowed).
     """
-    skills = [s for s in registry.skills.values() if not s.get("key", "").startswith("Enemy")]
+    skills = [s for s in registry.skills.values() if not s.get("_npc_only")]
     if category:
         skills = [s for s in skills if s.get("category") == category]
     if element:

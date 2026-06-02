@@ -51,6 +51,9 @@ Thumbs.db
 # Claude Code session files
 .claude/
 
+# CodeGraph index (generated, local)
+.codegraph/
+
 # Alembic — keep migrations but ignore local env overrides
 # (alembic.ini is committed)
 /output_tiles

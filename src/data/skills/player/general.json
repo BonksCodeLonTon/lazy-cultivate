@@ -1,419 +1,319 @@
 [
   {
-    "key": "SkillSupMp",
-    "vi": "Nhân Linh Hồi Khí",
-    "en": "Human Spirit Qi Recovery",
-    "scroll_grade": 1,
+    "key": "SkillXuanThuNhatBut",
+    "vi": "Xuân Thu Nhất Bút",
+    "en": "One-Brush Spring-Autumn",
+    "scroll_grade": 2,
     "category": "defense",
     "element": null,
     "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 21,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "BuffXuanThuLuanChuyen"
+    ],
+    "formation_key": null,
+    "description_vi": "Một nét bút vẽ ra Xuân-Thu luân chuyển — 4 lượt hiệu lực, mỗi lượt tự đổi mùa: Xuân hồi máu, hồi khiên và giảm sát thương nhận; Thu tăng sát thương, tỉ lệ bạo kích và bạo kích sát thương. Khởi đầu bằng mùa Xuân.",
+    "effect_overrides": {
+      "BuffXuanThuLuanChuyen": {
+        "stat_bonus": {
+          "_xt_spring_hp_regen_pct": 0.06,
+          "_xt_spring_final_dmg_reduce": 0.1,
+          "_xt_spring_shield_regen_pct": 0.015,
+          "_xt_autumn_final_dmg_bonus": 0.12,
+          "_xt_autumn_crit_dmg_rating": 200,
+          "_xt_autumn_crit_rating": 150
+        },
+        "duration": 4
+      }
+    }
+  },
+  {
+    "key": "SkillPasHaoNhienChinhKhi",
+    "vi": "Hạo Nhiên Chính Khí",
+    "en": "Boundless Righteous Qi",
+    "scroll_grade": 3,
+    "category": "passive",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self"
+    ],
+    "effects": [
+      "BuffHaoNhienChinhKhi"
+    ],
+    "formation_key": null,
+    "description_vi": "Hạo nhiên chính khí thấm vào kinh mạch — bị động vĩnh viễn. Khi vào trận tự kích hoạt **Hạo Nhiên Chính Khí**: miễn nhiễm 20% mọi trạng thái bất lợi, mỗi lượt có 30% cơ hội Thanh Tẩy 1 trạng thái xấu (mỗi lần Thanh Tẩy hồi 4% HP tối đa), và **+30% Kháng Âm** baseline. Hào quang gắn cả trận đấu — không thể giải trừ / cướp."
+  },
+  {
+    "key": "SkillCongLuanThienHa",
+    "vi": "Công Luận Thiên Hạ",
+    "en": "World's Verdict",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 50,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "DebuffCongLuan"
+    ],
+    "effect_chances": {
+      "DebuffCongLuan": 1.0
+    },
+    "formation_key": null,
+    "description_vi": "Triệu hồi công luận tu chân giới phán xét đối thủ — đòn của địch nhuốm vô minh, mọi sát thương xuất giảm 25% trong 4 lượt. Bia miệng người đời nặng hơn ngàn cân kiếm khí."
+  },
+  {
+    "key": "SkillChinhKhiCa",
+    "vi": "Chính Khí Ca",
+    "en": "Ballad of Righteous Qi",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 30,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffChinhKhiCa"
+    ],
+    "effect_chances": {
+      "BuffChinhKhiCa": 1.0
+    },
+    "formation_key": null,
+    "description_vi": "Vận chính khí thành thanh âm, cất cao khúc ca hùng tráng tự thân — 3 lượt khí thế ngút trời: mọi sát thương gây ra +15%, bạo kích sát thương tăng vọt, mỗi lượt tự hồi 4% HP tối đa và 1% Khiên. Khúc ca chính nghĩa vang xa, song cũng có thể bị giải trừ hay cướp đoạt."
+  },
+  {
+    "key": "SkillThienMenhQuyNhat",
+    "vi": "Thiên Mệnh Quy Nhất",
+    "en": "Mandate of Heaven United",
+    "scroll_grade": 3,
+    "category": "defense",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 47,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "BuffThienMenhQuyNhat"
+    ],
+    "effect_chances": {
+      "BuffThienMenhQuyNhat": 1.0
+    },
+    "effect_overrides": {
+      "BuffThienMenhQuyNhat": {
+        "_aegis": {
+          "shield_grant": {
+            "flat": 600,
+            "matk_scale": 3.0
+          },
+          "store_charge": {
+            "pct": 0.25,
+            "cap_matk_scale": 4.0
+          },
+          "discharge": {
+            "element": "quang",
+            "base_dmg": 500,
+            "matk_scale": 0.4,
+            "stored_mult": 1.5,
+            "stored_label": "Thiên Mệnh Trữ",
+            "log_emoji": "☯️",
+            "log_name": "Thiên Mệnh Phán"
+          }
+        }
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Thiên Mệnh Quy Nhất — vạn mệnh quy về một điểm (3 lượt): khai mở liền nhận **+600 Khiên** (+3·MATK). Càng cận tử thiên mệnh càng hộ thân — **mỗi 10% HP đã mất** cộng **+4% giảm sát thương nhận** (trần 30%) và **+2% kháng toàn hệ** (trần 15%). Suốt thời gian hiệu lực, **tích trữ 25% sát thương phải nhận** (trần 4·MATK). Khi hào quang tan, thiên mệnh hồi quy: phóng **500 (+0.4·MATK) + 1.5× lượng đã tích** sát thương Quang vào địch. Nghịch thiên cải mệnh, họa phúc quy nhất."
+  },
+  {
+    "key": "SkillMovQuanTuChiPhong",
+    "vi": "Quân Tử Chi Phong",
+    "en": "Gentleman's Bearing",
+    "scroll_grade": 3,
+    "category": "movement",
+    "element": null,
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 37,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "effects": [
+      "BuffQuanTuChiPhong"
+    ],
+    "effect_chances": {
+      "BuffQuanTuChiPhong": 1.0
+    },
+    "formation_key": null,
+    "description_vi": "Quân Tử Chi Phong — vận phong thái quân tử ung dung tự tại (3 lượt): **+20% Tốc Độ**, **+350 Né Tránh** và **+250 Kháng Bạo**. Lấy nhu chế cương, lấy tĩnh chế động — thân pháp thong dong, lâm nguy bất loạn, đòn hiểm khó chạm tới thân."
+  },
+  {
+    "key": "SkillTriHanhHopNhat",
+    "vi": "Tri Hành Hợp Nhất",
+    "en": "Unity of Knowledge and Action",
+    "scroll_grade": 3,
+    "category": "defense",
+    "element": null,
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 40,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTriHanhHopNhat"
+    ],
+    "effect_chances": {
+      "BuffTriHanhHopNhat": 1.0
+    },
+    "effect_overrides": {
+      "BuffTriHanhHopNhat": {
+        "duration": 5,
+        "_aegis": {
+          "adapt_elem_res": {
+            "step": 0.08,
+            "cap": 0.4
+          }
+        }
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Tri Hành Hợp Nhất — tri thức và hành động hợp làm một (5 lượt): mỗi đòn nguyên tố phải hứng chịu, thân thể lĩnh hội mà **thích nghi +8% kháng đúng hệ đó** (trần 40%). Nhưng nếu trúng phải **một hệ khác**, lĩnh ngộ cũ tan biến — kháng đã tích **đặt lại** và bắt đầu học hệ mới. Mỗi vết thương là một bài học; địch đổi hệ liên tục thì khó mà thích ứng kịp."
+  },
+  {
+    "key": "SkillNghichLuuPhanPhe",
+    "vi": "Nghịch Lưu Phản Phệ",
+    "en": "Backflow Reversal",
+    "scroll_grade": 3,
+    "category": "defense",
+    "element": "general",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 90,
+    "cooldown": 8,
+    "base_dmg": 0,
+    "effects": [
+      "BuffNghichLuu"
+    ],
+    "effect_chances": {
+      "BuffNghichLuu": 1.0
+    },
+    "cooldown_reservoir": {
+      "shield_per_cd_turn": 260,
+      "shield_cap": 6000,
+      "wipe_to": 1,
+      "buff_fdb_per_cd_turn": 0.015,
+      "buff_fdb_cap": 0.25
+    },
+    "formation_key": null,
+    "description_vi": "Nghịch Lưu Phản Phệ — khí huyết nghịch chuyển, quy đổi tổng lượt hồi chiêu còn lại của mọi kỹ năng khác thành **Khiên** (260/lượt, trần 6000) và **tăng ST** (+1.5%/lượt, trần +25%) trong 3 lượt, rồi **reset hết hồi chiêu của chúng về 1 lượt**. Dồn toàn lực vào một khoảnh khắc bùng nổ — đổi sự chờ đợi lấy uy năng tức thời."
+  },
+  {
+    "key": "SkillDongQuyVuTan",
+    "vi": "Đồng Quy Vu Tận",
+    "en": "Mutual Destruction Pact",
+    "scroll_grade": 3,
+    "category": "support",
+    "element": "general",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 110,
+    "cooldown": 9,
+    "base_dmg": 0,
+    "effects": [
+      "DebuffDongQuyAn"
+    ],
+    "effect_chances": {
+      "DebuffDongQuyAn": 1.0
+    },
+    "effect_overrides": {
+      "DebuffDongQuyAn": {
+        "expire_detonate_hp_race": {
+          "per_pct_diff_dmg_pct": 0.3,
+          "cap_pct_hp_max": 0.45,
+          "element": "general"
+        }
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Đồng Quy Vu Tận — đặt **Đồng Quy Ấn** 3 lượt lên địch. Khi ấn tan, nổ theo chênh lệch **%HP đã mất** giữa hai bên (địch − bạn) × HP tối đa địch: bạn càng áp đảo thì sát thương càng lớn (mỗi 1% chênh lệch = 0.30% HP địch, trần 45%). Đồng sinh cộng tử — kẻ thắng thế nắm quyền sinh sát."
+  },
+  {
+    "key": "SkillAtkGeneral1",
+    "vi": "Chân Khí Trảm",
+    "en": "True-Qi Cleave",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": null,
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.5,
+      "matk": 0.5
+    },
+    "mp_cost": 37,
+    "cooldown": 4,
+    "base_dmg": 90,
+    "effects": [],
+    "formation_key": null,
+    "description_vi": "Đòn chân khí vô thuộc tính — dùng được cho mọi Linh Căn."
+  },
+  {
+    "key": "SkillDefGeneral1",
+    "vi": "Hộ Thể Chân Khí",
+    "en": "Body-Shield Qi",
+    "scroll_grade": 1,
+    "category": "defense",
+    "element": null,
+    "attack_type": "physical",
     "dmg_scale": {
       "atk": 0.0,
       "matk": 0.0
     },
     "mp_cost": 5,
-    "cooldown": 2,
-    "base_dmg": 0,
-    "effects": [
-      "MpRegen"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillSupRegen_R2",
-    "vi": "Nhân Khí Song Tu",
-    "en": "Human Twin Cultivation",
-    "scroll_grade": 1,
-    "category": "defense",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 16,
     "cooldown": 3,
     "base_dmg": 0,
     "effects": [
-      "HpRegen",
-      "MpRegen"
-    ],
-    "formation_key": null,
-    "description_vi": "Tu luyện song hành thân khí, hồi đồng thời HP và MP."
-  },
-  {
-    "key": "SkillDefChung",
-    "vi": "Địa Hộ Pháp Vô Ngại",
-    "en": "Earth Dharma Protection",
-    "scroll_grade": 2,
-    "category": "defense",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 52,
-    "cooldown": 4,
-    "base_dmg": 0,
-    "effects": [
-      "BuffHoPhap"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffHoPhap": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.275,
-          "crit_res_rating": 110
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillSupHeal1",
-    "vi": "Nhân Sinh Phục Hồi",
-    "en": "Human Life Recovery",
-    "scroll_grade": 2,
-    "category": "defense",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 35,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "HpRegen"
-    ],
-    "formation_key": null
-  },
-  {
-    "key": "SkillSupHeal2_R4",
-    "vi": "Huyền Sinh Đại Hồi Phục",
-    "en": "Mystery Life Major Recovery",
-    "scroll_grade": 2,
-    "category": "defense",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 74,
-    "cooldown": 4,
-    "base_dmg": 0,
-    "effects": [
-      "HpRegen",
-      "BuffSinhCo",
       "BuffCanCo"
     ],
     "formation_key": null,
-    "description_vi": "Hồi phục mạnh — kết hợp HP regen lớn, buff Sinh Cơ tự hồi và Căn Cơ giảm sát thương.",
-    "effect_overrides": {
-      "BuffSinhCo": {
-        "stat_bonus": {
-          "hp_regen_pct": 0.085
-        },
-        "duration": 4
-      },
-      "BuffCanCo": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.16
-        },
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillSupAll",
-    "vi": "Nhân Vạn Tượng Hóa",
-    "en": "Human Ten-Thousand Form",
-    "scroll_grade": 3,
-    "category": "movement",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 88,
-    "cooldown": 5,
-    "base_dmg": 0,
-    "effects": [
-      "BuffTangToc",
-      "BuffSinhCo"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffTangToc": {
-        "stat_bonus": {
-          "spd_pct": 0.39
-        }
-      },
-      "BuffSinhCo": {
-        "stat_bonus": {
-          "hp_regen_pct": 0.065
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillDefChung_R6",
-    "vi": "Chân Nguyên Hộ Thể",
-    "en": "True Origin Body Guard",
-    "scroll_grade": 3,
-    "category": "defense",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 172,
-    "cooldown": 5,
-    "base_dmg": 0,
-    "effects": [
-      "BuffHoPhap",
-      "BuffCanCo",
-      "HpRegen"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffHoPhap": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.35,
-          "crit_res_rating": 140
-        }
-      },
-      "BuffCanCo": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.21
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillDefChung_R7",
-    "vi": "Thần Nguyên Thiên Cương Hộ",
-    "en": "Divine Origin Heaven-Strong Ward",
-    "scroll_grade": 3,
-    "category": "defense",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 260,
-    "cooldown": 6,
-    "base_dmg": 0,
-    "effects": [
-      "BuffHoPhap",
-      "BuffCanCo",
-      "BuffHuKhong",
-      "HpRegen"
-    ],
-    "formation_key": null,
-    "description_vi": "Thần nguyên hội tụ kết thiên cương — hộ thân, kháng bạo, né tránh, hồi phục đồng thời.",
-    "effect_overrides": {
-      "BuffHoPhap": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.375,
-          "crit_res_rating": 150
-        },
-        "duration": 5
-      },
-      "BuffCanCo": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.225
-        },
-        "duration": 4
-      },
-      "BuffHuKhong": {
-        "stat_bonus": {
-          "evasion_rating": 360
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillSupNghichThien_R7",
-    "vi": "Nghịch Thiên Cải Mệnh",
-    "en": "Heaven-Defying Fate Reversal",
-    "scroll_grade": 4,
-    "category": "passive",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 292,
-    "cooldown": 10,
-    "base_dmg": 0,
-    "effects": [
-      "BuffVoNgaKiemTam",
-      "BuffLietDiem",
-      "MpRegen"
-    ],
-    "formation_key": null,
-    "description_vi": "Cải mệnh nghịch thiên — tăng vọt sát thương và giảm sát thương nhận, hồi linh khí đồng thời.",
-    "effect_overrides": {
-      "BuffVoNgaKiemTam": {
-        "stat_bonus": {
-          "final_dmg_bonus": 0.55
-        },
-        "duration": 4
-      },
-      "BuffLietDiem": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.18
-        },
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillDefChung_R8",
-    "vi": "Thánh Nguyên Vạn Kiếp Hộ",
-    "en": "Saint Origin Myriad-Tribulation Ward",
-    "scroll_grade": 4,
-    "category": "defense",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 381,
-    "cooldown": 7,
-    "base_dmg": 0,
-    "effects": [
-      "BuffBatTu",
-      "BuffHoPhap",
-      "BuffHuKhong",
-      "HpRegen"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffBatTu": {
-        "duration": 2
-      },
-      "BuffHoPhap": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.4,
-          "crit_res_rating": 160
-        },
-        "duration": 5
-      },
-      "BuffHuKhong": {
-        "stat_bonus": {
-          "evasion_rating": 400
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillDefDangTien_R9",
-    "vi": "Đăng Tiên Bất Diệt Thể",
-    "en": "Immortal Ascension Undying Body",
-    "scroll_grade": 4,
-    "category": "defense",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 560,
-    "cooldown": 9,
-    "base_dmg": 0,
-    "effects": [
-      "BuffBatTu",
-      "BuffHoPhap",
-      "BuffHuKhong",
-      "BuffCanCo",
-      "HpRegen",
-      "MpRegen"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffBatTu": {
-        "duration": 2
-      },
-      "BuffHoPhap": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.425,
-          "crit_res_rating": 170
-        },
-        "duration": 5
-      },
-      "BuffHuKhong": {
-        "stat_bonus": {
-          "evasion_rating": 425
-        },
-        "duration": 3
-      },
-      "BuffCanCo": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.255
-        },
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillPasDangTien_R9",
-    "vi": "Đăng Tiên Hỗn Nguyên Đạo Ý",
-    "en": "Immortal Ascension Primordial Dao Intent",
-    "scroll_grade": 4,
-    "category": "passive",
-    "element": null,
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 600,
-    "cooldown": 15,
-    "base_dmg": 0,
-    "effects": [
-      "BuffVoNgaKiemTam",
-      "BuffHoangKim",
-      "BuffDaiDia",
-      "BuffLietDiem"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffVoNgaKiemTam": {
-        "stat_bonus": {
-          "final_dmg_bonus": 0.68
-        },
-        "duration": 4
-      },
-      "BuffHoangKim": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.255,
-          "res_all": 0.17
-        },
-        "duration": 4
-      },
-      "BuffDaiDia": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.425
-        },
-        "duration": 4
-      },
-      "BuffLietDiem": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.17
-        },
-        "duration": 4
-      }
-    }
+    "description_vi": "Vận chân khí hộ thể — giảm 15% sát thương phải nhận (3 lượt)."
   }
 ]

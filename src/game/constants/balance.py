@@ -70,6 +70,14 @@ ENEMY_HP_SCALE_FACTOR: float = 2.0      # at max realm: 3× base HP
 ENEMY_DMG_BONUS_SCALE: float = 1.5     # at max realm: +150 % damage
 ENEMY_BASE_ELEM_RES: float = 0.10      # 10% elemental resistance for enemy's own element
 
+# Per-wave merit base. Final wave merit = ``base × enemy.realm_level``,
+# multiplied by ``ENCOUNTER_GRADES[grade]["merit_mult"]`` in
+# ``systems/dungeon.py``. Range at extremes: 5 (R1 Bình Thường, mult 1.0)
+# → 400 (R10 Truyền Thuyết, mult 8.0). Layered on top of each dungeon's
+# flat ``merit_reward`` so per-wave grade still pays out meaningfully even
+# when the dungeon-level reward dominates.
+ENEMY_BASE_MERIT_PER_WAVE: int = 5
+
 # Fallback base combat stats by rank — used when enemy JSON omits base_atk/matk/def/evasion.
 # These are BEFORE realm_scale is applied.
 ENEMY_RANK_BASE_ATK: dict[str, int] = {
@@ -155,8 +163,9 @@ FORMATION_RESERVE_FLOOR_MULT: float = 0.30
 # Per-DoT stack caps and per-stack damage fractions now live on each
 # EffectMeta in ``src/game/engine/effects.py`` (``stack_cap`` /
 # ``per_stack_pct`` fields). Designers tune them at the meta entry; the
-# Combatant-side gear/item bonuses (``burn_stack_cap_bonus`` etc.) still
-# stack additively on top via ``compute_combat_stats``.
+# Combatant-side gear/constitution/linh_can bonuses
+# (``dot_stack_cap_bonus: {<kind>: N}``) still stack additively on top via
+# ``compute_combat_stats``.
 DEFAULT_MANA_STACK_CAP: int = 10
 # Turn-based combat regenerates shield every turn — ``DEFAULT_SHIELD_RECHARGE_DELAY``
 # of 0 means there is no "no-regen" pause after a hit (the PoE-style recharge
@@ -181,15 +190,15 @@ DOT_POWER_COEF: float = 4.0
 #   final_scaled = (atk × scale.atk + matk × scale.matk) × SKILL_STAT_SCALE_MULT
 # Power-tier scaling is baked into ``skill.base_dmg`` at design time — higher
 # grade scrolls have larger base_dmg — rather than derived from a multiplier.
-SKILL_STAT_SCALE_MULT: float = 4.0
+SKILL_STAT_SCALE_MULT: float = 1.0
 
 # ── True damage cap ───────────────────────────────────────────────────────────
 # Per-hit cap on the Sát Thương Chuẩn mechanic. The pct scales the *hit's*
-# damage (post-mitigation), so a 0.65 cap means at most +65 % bonus on top
+# damage (post-mitigation), so a 0.50 cap means at most +50 % bonus on top
 # of the regular damage. Combines skill + passive contributions. World-boss
 # damage is naturally bounded by the per-attack damage cap that already
 # gates world-boss contributions, so no extra clamp is needed.
-TRUE_DMG_PCT_CAP: float = 0.65
+TRUE_DMG_PCT_CAP: float = 0.50
 
 # Hard ceiling on cumulative cooldown reduction. Constitutions, equipment
 # uniques, gems, and formations can stack well past 200 % for end-game Thể Tu;

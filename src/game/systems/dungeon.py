@@ -288,6 +288,7 @@ def run_dungeon(
     gem_count: int = 0,
     equip_stats: dict | None = None,
     gem_keys: list[str] | None = None,
+    skill_mastery: dict[str, int] | None = None,
 ) -> DungeonResult:
     """Run all waves of a dungeon sequentially.
 
@@ -305,6 +306,7 @@ def run_dungeon(
     rng = random.Random()
     player_c = build_player_combatant(
         char, skill_keys, gem_count, equip_stats=equip_stats, gem_keys=gem_keys,
+        skill_mastery=skill_mastery,
     )
     player_realm_total = compute_realm_total(char)
 

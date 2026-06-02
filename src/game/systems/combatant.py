@@ -5,6 +5,32 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 
+# Stack kind → EffectMeta key used to look up the cap via
+# ``effective_stack_cap`` (which folds in EffectMeta defaults, per-instance
+# ``effect_overrides[<key>].stack_cap``, and ``stack_cap_bonuses`` from
+# gear/constitutions/linh_can). Kinds whose cap comes from a different
+# source (mana → ``self.mana_stack_cap`` field) are absent here and
+# short-circuit inside ``Combatant.add_stack``. Adding a new stack kind is
+# one entry here plus a Combatant ``_stacks`` field — no helper method needed.
+_STACK_EFFECT_KEY: dict[str, str] = {
+    "burn":       "DebuffThieuDot",
+    "bleed":      "DebuffChayMau",
+    "shock":      "DebuffSocDien",
+    "poison":     "DebuffDocTo",
+    "chan_hoa":   "DebuffChanHoa",
+    "nghiep_hoa": "DebuffNghiepHoa",
+    "u_minh":     "DebuffUMinh",
+    "hoa_van":    "DebuffHoaVan",
+    "phuong_hoa": "DebuffPhuongHoa",
+    "thuy_mark":  "DebuffNhuocThuyAn",
+    "cuu_khuc":   "DebuffCuuKhuc",
+    "sat_an":     "DebuffSatAn",
+    "phong_nhan_thuc": "DebuffPhongNhanThuc",
+    "tran_son_ha":     "DebuffTranSonHa",
+    "loi_kiep_an":     "DebuffLoiKiepAn",
+}
+
+
 @dataclass
 class Combatant:
     """Live combatant state during combat — player or enemy."""
@@ -129,6 +155,9 @@ class Combatant:
     # the effect modules read for proc-chance / potency scaling.
     linh_can: list[str] = field(default_factory=list)
     linh_can_levels: dict[str, int] = field(default_factory=dict)
+    # Per-skill mastery levels: skill_key → level (1..25). Empty for
+    # enemies/bosses → power_mult resolves to 1.0 (inert).
+    skill_mastery: dict[str, int] = field(default_factory=dict)
     # Thổ Hộ Thể shield (absorbs damage)
     shield: int = 0
     ho_the_used: bool = False
@@ -138,7 +167,7 @@ class Combatant:
     # per-stack damage to the DebuffThieuDot tick. Stacks decay when the burn
     # effect fully expires. Stack cap is read from ``EffectMeta.stack_cap``
     # (default 5) via ``effective_stack_cap`` — gear / constitution / Linh
-    # Căn flat bonuses (``burn_stack_cap_bonus``) flow through
+    # Căn bonuses (``dot_stack_cap_bonus: {burn: N}``) flow through
     # ``stack_cap_bonuses["DebuffThieuDot"]``.
     burn_stacks: int = 0
     # Bonus damage multiplier vs targets that currently have burn stacks.
@@ -207,7 +236,8 @@ class Combatant:
     stack_cap_bonuses: dict[str, int] = field(default_factory=dict)
     # Solar aura — every turn, deal hp_max × pct as fire damage to opponent.
     # Independent of skill actions and DoTs; benefits from final_dmg_bonus,
-    # burn_dmg_bonus, bonus_dmg_vs_burn, and shreds opponent's hoa resist.
+    # dot_dmg_bonus_by_kind["burn"], bonus_dmg_vs_burn, and shreds opponent's
+    # hoa resist.
     solar_aura_pct: float = 0.0
     # Wither aura — every turn, deal hp_max × pct as moc damage to opponent
     # and leech the dealt amount back as healing on the holder. Benefits from
@@ -224,6 +254,11 @@ class Combatant:
     phoenix_revive_pct: float = 0.0
     phoenix_revive_buff_pct: float = 0.0
     phoenix_revive_used: bool = False
+    # Chân Mệnh Lôi Phù once-per-fight flag — flipped on the Lôi passive
+    # destiny revival (``_try_chan_menh_loi_phu``). Independent from phoenix /
+    # buff revives so a player carrying multiple revive sources gets the full
+    # cascade in priority order (phoenix → buff revive → Lôi Phù).
+    chan_menh_loi_phu_used: bool = False
     # Thôn Thiên Ma Khí — at combat start, drain ``pct`` of the opponent's
     # core combat stats (atk/matk/def/spd) and add the same amount to the
     # holder. Applied once per fight; flag below tracks consumption so the
@@ -268,8 +303,19 @@ class Combatant:
     # Both fields are read by ``CombatSession._roll_loot``.
     loot_qty_bonus: float = 0.0
     loot_luck_bonus: float = 0.0
-    # Generic per-element bonus dicts. Replaces the ad-hoc
-    # ``damage_to_fire_convert_pct`` / ``burn_dmg_bonus`` style fields with
+    # Hậu Thổ Phong Ma Trận — formation gem-ladder lane percents (permanent
+    # contribution, layered on top of the buff's stat_bonus lanes which the
+    # rider also reads). See ``_hau_tho_tank_conversion_rider``.
+    bonus_base_dmg_per_self_hp_pct: float = 0.0
+    bonus_base_dmg_per_self_shield_pct: float = 0.0
+    bonus_base_dmg_per_self_def_pct: float = 0.0
+    # Thổ Nguyên Hộ Pháp Trận — armor-extension lane (permanent contribution
+    # from the formation's gem ladder, layered with the buff's stat_bonus
+    # of the same key). Read by ``build_defense_stats``.
+    def_applies_to_elemental_pct: float = 0.0
+    # Generic per-element bonus dicts. The unified ``element_pen`` /
+    # ``element_dmg_bonus`` / ``damage_taken_convert_pct`` / ``dmg_taken``
+    # shape replaces the historical ad-hoc per-element scalar fields with
     # element-keyed dicts that any constitution / equipment can target:
     #
     #   damage_taken_convert_pct["hoa"] = 0.40
@@ -537,6 +583,30 @@ class Combatant:
     # Per-stack final-damage multiplier the attacker adds when a Lôi-element
     # hit lands on a shocked target. e.g. 0.03 → +3% final damage per stack.
     shock_per_stack_pct: float = 0.03
+    # Same-element cast streak — element of the LAST top-level skill this
+    # combatant cast, and how many same-element casts have chained in a row
+    # (INCLUDING the current one). Bumped in ``cast_skill`` for top-level
+    # casts only (reactive / 0-mp suppressed casts don't break the chain).
+    # The first cast of an element starts the streak at 1; a different
+    # element resets it to 1. Read by ``same_element_streak_scaling``
+    # (Lôi Tù Cấm Ngục) to scale base_dmg + element_pen + forced Sốc Điện.
+    last_cast_element: Optional[str] = None
+    same_element_streak: int = 0
+    # Truy Kích Liên Vũ (Phong B1) — self-combo escalator. Each consecutive
+    # cast of ``SkillAtkPhongTruyKichLuyenVu`` that is NOT broken bumps this
+    # toward ``combo_cap``; the ``combo_counter_scaling`` rider reads it for
+    # the CURRENT cast's base + final-dmg bonus. Breaks (reset to 0) when the
+    # actor casts a different-element skill (cast path) or takes any CC
+    # (``inflict_debuff`` path). Empty for enemies → no combo → inert.
+    phong_combo: int = 0
+    # Trào Tịch Tích Lãng (Thủy B2) — dealt-damage reservoir + cast counter.
+    # Each cast of ``SkillAtkThuyTrieuTichLang`` banks a fraction of the
+    # damage dealt into ``thuy_tide`` (clamped to a matk-scaled cap) and bumps
+    # ``thuy_tide_casts``; every Nth cast the ``tide_charge`` post-cast
+    # consumer discharges the reservoir as a Thủy strike and resets both.
+    # Both default 0 → enemies (which never cast the skill) stay inert.
+    thuy_tide: int = 0
+    thuy_tide_casts: int = 0
 
     # ── Thủy (Nhược Thủy Ấn) mark build ──────────────────────────────────────
     # Nhược Thủy Ấn marks: each stack shreds 4% res_thuy via
@@ -555,6 +625,30 @@ class Combatant:
     # stack). JSON declares the dict; gem thresholds merge additively for
     # numbers and last-write-wins for the string key.
     cuu_khuc: dict = field(default_factory=dict)
+    # Vạn Kiếp Lôi Ngục Trận tunables — single dict (mirrors ``cuu_khuc``).
+    # ``per_cast_bonus`` (extra Lôi Kiếp Ấn stacks/tick on top of the always-
+    # 1 base read in the stack stamper); ``bolt_*`` and ``capstone_*`` are
+    # numeric tunables consumed by ``formation_prison.process_loi_kiep_an_tick``
+    # to size the milestone Lôi Kiếp Phán bolt and the 10-stack Vạn Kiếp
+    # Phán capstone. Gem thresholds merge additively (per ``_merge_bonus_dict``).
+    loi_kiep_an: dict = field(default_factory=dict)
+    # Thiên Lôi Tru Tà Trận tunables — single dict (mirrors ``loi_kiep_an``).
+    # Read by ``formation_prison.process_thien_loi_tru_ta_tick`` to size the
+    # Thiên Lôi Phán bolt + Thiên Lôi Đại Phán capstone and to gate the
+    # capstone cooldown. Gem-tier deltas merge additively via _merge_bonus_dict.
+    thien_loi_tru_ta: dict = field(default_factory=dict)
+    # Thái Cực Âm Dương Lôi Đại Trận tunables — single dict (mirrors the
+    # other formation dicts). Read by ``process_thai_cuc_tick`` to size
+    # the Dương / Âm phase payloads, the Thái Cực Lưỡng Nghi Lôi fusion,
+    # and the dual_phase_fire (10-gem) tier flag.
+    thai_cuc_am_duong_loi: dict = field(default_factory=dict)
+    # Thái Cực phase rotation + per-pole Khí counters. ``taic_phase`` toggles
+    # 0→1→0 each tick (0=Dương next, 1=Âm next). Each phase emit increments
+    # its own Khí counter (cap 5). When both reach 5 the next tick fires
+    # the Thái Cực Lưỡng Nghi Lôi fusion which consumes both back to 0.
+    taic_phase: int = 0
+    taic_duong_khi: int = 0
+    taic_am_khi: int = 0
     # Xích Luyện Tỏa Hồn Trận — single dict of stat_bonus deltas layered on
     # top of DebuffXichLuyenToaHon at apply time. Mirrors ``element_pen`` /
     # ``dmg_taken`` — JSON gem thresholds declare
@@ -578,6 +672,77 @@ class Combatant:
     cuu_khuc_stacks: int = 0
     cuu_khuc_atk_reduce_active: float = 0.0
     cuu_khuc_res_shred_active: float = 0.0
+    # Vạn Kiếp Lôi Ngục Trận — formation prison tax mark. Each round while
+    # the formation is active, the owner's ``SkillFrmVanKiepLoiNguc`` auto-fire
+    # stamps +1 stack on the opposing target. Per-stack +dmg_taken_bonus_loi
+    # / -res_loi expand from the meta's ``scaling_rules`` keyed off
+    # ``stack:loi_kiep_an``. Milestone-bolts and the 10-stack Vạn Kiếp Phán
+    # capstone read this counter from inside the formation cast.
+    loi_kiep_an_stacks: int = 0
+    # Thất Sát Trảm Trận — pure marker counter built by every Kim hit while
+    # the formation is active. No DoT, no stat reduction; the threshold (7)
+    # gates the formation_skill's true-damage execute via
+    # ``consume_target_marks_for_execute``. Cap and meta default duration
+    # live on ``EffectMeta(DebuffSatAn)``.
+    sat_an_stacks: int = 0
+    # Cuồng Phong Đại Trận — combo + burst counters. ``consecutive_phong_casts``
+    # is the resettable combo chain (cap 5, reset on any non-Phong top-level
+    # cast or basic attack); the formation's aura buff reads this via
+    # ``stat:consecutive_phong_casts`` to scale ``dmg_bonus_phong`` and
+    # ``crit_rating`` per stack. ``phong_casts_total`` is the cumulative
+    # counter (never resets in-fight); the engine hook in ``cast_skill``
+    # fires ``SkillFrmCuongPhongBurst`` on every 5th cumulative Phong cast
+    # while the holder carries ``BuffCuongPhongDaiTran``.
+    consecutive_phong_casts: int = 0
+    phong_casts_total: int = 0
+    # Chưởng Tâm Lôi resonator — same pattern as ``consecutive_phong_casts``
+    # but for Loi-element casts. Cap 5, resets on any non-Loi top-level cast
+    # or basic attack. ``BuffTamLoiCong`` reads this via
+    # ``stat:consecutive_loi_casts`` to scale crit_rating and dmg_bonus_loi
+    # per stack (Loi-mono rotation reward).
+    consecutive_loi_casts: int = 0
+    # Vô Tướng Phong (Formless Wind) absorber charges — remaining count of
+    # debuff/CC applications the buff will negate. Initialized to
+    # ``effect_overrides["BuffVoTuongPhong"]["formless_charges"]`` on apply,
+    # decremented each time ``inflict_debuff`` is gated by the buff. Buff
+    # auto-expires when this hits 0; also cleared when the duration ticks
+    # out naturally via ``tick_effects``.
+    vo_tuong_phong_charges: int = 0
+    # Phong Nhận Thực (Wind-Blade Erosion) stacks. Read via the data-driven
+    # ``scaling_rules`` on ``DebuffPhongNhanThuc`` (source: ``stack:phong_nhan_thuc``)
+    # to scale ``heal_taken_reduce`` / ``shield_taken_reduce`` /
+    # ``final_dmg_taken_bonus`` linearly per stack. Cap from the meta's
+    # ``stack_cap`` (default 7); cleared on debuff expiry. Stack increment
+    # lives in ``inflict_debuff`` alongside burn/bleed/shock/poison blocks.
+    phong_nhan_thuc_stacks: int = 0
+    # Trấn Sơn Hà Ấn (Mountain-River Suppression Seal) stacks. Read via
+    # the data-driven ``scaling_rules`` on ``DebuffTranSonHa`` (source:
+    # ``stack:tran_son_ha``) to scale ``final_dmg_bonus`` by -0.08/stack on
+    # the holder — i.e. reduce the target's outgoing damage. Cap from the
+    # meta's ``stack_cap`` (default 3); cleared on debuff expiry. Stack
+    # increment lives in ``inflict_debuff`` alongside the other ``stack_kind``
+    # blocks. The skill ``SkillSonHaAn`` reads
+    # ``seal_refresh_dmg_bonus`` on the spec to compound its own strike when
+    # the target already carries the seal — see ``casting.cast_skill``.
+    tran_son_ha_stacks: int = 0
+    # Địa Mạch Quy Chân (Earth Vein Return-to-Truth) stacks. Gained when
+    # the holder of ``SkillDiaMachQuyChan`` takes damage from an enemy.
+    # While stacks > 0, every attack the holder makes gets a flat bonus
+    # of ``def_stat × 0.10 × stacks`` added to both ``effective_atk`` and
+    # ``effective_matk`` — armor-to-power conversion. Stack cap 5; at cap
+    # the holder auto-casts ``SkillDaiDiaMaiTang`` back at the attacker
+    # and resets to 0. Increment + auto-cast hook live in
+    # ``casting._bump_dia_mach_stack``; conversion read in
+    # ``build_attack_stats``.
+    dia_mach_stacks: int = 0
+    # Phù Dao Trực Thượng altitude — gained while ``BuffPhuDao`` is active,
+    # consumed by the next attack-skill cast (multiplies its base_dmg and
+    # rolls a per-stack DebuffCuonBay rider). Per-cast tunables
+    # (``altitude_max`` / ``per_stack_pct`` / ``rider_on_descent`` /
+    # ``rider_chance_per_stack`` / ``reset_on_cc``) live on the buff's
+    # ``effect_overrides`` entry. Reset on buff expiry, on dive consumption,
+    # and when ``reset_on_cc`` fires.
+    phu_dao_altitude: int = 0
     # On-hit: chance the actor lands a Sốc Điện stack on the target.
     shock_on_hit_pct: float = 0.0
     # After a normal turn, flat chance to immediately steal an extra turn
@@ -643,15 +808,50 @@ class Combatant:
     # Active summons spawned by ``summon_spec`` skills. Each entry:
     #   {"name": str, "vi": str, "element": str|None,
     #    "dmg": int, "turns": int, "emoji": str}
+    # Optional per-summon fields (read by ``tick_summons``):
+    #   ``crit_rating`` / ``crit_dmg_rating`` — enable per-tick crit rolls
+    #   ``on_hit_debuff: {key, chance, overrides}`` — chance to stamp a debuff
+    #   ``expire_finisher`` — {pct, element, emoji, vi}: when the LAST copy of
+    #     this summon-group expires, fire ``pct × accumulated_dmg`` as a burst
     # ``_process_periodic`` ticks every entry: deals ``dmg`` to the opponent,
     # decrements ``turns``, and removes expired entries.
     summons: list[dict] = field(default_factory=list)
+    # Per-summon-name running total of damage dealt during the current
+    # batch's lifetime. Keyed by ``summon["vi"]``. Read by ``tick_summons``
+    # to compute the ``expire_finisher`` burst on the LAST copy's expiry,
+    # then popped so a re-summon starts fresh.
+    summon_dmg_dealt: dict[str, int] = field(default_factory=dict)
+    # Cửu Long Thần Hỏa Trận tunables — single dict (mirrors ``cuu_khuc``).
+    # JSON gem thresholds contribute ``cuu_long: {dmg_pct_bonus, crit_rating,
+    # crit_dmg_rating, stun_chance, finisher_pct}``; read by
+    # ``maybe_spawn_summon`` to customise the 9-dragon swarm at spawn time.
+    cuu_long: dict = field(default_factory=dict)
+    # Vạn Kiếm Quy Tông — Sword-Heart stack counter. Built by consuming a
+    # full sword swarm (10 summons of "Vạn Kiếm" → +5 stacks). Each stack
+    # adds 5% kim damage in ``build_attack_stats`` (gated on skill element).
+    # Capped at 10 by the consume path; resets per fight (Combatant rebuild).
+    sword_heart_stacks: int = 0
+    # Per-Sword-Heart-stack damage reduction — granted by Hộ Thể Kiếm Cương's
+    # passive (3% DR per stack). Folds into ``effective_damage_reduction``
+    # alongside ``fortify_per_turn_pct``. Default 0 so a character without
+    # the passive sees no DR bonus from stacks; flows through equip_stats
+    # via ``passive.sword_heart_per_stack_dr`` on the skill JSON.
+    sword_heart_per_stack_dr: float = 0.0
+    # Damage amplifier for "Vạn Kiếm"-type summons — granted by Kiếm Tâm
+    # Thông Minh's passive (+40 % to each sword's per-turn swing AND the
+    # Quy Tông consume burst). Applied as a multiplicative bonus in
+    # ``maybe_spawn_summon`` (spawn-time damage) and the consume-pass inside
+    # ``tick_summons`` (burst damage). Default 0 so a character without
+    # the passive sees no boost; flows through equip_stats via
+    # ``passive.sword_summon_dmg_amp`` on the skill JSON.
+    sword_summon_dmg_amp: float = 0.0
 
     def is_alive(self) -> bool:
         return self.hp > 0
 
     def take_damage(
         self, amount: int, is_dot: bool = False, bypass_shield: bool = False,
+        is_echo: bool = False,
     ) -> int:
         """Apply ``amount`` damage with PoE-style Energy Shield absorption.
 
@@ -785,6 +985,9 @@ class Combatant:
         # hit always pauses regen for the pre-configured window.
         # ``bypass_shield`` skips the absorption step but still pauses regen,
         # so a shielded target can't repair while being shield-pierced.
+        # Snapshot pre-absorption amount so the Lôi Thần Khải hook below can
+        # account for damage routed through both shield and HP in a single read.
+        pre_absorb_amount = amount if not is_dot else 0
         if not is_dot and amount > 0:
             if self.shield > 0 and not bypass_shield:
                 absorbed = min(self.shield, amount)
@@ -802,6 +1005,31 @@ class Combatant:
         # "HP damage taken in this turn"). Reset to 0 in ``CombatSession.step``.
         self.damage_taken_this_turn += hp_before - self.hp
 
+        # Step 4.5 — Damage→MP conduit (Cửu Thiên Lôi Giáp). A fraction of
+        # the HP loss is channeled into MP for the holder. Reads from
+        # ``active_mods`` so any future buff contributing the same key
+        # stacks naturally. Skipped on DoT so sustained tick damage can't
+        # trivialize the mana pool. Keyed on HP loss (not gross incoming)
+        # so shield-absorbed hits don't print free MP.
+        if not is_dot:
+            hp_loss = hp_before - self.hp
+            if hp_loss > 0:
+                mp_gain_pct = float(active_mods.get("dmg_taken_mp_gain_pct", 0.0))
+                if mp_gain_pct > 0 and self.mp < self.mp_max:
+                    gain = int(hp_loss * mp_gain_pct)
+                    if gain > 0:
+                        self.mp = min(self.mp_max, self.mp + gain)
+
+        # Step 4.6 — Defense-aegis stored-charge accumulator. Every active
+        # aegis buff with an ``_aegis.store_charge`` block banks a fraction
+        # of ``pre_absorb_amount`` (counting BOTH shield-absorbed and HP-loss
+        # portions) into its own ``_stored_charge`` override. The discharge
+        # hook in ``CombatSession._process_periodic`` reads it back on
+        # natural expiry. See ``src.game.systems.combat.defense_aegis``.
+        if not is_dot and pre_absorb_amount > 0:
+            from src.game.systems.combat.defense_aegis import accumulate_stored_charge
+            accumulate_stored_charge(self, pre_absorb_amount)
+
         # Step 5 — Endure (Cội Nguồn Bất Tận). When a hit would kill the
         # holder and the cooldown is not engaged, clamp HP to a survival
         # floor instead and engage the cooldown. Repeats every
@@ -818,153 +1046,114 @@ class Combatant:
             self.endure_remaining = self.endure_cooldown
             self.endure_just_triggered = True
 
+        # Step 6 — Âm Hồn Khế Ấn damage echo. A holder of ``DebuffAmHonKheAn``
+        # echoes a fraction of every damaging hit (HP loss this call) back onto
+        # ITSELF as TRUE damage (bypass shield/DR — routed via a recursive
+        # ``take_damage(..., is_echo=True)``).
+        #
+        # RECURSION GUARD: ``is_echo`` short-circuits this block so the echo's
+        # own ``take_damage`` never spawns a second echo (echo-of-echo = 0).
+        # Gated strictly to non-DoT, non-echo damaging hits whose HP loss
+        # ≥ ``min_source_dmg`` so chip/0-dmg taps don't echo.
+        #
+        # World-boss note: the echo reduces ``self.hp`` through the normal
+        # ``take_damage`` HP path, so on a world-boss holder it is naturally
+        # included in the cog's ``starting_hp - ending_hp`` contribution total
+        # AND subject to the same per-attack ``dmg_cap`` — it can't bypass the
+        # boss contribution cap. No separate routing needed.
+        if not is_echo and not is_dot:
+            hp_loss = hp_before - self.hp
+            if hp_loss > 0:
+                self._maybe_echo_damage(hp_loss)
+
         return amount
 
-    def add_burn_stack(self, count: int = 1) -> int:
-        """Add burn stacks, clamped by the meta's stack cap. Returns stacks gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffThieuDot")
-        before = self.burn_stacks
-        self.burn_stacks = min(cap, self.burn_stacks + count)
-        return self.burn_stacks - before
+    def _maybe_echo_damage(self, source_hp_loss: int) -> None:
+        """Fire the Âm Hồn Khế Ấn echo if this holder carries the brand.
 
-    def consume_burn_stacks(self) -> int:
-        """Remove all burn stacks and return how many were consumed."""
-        stacks = self.burn_stacks
-        self.burn_stacks = 0
-        return stacks
+        Reads ``damage_echo`` config off the brand's per-instance override.
+        Echo = ``min(echo_cap_per_hit, int(source_hp_loss × echo_pct))`` dealt
+        to this holder as TRUE damage (``is_echo=True`` recursion-guarded).
+        """
+        if self.effects.get("DebuffAmHonKheAn", 0) <= 0:
+            return
+        ovr = self.effect_overrides.get("DebuffAmHonKheAn") or {}
+        cfg = ovr.get("damage_echo")
+        if not isinstance(cfg, dict):
+            return
+        min_source = int(cfg.get("min_source_dmg", 0))
+        if source_hp_loss < min_source:
+            return
+        echo_pct = float(cfg.get("echo_pct", 0.0))
+        if echo_pct <= 0:
+            return
+        cap = int(cfg.get("echo_cap_per_hit", 0))
+        echo = int(source_hp_loss * echo_pct)
+        if cap > 0:
+            echo = min(cap, echo)
+        if echo <= 0:
+            return
+        # Silent HP mechanic — mirrors the other in-``take_damage`` effects
+        # (element conversion, deferred-damage split, HP→MP redirect) which
+        # all mutate HP without a log line (the model has no session handle).
+        # The brand's effect is observable via the holder's HP drop.
+        self.take_damage(echo, bypass_shield=True, is_echo=True)
 
-    def add_chan_hoa_stack(self, count: int = 1) -> int:
-        """Add Chân Hỏa stacks, clamped by the meta's stack cap. Returns gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffChanHoa")
-        before = self.chan_hoa_stacks
-        self.chan_hoa_stacks = min(cap, self.chan_hoa_stacks + count)
-        return self.chan_hoa_stacks - before
+    def consume_stacks(self, kind: str) -> int:
+        """Zero the named stack counter and return how many were consumed.
 
-    def consume_chan_hoa_stacks(self) -> int:
-        """Strip all Chân Hỏa stacks and return how many were consumed."""
-        stacks = self.chan_hoa_stacks
-        self.chan_hoa_stacks = 0
-        return stacks
+        ``kind`` is the stack name without the trailing ``_stacks`` suffix —
+        e.g. ``"burn"``, ``"bleed"``, ``"chan_hoa"``, ``"thuy_mark"``,
+        ``"mana"``. Returns 0 when the field doesn't exist on the combatant
+        so callers can dispatch via a stack-name string from skill JSON
+        without needing per-kind guards.
 
-    def add_nghiep_hoa_stack(self, count: int = 1) -> int:
-        """Add Nghiệp Hỏa stacks, clamped by the meta's stack cap. Returns gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffNghiepHoa")
-        before = self.nghiep_hoa_stacks
-        self.nghiep_hoa_stacks = min(cap, self.nghiep_hoa_stacks + count)
-        return self.nghiep_hoa_stacks - before
+        Replaces a fleet of identical ``consume_<kind>_stacks`` helpers that
+        all did "zero the counter, return prior count". Skills with extra
+        cleanup beyond resetting the counter (e.g. Cửu Khúc snapshot fields)
+        should reset those fields explicitly at the call site after invoking
+        this — keeping ``consume_stacks`` pure makes it safe to reuse for
+        future stack kinds without growing per-kind branches.
+        """
+        field = f"{kind}_stacks"
+        if not hasattr(self, field):
+            return 0
+        prior = int(getattr(self, field))
+        setattr(self, field, 0)
+        return prior
 
-    def consume_nghiep_hoa_stacks(self) -> int:
-        """Strip all Nghiệp Hỏa stacks and return how many were consumed."""
-        stacks = self.nghiep_hoa_stacks
-        self.nghiep_hoa_stacks = 0
-        return stacks
+    def add_stack(self, kind: str, count: int = 1) -> int:
+        """Add stacks to the named counter, clamped to the kind's cap.
 
-    def add_u_minh_stack(self, count: int = 1) -> int:
-        """Add U Minh stacks, clamped by the meta's stack cap. Returns gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffUMinh")
-        before = self.u_minh_stacks
-        self.u_minh_stacks = min(cap, self.u_minh_stacks + count)
-        return self.u_minh_stacks - before
+        Returns the count actually gained (0 when the counter was already
+        at cap, or when the kind isn't recognized — callers can dispatch
+        via JSON strings without per-kind guards).
 
-    def add_hoa_van_stack(self, count: int = 1) -> int:
-        """Add Hỏa Vân stacks, clamped by the meta's stack cap. Returns gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffHoaVan")
-        before = self.hoa_van_stacks
-        self.hoa_van_stacks = min(cap, self.hoa_van_stacks + count)
-        return self.hoa_van_stacks - before
+        Cap source by kind:
+          * ``mana``         — reads the runtime field ``mana_stack_cap``
+            (set by Khí Tu mana-stack constitutions and per-fight aura
+            buffs that grow the cap dynamically).
+          * everything else  — routes through ``effective_stack_cap`` using
+            the ``_STACK_EFFECT_KEY`` map, so EffectMeta defaults,
+            per-instance ``effect_overrides[...].stack_cap``, and
+            ``stack_cap_bonuses`` from gear all fold in uniformly.
 
-    def add_phuong_hoa_stack(self, count: int = 1) -> int:
-        """Add Phượng Hỏa stacks, clamped by the meta's stack cap. Returns gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffPhuongHoa")
-        before = self.phuong_hoa_stacks
-        self.phuong_hoa_stacks = min(cap, self.phuong_hoa_stacks + count)
-        return self.phuong_hoa_stacks - before
-
-    def add_shock_stack(self, count: int = 1) -> int:
-        """Add shock stacks, clamped by the meta's stack cap. Returns stacks gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffSocDien")
-        before = self.shock_stacks
-        self.shock_stacks = min(cap, self.shock_stacks + count)
-        return self.shock_stacks - before
-
-    def consume_shock_stacks(self) -> int:
-        """Remove all shock stacks and return how many were consumed."""
-        stacks = self.shock_stacks
-        self.shock_stacks = 0
-        return stacks
-
-    def add_bleed_stack(self, count: int = 1) -> int:
-        """Add bleed stacks, clamped by the meta's stack cap. Returns stacks gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffChayMau")
-        before = self.bleed_stacks
-        self.bleed_stacks = min(cap, self.bleed_stacks + count)
-        return self.bleed_stacks - before
-
-    def consume_bleed_stacks(self) -> int:
-        stacks = self.bleed_stacks
-        self.bleed_stacks = 0
-        return stacks
-
-    def add_thuy_mark_stack(self, count: int = 1) -> int:
-        """Add Nhược Thủy marks, clamped by the meta's stack cap. Returns gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffNhuocThuyAn")
-        before = self.thuy_mark_stacks
-        self.thuy_mark_stacks = min(cap, self.thuy_mark_stacks + count)
-        return self.thuy_mark_stacks - before
-
-    def consume_thuy_mark_stacks(self) -> int:
-        """Strip all Nhược Thủy marks and return how many were consumed."""
-        stacks = self.thuy_mark_stacks
-        self.thuy_mark_stacks = 0
-        return stacks
-
-    def add_cuu_khuc_stack(self, count: int = 1) -> int:
-        """Add Cửu Khúc marks, clamped by the meta's stack cap. Returns gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffCuuKhuc")
-        before = self.cuu_khuc_stacks
-        self.cuu_khuc_stacks = min(cap, self.cuu_khuc_stacks + count)
-        return self.cuu_khuc_stacks - before
-
-    def consume_cuu_khuc_stacks(self) -> int:
-        """Strip all Cửu Khúc marks and clear the snapshots. Returns count."""
-        stacks = self.cuu_khuc_stacks
-        self.cuu_khuc_stacks = 0
-        self.cuu_khuc_atk_reduce_active = 0.0
-        self.cuu_khuc_res_shred_active = 0.0
-        return stacks
-
-    def add_poison_stack(self, count: int = 1) -> int:
-        """Add poison stacks, clamped by the meta's stack cap. Returns stacks gained."""
-        from src.game.engine.effects import effective_stack_cap
-        cap = effective_stack_cap(self, "DebuffDocTo")
-        before = self.poison_stacks
-        self.poison_stacks = min(cap, self.poison_stacks + count)
-        return self.poison_stacks - before
-
-    def consume_poison_stacks(self) -> int:
-        stacks = self.poison_stacks
-        self.poison_stacks = 0
-        return stacks
-
-    def add_mana_stack(self, count: int = 1) -> int:
-        before = self.mana_stacks
-        self.mana_stacks = min(self.mana_stack_cap, self.mana_stacks + count)
-        return self.mana_stacks - before
-
-    def consume_mana_stacks(self) -> int:
-        stacks = self.mana_stacks
-        self.mana_stacks = 0
-        return stacks
+        Replaces a fleet of identical ``add_<kind>_stack`` helpers.
+        """
+        field = f"{kind}_stacks"
+        if not hasattr(self, field):
+            return 0
+        if kind == "mana":
+            cap = self.mana_stack_cap
+        else:
+            effect_key = _STACK_EFFECT_KEY.get(kind)
+            if effect_key is None:
+                return 0
+            from src.game.engine.effects import effective_stack_cap
+            cap = effective_stack_cap(self, effect_key)
+        before = int(getattr(self, field))
+        setattr(self, field, min(cap, before + count))
+        return int(getattr(self, field)) - before
 
     def shield_cap(self) -> int:
         """Maximum shield value this combatant can hold.
@@ -976,7 +1165,12 @@ class Combatant:
             spd (Quang Minh Tung Hoành Bộ). Effective spd folds in active
             ``spd_pct`` mods so the active buff (+20% spd) compounds the
             passive aura naturally.
-          * ``shield_max_pct``         — multiplicative on the base+flat sum
+          * ``shield_max_pct``         — multiplicative on the base+flat sum.
+            Reads the field plus any ``shield_max_pct`` contributed by active
+            effects. Skill-level ``passive`` blocks (Kim Chung Tráo etc.) are
+            folded into ``shield_max_pct`` at build time via
+            ``compute_skill_passive_stats`` so this read is the single source
+            of truth without a per-call skill_keys scan.
 
         Formula: ``(base + flat + per_spd × eff_spd) * (1 + max_pct)``.
         """
@@ -986,12 +1180,24 @@ class Combatant:
         effective_spd = max(1, int(round(self.spd * (1.0 + mods.get("spd_pct", 0.0)))))
         spd_flat = int(per_spd * effective_spd)
         flat_total = self.shield_max_base + self.shield_max_flat + spd_flat
-        return max(0, int(flat_total * (1.0 + self.shield_max_pct)))
+        total_pct = self.shield_max_pct + float(mods.get("shield_max_pct", 0.0))
+        return max(0, int(flat_total * (1.0 + total_pct)))
 
     def add_shield(self, amount: int) -> int:
-        """Add shield capped at shield_cap. Returns actual gained."""
+        """Add shield capped at shield_cap. Returns actual gained.
+
+        Effect-driven ``shield_taken_reduce`` (e.g. DebuffPhongNhanThuc)
+        reduces the incoming amount before clamping. Mirrors how
+        ``heal_taken_reduce`` is applied in ``_apply_heal``; capped at 90%
+        so stacked sources can't make shield gain strictly zero.
+        """
         if amount <= 0:
             return 0
+        # Lazy import to avoid cycle: effects → combatant.
+        from src.game.engine.effects import get_combat_modifiers
+        reduce = float(get_combat_modifiers(self).get("shield_taken_reduce", 0.0))
+        if reduce > 0:
+            amount = max(1, int(amount * (1.0 - min(0.90, reduce))))
         cap = self.shield_cap()
         before = self.shield
         self.shield = min(cap, self.shield + amount)
@@ -1025,6 +1231,14 @@ class Combatant:
         if overrides:
             existing = self.effect_overrides.get(effect, {})
             self.effect_overrides[effect] = _merge_effect_overrides(existing, overrides)
+        # Vô Tướng Phong refresh: each application resets the absorber pool
+        # to the cast's ``formless_charges`` value. Snowballed spd_pct
+        # growth in the override's stat_bonus is preserved by the merge
+        # (larger-magnitude wins) — recast adds charges without erasing
+        # accumulated spd from prior consumptions.
+        if effect == "BuffVoTuongPhong":
+            merged_ov = self.effect_overrides.get(effect) or overrides or {}
+            self.vo_tuong_phong_charges = int(merged_ov.get("formless_charges", 3))
 
     def tick_effects(self) -> list[str]:
         expired = [k for k, v in self.effects.items() if v <= 1]
@@ -1063,6 +1277,25 @@ class Combatant:
             self.cuu_khuc_stacks = 0
             self.cuu_khuc_atk_reduce_active = 0.0
             self.cuu_khuc_res_shred_active = 0.0
+        # Whirlwind altitude is bound to BuffPhuDao's lifetime — when the
+        # buff times out naturally, the charge dissipates with it.
+        if "BuffPhuDao" in expired:
+            self.phu_dao_altitude = 0
+        # Wind-Blade Erosion stacks die with the debuff.
+        if "DebuffPhongNhanThuc" in expired:
+            self.phong_nhan_thuc_stacks = 0
+        # Mountain-River Suppression Seal stacks die with the debuff.
+        if "DebuffTranSonHa" in expired:
+            self.tran_son_ha_stacks = 0
+        # Lôi Kiếp Ấn stacks die with the prison mark (cleanse, expire, or
+        # capstone Vạn Kiếp Phán consume — the latter clears via apply_effect
+        # remove before re-stamping for the next cycle).
+        if "DebuffLoiKiepAn" in expired:
+            self.loi_kiep_an_stacks = 0
+        # Vô Tướng Phong charges die with the buff (either by natural
+        # duration expiry here, or by charge-exhaustion in inflict_debuff).
+        if "BuffVoTuongPhong" in expired:
+            self.vo_tuong_phong_charges = 0
         return expired
 
     def tick_cooldowns(self) -> None:

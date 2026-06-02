@@ -56,7 +56,7 @@ STAT_LABELS: dict[str, str] = {
     "quang_max_resist_bonus": "Cap Kháng Quang",
     "am_max_resist_bonus":    "Cap Kháng Ám",
     # Energy Shield stats — see Combatant.shield_cap() for the formula.
-    "shield_max_base":   "Khiên Nền",
+    "shield_max_base":   "Khiên Gốc",
     "shield_max_flat":   "Khiên Tối Đa",
     "shield_max_pct":    "Khiên Tối Đa %",
     "shield_regen_flat": "Hồi Khiên",
@@ -118,6 +118,50 @@ _PCT_STATS = frozenset({
 })
 
 
+def merge_passive_dict(container: dict, passive: dict) -> None:
+    """Merge ``passive`` into ``container`` in place.
+
+    Numbers add, bools OR, nested dicts merge recursively (per-sub-key, same
+    rules). Lets any source — unique-item ``passive_bonus``, super-material
+    ``granted_passive``, skill JSON ``passive`` blocks — land its bonuses in
+    a shared stat dict that the denester in ``build_combat_stats`` then
+    flattens. The pattern was extracted from ``compute_equipment_stats`` so
+    skill-level passives and equipment passives share the merge math.
+    """
+    for stat, val in passive.items():
+        if isinstance(val, bool):
+            container[stat] = bool(container.get(stat)) or val
+        elif isinstance(val, dict):
+            existing = container.setdefault(stat, {})
+            if isinstance(existing, dict):
+                merge_passive_dict(existing, val)
+            else:
+                container[stat] = dict(val)
+        else:
+            container[stat] = container.get(stat, 0.0) + float(val)
+
+
+def compute_skill_passive_stats(skill_keys: list[str]) -> dict[str, float]:
+    """Sum every equipped skill's ``passive`` dict into a flat stat sheet.
+
+    Mirrors ``compute_equipment_stats`` shape so the result can be merged
+    directly into the equipment stat sheet before ``compute_combat_stats``
+    consumes it — the existing denest / cap / read pipeline then handles
+    skill passives identically to unique-item passives. Empty input or
+    skills without a ``passive`` block produce an empty dict.
+    """
+    from src.data.registry import registry
+    totals: dict[str, float] = {}
+    for skill_key in skill_keys or []:
+        data = registry.get_skill(skill_key)
+        if not data:
+            continue
+        passive = data.get("passive")
+        if passive:
+            merge_passive_dict(totals, passive)
+    return totals
+
+
 def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
     """Sum all stat bonuses from a player's equipped ItemInstances.
 
@@ -135,24 +179,6 @@ def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
     """
     from src.data.registry import registry
 
-    def _merge_passive(container: dict, passive: dict) -> None:
-        """Merge ``passive`` into ``container``. Numbers add, bools OR,
-        nested dicts merge recursively (per-sub-key, same rules). Lets a
-        unique JSON declare ``passive_bonus: { dot_dmg_bonus_by_kind:
-        { burn: 0.20 } }`` and have it land in ``totals`` as a nested dict
-        that the denester in build_combat_stats then flattens."""
-        for stat, val in passive.items():
-            if isinstance(val, bool):
-                container[stat] = bool(container.get(stat)) or val
-            elif isinstance(val, dict):
-                existing = container.setdefault(stat, {})
-                if isinstance(existing, dict):
-                    _merge_passive(existing, val)
-                else:
-                    container[stat] = dict(val)
-            else:
-                container[stat] = container.get(stat, 0.0) + float(val)
-
     totals: dict[str, float] = {}
     for inst in equipped:
         if inst.location != "equipped":
@@ -164,7 +190,7 @@ def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
         uniq_key = getattr(inst, "unique_key", None)
         if uniq_key:
             uniq_def = registry.get_unique(uniq_key) or {}
-            _merge_passive(totals, uniq_def.get("passive_bonus") or {})
+            merge_passive_dict(totals, uniq_def.get("passive_bonus") or {})
 
         # Super-material grants — numeric portions are already baked into
         # the item's ``computed_stats`` as ``type="super"`` affixes (forge.py),
@@ -180,7 +206,7 @@ def compute_equipment_stats(equipped: list["ItemInstance"]) -> dict[str, float]:
                 if isinstance(v, bool)
             }
             if bool_only:
-                _merge_passive(totals, bool_only)
+                merge_passive_dict(totals, bool_only)
     return totals
 
 

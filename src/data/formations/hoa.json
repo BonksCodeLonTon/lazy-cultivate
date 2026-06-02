@@ -44,11 +44,11 @@
       "attack_type": "magical",
       "dmg_scale": {
         "atk": 0.0,
-        "matk": 1.1
+        "matk": 1.65
       },
-      "mp_cost": 112,
+      "mp_cost": 37,
       "cooldown": 4,
-      "base_dmg": 875,
+      "base_dmg": 88,
       "effects": [
         "DebuffThieuDot",
         "DebuffDotChay"
@@ -90,17 +90,17 @@
       },
       "5": {
         "toa_hon_amp": {
-          "evasion_rating_pct": -0.10,
-          "mp_regen_pct": -0.10,
-          "hp_regen_pct": -0.10
+          "evasion_rating_pct": -0.1,
+          "mp_regen_pct": -0.1,
+          "hp_regen_pct": -0.1
         },
         "note": "Thịnh Vượng Tỏa Hồn (-32% mỗi chỉ số)"
       },
       "7": {
         "toa_hon_amp": {
-          "evasion_rating_pct": -0.10,
-          "mp_regen_pct": -0.10,
-          "hp_regen_pct": -0.10
+          "evasion_rating_pct": -0.1,
+          "mp_regen_pct": -0.1,
+          "hp_regen_pct": -0.1
         },
         "dmg_taken": {
           "hoa": 0.05
@@ -114,7 +114,7 @@
           "hp_regen_pct": -0.08
         },
         "dmg_taken": {
-          "hoa": 0.10
+          "hoa": 0.1
         },
         "note": "Tuyệt Đỉnh Xích Luyện Tỏa Hồn (-50% mỗi chỉ số; +15% sát thương Hỏa địch phải nhận)"
       }
@@ -138,8 +138,77 @@
       "effects": [
         "DebuffXichLuyenToaHon"
       ],
-      "reserved_mp_pct": 0.30,
+      "reserved_mp_pct": 0.3,
       "description_vi": "Trận pháp thụ động — không gây sát thương trực tiếp. Mỗi lượt phủ lên kẻ địch dấu **Xích Luyện Tỏa Hồn**: né tránh, tốc hồi linh lực, tốc hồi sinh lực đều sụt **10%** (giá trị cơ bản). Khảm ngọc cộng dồn % sụt giảm theo từng ngưỡng — tổng cộng **15% / 22% / 32% / 42% / 50%** ở mức 1/3/5/7/10 ngọc. Từ **7 ngọc** địch phải nhận thêm **+5% sát thương Hỏa**; **10 ngọc** nâng lên **+15% sát thương Hỏa phải nhận** (nhân vào sau bước trừ kháng nguyên tố). Chi phí duy trì: 30% MP trấn giữ khi kích hoạt trận."
+    }
+  },
+  {
+    "key": "CuuLongThanHoaTran",
+    "vi": "Cửu Long Thần Hỏa Trận",
+    "en": "Nine Dragon Divine Fire Formation",
+    "element": "hoa",
+    "base_stat_bonus": {
+      "hp_pct": 0.03,
+      "mp_pct": 0.05
+    },
+    "gem_threshold_bonuses": {
+      "3": {
+        "cuu_long": {
+          "dmg_pct_bonus": 0.1
+        },
+        "note": "Sơ Khai Cửu Long (+10% ST Hỏa Long)"
+      },
+      "5": {
+        "cuu_long": {
+          "crit_rating": 500
+        },
+        "note": "Kiên Cố Cửu Long (+500 Bạo Kích Hỏa Long)"
+      },
+      "7": {
+        "cuu_long": {
+          "stun_chance": 0.1
+        },
+        "note": "Thịnh Vượng Cửu Long (10% Choáng/đòn Hỏa Long)"
+      },
+      "9": {
+        "cuu_long": {
+          "finisher_pct": 2.0
+        },
+        "note": "Vô Song Cửu Long (Hết duyên: 200% tổng ST gây ra)"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmCuuLongThanHoa",
+      "vi": "Cửu Long Thần Hỏa Thức",
+      "en": "Nine Dragon Divine Fire Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "hoa",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 0,
+      "debuff_only": true,
+      "effects": [],
+      "summon_spec": {
+        "vi": "Cửu Long Hỏa",
+        "emoji": "🐉",
+        "element": "hoa",
+        "count": 9,
+        "limit": 9,
+        "turns": 6,
+        "dmg_pct_of_matk": 0.45,
+        "actor_overrides": "cuu_long",
+        "finisher_vi": "Cửu Long Tận Sát",
+        "finisher_emoji": "💥🐉",
+        "respect_target_res": true
+      },
+      "reserved_mp_pct": 0.25,
+      "description_vi": "Cửu Long Thần Hỏa Trận — triệu hồi **9 Hỏa Long** mỗi đòn đánh kẻ địch trong **6 lượt** (đa kích). Hỏa Long tự hồi sinh khi cả bầy tan biến. Khảm ngọc:\n• **3 ngọc**: +10% sát thương Hỏa Long.\n• **5 ngọc**: +500 Bạo Kích cho Hỏa Long.\n• **7 ngọc**: 10% Choáng cho mỗi đòn Hỏa Long.\n• **9 ngọc**: khi bầy rồng tan biến, gây 1 đòn bùng nổ bằng **200% tổng ST Hỏa Long đã gây ra** trong duyên trận.\nChi phí duy trì: 25% MP trấn giữ khi kích hoạt trận."
     }
   }
 ]

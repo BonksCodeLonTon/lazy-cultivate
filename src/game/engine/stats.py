@@ -44,6 +44,12 @@ class AttackStats:
     # chance via the same rating→pct curve (mirrors crit ↔ crit_res),
     # consumed in ``damage/evasion.check_evasion``.
     accuracy_rating: int = 0
+    # Per-element ATTACKER amp — applied at the elemental step (post-
+    # resistance, mirrors the defender-side ``damage_taken_by_element``).
+    # Lets a passive like Vạn Kiếm's Sword Heart amplify ONE element
+    # without touching the generic ``final_dmg_bonus`` pool. Stacks
+    # additively across sources.
+    element_dmg_amp: dict[str, float] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -58,3 +64,13 @@ class DefenseStats:
     # stat_bonus keys (see apply_elemental for the consumer). Stacks ADDITIVELY
     # across sources and is applied AFTER elemental resistance.
     damage_taken_by_element: dict[str, float] = field(default_factory=dict)
+    # Hộ Pháp armor-extension lane — when > 0, the physical defense formula
+    # ALSO mitigates non-physical hits, scaled by this pct (0.50 = half the
+    # armor DR applies to elemental; 1.0 = full armor DR applies). Stacks
+    # additively from active effects (e.g. BuffThoNguyenHoPhap) + permanent
+    # actor field (formation gem ladder). Read by ``apply_armor_to_elemental``
+    # in the damage pipeline. Capped via the same MAX_PHYS_REDUCTION used by
+    # apply_physical_defense, so the lane has identical diminishing returns
+    # and never exceeds the physical cap. Separate from elemental resistance
+    # — both apply multiplicatively when the formation is active.
+    def_applies_to_elemental_pct: float = 0.0

@@ -61,6 +61,11 @@ class TestCleansableDefaults:
     _UNCLEANSABLE_DEBUFF_EXCEPTIONS = {
         EffectKey.DEBUFF_TAN_DIET.value,  # Tận Diệt — irreversible HP-max shrink
         EffectKey.DEBUFF_THIEN_MA_POST.value,  # Thiên Ma Hậu Di Chứng — locked into the auto-cycle, can't be cleansed away
+        EffectKey.DEBUFF_NGHIEP_HOA_HONG_LIEN.value,  # Hồng Liên Nghiệp Hỏa — karmic mark, "không thể giải trừ" by design
+        EffectKey.DEBUFF_PHONG_DO_MA.value,  # Phong Đô Ma Khí — formation aura, lives as long as the trận is active
+        EffectKey.DEBUFF_XICH_LUYEN_TOA_HON.value,  # Xích Luyện Tỏa Hồn — formation aura, lives as long as the trận is active
+        EffectKey.DEBUFF_THO_NGUYEN_TRAN_MA.value,  # Thổ Nguyên Trấn Ma — Hộ Pháp Trận aura, lives as long as the trận is active
+        "DebuffKimPheGiap",  # Phệ Giáp — armor devoured by Kim Phệ Giáp, "không thể giải" structural -25% DEF for the fight
     }
 
     def test_every_effect_has_correct_default_for_its_kind(self):

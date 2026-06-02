@@ -46,12 +46,12 @@
       "element": "am",
       "attack_type": "physical",
       "dmg_scale": {
-        "atk": 0.85,
+        "atk": 1.275,
         "matk": 0.0
       },
       "mp_cost": 0,
       "cooldown": 0,
-      "base_dmg": 820,
+      "base_dmg": 82,
       "effects": [],
       "per_hit_followup": true,
       "description_vi": "Trận pháp thụ động — không thể phát chiêu chủ động. Mỗi đòn đánh của chủ trận lập tức kích hoạt một đòn ám sát theo. Kỹ năng đa kích (ví dụ Thất Tình Đoạn Tuyệt 7 đòn) sẽ kích hoạt 7 lần bồi sát. Chi phí duy trì: 18% MP trấn giữ khi kích hoạt trận.",

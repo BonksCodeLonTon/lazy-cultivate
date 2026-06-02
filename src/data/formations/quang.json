@@ -6,7 +6,7 @@
     "element": "quang",
     "base_stat_bonus": {
       "element_dmg_bonus": {
-        "quang": 0.20
+        "quang": 0.2
       }
     },
     "gem_threshold_bonuses": {
@@ -20,9 +20,9 @@
       },
       "3": {
         "res_all": 0.04,
-        "heal_pct": 0.10,
+        "heal_pct": 0.1,
         "element_dmg_bonus": {
-          "quang": 0.10
+          "quang": 0.1
         },
         "element_pen": {
           "quang": 0.05
@@ -39,7 +39,7 @@
       },
       "7": {
         "res_all": 0.08,
-        "heal_pct": 0.20,
+        "heal_pct": 0.2,
         "element_dmg_bonus": {
           "quang": 0.25
         },
@@ -52,7 +52,7 @@
         "res_all": 0.12,
         "heal_pct": 0.25,
         "element_dmg_bonus": {
-          "quang": 0.30
+          "quang": 0.3
         },
         "element_pen": {
           "quang": 0.15
@@ -86,9 +86,10 @@
         "aura_buff": {
           "key": "BuffDaiThienSuAura",
           "duration": 1
-        }
+        },
+        "respect_target_res": true
       },
-      "reserved_mp_pct": 0.10,
+      "reserved_mp_pct": 0.1,
       "description_vi": "Thiên Giới Thẩm Phán — triệu hồi **Đại Thiên Sứ** (giới hạn 1, **2 ở ngọc Cấp 10**) trong 5 lượt, mỗi lượt giáng đòn = 3.0 ATK của chủ nhân và tự nhân với toàn bộ +Quang sát thương từ trận pháp. Khi Đại Thiên Sứ hiện diện, chủ nhân nhận hào quang **+10% kháng tất cả** và **+10% hiệu ứng hồi máu**. Ngọc khảm cao càng nhiều cấp, sát thương Đại Thiên Sứ càng tăng (qua bonus Quang) và chủ nhân càng nhận thêm Kháng / Hồi Máu / Xuyên Quang."
     }
   }

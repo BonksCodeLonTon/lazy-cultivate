@@ -42,12 +42,12 @@
       "element": "kim",
       "attack_type": "physical",
       "dmg_scale": {
-        "atk": 1.0,
+        "atk": 1.5,
         "matk": 0.0
       },
-      "mp_cost": 52,
+      "mp_cost": 17,
       "cooldown": 3,
-      "base_dmg": 345,
+      "base_dmg": 34,
       "effects": [
         "DebuffPhaGiap"
       ],
@@ -59,6 +59,250 @@
         }
       },
       "reserved_mp_pct": 0.06
+    }
+  },
+  {
+    "key": "CanhKimSatTran",
+    "vi": "Canh Kim Sát Trận",
+    "en": "Geng Metal Killing Formation",
+    "element": "kim",
+    "base_stat_bonus": {
+      "atk": 30,
+      "bleed_stack_cap_bonus": 0
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "atk": 20,
+        "note": "Sơ Khai Canh Kim"
+      },
+      "3": {
+        "atk": 50,
+        "element_pen": {
+          "kim": 0.03
+        },
+        "note": "Kiên Cố Canh Kim"
+      },
+      "5": {
+        "atk": 100,
+        "element_pen": {
+          "kim": 0.06
+        },
+        "note": "Thịnh Vượng Canh Kim"
+      },
+      "7": {
+        "atk": 180,
+        "element_pen": {
+          "kim": 0.1
+        },
+        "note": "Vô Song Canh Kim"
+      },
+      "10": {
+        "atk": 350,
+        "element_pen": {
+          "kim": 0.15
+        },
+        "note": "Tuyệt Đỉnh Canh Kim"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmCanhKimSatTran",
+      "vi": "Canh Kim Sát Trận Thức",
+      "en": "Geng Metal Killing Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "kim",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 0.75,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 40,
+      "passive_stack_on_element_hit": {
+        "stack": "bleed",
+        "element": "kim",
+        "chance": 1.0
+      },
+      "consume_target_bleed_on_cast": {
+        "dmg_pct_of_atk_per_stack": 1.5,
+        "element_pen_per_stack": 0.05
+      },
+      "effects": [
+        "DebuffCanhKimSatKhi"
+      ],
+      "effect_overrides": {
+        "DebuffCanhKimSatKhi": {
+          "duration": 3,
+          "stat_bonus": {
+            "hp_regen_pct": -0.2,
+            "mp_regen_pct": -0.2,
+            "shield_regen_pct": -0.2
+          }
+        }
+      },
+      "reserved_mp_pct": 0.15,
+      "description_vi": "Canh Kim Sát Trận — **Bị động**: mỗi đòn niệm hệ Kim chồng 1 tầng Chảy Máu lên địch (tối đa 5 tầng). **Chủ động (mỗi lượt khi kích hoạt)**: niệm thức Canh Kim — nếu địch đang Chảy Máu, **nuốt toàn bộ tầng**: cộng **+150% ATK/tầng** vào ST gốc và **+5% Xuyên Kim/tầng** cho đòn này, đồng thời áp **Canh Kim Sát Khí** (−20% Hồi HP/MP/Khiên, 3 lượt). Chi phí trấn giữ: 15% MP khi kích hoạt trận."
+    }
+  },
+  {
+    "key": "ThatSatKiemTran",
+    "vi": "Thất Sát Kiếm Trận",
+    "en": "Seven-Murder Sword Formation",
+    "element": "kim",
+    "base_stat_bonus": {
+      "atk": 40,
+      "crit_rating": 80
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "atk": 20,
+        "note": "Sơ Khai Thất Sát"
+      },
+      "3": {
+        "atk": 50,
+        "crit_rating": 120,
+        "note": "Kiên Cố Thất Sát"
+      },
+      "5": {
+        "atk": 100,
+        "crit_rating": 220,
+        "element_pen": {
+          "kim": 0.05
+        },
+        "note": "Thịnh Vượng Thất Sát"
+      },
+      "7": {
+        "atk": 180,
+        "crit_rating": 320,
+        "element_pen": {
+          "kim": 0.1
+        },
+        "note": "Vô Song Thất Sát"
+      },
+      "10": {
+        "atk": 320,
+        "crit_rating": 500,
+        "element_pen": {
+          "kim": 0.18
+        },
+        "final_dmg_bonus": 0.08,
+        "note": "Tuyệt Đỉnh Thất Sát"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmThatSatKiemTran",
+      "vi": "Thất Sát Kiếm Trận Thức",
+      "en": "Seven-Murder Sword Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "kim",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 1.2,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 50,
+      "passive_stack_on_element_hit": {
+        "stack": "sat_an",
+        "element": "kim",
+        "chance": 1.0
+      },
+      "consume_target_marks_for_execute": {
+        "marker_stack": "sat_an",
+        "threshold": 7,
+        "true_dmg_pct_missing_hp": 0.2
+      },
+      "effects": [],
+      "reserved_mp_pct": 0.16,
+      "description_vi": "Thất Sát Kiếm Trận — **Bị động**: mỗi đòn niệm hệ Kim in 1 **Sát Ấn** lên địch (tối đa 7 ấn, 6 lượt). **Chủ động (mỗi lượt khi kích hoạt)**: niệm thức Thất Sát — khi địch đủ **7 Sát Ấn**, đòn này thêm **Sát Thương Chuẩn = 20% HP đã mất** của địch và nuốt toàn bộ Sát Ấn. Dưới 7 ấn, đòn chỉ gây sát thương Kim thường. Chi phí trấn giữ: 16% MP khi kích hoạt trận."
+    }
+  },
+  {
+    "key": "VanKiemQuyTongTran",
+    "vi": "Vạn Kiếm Quy Tông Trận",
+    "en": "Ten Thousand Swords Return Formation",
+    "element": "kim",
+    "base_stat_bonus": {
+      "hp_pct": 0.02,
+      "mp_pct": 0.04
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "atk": 20,
+        "note": "Sơ Khai Vạn Kiếm"
+      },
+      "3": {
+        "atk": 50,
+        "note": "Kiên Cố Vạn Kiếm"
+      },
+      "5": {
+        "atk": 100,
+        "element_pen": {
+          "kim": 0.05
+        },
+        "note": "Thịnh Vượng Vạn Kiếm"
+      },
+      "7": {
+        "atk": 180,
+        "element_pen": {
+          "kim": 0.1
+        },
+        "note": "Vô Song Vạn Kiếm"
+      },
+      "10": {
+        "atk": 300,
+        "element_pen": {
+          "kim": 0.18
+        },
+        "final_dmg_bonus": 0.08,
+        "note": "Tuyệt Đỉnh Vạn Kiếm"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmVanKiemQuyTong",
+      "vi": "Vạn Kiếm Quy Tông Thức",
+      "en": "Ten Thousand Swords Return Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "kim",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 0,
+      "debuff_only": true,
+      "effects": [],
+      "summon_spec": {
+        "vi": "Vạn Kiếm",
+        "dmg_amp_field": "sword_summon_dmg_amp",
+        "emoji": "⚔️",
+        "element": "kim",
+        "count": 2,
+        "limit": 10,
+        "turns": 99,
+        "dmg_pct_of_atk": 0.8,
+        "respect_target_res": true,
+        "consume_spec": {
+          "at_count": 10,
+          "dmg_pct_of_atk": 6.0,
+          "element": "kim",
+          "vi": "Vạn Kiếm Quy Tông",
+          "emoji": "⚔️🌀",
+          "stack_field": "sword_heart_stacks",
+          "stack_gain": 5,
+          "stack_cap": 10,
+          "stack_vi": "Kiếm Tâm",
+          "respect_target_res": true
+        }
+      },
+      "reserved_mp_pct": 0.18,
+      "description_vi": "Vạn Kiếm Quy Tông Trận — mỗi lượt triệu hồi **2 thanh kiếm** (tối đa 10), mỗi kiếm đánh địch **80% ST vật lý** của chủ trận. Khi đủ 10 kiếm, tự động hợp nhất thành đòn **Vạn Kiếm Quy Tông** (600% ST vật lý hệ Kim) rồi cộng **5 tầng Kiếm Tâm** cho chủ trận (tối đa 10 tầng). Mỗi tầng Kiếm Tâm: **+5% ST hệ Kim** trên mọi đòn niệm. Chi phí duy trì: 18% MP trấn giữ khi kích hoạt trận."
     }
   }
 ]

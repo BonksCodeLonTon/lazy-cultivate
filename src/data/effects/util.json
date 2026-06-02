@@ -1,0 +1,20 @@
+[
+  {
+    "key": "HpRegen",
+    "vi": "Hồi Sinh Lực",
+    "en": "HP Regen",
+    "kind": "buff",
+    "description_vi": "Hồi tức thì 10% sinh lực tối đa khi sử dụng.",
+    "instant_heal_pct": 0.1,
+    "emoji": "💚"
+  },
+  {
+    "key": "MpRegen",
+    "vi": "Hồi Linh Lực",
+    "en": "MP Regen",
+    "kind": "buff",
+    "description_vi": "Hồi tức thì 10% linh lực tối đa khi sử dụng.",
+    "instant_mp_pct": 0.1,
+    "emoji": "💙"
+  }
+]

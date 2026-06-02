@@ -15,6 +15,8 @@ from src.db.connection import get_session
 from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
+from src.db.repositories.skill_mastery import add_combat_xp, get_mastery_map
+from src.utils.config import settings
 from src.game.constants.currencies import CURRENCY_CAP
 from src.game.constants.grades import Grade
 from src.game.constants.realms import QI_REALMS
@@ -515,6 +517,7 @@ async def _execute_dungeon(
     player_name = ""
     gem_count = 0
     gem_keys: list[str] = []
+    skill_mastery: dict[str, int] | None = None
 
     async with get_session() as session:
         repo = PlayerRepository(session)
@@ -552,6 +555,10 @@ async def _execute_dungeon(
         skill_keys = [s.skill_key for s in player.skills] if player.skills else ["SkillAtkKim1"]
         player_name = player.name
 
+        # Skill Mastery — flag-gated. OFF → no DB read, None passed → inert.
+        if settings.skill_mastery_enabled:
+            skill_mastery = await get_mastery_map(session, player.id)
+
     # Realm total for enemy scaling (computed from char to be always fresh)
     _realm_total = compute_realm_total(char)
 
@@ -567,6 +574,7 @@ async def _execute_dungeon(
     player_c = build_player_combatant(
         char, skill_keys, gem_count, equip_stats=equip_stats,
         gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+        skill_mastery=skill_mastery,
     )
     req_realm = dungeon.get("required_qi_realm", 0)
     # Use the player's strongest qualifying axis for grade scaling so a
@@ -763,6 +771,19 @@ async def _execute_dungeon(
                 await award_drops(all_loot, player.id, irepo, eqrepo)
 
             await repo.save(player)
+
+    # Skill Mastery XP — flag-gated, awarded once per full bí cảnh run using the
+    # usage counts accumulated across all waves on the shared player Combatant.
+    # Wrapped so a mastery-bookkeeping failure can never fail the dungeon run.
+    if settings.skill_mastery_enabled:
+        try:
+            async with get_session() as session:
+                await add_combat_xp(
+                    session, char.player_id, player_c.skill_usage_count,
+                    victory=dungeon_success,
+                )
+        except Exception as e:
+            log.exception("Skill mastery XP award failed (dungeon): %s", e)
 
     # In auto-mode the loop wrapper renders its own aggregated summary;
     # skip the per-run result view so the next iteration can take over.

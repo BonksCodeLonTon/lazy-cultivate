@@ -1,106 +1,5 @@
 [
   {
-    "key": "SkillAtkKim_R9",
-    "vi": "Tiên Kim Vô Cực Kiếm Đạo",
-    "en": "Immortal Metal Infinite Sword Dao",
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "kim",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.9
-    },
-    "mp_cost": 560,
-    "cooldown": 7,
-    "base_dmg": 5850,
-    "effects": [
-      "DebuffBaoMon",
-      "DebuffPhaGiap",
-      "DebuffCatDut",
-      "DebuffChayMau",
-      "DebuffXeRach"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.085
-        },
-        "duration": 4
-      },
-      "DebuffPhaGiap": {
-        "stat_bonus": {
-          "final_dmg_reduce": -0.255
-        },
-        "duration": 4
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.51
-        },
-        "duration": 4
-      },
-      "DebuffChayMau": {
-        "dot_pct": 0.0561,
-        "duration": 4
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.136
-        },
-        "duration": 3
-      }
-    }
-  },
-  {
-    "key": "SkillAtkKim_R7",
-    "vi": "Thần Kim Tuyệt Đạo",
-    "en": "Divine Metal Absolute Dao",
-    "scroll_grade": 1,
-    "category": "attack",
-    "element": "kim",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.0,
-      "matk": 0.4
-    },
-    "mp_cost": 254,
-    "cooldown": 5,
-    "base_dmg": 2450,
-    "effects": [
-      "DebuffBaoMon",
-      "DebuffPhaGiap",
-      "DebuffCatDut",
-      "DebuffChayMau"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.075
-        },
-        "duration": 4
-      },
-      "DebuffPhaGiap": {
-        "stat_bonus": {
-          "final_dmg_reduce": -0.225
-        },
-        "duration": 4
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.45
-        },
-        "duration": 4
-      },
-      "DebuffChayMau": {
-        "dot_pct": 0.0495,
-        "duration": 4
-      }
-    }
-  },
-  {
     "key": "SkillAtkKim_R8Basic",
     "vi": "Vạn Kim Trảm Phong",
     "en": "Myriad-Metal Wind-Cleaver",
@@ -109,12 +8,12 @@
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.0,
+      "atk": 1.67,
       "matk": 0.0
     },
-    "mp_cost": 272,
+    "mp_cost": 91,
     "cooldown": 3,
-    "base_dmg": 2400,
+    "base_dmg": 240,
     "effects": [
       "DebuffChayMau"
     ],
@@ -132,12 +31,12 @@
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.0,
+      "atk": 1.67,
       "matk": 0.0
     },
-    "mp_cost": 112,
+    "mp_cost": 37,
     "cooldown": 4,
-    "base_dmg": 900,
+    "base_dmg": 90,
     "effects": [],
     "formation_key": null
   },
@@ -153,7 +52,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 15,
+    "mp_cost": 5,
     "cooldown": 3,
     "base_dmg": 0,
     "effects": [
@@ -162,78 +61,88 @@
     "formation_key": null
   },
   {
-    "key": "SkillKimVoidEdge_R7",
-    "vi": "Hư Không Kiếm Phong",
-    "en": "Void Sword Edge",
-    "scroll_grade": 2,
-    "category": "attack",
+    "key": "SkillDefKimChungTrao",
+    "vi": "Kim Chung Tráo",
+    "en": "Golden Bell Hood",
+    "scroll_grade": 3,
+    "category": "defense",
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.2,
-      "matk": 0.2
+      "atk": 0.0,
+      "matk": 0.0
     },
-    "mp_cost": 276,
-    "cooldown": 4,
-    "base_dmg": 2520,
+    "mp_cost": 73,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "passive": {
+      "shield_max_pct": 0.12
+    },
     "effects": [
-      "DebuffPhaGiap",
-      "DebuffXeRach"
+      "BuffKimChungTrao"
     ],
     "formation_key": null,
-    "description_vi": "Kiếm phong xé hư không — phá giáp sâu, gây Xé Rách lan rộng.",
+    "description_vi": "Kim Chung Tráo ôm thân — **Bị động**: trang bị kỹ năng này tăng **+12% Hộ Thuẫn Tối Đa**. **Chủ động**: khai phát Kim Chung Tráo trong 4 lượt — mọi đòn tấn công vào thân **bị phản 30% sát thương** trở lại.",
     "effect_overrides": {
-      "DebuffPhaGiap": {
+      "BuffKimChungTrao": {
         "stat_bonus": {
-          "final_dmg_reduce": -0.22
+          "reflect_pct": 0.3
         },
         "duration": 4
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.13
-        },
-        "duration": 3
       }
     }
   },
   {
-    "key": "SkillKimDragonSlayer_R5",
-    "vi": "Trảm Long Kiếm Quyết",
-    "en": "Dragon-Slayer Sword Art",
-    "scroll_grade": 2,
-    "category": "attack",
+    "key": "SkillDefHoTheKiemCuong",
+    "vi": "Hộ Thể Kiếm Cương",
+    "en": "Sword-Steel Body Guard",
+    "scroll_grade": 4,
+    "category": "defense",
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.2,
+      "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 162,
-    "cooldown": 4,
-    "base_dmg": 1000,
+    "mp_cost": 120,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "passive": {
+      "element_dmg_bonus": {
+        "kim": 0.1
+      },
+      "sword_heart_per_stack_dr": 0.03
+    },
     "effects": [
-      "DebuffPhaGiap",
-      "DebuffChayMau",
-      "DebuffXeRach"
+      "BuffHoTheKiemCuong"
     ],
     "formation_key": null,
-    "description_vi": "Kiếm khí trảm long — phá giáp 22%, áp Chảy Máu và Xé Rách cùng lúc.",
+    "description_vi": "Kiếm cương hộ thể — **Bị động**: +10% Sát Thương hệ Kim; mỗi tầng **Kiếm Tâm** thêm **+3% Giảm Sát Thương** (tối đa +30% ở 10 tầng). **Chủ động**: khai phát Hộ Thể Kiếm Cương 4 lượt — mỗi lần chịu sát thương, triệu hồi **2 thanh Vạn Kiếm** (cùng loại với Vạn Kiếm Quy Tông) tự đánh địch. *Đòn bùng nổ Vạn Kiếm Quy Tông (10 kiếm) chỉ kích hoạt khi đồng thời trang bị Trận Vạn Kiếm Quy Tông.*",
     "effect_overrides": {
-      "DebuffPhaGiap": {
-        "stat_bonus": {
-          "final_dmg_reduce": -0.22
-        },
-        "duration": 4
-      },
-      "DebuffChayMau": {
-        "duration": 4
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.12
-        },
-        "duration": 3
+      "BuffHoTheKiemCuong": {
+        "duration": 4,
+        "summon_on_hit_taken": {
+          "vi": "Vạn Kiếm",
+          "dmg_amp_field": "sword_summon_dmg_amp",
+          "emoji": "⚔️",
+          "element": "kim",
+          "count": 2,
+          "limit": 10,
+          "turns": 99,
+          "dmg_pct_of_atk": 0.8,
+          "consume_spec": {
+            "at_count": 10,
+            "dmg_pct_of_atk": 6.0,
+            "element": "kim",
+            "vi": "Vạn Kiếm Quy Tông",
+            "emoji": "⚔️🌀",
+            "stack_field": "sword_heart_stacks",
+            "stack_gain": 5,
+            "stack_cap": 10,
+            "stack_vi": "Kiếm Tâm",
+            "requires_formation_skill": "SkillFrmVanKiemQuyTong"
+          }
+        }
       }
     }
   },
@@ -246,19 +155,20 @@
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 0.4,
+      "atk": 0.67,
       "matk": 0.0
     },
-    "mp_cost": 259,
+    "mp_cost": 86,
     "cooldown": 6,
-    "base_dmg": 1080,
+    "base_dmg": 108,
     "effects": [],
     "summon_spec": {
       "vi": "Kim Hồn Vệ",
       "emoji": "🗡️",
       "element": "kim",
       "dmg_pct_of_atk": 0.45,
-      "turns": 3
+      "turns": 3,
+      "respect_target_res": true
     },
     "formation_key": null,
     "description_vi": "Mỗi lần niệm còn triệu hồi một Kim Hồn Vệ tự đánh kèm 3 lượt, ST = 45% ATK chủ nhân."
@@ -272,12 +182,12 @@
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.1
+      "atk": 1.83,
+      "matk": 0.17
     },
-    "mp_cost": 74,
+    "mp_cost": 25,
     "cooldown": 2,
-    "base_dmg": 380,
+    "base_dmg": 38,
     "effects": [
       "DebuffChayMau",
       "DebuffChayMau"
@@ -305,7 +215,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 81,
+    "mp_cost": 27,
     "cooldown": 4,
     "base_dmg": 0,
     "effects": [
@@ -339,7 +249,7 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 115,
+    "mp_cost": 38,
     "cooldown": 5,
     "base_dmg": 0,
     "effects": [
@@ -363,45 +273,95 @@
     }
   },
   {
-    "key": "SkillDefKim_R7",
-    "vi": "Thần Kim Vô Ngã Kiếm Tâm",
-    "en": "Divine Metal Selfless Sword Heart",
-    "scroll_grade": 2,
-    "category": "defense",
+    "key": "SkillMovBachHoThiem",
+    "vi": "Bạch Hổ Thiểm",
+    "en": "White-Tiger Flash",
+    "scroll_grade": 3,
+    "category": "movement",
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 254,
-    "cooldown": 5,
+    "mp_cost": 73,
+    "cooldown": 6,
     "base_dmg": 0,
+    "passive": {
+      "evasion_rating": 500
+    },
     "effects": [
-      "BuffVoNgaKiemTam",
-      "BuffKiemY"
+      "BuffBachHoThiem"
     ],
     "formation_key": null,
+    "description_vi": "Bạch Hổ Thiểm — **Bị động**: +500 Né Tránh. **Chủ động**: trong 4 lượt, thêm +500 Né Tránh (tổng +1000); mỗi lần né được đòn tấn công, giáng lên kẻ tấn công **Suy Khí (−10% ATK, 3 lượt)** và **Pháp Nhược (−10% MATK, 3 lượt)**.",
     "effect_overrides": {
-      "BuffVoNgaKiemTam": {
+      "BuffBachHoThiem": {
+        "duration": 4,
         "stat_bonus": {
-          "final_dmg_bonus": 0.6
+          "evasion_rating": 500
         },
-        "duration": 4
-      },
-      "BuffKiemY": {
-        "stat_bonus": {
-          "final_dmg_bonus": 0.375
-        },
-        "duration": 5
+        "on_evade_debuffs": [
+          {
+            "key": "DebuffSuyKhi",
+            "duration": 3,
+            "overrides": {
+              "stat_bonus": {
+                "atk_pct": -0.1
+              }
+            }
+          },
+          {
+            "key": "DebuffPhapNhuoc",
+            "duration": 3,
+            "overrides": {
+              "stat_bonus": {
+                "matk_pct": -0.1
+              }
+            }
+          }
+        ]
       }
     }
   },
   {
-    "key": "SkillPasKim_R6",
-    "vi": "Chân Kim Ý Cảnh",
-    "en": "True Metal Intent Realm",
-    "scroll_grade": 2,
+    "key": "SkillMovVanLyTruyPhong",
+    "vi": "Vạn Lý Truy Phong",
+    "en": "Ten-Thousand-Mile Wind-Chase",
+    "scroll_grade": 3,
+    "category": "movement",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 60,
+    "cooldown": 5,
+    "base_dmg": 0,
+    "passive": {
+      "spd_pct": 0.2
+    },
+    "effects": [
+      "BuffVanLyTruyPhong"
+    ],
+    "formation_key": null,
+    "description_vi": "Vạn Lý Truy Phong — **Bị động**: +20% Tốc Độ. **Chủ động**: trong 4 lượt, mỗi 1 điểm Tốc Độ vượt hơn địch cộng **+20 Chính Xác** và **+10 Bạo Kích** trên mọi đòn niệm (gap được tính sau khi đã cộng cả +20% bị động).",
+    "effect_overrides": {
+      "BuffVanLyTruyPhong": {
+        "duration": 4,
+        "stat_bonus": {
+          "accuracy_rating_per_spd_diff": 20,
+          "crit_rating_per_spd_diff": 10
+        }
+      }
+    }
+  },
+  {
+    "key": "SkillPasKiemTamThongMinh",
+    "vi": "Kiếm Tâm Thông Minh",
+    "en": "Sword Heart Wisdom",
+    "scroll_grade": 4,
     "category": "passive",
     "element": "kim",
     "attack_type": "physical",
@@ -409,113 +369,16 @@
       "atk": 0.0,
       "matk": 0.0
     },
-    "mp_cost": 172,
-    "cooldown": 8,
+    "mp_cost": 0,
+    "cooldown": 0,
     "base_dmg": 0,
-    "effects": [
-      "BuffKiemKhi",
-      "BuffLietDiem"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "BuffKiemKhi": {
-        "stat_bonus": {
-          "final_dmg_bonus": 0.21,
-          "crit_rating": 210
-        }
-      },
-      "BuffLietDiem": {
-        "stat_bonus": {
-          "final_dmg_reduce": 0.14
-        }
-      }
-    }
-  },
-  {
-    "key": "SkillAtkKim_R8",
-    "vi": "Thánh Kim Vô Thượng Kiếm",
-    "en": "Saint Metal Supreme Sword",
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "kim",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.1,
-      "matk": 0.6
+    "passive": {
+      "sword_summon_dmg_amp": 0.4,
+      "accuracy_rating": 1000
     },
-    "mp_cost": 362,
-    "cooldown": 6,
-    "base_dmg": 3680,
-    "effects": [
-      "DebuffBaoMon",
-      "DebuffPhaGiap",
-      "DebuffCatDut",
-      "DebuffChayMau"
-    ],
+    "effects": [],
     "formation_key": null,
-    "effect_overrides": {
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.08
-        },
-        "duration": 4
-      },
-      "DebuffPhaGiap": {
-        "stat_bonus": {
-          "final_dmg_reduce": -0.24
-        },
-        "duration": 4
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.48
-        },
-        "duration": 4
-      },
-      "DebuffChayMau": {
-        "dot_pct": 0.0528,
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillAtkKim_R6",
-    "vi": "Chân Kim Phá Hồn Kiếm",
-    "en": "True Metal Soul Cleave",
-    "scroll_grade": 3,
-    "category": "attack",
-    "element": "kim",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.2,
-      "matk": 0.0
-    },
-    "mp_cost": 167,
-    "cooldown": 4,
-    "base_dmg": 1500,
-    "effects": [
-      "DebuffBaoMon",
-      "DebuffPhaGiap",
-      "DebuffCatDut"
-    ],
-    "formation_key": null,
-    "effect_overrides": {
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.07
-        }
-      },
-      "DebuffPhaGiap": {
-        "stat_bonus": {
-          "final_dmg_reduce": -0.21
-        }
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.42
-        }
-      }
-    }
+    "description_vi": "Kiếm Tâm Thông Minh — **Bị động (luôn kích hoạt khi trang bị)**: mỗi thanh **Vạn Kiếm** (cùng loại với Vạn Kiếm Quy Tông) tăng **+40% Sát Thương ATK** trên đòn đánh thường và đòn bùng nổ Vạn Kiếm Quy Tông; bản thân được **+1000 Chỉ Số Chính Xác**."
   },
   {
     "key": "SkillKimTripleStrike",
@@ -526,12 +389,12 @@
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 0.55,
+      "atk": 0.92,
       "matk": 0.0
     },
-    "mp_cost": 128,
+    "mp_cost": 43,
     "cooldown": 4,
-    "base_dmg": 360,
+    "base_dmg": 36,
     "effects": [
       "DebuffChayMau"
     ],
@@ -543,184 +406,125 @@
     "description_vi": "Niệm 1 chiêu — kiếm khí 3 lần trảm tiếp nhau, mỗi đòn có thể bạo và áp Chảy Máu độc lập."
   },
   {
-    "key": "SkillKimEdgeStorm_R3",
-    "vi": "Kim Đao Phong Bão",
-    "en": "Metal-Blade Storm",
+    "key": "SkillKimBachHoKhieuThien",
+    "vi": "Bạch Hổ Khiếu Thiên",
+    "en": "White Tiger Roars at Heaven",
     "scroll_grade": 3,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 1.15,
+      "atk": 2.0,
       "matk": 0.0
     },
-    "mp_cost": 52,
-    "cooldown": 3,
-    "base_dmg": 270,
+    "mp_cost": 80,
+    "cooldown": 5,
+    "base_dmg": 180,
+    "bonus_dmg_per_target_hp_lost_pct": 0.05,
+    "final_dmg_bonus_per_target_hp_lost_bucket": {
+      "bucket": 0.05,
+      "per_bucket": 0.02,
+      "max_bonus": 0.2
+    },
     "effects": [
-      "DebuffChayMau"
+      "DebuffSoHai"
     ],
     "effect_chances": {
-      "DebuffChayMau": 0.45
+      "DebuffSoHai": 1.0
     },
-    "formation_key": null
+    "formation_key": null,
+    "description_vi": "Tiếng gầm Bạch Hổ chấn động trời cao — áp **Sợ Hãi** (−15% ATK, −15% MATK, 20% đứng hình mỗi lượt, 3 lượt). Sát thương cộng thêm 5% HP đã mất của địch, đồng thời +2% Sát Thương Cuối mỗi 5% HP địch đã mất (tối đa +20%).",
+    "effect_overrides": {
+      "DebuffSoHai": {
+        "stat_bonus": {
+          "atk_pct": -0.15,
+          "matk_pct": -0.15
+        },
+        "duration": 3
+      }
+    }
   },
   {
-    "key": "SkillKimSevenSwords_R9",
-    "vi": "Kim Cương Thất Tinh Trảm",
-    "en": "Diamond Seven-Star Cleave",
-    "scroll_grade": 4,
+    "key": "SkillKimLietKimPhaSon",
+    "vi": "Liệt Kim Phá Sơn",
+    "en": "Raging Metal Mountain-Breaker",
+    "scroll_grade": 3,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
-      "atk": 0.7,
+      "atk": 2.33,
       "matk": 0.0
     },
-    "mp_cost": 560,
-    "cooldown": 7,
-    "base_dmg": 3240,
+    "mp_cost": 113,
+    "cooldown": 5,
+    "base_dmg": 340,
     "effects": [
-      "DebuffChayMau",
-      "DebuffXeRach"
+      "DebuffKimXuyenThau"
     ],
     "effect_chances": {
-      "DebuffChayMau": 0.6,
-      "DebuffXeRach": 0.5
+      "DebuffKimXuyenThau": 1.0
     },
-    "hit_count": 7,
     "formation_key": null,
-    "description_vi": "Đỉnh cấp Kim — niệm 1 chiêu, kiếm khí thất tinh chém 7 đòn liên tiếp, mỗi đòn riêng có thể bạo + áp Chảy Máu / Xé Rách."
+    "description_vi": "Liệt Kim chấn động sơn hà — bổ một đòn cực mạnh, áp **Kim Xuyên Thấu** (−20% Kháng Kim, 3 lượt).",
+    "effect_overrides": {
+      "DebuffKimXuyenThau": {
+        "stat_bonus": {
+          "res_kim": -0.2
+        },
+        "duration": 3
+      }
+    }
   },
   {
-    "key": "SkillKimBloodbath_R9",
-    "vi": "Huyết Đạo Vô Song",
-    "en": "Peerless Blood Dao",
-    "scroll_grade": 4,
+    "key": "SkillKimThaiAtKimCanh",
+    "vi": "Thái Ất Kim Canh",
+    "en": "Taiyi Golden Lance",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.83
+    },
+    "mp_cost": 93,
+    "cooldown": 5,
+    "base_dmg": 200,
+    "base_dmg_caster_scaling": {
+      "spd": 5,
+      "evasion_rating": 0.5,
+      "element_dmg_bonus_pct": {
+        "element": "kim",
+        "per_pct": 3.75
+      }
+    },
+    "effects": [],
+    "formation_key": null,
+    "description_vi": "Thái Ất Kim Canh giáng thế — chiêu pháp thuật hệ Kim theo lực MATK. **ST gốc tăng**: +5/điểm Tốc Độ, +2/điểm Né Tránh, +15/1% Tăng ST Kim (chỉ tính của bản thân)."
+  },
+  {
+    "key": "SkillKimPheGiap",
+    "vi": "Kim Phệ Giáp",
+    "en": "Metal-Devouring Carapace",
+    "scroll_grade": 3,
     "category": "attack",
     "element": "kim",
     "attack_type": "physical",
     "dmg_scale": {
       "atk": 1.4,
-      "matk": 0.2
+      "matk": 0.0
     },
-    "mp_cost": 560,
+    "mp_cost": 150,
     "cooldown": 6,
-    "base_dmg": 6300,
-    "true_dmg_pct": 0.18,
+    "base_dmg": 300,
+    "bonus_dmg_per_target_def": 4.0,
+    "bonus_dmg_per_target_shield_pct": 0.20,
+    "bonus_dmg_cap": 4500,
     "effects": [
-      "DebuffChayMau",
-      "DebuffChayMau",
-      "DebuffChayMau",
-      "DebuffPhaGiap",
-      "DebuffCatDut"
-    ],
-    "effect_chances": {
-      "DebuffChayMau": 1.0,
-      "DebuffPhaGiap": 1.0,
-      "DebuffCatDut": 0.8
-    },
-    "formation_key": null,
-    "description_vi": "Đỉnh cao Kim Đạo — chồng 3 tầng Chảy Máu và gây thêm 18% Sát Thương Chuẩn (tính theo sát thương đòn đánh), cắt đứt linh khí ngăn hồi phục.",
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0561,
-        "duration": 4
-      },
-      "DebuffPhaGiap": {
-        "stat_bonus": {
-          "final_dmg_reduce": -0.255
-        },
-        "duration": 4
-      },
-      "DebuffCatDut": {
-        "stat_bonus": {
-          "hp_regen_pct": -0.51
-        },
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillKimEternal_R9",
-    "vi": "Vĩnh Hằng Kim Quang",
-    "en": "Eternal Golden Light",
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "kim",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.2,
-      "matk": 0.4
-    },
-    "mp_cost": 600,
-    "cooldown": 7,
-    "base_dmg": 6300,
-    "true_dmg_pct": 0.07,
-    "effects": [
-      "DebuffPhaGiap",
-      "DebuffChayMau",
-      "DebuffXeRach",
-      "DebuffBaoMon"
+      "DebuffKimPheGiap"
     ],
     "formation_key": null,
-    "description_vi": "Vĩnh hằng kim quang — +7% Sát Thương Chuẩn (tính theo sát thương đòn đánh), kết hợp 4 debuff Kim đỉnh cao.",
-    "effect_overrides": {
-      "DebuffPhaGiap": {
-        "stat_bonus": {
-          "final_dmg_reduce": -0.26
-        },
-        "duration": 4
-      },
-      "DebuffChayMau": {
-        "duration": 4
-      },
-      "DebuffXeRach": {
-        "stat_bonus": {
-          "res_all": -0.135
-        },
-        "duration": 3
-      },
-      "DebuffBaoMon": {
-        "stat_bonus": {
-          "res_all": -0.085
-        },
-        "duration": 4
-      }
-    }
-  },
-  {
-    "key": "SkillKimExecute_R7",
-    "vi": "Xuất Huyết Vô Ảnh",
-    "en": "Bloodless Execution",
-    "scroll_grade": 4,
-    "category": "attack",
-    "element": "kim",
-    "attack_type": "physical",
-    "dmg_scale": {
-      "atk": 1.3,
-      "matk": 0.2
-    },
-    "mp_cost": 276,
-    "cooldown": 4,
-    "base_dmg": 2380,
-    "true_dmg_pct": 0.1,
-    "effects": [
-      "DebuffChayMau",
-      "DebuffChayMau",
-      "DebuffPhaGiap",
-      "DebuffBaoMon"
-    ],
-    "effect_chances": {
-      "DebuffChayMau": 1.0
-    },
-    "formation_key": null,
-    "description_vi": "Đòn chém chuyên khóa mục tiêu chảy máu — chồng 2 tầng, gây thêm 10% Sát Thương Chuẩn (tính theo sát thương đòn đánh).",
-    "effect_overrides": {
-      "DebuffChayMau": {
-        "dot_pct": 0.0495,
-        "duration": 4
-      }
-    }
+    "description_vi": "Nuốt giáp địch: +4 ST nền mỗi điểm DEF + 20% Khiên hiện có của địch (tối đa +4500). In Phệ Giáp: giảm 25% DEF địch tới hết trận."
   }
 ]

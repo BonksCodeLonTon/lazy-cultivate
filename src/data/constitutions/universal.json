@@ -531,7 +531,7 @@
       "merit": 0,
       "stones": 0
     },
-    "passive_description_vi": "Hỗn độn chi thể, bao hàm Nguyên thủy đại đạo. Passive nền của các thần thể khác được khuếch đại 1.25 lần (không áp dụng cho hệ số sát thương/hồi chiêu đã nhân kép), kèm chỉ số nền áp chế vạn đạo. Yêu cầu giác ngộ toàn bộ đạo ti.",
+    "passive_description_vi": "Hỗn độn chi thể, bao hàm Nguyên thủy đại đạo. Các hiệu ứng tăng cường của các thần thể khác được khuếch đại 1.25 lần (không áp dụng cho hệ số sát thương/hồi chiêu đã nhân kép), kèm chỉ số áp chế vạn đạo. Yêu cầu giác ngộ toàn bộ đạo ti.",
     "stat_bonuses": {
       "all_passives_multiplier": 1.25,
       "hp_pct": 0.3,
@@ -1014,7 +1014,7 @@
       "merit": 0,
       "stones": 120000
     },
-    "passive_description_vi": "**Cửu Trọng Thiên** — Thánh Thể viên mãn,  trở về hình thái của thượng cổ thánh nhân. **Hào Quang Củng Cố (Fortify Aura):** mỗi lượt tự động tích lũy 1 tầng Củng Cố — mỗi tầng cộng thêm ST cuối + Giảm ST ( tối đa 10 tầng); khi nhận đòn không phải DoT, lập tức tạo **Phòng Ngự Hậu-Thương** — cộng thêm Giảm ST trong 1 lượt kế tiếp. Cộng với nền Giảm ST khổng lồ — sát thương vào người gần như bị triệt tiêu. Tiến hóa cuối cùng từ Bát Trọng Thiên.",
+    "passive_description_vi": "**Cửu Trọng Thiên** — Thánh Thể viên mãn,  trở về hình thái của thượng cổ thánh nhân. **Hào Quang Củng Cố (Fortify Aura):** mỗi lượt tự động tích lũy 1 tầng Củng Cố — mỗi tầng cộng thêm ST cuối + Giảm ST ( tối đa 10 tầng); khi nhận đòn không phải DoT, lập tức tạo **Phòng Ngự Hậu-Thương** — cộng thêm Giảm ST trong 1 lượt kế tiếp. Cộng với Giảm ST khổng lồ — sát thương vào người gần như bị triệt tiêu. Tiến hóa cuối cùng từ Bát Trọng Thiên.",
     "stat_bonuses": {
       "hp_pct": 0.45,
       "mp_pct": 0.35,

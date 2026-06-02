@@ -43,7 +43,7 @@ def burst_mana_stacks(
     session: "CombatSession", actor: Combatant, target: Combatant, skill_data: dict
 ) -> None:
     """Consume all mana stacks → thủy burst damage scaled by stacks × mp_max."""
-    stacks = actor.consume_mana_stacks()
+    stacks = actor.consume_stacks("mana")
     if stacks <= 0:
         return
     per_stack_mult = float(skill_data.get("burst_per_mana_stack_mult", 0.12))

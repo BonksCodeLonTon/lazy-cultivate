@@ -16,6 +16,7 @@ from src.db.models.world_boss import WorldBossInstance
 from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
+from src.db.repositories.skill_mastery import add_combat_xp, get_mastery_map
 from src.db.repositories.world_boss_repo import WorldBossRepository
 from src.game.constants.grades import Grade, GRADE_LABELS
 from src.game.constants.realms import QI_REALMS
@@ -30,6 +31,7 @@ from src.game.systems.world_boss import (
     compute_rewards, flag_rewards_distributed, format_leaderboard,
     grant_loot_from_tables, scheduler_tick,
 )
+from src.utils.config import settings
 from src.utils.embed_builder import base_embed, battle_embed, error_embed, success_embed
 from src.utils.discord_safe import safe_defer
 
@@ -220,9 +222,15 @@ async def _execute_boss_attack_inner(
 
         realm_total = compute_realm_total(char)
 
+        # Skill Mastery — flag-gated. OFF → no DB read, None passed → inert.
+        skill_mastery: dict[str, int] | None = None
+        if settings.skill_mastery_enabled:
+            skill_mastery = await get_mastery_map(session, player.id)
+
         player_c = build_player_combatant(
             char, skill_keys, len(gem_keys), equip_stats=equip_stats,
             gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+            skill_mastery=skill_mastery,
         )
         boss_c = build_world_boss_combatant(boss_data, instance.hp_current, realm_total)
 
@@ -347,6 +355,19 @@ async def _execute_boss_attack_inner(
             player.mp_current = cs.mp_max
             player.shield_current = cs.shield_max
             await prepo.save(player)
+
+            # Skill Mastery XP — flag-gated, awarded per world-boss attack on the
+            # usage counts from this engagement. Surviving the round limit (the
+            # expected "chip away" outcome) counts as a win; dying does not.
+            # Wrapped so a mastery-bookkeeping failure can't fail the attack.
+            if settings.skill_mastery_enabled:
+                try:
+                    await add_combat_xp(
+                        session, player.id, player_c.skill_usage_count,
+                        victory=combat_result.reason != CombatEndReason.PLAYER_DEAD,
+                    )
+                except Exception as e:
+                    log.exception("Skill mastery XP award failed (world boss): %s", e)
 
     # Build post-attack embed — report damage actually credited to the shared pool.
     # Uses ``instance_hp_max`` (the DB row's spawn-time hp_max) so the displayed

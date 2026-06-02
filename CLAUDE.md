@@ -42,36 +42,41 @@ Config is loaded via `src/utils/config.py` (Pydantic `BaseSettings`); `settings.
 main.py                     Entry point: init DB, start bot
 src/bot/client.py           CultivationBot — loads cogs, syncs slash commands
 src/bot/cogs/               One cog per feature (Discord layer only, no game logic)
-                              cultivation, status, combat, skills, equipment, dungeon,
-                              world_boss, formation, inventory, shop, trade, direct_trade,
-                              forge, alchemy, linh_can, constitution, admin
+                              cultivation, status, skills, equipment, dungeon, world_boss,
+                              formation, inventory, shop, trade, direct_trade, forge, alchemy,
+                              linh_can, constitution, arena, handbook, recycle, admin
+                              (combat slash commands live in cogs/skills.py / cogs/dungeon.py /
+                               cogs/world_boss.py / cogs/arena.py — there is no combat.py cog)
 src/game/
   constants/                Immutable game rules: realms, elements, grades, currencies, linh_can
   models/                   Pure Python dataclasses (no DB) — Character, Enemy, Item, Skill
   systems/                  Core game logic — cultivation, cultivation_service, combatant,
                               character_stats, status, skills, formation, inventory,
                               economy, trade, dungeon, world_boss, alchemy, forge, chest,
-                              tribulation, linh_can, linh_can_environment, the_chat
-    combat/                 Combat subpackage — encounter (orchestrator), session, procs,
-                              casting, bursts, builders, helpers
+                              tribulation, linh_can, linh_can_environment, the_chat,
+                              merit, pill_buffs, recycle, toxicity
+    combat/                 Combat subpackage — session (CombatSession orchestrator), phase,
+                              procs, casting, bursts, builders, helpers, skill_extras
   engine/                   Low-level computation
-    damage/                 Pipeline: evasion → base → crit → elemental → final_bonus
-                              (combat_hit, dot, physical, color, result helpers)
+    damage/                 Pipeline entrypoint: pipeline.py (evasion → base → crit →
+                              elemental → final_bonus). Helpers: combat_hit, dot, physical,
+                              true_damage, critical, color, result
     linh_can_effects/       One module per element (am/hoa/kim/loi/moc/phong/quang/tho/thuy)
     tick.py                 Offline AFK progress computed on reconnect
-    rating.py, quality.py, equipment.py, item_generator.py, drop.py, effects.py, stats.py
+    rating.py, quality.py, equipment.py, item_generator.py, drop.py, loot.py,
+    effects.py, stats.py, stat_diff.py
 src/db/
   models/                   SQLAlchemy ORM models (async) — must be imported in connection.py
   repositories/             Data access: player, inventory, equipment, market, formation, world_boss
-  migrations/               Alembic versioned migrations
+  migrations/               Alembic versioned migrations (versions/ holds revision files)
 src/data/                   Static JSON loaded at startup via GameRegistry singleton
   items/                    chests, elixirs, gems, materials, scrolls, specials
-  skills/                   thien, dia, nhan, tran_phap, enemy
+  skills/                   thien, dia, nhan, tran_phap, player/, enemy/
   enemies/                  realm_*.json — drop new file to add a realm, no registry change
   loot_tables/              zone_*.json + bosses, chests — drop file to add farm zone
   equipment/                bases, affixes, uniques
   constitutions/            per-element JSON (kim, moc, thuy, hoa, tho, loi, phong, quang, am, …)
-  formations.json, constitutions.json, dungeons.json
+  formations/, dungeons/, effects/, gems/, pills/, tribulations/, world_bosses.json
 src/utils/
   config.py                 Pydantic Settings singleton (`settings`)
   embed_builder.py          Discord embed helpers
@@ -82,7 +87,7 @@ src/utils/
 - Cogs receive Discord interactions → call `game/systems/` → use `db/repositories/` for persistence
 - `game/models/` are runtime objects (not ORM); populated from DB rows via repositories
 - `game/engine/damage/pipeline.py` is the single entry point for all damage — chains evasion → base → crit → elemental → final_bonus
-- `game/systems/combat/encounter.py` is the combat orchestrator — drives turn loop, delegates to `procs`/`casting`/`bursts`
+- `game/systems/combat/session.py` (`CombatSession`) is the combat orchestrator — drives turn loop, delegates to `procs`/`casting`/`bursts`/`phase`/`skill_extras`. Public surface is re-exported from `src.game.systems.combat`
 - `game/systems/cultivation_service.py` wraps `cultivation.py` for cog use (state changes + persistence); `cultivation.py` is pure logic
 - `src/data/registry.py` exposes a module-level `registry` singleton (`GameRegistry.get()`); import and call `registry.get_item(key)` etc.
 - New ORM models must be imported in `src/db/connection.py` so `Base.metadata.create_all` discovers them

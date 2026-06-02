@@ -1,0 +1,823 @@
+[
+  {
+    "key": "DebuffThieuDot",
+    "vi": "Thiêu Đốt",
+    "en": "Burning",
+    "kind": "debuff",
+    "description_vi": "Lửa đốt cháy cơ thể, gây sát thương mỗi lượt.",
+    "dot_element": "hoa",
+    "stack_kind": "burn",
+    "stack_cap": 5,
+    "per_stack_pct": 0.008,
+    "emoji": "🔥",
+    "duration": 3
+  },
+  {
+    "key": "DebuffNghiepHoaHongLien",
+    "vi": "Nghiệp Hỏa Hồng Liên",
+    "en": "Red Lotus Karma Fire",
+    "kind": "debuff",
+    "description_vi": "Hồng Liên Nghiệp Hỏa đóng dấu nghiệp lực — **không thể giải trừ**. Mỗi khi địch nhân nhận thêm bất kỳ debuff/CC/DoT nào, in 1 tầng **Nghiệp Hỏa** (3% HP tối đa/lượt, hệ Hỏa) và có 30% cơ hội đốt cháy 1 trạng thái tốt ngẫu nhiên.",
+    "cleansable": false,
+    "emoji": "🔴"
+  },
+  {
+    "key": "DebuffNghiepHoa",
+    "vi": "Nghiệp Hỏa",
+    "en": "Karma Fire",
+    "kind": "debuff",
+    "description_vi": "Lửa nghiệp lực thiêu đốt — mỗi tầng gây 3% HP tối đa làm sát thương Hỏa mỗi lượt. Tích từ Nghiệp Hỏa Hồng Liên: mỗi debuff mới in 1 tầng. Tan biến khi Hồng Liên kết thúc.",
+    "dot_element": "hoa",
+    "stack_kind": "nghiep_hoa",
+    "boss_dot_cap_matk_scale": 8.0,
+    "stack_cap": 99,
+    "per_stack_pct": 0.03,
+    "emoji": "🔥"
+  },
+  {
+    "key": "DebuffHoaVan",
+    "vi": "Hỏa Vân",
+    "en": "Fire Cloud Mark",
+    "kind": "debuff",
+    "description_vi": "Hỏa Vân kiếm khí bám trên thân — mỗi lần né tránh (cả hai bên) chồng 1 tầng. **Đủ 5 tầng** sẽ kích **Hỏa Vân Sậu Thiên Kiếm** (tự động, luôn bạo kích, tiêu hết tầng).",
+    "stack_cap": 5,
+    "emoji": "🗡️",
+    "duration": 4
+  },
+  {
+    "key": "DebuffPhuongHoa",
+    "vi": "Phượng Hỏa",
+    "en": "Phoenix Fire",
+    "kind": "debuff",
+    "description_vi": "Chân hỏa Phượng Hoàng đeo bám thân thể địch — mỗi tầng gây 2% HP tối đa làm sát thương Hỏa mỗi lượt và giảm 10% hồi máu nhận vào từ mọi nguồn (tối đa 3 tầng).",
+    "stat_bonus": {
+      "phuong_hoa_per_stack_heal_reduce": 0.1
+    },
+    "dot_element": "hoa",
+    "stack_kind": "phuong_hoa",
+    "stack_cap": 3,
+    "per_stack_pct": 0.02,
+    "scaling_rules": [
+      {
+        "key": "phuong_hoa_per_stack_heal_reduce",
+        "source": "stack:phuong_hoa",
+        "output": "heal_taken_reduce"
+      }
+    ],
+    "emoji": "🦅",
+    "duration": 3
+  },
+  {
+    "key": "DebuffUMinh",
+    "vi": "U Minh",
+    "en": "Underworld Mark",
+    "kind": "debuff",
+    "description_vi": "Quỷ hỏa U Minh thiêu đốt linh lực — không gây sát thương HP, nhưng mỗi tầng bào mòn 5% MP tối đa của địch mỗi lượt. Tan biến khi hết thời lượng (tối đa 3 tầng).",
+    "dot_element": "hoa",
+    "stack_cap": 3,
+    "emoji": "👻",
+    "duration": 3
+  },
+  {
+    "key": "DebuffChanHoa",
+    "vi": "Tam Muội Chân Hỏa",
+    "en": "Three-Layer True Fire",
+    "kind": "debuff",
+    "description_vi": "Lửa Tam Muội thiêu đốt từ bên trong — mỗi tầng gây 2% HP tối đa làm sát thương Hỏa mỗi lượt, đồng thời khuếch đại MỌI sát thương DoT hệ Hỏa khác trên thân +4% / tầng. Tối đa 5 tầng. Đối với thế giới boss / boss đặc biệt: tổn thương mỗi lượt giới hạn 6× matk người niệm.",
+    "dot_element": "hoa",
+    "stack_kind": "chan_hoa",
+    "stack_cap": 5,
+    "per_stack_pct": 0.02,
+    "emoji": "🔥"
+  },
+  {
+    "key": "DebuffDotChay",
+    "vi": "Đốt Cháy Nội Tạng",
+    "en": "Internal Burning",
+    "kind": "debuff",
+    "description_vi": "Lửa đốt nội tạng, gây sát thương nặng mỗi lượt.",
+    "dot_pct": 0.08,
+    "dot_element": "hoa",
+    "emoji": "💥",
+    "duration": 3
+  },
+  {
+    "key": "DebuffHoaXuyenThau",
+    "vi": "Hỏa Xuyên Thấu",
+    "en": "Fire Penetration",
+    "kind": "debuff",
+    "description_vi": "Lá chắn hỏa khí bị xuyên thủng, giảm mạnh kháng Hỏa.",
+    "stat_bonus": {
+      "res_hoa": -0.15
+    },
+    "emoji": "🔻",
+    "duration": 3
+  },
+  {
+    "key": "DebuffMocXuyenThau",
+    "vi": "Mộc Xuyên Thấu",
+    "en": "Wood Penetration",
+    "kind": "debuff",
+    "description_vi": "Rễ độc xâm nhập cơ thể, giảm mạnh kháng Mộc.",
+    "stat_bonus": {
+      "res_moc": -0.15
+    },
+    "emoji": "🌱",
+    "duration": 3
+  },
+  {
+    "key": "DebuffPheHuyetThuc",
+    "vi": "Phệ Huyết Thực",
+    "en": "Blood-Devour Erosion",
+    "kind": "debuff",
+    "description_vi": "Vết cắn của Phệ Huyết Ma Đằng — đằng yêu hút máu liên hồi, mỗi lượt mất **5% HP tối đa** dạng sát thương hệ Mộc, không phụ thuộc vào chỉ số người niệm.",
+    "dot_element": "moc",
+    "dot_target_hp_pct": 0.05,
+    "emoji": "🩸",
+    "duration": 3
+  },
+  {
+    "key": "DebuffHuMoc",
+    "vi": "Hủ Mộc",
+    "en": "Rotwood",
+    "kind": "debuff",
+    "description_vi": "Thân thể mục ruỗng như gỗ mục — mỗi lượt mất **3% HP tối đa** dạng sát thương hệ Mộc (không phụ thuộc chỉ số người niệm), đồng thời **mọi máu hồi nhận vào giảm 50%** và **hồi HP tự nhiên giảm 10%**.",
+    "dot_element": "moc",
+    "dot_target_hp_pct": 0.03,
+    "boss_dot_cap_matk_scale": 5.0,
+    "stat_bonus": {
+      "heal_taken_reduce": 0.5,
+      "hp_regen_pct": -0.1
+    },
+    "emoji": "🪵",
+    "duration": 4
+  },
+  {
+    "key": "DebuffDaoHoaMe",
+    "vi": "Đào Hoa Mê",
+    "en": "Peach-Blossom Entrancement",
+    "kind": "debuff",
+    "description_vi": "Lạc trong sương đào mê hoặc — **30% mỗi lượt đứng hình** vì mê man và **−15% Tốc Độ**.",
+    "skip_turn_chance": 0.3,
+    "stat_bonus": {
+      "spd_pct": -0.15
+    },
+    "emoji": "🌸",
+    "duration": 3
+  },
+  {
+    "key": "DebuffBachHoa",
+    "vi": "Bách Hoa Ấn",
+    "en": "Hundred-Flower Seal",
+    "kind": "debuff",
+    "description_vi": "Bị phong ấn giữa trận trăm hoa — phấn hoa trấn áp sát khí: **sát thương địch gây ra giảm 20%**.",
+    "stat_bonus": {
+      "final_dmg_bonus": -0.2
+    },
+    "emoji": "🌺",
+    "duration": 4
+  },
+  {
+    "key": "DebuffGiaThienMan",
+    "vi": "Già Thiên Mạn",
+    "en": "Sky-Veiling Leaf-Curtain",
+    "kind": "debuff",
+    "description_vi": "Bị vạn lá vạn bóng phủ kín nhãn giới — tầm nhìn nhòe đi, **Chỉ Số Chính Xác** sụt 30% (multiplier trên rating gốc). Mọi đòn của bản thân khó trúng hơn trước né tránh của địch.",
+    "stat_bonus": {
+      "accuracy_rating_pct": -0.3
+    },
+    "emoji": "🍃",
+    "duration": 3
+  },
+  {
+    "key": "DebuffThuyXuyenThau",
+    "vi": "Thủy Xuyên Thấu",
+    "en": "Water Penetration",
+    "kind": "debuff",
+    "description_vi": "Khiên thủy khí bị xuyên thủng, giảm mạnh kháng Thủy.",
+    "stat_bonus": {
+      "res_thuy": -0.15
+    },
+    "emoji": "💧",
+    "duration": 3
+  },
+  {
+    "key": "DebuffKimXuyenThau",
+    "vi": "Kim Xuyên Thấu",
+    "en": "Metal Penetration",
+    "kind": "debuff",
+    "description_vi": "Kim giáp bị xuyên thủng, giảm mạnh kháng Kim.",
+    "stat_bonus": {
+      "res_kim": -0.15
+    },
+    "emoji": "⚔️",
+    "duration": 3
+  },
+  {
+    "key": "DebuffThoXuyenThau",
+    "vi": "Thổ Xuyên Thấu",
+    "en": "Earth Penetration",
+    "kind": "debuff",
+    "description_vi": "Địa khí phòng tuyến bị xuyên thủng, giảm mạnh kháng Thổ.",
+    "stat_bonus": {
+      "res_tho": -0.15
+    },
+    "emoji": "🗿",
+    "duration": 3
+  },
+  {
+    "key": "DebuffTuLuuSa",
+    "vi": "Tụ Lưu Sa",
+    "en": "Gathered Quicksand",
+    "kind": "debuff",
+    "description_vi": "Cát Lưu Sa kết tụ trên thân — không gây hại trực tiếp, nhưng đòn **Tụ Tán Lưu Sa** tiếp theo sẽ **Tán** (tiêu hao dấu này để bùng nổ thêm sát thương gốc).",
+    "emoji": "🌪️",
+    "duration": 3
+  },
+  {
+    "key": "DebuffThoNguyenTranMa",
+    "vi": "Thổ Nguyên Trấn Ma",
+    "en": "Earth-Origin Demon-Suppression",
+    "kind": "debuff",
+    "description_vi": "Bị Hộ Pháp Trận trấn áp — **-8% sát thương xuất**, **-200 Bạo Sát**. Tồn tại khi Hộ Pháp Trận còn duy trì.",
+    "stat_bonus": {
+      "final_dmg_bonus": -0.08,
+      "crit_dmg_rating": -200
+    },
+    "cleansable": false,
+    "emoji": "⛓️",
+    "duration": 999
+  },
+  {
+    "key": "DebuffDiaLiet",
+    "vi": "Địa Liệt",
+    "en": "Earth-Rift",
+    "kind": "debuff",
+    "description_vi": "Mặt đất nứt vỡ in vào thân — chịu thêm **15% sát thương từ hệ Thổ** trong 4 lượt. Vết nứt khiến mọi đòn Thổ tiếp theo lọt thẳng vào tử huyệt.",
+    "stat_bonus": {
+      "dmg_taken_bonus_tho": 0.15
+    },
+    "emoji": "🌋",
+    "duration": 4
+  },
+  {
+    "key": "DebuffCuuKhuc",
+    "vi": "Cửu Khúc Ấn",
+    "en": "Nine-Bend Mark",
+    "kind": "debuff",
+    "description_vi": "Bị in dấu Cửu Khúc Hoàng Hà — mỗi đòn niệm gây sát thương của thí chủ chồng thêm 1 tầng (tối đa 9). **3 tầng**: -atk và -matk; **6 tầng**: thêm -kháng Thủy; **9 tầng**: mỗi đòn tấn công đều khởi động Thủy Long Đạn theo dư uy của trận (40% phổ thông, 100% ở 10 ngọc).",
+    "stack_cap": 9,
+    "scaling_rules": [
+      {
+        "key": "field:cuu_khuc_atk_reduce_active",
+        "source": "constant",
+        "gate_source": "stack:cuu_khuc",
+        "min": 3,
+        "multiplier": -1.0,
+        "output": "atk_pct"
+      },
+      {
+        "key": "field:cuu_khuc_atk_reduce_active",
+        "source": "constant",
+        "gate_source": "stack:cuu_khuc",
+        "min": 3,
+        "multiplier": -1.0,
+        "output": "matk_pct"
+      },
+      {
+        "key": "field:cuu_khuc_res_shred_active",
+        "source": "constant",
+        "gate_source": "stack:cuu_khuc",
+        "min": 6,
+        "multiplier": -1.0,
+        "output": "res_thuy"
+      }
+    ],
+    "emoji": "🌊"
+  },
+  {
+    "key": "DebuffNhuocThuyAn",
+    "vi": "Nhược Thủy Ấn",
+    "en": "Weak Water Mark",
+    "kind": "debuff",
+    "description_vi": "Bị in dấu Nhược Thủy: mỗi tầng giảm 4% Kháng Thủy. Khi chồng đủ 5 tầng, ấn ký bùng nổ — gây sát thương bằng 10% lượng HP đã mất của chính mục tiêu, sau đó reset về 0.",
+    "stat_bonus": {
+      "thuy_mark_per_stack_res": -0.04,
+      "thuy_mark_detonate_lost_hp_pct": 0.1
+    },
+    "stack_cap": 5,
+    "scaling_rules": [
+      {
+        "key": "thuy_mark_per_stack_res",
+        "source": "stack:thuy_mark",
+        "output": "res_thuy"
+      }
+    ],
+    "emoji": "🌊"
+  },
+  {
+    "key": "DebuffDocTo",
+    "vi": "Độc Tố",
+    "en": "Poison",
+    "kind": "debuff",
+    "description_vi": "Độc tố ăn mòn cơ thể, gây sát thương mỗi lượt.",
+    "dot_element": "moc",
+    "stack_kind": "poison",
+    "stack_cap": 5,
+    "per_stack_pct": 0.008,
+    "emoji": "☠️",
+    "duration": 3
+  },
+  {
+    "key": "DebuffBaoMon",
+    "vi": "Bào Mòn",
+    "en": "Corrosion",
+    "kind": "debuff",
+    "description_vi": "Bào mòn kháng cự, giảm khả năng chịu đòn.",
+    "stat_bonus": {
+      "res_all": -0.05
+    },
+    "emoji": "🧪",
+    "duration": 3
+  },
+  {
+    "key": "DebuffTroBuoc",
+    "vi": "Trói Buộc",
+    "en": "Bind",
+    "kind": "debuff",
+    "description_vi": "Bị trói buộc, giảm mạnh tốc độ và không thể tháo chạy.",
+    "stat_bonus": {
+      "spd_pct": -0.5
+    },
+    "emoji": "⛓️",
+    "duration": 2
+  },
+  {
+    "key": "DebuffLunDat",
+    "vi": "Lún Đất",
+    "en": "Quicksand",
+    "kind": "debuff",
+    "description_vi": "Lún xuống đất, giảm tốc độ.",
+    "stat_bonus": {
+      "spd_pct": -0.3
+    },
+    "emoji": "🌱",
+    "duration": 2
+  },
+  {
+    "key": "DebuffTranSonHa",
+    "vi": "Trấn Sơn Hà Ấn",
+    "en": "Mountain-River Suppression Seal",
+    "kind": "debuff",
+    "description_vi": "Bị Sơn Hà Ấn trấn áp — núi sông đè ép kinh mạch, mỗi tầng giảm 8% sát thương gây ra (tối đa 3 tầng, kéo dài 4 lượt). Mỗi đòn Sơn Hà Ấn về sau chồng thêm 1 tầng và đập mạnh hơn theo ``seal_refresh_dmg_bonus``.",
+    "stat_bonus": {
+      "_tsh_dmg_per_stack": 0.08
+    },
+    "stack_kind": "tran_son_ha",
+    "stack_cap": 3,
+    "scaling_rules": [
+      {
+        "key": "_tsh_dmg_per_stack",
+        "source": "stack:tran_son_ha",
+        "multiplier": -1.0,
+        "output": "final_dmg_bonus"
+      }
+    ],
+    "emoji": "🗿",
+    "duration": 4
+  },
+  {
+    "key": "EffectNgungDong",
+    "vi": "Ngưng Đọng",
+    "en": "Stagnation",
+    "kind": "debuff",
+    "description_vi": "Khí trường ngưng đọng, giảm tốc độ.",
+    "stat_bonus": {
+      "spd_pct": -0.25
+    },
+    "emoji": "💨",
+    "duration": 2
+  },
+  {
+    "key": "DebuffLamCham",
+    "vi": "Làm Chậm",
+    "en": "Slow",
+    "kind": "debuff",
+    "description_vi": "Tốc độ bị giảm.",
+    "stat_bonus": {
+      "spd_pct": -0.25
+    },
+    "emoji": "🐢",
+    "duration": 2
+  },
+  {
+    "key": "DebuffChayMau",
+    "vi": "Chảy Máu",
+    "en": "Bleed",
+    "kind": "debuff",
+    "description_vi": "Máu chảy không ngừng, gây sát thương mỗi lượt.",
+    "dot_element": "kim",
+    "stack_kind": "bleed",
+    "stack_cap": 5,
+    "per_stack_pct": 0.008,
+    "emoji": "🩸",
+    "duration": 3
+  },
+  {
+    "key": "DebuffPhaGiap",
+    "vi": "Phá Giáp",
+    "en": "Armor Break",
+    "kind": "debuff",
+    "description_vi": "Giáp phòng thủ bị phá vỡ, giảm khả năng chịu đòn.",
+    "stat_bonus": {
+      "final_dmg_reduce": -0.15
+    },
+    "emoji": "🔨",
+    "duration": 3
+  },
+  {
+    "key": "DebuffXeRach",
+    "vi": "Xé Rách",
+    "en": "Lacerate",
+    "kind": "debuff",
+    "description_vi": "Xé nát kháng cự, giảm mạnh kháng nguyên tố.",
+    "stat_bonus": {
+      "res_all": -0.08
+    },
+    "emoji": "🗡️",
+    "duration": 2
+  },
+  {
+    "key": "DebuffCatDut",
+    "vi": "Cắt Đứt Linh Khí",
+    "en": "Qi Severance",
+    "kind": "debuff",
+    "description_vi": "Linh khí bị cắt đứt, giảm hiệu quả hồi sinh lực.",
+    "stat_bonus": {
+      "hp_regen_pct": -0.3
+    },
+    "emoji": "✂️",
+    "duration": 3
+  },
+  {
+    "key": "DebuffSetDanh",
+    "vi": "Sét Đánh",
+    "en": "Lightning Strike",
+    "kind": "debuff",
+    "description_vi": "Bị sét đánh, chịu thêm sát thương sét mỗi lượt.",
+    "dot_pct": 0.05,
+    "dot_element": "loi",
+    "emoji": "⚡",
+    "duration": 2
+  },
+  {
+    "key": "DebuffSocDien",
+    "vi": "Sốc Điện",
+    "en": "Electric Shock",
+    "kind": "debuff",
+    "description_vi": "Thần kinh tê rần — mỗi tầng Sốc Điện khiến mục tiêu chịu thêm sát thương Lôi từ đòn đánh.",
+    "stack_cap": 5,
+    "per_stack_pct": 0.04,
+    "emoji": "⚡",
+    "duration": 3
+  },
+  {
+    "key": "DebuffThienLoiAn",
+    "vi": "Thiên Lôi Ấn",
+    "en": "Heavenly-Thunder Mark",
+    "kind": "debuff",
+    "description_vi": "Bị Thiên Lôi Tru Tà Trận khắc dấu — vận tà càng nhiều, Thiên Lôi càng nặng. Mỗi lượt trận pháp đo lại số debuff trên thân và làm tươi dấu này: **mỗi debuff khác trên người = +3% sát thương Lôi phải nhận**. Tự tan nếu trận pháp ngừng hoạt động hoặc 2 lượt không được làm tươi.",
+    "stat_bonus": {
+      "dmg_taken_bonus_loi": 0.0
+    },
+    "cleansable": true,
+    "emoji": "⚖️",
+    "duration": 2
+  },
+  {
+    "key": "DebuffLoiKiepAn",
+    "vi": "Lôi Kiếp Ấn",
+    "en": "Thunder-Calamity Mark",
+    "kind": "debuff",
+    "description_vi": "Bị Vạn Kiếp Lôi Ngục Trận đếm kiếp — mỗi lượt trận pháp tự thêm 1 dấu. Mỗi tầng: **+2% sát thương Lôi phải nhận** và **-1% kháng Lôi**. Cứ chạm mốc 5/10/15/... tầng, trận pháp lập tức bổ một đạo **Lôi Kiếp Phán** bồi sát; khi đủ 10 tầng, trận pháp bùng **Vạn Kiếp Phán** đoạn mệnh, ăn sạch tầng để chồng lại từ đầu.",
+    "stat_bonus": {
+      "_lka_per_stack_dmg_taken": 0.02,
+      "_lka_per_stack_res": 0.01
+    },
+    "scaling_rules": [
+      {
+        "key": "_lka_per_stack_dmg_taken",
+        "source": "stack:loi_kiep_an",
+        "output": "dmg_taken_bonus_loi"
+      },
+      {
+        "key": "_lka_per_stack_res",
+        "source": "stack:loi_kiep_an",
+        "multiplier": -1.0,
+        "output": "res_loi"
+      }
+    ],
+    "stack_cap": 20,
+    "emoji": "⛓️",
+    "duration": 8
+  },
+  {
+    "key": "DebuffAnPhong",
+    "vi": "Ấn Phong",
+    "en": "Wind Mark",
+    "kind": "debuff",
+    "description_vi": "Ấn ký gió bám lên mục tiêu — né tránh suy giảm, dễ bị bạo kích và chịu sát thương bạo khổng lồ từ người đánh dấu.",
+    "stat_bonus": {
+      "evasion_rating": -150
+    },
+    "emoji": "🌀",
+    "duration": 3
+  },
+  {
+    "key": "DebuffPhongSang",
+    "vi": "Phong Sang",
+    "en": "Wind Wound",
+    "kind": "debuff",
+    "description_vi": "Vết thương do cương phong khắc trên cốt — mỗi đòn Phong sau đó như xát muối vào vết hở, chịu thêm 12% sát thương Phong trong 4 lượt.",
+    "stat_bonus": {
+      "dmg_taken_bonus_phong": 0.12
+    },
+    "emoji": "🦴",
+    "duration": 4
+  },
+  {
+    "key": "DebuffPhongNhanThuc",
+    "vi": "Phong Nhận Thực",
+    "en": "Wind-Blade Erosion",
+    "kind": "debuff",
+    "description_vi": "Vạn lưỡi gió bám trên người, mỗi tầng càng làm cơ thể khó hồi phục và dễ tổn thương trước Phong — mỗi tầng −5% trị liệu, −5% khiên nhận, +2% sát thương Phong phải nhận. Tích lũy tối đa 7 tầng, bám 5 lượt.",
+    "stat_bonus": {
+      "_pnt_heal_per_stack": 0.05,
+      "_pnt_shield_per_stack": 0.05,
+      "_pnt_phong_per_stack": 0.02
+    },
+    "scaling_rules": [
+      {
+        "key": "_pnt_heal_per_stack",
+        "source": "stack:phong_nhan_thuc",
+        "output": "heal_taken_reduce"
+      },
+      {
+        "key": "_pnt_shield_per_stack",
+        "source": "stack:phong_nhan_thuc",
+        "output": "shield_taken_reduce"
+      },
+      {
+        "key": "_pnt_phong_per_stack",
+        "source": "stack:phong_nhan_thuc",
+        "output": "dmg_taken_bonus_phong"
+      }
+    ],
+    "stack_cap": 7,
+    "emoji": "🌪️",
+    "duration": 5
+  },
+  {
+    "key": "DebuffLoaMat",
+    "vi": "Lóa Mắt",
+    "en": "Blinded",
+    "kind": "debuff",
+    "description_vi": "Tầm nhìn bị Âm khí che mờ — mỗi đòn đánh đều có khả năng đánh trượt.",
+    "miss_chance": 0.5,
+    "emoji": "🌫️",
+    "duration": 2
+  },
+  {
+    "key": "DebuffTanDiet",
+    "vi": "Tận Diệt",
+    "en": "Annihilation",
+    "kind": "debuff",
+    "description_vi": "Sinh cơ bị tận diệt — HP tối đa và hồi HP đều suy giảm vĩnh viễn trong trận. Magnitude is supplied per-cast via ``effect_overrides`` (``hp_max_pct`` shrinks max HP one-shot on first apply; ``hp_regen_pct`` aggregates while the effect is active).",
+    "cleansable": false,
+    "emoji": "☠️"
+  },
+  {
+    "key": "DebuffVoDao",
+    "vi": "Vô Đạo",
+    "en": "Way Severed",
+    "kind": "debuff",
+    "description_vi": "Đạo cơ bị cắt đứt — toàn bộ máu hồi nhận vào giảm 90% trong 3 lượt.",
+    "stat_bonus": {
+      "heal_taken_reduce": 0.9
+    },
+    "emoji": "🩸",
+    "duration": 3
+  },
+  {
+    "key": "DebuffSuyKhi",
+    "vi": "Suy Khí",
+    "en": "Qi Drain",
+    "kind": "debuff",
+    "description_vi": "Khí huyết suy kiệt — sức tấn công vật lý sụt giảm.",
+    "stat_bonus": {
+      "atk_pct": -0.2
+    },
+    "emoji": "🩸",
+    "duration": 3
+  },
+  {
+    "key": "DebuffPhapNhuoc",
+    "vi": "Pháp Nhược",
+    "en": "Spell Weakened",
+    "kind": "debuff",
+    "description_vi": "Linh lực rối loạn — sức tấn công pháp thuật sụt giảm.",
+    "stat_bonus": {
+      "matk_pct": -0.2
+    },
+    "emoji": "🌫️",
+    "duration": 3
+  },
+  {
+    "key": "DebuffSoHai",
+    "vi": "Sợ Hãi",
+    "en": "Fear",
+    "kind": "debuff",
+    "description_vi": "Tâm thần khiếp đảm — công kích vật lý và pháp thuật đều suy giảm; mỗi lượt còn có khả năng đứng hình vì sợ.",
+    "stat_bonus": {
+      "atk_pct": -0.15,
+      "matk_pct": -0.15
+    },
+    "skip_turn_chance": 0.2,
+    "emoji": "😱",
+    "duration": 3
+  },
+  {
+    "key": "DebuffLinhLucKiet",
+    "vi": "Linh Lực Kiệt",
+    "en": "Spiritual Exhaustion",
+    "kind": "debuff",
+    "description_vi": "Kinh mạch khô kiệt — tốc độ hồi linh lực sụt giảm.",
+    "stat_bonus": {
+      "mp_regen_pct": -0.5
+    },
+    "emoji": "💧",
+    "duration": 3
+  },
+  {
+    "key": "DebuffSatAn",
+    "vi": "Sát Ấn",
+    "en": "Murder Mark",
+    "kind": "debuff",
+    "description_vi": "Sát Ấn của Thất Sát Kiếm Trận in lên đối thủ — không gây sát thương trực tiếp, nhưng đủ 7 ấn thì kích hoạt đòn xử trảm.",
+    "stack_kind": "sat_an",
+    "stack_cap": 7,
+    "emoji": "🗡️",
+    "duration": 6
+  },
+  {
+    "key": "DebuffCanhKimSatKhi",
+    "vi": "Canh Kim Sát Khí",
+    "en": "Geng-Metal Murder Aura",
+    "kind": "debuff",
+    "description_vi": "Sát khí Canh Kim bao trùm — toàn bộ tốc hồi sinh lực, linh lực, hộ thuẫn đều suy giảm.",
+    "stat_bonus": {
+      "hp_regen_pct": -0.2,
+      "mp_regen_pct": -0.2,
+      "shield_regen_pct": -0.2
+    },
+    "emoji": "🔻",
+    "duration": 3
+  },
+  {
+    "key": "DebuffAmThucKy",
+    "vi": "Âm Thực Ký",
+    "en": "Shadow-Devour Mark",
+    "kind": "debuff",
+    "description_vi": "Quỷ khí khắc lên hồn — kháng Âm sụt mạnh, dấu ấn được làm mới mỗi lần tiểu quỷ chạm tới.",
+    "stat_bonus": {
+      "res_am": -0.25
+    },
+    "emoji": "👁️",
+    "duration": 3
+  },
+  {
+    "key": "DebuffPhongDoMa",
+    "vi": "Phong Đô Ma Khí",
+    "en": "Fengdu Demonic Mist",
+    "kind": "debuff",
+    "description_vi": "Sương mù Phong Đô bao trùm — kháng Âm sụt 5% (trước khi cộng dồn ngọc khảm).",
+    "stat_bonus": {
+      "res_am": -0.05
+    },
+    "cleansable": false,
+    "emoji": "🪦",
+    "duration": 2
+  },
+  {
+    "key": "DebuffXichLuyenToaHon",
+    "vi": "Xích Luyện Tỏa Hồn",
+    "en": "Red-Refining Soul-Lock",
+    "kind": "debuff",
+    "description_vi": "Xích Luyện ngọn lửa tỏa hồn — né tránh, tốc hồi linh lực, tốc hồi sinh lực đều sụt 10% (giá trị cơ bản, cộng dồn theo ngưỡng ngọc khảm Xích Luyện Tỏa Hồn Trận — tối đa 50% mỗi chỉ số).",
+    "stat_bonus": {
+      "evasion_rating_pct": -0.1,
+      "mp_regen_pct": -0.1,
+      "hp_regen_pct": -0.1
+    },
+    "cleansable": false,
+    "emoji": "🔥",
+    "duration": 2
+  },
+  {
+    "key": "DebuffLucHonChu",
+    "vi": "Lục Hồn Chú",
+    "en": "Six-Soul Curse",
+    "kind": "debuff",
+    "description_vi": "Sáu hồn ma quấn xác — kháng Âm và sức chịu DoT bị phá vỡ. Mỗi lượt: tổn HP theo Âm Khí của người niệm chú (xuyên qua khiên 50%) và bào mòn linh lực địch.",
+    "stat_bonus": {
+      "res_am": -0.2,
+      "dot_taken_bonus": 0.2
+    },
+    "dot_element": "am",
+    "dot_shield_drain_pct": 0.5,
+    "dot_mp_drain_pct": 0.05,
+    "dot_caster_hp_pct": 0.06,
+    "dot_caster_matk_scale": 5.5,
+    "emoji": "🕯️",
+    "duration": 4
+  },
+  {
+    "key": "DebuffThienMaPost",
+    "vi": "Thiên Ma Hậu Di Chứng",
+    "en": "Demon-Mode Backlash",
+    "kind": "debuff",
+    "description_vi": "Thân thể quá tải sau cơn cuồng vũ Thiên Ma — chịu thêm sát thương trong 2 lượt, sau đó tự động trở lại Thiên Ma. ``cleansable=False`` so the cycle can't be Thanh Tẩy'd off.",
+    "stat_bonus": {
+      "final_dmg_reduce": -0.3
+    },
+    "cleansable": false,
+    "on_expire_apply": [
+      "BuffThienMa",
+      {
+        "duration": 2
+      }
+    ],
+    "emoji": "🩸",
+    "duration": 2
+  },
+  {
+    "key": "DebuffTeNguyenLuc",
+    "vi": "Tê Nguyên Lực",
+    "en": "Yuan-Force Paralysis",
+    "kind": "debuff",
+    "description_vi": "Linh khí ngưng trệ do Tử Tiêu Thần Lôi đả thông kinh mạch — **hồi MP -40%** trong 3 lượt. Cảnh giới thấp có thể bị triệt hoàn toàn nguồn hồi MP.",
+    "stat_bonus": {
+      "mp_regen_pct": -0.4
+    },
+    "emoji": "💜",
+    "duration": 3
+  },
+  {
+    "key": "DebuffCongLuan",
+    "vi": "Công Luận Triền Thân",
+    "en": "World's Verdict",
+    "kind": "debuff",
+    "description_vi": "Công luận tu chân giới phán xét trên thân — danh tiếng tổn hao, đạo tâm lung lay. Sát thương xuất giảm 15% trong 4 lượt. Mỗi đòn niệm như bị muôn ngàn lời chê dìm xuống.",
+    "stat_bonus": {
+      "final_dmg_bonus": -0.15
+    },
+    "emoji": "⚖️",
+    "duration": 4
+  },
+  {
+    "key": "DebuffKimPheGiap",
+    "vi": "Phệ Giáp",
+    "en": "Devoured Armor",
+    "kind": "debuff",
+    "description_vi": "Giáp bị Kim khí gặm mòn — giảm 25% DEF (không thể giải).",
+    "stat_bonus": {
+      "def_pct": -0.25
+    },
+    "cleansable": false,
+    "emoji": "🦷",
+    "duration": 99
+  },
+  {
+    "key": "DebuffDongQuyAn",
+    "vi": "Đồng Quy Ấn",
+    "en": "Pact Seal",
+    "kind": "debuff",
+    "description_vi": "Khi tan: nổ theo chênh lệch %HP đã mất giữa hai bên.",
+    "stat_bonus": {},
+    "cleansable": true,
+    "emoji": "💀",
+    "duration": 3
+  },
+  {
+    "key": "DebuffAmHonKheAn",
+    "vi": "Âm Hồn Khế Ấn",
+    "en": "Soul Contract Brand",
+    "kind": "debuff",
+    "description_vi": "18% ST nhận vào vọng lại thành đòn Âm chuẩn.",
+    "stat_bonus": {},
+    "cleansable": true,
+    "reflectable": false,
+    "emoji": "🕯️",
+    "duration": 3
+  }
+]

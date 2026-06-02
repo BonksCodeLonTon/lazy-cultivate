@@ -740,5 +740,680 @@
         "duration": 1
       }
     }
+  },
+  {
+    "key": "SkillLoiDinhChanThienSat",
+    "vi": "Lôi Đình Chấn Thiên Sát",
+    "en": "Thunder Heaven-Shock Finisher",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.67
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 200,
+    "effects": [
+      "CCStun"
+    ],
+    "effect_chances": {
+      "CCStun": 0.5
+    },
+    "chain_only": true,
+    "formation_key": null,
+    "description_vi": "Đỉnh cấp Lôi — **chỉ kích hoạt qua Ngũ Lôi Oanh Đỉnh** khi địch đủ 5 tầng Sốc Điện. Tiêu hết toàn bộ tầng Sốc Điện; mỗi tầng tiêu hao cộng **+500 ST nền + 10% ST Lôi + 3% xuyên Lôi** cho chính đòn này. 50% gây Choáng. Không thể niệm trực tiếp."
+  },
+  {
+    "key": "SkillLoiNguLoiOanhDinh",
+    "vi": "Ngũ Lôi Oanh Đỉnh",
+    "en": "Five-Thunder Crashing Peak",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.67
+    },
+    "mp_cost": 127,
+    "cooldown": 6,
+    "base_dmg": 80,
+    "hit_count": 5,
+    "formation_key": null,
+    "per_hit_specs": [
+      {
+        "label": "Kim Lôi",
+        "effects": [
+          "DebuffSocDien"
+        ],
+        "effect_chances": {
+          "DebuffSocDien": 0.8
+        },
+        "effect_overrides": {
+          "DebuffSocDien": {
+            "duration": 4
+          }
+        }
+      },
+      {
+        "label": "Mộc Lôi",
+        "effects": [
+          "DebuffSocDien"
+        ],
+        "effect_chances": {
+          "DebuffSocDien": 0.8
+        },
+        "effect_overrides": {
+          "DebuffSocDien": {
+            "duration": 4
+          }
+        }
+      },
+      {
+        "label": "Thủy Lôi",
+        "effects": [
+          "DebuffSocDien"
+        ],
+        "effect_chances": {
+          "DebuffSocDien": 0.8
+        },
+        "effect_overrides": {
+          "DebuffSocDien": {
+            "duration": 4
+          }
+        }
+      },
+      {
+        "label": "Hỏa Lôi",
+        "effects": [
+          "DebuffSocDien"
+        ],
+        "effect_chances": {
+          "DebuffSocDien": 0.8
+        },
+        "effect_overrides": {
+          "DebuffSocDien": {
+            "duration": 4
+          }
+        }
+      },
+      {
+        "label": "Thổ Lôi",
+        "effects": [
+          "DebuffSocDien",
+          "DebuffTeLiet"
+        ],
+        "effect_chances": {
+          "DebuffSocDien": 0.8
+        },
+        "effect_overrides": {
+          "DebuffSocDien": {
+            "duration": 4
+          },
+          "DebuffTeLiet": {
+            "duration": 1
+          }
+        }
+      }
+    ],
+    "chain_skill": {
+      "key": "SkillLoiDinhChanThienSat",
+      "pct": 1.0,
+      "cast_on": "target_stacks_at_least",
+      "stack": "shock",
+      "threshold": 5,
+      "consume": true,
+      "per_stack_base_dmg_bonus": 500,
+      "per_stack_element_pen_pct": 0.03,
+      "per_stack_element_dmg_pct": 0.1,
+      "per_stack_buff_key": "BuffNguLoiCharged"
+    },
+    "description_vi": "Ngũ Lôi Oanh Đỉnh — năm vị Lôi thần đồng loạt giáng xuống đỉnh đầu địch nhân. Mỗi đòn gây ST riêng và có **80% cơ hội** chồng 1 tầng Sốc Điện (kỳ vọng ~4 tầng/niệm). Đòn cuối thêm Tê Liệt 1 lượt. Khi đủ 5 tầng Sốc Điện sau đòn cuối, tiêu hết tầng để **liên hoàn Lôi Đình Chấn Thiên Sát** (yêu cầu trang bị skill này); mỗi tầng tiêu hao tăng +500 ST nền / +10% ST Lôi / +3% xuyên Lôi cho đòn liên hoàn."
+  },
+  {
+    "key": "SkillLoiCuuDaoLoiTinh",
+    "vi": "Cửu Đạo Lôi Tinh",
+    "en": "Nine-Path Thunder Essence",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.17
+    },
+    "mp_cost": 140,
+    "cooldown": 7,
+    "base_dmg": 20,
+    "hit_count": 9,
+    "effects": [],
+    "formation_key": null,
+    "per_hit_specs": [
+      {
+        "label": "Khởi Lôi"
+      },
+      {
+        "label": "Tiên Lôi"
+      },
+      {
+        "label": "Phong Lôi"
+      },
+      {
+        "label": "Lưu Lôi"
+      },
+      {
+        "label": "Vạn Lôi"
+      },
+      {
+        "label": "Thần Lôi"
+      },
+      {
+        "label": "Huyền Lôi"
+      },
+      {
+        "label": "Cuồng Lôi"
+      },
+      {
+        "label": "Thiên Lôi Đỉnh",
+        "base_dmg": 1200,
+        "dmg_scale": {
+          "atk": 0.0,
+          "matk": 0.25
+        }
+      }
+    ],
+    "description_vi": "Cửu Đạo Lôi Tinh — chín đạo lôi tinh giáng xuống đỉnh đầu địch nhân, từ **Khởi Lôi** đến **Cuồng Lôi**, kết bằng **Thiên Lôi Đỉnh** (đòn thứ 9, ST mạnh hơn nhiều lần)."
+  },
+  {
+    "key": "SkillLoiCuuThienNguLoiChanQuyet",
+    "vi": "Cửu Thiên Ngự Lôi Chân Quyết",
+    "en": "Nine Heavens Thunder-Commanding True Art",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.42
+    },
+    "mp_cost": 93,
+    "cooldown": 5,
+    "base_dmg": 140,
+    "effects": [
+      "BuffCuuThienNguLoi"
+    ],
+    "formation_key": null,
+    "description_vi": "Cửu Thiên Ngự Lôi Chân Quyết — chân quyết ngự lôi thượng phẩm. Niệm xuất một đòn sấm sét và chồng 1 tầng Sốc Điện. Bản thân nhập trạng thái **Ngự Lôi** trong 3 lượt: mọi đòn hệ Lôi tiếp theo **+20% sát thương**."
+  },
+  {
+    "key": "SkillLoiTuTieuThanLoi",
+    "vi": "Tử Tiêu Thần Lôi",
+    "en": "Purple Empyrean Divine Thunder",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.67
+    },
+    "mp_cost": 107,
+    "cooldown": 5,
+    "base_dmg": 180,
+    "drain_target_mp_pct": 0.2,
+    "effects": [
+      "DebuffTeNguyenLuc"
+    ],
+    "effect_overrides": {
+      "DebuffTeNguyenLuc": {
+        "duration": 3
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Tử Tiêu Thần Lôi — sấm sét tử tiêu thượng thiên đả thông kinh mạch địch nhân. Gây sát thương hệ Lôi (1800 + 1.0·matk), **tiêu hủy 20% MP tối đa của địch**, và in dấu **Tê Nguyên Lực** trong 3 lượt (-40% hồi MP)."
+  },
+  {
+    "key": "SkillLoiChuongTamLoi",
+    "vi": "Chưởng Tâm Lôi",
+    "en": "Heart-Palm Thunder",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.83
+    },
+    "mp_cost": 50,
+    "cooldown": 3,
+    "base_dmg": 60,
+    "effects": [
+      "BuffTamLoiCong"
+    ],
+    "formation_key": null,
+    "description_vi": "Chưởng Tâm Lôi — pháp môn ngự lôi gần thân, sấm sét kết tụ giữa lòng bàn tay rồi phóng thẳng vào tim địch. Sát thương vừa phải (600 + 0.5·matk) nhưng **mỗi đòn cộng 1 tầng Tâm Lôi Cộng** lên bản thân (tối đa 5): mỗi tầng +50 Bạo Kích & +3% ST Lôi. Niệm khác hệ hoặc đánh thường thì tầng tan. Là chiêu xương sống cho vòng quay Loi đơn nguyên."
+  },
+  {
+    "key": "SkillDefTuLoiHoThan",
+    "vi": "Tử Lôi Hộ Thân",
+    "en": "Purple Thunder Body Guard",
+    "scroll_grade": 3,
+    "category": "defense",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 67,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "BuffTuLoiHoThan"
+    ],
+    "effect_overrides": {
+      "BuffTuLoiHoThan": {
+        "duration": 4,
+        "stat_bonus": {
+          "reflect_pct": 0.3
+        },
+        "_aegis": {
+          "on_hit_inflict": {
+            "debuff": "DebuffSocDien",
+            "chance": 0.4,
+            "duration": 3
+          }
+        }
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Tử Lôi Hộ Thân — tử lôi quấn quanh thân khai phát (4 lượt). Mỗi đòn đánh trúng bản thân: **phản 30% sát thương** trở lại attacker, và **40% cơ hội** chồng **1 tầng Sốc Điện** lên attacker (3 lượt)."
+  },
+  {
+    "key": "SkillDefCuuThienLoiGiap",
+    "vi": "Cửu Thiên Lôi Giáp",
+    "en": "Nine-Heavens Thunder Armor",
+    "scroll_grade": 3,
+    "category": "defense",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 93,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "effects": [
+      "BuffCuuThienLoiGiap"
+    ],
+    "effect_overrides": {
+      "BuffCuuThienLoiGiap": {
+        "duration": 4,
+        "_aegis": {
+          "on_hit_inflict": {
+            "debuff": "DebuffSocDien",
+            "chance": 1.0,
+            "duration": 3
+          },
+          "discharge": {
+            "element": "loi",
+            "base_dmg": 500,
+            "matk_scale": 0.5,
+            "log_emoji": "⚡",
+            "log_name": "Lôi Hồi Quang",
+            "cc": {
+              "key": "DebuffTeLiet",
+              "chance": 0.6,
+              "duration": 2
+            }
+          }
+        }
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Cửu Thiên Lôi Giáp — chín tầng lôi giáp quấn quanh thân (4 lượt). **Giảm 15% ST phải nhận**; **25% ST nhận vào** được dẫn qua kinh mạch hóa thành **MP hồi cho bản thân**; thêm **+3% hồi MP/lượt** — giải quyết bài toán MP nặng của lộ trình Lôi. Mỗi đòn nhận vào: **100% chồng 1 tầng Sốc Điện** lên attacker (3 lượt) — nuôi stack cho Ngũ Lôi/Lôi Đình mà không tốn lượt niệm. Khi giáp tan tự nhiên: phát nổ **Lôi Hồi Quang** lên đối thủ — gây ST Lôi (500 + 0.5·matk) + 60% Tê Liệt 1 lượt."
+  },
+  {
+    "key": "SkillDefLoiThanKhai",
+    "vi": "Lôi Thần Khải",
+    "en": "Thunder God Aegis",
+    "scroll_grade": 3,
+    "category": "defense",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 87,
+    "cooldown": 7,
+    "base_dmg": 0,
+    "effects": [
+      "BuffLoiThanKhai"
+    ],
+    "effect_overrides": {
+      "BuffLoiThanKhai": {
+        "duration": 4,
+        "_aegis": {
+          "shield_grant": {
+            "flat": 500,
+            "matk_scale": 4.0
+          },
+          "store_charge": {
+            "pct": 0.3,
+            "cap_matk_scale": 5.0
+          },
+          "discharge": {
+            "element": "loi",
+            "base_dmg": 600,
+            "matk_scale": 0.5,
+            "stored_mult": 1.5,
+            "stored_label": "Lôi Điện Trữ",
+            "log_emoji": "🌩️",
+            "log_name": "Lôi Thần Phán",
+            "cc": {
+              "key": "DebuffTeLiet",
+              "chance": 1.0,
+              "duration": 1
+            }
+          }
+        }
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Lôi Thần Khải — Thiên Lôi kết khải bao quanh thân (4 lượt). Khi niệm: triệu hồi **Lôi Khải Chắn** (Khiên = 500 + 4.0·matk, cap theo shield_cap của bản thân) làm tuyến phòng ngự đầu tiên. Trong lúc khải còn: **giảm 10% sát thương phải nhận**; mỗi đòn đánh vào thân, **30% sát thương thực sự bào** (cả Khiên lẫn HP) được nén thành **Lôi Điện Trữ** (cap = 5.0·matk). Khi khải tan tự nhiên: bùng nổ **Lôi Thần Phán** — phóng toàn bộ Lôi Điện Trữ ×1.5 + 600 + 0.5·matk lên đối thủ, kèm **100% Tê Liệt 1 lượt**. Càng tank nặng đòn → đòn phán càng đau."
+  },
+  {
+    "key": "SkillMovBonLoiThuat_R7",
+    "vi": "Bôn Lôi Thuật",
+    "en": "Galloping Thunder Technique",
+    "scroll_grade": 3,
+    "category": "movement",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 47,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "BuffBonLoiThuat"
+    ],
+    "effect_overrides": {
+      "BuffBonLoiThuat": {
+        "duration": 3
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Bôn Lôi Thuật — bộ pháp xông trận hệ Lôi, sấm sét cuốn thân lao thẳng vào địch. **Chủ động** (3 lượt): +30% Tốc. Mỗi đòn niệm hệ Lôi trong lúc kích hoạt: nếu địch mang **≥1 tầng Sốc Điện**, nuốt 1 tầng → đòn đó **+15% sát thương cuối**. Là chiêu khai chiến cho lộ trình tu Lôi tốc đánh — tiêu hao Sốc Điện đã chồng (từ Ngũ Lôi / Điện Ảnh / Cửu Thiên) thành sát thương dứt điểm thay vì phải đợi đủ 5 tầng cho Lôi Đình."
+  },
+  {
+    "key": "SkillMovLoiQuangDienAnh_R7",
+    "vi": "Lôi Quang Điện Ảnh",
+    "en": "Lightning-Light Electric Phantom",
+    "scroll_grade": 3,
+    "category": "movement",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 53,
+    "cooldown": 6,
+    "base_dmg": 0,
+    "effects": [
+      "BuffLoiQuangDienAnh"
+    ],
+    "effect_overrides": {
+      "BuffLoiQuangDienAnh": {
+        "duration": 3
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Lôi Quang Điện Ảnh — bộ pháp Lôi truyền kỳ, thân hoá điện ảnh lướt nhanh hơn tầm mắt. **Chủ động** (3 lượt): +30% Tốc + 300 Né Tránh. Mỗi lần né được đòn: phản đòn **Lôi Quang Phản Kích** (500 + 0.5·matk ST Lôi) + **40% cơ hội** đính Sốc Điện 3 lượt + **kéo dài thêm 1 lượt** bộ pháp (cap 6 lượt). Là bộ pháp xương sống cho lộ trình tu Lôi tốc-đánh — né càng nhiều, điện ảnh càng dày, vừa né đòn vừa nuôi stack Sốc Điện cho Ngũ Lôi/Lôi Đình."
+  },
+  {
+    "key": "SkillPassiveChanMenhLoiPhu",
+    "vi": "Chân Mệnh Lôi Phù",
+    "en": "True Destiny Thunder Talisman",
+    "scroll_grade": 3,
+    "category": "passive",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "revive_hp_pct": 0.15,
+    "nuke_base_dmg": 1500,
+    "nuke_matk_scale": 1.5,
+    "te_liet_chance": 1.0,
+    "te_liet_duration": 1,
+    "refresh_loi_stacks": 10,
+    "formation_key": null,
+    "description_vi": "Chân Mệnh Lôi Phù — **Bị động (luôn kích hoạt khi trang bị, 1 lần/trận)**: khi bản thân chịu đòn chí mạng (HP về 0), Lôi Phù khắc trên cốt mệnh tự bùng cháy — hồi sinh tức thì lên **15% HP tối đa**, **Tụ Lôi nạp đầy 10 tầng**, **mọi kỹ năng hệ Lôi khôi phục hồi chiêu**, và phóng **Lôi Phù Phản Phán** lên kẻ tấn công — gây ST Lôi (1500 + 1.5·matk) kèm **100% Tê Liệt 1 lượt**. Thiên mệnh chưa định, lôi phù chưa tan — kẻ đoạn mệnh ngươi sẽ phải nếm sấm sét báo ứng."
+  },
+  {
+    "key": "SkillPassiveTuLoiQuyet",
+    "vi": "Tụ Lôi Quyết",
+    "en": "Thunder-Gathering Art",
+    "scroll_grade": 3,
+    "category": "passive",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 0,
+    "aura": true,
+    "aura_targets": [
+      "self"
+    ],
+    "effects": [
+      "BuffTuLoiQuyet"
+    ],
+    "formation_key": null,
+    "effect_overrides": {
+      "BuffTuLoiQuyet": {
+        "duration": 999
+      }
+    },
+    "description_vi": "Tụ Lôi Quyết — **Bị động (luôn kích hoạt khi trang bị)**: mỗi lần niệm 1 kỹ năng hệ Lôi cộng dồn 1 tầng **Tụ Lôi** lên bản thân (tối đa 10). Mỗi tầng: **+2% Pháp Công + 2% sát thương Lôi**. Đạt 10 tầng: +20% Pháp Công và +20% ST Lôi. Niệm khác hệ hoặc đánh thường thì toàn bộ tầng tan. Là pháp môn nền tảng cho lộ trình tu lôi đơn nguyên — càng duy trì spam Lôi liên tục, lôi khí càng tích tụ."
+  },
+  {
+    "key": "SkillLoiTuCamNguc",
+    "vi": "Lôi Tù Cấm Ngục",
+    "en": "Thunder Prison",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.45
+    },
+    "mp_cost": 165,
+    "cooldown": 6,
+    "base_dmg": 320,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.6
+    },
+    "same_element_streak_scaling": {
+      "per_streak_base_dmg": 240,
+      "per_streak_element_pen_pct": 0.04,
+      "streak_cap": 5,
+      "guaranteed_shock_at": 3
+    },
+    "formation_key": null,
+    "description_vi": "Mỗi kỹ năng Lôi niệm liên tiếp (gãy khi niệm hệ khác) +240 ST nền + 4% xuyên Lôi cho đòn này (tối đa 5). Chuỗi ≥3: chắc chắn Sốc Điện."
+  },
+  {
+    "key": "SkillAtkLoi1",
+    "vi": "Lôi Kích",
+    "en": "Thunder Jolt",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.67
+    },
+    "mp_cost": 40,
+    "cooldown": 4,
+    "base_dmg": 95,
+    "effects": [],
+    "formation_key": null,
+    "description_vi": "Lôi Kích — một đòn lôi điện cơ bản, gây sát thương Lôi theo MATK."
+  },
+  {
+    "key": "SkillAtkLoi2Basic",
+    "vi": "Điện Mang Trảm",
+    "en": "Voltaic Slash",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.67
+    },
+    "mp_cost": 88,
+    "cooldown": 3,
+    "base_dmg": 235,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.45
+    },
+    "formation_key": null,
+    "description_vi": "Điện mang trảm — 45% chồng 1 tầng Sốc Điện, nuôi stack cho vòng quay Lôi."
+  },
+  {
+    "key": "SkillDefLoi1",
+    "vi": "Lôi Quang Hộ Thuẫn",
+    "en": "Spark Ward",
+    "scroll_grade": 1,
+    "category": "defense",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 5,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffLietDiem"
+    ],
+    "formation_key": null,
+    "description_vi": "Lôi quang hộ thuẫn — giảm 10% sát thương phải nhận."
+  },
+  {
+    "key": "SkillAtkLoiSocDien2",
+    "vi": "Tử Điện Song Phá",
+    "en": "Twin-Arc Surge",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.0
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 110,
+    "hit_count": 2,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.7
+    },
+    "formation_key": null,
+    "description_vi": "Hai tia điện liên tiếp — mỗi đòn 70% chồng 1 tầng Sốc Điện (kỳ vọng ~1.4 tầng/niệm)."
+  },
+  {
+    "key": "SkillAtkLoiSetDanh2",
+    "vi": "Lạc Lôi Phần",
+    "en": "Falling-Bolt Scorch",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 2.0
+    },
+    "mp_cost": 92,
+    "cooldown": 4,
+    "base_dmg": 250,
+    "effects": [
+      "DebuffSetDanh",
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSetDanh": 1.0,
+      "DebuffSocDien": 0.6
+    },
+    "formation_key": null,
+    "description_vi": "Sét giáng đốt cháy kinh mạch — áp Sét Đánh (DoT Lôi) + 60% Sốc Điện."
+  },
+  {
+    "key": "SkillAtkLoiQuaTaiCong",
+    "vi": "Quá Tải Lôi Bạo",
+    "en": "Overload Thunderburst",
+    "scroll_grade": 4,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 2.33
+    },
+    "mp_cost": 150,
+    "cooldown": 4,
+    "base_dmg": 420,
+    "effects": [
+      "DebuffSocDien",
+      "DebuffTeNguyenLuc"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 1.0,
+      "DebuffTeNguyenLuc": 1.0
+    },
+    "overload_recoil": {
+      "consume_target_shock_stacks": true,
+      "per_shock_stack_final_dmg_pct": 0.05,
+      "per_shock_stack_element_pen": 0.04,
+      "self_cooldown_lockout_turns": 2,
+      "lockout_scope": "loi"
+    },
+    "effect_overrides": {
+      "DebuffTeNguyenLuc": {
+        "duration": 3
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Quá Tải Lôi Bạo — tiêu hết tầng Sốc Điện trên địch: mỗi tầng +5% sát thương cuối và +4% xuyên Kháng Lôi cho đòn này. Đổi lại, mọi kỹ năng Lôi khác của người niệm bị khóa thêm 2 lượt hồi chiêu."
   }
 ]

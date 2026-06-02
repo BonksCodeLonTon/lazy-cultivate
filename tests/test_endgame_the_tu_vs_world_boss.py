@@ -459,13 +459,15 @@ def test_endgame_the_tu_oneshots_r9_dungeon_bosses():
             f"min_hp={min_hp*100:>5.1f}%"
         )
 
-    # If a maxed Thể Tu is finishing dungeon bosses in <5 turns with >90% HP,
-    # the fight is a cutscene — flag with an assert that triggers on tighter
-    # fights (>= 5 turns avg or < 90 % HP), so a balance buff on the boss
-    # side would be noticed.
+    # The Thể Tu still clears every dungeon boss at full HP — the fight is a
+    # cutscene. The turns bound was relaxed 8 → 13 after the Season-2 damage
+    # reshape lowered per-cast damage (avg_turns drifted to ~9.7 while wins
+    # stayed 20/20 at 100% HP — a snapshot drift, not a real toughening). The
+    # hp/win-style guards stay tight so a genuine boss buff (a loss or an HP
+    # drop) would still trip this. Update the snapshot only on confirmed drift.
     avg_turns_all = statistics.mean(r[1] for r in rows if r[1] == r[1])
     avg_hp_all = statistics.mean(r[2] for r in rows if r[2] == r[2])
-    assert avg_turns_all < 8 and avg_hp_all > 0.80, (
+    assert avg_turns_all < 13 and avg_hp_all > 0.80, (
         f"Endgame Thể Tu dungeon-boss sweep toughened up: "
         f"avg_turns={avg_turns_all:.1f}, avg_hp={avg_hp_all*100:.1f}% — "
         f"bosses may now be meaningful; update this snapshot."

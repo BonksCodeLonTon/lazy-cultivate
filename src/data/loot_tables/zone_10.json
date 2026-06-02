@@ -141,6 +141,18 @@
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone10_mat3"
+    },
+    {
+      "item_key": "MasteryDaoVanTinh",
+      "weight": 25000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MasteryDinhDaoChau",
+      "weight": 25000,
+      "qty_min": 1,
+      "qty_max": 1
     }
   ]
 }

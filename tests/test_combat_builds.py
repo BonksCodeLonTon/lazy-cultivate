@@ -212,7 +212,7 @@ def test_mana_gains_mp_leech_and_stack_accum():
 
 def test_burst_mana_consumes_stacks_and_damages():
     actor = make_combatant("a", mp_max=500)
-    actor.add_mana_stack(4)
+    actor.add_stack("mana", 4)
     target = make_combatant("t", hp=1_000, hp_max=1_000)
     session = make_session(actor, target)
     session._burst_mana_stacks(actor, target, {"burst_per_mana_stack_mult": 0.1})

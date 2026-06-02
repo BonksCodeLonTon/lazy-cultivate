@@ -1,0 +1,76 @@
+[
+  {
+    "key": "DebuffTeLiet",
+    "vi": "Tê Liệt",
+    "en": "Paralysis",
+    "kind": "cc",
+    "description_vi": "Cơ thể tê liệt, 50% mất lượt.",
+    "skip_turn_chance": 0.5,
+    "emoji": "⚡",
+    "duration": 2
+  },
+  {
+    "key": "DebuffDongBang",
+    "vi": "Đóng Băng",
+    "en": "Frozen",
+    "kind": "cc",
+    "description_vi": "Bị đông cứng, mất lượt hành động.",
+    "skips_turn": true,
+    "emoji": "🧊",
+    "duration": 2
+  },
+  {
+    "key": "DebuffCuonBay",
+    "vi": "Cuốn Bay",
+    "en": "Knock Up",
+    "kind": "cc",
+    "description_vi": "Bị cuốn bay lên không trung — mất lượt và chịu +8% sát thương trong lúc lơ lửng; khi rơi xuống nhận đòn Ngã Xuống bằng 4% HP tối đa.",
+    "skips_turn": true,
+    "stat_bonus": {
+      "final_dmg_taken_bonus": 0.08
+    },
+    "expire_dmg_pct_hp_max": 0.04,
+    "expire_dmg_element": "phong",
+    "emoji": "💨",
+    "duration": 1
+  },
+  {
+    "key": "CCMuted",
+    "vi": "Câm Lặng",
+    "en": "Silence",
+    "kind": "cc",
+    "description_vi": "Bị câm lặng, không thể sử dụng kỹ năng.",
+    "prevents_skills": true,
+    "emoji": "🔇",
+    "duration": 2
+  },
+  {
+    "key": "CCStun",
+    "vi": "Choáng",
+    "en": "Stun",
+    "kind": "cc",
+    "description_vi": "Bị choáng, mất lượt hành động.",
+    "skips_turn": true,
+    "emoji": "💫",
+    "duration": 1
+  },
+  {
+    "key": "CCInterrupt",
+    "vi": "Ngắt Kỹ Năng",
+    "en": "Interrupt",
+    "kind": "cc",
+    "description_vi": "Kỹ năng bị ngắt, lượt này không thể sử dụng kỹ năng.",
+    "prevents_skills": true,
+    "emoji": "⛔",
+    "duration": 1
+  },
+  {
+    "key": "CCLockBreak",
+    "vi": "Khóa Đột Phá",
+    "en": "Breakthrough Lock",
+    "kind": "cc",
+    "description_vi": "Đột phá bị khóa bởi trạng thái khống chế.",
+    "emoji": "🔒",
+    "duration": 3
+  }
+]

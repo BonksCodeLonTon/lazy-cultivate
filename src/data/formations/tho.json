@@ -1,5 +1,152 @@
 [
   {
+    "key": "ThoNguyenHoPhapTran",
+    "vi": "Thổ Nguyên Hộ Pháp Trận",
+    "en": "Earth-Origin Dharma-Protector Formation",
+    "element": "tho",
+    "base_stat_bonus": {
+      "mp_pct": 0.02
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "def_pct": 0.05,
+        "def_applies_to_elemental_pct": 0.05,
+        "note": "Sơ Khai Hộ Pháp — +5% Phòng Ngự, mở rộng giáp lên ST nguyên tố thêm +5% (lũy kế: +15% Phòng / 15% mở rộng)"
+      },
+      "3": {
+        "def_pct": 0.08,
+        "def_applies_to_elemental_pct": 0.05,
+        "note": "Kiên Cố Hộ Pháp — +8% Phòng Ngự, mở rộng giáp thêm +5% (lũy kế: +23% Phòng / 20% mở rộng)"
+      },
+      "5": {
+        "def_pct": 0.12,
+        "def_applies_to_elemental_pct": 0.1,
+        "note": "Thịnh Vượng Hộ Pháp — +12% Phòng Ngự, mở rộng giáp thêm +10% (lũy kế: +35% Phòng / 30% mở rộng)"
+      },
+      "7": {
+        "def_pct": 0.15,
+        "def_applies_to_elemental_pct": 0.1,
+        "note": "Vô Song Hộ Pháp — +15% Phòng Ngự, mở rộng giáp thêm +10% (lũy kế: +50% Phòng / 40% mở rộng)"
+      },
+      "10": {
+        "def_pct": 0.15,
+        "def_applies_to_elemental_pct": 0.2,
+        "note": "Tuyệt Đỉnh Hộ Pháp — +15% Phòng Ngự, mở rộng giáp thêm +20% (lũy kế: +65% Phòng / 60% mở rộng — 60% công thức giáp áp dụng cho mọi sát thương nguyên tố)"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmThoNguyenHoPhapTran",
+      "vi": "Thổ Nguyên Hộ Pháp Trận Thức",
+      "en": "Earth-Origin Dharma-Protector Formation Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "tho",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 0,
+      "aura": true,
+      "aura_targets": [
+        "self",
+        "opponent"
+      ],
+      "effects": [
+        "BuffThoNguyenHoPhap",
+        "DebuffThoNguyenTranMa"
+      ],
+      "effect_overrides": {
+        "BuffThoNguyenHoPhap": {
+          "duration": 999
+        },
+        "DebuffThoNguyenTranMa": {
+          "duration": 999
+        }
+      },
+      "reserved_mp_pct": 0.22,
+      "description_vi": "Thổ Nguyên Hộ Pháp Trận — kích hoạt đầu trận, giữ trận đến khi tan. Bản thân nhận aura Hộ Pháp: **công thức giảm sát thương từ giáp cũng áp dụng cho sát thương nguyên tố** ở mức gốc **10%** (riêng biệt với kháng nguyên tố — cả hai cùng cộng dồn theo phép nhân). Cộng thêm +10% Phòng Ngự và mở rộng tăng theo từng tầng ngọc (tối đa +65% Phòng / 60% mở rộng ở Tuyệt Đỉnh). Đối thủ bị **Thổ Nguyên Trấn Ma**: -8% sát thương gây ra, -200 Bạo Sát. Chi phí duy trì: 22% MP trấn giữ."
+    }
+  },
+  {
+    "key": "HauThoPhongMaTran",
+    "vi": "Hậu Thổ Phong Ma Trận",
+    "en": "Earth-Empress Demon-Sealing Formation",
+    "element": "tho",
+    "base_stat_bonus": {
+      "hp_pct": 0.05,
+      "mp_pct": 0.02
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "hp_pct": 0.04,
+        "bonus_base_dmg_per_self_hp_pct": 0.002,
+        "note": "Sơ Khai Phong Ma — +4% HP tối đa, mỗi đòn cộng thêm +0.2% HP làm ST gốc (lũy kế: 0.7% HP — bao gồm 0.5% aura)"
+      },
+      "3": {
+        "hp_pct": 0.1,
+        "bonus_base_dmg_per_self_hp_pct": 0.003,
+        "bonus_base_dmg_per_self_shield_pct": 0.003,
+        "note": "Kiên Cố Phong Ma — +10% HP tối đa, mỗi đòn cộng thêm +0.3% HP & +0.3% Khiên làm ST gốc (lũy kế: 1% HP / 0.8% Khiên)"
+      },
+      "5": {
+        "hp_pct": 0.2,
+        "bonus_base_dmg_per_self_hp_pct": 0.005,
+        "bonus_base_dmg_per_self_shield_pct": 0.005,
+        "bonus_base_dmg_per_self_def_pct": 0.005,
+        "note": "Thịnh Vượng Phong Ma — +20% HP tối đa, mỗi đòn cộng thêm +0.5% mỗi nguồn (HP/Khiên/Phòng) làm ST gốc (lũy kế: 1.5% HP / 1.3% Khiên / 1% Phòng)"
+      },
+      "7": {
+        "hp_pct": 0.32,
+        "res_all": 0.08,
+        "bonus_base_dmg_per_self_hp_pct": 0.003,
+        "bonus_base_dmg_per_self_shield_pct": 0.003,
+        "bonus_base_dmg_per_self_def_pct": 0.003,
+        "note": "Vô Song Phong Ma — +32% HP tối đa, +8% kháng toàn phần; mỗi đòn cộng thêm +0.3% mỗi nguồn (HP/Khiên/Phòng) làm ST gốc (lũy kế: 1.8% HP / 1.6% Khiên / 1.3% Phòng)"
+      },
+      "10": {
+        "hp_pct": 0.5,
+        "res_all": 0.15,
+        "bonus_base_dmg_per_self_hp_pct": 0.004,
+        "bonus_base_dmg_per_self_shield_pct": 0.004,
+        "bonus_base_dmg_per_self_def_pct": 0.004,
+        "note": "Tuyệt Đỉnh Phong Ma — +50% HP tối đa, +15% kháng toàn phần; mỗi đòn cộng thêm +0.4% mỗi nguồn (HP/Khiên/Phòng) làm ST gốc (lũy kế: 2.2% HP / 2% Khiên / 1.7% Phòng — bao gồm 0.5% từ aura Hậu Thổ)"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmHauThoPhongMaTran",
+      "vi": "Hậu Thổ Phong Ma Trận Thức",
+      "en": "Earth-Empress Demon-Sealing Formation Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "tho",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 0,
+      "aura": true,
+      "aura_targets": [
+        "self"
+      ],
+      "effects": [
+        "BuffHauThoPhongMa"
+      ],
+      "effect_overrides": {
+        "BuffHauThoPhongMa": {
+          "duration": 999
+        }
+      },
+      "reserved_mp_pct": 0.2,
+      "description_vi": "Hậu Thổ Phong Ma Trận — kích hoạt đầu trận, giữ trận đến khi tan. Bản thân nhận aura Hậu Thổ Phong Ma: mỗi đòn tấn công cộng thêm **0.5% HP tối đa + 0.5% Khiên hiện tại + 0.5% Phòng Ngự** làm sát thương gốc (cộng dồn với từng tầng ngọc, tối đa ~2.2% HP / 2% Khiên / 1.7% Phòng ở Tuyệt Đỉnh). Càng dày càng nặng tay — bộ trận của những thân tu đắp núi. Chi phí duy trì: 20% MP trấn giữ."
+    }
+  },
+  {
     "key": "NhatNguyenTho",
     "vi": "Nhất Nguyên Thổ Trận",
     "en": "One Origin Earth Formation",
@@ -43,12 +190,12 @@
       "element": "tho",
       "attack_type": "physical",
       "dmg_scale": {
-        "atk": 1.0,
+        "atk": 1.5,
         "matk": 0.0
       },
-      "mp_cost": 49,
+      "mp_cost": 16,
       "cooldown": 3,
-      "base_dmg": 300,
+      "base_dmg": 30,
       "effects": [
         "DebuffLunDat"
       ],

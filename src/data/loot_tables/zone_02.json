@@ -149,6 +149,12 @@
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone2_mat1"
+    },
+    {
+      "item_key": "MasteryLinhNgoPhu",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
     }
   ]
 }

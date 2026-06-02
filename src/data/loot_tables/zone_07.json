@@ -232,6 +232,24 @@
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone7_mat3"
+    },
+    {
+      "item_key": "MasteryTamDacNgoc",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MasteryHoDaoPhu",
+      "weight": 30000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MasteryDinhDaoChau",
+      "weight": 20000,
+      "qty_min": 1,
+      "qty_max": 1
     }
   ]
 }

@@ -1,5 +1,157 @@
 [
   {
+    "key": "CuongPhongDaiTran",
+    "vi": "Cuồng Phong Đại Trận",
+    "en": "Hurricane Combo Formation",
+    "element": "phong",
+    "base_stat_bonus": {
+      "hp_pct": 0.03,
+      "mp_pct": 0.05,
+      "evasion_rating": 80,
+      "spd_pct": 0.05
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "spd_pct": 0.03,
+        "crit_rating": 80,
+        "note": "Sơ Khai Cuồng Phong"
+      },
+      "3": {
+        "spd_pct": 0.05,
+        "crit_rating": 150,
+        "evasion_rating": 100,
+        "note": "Kiên Cố Cuồng Phong"
+      },
+      "5": {
+        "spd_pct": 0.08,
+        "crit_rating": 250,
+        "evasion_rating": 200,
+        "dmg_bonus_phong": 0.08,
+        "note": "Thịnh Vượng Cuồng Phong"
+      },
+      "7": {
+        "spd_pct": 0.12,
+        "crit_rating": 400,
+        "evasion_rating": 300,
+        "dmg_bonus_phong": 0.15,
+        "element_pen": {
+          "phong": 0.08
+        },
+        "note": "Vô Song Cuồng Phong"
+      },
+      "10": {
+        "spd_pct": 0.2,
+        "crit_rating": 600,
+        "evasion_rating": 450,
+        "dmg_bonus_phong": 0.25,
+        "element_pen": {
+          "phong": 0.15
+        },
+        "note": "Tuyệt Đỉnh Cuồng Phong"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmCuongPhongDaiTran",
+      "vi": "Cuồng Phong Đại Trận Thức",
+      "en": "Hurricane Combo Formation Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "phong",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 0,
+      "aura": true,
+      "aura_targets": [
+        "self"
+      ],
+      "effects": [
+        "BuffCuongPhongDaiTran"
+      ],
+      "effect_overrides": {
+        "BuffCuongPhongDaiTran": {
+          "duration": 999
+        }
+      },
+      "reserved_mp_pct": 0.25,
+      "description_vi": "Cuồng Phong Đại Trận — kích hoạt đầu trận. Mỗi đòn Phong liên tiếp cộng dồn 1 chuỗi Cuồng Phong (tối đa 5): mỗi chuỗi cộng +8% sát thương Phong và +50 Bạo Kích. Niệm khác hệ hoặc bị câm (đánh thường) phá chuỗi. Mỗi 5 đòn Phong tích lũy tự bùng nổ thêm 1 đòn Cuồng Phong Bùng Nổ (2500 + 100% CÔNG + 2× TĐ, áp tầng Phong Nhận Thực). Chi phí duy trì: 15% MP trấn giữ."
+    }
+  },
+  {
+    "key": "ThienPhongDaiTran",
+    "vi": "Thiên Phong Đại Trận",
+    "en": "Heavenly Wind Grand Formation",
+    "element": "phong",
+    "base_stat_bonus": {
+      "hp_pct": 0.03,
+      "mp_pct": 0.05,
+      "evasion_rating": 100,
+      "spd_pct": 0.05
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "formation_skill_dmg_bonus": 0.05,
+        "evasion_rating": 80,
+        "note": "Sơ Khai Thiên Phong"
+      },
+      "3": {
+        "formation_skill_dmg_bonus": 0.12,
+        "evasion_rating": 150,
+        "note": "Kiên Cố Thiên Phong (+12% ST bồi sát, +150 Né)"
+      },
+      "5": {
+        "formation_skill_dmg_bonus": 0.22,
+        "evasion_rating": 250,
+        "note": "Thịnh Vượng Thiên Phong (+22% ST bồi sát, +250 Né)"
+      },
+      "7": {
+        "formation_skill_dmg_bonus": 0.35,
+        "evasion_rating": 400,
+        "element_pen": {
+          "phong": 0.1
+        },
+        "note": "Vô Song Thiên Phong (+35% ST bồi sát, +400 Né, +10% xuyên Phong)"
+      },
+      "10": {
+        "formation_skill_dmg_bonus": 0.55,
+        "evasion_rating": 600,
+        "element_pen": {
+          "phong": 0.15
+        },
+        "formation_echo_bonus": 1,
+        "note": "Tuyệt Đỉnh Thiên Phong (+55% ST bồi sát, +600 Né, +15% xuyên Phong, +1 đòn bồi sát/cú niệm)"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmThienPhongDaiTran",
+      "vi": "Thiên Phong Đại Trận Thức",
+      "en": "Heavenly Wind Grand Formation Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "phong",
+      "attack_type": "physical",
+      "dmg_scale": {
+        "atk": 0.525,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 50,
+      "base_dmg_caster_scaling": {
+        "evasion_rating": 0.45
+      },
+      "per_hit_followup": true,
+      "last_hit_only": true,
+      "effects": [],
+      "reserved_mp_pct": 0.25,
+      "description_vi": "Thiên Phong Đại Trận — trận pháp thụ động: sau mỗi cú niệm chủ trận (kể cả đa kích) kích hoạt **một đòn Phong bồi sát**. Sát thương cơ bản = **500 + 0.45 × Né Tránh + 35% CÔNG**, thuộc tính Phong. 10 ngọc thêm +1 đòn bồi sát. Chi phí duy trì: 20% MP trấn giữ."
+    }
+  },
+  {
     "key": "NhatNguyenPhong",
     "vi": "Nhất Nguyên Phong Trận",
     "en": "One Origin Wind Formation",
@@ -77,12 +229,12 @@
       "element": "phong",
       "attack_type": "physical",
       "dmg_scale": {
-        "atk": 1.0,
+        "atk": 1.5,
         "matk": 0.0
       },
-      "mp_cost": 44,
+      "mp_cost": 15,
       "cooldown": 3,
-      "base_dmg": 285,
+      "base_dmg": 28,
       "effects": [
         "DebuffAnPhong",
         "DebuffLamCham"
@@ -99,7 +251,7 @@
           }
         }
       },
-      "reserved_mp_pct": 0.06
+      "reserved_mp_pct": 0.25
     }
   }
 ]

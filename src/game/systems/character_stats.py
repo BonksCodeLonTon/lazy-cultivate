@@ -91,14 +91,13 @@ class CombatStats:
     crit_dmg_rating: int
     evasion_rating: int
     crit_res_rating: int
-    # Counter to the defender's evasion_rating — see engine/damage/evasion.py.
     accuracy_rating: int
-    final_dmg_bonus: float      # includes realm_power_bonus
+    final_dmg_bonus: float
     final_dmg_reduce: float
     hp_regen_pct: float
-    hp_regen_flat: int         # flat HP per turn (stacks with pct regen)
+    hp_regen_flat: int
     mp_regen_pct: float
-    mp_regen_flat: int         # flat MP per turn (stacks with pct regen)
+    mp_regen_flat: int
     heal_pct: float
     cooldown_reduce: float
     burn_on_hit_pct: float
@@ -108,8 +107,9 @@ class CombatStats:
     poison_immunity: bool
     debuff_immune_pct: float
     # ── Fire-DoT build ────────────────────────────────────────────────────
-    # Stack cap routed through ``Combatant.stack_cap_bonuses`` (gear adds
-    # ``burn_stack_cap_bonus``); ``effective_stack_cap`` folds it on top of
+    # Stack cap routed through ``Combatant.stack_cap_bonuses`` (gear /
+    # constitutions / linh_can write ``dot_stack_cap_bonus: {burn: N}``);
+    # ``effective_stack_cap`` folds the resolved value on top of
     # ``EffectMeta.stack_cap``.
     burn_per_stack_pct: float = _BURN_PCT_DEFAULT
     bonus_dmg_vs_burn: float = 0.0
@@ -213,8 +213,8 @@ class CombatStats:
     shock_on_hit_pct: float = 0.0
     turn_steal_pct: float = 0.0
     # ── Poison stacks (Mộc / Âm) ──────────────────────────────────────────
-    # Stack cap routed through ``stack_cap_bonuses`` (gear adds
-    # ``poison_stack_cap_bonus``).
+    # Stack cap routed through ``stack_cap_bonuses`` (gear / constitutions /
+    # linh_can write ``dot_stack_cap_bonus: {poison: N}``).
     poison_per_stack_pct: float = _POISON_PCT_DEFAULT
     # ── Phong (wind/evasion/mark) build ───────────────────────────────────
     mark_on_hit_pct: float = 0.0
@@ -274,11 +274,32 @@ class CombatStats:
     fortify_per_turn_pct: float = 0.0
     fortify_stack_cap: int = 0
     fortify_post_hit_dr_pct: float = 0.0
+    # Hộ Thể Kiếm Cương passive — per-Kiếm-Tâm-stack damage reduction. Folds
+    # into ``effective_damage_reduction`` alongside fortify. Default 0 so
+    # players without the passive see no DR from sword_heart_stacks.
+    sword_heart_per_stack_dr: float = 0.0
+    # Kiếm Tâm Thông Minh passive — multiplicative damage amp on "Vạn Kiếm"
+    # summons (both per-turn swing and the Quy Tông consume burst).
+    sword_summon_dmg_amp: float = 0.0
     # Loot economy passives (constitutions / equipment) applied inside
     # CombatSession._roll_loot — additive on top of the session's baseline
     # loot_qty_multiplier (elite roll, dungeon grade) and loot_luck_pct.
     loot_qty_bonus: float = 0.0
     loot_luck_bonus: float = 0.0
+    # Hậu Thổ Phong Ma Trận — tank-conversion lane percents accumulated from
+    # the formation's gem ladder. Read alongside aggregated effect stats by
+    # ``_hau_tho_tank_conversion_rider`` so the formation's gem progression
+    # directly boosts the bonus base_dmg per attack. Permanent (formation
+    # bonuses fold into here at session start) — distinct from the active-
+    # effect ``BuffHauThoPhongMa.stat_bonus`` lanes which the rider also reads.
+    bonus_base_dmg_per_self_hp_pct: float = 0.0
+    bonus_base_dmg_per_self_shield_pct: float = 0.0
+    bonus_base_dmg_per_self_def_pct: float = 0.0
+    # Thổ Nguyên Hộ Pháp Trận — armor-extension lane. Permanent contribution
+    # from the formation's gem ladder, layered on top of the buff's
+    # ``def_applies_to_elemental_pct`` stat_bonus. Read by ``build_defense_stats``
+    # and applied in the damage pipeline (``apply_armor_to_elemental``).
+    def_applies_to_elemental_pct: float = 0.0
     # Generic per-element bonus dicts (constitutions / equipment).
     damage_taken_convert_pct: dict[str, float] = field(default_factory=dict)
     element_dmg_bonus: dict[str, float] = field(default_factory=dict)
@@ -297,6 +318,40 @@ class CombatStats:
     # the threshold-tier magnitudes that get snapshotted onto the target on
     # apply; ``followup_skill_key`` is the chain target at full Cửu Khúc.
     cuu_khuc: dict = field(default_factory=dict)
+    # Vạn Kiếp Lôi Ngục Trận tunables — single dict (mirrors ``cuu_khuc``).
+    # Sub-keys (all optional, all numeric so ``_merge_bonus_dict`` sums across
+    # base + gem tiers): ``per_cast_bonus`` (extra Lôi Kiếp Ấn stacks per
+    # formation tick on top of the always-1 base), ``bolt_base_dmg`` /
+    # ``bolt_matk_scale`` / ``bolt_te_liet_chance`` (per-milestone Lôi Kiếp
+    # Phán bolt tuning), ``capstone_base_floor`` / ``capstone_base_per_stack``
+    # / ``capstone_matk_floor`` / ``capstone_matk_per_stack`` /
+    # ``capstone_te_liet_chance`` (10-stack Vạn Kiếp Phán capstone tuning),
+    # ``capstone_refund_mp_pct`` (Tuyệt Đỉnh-tier MP refund on capstone).
+    loi_kiep_an: dict = field(default_factory=dict)
+    # Thiên Lôi Tru Tà Trận tunables — single dict. Sub-keys (all optional,
+    # all numeric so ``_merge_bonus_dict`` sums across base + gem tiers):
+    # ``per_debuff_amp`` (dmg_taken_bonus_loi added to DebuffThienLoiAn per
+    # distinct debuff on target each tick), ``debuff_count_cap`` (clamps the
+    # scaling at this many debuffs), ``capstone_threshold`` (debuff count
+    # that promotes Phán → Đại Phán), ``dai_phan_cd`` (turns gating Đại
+    # Phán reuse), ``dai_phan_buff_strip`` (buffs ripped per capstone),
+    # ``low_hp_threshold_pct`` + ``low_hp_amp_pct`` (extra dmg when target's
+    # HP% is below the threshold). ``bolt_*`` / ``capstone_*`` base + scale
+    # numbers tune the strike payloads on the same dict.
+    thien_loi_tru_ta: dict = field(default_factory=dict)
+    # Thái Cực Âm Dương Lôi Đại Trận tunables — single dict (mirrors the
+    # other formation dicts). Carries phase payload tunables (Dương + Âm),
+    # Thái Cực fusion damage / CD / HP-pct scaling, and the 10-gem
+    # ``dual_phase_fire`` flag that collapses the rotation so both poles
+    # emit every tick. Gem-tier deltas merge additively via _merge_bonus_dict
+    # (and the bool dual_phase_fire is last-write-wins).
+    thai_cuc_am_duong_loi: dict = field(default_factory=dict)
+    # Cửu Long Thần Hỏa Trận tunables — single dict (mirrors ``cuu_khuc``).
+    # Sub-keys (all optional): ``dmg_pct_bonus`` (extra dragon-tick damage),
+    # ``crit_rating`` / ``crit_dmg_rating`` (per-tick crit on dragons),
+    # ``stun_chance`` (per-hit CCStun roll), ``finisher_pct`` (% of damage
+    # dealt during the batch fired as a burst when the last dragon expires).
+    cuu_long: dict = field(default_factory=dict)
     # Xích Luyện Tỏa Hồn Trận tunables — extra stat_bonus deltas layered on
     # top of DebuffXichLuyenToaHon's base values at apply time. Mirrors
     # ``element_pen`` / ``dmg_taken``: JSON declares
@@ -622,7 +677,15 @@ def compute_combat_stats(
     # Equipment can contribute flat spd_bonus too (e.g. boot affixes).
     _equip_spd_bonus = int((equip_stats or {}).get("spd_bonus", 0))
     spd_base  = char.stats.spd + bonuses.get("spd_bonus", 0) + _equip_spd_bonus
-    spd_final = round(spd_base * (1.0 + bonuses.get("spd_pct", 0.0)))
+    # ``spd_pct`` aggregates the constitution/formation/linh_can layer
+    # (``bonuses``) and any equipment/skill-passive layer (``equip_stats``) —
+    # equipped passives like Vạn Lý Truy Phong's +20 % spd land in equip_stats
+    # via ``compute_skill_passive_stats`` and need this read to stick.
+    _spd_pct_total = (
+        float(bonuses.get("spd_pct", 0.0))
+        + float((equip_stats or {}).get("spd_pct", 0.0))
+    )
+    spd_final = round(spd_base * (1.0 + _spd_pct_total))
 
     # ── Combat ratings ────────────────────────────────────────────────────────
     crit_rating     = char.stats.crit_rating     + bonuses.get("crit_rating", 0)
@@ -747,10 +810,11 @@ def compute_combat_stats(
     soul_drain_on_hit_pct        = float(bonuses.get("soul_drain_on_hit_pct", 0.0))
     stat_steal_on_hit_pct        = float(bonuses.get("stat_steal_on_hit_pct", 0.0))
     # DoT-amplifier fields (cross-build). Per-kind amps consolidate into one
-    # dict (mirrors element_pen / dmg_taken); flat JSON keys
-    # ``burn_dmg_bonus`` / ``bleed_dmg_bonus`` / ``poison_dmg_bonus`` stay
-    # the data-side convention so equipment affixes / linh_can passives /
-    # constitution display strings don't need migration.
+    # dict (mirrors element_pen / dmg_taken). Most authored data declares
+    # ``dot_dmg_bonus_by_kind: {<kind>: X}`` (denested into flat keys at the
+    # function entrance); equipment affix templates remain the one source
+    # that still emits flat ``<kind>_dmg_bonus`` keys directly because
+    # rolled-stat instances are stored that way in player inventories.
     dot_dmg_bonus                = float(bonuses.get("dot_dmg_bonus", 0.0))
     dot_dmg_bonus_by_kind: dict[str, float] = {}
     for _kind in ("burn", "bleed", "poison"):
@@ -768,8 +832,14 @@ def compute_combat_stats(
     fortify_per_turn_pct         = float(bonuses.get("fortify_per_turn_pct", 0.0))
     fortify_stack_cap            = int(bonuses.get("fortify_stack_cap", 0))
     fortify_post_hit_dr_pct      = float(bonuses.get("fortify_post_hit_dr_pct", 0.0))
+    sword_heart_per_stack_dr     = float(bonuses.get("sword_heart_per_stack_dr", 0.0))
+    sword_summon_dmg_amp         = float(bonuses.get("sword_summon_dmg_amp", 0.0))
     loot_qty_bonus               = float(bonuses.get("loot_qty_bonus", 0.0))
     loot_luck_bonus              = float(bonuses.get("loot_luck_bonus", 0.0))
+    bonus_base_dmg_per_self_hp_pct     = float(bonuses.get("bonus_base_dmg_per_self_hp_pct", 0.0))
+    bonus_base_dmg_per_self_shield_pct = float(bonuses.get("bonus_base_dmg_per_self_shield_pct", 0.0))
+    bonus_base_dmg_per_self_def_pct    = float(bonuses.get("bonus_base_dmg_per_self_def_pct", 0.0))
+    def_applies_to_elemental_pct       = float(bonuses.get("def_applies_to_elemental_pct", 0.0))
     damage_taken_convert_pct: dict[str, float] = dict(bonuses.get("damage_taken_convert_pct", {}) or {})
     element_dmg_bonus: dict[str, float] = dict(bonuses.get("element_dmg_bonus", {}) or {})
     # Per-element max-res cap lifters. Two JSON shapes are accepted:
@@ -800,6 +870,84 @@ def compute_combat_stats(
         "res_shred_pct":      max(0.0, float(_ck_raw.get("res_shred_pct", 0.0))),
         "followup_pct":       max(0.0, min(1.0, float(_ck_raw.get("followup_pct", 0.0)))),
         "followup_skill_key": str(_ck_raw.get("followup_skill_key", "")),
+    }
+    # Vạn Kiếp Lôi Ngục Trận — single dict pulled from bonuses. Every entry
+    # is non-negative (clamps any misconfigured negative gem stack to 0) so
+    # the formation can't end up healing the target or refunding > MP_max.
+    _vk_raw = bonuses.get("loi_kiep_an") or {}
+    loi_kiep_an: dict = {
+        "per_cast_bonus":           max(0, int(_vk_raw.get("per_cast_bonus", 0))),
+        "bolt_base_dmg":            max(0, int(_vk_raw.get("bolt_base_dmg", 0))),
+        "bolt_matk_scale":          max(0.0, float(_vk_raw.get("bolt_matk_scale", 0.0))),
+        "bolt_te_liet_chance":      max(0.0, min(1.0, float(_vk_raw.get("bolt_te_liet_chance", 0.0)))),
+        "capstone_base_floor":      max(0, int(_vk_raw.get("capstone_base_floor", 0))),
+        "capstone_base_per_stack":  max(0, int(_vk_raw.get("capstone_base_per_stack", 0))),
+        "capstone_matk_floor":      max(0.0, float(_vk_raw.get("capstone_matk_floor", 0.0))),
+        "capstone_matk_per_stack":  max(0.0, float(_vk_raw.get("capstone_matk_per_stack", 0.0))),
+        "capstone_te_liet_chance":  max(0.0, min(1.0, float(_vk_raw.get("capstone_te_liet_chance", 0.0)))),
+        "capstone_refund_mp_pct":   max(0.0, min(1.0, float(_vk_raw.get("capstone_refund_mp_pct", 0.0)))),
+    }
+    # Thiên Lôi Tru Tà Trận — single dict pulled from bonuses. Clamping
+    # mirrors the loi_kiep_an block: counts/cooldowns are non-negative ints,
+    # pcts are clamped to [0, 1] so misconfigured gems can't push past 100%.
+    _tt_raw = bonuses.get("thien_loi_tru_ta") or {}
+    thien_loi_tru_ta: dict = {
+        "per_debuff_amp":         max(0.0, float(_tt_raw.get("per_debuff_amp", 0.0))),
+        "debuff_count_cap":       max(0, int(_tt_raw.get("debuff_count_cap", 8))),
+        "capstone_threshold":     max(1, int(_tt_raw.get("capstone_threshold", 5))),
+        "dai_phan_cd":            max(0, int(_tt_raw.get("dai_phan_cd", 7))),
+        "dai_phan_buff_strip":    max(0, int(_tt_raw.get("dai_phan_buff_strip", 1))),
+        "low_hp_threshold_pct":   max(0.0, min(1.0, float(_tt_raw.get("low_hp_threshold_pct", 0.0)))),
+        "low_hp_amp_pct":         max(0.0, float(_tt_raw.get("low_hp_amp_pct", 0.0))),
+        "bolt_base":              max(0, int(_tt_raw.get("bolt_base", 0))),
+        "bolt_base_per_debuff":   max(0, int(_tt_raw.get("bolt_base_per_debuff", 0))),
+        "bolt_matk_scale":        max(0.0, float(_tt_raw.get("bolt_matk_scale", 0.0))),
+        "bolt_matk_per_debuff":   max(0.0, float(_tt_raw.get("bolt_matk_per_debuff", 0.0))),
+        "bolt_te_liet_chance_floor":     max(0.0, min(1.0, float(_tt_raw.get("bolt_te_liet_chance_floor", 0.0)))),
+        "bolt_te_liet_chance_per_debuff": max(0.0, float(_tt_raw.get("bolt_te_liet_chance_per_debuff", 0.0))),
+        "capstone_base":          max(0, int(_tt_raw.get("capstone_base", 0))),
+        "capstone_base_per_debuff": max(0, int(_tt_raw.get("capstone_base_per_debuff", 0))),
+        "capstone_matk_scale":    max(0.0, float(_tt_raw.get("capstone_matk_scale", 0.0))),
+        "capstone_matk_per_debuff": max(0.0, float(_tt_raw.get("capstone_matk_per_debuff", 0.0))),
+        "capstone_te_liet_chance": max(0.0, min(1.0, float(_tt_raw.get("capstone_te_liet_chance", 0.0)))),
+        "capstone_te_liet_duration": max(0, int(_tt_raw.get("capstone_te_liet_duration", 2))),
+    }
+    # Thái Cực Âm Dương Lôi Đại Trận — single dict pulled from bonuses.
+    # Capstone target HP-pct nerfed to 0.20 (was 0.50 in initial proposal) so
+    # the fusion can't trivialize high-HP bosses on a single fire.
+    _ad_raw = bonuses.get("thai_cuc_am_duong_loi") or {}
+    thai_cuc_am_duong_loi: dict = {
+        # Dương phase (attack pole) payload
+        "duong_base":             max(0, int(_ad_raw.get("duong_base", 0))),
+        "duong_matk_scale":       max(0.0, float(_ad_raw.get("duong_matk_scale", 0.0))),
+        "duong_dmg_amp_pct":      max(0.0, float(_ad_raw.get("duong_dmg_amp_pct", 0.0))),
+        "duong_shock_stacks":     max(0, int(_ad_raw.get("duong_shock_stacks", 1))),
+        "duong_te_liet_chance":   max(0.0, min(1.0, float(_ad_raw.get("duong_te_liet_chance", 0.0)))),
+        # Âm phase (utility pole) payload
+        "am_shock_stacks":        max(0, int(_ad_raw.get("am_shock_stacks", 2))),
+        "am_hp_restore_pct":      max(0.0, min(1.0, float(_ad_raw.get("am_hp_restore_pct", 0.0)))),
+        "am_mp_restore_pct":      max(0.0, min(1.0, float(_ad_raw.get("am_mp_restore_pct", 0.0)))),
+        "am_buff_extend_cap":     max(0, int(_ad_raw.get("am_buff_extend_cap", 6))),
+        "am_apply_te_nguyen_luc": bool(_ad_raw.get("am_apply_te_nguyen_luc", True)),
+        # Thái Cực Lưỡng Nghi Lôi fusion (capstone)
+        "fusion_base":            max(0, int(_ad_raw.get("fusion_base", 0))),
+        "fusion_matk_scale":      max(0.0, float(_ad_raw.get("fusion_matk_scale", 0.0))),
+        "fusion_target_hp_pct":   max(0.0, min(1.0, float(_ad_raw.get("fusion_target_hp_pct", 0.0)))),
+        "fusion_shock_bonus_per_stack": max(0, int(_ad_raw.get("fusion_shock_bonus_per_stack", 0))),
+        "fusion_te_liet_duration": max(0, int(_ad_raw.get("fusion_te_liet_duration", 3))),
+        "fusion_cd":              max(0, int(_ad_raw.get("fusion_cd", 8))),
+        "khi_cap":                max(1, int(_ad_raw.get("khi_cap", 5))),
+        # 10-gem tier: both poles fire every tick (duality collapses).
+        "dual_phase_fire":        bool(_ad_raw.get("dual_phase_fire", False)),
+    }
+    # Cửu Long Thần Hỏa Trận — single dict pulled from bonuses.
+    _cl_raw = bonuses.get("cuu_long") or {}
+    cuu_long: dict = {
+        "dmg_pct_bonus":   max(0.0, float(_cl_raw.get("dmg_pct_bonus", 0.0))),
+        "crit_rating":     max(0, int(_cl_raw.get("crit_rating", 0))),
+        "crit_dmg_rating": max(0, int(_cl_raw.get("crit_dmg_rating", 0))),
+        "stun_chance":     max(0.0, min(1.0, float(_cl_raw.get("stun_chance", 0.0)))),
+        "finisher_pct":    max(0.0, float(_cl_raw.get("finisher_pct", 0.0))),
     }
     # Xích Luyện Tỏa Hồn Trận — single dict pulled from bonuses (mirrors
     # element_pen / dmg_taken). Clamp each delta to (-1.0, +∞) so a
@@ -987,6 +1135,8 @@ def compute_combat_stats(
         fortify_per_turn_pct         = max(fortify_per_turn_pct, float(equip_stats.get("fortify_per_turn_pct", 0.0)))
         fortify_stack_cap            = max(fortify_stack_cap, int(equip_stats.get("fortify_stack_cap", 0)))
         fortify_post_hit_dr_pct      = max(fortify_post_hit_dr_pct, float(equip_stats.get("fortify_post_hit_dr_pct", 0.0)))
+        sword_heart_per_stack_dr    += float(equip_stats.get("sword_heart_per_stack_dr", 0.0))
+        sword_summon_dmg_amp        += float(equip_stats.get("sword_summon_dmg_amp", 0.0))
         loot_qty_bonus              += float(equip_stats.get("loot_qty_bonus", 0.0))
         loot_luck_bonus             += float(equip_stats.get("loot_luck_bonus", 0.0))
         for elem, val in (equip_stats.get("damage_taken_convert_pct") or {}).items():
@@ -1170,12 +1320,22 @@ def compute_combat_stats(
         fortify_per_turn_pct=fortify_per_turn_pct,
         fortify_stack_cap=fortify_stack_cap,
         fortify_post_hit_dr_pct=fortify_post_hit_dr_pct,
+        sword_heart_per_stack_dr=sword_heart_per_stack_dr,
+        sword_summon_dmg_amp=sword_summon_dmg_amp,
         loot_qty_bonus=loot_qty_bonus,
         loot_luck_bonus=loot_luck_bonus,
+        bonus_base_dmg_per_self_hp_pct=bonus_base_dmg_per_self_hp_pct,
+        bonus_base_dmg_per_self_shield_pct=bonus_base_dmg_per_self_shield_pct,
+        bonus_base_dmg_per_self_def_pct=bonus_base_dmg_per_self_def_pct,
+        def_applies_to_elemental_pct=def_applies_to_elemental_pct,
         damage_taken_convert_pct=damage_taken_convert_pct,
         element_dmg_bonus=element_dmg_bonus,
         element_mp_cost_mult=element_mp_cost_mult,
         cuu_khuc=cuu_khuc,
+        loi_kiep_an=loi_kiep_an,
+        thien_loi_tru_ta=thien_loi_tru_ta,
+        thai_cuc_am_duong_loi=thai_cuc_am_duong_loi,
+        cuu_long=cuu_long,
         toa_hon_amp=toa_hon_amp,
         dmg_taken=dmg_taken,
         element_pen=element_pen,

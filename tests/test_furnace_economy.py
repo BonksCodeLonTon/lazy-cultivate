@@ -79,8 +79,14 @@ def test_danlo_chests_are_buyable_in_rotating_pool():
         ("ChestDanLoG4", "DanLoThienMenh_G4"),
     ],
 )
-def test_danlo_chest_drops_unique_furnace_at_high_rate(chest_key: str, expected_unique: str):
-    """Opening a Đan Lô chest should yield the tier's unique furnace most of the time."""
+def test_danlo_chest_drops_unique_furnace_as_bonus(chest_key: str, expected_unique: str):
+    """Opening a Đan Lô chest yields the tier's unique furnace as a minority BONUS.
+
+    Post-redesign the Đan Lô chest is primarily alchemy materials/herbs; the
+    tier's unique furnace sits in a small/solo ``pool_id`` (weight ~200k) and
+    competes against the much heavier herb weights, so it lands roughly 15-20%
+    of the time rather than being guaranteed.
+    """
     hits = 0
     trials = 200
     for seed in range(trials):
@@ -88,9 +94,8 @@ def test_danlo_chest_drops_unique_furnace_at_high_rate(chest_key: str, expected_
         assert r.ok
         if any(d["item_key"] == expected_unique for d in r.loot):
             hits += 1
-    # The unique has weight 100 vs normal weight 15 in the same pool (pool_id),
-    # so it should hit at least ~75% of the time over 200 trials.
-    assert hits / trials > 0.75, f"{chest_key} dropped {expected_unique} only {hits}/{trials}"
+    # Minority bonus drop: reliably obtainable but well under half the time.
+    assert 0.05 < hits / trials < 0.40, f"{chest_key} dropped {expected_unique} {hits}/{trials}"
 
 
 def test_duoc_vien_chest_drops_mostly_herbs_with_rare_furnace():

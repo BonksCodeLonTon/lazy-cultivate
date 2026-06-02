@@ -36,6 +36,10 @@ _AXIS_CONFIGS = [
     ("formation", "🔯 Trận Đạo"),
 ]
 
+# Divider sized to roughly span the 3-axis button row below the panel, so the
+# Tu Luyện embed reads as wide as its controls instead of collapsing narrow.
+_PANEL_RULE = "─" * 48
+
 # Maximum total /reset_character uses per Discord user (lifetime cap).
 REROLL_LIMIT = 10000
 
@@ -55,6 +59,7 @@ def _cultivate_embed(axis: str, result: dict) -> discord.Embed:
 
     lines = [
         f"Hướng: {axis_icon} **{axis_label}**",
+        _PANEL_RULE,
         f"Lượt xử lý: **{turns:,}** lượt",
         f"{emojis.for_currency('merit')} Công Đức nhận: **+{merit:,}**",
         f"{emojis.for_currency('karma_accum')} Nghiệp Lực tích lũy: **+{karma:,}**",
@@ -215,6 +220,12 @@ class CultivateView(discord.ui.View):
             study_btn.callback = self._study_cb
             self.add_item(study_btn)
 
+        bt_btn = discord.ui.Button(
+            label="⚡ Đột Phá", style=discord.ButtonStyle.secondary, row=1,
+        )
+        bt_btn.callback = self._open_breakthrough_cb
+        self.add_item(bt_btn)
+
         if back_fn:
             back = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=2)
             back.callback = self._back_cb
@@ -328,6 +339,34 @@ class CultivateView(discord.ui.View):
             return
         await self._back_fn(interaction)
 
+    async def _open_breakthrough_cb(self, interaction: discord.Interaction) -> None:
+        """Switch to the Đột Phá panel in place — the merged Tu Luyện ⇄ Đột Phá
+        UI. ``◀ Trở về`` on either panel still exits to the status hub."""
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            inventory_map: dict[str, int] = {}
+            for inv_item in player.inventory:
+                inventory_map[inv_item.item_key] = (
+                    inventory_map.get(inv_item.item_key, 0) + inv_item.quantity
+                )
+            char = _player_to_model(player)
+            readiness: dict[str, bool] = {}
+            for ax in ("body", "qi", "formation"):
+                ok, _ = can_breakthrough(char, ax, inventory=inventory_map)
+                readiness[ax] = ok
+        embed = _breakthrough_overview_embed(player, readiness)
+        view = BreakthroughView(self._discord_id, readiness, back_fn=self._back_fn)
+        await interaction.edit_original_response(embed=embed, view=view)
+
 
 class BreakthroughView(discord.ui.View):
     def __init__(self, discord_id: int, readiness: dict[str, bool], back_fn=None) -> None:
@@ -341,6 +380,12 @@ class BreakthroughView(discord.ui.View):
             btn = discord.ui.Button(label=axis_label, style=style, row=0)
             btn.callback = self._make_cb(axis_id)
             self.add_item(btn)
+
+        tl_btn = discord.ui.Button(
+            label="🌀 Tu Luyện", style=discord.ButtonStyle.secondary, row=1,
+        )
+        tl_btn.callback = self._open_cultivate_cb
+        self.add_item(tl_btn)
 
         if back_fn:
             back = discord.ui.Button(label="◀ Trở về", style=discord.ButtonStyle.secondary, row=1)
@@ -499,6 +544,26 @@ class BreakthroughView(discord.ui.View):
         if not await safe_defer(interaction):
             return
         await self._back_fn(interaction)
+
+    async def _open_cultivate_cb(self, interaction: discord.Interaction) -> None:
+        """Switch to the Tu Luyện panel in place — the merged Tu Luyện ⇄ Đột Phá
+        UI. ``◀ Trở về`` on either panel still exits to the status hub."""
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            active = player.active_axis or "qi"
+            result = await apply_offline_ticks(player, repo, active)
+        embed = _cultivate_embed(active, result)
+        view = CultivateView(self._discord_id, active, back_fn=self._back_fn)
+        await interaction.edit_original_response(embed=embed, view=view)
 
 
 # ── Cog ───────────────────────────────────────────────────────────────────────

@@ -67,7 +67,7 @@ def run_on_hit_procs(
         stack_kind = spec.get("stack_kind")
         if stack_kind:
             _propagate_stack_build(actor, target, stack_kind)
-            getattr(target, spec["stack_add"])(1)
+            target.add_stack(stack_kind, 1)
             session.log.append(spec["log_fmt"].format(
                 stacks=getattr(target, spec["stacks_attr"]),
                 cap=effective_stack_cap(target, str(effect_key)),
@@ -326,13 +326,39 @@ def apply_buff_steal(
 
 
 def apply_reactive_damage(
-    session: "CombatSession", actor: Combatant, target: Combatant, dmg: int
+    session: "CombatSession", actor: Combatant, target: Combatant, dmg: int,
+    skill_element: str | None = None,
 ) -> None:
-    """Thủy reflect + Thổ thorn — defender-triggered retaliation."""
-    if target.reflect_pct > 0:
-        apply_reflect(session, actor, target, dmg)
+    """Thủy reflect + Thổ thorn — defender-triggered retaliation.
+
+    Reflect reads the defender's permanent ``reflect_pct`` plus any active-
+    effect contribution (Kim Chung Tráo style buffs) so temp reflect auras
+    fire alongside permanent gear-driven reflect.
+
+    ``skill_element`` (the incoming hit's element, when elemental) drives the
+    adaptive-elemental-resist aegis hook (Tri Hành Hợp Nhất) at the tail.
+    """
+    from src.game.engine.effects import get_combat_modifiers
+    reflect_total = target.reflect_pct + float(
+        get_combat_modifiers(target).get("reflect_pct", 0.0)
+    )
+    if reflect_total > 0:
+        apply_reflect(session, actor, target, dmg, reflect_pct=reflect_total)
     if target.thorn_pct > 0 and actor.is_alive():
         apply_thorn(session, actor, target, dmg)
+
+    # Hộ Thể Kiếm Cương — every damaging hit on a holder of the buff spawns
+    # the swords declared by the buff's ``summon_on_hit_taken`` override.
+    # Routed through ``maybe_spawn_summon`` so the existing summon limit /
+    # element-amp / consume-spec plumbing all apply unchanged.
+    if dmg > 0 and target.has_effect(EffectKey.BUFF_HO_THE_KIEM_CUONG):
+        buff_ovr = target.effect_overrides.get(
+            EffectKey.BUFF_HO_THE_KIEM_CUONG.value
+        ) or {}
+        summon_spec = buff_ovr.get("summon_on_hit_taken")
+        if summon_spec:
+            from .skill_extras import maybe_spawn_summon
+            maybe_spawn_summon(session, target, {"summon_spec": summon_spec})
     # Phượng Hoàng Chân Hỏa — defensive aura. When the defender owns the
     # buff and an attacker lands a damaging hit, stamp Phượng Hỏa stack(s)
     # on the attacker. Tunables (duration, stack_cap, per_stack_pct,
@@ -363,9 +389,26 @@ def apply_reactive_damage(
                     actor, actor=target, overrides=inflict_ovr,
                 )
 
+    # Defense-aegis on-hit inflict hook — generic dispatch for any active
+    # aegis buff on the target whose ``_aegis.on_hit_inflict`` block declares
+    # a debuff key + chance. Covers Tử Lôi Hộ Thân (Sốc Điện 40%),
+    # Cửu Thiên Lôi Giáp (Sốc Điện 100%), and any future entrant. Reflect /
+    # damage routing stay on the existing apply_reactive_damage path above.
+    from .defense_aegis import apply_on_hit_inflicts
+    apply_on_hit_inflicts(session, actor, target, dmg)
+
+    # Defense-aegis adaptive elemental resist (Tri Hành Hợp Nhất) — hardens
+    # the defender against the element currently striking it, resetting when a
+    # different element lands. Needs the hit's element, which the on-hit path
+    # carries (take_damage does not), so it lives here rather than in
+    # ``Combatant.take_damage``.
+    from .defense_aegis import adapt_elem_res
+    adapt_elem_res(target, skill_element, dmg)
+
 
 def apply_reflect(
-    session: "CombatSession", attacker: Combatant, defender: Combatant, dmg: int
+    session: "CombatSession", attacker: Combatant, defender: Combatant, dmg: int,
+    reflect_pct: float | None = None,
 ) -> None:
     """Reflect a portion of damage dealt to ``defender`` back at ``attacker``.
 
@@ -373,16 +416,47 @@ def apply_reflect(
     on-hit proc flags (freeze_on_skill_chance, slow_on_hit_pct, burn_on_hit_pct,
     bleed_on_hit_pct) also roll against the attacker — the mirror throws
     the defender's build flavor back at them.
+
+    ``reflect_pct`` (optional) overrides ``defender.reflect_pct`` for cases
+    where active-effect contributions need to fold into the rate (caller
+    supplies the summed total). Falls back to the field when omitted.
     """
     if not attacker.is_alive() or dmg <= 0:
         return
-    reflected = max(1, int(dmg * defender.reflect_pct))
+    effective_pct = defender.reflect_pct if reflect_pct is None else reflect_pct
+    reflected = max(1, int(dmg * effective_pct))
     attacker.take_damage(reflected)
     # Reflect paints in the defender's element (mirror = their flavor).
     reflect_tag = colorize_damage(f"-{reflected:,} HP", defender.element)
     session.log.append(
         f"    🪞 **{defender.name}** phản đòn → **{attacker.name}** {reflect_tag}"
     )
+
+    # Generic debuff reflect — any effect on the defender whose meta carries
+    # ``reflectable=True`` mirrors back to the attacker. Data-driven counterpart
+    # to the legacy ``reflect_applies_effects`` block (which mirrors the
+    # defender's hardcoded on-hit FLAGS — see below). Fires unconditionally
+    # whenever damage reflect lands; any reflectable debuff currently on the
+    # defender bounces. Note: ``apply_reactive_damage`` runs BEFORE
+    # ``apply_skill_effects`` in the cast pipeline, so debuffs the attacker is
+    # about to stamp from THIS skill aren't on the defender yet — they'll
+    # bounce on the NEXT damaging hit. Pre-existing reflectable debuffs
+    # bounce immediately on every damaging hit until they expire.
+    from src.game.engine.effects import EFFECTS
+    from src.game.systems.combat.casting import inflict_debuff
+    for refl_key in list(defender.effects.keys()):
+        refl_meta = EFFECTS.get(refl_key)
+        if refl_meta is None or not refl_meta.reflectable:
+            continue
+        refl_ovr = defender.effect_overrides.get(refl_key)
+        session.log.append(
+            f"    🪞 **{defender.name}** Phản Hồi **{refl_meta.vi}** → **{attacker.name}**"
+        )
+        inflict_debuff(
+            session, refl_key, refl_meta, attacker,
+            actor=defender, overrides=refl_ovr,
+        )
+
     if not defender.reflect_applies_effects:
         return
 
@@ -398,23 +472,23 @@ def apply_reflect(
         else:
             dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
             attacker.apply_effect(EffectKey.DEBUFF_DONG_BANG, dur)
-            session.log.append(f"    🧊 Mirror Đóng Băng — **{attacker.name}** bị đông cứng!")
+            session.log.append(f"    🧊 Phản Đóng Băng — **{attacker.name}** bị đông cứng!")
     if defender.slow_on_hit_pct > 0 and session.rng.random() < defender.slow_on_hit_pct:
         dur = default_duration(EffectKey.DEBUFF_LAM_CHAM)
         attacker.apply_effect(EffectKey.DEBUFF_LAM_CHAM, dur)
-        session.log.append(f"    🐢 Mirror Làm Chậm — **{attacker.name}**")
+        session.log.append(f"    🐢 Phản Làm Chậm — **{attacker.name}**")
     if defender.burn_on_hit_pct > 0 and session.rng.random() < defender.burn_on_hit_pct:
         dur = default_duration(EffectKey.DEBUFF_THIEU_DOT)
         attacker.apply_effect(EffectKey.DEBUFF_THIEU_DOT, dur)
         _propagate_stack_build(defender, attacker, "burn")
-        attacker.add_burn_stack(1)
-        session.log.append(f"    🔥 Mirror Thiêu Đốt — **{attacker.name}**")
+        attacker.add_stack("burn", 1)
+        session.log.append(f"    🔥 Phản Thiêu Đốt — **{attacker.name}**")
     if defender.bleed_on_hit_pct > 0 and session.rng.random() < defender.bleed_on_hit_pct:
         dur = default_duration(EffectKey.DEBUFF_CHAY_MAU)
         attacker.apply_effect(EffectKey.DEBUFF_CHAY_MAU, dur)
         _propagate_stack_build(defender, attacker, "bleed")
-        attacker.add_bleed_stack(1)
-        session.log.append(f"    🩸 Mirror Chảy Máu — **{attacker.name}**")
+        attacker.add_stack("bleed", 1)
+        session.log.append(f"    🩸 Phản Chảy Máu — **{attacker.name}**")
 
 
 def apply_thorn(

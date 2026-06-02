@@ -46,6 +46,7 @@ class GameRegistry:
     _ITEM_FILES = (
         "chests", "scrolls", "specials",
         "constitution_materials",
+        "mastery_materials",
         "linh_can_material",
         "world_boss_chests",
     )

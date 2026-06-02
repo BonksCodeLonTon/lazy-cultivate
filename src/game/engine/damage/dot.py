@@ -23,8 +23,8 @@ on EffectMeta lets each effect declare its kind once in the data so the
 runtime doesn't need to grow a per-effect-key branch.
 
 After base scaling, elemental resistance and amp bonuses (``dot_dmg_bonus``
-plus per-type ``burn_dmg_bonus`` / ``bleed_dmg_bonus`` / ``poison_dmg_bonus``)
-apply, then an optional crit roll (25% chance, ×1.5) when ``dot_can_crit``.
+plus per-kind ``dot_dmg_bonus_by_kind[<kind>]``) apply, then an optional
+crit roll (25% chance, ×1.5) when ``dot_can_crit``.
 
 Per-effect boss caps
 --------------------
@@ -111,6 +111,11 @@ def _scale_damage(
             int(hp_max * meta.dot_caster_hp_pct)
             + int(matk * meta.dot_caster_matk_scale),
         )
+    # Target-HP-driven DoT — flat % of the holder's hp_max every tick,
+    # independent of attacker stats / stack counters. Read at tick time so
+    # changes to ``hp_max`` mid-fight (Tận Diệt etc.) flow through naturally.
+    if meta.dot_target_hp_pct > 0:
+        return max(1, int(combatant.hp_max * meta.dot_target_hp_pct))
     if combatant.dot_scales_hp_pct:
         return max(1, int(combatant.hp_max * base_pct))
     max_power = max(

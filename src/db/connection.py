@@ -18,6 +18,7 @@ import src.db.models.player  # noqa: F401
 import src.db.models.turn_tracker  # noqa: F401
 import src.db.models.inventory  # noqa: F401
 import src.db.models.skill  # noqa: F401
+import src.db.models.skill_mastery  # noqa: F401
 import src.db.models.artifact  # noqa: F401
 import src.db.models.formation  # noqa: F401
 import src.db.models.market  # noqa: F401

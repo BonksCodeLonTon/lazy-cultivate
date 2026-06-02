@@ -146,7 +146,7 @@ _BONUS_FORMATTERS: list[tuple[str, str]] = [
     ("thorn_pct",                     "🌵 Phản +{pct:.0f}% lại kẻ địch"),
     ("shield_regen_pct",              "🛡️ Hồi Khiên {pct:.1f}% Khiên/lượt"),
     ("shield_regen_flat",             "🛡️ Hồi Khiên +{flat}/lượt"),
-    ("shield_max_base",               "🛡️ Khiên Nền +{flat}"),
+    ("shield_max_base",               "🛡️ Khiên Gốc +{flat}"),
     ("shield_max_flat",               "🛡️ Khiên Tối Đa +{flat}"),
     ("shield_max_pct",                "🛡️ Khiên Tối Đa +{pct:.0f}%"),
     ("hp_to_shield_pct",              "🔄 Chuyển {pct:.0f}% HP → Khiên"),
@@ -205,6 +205,10 @@ def _rarity_label(rarity: str) -> str:
     return f"{meta['emoji']} {meta['vi']}"
 
 
+_DOT_KIND_LABEL_VI: dict[str, str] = {"burn": "Thiêu Đốt", "bleed": "Chảy Máu", "poison": "Trúng Độc"}
+_CRIT_STATE_LABEL_VI: dict[str, str] = {"bleed": "Chảy Máu", "marked": "Đ.Dấu", "drained": "Hút Hồn"}
+
+
 def _format_bonus_lines(bonuses: dict) -> list[str]:
     lines: list[str] = []
     for key, template in _BONUS_FORMATTERS:
@@ -244,6 +248,24 @@ def _format_bonus_lines(bonuses: dict) -> list[str]:
                 f"{emoji} Hóa Thân {vi}: {c * 100:.0f}% ST nhận vào → ST {vi} "
                 f"(chịu Kháng {vi})"
             )
+
+    # ── Grouped DoT-kind / crit-vs-state dicts (post-2026-05 migration) ─────
+    # Authors now declare ``dot_dmg_bonus_by_kind: {burn: 0.15}`` etc.; fan
+    # each sub-entry out into a labelled line. Mirrors the same per-kind
+    # display the pre-migration flat keys used to render.
+    for kind, label in _DOT_KIND_LABEL_VI.items():
+        if (v := (bonuses.get("dot_dmg_bonus_by_kind") or {}).get(kind, 0)):
+            lines.append(f"🔥 ST {label} +{v * 100:.0f}%")
+        if (v := (bonuses.get("dot_stack_cap_bonus") or {}).get(kind, 0)):
+            lines.append(f"🔥 Cap {label} +{int(v)}")
+        if (v := (bonuses.get("dot_per_stack_pct_bonus") or {}).get(kind, 0)):
+            lines.append(f"🔥 {label}/Stack +{v * 100:.2f}%")
+    for state, amps in (bonuses.get("crit_amp_vs") or {}).items():
+        state_label = _CRIT_STATE_LABEL_VI.get(state, state)
+        if (r := (amps or {}).get("rating", 0)):
+            lines.append(f"🎯 Bạo Kích vs {state_label} +{int(r)}")
+        if (d := (amps or {}).get("dmg", 0)):
+            lines.append(f"🎯 Bạo Thương vs {state_label} +{int(d)}")
     return lines
 
 

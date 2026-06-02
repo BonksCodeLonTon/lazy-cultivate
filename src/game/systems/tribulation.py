@@ -3,6 +3,8 @@ import random, asyncio, discord
 from dataclasses import dataclass
 
 from src.data.registry import registry
+from src.db.connection import get_session
+from src.db.repositories.skill_mastery import get_mastery_map
 from src.game.models.character import Character
 from src.game.constants.realms import QI_REALMS, BODY_REALMS, FORMATION_REALMS
 from src.game.systems.combat import (
@@ -11,6 +13,7 @@ from src.game.systems.combat import (
     build_enemy_combatant,
     build_player_combatant,
 )
+from src.utils.config import settings
 from src.utils.embed_builder import battle_embed, success_embed, error_embed
 
 
@@ -56,9 +59,18 @@ class TribulationManager:
         trib_key = self.get_tribulation_id(axis, target_realm_idx)
 
         # ── Build combatants ─────────────────────────
+        # Tribulation PASSES mastery for the combat effect, but XP is
+        # intentionally NOT awarded here — XP earning is a PvE-farm reward only.
+        # Flag-gated: OFF → no DB read, None passed → inert.
+        skill_mastery: dict[str, int] | None = None
+        if settings.skill_mastery_enabled:
+            async with get_session() as session:
+                skill_mastery = await get_mastery_map(session, char.player_id)
+
         player_c = build_player_combatant(
             char, skill_keys, gem_count, equip_stats=equip_stats,
             gem_keys=gem_keys, gem_keys_by_formation=gem_keys_by_formation,
+            skill_mastery=skill_mastery,
         )
 
         player_realm_total = (

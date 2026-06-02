@@ -538,5 +538,205 @@
     ],
     "formation_key": null,
     "description_vi": "Ma Long Xuất Uyên — thân pháp tà đạo. Mỗi lần né thành công, hoá Ma Long phản kích đối thủ: gây sát thương Âm nhỏ (= 600 + 40% MATK) và 60% xác suất đính Cắt Đứt Linh Khí lên kẻ tấn công."
+  },
+  {
+    "key": "SkillAmHonKheAn",
+    "vi": "Âm Hồn Khế Ấn",
+    "en": "Soul Contract Brand",
+    "scroll_grade": 3,
+    "category": "support",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 130,
+    "cooldown": 8,
+    "base_dmg": 0,
+    "effects": [
+      "DebuffAmHonKheAn"
+    ],
+    "effect_chances": {
+      "DebuffAmHonKheAn": 1.0
+    },
+    "effect_overrides": {
+      "DebuffAmHonKheAn": {
+        "damage_echo": {
+          "echo_pct": 0.18,
+          "echo_cap_per_hit": 2500,
+          "element": "am",
+          "min_source_dmg": 200
+        }
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Âm Hồn Khế Ấn — khế ấn linh hồn lên địch trong 3 lượt. **18% mọi sát thương** mà địch phải nhận sẽ **vọng lại** thành một đòn Âm chuẩn (xuyên giáp, bỏ qua khiên), tối đa 2500/đòn vọng. Hồn ước đã kết, mọi đau đớn đều có tiếng vọng — kẻ địch chịu đòn bao nhiêu thì tự gánh thêm bấy nhiêu."
+  },
+  {
+    "key": "SkillAtkAm1",
+    "vi": "Âm Sát",
+    "en": "Shadow Strike",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.67
+    },
+    "mp_cost": 40,
+    "cooldown": 4,
+    "base_dmg": 95,
+    "effects": [],
+    "formation_key": null,
+    "description_vi": "Âm Sát — một đòn âm khí cơ bản, gây sát thương Âm theo MATK."
+  },
+  {
+    "key": "SkillAtkAm2Basic",
+    "vi": "U Ám Phất",
+    "en": "Gloom Lash",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.67
+    },
+    "mp_cost": 88,
+    "cooldown": 3,
+    "base_dmg": 235,
+    "effects": [
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffLoaMat": 0.35
+    },
+    "formation_key": null,
+    "description_vi": "U Ám Phất — quất một roi u ám, 35% xác suất gây Lóa Mắt lên địch."
+  },
+  {
+    "key": "SkillDefAm1",
+    "vi": "Âm Khí Hộ Thể",
+    "en": "Shade-Qi Guard",
+    "scroll_grade": 1,
+    "category": "defense",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.0
+    },
+    "mp_cost": 5,
+    "cooldown": 3,
+    "base_dmg": 0,
+    "effects": [
+      "BuffThuyKinh"
+    ],
+    "formation_key": null,
+    "description_vi": "Âm khí cuộn quanh thân — giảm 15% sát thương phải nhận."
+  },
+  {
+    "key": "SkillAtkAmXeRach2",
+    "vi": "U Minh Liệt Trảo",
+    "en": "Netherworld Rending Claw",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 2.0
+    },
+    "mp_cost": 92,
+    "cooldown": 4,
+    "base_dmg": 248,
+    "effects": [
+      "DebuffXeRach",
+      "DebuffLoaMat"
+    ],
+    "effect_chances": {
+      "DebuffXeRach": 1.0,
+      "DebuffLoaMat": 0.5
+    },
+    "effect_overrides": {
+      "DebuffXeRach": {
+        "stat_bonus": {
+          "res_all": -0.13
+        },
+        "duration": 3
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Móng vuốt u minh xé toang kháng cự — Xé Rách (−13% kháng toàn hệ) kèm 50% Lóa Mắt."
+  },
+  {
+    "key": "SkillAtkAmPhapNhuoc2",
+    "vi": "Nhiếp Hồn Chú",
+    "en": "Soul-Sapping Hex",
+    "scroll_grade": 2,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 2.0
+    },
+    "mp_cost": 54,
+    "cooldown": 4,
+    "base_dmg": 105,
+    "effects": [
+      "DebuffPhapNhuoc",
+      "DebuffSuyKhi"
+    ],
+    "effect_chances": {
+      "DebuffPhapNhuoc": 1.0,
+      "DebuffSuyKhi": 0.6
+    },
+    "effect_overrides": {
+      "DebuffPhapNhuoc": {
+        "stat_bonus": {
+          "matk_pct": -0.1
+        }
+      },
+      "DebuffSuyKhi": {
+        "stat_bonus": {
+          "atk_pct": -0.1
+        }
+      }
+    },
+    "formation_key": null,
+    "description_vi": "Nhiếp hồn làm suy nhược địch — −10% MATK, 60% −10% ATK."
+  },
+  {
+    "key": "SkillAtkAmHuyetTeChu",
+    "vi": "Huyết Tế Chú",
+    "en": "Blood-Offering Curse",
+    "scroll_grade": 3,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.92
+    },
+    "mp_cost": 60,
+    "cooldown": 4,
+    "base_dmg": 180,
+    "self_hp_cost_pct": 0.08,
+    "blood_offering": {
+      "final_dmg_pct_per_pct_hp_spent": 0.4,
+      "lifesteal_pct_of_dmg": 0.25,
+      "max_final_dmg_bonus": 0.5
+    },
+    "effects": [
+      "DebuffXeRach"
+    ],
+    "effect_chances": {
+      "DebuffXeRach": 1.0
+    },
+    "formation_key": null,
+    "description_vi": "Huyết Tế Chú — người niệm chi 8% HP hiện tại (Hộ Thuẫn đỡ trước) làm vật tế: mỗi 1% HP tiêu hao cộng +0.4% sát thương cuối (trần +50%). Đòn này hút lại 25% sát thương gây ra thành HP."
   }
 ]

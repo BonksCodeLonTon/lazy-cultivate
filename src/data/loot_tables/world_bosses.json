@@ -4493,6 +4493,12 @@
       "weight": 300,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "MasteryThongThienDaoQua",
+      "weight": 8,
+      "qty_min": 1,
+      "qty_max": 1
     }
   ],
   "LootWorldBossRealm9_HonNguyen": [
@@ -4597,6 +4603,12 @@
       "weight": 400,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "MasteryThongThienDaoQua",
+      "weight": 8,
+      "qty_min": 1,
+      "qty_max": 1
     }
   ],
   "LootWorldBossRealm9_ThoThan": [
@@ -4693,6 +4705,12 @@
     {
       "item_key": "SupremeHonDonTinh",
       "weight": 300,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "MasteryThongThienDaoQua",
+      "weight": 8,
       "qty_min": 1,
       "qty_max": 1
     }

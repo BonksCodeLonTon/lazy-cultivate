@@ -554,7 +554,7 @@ class EquipmentCog(commands.Cog):
             base = registry.get_base(inst.base_key)
             if base:
                 implicit_str = format_computed_stats(base.get("implicit_stats", {}))
-                embed.add_field(name=f"Nền ({base['vi']})", value=implicit_str, inline=False)
+                embed.add_field(name=f"Gốc ({base['vi']})", value=implicit_str, inline=False)
 
         # Show affixes — prefix/suffix come from registry.affixes; ``super``
         # entries are super-material grants stamped at forge time and have

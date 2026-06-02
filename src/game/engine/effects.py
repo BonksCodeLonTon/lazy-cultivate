@@ -1,4 +1,8 @@
-"""Combat effects registry — 23 buffs + 19 debuffs/CC.
+"""Combat effects registry — definitions loaded from src/data/effects/*.json.
+
+Effect *data* (buffs / debuffs / CC) lives in JSON, mirroring the skill
+data pattern; this module owns only the ``EffectMeta`` shape and the
+behaviour helpers that interpret it.
 
 Provides:
   EFFECTS                 dict[key → EffectMeta]
@@ -10,12 +14,15 @@ Provides:
 """
 from __future__ import annotations
 
+import json
 import random
 from dataclasses import dataclass, field
 from enum import StrEnum
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from src.game.constants.effects import EffectKey
+
 
 if TYPE_CHECKING:
     from src.game.systems.combatant import Combatant
@@ -53,6 +60,17 @@ class EffectMeta:
     stack_kind: str | None = None
     # Whether this CC effect causes the holder to skip their turn (deterministic)
     skips_turn: bool = False
+    # Probabilistic sibling of ``skips_turn``: per-turn chance (0.0–1.0) the
+    # holder skips their turn while this effect is active. Rolled in
+    # ``check_cc_skip_turn`` after the deterministic ``skips_turn`` check.
+    # Replaces the old per-effect-key hardcodes (paralysis 0.50 / fear 0.20)
+    # — any effect can now declare its own skip chance in the JSON data.
+    skip_turn_chance: float = 0.0
+    # Per-swing chance (0.0–1.0) the holder's attack whiffs while this effect
+    # is active (blind-style). Rolled in ``check_attack_miss`` — the holder
+    # still pays MP/CD, the swing just fails to land. Replaces the old
+    # DebuffLoaMat ``BLIND_MISS_CHANCE`` hardcode.
+    miss_chance: float = 0.0
     # Whether this effect prevents skill usage (silence / interrupt)
     prevents_skills: bool = False
     # Aura-on-hit: ``(effect_key, chance)`` or ``(effect_key, chance, duration)``
@@ -89,6 +107,13 @@ class EffectMeta:
     # these are set; resistance + ``dot_taken_bonus`` amps still apply on top.
     dot_caster_hp_pct:     float = 0.0
     dot_caster_matk_scale: float = 0.0
+    # Target-HP-driven DoT tick. When > 0, the tick is computed as
+    # ``holder.hp_max × dot_target_hp_pct`` — independent of attacker stats,
+    # stack counters, or applier power sources. Resistance + ``dot_taken_bonus``
+    # amps still apply on top. Used for "X% target HP per turn" effects like
+    # Phệ Huyết Thực where the design wants a flat percentage regardless of
+    # build (no scaling variance). Mutually exclusive with caster-stat scaling.
+    dot_target_hp_pct: float = 0.0
     # Per-tick damage cap for this DoT against world-boss / stat-mutation-immune
     # holders, expressed as a multiplier of the strongest applier's recorded
     # ``caster_matk``. 0.0 (the default) means uncapped — most DoTs don't need
@@ -135,6 +160,16 @@ class EffectMeta:
     # to override (e.g. ``False`` on a unique mode buff that shouldn't leave
     # its owner — Lục Dục Cộng Minh is locked to its caster, etc.).
     stealable: bool | None = None
+    # Whether this debuff/CC bounces back to the original attacker when the
+    # defender carries ``reflect_pct`` (Kim Chung Tráo etc.). Default False
+    # so existing debuffs stay opt-in. The bounce check fires in
+    # ``inflict_debuff`` after the stamp succeeds: ``reflect_pct`` is treated
+    # as the chance to mirror (not a damage multiplier). Recursion-guarded so
+    # a reflected debuff can't re-bounce off the original attacker's reflect.
+    # Stack-based DoTs (burn/bleed/shock/poison/chan_hoa…) should generally
+    # stay False — their per-stack damage scales on caster stats, and
+    # reflecting confuses the source attribution.
+    reflectable: bool = False
     # When an effect expires naturally (duration tick → 0), automatically
     # apply this follow-up effect to the same holder. Tuple is
     # ``(effect_key, override_dict_or_None)``. Used for self-cycling passives
@@ -143,6 +178,15 @@ class EffectMeta:
     # other to form an infinite loop. Cleansed effects skip this chain
     # (handled in tick_effects, not in the cleanse path).
     on_expire_apply: tuple[str, dict | None] | None = None
+    # One-shot damage dealt to the holder when this effect expires naturally
+    # (NOT via cleanse — same gating as ``on_expire_apply``). Computed as
+    # ``floor(holder.hp_max × expire_dmg_pct_hp_max)`` and applied directly to
+    # HP (bypasses evasion / crit / DR / elemental res). ``expire_dmg_element``
+    # is metadata for the log line and future proc hooks; falls back to
+    # ``"physical"`` when unset. Used by ``DebuffCuonBay``'s Ngã Xuống tail —
+    # the airborne window deals fall damage when the lift dissipates.
+    expire_dmg_pct_hp_max: float = 0.0
+    expire_dmg_element: str | None = None
     # Generic scaling rules — replace bespoke "placeholder key + manual
     # expansion in get_combat_modifiers" patterns with data-driven specs.
     # Each rule reads a value off the holder, optionally buckets/gates it,
@@ -192,6 +236,16 @@ class EffectMeta:
     # Huyễn Ảnh → Cực Quang Trảm reactive into a reusable mechanism that
     # any future buff can opt into via this single field.
     proc_on_holder_evade_cast: str | None = None
+    # Data-driven on-evade reactive block. When set, the holder's evade
+    # event runs through the capability handlers in
+    # ``src.game.systems.combat.evade_reactive`` (counter, inflict,
+    # extend_self, proc_cast). Per-instance overrides via
+    # ``effect_overrides[<buff>]._evade_react`` win over this default so
+    # granting skills can customize tunables. Replaces the per-buff inline
+    # branches in ``cast_skill`` (Lôi Quang Điện Ảnh, Ma Long Xuất Uyên).
+    # ``proc_on_holder_evade_cast`` above stays as a legacy fallback for
+    # buffs not yet migrated.
+    evade_react: dict | None = None
     # Display emoji
     emoji: str = "✨"
 
@@ -208,1528 +262,62 @@ class EffectMeta:
             object.__setattr__(self, "stealable", self.kind == EffectKind.BUFF)
 
 
-# ── Buff definitions (23) ─────────────────────────────────────────────────────
+# ── Data-driven registry ──────────────────────────────────────────────────────
+# Effect definitions live in src/data/effects/*.json. Mirrors the skill data
+# pattern: drop a new entry in the JSON, no engine change needed. Loaded once
+# at import; EffectMeta is rebuilt verbatim so all downstream behaviour is
+# identical to the old in-Python literals.
 
-_BUFFS: list[EffectMeta] = [
-    EffectMeta(
-        key="BuffKiemKhi",
-        vi="Kiếm Khí", en="Sword Qi",
-        kind=EffectKind.BUFF,
-        description_vi="Tụ kiếm khí, tăng sát thương và tỉ lệ bạo kích.",
-        stat_bonus={"final_dmg_bonus": 0.15, "crit_rating": 150},
-        emoji="⚔️",
-    ),
-    EffectMeta(
-        key="BuffKiemY",
-        vi="Kiếm Ý", en="Sword Intent",
-        kind=EffectKind.BUFF,
-        description_vi="Kiếm ý sung mãn, tăng mạnh sát thương.",
-        stat_bonus={"final_dmg_bonus": 0.25},
-        emoji="🗡️",
-    ),
-    EffectMeta(
-        key="BuffVoNgaKiemTam",
-        vi="Vô Ngã Kiếm Tâm", en="Selfless Sword Heart",
-        kind=EffectKind.BUFF,
-        description_vi="Đạt cảnh giới vô ngã, tăng tối đa sát thương kiếm.",
-        stat_bonus={"final_dmg_bonus": 0.40},
-        emoji="✨",
-    ),
-    EffectMeta(
-        key="BuffNhietTinh",
-        vi="Nhiệt Tình", en="Blazing Passion",
-        kind=EffectKind.BUFF,
-        description_vi="Chiến ý bùng cháy, tăng sát thương và sát thương bạo kích.",
-        stat_bonus={"final_dmg_bonus": 0.20, "crit_dmg_rating": 200},
-        emoji="🔥",
-    ),
-    EffectMeta(
-        key="BuffHoaThan",
-        vi="Hỏa Thần Giáng Lâm", en="Fire God Descent",
-        kind=EffectKind.BUFF,
-        description_vi="Hỏa thần tạm hạ phàm, tăng sát thương kỹ năng Hỏa và đánh trúng có xác suất gây Thiêu Đốt 4 lượt.",
-        stat_bonus={"dmg_bonus_hoa": 0.20},
-        aura_on_hit=("DebuffThieuDot", 0.35, 4),
-        emoji="🔥",
-    ),
-    EffectMeta(
-        key="BuffPhuongHoangChanHoa",
-        vi="Phượng Hoàng Chân Hỏa", en="Phoenix True Fire",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Chân hỏa Phượng Hoàng quấn quanh thân — passive: mỗi 5% HP đã "
-            "mất tăng 0.2% hồi sinh lực. Khi địch đánh trúng, in 1 tầng "
-            "**Phượng Hỏa** lên địch (tối đa 3 tầng): mỗi tầng đốt 2% HP "
-            "mỗi lượt và **giảm 10% hồi máu nhận vào** từ mọi nguồn."
-        ),
-        # Per-bucket missing-HP regen scaling expressed as a generic rule.
-        # The reflective ``DebuffPhuongHoa`` proc lives in
-        # ``procs.apply_reactive_damage`` because ``aura_on_hit`` fires on
-        # the holder's outbound hits (wrong direction) — we need an inbound
-        # hook on hit-taken.
-        stat_bonus={"phuong_hoang_per_5pct_hp_lost_regen": 0.002},
-        scaling_rules=(
-            {
-                "key": "phuong_hoang_per_5pct_hp_lost_regen",
-                "source": "hp_missing_pct",
-                "bucket": 0.05,
-                "output": "hp_regen_pct",
-            },
-        ),
-        emoji="🦅",
-    ),
-    EffectMeta(
-        key="BuffLuuLyTinhHoa",
-        vi="Lưu Ly Tịnh Hỏa", en="Lapis Pure Fire",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Lưu ly tịnh hỏa hộ thân — mỗi lượt, với **mỗi loại Hỏa DoT** "
-            "đang cháy trên địch, có **30% cơ hội Thanh Tẩy 1 trạng thái "
-            "xấu** trên thân. Mỗi lần Thanh Tẩy thành công cộng dồn "
-            "**+200 Kháng Bạo** (tối đa 3 tầng, hết khi buff tan)."
-        ),
-        # ``luu_ly_cleanse_chance`` is read by the periodic hook in
-        # ``CombatSession`` (tunable via per-skill effect_overrides). The
-        # per-cleanse +crit_res_rating is wired through the generic scaling
-        # rules — each successful cleanse bumps ``luu_ly_tinh_hoa_stacks``
-        # and the rule converts stacks × per_unit → crit_res_rating.
-        # The stack cap rides on the standard ``EffectMeta.stack_cap`` field
-        # — read by the periodic hook via ``effective_stack_cap`` so a
-        # per-skill ``effect_overrides[...].stack_cap`` still wins. No
-        # dedicated Combatant cap field needed because there's no gear /
-        # build hook that scales this counter.
-        stack_cap=3,
-        stat_bonus={
-            "luu_ly_cleanse_chance": 0.30,
-            "luu_ly_per_stack_crit_res": 200,
-        },
-        scaling_rules=(
-            {
-                "key": "luu_ly_per_stack_crit_res",
-                "source": "stack:luu_ly_tinh_hoa",
-                "output": "crit_res_rating",
-            },
-        ),
-        stealable=False,
-        cleansable=False,
-        emoji="🔮",
-    ),
-    EffectMeta(
-        key="BuffCuuDuong",
-        vi="Cửu Dương Hộ Thể", en="Nine-Sun Body Guard",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Cửu dương chân khí cuộn quanh thân — **kháng 90% Đóng Băng**; "
-            "**+60% Kháng Hỏa** kèm **+10% Cap Kháng Hỏa** (tối đa 85%); "
-            "**40% sát thương phải nhận** được chuyển hóa thành Hỏa trước "
-            "khi đè lên thân (mitigation qua res Hỏa đã được tăng cường)."
-        ),
-        # Four layers in one stat_bonus dict, all already wired:
-        #   * ``res_hoa`` folds into the damage-taken element-mitigation pipe
-        #     (combatant.py reads ``active_mods.get(f"res_{elem}")``).
-        #   * ``hoa_max_resist_bonus`` lifts the player's hoa cap from 0.75
-        #     to 0.85 for the buff's duration — read by ``effective_res_cap``
-        #     so the +60% res actually has headroom past the default soft cap.
-        #   * ``damage_convert_hoa`` is consumed by the element-conversion
-        #     step in ``Combatant.take_damage`` — 40% of incoming damage is
-        #     reclassified as Hỏa and mitigated by the holder's (boosted) res.
-        #   * ``effect_resist:DebuffDongBang`` is a generic per-effect resist
-        #     gate read by ``inflict_debuff`` — 90% roll to shrug off freeze.
-        stat_bonus={
-            "res_hoa": 0.60,
-            "hoa_max_resist_bonus": 0.10,
-            "damage_convert_hoa": 0.40,
-            "effect_resist:DebuffDongBang": 0.90,
-        },
-        stealable=False,
-        cleansable=False,
-        emoji="🌞",
-    ),
-    EffectMeta(
-        key="BuffPhuongHoangTrienSi",
-        vi="Phượng Hoàng Triển Sí", en="Phoenix Wing Spread",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Phượng hoàng triển sí — chấn cánh hỏa vũ, **+500 Bạo Kích "
-            "Sát Thương** và **+20% Né Tránh** (theo % của Né Tránh nền). "
-            "Khi né được đòn, tự động phát động **Phượng Hoàng Chân Hỏa** "
-            "(nếu đang trang bị) để hộ thân."
-        ),
-        # ``evasion_rating_pct`` is a new multiplier on the holder's base
-        # ``evasion_rating`` — read in ``build_defense_stats`` so it stacks
-        # with flat ``evasion_rating`` mods naturally. The auto-cast trigger
-        # of Phượng Hoàng Chân Hỏa rides on the skill's
-        # ``proc_on_self_evade_cast`` config, not on this buff — so the
-        # passive proc fires even if the buff has expired.
-        stat_bonus={"crit_dmg_rating": 500, "evasion_rating_pct": 0.20},
-        stealable=False,
-        cleansable=False,
-        emoji="🦅",
-    ),
-    EffectMeta(
-        key="BuffLuuTinhCanNguyet",
-        vi="Lưu Tinh Cản Nguyệt", en="Shooting Star Blocking Moon",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Lưu tinh thân pháp — **+20% tốc độ** vĩnh viễn. Khi địch mang "
-            "Hỏa DoT: mỗi loại Hỏa DoT cộng thêm **+150 Né Tránh** và "
-            "**+5% Tốc Độ** cho người niệm (cập nhật mỗi lượt). Aura — "
-            "không thể giải trừ / cướp."
-        ),
-        # Base passive: +20% spd. The per-fire-DoT scaling for spd_pct +
-        # evasion_rating is updated each turn by
-        # ``CombatSession._refresh_luu_tinh_can_nguyet`` based on the
-        # opponent's live ``count_elemental_dots("hoa")``. The hook writes
-        # the computed totals into ``effect_overrides[...].stat_bonus``
-        # (``spd_pct`` and ``evasion_rating``), which ``get_combat_modifiers``
-        # reads through the standard per-instance-override path.
-        stat_bonus={"spd_pct": 0.20},
-        stealable=False,
-        cleansable=False,
-        emoji="🌠",
-    ),
-    EffectMeta(
-        key="BuffBatDietHoaChung",
-        vi="Bất Diệt Hỏa Chủng", en="Immortal Fire Seed",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Hỏa chủng bất diệt cuộn quanh chân khí — **+70% giảm sát thương "
-            "phải nhận** trong lúc thân hóa hỏa chủng, đồng thời **không thể "
-            "hành động 1 lượt**. Khi buff tan, bùng nổ trả đòn: gây sát "
-            "thương Hỏa = 15% HP tối đa và choáng địch 1 lượt."
-        ),
-        # ``skips_turn`` makes the holder skip on the next turn (the
-        # "can't action" phase). Duration 2 covers the residual current
-        # turn + the next full turn. ``cleansable=False`` so the panic
-        # button can't be Thanh Tẩy'd off mid-window.
-        stat_bonus={"final_dmg_reduce": 0.70},
-        skips_turn=True,
-        cleansable=False,
-        stealable=False,
-        emoji="🔥",
-    ),
-    EffectMeta(
-        key="BuffLietDiem",
-        vi="Liệt Diệm Hộ Thể", en="Blazing Flame Guard",
-        kind=EffectKind.BUFF,
-        description_vi="Lửa thiêu đốt bảo vệ cơ thể, giảm sát thương nhận vào.",
-        stat_bonus={"final_dmg_reduce": 0.10},
-        emoji="🛡️",
-    ),
-    EffectMeta(
-        key="BuffBangGiap",
-        vi="Băng Giáp", en="Ice Armor",
-        kind=EffectKind.BUFF,
-        description_vi="Băng giáp bao phủ, giảm đáng kể sát thương nhận vào.",
-        stat_bonus={"final_dmg_reduce": 0.20},
-        emoji="🧊",
-    ),
-    EffectMeta(
-        key="BuffThuyKinh",
-        vi="Thủy Kính Thân", en="Water Mirror Body",
-        kind=EffectKind.BUFF,
-        description_vi="Thân như gương nước, giảm đáng kể sát thương nhận vào.",
-        stat_bonus={"final_dmg_reduce": 0.15},
-        emoji="💧",
-    ),
-    EffectMeta(
-        key="BuffHanKhi",
-        vi="Hàn Khí Tỏa Thân", en="Cold Aura",
-        kind=EffectKind.BUFF,
-        description_vi="Hàn khí tỏa ra, giảm sát thương nhận và làm chậm 4 lượt mọi kẻ địch bị đánh trúng.",
-        stat_bonus={"final_dmg_reduce": 0.10},
-        # 4-turn slow — non-heavy CC bracket (2 low / 4 high). The slow
-        # doesn't shut the target down (they still act, just slower) so the
-        # longer high-realm cap is fine.
-        aura_on_hit=("DebuffLamCham", 1.0, 4),
-        emoji="❄️",
-    ),
-    EffectMeta(
-        key="BuffLoiThan",
-        vi="Lôi Thần Giáng", en="Thunder God Strike",
-        kind=EffectKind.BUFF,
-        description_vi="Lôi thần gia hộ, tăng tỉ lệ bạo kích và đánh trúng có xác suất gây Tê Liệt 2 lượt.",
-        stat_bonus={"crit_rating": 100},
-        aura_on_hit=("DebuffTeLiet", 0.20, 2),
-        emoji="⚡",
-    ),
-    EffectMeta(
-        key="BuffTocLoi",
-        vi="Tốc Lôi", en="Speed Lightning",
-        kind=EffectKind.BUFF,
-        description_vi="Tốc độ như sét đánh, tăng mạnh tốc độ hành động.",
-        stat_bonus={"spd_pct": 0.50},
-        emoji="⚡",
-    ),
-    EffectMeta(
-        key="BuffNguPhong",
-        vi="Ngự Phong", en="Wind Mastery",
-        kind=EffectKind.BUFF,
-        description_vi="Điều khiển gió, tăng cao khả năng né tránh.",
-        stat_bonus={"evasion_rating": 200},
-        emoji="🌬️",
-    ),
-    EffectMeta(
-        key="BuffPhongVu",
-        vi="Phong Vũ Tương Hòa", en="Wind Rain Harmony",
-        kind=EffectKind.BUFF,
-        description_vi="Phong vũ hòa quyện, tăng cả né tránh lẫn bạo kích.",
-        stat_bonus={"evasion_rating": 100, "crit_rating": 100},
-        emoji="🌧️",
-    ),
-    EffectMeta(
-        key="BuffSinhCo",
-        vi="Sinh Cơ Sung Mãn", en="Vitality Overflow",
-        kind=EffectKind.BUFF,
-        description_vi="Sinh cơ dồi dào, hồi phục HP mỗi lượt.",
-        stat_bonus={"hp_regen_pct": 0.05},
-        emoji="💚",
-    ),
-    EffectMeta(
-        key="BuffCanCo",
-        vi="Căn Cơ Bất Động", en="Immovable Foundation",
-        kind=EffectKind.BUFF,
-        description_vi="Căn cơ vững chắc như núi, giảm sát thương nhận vào.",
-        stat_bonus={"final_dmg_reduce": 0.15},
-        emoji="🪨",
-    ),
-    EffectMeta(
-        key="BuffKimCuong",
-        vi="Kim Cương Thể", en="Diamond Body",
-        kind=EffectKind.BUFF,
-        description_vi="Thân như kim cương, giảm mạnh sát thương nhận vào.",
-        stat_bonus={"final_dmg_reduce": 0.20},
-        emoji="💎",
-    ),
-    EffectMeta(
-        key="BuffHoangKim",
-        vi="Hoàng Kim Hộ", en="Golden Guard",
-        kind=EffectKind.BUFF,
-        description_vi="Khiên vàng bảo hộ, giảm sát thương và tăng kháng cự toàn nguyên tố.",
-        stat_bonus={"final_dmg_reduce": 0.15, "res_all": 0.10},
-        emoji="🟡",
-    ),
-    EffectMeta(
-        key="BuffDaiDia",
-        vi="Đại Địa Thần Hộ", en="Great Earth Divine Guard",
-        kind=EffectKind.BUFF,
-        description_vi="Đại địa thần hộ trì, giảm tối đa sát thương nhận vào.",
-        stat_bonus={"final_dmg_reduce": 0.25},
-        emoji="🌍",
-    ),
-    EffectMeta(
-        key="BuffTrongTo",
-        vi="Trọng Thổ", en="Heavy Earth",
-        kind=EffectKind.BUFF,
-        description_vi="Thổ khí nặng trịch, tăng phòng thủ và kháng cự.",
-        stat_bonus={"final_dmg_reduce": 0.10, "res_all": 0.05},
-        emoji="🪨",
-    ),
-    EffectMeta(
-        key="BuffBatTu",
-        vi="Bất Tử", en="Immortality",
-        kind=EffectKind.BUFF,
-        description_vi="Nhận lấy bất tử nhất thời, ngăn cái chết một lần.",
-        stat_bonus={},
-        emoji="💫",
-    ),
-    EffectMeta(
-        key="BuffTangToc",
-        vi="Tăng Tốc", en="Haste",
-        kind=EffectKind.BUFF,
-        description_vi="Tốc độ hành động tăng mạnh.",
-        stat_bonus={"spd_pct": 0.30},
-        emoji="⚡",
-    ),
-    EffectMeta(
-        key="BuffHoPhap",
-        vi="Hộ Pháp", en="Dharma Protection",
-        kind=EffectKind.BUFF,
-        description_vi="Hộ pháp bảo vệ toàn diện, giảm sát thương và tăng kháng bạo kích.",
-        stat_bonus={"final_dmg_reduce": 0.25, "crit_res_rating": 100},
-        emoji="🔮",
-    ),
-    EffectMeta(
-        key="BuffHuKhong",
-        vi="Hư Không Thân", en="Void Body",
-        kind=EffectKind.BUFF,
-        description_vi="Thân nhập hư không, né tránh cực cao.",
-        stat_bonus={"evasion_rating": 250},
-        emoji="👻",
-    ),
-    EffectMeta(
-        key="BuffHuVo",
-        vi="Hư Vô", en="Void Annulment",
-        kind=EffectKind.BUFF,
-        description_vi="Hư vô thân ảnh — Né Tránh tăng vọt sau khi phản kích. Magnitude is supplied per-cast via ``effect_overrides`` (e.g. evasion_rating: 2000).",
-        emoji="🌌",
-        stealable=False,
-        cleansable=False,
-    ),
-    EffectMeta(
-        key="AuraHuyDiet",
-        vi="Hủy Diệt", en="Annihilation Aura",
-        kind=EffectKind.BUFF,
-        description_vi="Hào quang Hủy Diệt — đối xứng cộng sát thương đánh ra và sát thương phải nhận. Magnitude is supplied per-cast via ``effect_overrides`` (``final_dmg_bonus`` for outgoing, ``final_dmg_taken_bonus`` for incoming).",
-        emoji="☄️",
-        stealable=False,
-        cleansable=False,
-    ),
-    EffectMeta(
-        key="BuffDoanTuyet",
-        vi="Đoạn Tuyệt", en="Severance",
-        kind=EffectKind.BUFF,
-        description_vi="Tâm cảnh đoạn tuyệt thất tình — sát thương tăng theo số trạng thái bất lợi đang đè trên đối thủ. Magnitude per-debuff supplied via ``effect_overrides`` key ``dmg_per_debuff_pct`` (read by ``build_attack_stats``).",
-        emoji="🌒",
-        stealable=False,
-        cleansable=False,
-    ),
-    EffectMeta(
-        key="BuffThienMa",
-        vi="Thiên Ma", en="Heavenly Demon Mode",
-        kind=EffectKind.BUFF,
-        description_vi="Hóa thân Thiên Ma — tốc độ, sát thương Âm và tốc hồi chiêu đều bùng nổ. Khi tan biến tự động chuyển sang Thiên Ma Hậu Di Chứng (yếu thân).",
-        stat_bonus={"spd_pct": 0.50, "dmg_bonus_am": 0.50, "cooldown_reduce": 0.50},
-        on_expire_apply=("DebuffThienMaPost", {"duration": 2}),
-        emoji="👹",
-        stealable=False,
-        cleansable=False,
-    ),
-    # ── Lục Dục (Six-Desires) cycle buffs ────────────────────────────────────
-    # Each desire stacks one stat. Six accumulate over 3 turns (2 per turn);
-    # at full stack the BuffLucDucCongMinh amp adds +20% of each desire's
-    # contribution. The Lục Dục Thiên Ma Vũ passive then expires the whole
-    # set for 2 quiet turns before restarting the cycle. Driven by the cycle
-    # hook in CombatSession._tick_luc_duc_thien_ma_vu, not by aura plumbing.
-    EffectMeta(
-        key="BuffLucDucSac",
-        vi="Sắc Dục", en="Desire of Sight",
-        kind=EffectKind.BUFF,
-        description_vi="Sắc — mắt thấy đạo, tăng tỉ lệ bạo kích.",
-        stat_bonus={"crit_rating": 500},
-        emoji="👁️",
-    ),
-    EffectMeta(
-        key="BuffLucDucThanh",
-        vi="Thanh Dục", en="Desire of Sound",
-        kind=EffectKind.BUFF,
-        description_vi="Thanh — tai nghe gió động, tăng tốc độ.",
-        stat_bonus={"spd_pct": 0.3},
-        emoji="👂",
-    ),
-    EffectMeta(
-        key="BuffLucDucHuong",
-        vi="Hương Dục", en="Desire of Smell",
-        kind=EffectKind.BUFF,
-        description_vi="Hương — mũi đánh hơi sát khí, tăng né tránh.",
-        stat_bonus={"evasion_rating": 500},
-        emoji="👃",
-    ),
-    EffectMeta(
-        key="BuffLucDucVi",
-        vi="Vị Dục", en="Desire of Taste",
-        kind=EffectKind.BUFF,
-        description_vi="Vị — lưỡi nếm tinh huyết, hồi sinh lực mỗi lượt.",
-        stat_bonus={"hp_regen_pct": 0.1},
-        emoji="👅",
-    ),
-    EffectMeta(
-        key="BuffLucDucXuc",
-        vi="Xúc Dục", en="Desire of Touch",
-        kind=EffectKind.BUFF,
-        description_vi="Xúc — thân tiếp đại đạo, tăng sát thương cuối.",
-        stat_bonus={"final_dmg_bonus": 0.1},
-        emoji="✋",
-    ),
-    EffectMeta(
-        key="BuffLucDucPhap",
-        vi="Pháp Dục", en="Desire of Thought",
-        kind=EffectKind.BUFF,
-        description_vi="Pháp — ý nắm Âm Khí, tăng sát thương Âm.",
-        stat_bonus={"dmg_bonus_am": 0.20},
-        emoji="🧠",
-    ),
-    EffectMeta(
-        key="BuffLucDucCongMinh",
-        vi="Lục Dục Cộng Minh", en="Six-Desires Resonance",
-        kind=EffectKind.BUFF,
-        description_vi="Lục dục cộng hưởng — toàn bộ Lục Dục đang đè trên thân được khuếch đại 20%.",
-        stat_bonus={
-            "crit_rating": 40, "spd_pct": 0.03, "evasion_rating": 40,
-            "hp_regen_pct": 0.01, "final_dmg_bonus": 0.03, "dmg_bonus_am": 0.04,
-        },
-        stealable=False,
-        cleansable=False,
-        emoji="🌌",
-    ),
-    EffectMeta(
-        key="BuffVoTuongThienMa",
-        vi="Vô Tướng Thiên Ma", en="Formless Heavenly Demon",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Vô tướng vô hình — 40% sát thương phải nhận được chuyển hóa "
-            "thành Âm trước khi đè lên thân, **+50% Kháng Âm** kèm "
-            "**+15% Cap Kháng Âm** (giới hạn nâng lên 90%) để đảm bảo "
-            "buff có đủ room ngấm vào res sàn."
-        ),
-        # ``am_max_resist_bonus`` lifts the player's am cap from 0.75 to
-        # 0.90 for the buff's duration — read by ``effective_res_cap`` so
-        # the +50% res actually has room past the default soft cap.
-        stat_bonus={
-            "damage_convert_am": 0.40,
-            "res_am": 0.50,
-            "am_max_resist_bonus": 0.15,
-        },
-        stealable=False,
-        cleansable=False,
-        emoji="🌑",
-    ),
-    EffectMeta(
-        key="BuffMaKhiHoThe",
-        vi="Ma Khí Hộ Thể", en="Demon-Aura Bodyguard",
-        kind=EffectKind.BUFF,
-        description_vi="Ma khí cuộn quanh thân — mỗi đòn Âm đánh ra chuyển hóa một phần sát thương thành khiên cho người niệm. Magnitude per cast read from ``stat_bonus.am_hit_to_shield_pct`` (folded into shield gain in cast_skill's on-hit hook).",
-        stat_bonus={"am_hit_to_shield_pct": 0.30},
-        stealable=False,
-        cleansable=False,
-        emoji="🩻",
-    ),
-    EffectMeta(
-        key="BuffChanMaChiTam",
-        vi="Chân Ma Chi Tâm", en="True Demon Heart",
-        kind=EffectKind.BUFF,
-        description_vi="Tâm hóa Chân Ma — kháng debuff +30% và mọi đòn của người niệm có thêm 10% xác suất gây trạng thái bất lợi.",
-        stat_bonus={"debuff_immune_pct": 0.30, "debuff_apply_bonus": 0.10},
-        emoji="🪬",
-        stealable=False,
-        cleansable=False,
-    ),
-    EffectMeta(
-        key="BuffQuyAnhMeTung",
-        vi="Quỷ Ảnh Mê Tung", en="Demon-Shadow Phantom Step",
-        kind=EffectKind.BUFF,
-        description_vi="Mỗi lần né thành công cộng dồn 1 tầng (tối đa 3): +10% Tốc và Né Tránh tăng theo tầng. Per-stack values driven by ``scaling_rules`` keyed on ``combatant.quy_anh_stacks``.",
-        stat_bonus={
-            "quy_anh_per_stack_evasion": 200,
-            "quy_anh_per_stack_spd_pct": 0.10,
-            "quy_anh_max_stacks": 3,
-        },
-        scaling_rules=(
-            {"key": "quy_anh_per_stack_evasion", "source": "stack:quy_anh", "output": "evasion_rating"},
-            {"key": "quy_anh_per_stack_spd_pct", "source": "stack:quy_anh", "output": "spd_pct"},
-        ),
-        emoji="👤",
-        stealable=False,
-        cleansable=False,
-    ),
-    EffectMeta(
-        key="BuffMaLongXuatUyen",
-        vi="Ma Long Xuất Uyên", en="Demon-Dragon Emerges",
-        kind=EffectKind.BUFF,
-        description_vi="Mỗi lần né thành công, hoá Ma Long phản kích — gây sát thương Âm nhỏ + đính Cắt Đứt Linh Khí lên đối thủ. Counter-strike config carried in stat_bonus; popped by ``get_combat_modifiers`` and consumed by the on-evade hook in ``cast_skill``.",
-        stat_bonus={
-            "ma_long_counter_base_dmg": 600,
-            "ma_long_counter_matk_pct": 0.40,
-            "ma_long_counter_debuff_chance": 0.60,
-        },
-        emoji="🐉",
-        stealable=False,
-        cleansable=False,
-    ),
-]
+_EFFECTS_DIR = Path(__file__).resolve().parents[2] / "data" / "effects"
 
-# ── Debuff / CC definitions (19) ─────────────────────────────────────────────
+# JSON stores these as arrays; the dataclass wants tuples.
+_TUPLE_FIELDS = ("aura_on_hit", "on_expire_apply", "scaling_rules")
 
-_DEBUFFS_CC: list[EffectMeta] = [
-    EffectMeta(
-        key="DebuffThieuDot",
-        vi="Thiêu Đốt", en="Burning",
-        kind=EffectKind.DEBUFF,
-        description_vi="Lửa đốt cháy cơ thể, gây sát thương mỗi lượt.",
-        # Stack-based: tick = burn_stacks × burn_per_stack_pct × max(atk, matk) × DOT_POWER_COEF.
-        # ``dot_pct`` is intentionally 0 — the runtime reads the per-stack value off the combatant.
-        stack_kind="burn",
-        dot_element="hoa",
-        stack_cap=5,
-        per_stack_pct=0.008,
-        emoji="🔥",
-    ),
-    EffectMeta(
-        key="DebuffNghiepHoaHongLien",
-        vi="Nghiệp Hỏa Hồng Liên", en="Red Lotus Karma Fire",
-        kind=EffectKind.DEBUFF,
-        description_vi=(
-            "Hồng Liên Nghiệp Hỏa đóng dấu nghiệp lực — **không thể giải "
-            "trừ**. Mỗi khi địch nhân nhận thêm bất kỳ debuff/CC/DoT nào, "
-            "in 1 tầng **Nghiệp Hỏa** (3% HP tối đa/lượt, hệ Hỏa) và có "
-            "30% cơ hội đốt cháy 1 trạng thái tốt ngẫu nhiên."
-        ),
-        # Marker only — no stat_bonus, no DoT of its own. The reactive
-        # logic lives in casting._fire_nghiep_hoa_hong_lien_reaction
-        # and runs after every successful inflict_debuff on the holder.
-        cleansable=False,
-        emoji="🔴",
-    ),
-    EffectMeta(
-        key="DebuffNghiepHoa",
-        vi="Nghiệp Hỏa", en="Karma Fire",
-        kind=EffectKind.DEBUFF,
-        description_vi=(
-            "Lửa nghiệp lực thiêu đốt — mỗi tầng gây 3% HP tối đa làm "
-            "sát thương Hỏa mỗi lượt. Tích từ Nghiệp Hỏa Hồng Liên: mỗi "
-            "debuff mới in 1 tầng. Tan biến khi Hồng Liên kết thúc."
-        ),
-        # Stack-based hoa DoT. Tick reads ``nghiep_hoa_stacks ×
-        # nghiep_hoa_per_stack_pct`` via the dot.py kind table. Boss cap
-        # set generously — uncapped, the 99-stack ceiling × 3 % hp_max
-        # against a multi-million HP boss would still trivialize fights.
-        stack_kind="nghiep_hoa",
-        dot_element="hoa",
-        stack_cap=99,
-        per_stack_pct=0.03,
-        boss_dot_cap_matk_scale=8.0,
-        emoji="🔥",
-    ),
-    EffectMeta(
-        key="DebuffHoaVan",
-        vi="Hỏa Vân", en="Fire Cloud Mark",
-        kind=EffectKind.DEBUFF,
-        description_vi=(
-            "Hỏa Vân kiếm khí bám trên thân — mỗi lần né tránh (cả hai bên) "
-            "chồng 1 tầng. **Đủ 5 tầng** sẽ kích **Hỏa Vân Sậu Thiên Kiếm** "
-            "(tự động, luôn bạo kích, tiêu hết tầng)."
-        ),
-        stack_cap=5,
-        emoji="🗡️",
-    ),
-    EffectMeta(
-        key="DebuffPhuongHoa",
-        vi="Phượng Hỏa", en="Phoenix Fire",
-        kind=EffectKind.DEBUFF,
-        description_vi=(
-            "Chân hỏa Phượng Hoàng đeo bám thân thể địch — mỗi tầng gây 2% "
-            "HP tối đa làm sát thương Hỏa mỗi lượt và giảm 10% hồi máu "
-            "nhận vào từ mọi nguồn (tối đa 3 tầng)."
-        ),
-        stack_kind="phuong_hoa",
-        dot_element="hoa",
-        stack_cap=3,
-        per_stack_pct=0.02,
-        # Per-stack heal-reduction scaling — ``heal_taken_reduce`` is consumed
-        # by ``_apply_heal`` (capped at 0.90 globally).
-        stat_bonus={"phuong_hoa_per_stack_heal_reduce": 0.10},
-        scaling_rules=(
-            {
-                "key": "phuong_hoa_per_stack_heal_reduce",
-                "source": "stack:phuong_hoa",
-                "output": "heal_taken_reduce",
-            },
-        ),
-        emoji="🦅",
-    ),
-    EffectMeta(
-        key="DebuffUMinh",
-        vi="U Minh", en="Underworld Mark",
-        kind=EffectKind.DEBUFF,
-        description_vi=(
-            "Quỷ hỏa U Minh thiêu đốt linh lực — không gây sát thương HP, "
-            "nhưng mỗi tầng bào mòn 5% MP tối đa của địch mỗi lượt. "
-            "Tan biến khi hết thời lượng (tối đa 3 tầng)."
-        ),
-        # MP-burn-only debuff: no dot_pct, no stack_kind (so it doesn't enter
-        # the HP DoT loop). The per-turn MP drain is handled directly in
-        # CombatSession._process_periodic from the holder's u_minh_stacks.
-        # Stack cap rides on ``EffectMeta.stack_cap`` (read via
-        # ``effective_stack_cap``); no Combatant field needed.
-        stack_cap=3,
-        dot_element="hoa",
-        emoji="👻",
-    ),
-    EffectMeta(
-        key="DebuffChanHoa",
-        vi="Tam Muội Chân Hỏa", en="Three-Layer True Fire",
-        kind=EffectKind.DEBUFF,
-        description_vi=(
-            "Lửa Tam Muội thiêu đốt từ bên trong — mỗi tầng gây 2% HP tối "
-            "đa làm sát thương Hỏa mỗi lượt, đồng thời khuếch đại MỌI sát "
-            "thương DoT hệ Hỏa khác trên thân +4% / tầng. Tối đa 5 tầng. "
-            "Đối với thế giới boss / boss đặc biệt: tổn thương mỗi lượt "
-            "giới hạn 6× matk người niệm."
-        ),
-        # Stack-based hoa DoT — tick magnitude reads chan_hoa_stacks ×
-        # chan_hoa_per_stack_pct via the dot.py kind table. The fire-amp
-        # rider lives in dot._dot_amp's ``meta.dot_element == "hoa"`` gate
-        # so it boosts every fire-element DoT on the holder, not just its
-        # own ticks. ``boss_dot_cap_matk_scale`` clamps the per-tick damage
-        # against world bosses / stat-mutation-immune bosses to 6× the
-        # applier's matk so the spell stays meaningful without being the
-        # sole win condition.
-        stack_kind="chan_hoa",
-        dot_element="hoa",
-        stack_cap=5,
-        per_stack_pct=0.02,
-        emoji="🔥",
-    ),
-    EffectMeta(
-        key="DebuffTeLiet",
-        vi="Tê Liệt", en="Paralysis",
-        kind=EffectKind.CC,
-        description_vi="Cơ thể tê liệt, 50% mất lượt.",
-        emoji="⚡",
-    ),
-    EffectMeta(
-        key="DebuffDotChay",
-        vi="Đốt Cháy Nội Tạng", en="Internal Burning",
-        kind=EffectKind.DEBUFF,
-        description_vi="Lửa đốt nội tạng, gây sát thương nặng mỗi lượt.",
-        dot_pct=0.08,
-        dot_element="hoa",
-        emoji="💥",
-    ),
-    EffectMeta(
-        key="DebuffHoaXuyenThau",
-        vi="Hỏa Xuyên Thấu", en="Fire Penetration",
-        kind=EffectKind.DEBUFF,
-        description_vi="Lá chắn hỏa khí bị xuyên thủng, giảm mạnh kháng Hỏa.",
-        stat_bonus={"res_hoa": -0.15},
-        emoji="🔻",
-    ),
-    EffectMeta(
-        key="DebuffMocXuyenThau",
-        vi="Mộc Xuyên Thấu", en="Wood Penetration",
-        kind=EffectKind.DEBUFF,
-        description_vi="Rễ độc xâm nhập cơ thể, giảm mạnh kháng Mộc.",
-        stat_bonus={"res_moc": -0.15},
-        emoji="🌱",
-    ),
-    EffectMeta(
-        key="DebuffThuyXuyenThau",
-        vi="Thủy Xuyên Thấu", en="Water Penetration",
-        kind=EffectKind.DEBUFF,
-        description_vi="Khiên thủy khí bị xuyên thủng, giảm mạnh kháng Thủy.",
-        stat_bonus={"res_thuy": -0.15},
-        emoji="💧",
-    ),
-    EffectMeta(
-        key="DebuffCuuKhuc",
-        vi="Cửu Khúc Ấn", en="Nine-Bend Mark",
-        kind=EffectKind.DEBUFF,
-        description_vi=(
-            "Bị in dấu Cửu Khúc Hoàng Hà — mỗi đòn niệm gây sát thương "
-            "của thí chủ chồng thêm 1 tầng (tối đa 9). **3 tầng**: -atk "
-            "và -matk; **6 tầng**: thêm -kháng Thủy; **9 tầng**: mỗi đòn "
-            "tấn công đều khởi động Thủy Long Đạn theo dư uy của trận "
-            "(40% phổ thông, 100% ở 10 ngọc)."
-        ),
-        stack_cap=9,
-        # Magnitudes are snapshotted onto the holder's ``cuu_khuc_*_active``
-        # fields by ``inflict_debuff`` (so the formation tier of the *applier*
-        # drives the strength). Scaling rules read those fields directly via
-        # ``key: "field:..."`` and route them through the gated expansion —
-        # ≥3 stacks for atk/matk shred, ≥6 stacks for thuy res shred.
-        # ``multiplier: -1.0`` flips sign because the field values are stored
-        # as positive percentages but applied as reductions.
-        scaling_rules=(
-            {
-                "key": "field:cuu_khuc_atk_reduce_active",
-                "source": "constant",
-                "gate_source": "stack:cuu_khuc",
-                "min": 3,
-                "multiplier": -1.0,
-                "output": "atk_pct",
-            },
-            {
-                "key": "field:cuu_khuc_atk_reduce_active",
-                "source": "constant",
-                "gate_source": "stack:cuu_khuc",
-                "min": 3,
-                "multiplier": -1.0,
-                "output": "matk_pct",
-            },
-            {
-                "key": "field:cuu_khuc_res_shred_active",
-                "source": "constant",
-                "gate_source": "stack:cuu_khuc",
-                "min": 6,
-                "multiplier": -1.0,
-                "output": "res_thuy",
-            },
-        ),
-        emoji="🌊",
-    ),
-    EffectMeta(
-        key="DebuffNhuocThuyAn",
-        vi="Nhược Thủy Ấn", en="Weak Water Mark",
-        kind=EffectKind.DEBUFF,
-        description_vi=(
-            "Bị in dấu Nhược Thủy: mỗi tầng giảm 4% Kháng Thủy. "
-            "Khi chồng đủ 5 tầng, ấn ký bùng nổ — gây sát thương bằng "
-            "10% lượng HP đã mất của chính mục tiêu, sau đó reset về 0."
-        ),
-        # Per-stack penalty expanded via ``scaling_rules`` against
-        # ``combatant.thuy_mark_stacks``. ``stack_cap`` is the canonical
-        # cap (read via ``effective_stack_cap``).
-        # ``thuy_mark_detonate_lost_hp_pct`` is config-only (consumed by
-        # casting.py's detonation hook) and still gets popped at the
-        # bottom of get_combat_modifiers to keep it out of the live stat dict.
-        stack_cap=5,
-        stat_bonus={
-            "thuy_mark_per_stack_res": -0.04,
-            "thuy_mark_detonate_lost_hp_pct": 0.10,
-        },
-        scaling_rules=(
-            {"key": "thuy_mark_per_stack_res", "source": "stack:thuy_mark", "output": "res_thuy"},
-        ),
-        emoji="🌊",
-    ),
-    EffectMeta(
-        key="DebuffDocTo",
-        vi="Độc Tố", en="Poison",
-        kind=EffectKind.DEBUFF,
-        description_vi="Độc tố ăn mòn cơ thể, gây sát thương mỗi lượt.",
-        # Stack-based: tick = poison_stacks × poison_per_stack_pct × max(atk, matk) × DOT_POWER_COEF.
-        stack_kind="poison",
-        dot_element="moc",
-        stack_cap=5,
-        per_stack_pct=0.008,
-        emoji="☠️",
-    ),
-    EffectMeta(
-        key="DebuffBaoMon",
-        vi="Bào Mòn", en="Corrosion",
-        kind=EffectKind.DEBUFF,
-        description_vi="Bào mòn kháng cự, giảm khả năng chịu đòn.",
-        stat_bonus={"res_all": -0.05},
-        emoji="🧪",
-    ),
-    EffectMeta(
-        key="DebuffTroBuoc",
-        vi="Trói Buộc", en="Bind",
-        kind=EffectKind.DEBUFF,
-        description_vi="Bị trói buộc, giảm mạnh tốc độ và không thể tháo chạy.",
-        stat_bonus={"spd_pct": -0.50},
-        emoji="⛓️",
-    ),
-    EffectMeta(
-        key="DebuffLunDat",
-        vi="Lún Đất", en="Quicksand",
-        kind=EffectKind.DEBUFF,
-        description_vi="Lún xuống đất, giảm tốc độ.",
-        stat_bonus={"spd_pct": -0.30},
-        emoji="🌱",
-    ),
-    EffectMeta(
-        key="EffectNgungDong",
-        vi="Ngưng Đọng", en="Stagnation",
-        kind=EffectKind.DEBUFF,
-        description_vi="Khí trường ngưng đọng, giảm tốc độ.",
-        stat_bonus={"spd_pct": -0.25},
-        emoji="💨",
-    ),
-    EffectMeta(
-        key="DebuffLamCham",
-        vi="Làm Chậm", en="Slow",
-        kind=EffectKind.DEBUFF,
-        description_vi="Tốc độ bị giảm.",
-        stat_bonus={"spd_pct": -0.25},
-        emoji="🐢",
-    ),
-    EffectMeta(
-        key="DebuffDongBang",
-        vi="Đóng Băng", en="Frozen",
-        kind=EffectKind.CC,
-        description_vi="Bị đông cứng, mất lượt hành động.",
-        skips_turn=True,
-        emoji="🧊",
-    ),
-    EffectMeta(
-        key="DebuffChayMau",
-        vi="Chảy Máu", en="Bleed",
-        kind=EffectKind.DEBUFF,
-        description_vi="Máu chảy không ngừng, gây sát thương mỗi lượt.",
-        # Stack-based: tick = bleed_stacks × bleed_per_stack_pct × max(atk, matk) × DOT_POWER_COEF.
-        stack_kind="bleed",
-        dot_element="kim",
-        stack_cap=5,
-        per_stack_pct=0.008,
-        emoji="🩸",
-    ),
-    EffectMeta(
-        key="DebuffPhaGiap",
-        vi="Phá Giáp", en="Armor Break",
-        kind=EffectKind.DEBUFF,
-        description_vi="Giáp phòng thủ bị phá vỡ, giảm khả năng chịu đòn.",
-        stat_bonus={"final_dmg_reduce": -0.15},
-        emoji="🔨",
-    ),
-    EffectMeta(
-        key="DebuffXeRach",
-        vi="Xé Rách", en="Lacerate",
-        kind=EffectKind.DEBUFF,
-        description_vi="Xé nát kháng cự, giảm mạnh kháng nguyên tố.",
-        stat_bonus={"res_all": -0.08},
-        emoji="🗡️",
-    ),
-    EffectMeta(
-        key="DebuffCuonBay",
-        vi="Cuốn Bay", en="Knock Up",
-        kind=EffectKind.CC,
-        description_vi="Bị cuốn bay lên, mất lượt hành động.",
-        skips_turn=True,
-        emoji="💨",
-    ),
-    EffectMeta(
-        key="DebuffCatDut",
-        vi="Cắt Đứt Linh Khí", en="Qi Severance",
-        kind=EffectKind.DEBUFF,
-        description_vi="Linh khí bị cắt đứt, giảm hiệu quả hồi sinh lực.",
-        stat_bonus={"hp_regen_pct": -0.3},
-        emoji="✂️",
-    ),
-    EffectMeta(
-        key="CCMuted",
-        vi="Câm Lặng", en="Silence",
-        kind=EffectKind.CC,
-        description_vi="Bị câm lặng, không thể sử dụng kỹ năng.",
-        prevents_skills=True,
-        emoji="🔇",
-    ),
-    EffectMeta(
-        key="CCStun",
-        vi="Choáng", en="Stun",
-        kind=EffectKind.CC,
-        description_vi="Bị choáng, mất lượt hành động.",
-        skips_turn=True,
-        emoji="💫",
-    ),
-    EffectMeta(
-        key="CCInterrupt",
-        vi="Ngắt Kỹ Năng", en="Interrupt",
-        kind=EffectKind.CC,
-        description_vi="Kỹ năng bị ngắt, lượt này không thể sử dụng kỹ năng.",
-        prevents_skills=True,
-        emoji="⛔",
-    ),
-    EffectMeta(
-        key="CCLockBreak",
-        vi="Khóa Đột Phá", en="Breakthrough Lock",
-        kind=EffectKind.CC,
-        description_vi="Đột phá bị khóa bởi trạng thái khống chế.",
-        emoji="🔒",
-    ),
-    EffectMeta(
-        key="DebuffSetDanh",
-        vi="Sét Đánh", en="Lightning Strike",
-        kind=EffectKind.DEBUFF,
-        description_vi="Bị sét đánh, chịu thêm sát thương sét mỗi lượt.",
-        dot_pct=0.05,
-        dot_element="loi",
-        emoji="⚡",
-    ),
-    EffectMeta(
-        key="DebuffSocDien",
-        vi="Sốc Điện", en="Electric Shock",
-        kind=EffectKind.DEBUFF,
-        description_vi="Thần kinh tê rần — mỗi tầng Sốc Điện khiến mục tiêu chịu thêm sát thương Lôi từ đòn đánh.",
-        # NOT a DoT — shock stacks amp incoming Lôi hits via combatant
-        # ``shock_per_stack_pct`` rather than ticking. ``stack_kind`` is
-        # intentionally unset so get_periodic_damage doesn't try to call
-        # calculate_dot_damage on it. The cap/per-stack values seed via
-        # the kind→effect-key map in helpers.py, not via stack_kind.
-        stack_cap=5,
-        per_stack_pct=0.04,
-        emoji="⚡",
-    ),
-    EffectMeta(
-        key="DebuffAnPhong",
-        vi="Ấn Phong", en="Wind Mark",
-        kind=EffectKind.DEBUFF,
-        description_vi="Ấn ký gió bám lên mục tiêu — né tránh suy giảm, dễ bị bạo kích và chịu sát thương bạo khổng lồ từ người đánh dấu.",
-        stat_bonus={"evasion_rating": -150},
-        emoji="🌀",
-    ),
-    EffectMeta(
-        key="DebuffLoaMat",
-        vi="Lóa Mắt", en="Blinded",
-        kind=EffectKind.DEBUFF,
-        description_vi="Tầm nhìn bị Âm khí che mờ — mỗi đòn đánh đều có khả năng đánh trượt.",
-        emoji="🌫️",
-    ),
-    EffectMeta(
-        key="DebuffTanDiet",
-        vi="Tận Diệt", en="Annihilation",
-        kind=EffectKind.DEBUFF,
-        description_vi="Sinh cơ bị tận diệt — HP tối đa và hồi HP đều suy giảm vĩnh viễn trong trận. Magnitude is supplied per-cast via ``effect_overrides`` (``hp_max_pct`` shrinks max HP one-shot on first apply; ``hp_regen_pct`` aggregates while the effect is active).",
-        cleansable=False,
-        emoji="☠️",
-    ),
-    EffectMeta(
-        key="DebuffVoDao",
-        vi="Vô Đạo", en="Way Severed",
-        kind=EffectKind.DEBUFF,
-        description_vi="Đạo cơ bị cắt đứt — toàn bộ máu hồi nhận vào giảm 90% trong 3 lượt.",
-        # ``heal_taken_reduce`` is read by ``CombatSession._apply_heal``; default
-        # 0.9 here, but skills can override per-cast via ``effect_overrides``.
-        stat_bonus={"heal_taken_reduce": 0.9},
-        emoji="🩸",
-    ),
-    EffectMeta(
-        key="DebuffSuyKhi",
-        vi="Suy Khí", en="Qi Drain",
-        kind=EffectKind.DEBUFF,
-        description_vi="Khí huyết suy kiệt — sức tấn công vật lý sụt giảm.",
-        stat_bonus={"atk_pct": -0.20},
-        emoji="🩸",
-    ),
-    EffectMeta(
-        key="DebuffPhapNhuoc",
-        vi="Pháp Nhược", en="Spell Weakened",
-        kind=EffectKind.DEBUFF,
-        description_vi="Linh lực rối loạn — sức tấn công pháp thuật sụt giảm.",
-        stat_bonus={"matk_pct": -0.20},
-        emoji="🌫️",
-    ),
-    EffectMeta(
-        key="DebuffLinhLucKiet",
-        vi="Linh Lực Kiệt", en="Spiritual Exhaustion",
-        kind=EffectKind.DEBUFF,
-        description_vi="Kinh mạch khô kiệt — tốc độ hồi linh lực sụt giảm.",
-        stat_bonus={"mp_regen_pct": -0.50},
-        emoji="💧",
-    ),
-    EffectMeta(
-        key="DebuffAmThucKy",
-        vi="Âm Thực Ký", en="Shadow-Devour Mark",
-        kind=EffectKind.DEBUFF,
-        description_vi="Quỷ khí khắc lên hồn — kháng Âm sụt mạnh, dấu ấn được làm mới mỗi lần tiểu quỷ chạm tới.",
-        stat_bonus={"res_am": -0.25},
-        emoji="👁️",
-    ),
-    EffectMeta(
-        key="DebuffPhongDoMa",
-        vi="Phong Đô Ma Khí", en="Fengdu Demonic Mist",
-        kind=EffectKind.DEBUFF,
-        description_vi="Sương mù Phong Đô bao trùm — kháng Âm sụt 5% (trước khi cộng dồn ngọc khảm).",
-        stat_bonus={"res_am": -0.05},        
-        cleansable=False,
-        emoji="🪦",
-    ),
-    EffectMeta(
-        key="DebuffXichLuyenToaHon",
-        vi="Xích Luyện Tỏa Hồn", en="Red-Refining Soul-Lock",
-        kind=EffectKind.DEBUFF,
-        description_vi=(
-            "Xích Luyện ngọn lửa tỏa hồn — né tránh, tốc hồi linh lực, tốc hồi "
-            "sinh lực đều sụt 10% (giá trị cơ bản, cộng dồn theo ngưỡng ngọc "
-            "khảm Xích Luyện Tỏa Hồn Trận — tối đa 50% mỗi chỉ số)."
-        ),
-        stat_bonus={
-            "evasion_rating_pct": -0.10,
-            "mp_regen_pct": -0.10,
-            "hp_regen_pct": -0.10,
-        },
-        cleansable=False,
-        emoji="🔥",
-    ),
-    EffectMeta(
-        key="BuffPhatQuangPhoChieu",
-        vi="Phật Quang Phổ Chiếu", en="Buddha Light Universal Shine",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Phật quang phổ chiếu khắp thân — mọi nguồn hồi máu nhận được "
-            "tăng thêm 30% trong 3 lượt."
-        ),
-        stat_bonus={"heal_taken_bonus": 0.30},
-        emoji="🌟",
-    ),
-    EffectMeta(
-        key="BuffThamPhanChiNo",
-        vi="Thẩm Phán Chi Nộ", en="Wrath of Judgment",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Cơn thịnh nộ phán quyết bùng cháy — sức tấn công pháp thuật "
-            "(MATK) tăng 20% trong 3 lượt."
-        ),
-        stat_bonus={"matk_pct": 0.20},
-        emoji="⚖️",
-    ),
-    EffectMeta(
-        key="BuffCamLoLongLuc",
-        vi="Cam Lộ Long Lực", en="Sweet Dew Dragon Power",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Cam lộ tẩy uế hóa thành long lực — sát thương Thủy +20% trong "
-            "1 lượt sau khi Thanh Tẩy thành công."
-        ),
-        # dmg_bonus_thuy is read by build_attack_stats via the standard
-        # actor_mods.get(f"dmg_bonus_{elem}") fold (combat_hit.py:96).
-        stat_bonus={"dmg_bonus_thuy": 0.20},
-        stealable=False,
-        emoji="🐉",
-    ),
-    EffectMeta(
-        key="BuffCamLoTinhHoa",
-        vi="Cam Lộ Tịnh Hóa", en="Sweet Dew Purification",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Cam lộ rưới xuống tẩy uế thân — mỗi lượt có 50% cơ hội Thanh "
-            "Tẩy 1 trạng thái xấu, và mỗi lần Thanh Tẩy thành công còn hồi "
-            "5% HP tối đa và nhận **Cam Lộ Long Lực** (+20% sát thương Thủy "
-            "trong 1 lượt). Kéo dài 4 lượt."
-        ),
-        # cleanse_on_turn_pct + cleanse_heal_pct ride the standard try_cleanse
-        # buff-layer fold (lc_effects/quang.py) — works on non-Quang holders
-        # via that path's buff-bonus override branch. Buffs default to
-        # ``cleansable=False`` (see EffectMeta __post_init__), which is what
-        # we want here: the picker shouldn't self-strip the aura granting
-        # the cleanse.
-        stat_bonus={
-            "cleanse_on_turn_pct": 0.50,
-            "cleanse_heal_pct": 0.05,
-        },
-        stealable=False,
-        emoji="💧",
-    ),
-    EffectMeta(
-        key="BuffPhaMaChanNgon",
-        vi="Phá Ma Chân Ngôn", en="Demon-Breaking True Mantra",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Chân ngôn phá ma vang vọng — mỗi lượt có 40% cơ hội Thanh Tẩy "
-            "1 trạng thái xấu, và mỗi lần Thanh Tẩy thành công còn hồi 5% HP "
-            "tối đa. Hiệu ứng kéo dài 4 lượt."
-        ),
-        stat_bonus={
-            "cleanse_on_turn_pct": 0.40,
-            "cleanse_heal_pct": 0.05,
-        },
-        emoji="🔔",
-    ),
-    EffectMeta(
-        key="BuffLuuQuangHuyenAnh",
-        vi="Lưu Quang Huyễn Ảnh", en="Flowing Light Phantom",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Hóa thân thành ảo ảnh dòng quang — mỗi lần chịu sát thương cộng "
-            "thêm 10% tốc độ (tối đa +30%), và mỗi lần né tránh thành công lập "
-            "tức phản công bằng **Cực Quang Trảm**. Hiệu ứng kéo dài 5 lượt."
-        ),
-        # spd_pct stamped onto effect_overrides per-stack by the take_damage
-        # hook in cast_skill — ramps 0.10 → 0.20 → 0.30. Empty meta default
-        # so cast-time application is just a dormant marker until the first
-        # incoming hit lights it up. The on-evade chain target lives on the
-        # granting skill's JSON (``effect_overrides.BuffLuuQuangHuyenAnh
-        # .proc_on_holder_evade_cast``), so the engine reads it from the
-        # holder's per-instance override rather than hardcoded here.
-        stat_bonus={},
-        emoji="✨",
-    ),
-    EffectMeta(
-        key="BuffQuangMinhTungHoanhAura",
-        vi="Quang Minh Tung Hoành Bộ — Hào Quang", en="Bright Light Free-Step Aura",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Hào quang bị động — mỗi 1 điểm Tốc cộng thêm 10 Khiên tối đa. "
-            "Tự kích hoạt khi vào trận, kéo dài cả trận đấu."
-        ),
-        # shield_max_per_spd is read by Combatant.shield_cap() via
-        # get_combat_modifiers — recomputed each shield-cap call so any
-        # in-combat spd buffs (e.g. the active counterpart) immediately
-        # widen the shield ceiling.
-        stat_bonus={"shield_max_per_spd": 10.0},
-        cleansable=False,
-        stealable=False,
-        emoji="🌅",
-    ),
-    EffectMeta(
-        key="BuffQuangMinhTungHoanh",
-        vi="Quang Minh Tung Hoành Bộ", en="Bright Light Free-Step",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Cước pháp tung hoành — +20% Tốc và +0.5% hồi Khiên/lượt trong 4 lượt."
-        ),
-        stat_bonus={"spd_pct": 0.20, "shield_regen_pct": 0.005},
-        emoji="✨",
-    ),
-    EffectMeta(
-        key="BuffDaiThienSuAura",
-        vi="Đại Thiên Sứ — Hào Quang", en="Great Angel Aura",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Đại Thiên Sứ tỏa hào quang — +10% kháng tất cả nguyên tố và "
-            "+10% hiệu ứng hồi máu nhận được. Tồn tại khi Đại Thiên Sứ "
-            "còn hiện diện."
-        ),
-        stat_bonus={"res_all": 0.10, "heal_taken_bonus": 0.10},
-        cleansable=False,
-        stealable=False,
-        emoji="🪽",
-    ),
-    EffectMeta(
-        key="BuffHaiThiThanLauAura",
-        vi="Hải Thị Thận Lâu — Hào Quang", en="Sea-Mirage Tower Aura",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Hào quang bị động — thân pháp ảo cảnh: mỗi 1 điểm Tốc cao hơn "
-            "địch nhân cộng thêm 20 Né Tránh khi đối thủ tấn công vào thân. "
-            "Tự kích hoạt khi vào trận, kéo dài cả trận đấu."
-        ),
-        # ``evasion_rating_per_spd_diff`` follows the generic stat-diff
-        # pattern (see src/game/engine/stat_diff.py) — the helper folds
-        # ``max(0, defender_eff_spd - attacker_eff_spd) * 20`` into
-        # ``target_mods["evasion_rating"]`` right before build_defense_stats
-        # consumes it. Active counterpart's spd_pct widens the gap, stacking
-        # synergistically with the passive evasion gain.
-        stat_bonus={"evasion_rating_per_spd_diff": 20.0},
-        cleansable=False,
-        stealable=False,
-        emoji="🌊",
-    ),
-    EffectMeta(
-        key="BuffHaiThiThanLau",
-        vi="Hải Thị Thận Lâu", en="Sea-Mirage Tower",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Bộ pháp Hải Thị — +20% Tốc, đồng thời mỗi đòn niệm gây sát "
-            "thương có 60% cơ hội Làm Chậm địch nhân -20% Tốc. Kéo dài 4 lượt."
-        ),
-        # spd_pct rides the standard regen path; ``hai_thi_slow_chance`` and
-        # ``hai_thi_slow_magnitude`` are config keys read by the on-hit hook
-        # in cast_skill — popped from get_combat_modifiers below.
-        stat_bonus={
-            "spd_pct": 0.20,
-            "hai_thi_slow_chance": 0.60,
-            "hai_thi_slow_magnitude": -0.20,
-        },
-        cleansable=False,
-        stealable=False,
-        emoji="🏯",
-    ),
-    EffectMeta(
-        key="BuffLangBaViBoAura",
-        vi="Lăng Ba Vi Bộ — Hào Quang", en="Wave-Stepping Microsteps Aura",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Hào quang bị động — bộ pháp Lăng Ba: lướt trên sóng nhẹ như "
-            "không trọng lượng. **+500 Né Tránh** và **+20% Tốc** vĩnh "
-            "viễn (cả trận đấu)."
-        ),
-        stat_bonus={"evasion_rating": 500.0, "spd_pct": 0.20},
-        cleansable=False,
-        stealable=False,
-        emoji="🌊",
-    ),
-    EffectMeta(
-        key="BuffThuyThuongPhieuAura",
-        vi="Thủy Thượng Phiêu — Hào Quang", en="Water-Walking Drift Aura",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Hào quang bị động — bộ pháp Thủy Thượng Phiêu: lướt trên "
-            "mặt nước, vĩnh viễn **+20% Tốc** (cả trận đấu)."
-        ),
-        stat_bonus={"spd_pct": 0.20},
-        cleansable=False,
-        stealable=False,
-        emoji="🌊",
-    ),
-    EffectMeta(
-        key="BuffThuyThuongPhieu",
-        vi="Thủy Thượng Phiêu", en="Water-Walking Drift",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Trạng thái Thủy Thượng Phiêu — đọc thế trận mà tùy biến: "
-            "**khi địch nhân nhanh hơn**, gia tốc bản thân **+20% Tốc** "
-            "để đuổi kịp; **khi địch nhân chậm hơn**, dồn lực vào đòn "
-            "niệm **+20% Sát Thương Thủy**. Kéo dài 3 lượt."
-        ),
-        # Comparison-gated flat magnitudes — the ``_if_<source>_higher`` /
-        # ``_if_<source>_lower`` family in stat_diff.py routes these to the
-        # real ``spd_pct`` / ``dmg_bonus_thuy`` keys based on the live
-        # spd matchup against the opponent at cast time.
-        stat_bonus={
-            "spd_pct_if_spd_lower": 0.20,
-            "dmg_bonus_thuy_if_spd_higher": 0.20,
-        },
-        cleansable=False,
-        stealable=False,
-        emoji="💨",
-    ),
-    EffectMeta(
-        key="BuffTuyetDieuVoAnh",
-        vi="Tuyệt Diệu Vô Ảnh", en="Sublime Shadowless",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Trạng thái Tuyệt Diệu Vô Ảnh — thân pháp hư ảo, không một "
-            "thủ đoạn giảm Tốc nào có thể chạm tới. **Miễn dịch mọi "
-            "trạng thái giảm Tốc** trong 3 lượt."
-        ),
-        # ``slow_immune`` is a config flag read by ``inflict_debuff`` to
-        # gate any incoming debuff whose effective stat_bonus carries a
-        # negative ``spd_pct``. Popped from ``get_combat_modifiers`` so it
-        # never leaks into the live stat dict.
-        stat_bonus={"slow_immune": 1.0},
-        cleansable=False,
-        stealable=False,
-        emoji="👣",
-    ),
-    EffectMeta(
-        key="BuffTuLuongBatThienCan",
-        vi="Tứ Lạng Bạt Thiên Cân", en="Four Liang Move Thousand Catties",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Lấy nhu thắng cương — khi HP > 50% chuyển sang thế công, +20% "
-            "sát thương Thủy; khi HP < 50% chuyển sang thế thủ, +20% giảm "
-            "sát thương phải nhận. Hoán đổi tự động theo HP mỗi đòn. "
-            "Kéo dài 4 lượt."
-        ),
-        # Threshold-gated flat magnitudes — ``source: "constant"`` keeps
-        # the bonus flat (×1) while ``gate_source: "hp_pct"`` checks the
-        # holder's live HP%. Strict greater/less expressed via min: 0.5001
-        # / max: 0.4999 so exactly 50% HP yields neither (a one-pixel
-        # sliver, matching the original semantics).
-        stat_bonus={"tu_luong_thuy_amp": 0.20, "tu_luong_dr": 0.20},
-        scaling_rules=(
-            {
-                "key": "tu_luong_thuy_amp",
-                "source": "constant",
-                "gate_source": "hp_pct",
-                "min": 0.5001,
-                "output": "dmg_bonus_thuy",
-            },
-            {
-                "key": "tu_luong_dr",
-                "source": "constant",
-                "gate_source": "hp_pct",
-                "max": 0.4999,
-                "output": "final_dmg_reduce",
-            },
-        ),
-        cleansable=False,
-        stealable=False,
-        emoji="☯️",
-    ),
-    EffectMeta(
-        key="BuffKinhHoaThuyNguyet",
-        vi="Kính Hoa Thủy Nguyệt", en="Mirror Flower Water Moon",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Ảo cảnh kính hoa — mỗi lượt trước khi hành động có 50% cơ hội "
-            "đẩy ngược một trạng thái xấu trên thân về phía địch nhân (giữ "
-            "nguyên thời gian + cường độ). Trạng thái dạng tầng (Cháy/Chảy "
-            "Máu/Sốc/Độc) không thể chuyển. Kéo dài 3 lượt."
-        ),
-        # debuff_transfer_on_turn_pct is read by ``_try_transfer_debuffs``
-        # in session.py; popped from get_combat_modifiers below so it doesn't
-        # masquerade as a real stat.
-        stat_bonus={"debuff_transfer_on_turn_pct": 0.50},
-        cleansable=False,
-        stealable=False,
-        emoji="🪞",
-    ),
-    EffectMeta(
-        key="BuffThuyMacThienHoa",
-        vi="Thủy Mặc Thiên Hoa", en="Water-Ink Heaven Flower",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Thủy Mặc — 25% sát thương phải nhận sẽ chuyển hóa thành mất "
-            "linh lực (MP) thay vì máu. Phần MP không đủ chi trả vẫn rơi "
-            "lại HP như thường. Đồng thời +2% hồi linh lực mỗi lượt."
-        ),
-        # ``dmg_to_mp_pct`` is consumed by ``Combatant.take_damage`` directly
-        # via get_combat_modifiers; popped from the aggregated mod dict by the
-        # cleanup at the bottom of get_combat_modifiers so it doesn't pollute
-        # the stat namespace. ``mp_regen_pct`` rides the regular regen path.
-        stat_bonus={"dmg_to_mp_pct": 0.25, "mp_regen_pct": 0.02},
-        cleansable=False,
-        stealable=False,
-        emoji="🌊",
-    ),
-    EffectMeta(
-        key="BuffThuyVi",
-        vi="Thủy Vi", en="Subtle Water",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Thủy khí tinh tế thấm vào kỹ năng — N đòn niệm tiếp theo xuyên "
-            "thẳng X% Hộ Thuẫn của địch nhân. Tự tan khi cạn linh khí."
-        ),
-        # Charges + magnitude live in the per-instance override
-        # (``thuy_vi_charges`` + ``thuy_vi_bypass_pct``); this meta carries no
-        # auto-aggregated stat. Both keys are popped in get_combat_modifiers
-        # so they don't masquerade as real stat keys.
-        stat_bonus={},
-        cleansable=False,
-        stealable=False,
-        emoji="💧",
-    ),
-    EffectMeta(
-        key="BuffThanhQuangThuan",
-        vi="Thánh Quang Thuẫn", en="Holy Light Shield",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Thuẫn quang thánh khiết bao quanh thân — miễn dịch trạng thái xấu "
-            "+40%, mỗi lượt có 25% cơ hội Thanh Tẩy 1 trạng thái xấu, và giảm "
-            "10% sát thương phải nhận trong 3 lượt."
-        ),
-        stat_bonus={
-            "debuff_immune_pct": 0.40,
-            "cleanse_on_turn_pct": 0.25,
-            "final_dmg_reduce": 0.10,
-        },
-        emoji="🛡️",
-    ),
-    EffectMeta(
-        key="BuffThienSuHoMenh",
-        vi="Thiên Sứ Hộ Mệnh", en="Angel Guardian",
-        kind=EffectKind.BUFF,
-        description_vi=(
-            "Hào quang thiên sứ phù hộ — tăng kháng tất cả nguyên tố, HP tối đa, "
-            "và giảm sát thương phải nhận. Khi nhận đòn chí mạng, hào quang vỡ "
-            "tan và hồi sinh chủ nhân với 50% HP (1 lần/trận). Không thể bị cướp."
-        ),
-        stat_bonus={
-            "res_all": 0.15,
-            "hp_max_pct": 0.20,
-            "final_dmg_reduce": 0.15,
-            "revive_hp_pct": 0.50,
-        },
-        stealable=False,
-        emoji="👼",
-    ),
-    EffectMeta(
-        key="DebuffLucHonChu",
-        vi="Lục Hồn Chú", en="Six-Soul Curse",
-        kind=EffectKind.DEBUFF,
-        description_vi="Sáu hồn ma quấn xác — kháng Âm và sức chịu DoT bị phá vỡ. Mỗi lượt: tổn HP theo Âm Khí của người niệm chú (xuyên qua khiên 50%) và bào mòn linh lực địch.",
-        dot_caster_hp_pct=0.06,
-        dot_caster_matk_scale=5.5,
-        dot_element="am",
-        stat_bonus={"res_am": -0.20, "dot_taken_bonus": 0.20},
-        dot_shield_drain_pct=0.5,
-        dot_mp_drain_pct=0.05,
-        emoji="🕯️",
-    ),
-    EffectMeta(
-        key="DebuffThienMaPost",
-        vi="Thiên Ma Hậu Di Chứng", en="Demon-Mode Backlash",
-        kind=EffectKind.DEBUFF,
-        description_vi="Thân thể quá tải sau cơn cuồng vũ Thiên Ma — chịu thêm sát thương trong 2 lượt, sau đó tự động trở lại Thiên Ma. ``cleansable=False`` so the cycle can't be Thanh Tẩy'd off.",
-        stat_bonus={"final_dmg_reduce": -0.30},
-        on_expire_apply=("BuffThienMa", {"duration": 2}),
-        cleansable=False,
-        emoji="🩸",
-    ),
-]
 
-_UTIL: list[EffectMeta] = [
-    EffectMeta(
-        key="HpRegen",
-        vi="Hồi Sinh Lực", en="HP Regen",
-        kind=EffectKind.BUFF,
-        description_vi="Hồi tức thì 10% sinh lực tối đa khi sử dụng.",
-        instant_heal_pct=0.10,
-        emoji="💚",
-    ),
-    EffectMeta(
-        key="MpRegen",
-        vi="Hồi Linh Lực", en="MP Regen",
-        kind=EffectKind.BUFF,
-        description_vi="Hồi tức thì 10% linh lực tối đa khi sử dụng.",
-        instant_mp_pct=0.10,
-        emoji="💙",
-    ),
-]
+def _meta_from_dict(d: dict) -> EffectMeta:
+    """Rebuild an EffectMeta from one JSON entry.
 
-# ── Build registry ────────────────────────────────────────────────────────────
+    ``duration`` is folded into the JSON for designer ergonomics but is not
+    an EffectMeta field — it is split back out into ``_DEFAULT_DURATIONS``.
+    ``kind`` round-trips via the StrEnum; absent ``cleansable`` / ``stealable``
+    stay unset so ``__post_init__`` re-derives the kind-based default.
+    """
+    kw = {k: v for k, v in d.items() if k != "duration"}
+    kw["kind"] = EffectKind(kw["kind"])
+    for tf in _TUPLE_FIELDS:
+        v = kw.get(tf)
+        if v is not None:
+            kw[tf] = tuple(v)
+    return EffectMeta(**kw)
 
-EFFECTS: dict[str, EffectMeta] = {m.key: m for m in _BUFFS + _DEBUFFS_CC + _UTIL}
 
-# ── Default durations ─────────────────────────────────────────────────────────
+def _load_effect_group(filename: str) -> tuple[list[EffectMeta], list[dict]]:
+    raw = json.loads((_EFFECTS_DIR / filename).read_text(encoding="utf-8"))
+    return [_meta_from_dict(d) for d in raw], raw
 
-_DEFAULT_DURATIONS: dict[str, int] = {
-    # Buffs — typically 3–4 turns
-    EffectKey.BUFF_KIEM_KHI: 3, EffectKey.BUFF_KIEM_Y: 4, EffectKey.BUFF_VO_NGA_KIEM_TAM: 3,
-    EffectKey.BUFF_NHIET_TINH: 3, EffectKey.BUFF_HOA_THAN: 3, EffectKey.BUFF_LIET_DIEM: 3,
-    EffectKey.BUFF_BANG_GIAP: 4, EffectKey.BUFF_THUY_KINH: 3, EffectKey.BUFF_HAN_KHI: 3,
-    EffectKey.BUFF_LOI_THAN: 3, EffectKey.BUFF_TOC_LOI: 2, EffectKey.BUFF_NGU_PHONG: 3,
-    EffectKey.BUFF_PHONG_VU: 3, EffectKey.BUFF_SINH_CO: 4, EffectKey.BUFF_CAN_CO: 3,
-    EffectKey.BUFF_KIM_CUONG: 3, EffectKey.BUFF_HOANG_KIM: 3, EffectKey.BUFF_DAI_DIA: 3,
-    EffectKey.BUFF_TRONG_TO: 4, EffectKey.BUFF_BAT_TU: 1, EffectKey.BUFF_TANG_TOC: 3,
-    EffectKey.BUFF_HO_PHAP: 4, EffectKey.BUFF_HU_KHONG: 2,
-    EffectKey.BUFF_DOAN_TUYET: 4,
-    # Debuffs — typically 2–3 turns
-    EffectKey.DEBUFF_THIEU_DOT: 3, EffectKey.DEBUFF_TE_LIET: 2, EffectKey.DEBUFF_DOT_CHAY: 3,
-    EffectKey.DEBUFF_HOA_XUYEN_THAU: 3,
-    EffectKey.DEBUFF_MOC_XUYEN_THAU: 3,
-    EffectKey.DEBUFF_THUY_XUYEN_THAU: 3,
-    EffectKey.DEBUFF_DOC_TO: 3, EffectKey.DEBUFF_BAO_MON: 3, EffectKey.DEBUFF_TRO_BUOC: 2,
-    EffectKey.DEBUFF_LUN_DAT: 2, EffectKey.EFFECT_NGUNG_DONG: 2, EffectKey.DEBUFF_LAM_CHAM: 2,
-    EffectKey.DEBUFF_DONG_BANG: 2, EffectKey.DEBUFF_CHAY_MAU: 3, EffectKey.DEBUFF_PHA_GIAP: 3,
-    EffectKey.DEBUFF_XE_RACH: 2, EffectKey.DEBUFF_CUON_BAY: 1, EffectKey.DEBUFF_CAT_DUT: 3,
-    EffectKey.CC_MUTED: 2, EffectKey.CC_STUN: 1, EffectKey.CC_INTERRUPT: 1,
-    EffectKey.CC_LOCK_BREAK: 3, EffectKey.DEBUFF_SET_DANH: 2,
-    EffectKey.DEBUFF_SOC_DIEN: 3,
-    EffectKey.DEBUFF_AN_PHONG: 3,
-    EffectKey.DEBUFF_LOA_MAT: 2,
-    EffectKey.DEBUFF_VO_DAO: 3,
-    EffectKey.DEBUFF_SUY_KHI: 3,
-    EffectKey.DEBUFF_PHAP_NHUOC: 3,
-    EffectKey.DEBUFF_LINH_LUC_KIET: 3,
-    EffectKey.DEBUFF_AM_THUC_KY: 3,
-    EffectKey.DEBUFF_PHONG_DO_MA: 2,
-    EffectKey.DEBUFF_XICH_LUYEN_TOA_HON: 2,
-    EffectKey.BUFF_THIEN_SU_HO_MENH: 99,
-    EffectKey.BUFF_THANH_QUANG_THUAN: 3,
-    EffectKey.BUFF_PHAT_QUANG_PHO_CHIEU: 3,
-    EffectKey.BUFF_THAM_PHAN_CHI_NO: 3,
-    EffectKey.BUFF_PHA_MA_CHAN_NGON: 4,
-    EffectKey.BUFF_LUU_QUANG_HUYEN_ANH: 5,
-    EffectKey.BUFF_QMTH_AURA: 99,
-    EffectKey.BUFF_QMTH_ACTIVE: 4,
-    EffectKey.BUFF_DAI_THIEN_SU_AURA: 1,
-    # Buff is charge-driven (drops at 0 charges), but turn-tick decay is the
-    # natural hard cap if the player never lands a damage cast — 99 turns is
-    # effectively "until the fight ends or charges run out".
-    EffectKey.BUFF_THUY_VI: 99,
-    EffectKey.BUFF_THUY_MAC_THIEN_HOA: 4,
-    EffectKey.BUFF_KINH_HOA_THUY_NGUYET: 3,
-    EffectKey.BUFF_TU_LUONG_BAT_THIEN_CAN: 4,
-    EffectKey.BUFF_HAI_THI_THAN_LAU_AURA: 99,
-    EffectKey.BUFF_HAI_THI_THAN_LAU: 4,
-    EffectKey.BUFF_CAM_LO_TINH_HOA: 4,
-    EffectKey.BUFF_CAM_LO_LONG_LUC: 1,
-    EffectKey.DEBUFF_LUC_HON_CHU: 4,
-    EffectKey.DEBUFF_U_MINH: 3,
-    EffectKey.BUFF_PHUONG_HOANG_CHAN_HOA: 4,
-    EffectKey.DEBUFF_PHUONG_HOA: 3,
-    EffectKey.BUFF_LUU_LY_TINH_HOA: 4,
-    EffectKey.BUFF_CUU_DUONG: 4,
-    EffectKey.BUFF_BAT_DIET_HOA_CHUNG: 2,
-    EffectKey.BUFF_LUU_TINH_CAN_NGUYET: 99,
-    EffectKey.DEBUFF_HOA_VAN: 4,
-    EffectKey.BUFF_PHUONG_HOANG_TRIEN_SI: 4,
-    EffectKey.BUFF_THIEN_MA: 2,
-    EffectKey.DEBUFF_THIEN_MA_POST: 2,
-    # Lục Dục desires hold for 99 turns by default — the cycle hook in
-    # ``_tick_luc_duc_thien_ma_vu`` clears them manually when the amp resolves,
-    # so the long duration just guarantees natural-tick decay never beats the
-    # cycle to it.
-    EffectKey.BUFF_LUC_DUC_SAC: 99,
-    EffectKey.BUFF_LUC_DUC_THANH: 99,
-    EffectKey.BUFF_LUC_DUC_HUONG: 99,
-    EffectKey.BUFF_LUC_DUC_VI: 99,
-    EffectKey.BUFF_LUC_DUC_XUC: 99,
-    EffectKey.BUFF_LUC_DUC_PHAP: 99,
-    EffectKey.BUFF_LUC_DUC_CONG_MINH: 99,
-    EffectKey.BUFF_VO_TUONG_THIEN_MA: 4,
-    EffectKey.BUFF_MA_KHI_HO_THE: 99,
-    EffectKey.BUFF_CHAN_MA_CHI_TAM: 99,
-    EffectKey.BUFF_QUY_ANH_ME_TUNG: 99,
-    EffectKey.BUFF_MA_LONG_XUAT_UYEN: 99,
+
+# One file per effect kind (designer clarity); util.json keeps the two
+# instant-pulse regen effects separate. EFFECTS insertion order is the
+# concatenation order below — nothing depends on it, but a stable order
+# keeps diffs reviewable.
+_BUFFS, _raw_buffs = _load_effect_group("buffs.json")
+_DEBUFFS, _raw_debuffs = _load_effect_group("debuffs.json")
+_CC, _raw_cc = _load_effect_group("cc.json")
+_UTIL, _raw_util = _load_effect_group("util.json")
+
+EFFECTS: dict[str, EffectMeta] = {
+    m.key: m for m in _BUFFS + _DEBUFFS + _CC + _UTIL
 }
 
-# Default per-attack miss chance for DebuffLoaMat (Blind). Mirrors the
-# DebuffTeLiet 50% skip pattern — attacker is checked, not the target.
-BLIND_MISS_CHANCE: float = 0.50
+# Split the folded-in durations back out into the legacy lookup map. Only
+# entries that carried an explicit ``duration`` populate it — keys without
+# one keep falling through to ``default_duration``'s ``3`` default exactly
+# as before.
+_DEFAULT_DURATIONS: dict[str, int] = {
+    d["key"]: d["duration"]
+    for d in (*_raw_buffs, *_raw_debuffs, *_raw_cc, *_raw_util)
+    if "duration" in d
+}
 
 
 def default_duration(effect_key: str) -> int:
@@ -1881,6 +469,14 @@ def _resolve_scaling_source(combatant: "Combatant", source: str) -> float:
     if source.startswith("stack:"):
         attr = source[6:] + "_stacks"
         return float(getattr(combatant, attr, 0))
+    if source.startswith("stat:"):
+        # Direct read of a Combatant attribute. Lets a rule scale off raw
+        # stats (evasion_rating, atk, matk, etc.) instead of resource %s
+        # or stack counters. Unknown attrs return 0.0 so a typo disables
+        # the rule cleanly. Used by BuffCuongPhongHoThe — evasion_rating
+        # converts to final_dmg_reduce.
+        attr = source[5:]
+        return float(getattr(combatant, attr, 0.0))
     return 0.0
 
 
@@ -1934,10 +530,128 @@ def _apply_scaling_rules(combatant: "Combatant", result: dict) -> None:
             if units <= 0:
                 continue
             multiplier = float(rule.get("multiplier", 1.0))
+            contribution = per_unit * units * multiplier
+            # Optional ``max_output`` clamps the per-rule contribution by
+            # absolute value. Useful when source scales unboundedly (e.g.
+            # ``stat:evasion_rating``) but the output stat needs a ceiling
+            # (e.g. final_dmg_reduce capped at 0.30). Sign-preserving so
+            # a negative ``multiplier`` rule still respects the bound.
+            max_output = rule.get("max_output")
+            if max_output is not None:
+                mo = abs(float(max_output))
+                if contribution > mo:
+                    contribution = mo
+                elif contribution < -mo:
+                    contribution = -mo
             out_key = rule["output"]
-            result[out_key] = (
-                result.get(out_key, 0.0) + per_unit * units * multiplier
-            )
+            result[out_key] = result.get(out_key, 0.0) + contribution
+
+
+# ── Skill Mastery: magnitude stat_bonus allowlist ───────────────────────────
+# Only these stat_bonus keys are scaled by a buff/debuff's stamped
+# ``_mastery_mult`` in get_combat_modifiers. Fixed names plus the element-
+# suffixed families (res_<elem>, <elem>_max_resist_bonus, <elem>_dmg_taken).
+# Everything else (config-only keys, scaling_rule placeholders, _mastery_mult
+# itself) is left untouched. ``_mastery_scalable`` early-outs in the read path
+# only run when a non-1.0 mult is stamped, so this list never executes for the
+# flag-off / enemy / non-player case.
+_MASTERY_SCALABLE_STATS: frozenset[str] = frozenset({
+    "final_dmg_bonus",
+    "final_dmg_reduce",
+    "crit_rating",
+    "crit_dmg_rating",
+    "evasion_rating",
+    "crit_res_rating",
+    "hp_regen_pct",
+    "shield_regen_pct",
+    "mp_regen_pct",
+    "spd_pct",
+    "res_all",
+    "dot_taken_bonus",
+})
+_MASTERY_SCALABLE_SUFFIXES: tuple[str, ...] = (
+    "_max_resist_bonus",  # <elem>_max_resist_bonus
+    "_dmg_taken",         # <elem>_dmg_taken
+)
+
+
+def _mastery_scalable(stat: str) -> bool:
+    """True if ``stat`` is a magnitude stat_bonus key the mult should scale."""
+    if stat in _MASTERY_SCALABLE_STATS:
+        return True
+    if stat.startswith("res_"):  # res_all already covered; res_<elem> here
+        return True
+    return stat.endswith(_MASTERY_SCALABLE_SUFFIXES)
+
+
+# ── Config-only stat_bonus keys ─────────────────────────────────────────────
+# Stamped inside ``stat_bonus`` so designers can tune them in JSON, but consumed
+# by hooks elsewhere (casting / on-evade / inflict_debuff / per-turn aura
+# refreshers) rather than applied as real stats. ``get_combat_modifiers`` pops
+# them so they never masquerade as a stat, and ``displayable_stat_bonus`` hides
+# them from the skill browser so it never renders "+0 <raw_key>" noise.
+# Scaling-rule placeholders are handled separately (popped by
+# ``_apply_scaling_rules``; filtered for display via each rule's ``key``).
+_CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
+    # Quỷ Ảnh Mê Tung — stack cap (read by the on-evade hook).
+    "quy_anh_max_stacks",
+    # Nhược Thủy Ấn — detonation config (read by casting.py).
+    "thuy_mark_detonate_lost_hp_pct",
+    # Tuyệt Diệu Vô Ảnh — slow-immune gate flag (read by inflict_debuff).
+    "slow_immune",
+    # Ma Long Xuất Uyên — counter-strike config (read by cast_skill).
+    "ma_long_counter_base_dmg",
+    "ma_long_counter_matk_pct",
+    "ma_long_counter_debuff_chance",
+    # Thủy Vi — shield-bypass charge counters (read by cast_skill).
+    "thuy_vi_charges",
+    "thuy_vi_bypass_pct",
+    # Lưu Ly Tịnh Hỏa — per-roll cleanse chance (periodic hook).
+    "luu_ly_cleanse_chance",
+    # Lưu Tinh Cản Nguyệt — refresh-hook config.
+    "_lt_base_spd_pct",
+    "_lt_per_dot_evasion",
+    "_lt_per_dot_spd_pct",
+    # Liễu Nhứ Tùy Phong — drift base magnitudes.
+    "_ln_base_spd_pct",
+    "_ln_base_evasion",
+    # Bộ Bộ Sinh Liên — heal-taken→spd/eva conversion + caps.
+    "_bb_spd_per_htb",
+    "_bb_eva_per_htb",
+    "_bb_spd_cap",
+    "_bb_eva_cap",
+    # Xuân Thu Nhất Bút — season-rotation per-season magnitudes.
+    "_xt_spring_hp_regen_pct",
+    "_xt_spring_final_dmg_reduce",
+    "_xt_spring_shield_regen_pct",
+    "_xt_autumn_final_dmg_bonus",
+    "_xt_autumn_crit_dmg_rating",
+    "_xt_autumn_crit_rating",
+    # Mộc Linh Cộng Sinh — banked overheal reservoir (read by the heal-capture
+    # hook + the priority-48 periodic release). Lives at the override TOP level
+    # (not in stat_bonus), but listed here defensively so it never leaks as a
+    # stat even if a future code path copies it into stat_bonus.
+    "_sap",
+})
+
+
+def displayable_stat_bonus(meta: "EffectMeta") -> dict[str, float]:
+    """A buff/debuff's ``stat_bonus`` minus engine-internal keys.
+
+    Drops config-only keys (``_CONFIG_ONLY_STAT_KEYS``), this effect's
+    ``scaling_rules`` placeholders, and any ``_``-prefixed internal key — so
+    player-facing surfaces render only real stat modifiers instead of raw
+    placeholders like ``+0 _xt_autumn_crit_rating`` or
+    ``-0 thuy_mark_per_stack_res``.
+    """
+    placeholders = {rule["key"] for rule in meta.scaling_rules}
+    return {
+        stat: val
+        for stat, val in meta.stat_bonus.items()
+        if not stat.startswith("_")
+        and stat not in _CONFIG_ONLY_STAT_KEYS
+        and stat not in placeholders
+    }
 
 
 def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
@@ -1965,13 +679,30 @@ def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
             continue
         override = combatant.effect_overrides.get(effect_key) or {}
         override_stats = override.get("stat_bonus") or {}
-        for stat, val in meta.stat_bonus.items():
-            effective = override_stats.get(stat, val)
-            result[stat] = result.get(stat, 0.0) + effective
-        # Stats present only in the override (not in the meta) still apply.
-        for stat, val in override_stats.items():
-            if stat not in meta.stat_bonus:
-                result[stat] = result.get(stat, 0.0) + val
+        # Skill Mastery: a mastered cast stamps ``_mastery_mult`` onto this
+        # buff/debuff override. mm == 1.0 (absent, enemy, flag-off) → the
+        # original byte-identical path; otherwise allowlisted magnitude
+        # contributions are scaled. Downstream caps clamp as before.
+        mm = override.get("_mastery_mult", 1.0)
+        if mm == 1.0:
+            for stat, val in meta.stat_bonus.items():
+                effective = override_stats.get(stat, val)
+                result[stat] = result.get(stat, 0.0) + effective
+            # Stats present only in the override (not in the meta) still apply.
+            for stat, val in override_stats.items():
+                if stat not in meta.stat_bonus:
+                    result[stat] = result.get(stat, 0.0) + val
+        else:
+            for stat, val in meta.stat_bonus.items():
+                effective = override_stats.get(stat, val)
+                if _mastery_scalable(stat):
+                    effective *= mm
+                result[stat] = result.get(stat, 0.0) + effective
+            for stat, val in override_stats.items():
+                if stat not in meta.stat_bonus:
+                    if _mastery_scalable(stat):
+                        val *= mm
+                    result[stat] = result.get(stat, 0.0) + val
 
     # Lazy import to break the cycle: skill_extras → combatant → effects.
     if combatant.summons:
@@ -1991,29 +722,7 @@ def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
     # (casting / on-evade / inflict_debuff). Pop them here so they never
     # masquerade as real stats. Scaling-rule placeholders are popped by
     # ``_apply_scaling_rules``; this list is only for non-scaling config.
-    for cfg_key in (
-        # Quỷ Ảnh Mê Tung — stack cap (read by the on-evade hook).
-        "quy_anh_max_stacks",
-        # Nhược Thủy Ấn — detonation config (read by casting.py).
-        "thuy_mark_detonate_lost_hp_pct",
-        # Tuyệt Diệu Vô Ảnh — slow-immune gate flag (read by inflict_debuff).
-        "slow_immune",
-        # Ma Long Xuất Uyên — counter-strike config (read by cast_skill).
-        "ma_long_counter_base_dmg",
-        "ma_long_counter_matk_pct",
-        "ma_long_counter_debuff_chance",
-        # Thủy Vi — shield-bypass charge counters (read by cast_skill).
-        "thuy_vi_charges",
-        "thuy_vi_bypass_pct",
-        # Lưu Ly Tịnh Hỏa — per-roll cleanse chance (read by the periodic
-        # hook in CombatSession._process_luu_ly_tinh_hoa).
-        "luu_ly_cleanse_chance",
-        # Lưu Tinh Cản Nguyệt — refresh-hook config (read by
-        # CombatSession._refresh_luu_tinh_can_nguyet at start of each turn).
-        "_lt_base_spd_pct",
-        "_lt_per_dot_evasion",
-        "_lt_per_dot_spd_pct",
-    ):
+    for cfg_key in _CONFIG_ONLY_STAT_KEYS:
         result.pop(cfg_key, None)
     return result
 
@@ -2041,6 +750,17 @@ def get_periodic_damage(
             continue
         override = combatant.effect_overrides.get(effect_key) or {}
         effective_meta = _meta_with_override(meta, override)
+        # Skill Mastery: scale the classic %HP ``dot_pct`` by the holder's
+        # stamped ``_mastery_mult`` (early-out on 1.0). Stack-DoT per_stack_pct
+        # is deferred (see _meta_with_override).
+        # TODO(mastery 3b-followup): scale stack-DoT ``per_stack_pct`` (global
+        # Combatant field — coupling hazard) and caster-stat DoT formulas.
+        mm = override.get("_mastery_mult", 1.0)
+        if mm != 1.0 and effective_meta.dot_pct > 0:
+            from dataclasses import replace as _replace
+            effective_meta = _replace(
+                effective_meta, dot_pct=effective_meta.dot_pct * mm,
+            )
         # Gate accepts classic %HP DoTs (``dot_pct > 0``), stack-based DoTs
         # (``stack_kind`` set, dot_pct stays 0 in the data because the tick
         # comes from per-stack counters), and caster-stat-driven DoTs
@@ -2051,6 +771,7 @@ def get_periodic_damage(
             and not effective_meta.stack_kind
             and effective_meta.dot_caster_hp_pct <= 0
             and effective_meta.dot_caster_matk_scale <= 0
+            and effective_meta.dot_target_hp_pct <= 0
         ):
             continue
         if effect_key == EffectKey.DEBUFF_DOC_TO and combatant.poison_immunity:
@@ -2082,9 +803,10 @@ def check_cc_skip_turn(
 ) -> str | None:
     """Return the CC effect key that causes the combatant to skip their turn.
 
-    Returns None if the combatant can act normally.
-    DebuffTeLiet (paralysis) has a 50% chance to skip.
-    All other skips_turn effects are deterministic.
+    Returns None if the combatant can act normally. Effects with
+    ``skips_turn`` skip deterministically; effects with a non-zero
+    ``skip_turn_chance`` (e.g. paralysis 0.50, fear 0.20) roll once per
+    turn — both declared in the effect JSON data, no per-key branches.
     """
     for effect_key in combatant.effects:
         meta = EFFECTS.get(effect_key)
@@ -2092,7 +814,7 @@ def check_cc_skip_turn(
             continue
         if meta.skips_turn:
             return effect_key
-        if effect_key == EffectKey.DEBUFF_TE_LIET and rng.random() < 0.50:
+        if meta.skip_turn_chance > 0.0 and rng.random() < meta.skip_turn_chance:
             return effect_key
     return None
 
@@ -2107,14 +829,16 @@ def check_prevents_skills(combatant: "Combatant") -> str | None:
 
 
 def check_attack_miss(combatant: "Combatant", rng: random.Random) -> bool:
-    """Return True if the attacker's strike misses due to DebuffLoaMat.
+    """Return True if the attacker's strike whiffs due to a blind-style effect.
 
-    Mirrors the DebuffTeLiet pattern (probabilistic skip), but applied to
-    the attack swing instead of the turn — the attacker still pays MP/CD,
-    the swing simply fails to land. Single roll per swing.
+    Any active effect with a non-zero ``miss_chance`` (e.g. DebuffLoaMat)
+    rolls once per swing — the attacker still pays MP/CD, the swing just
+    fails to land. The chance is declared in the effect JSON data.
     """
-    if EffectKey.DEBUFF_LOA_MAT in combatant.effects:
-        return rng.random() < BLIND_MISS_CHANCE
+    for effect_key in combatant.effects:
+        meta = EFFECTS.get(effect_key)
+        if meta is not None and meta.miss_chance > 0.0:
+            return rng.random() < meta.miss_chance
     return False
 
 

@@ -72,11 +72,11 @@
       "attack_type": "magical",
       "dmg_scale": {
         "atk": 0.0,
-        "matk": 1.1
+        "matk": 1.65
       },
-      "mp_cost": 120,
+      "mp_cost": 40,
       "cooldown": 4,
-      "base_dmg": 900,
+      "base_dmg": 90,
       "effects": [
         "DebuffSocDien",
         "DebuffSocDien",
@@ -88,6 +88,298 @@
         }
       },
       "reserved_mp_pct": 0.09
+    }
+  },
+  {
+    "key": "VanKiepLoiNguc",
+    "vi": "Vạn Kiếp Lôi Ngục Trận",
+    "en": "Ten Thousand Tribulations Thunder Prison Formation",
+    "element": "loi",
+    "base_stat_bonus": {
+      "matk": 30,
+      "element_dmg_bonus": {
+        "loi": 0.1
+      },
+      "loi_kiep_an": {
+        "per_cast_bonus": 0,
+        "bolt_base_dmg": 200,
+        "bolt_matk_scale": 0.15,
+        "bolt_te_liet_chance": 0.3,
+        "capstone_base_floor": 400,
+        "capstone_base_per_stack": 100,
+        "capstone_matk_floor": 0.3,
+        "capstone_matk_per_stack": 0.05,
+        "capstone_te_liet_chance": 0.8
+      }
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "matk": 20,
+        "note": "Sơ Khai Lôi Ngục"
+      },
+      "3": {
+        "matk": 50,
+        "loi_kiep_an": {
+          "per_cast_bonus": 1
+        },
+        "note": "Kiên Cố Lôi Ngục (+1 dấu/lượt)"
+      },
+      "5": {
+        "matk": 100,
+        "element_pen": {
+          "loi": 0.05
+        },
+        "note": "Thịnh Vượng Lôi Ngục"
+      },
+      "7": {
+        "matk": 180,
+        "element_pen": {
+          "loi": 0.1
+        },
+        "loi_kiep_an": {
+          "bolt_matk_scale": 0.1,
+          "bolt_te_liet_chance": 0.3
+        },
+        "note": "Vô Song Lôi Ngục (+0.10 matk scale & +30% Tê Liệt cho Lôi Kiếp Phán bồi sát)"
+      },
+      "10": {
+        "matk": 320,
+        "element_pen": {
+          "loi": 0.18
+        },
+        "loi_kiep_an": {
+          "per_cast_bonus": 1,
+          "capstone_refund_mp_pct": 0.3
+        },
+        "note": "Tuyệt Đỉnh Lôi Ngục (+1 dấu/lượt nữa; Vạn Kiếp Phán hoàn 30% MP tối đa)"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmVanKiepLoiNguc",
+      "vi": "Vạn Kiếp Lôi Ngục Thức",
+      "en": "Ten Thousand Tribulations Thunder Prison Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "loi",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 0,
+      "debuff_only": true,
+      "effects": [
+        "DebuffLoiKiepAn"
+      ],
+      "loi_kiep_an_spec": {
+        "milestone_n": 5,
+        "consume_threshold": 10
+      },
+      "reserved_mp_pct": 0.2,
+      "description_vi": "Vạn Kiếp Lôi Ngục Trận — bản thân không gây sát thương trực tiếp. Mỗi lượt trận song phát: in **1 dấu Lôi Kiếp Ấn** lên địch (3 ngọc & 10 ngọc đều cộng thêm +1 dấu/lượt; tối đa 20 tầng).\n\n**Mỗi tầng**: địch chịu **+2% sát thương Lôi** và **-1% kháng Lôi** (luỹ tiến).\n\n**Mỗi 5 tầng** vừa chạm tới (5, 10, 15, 20…): trận pháp bổ thêm **Lôi Kiếp Phán** — ST Lôi (200 + 0.15·matk), 30% Tê Liệt 1t (mỗi cấp ngọc 7+ cộng thêm +0.10 matk scale & +30% Tê Liệt).\n\n**Đủ 10 tầng**: trận pháp bùng **Vạn Kiếp Phán** đoạn mệnh — ST Lôi (400 + 100·tầng + (0.30 + 0.05·tầng)·matk) + **80% Tê Liệt 2t**, **ăn sạch toàn bộ tầng Lôi Kiếp Ấn** để chồng lại từ đầu (ở 10 ngọc còn hoàn 30% MP tối đa cho chủ trận).\n\nChi phí trấn giữ: 20% MP."
+    }
+  },
+  {
+    "key": "ThienLoiTruTa",
+    "vi": "Thiên Lôi Tru Tà Trận",
+    "en": "Heavenly Thunder Demon-Slaying Formation",
+    "element": "loi",
+    "base_stat_bonus": {
+      "matk": 30,
+      "element_dmg_bonus": {
+        "loi": 0.08
+      },
+      "thien_loi_tru_ta": {
+        "per_debuff_amp": 0.03,
+        "debuff_count_cap": 8,
+        "capstone_threshold": 5,
+        "dai_phan_cd": 7,
+        "dai_phan_buff_strip": 1,
+        "bolt_base": 300,
+        "bolt_base_per_debuff": 200,
+        "bolt_matk_scale": 0.2,
+        "bolt_matk_per_debuff": 0.1,
+        "bolt_te_liet_chance_floor": 0.1,
+        "bolt_te_liet_chance_per_debuff": 0.08,
+        "capstone_base": 1500,
+        "capstone_base_per_debuff": 300,
+        "capstone_matk_scale": 0.5,
+        "capstone_matk_per_debuff": 0.15,
+        "capstone_te_liet_chance": 1.0,
+        "capstone_te_liet_duration": 2
+      }
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "matk": 20,
+        "note": "Sơ Khai Tru Tà"
+      },
+      "3": {
+        "matk": 50,
+        "thien_loi_tru_ta": {
+          "per_debuff_amp": 0.01
+        },
+        "note": "Kiên Cố Tru Tà (+1% Lôi-taken/debuff)"
+      },
+      "5": {
+        "matk": 100,
+        "element_pen": {
+          "loi": 0.05
+        },
+        "thien_loi_tru_ta": {
+          "capstone_threshold": -1
+        },
+        "note": "Thịnh Vượng Tru Tà (Đại Phán kích hoạt ở 4 debuff)"
+      },
+      "7": {
+        "matk": 180,
+        "element_pen": {
+          "loi": 0.1
+        },
+        "thien_loi_tru_ta": {
+          "dai_phan_buff_strip": 1
+        },
+        "note": "Vô Song Tru Tà (Đại Phán cướp thêm 1 buff)"
+      },
+      "10": {
+        "matk": 300,
+        "element_pen": {
+          "loi": 0.18
+        },
+        "thien_loi_tru_ta": {
+          "dai_phan_cd": -1,
+          "low_hp_threshold_pct": 0.5,
+          "low_hp_amp_pct": 0.2
+        },
+        "note": "Tuyệt Đỉnh Tru Tà (Đại Phán hồi nhanh -1t; +20% ST khi địch dưới 50% HP)"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmThienLoiTruTa",
+      "vi": "Thiên Lôi Tru Tà Thức",
+      "en": "Heavenly Thunder Demon-Slaying Form",
+      "scroll_grade": 3,
+      "category": "formation",
+      "element": "loi",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 0,
+      "debuff_only": true,
+      "effects": [],
+      "thien_loi_tru_ta_spec": {
+        "refresh_duration": 2
+      },
+      "reserved_mp_pct": 0.18,
+      "description_vi": "Thiên Lôi Tru Tà Trận — vận tà càng nặng, Thiên Lôi càng nghiệt. Mỗi lượt trận song phát đo lại số **debuff khác** trên thân địch (cap 8), rồi:\n\n**Làm tươi Thiên Lôi Ấn** trên địch — mỗi debuff khác = +3% sát thương Lôi phải nhận (3 ngọc cộng thêm +1% mỗi debuff → 4%/debuff). Mọi đòn Lôi từ bất kỳ nguồn nào (Sốc Điện chain, Ngũ Lôi, Vạn Kiếp…) đều ăn theo dấu này.\n\n**Thiên Lôi Phán** (mặc định): ST Lôi (300 + 200·N + (0.20 + 0.10·N)·matk) + **(10% + 8%·N) Tê Liệt 1t**, N = số debuff (cap 8).\n\n**Thiên Lôi Đại Phán** (khi N ≥ 5, mặc định; hồi 7t): ST Lôi (1500 + 300·N + (0.50 + 0.15·N)·matk) + **100% Tê Liệt 2t** + **cướp 1 buff** (7 ngọc +1 cướp, tổng 2). 5 ngọc hạ ngưỡng xuống 4 debuff; 10 ngọc rút hồi chiêu Đại Phán −1t và thêm **+20% ST khi địch dưới 50% HP**.\n\nChi phí trấn giữ: 18% MP."
+    }
+  },
+  {
+    "key": "ThaiCucAmDuongLoi",
+    "vi": "Thái Cực Âm Dương Lôi Đại Trận",
+    "en": "Great Yin-Yang Thunder Formation of the Supreme Ultimate",
+    "element": "loi",
+    "base_stat_bonus": {
+      "matk": 40,
+      "element_dmg_bonus": {
+        "loi": 0.1
+      },
+      "thai_cuc_am_duong_loi": {
+        "duong_base": 1000,
+        "duong_matk_scale": 1.0,
+        "duong_dmg_amp_pct": 0.2,
+        "duong_shock_stacks": 1,
+        "duong_te_liet_chance": 0.3,
+        "am_shock_stacks": 2,
+        "am_hp_restore_pct": 0.04,
+        "am_mp_restore_pct": 0.06,
+        "am_buff_extend_cap": 6,
+        "am_apply_te_nguyen_luc": true,
+        "fusion_base": 3000,
+        "fusion_matk_scale": 2.0,
+        "fusion_target_hp_pct": 0.2,
+        "fusion_shock_bonus_per_stack": 500,
+        "fusion_te_liet_duration": 3,
+        "fusion_cd": 8,
+        "khi_cap": 5
+      }
+    },
+    "gem_threshold_bonuses": {
+      "1": {
+        "matk": 30,
+        "note": "Sơ Khai Thái Cực"
+      },
+      "3": {
+        "matk": 70,
+        "thai_cuc_am_duong_loi": {
+          "duong_dmg_amp_pct": 0.05,
+          "am_hp_restore_pct": 0.01,
+          "am_mp_restore_pct": 0.015
+        },
+        "note": "Kiên Cố Thái Cực (Dương +5% ST, Âm +1% HP/+1.5% MP/lượt)"
+      },
+      "5": {
+        "matk": 130,
+        "element_pen": {
+          "loi": 0.06
+        },
+        "thai_cuc_am_duong_loi": {
+          "duong_dmg_amp_pct": 0.05,
+          "am_hp_restore_pct": 0.01,
+          "am_mp_restore_pct": 0.015
+        },
+        "note": "Thịnh Vượng Thái Cực (+6% Xuyên Lôi, Dương + Âm tăng tiếp)"
+      },
+      "7": {
+        "matk": 220,
+        "element_pen": {
+          "loi": 0.12
+        },
+        "thai_cuc_am_duong_loi": {
+          "fusion_cd": -1,
+          "duong_te_liet_chance": 0.2
+        },
+        "note": "Vô Song Thái Cực (Thái Cực −1t hồi, Dương Tê Liệt +20%)"
+      },
+      "10": {
+        "matk": 380,
+        "element_pen": {
+          "loi": 0.2,
+          "am": 0.1
+        },
+        "thai_cuc_am_duong_loi": {
+          "dual_phase_fire": true,
+          "fusion_cd": -1
+        },
+        "note": "Tuyệt Đỉnh Thái Cực — duality collapses (Dương + Âm fire MỖI lượt, Thái Cực −1t nữa)"
+      }
+    },
+    "skill": {
+      "key": "SkillFrmThaiCucAmDuongLoi",
+      "vi": "Thái Cực Âm Dương Lôi Thức",
+      "en": "Great Yin-Yang Thunder Form",
+      "scroll_grade": 4,
+      "category": "formation",
+      "element": "loi",
+      "attack_type": "magical",
+      "dmg_scale": {
+        "atk": 0.0,
+        "matk": 0.0
+      },
+      "mp_cost": 0,
+      "cooldown": 0,
+      "base_dmg": 0,
+      "debuff_only": true,
+      "effects": [],
+      "thai_cuc_am_duong_loi_spec": {},
+      "reserved_mp_pct": 0.22,
+      "description_vi": "Thái Cực Âm Dương Lôi Đại Trận — tối thượng đại trận, một âm một dương luân chuyển, đến cực sinh nghịch.\n\n**Lượt Dương**: phóng **Dương Lôi Trảm** — ST Lôi (1000 + 1.0·matk, ×1.20 ST khuếch), chồng 1 Sốc Điện + 30% Tê Liệt 1t. +1 Dương Khí (cap 5).\n\n**Lượt Âm**: niệm **Âm Lôi Phù** — chồng 2 Sốc Điện + đính **Tê Nguyên Lực** lên địch; chủ trận hồi 4% HP + 6% MP, kéo dài mọi buff hệ Lôi đang chạy +1t (cap 6). +1 Âm Khí (cap 5).\n\n**Thái Cực Lưỡng Nghi Lôi** (khi Dương Khí ×5 + Âm Khí ×5; hồi 8t): bùng nổ Lôi tối thượng — ST Lôi (3000 + 2.0·matk + **20% HP tối đa địch** + 500·tầng Sốc Điện đang có), **100% Tê Liệt 3 lượt không thể giải**, nuốt sạch Sốc Điện địch + reset cả hai Khí.\n\n10 ngọc: **lưỡng cực hợp nhất** — cả Dương lẫn Âm bùng phát mỗi lượt; Khí tăng song song, Thái Cực kích hoạt nhanh gấp đôi.\n\nChi phí trấn giữ: 22% MP."
     }
   }
 ]

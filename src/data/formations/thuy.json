@@ -44,11 +44,11 @@
       "attack_type": "magical",
       "dmg_scale": {
         "atk": 0.0,
-        "matk": 1.0
+        "matk": 1.5
       },
-      "mp_cost": 52,
+      "mp_cost": 17,
       "cooldown": 3,
-      "base_dmg": 330,
+      "base_dmg": 33,
       "effects": [
         "DebuffThuyXuyenThau"
       ],
@@ -100,11 +100,11 @@
       "attack_type": "magical",
       "dmg_scale": {
         "atk": 0.0,
-        "matk": 1.0
+        "matk": 1.5
       },
-      "mp_cost": 52,
+      "mp_cost": 17,
       "cooldown": 3,
-      "base_dmg": 330,
+      "base_dmg": 33,
       "effects": [
         "DebuffDongBang"
       ],
@@ -119,7 +119,7 @@
     "base_stat_bonus": {
       "mp_pct": 0.05,
       "element_dmg_bonus": {
-        "thuy": 0.10
+        "thuy": 0.1
       },
       "element_mp_cost_mult": {
         "thuy": 2.0
@@ -132,12 +132,12 @@
         "note": "Sơ Khai Thiên Nhất Trận"
       },
       "3": {
-        "mp_pct": 0.10,
+        "mp_pct": 0.1,
         "mp_regen_pct": 0.02,
         "note": "Kiên Cố Thiên Nhất Trận"
       },
       "5": {
-        "mp_pct": 0.20,
+        "mp_pct": 0.2,
         "mp_regen_pct": 0.03,
         "note": "Thịnh Vượng Thiên Nhất Trận"
       },
@@ -147,10 +147,10 @@
         "note": "Vô Song Thiên Nhất Trận"
       },
       "10": {
-        "mp_pct": 0.60,
+        "mp_pct": 0.6,
         "mp_regen_pct": 0.08,
         "element_dmg_bonus": {
-          "thuy": 0.10
+          "thuy": 0.1
         },
         "element_mp_cost_mult": {
           "thuy": 2.0
@@ -175,7 +175,7 @@
       "base_dmg": 0,
       "debuff_only": true,
       "effects": [],
-      "reserved_mp_pct": 0.20,
+      "reserved_mp_pct": 0.2,
       "description_vi": "Thiên Nhất Sinh Thủy Thức — bản thân không gây sát thương. Toàn bộ giá trị nằm ở passive trận pháp: +10% Sát Thương Thủy và khuếch đại MP cost của thủy lên ×3 (→ ×5 ở 10 ngọc), từ đó khuếch đại sát thương đòn niệm Thủy theo công thức `DMG = base + mp_cost`."
     }
   },
@@ -189,9 +189,9 @@
       "atk": 20,
       "cuu_khuc": {
         "per_hit": 1,
-        "atk_reduce_pct": 0.10,
-        "res_shred_pct": 0.10,
-        "followup_pct": 0.40,
+        "atk_reduce_pct": 0.1,
+        "res_shred_pct": 0.1,
+        "followup_pct": 0.4,
         "followup_skill_key": "SkillAtkThuyLongDan_R7"
       }
     },
@@ -231,9 +231,9 @@
         "matk": 240,
         "atk": 200,
         "cuu_khuc": {
-          "atk_reduce_pct": 0.10,
-          "res_shred_pct": 0.10,
-          "followup_pct": 0.60
+          "atk_reduce_pct": 0.1,
+          "res_shred_pct": 0.1,
+          "followup_pct": 0.6
         },
         "note": "Tuyệt Đỉnh Cửu Khúc Trận"
       }
