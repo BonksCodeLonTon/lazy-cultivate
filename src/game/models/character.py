@@ -114,6 +114,13 @@ class Character:
     linh_can: list[str] = field(default_factory=list)
     linh_can_levels: dict[str, int] = field(default_factory=dict)
 
+    # Constitution Process levels — per equipped Thể Chất progression level
+    # (1..9), keyed by constitution_key. Drives the flag-gated process-level
+    # read in ``character_stats.compute_combat_stats``. Empty by default and
+    # only populated (inside an active session) when the feature is enabled, so
+    # the dormant path stays allocation-free and byte-identical.
+    constitution_levels: dict[str, int] = field(default_factory=dict)
+
     # HP/MP/shield current (session state — persisted on the Player row)
     hp_current: int = 0
     mp_current: int = 0

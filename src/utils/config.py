@@ -25,6 +25,10 @@ class Settings(BaseSettings):
     # that monkeypatch this to False, so the dormant path stays regression-safe.
     skill_mastery_enabled: bool = True
 
+    # Constitution Process — gates the level-aware constitution bonus read path.
+    # Default OFF until content + persistence land.
+    constitution_process_enabled: bool = False
+
     @property
     def database_url(self) -> str:
         password = quote_plus(self.db_password)

@@ -25,6 +25,7 @@ from sqlalchemy import select
 from src.db.connection import get_session
 from src.db.models.player import Player
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
+from src.db.repositories.constitution_process import load_constitution_levels
 from src.db.repositories.skill_mastery import get_mastery_map
 from src.utils.config import settings
 from src.game.engine.equipment import compute_equipment_stats
@@ -94,6 +95,10 @@ async def _load_player_state(discord_id: int) -> _PlayerLoadout | None:
             return None
 
         char = _player_to_model(player)
+        # Constitution Process — flag-gated. OFF → empty map → inert flat read.
+        char.constitution_levels = await load_constitution_levels(
+            session, player.id, player.constitution_type
+        )
         gem_keys = active_formation_gem_keys(player)
         gem_map = active_formation_gem_map(player)
         gem_count = len(gem_keys)

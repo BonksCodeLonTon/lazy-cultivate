@@ -1,20 +1,20 @@
 from __future__ import annotations
-import random, asyncio, discord
+import random, discord
 from dataclasses import dataclass
 
-from src.data.registry import registry
 from src.db.connection import get_session
+from src.db.repositories.constitution_process import load_constitution_levels
 from src.db.repositories.skill_mastery import get_mastery_map
 from src.game.models.character import Character
 from src.game.constants.realms import QI_REALMS, BODY_REALMS, FORMATION_REALMS
 from src.game.systems.combat import (
     CombatEndReason,
-    CombatSession,
     build_enemy_combatant,
     build_player_combatant,
 )
+from src.game.systems.combat.trial_loop import run_trial_combat
 from src.utils.config import settings
-from src.utils.embed_builder import battle_embed, success_embed, error_embed
+from src.utils.embed_builder import success_embed, error_embed
 
 
 @dataclass
@@ -67,6 +67,13 @@ class TribulationManager:
             async with get_session() as session:
                 skill_mastery = await get_mastery_map(session, char.player_id)
 
+        # Constitution Process — flag-gated. OFF → empty map → inert flat read.
+        if settings.constitution_process_enabled:
+            async with get_session() as session:
+                char.constitution_levels = await load_constitution_levels(
+                    session, char.player_id, char.constitution_type
+                )
+
         player_c = build_player_combatant(
             char, skill_keys, gem_count, equip_stats=equip_stats,
             gem_keys=gem_keys, gem_keys_by_formation=gem_keys_by_formation,
@@ -91,115 +98,28 @@ class TribulationManager:
                 idx = min(target_realm_idx, len(realm_table) - 1)
                 trib_c.name = f"Thiên Kiếp {realm_table[idx].vi}"
 
-        session = CombatSession(
-            player=player_c,
-            enemy=trib_c,
-            player_skill_keys=skill_keys,
+        # ── Drive the trial fight via the shared trial-combat loop ───
+        # The loop owns the CombatSession, the skip button, and the per-turn
+        # battle-embed pacing; it returns only the combat outcome so the
+        # tribulation-specific success/fail + realm-drop handling below stays
+        # here, behavior-preserving.
+        reason = await run_trial_combat(
+            interaction, player_c, trib_c, skill_keys, title="⚡ Thiên Kiếp",
         )
-
-        # ── UI Control ───────────────────────────────
-        class ControlView(discord.ui.View):
-            def __init__(self):
-                super().__init__(timeout=120)
-                self.skip = False
-
-            @discord.ui.button(label="⏩ Bỏ qua", style=discord.ButtonStyle.secondary)
-            async def skip_btn(self, interaction2: discord.Interaction, _):
-                self.skip = True
-                await interaction2.response.defer()
-
-        view = ControlView()
-
-        all_logs: list[str] = []
-
-        # ── Start combat ─────────────────────────────
-        await interaction.edit_original_response(
-            embed=battle_embed(
-                "⚡ Thiên Kiếp",
-                0, 1,
-                player_c.name, player_c.hp, player_c.hp_max,
-                player_c.mp, player_c.mp_max,
-                trib_c.name, trib_c.hp, trib_c.hp_max,
-                0, [],
-                player_shield=player_c.shield, player_shield_cap=player_c.shield_cap(),
-                enemy_shield=trib_c.shield, enemy_shield_cap=trib_c.shield_cap(),
-            ),
-            view=view
-        )
-
-        await asyncio.sleep(1)
-
-        result = None
-
-        while True:
-            new_lines, result = session.step()
-            all_logs.extend(new_lines)
-
-            if result:
-                break
-
-            if not view.skip:
-                await interaction.edit_original_response(
-                    embed=battle_embed(
-                        "⚡ Thiên Kiếp",
-                        0, 1,
-                        player_c.name, player_c.hp, player_c.hp_max,
-                        player_c.mp, player_c.mp_max,
-                        trib_c.name, trib_c.hp, trib_c.hp_max,
-                        session.turn,
-                        new_lines,
-                        player_shield=player_c.shield, player_shield_cap=player_c.shield_cap(),
-                        enemy_shield=trib_c.shield, enemy_shield_cap=trib_c.shield_cap(),
-                    ),
-                    view=view
-                )
-                await asyncio.sleep(1)
 
         damage_taken = player_c.hp_max - player_c.hp
 
-        # ── Build log embeds (giống dungeon) ─────────
-        from src.game.engine.damage import to_ansi_block
-
-        log_text = "\n".join(all_logs)
-        log_embeds = []
-
-        chunks = [log_text[i:i+3000] for i in range(0, len(log_text), 3000)] or ["(Không có dữ liệu)"]
-
-        log_embeds = []
-        for i, chunk in enumerate(chunks):
-            body = to_ansi_block(chunk) if chunk.strip() else chunk
-            log_embeds.append(
-                discord.Embed(
-                    title="📜 Nhật Ký Thiên Kiếp" if i == 0 else "\u200b",
-                    description=body,
-                    color=0x00C851 if result.reason == CombatEndReason.PLAYER_WIN else 0xFF4444
-                )
-            )
-
-        # ── Result View ──────────────────────────────
-        class ResultView(discord.ui.View):
-            def __init__(self):
-                super().__init__(timeout=120)
-
-            # @discord.ui.button(label="📜 Xem Nhật Ký", style=discord.ButtonStyle.secondary)
-            # async def view_log(self, interaction2: discord.Interaction, _):
-            #     await interaction2.response.send_message(
-            #         embeds=log_embeds[:5],
-            #         ephemeral=True
-            #     )
-
         # ── Final result ─────────────────────────────
-        if result.reason == CombatEndReason.PLAYER_WIN:
+        if reason == CombatEndReason.PLAYER_WIN:
             embed = success_embed(
                 f"⚡ **Thiên Kiếp: {trib_c.name}**\n\n"
                 f"👤 {char.name}\n"
-                f"⏱️ {session.turn} lượt\n"
                 f"❤️ {player_c.hp:,}/{player_c.hp_max:,}\n"
                 f"📊 Sát thương nhận: {damage_taken:,}\n\n"
                 f"✨ **Đột phá thành công!**"
             )
 
-            await interaction.edit_original_response(embed=embed, view=ResultView())
+            await interaction.edit_original_response(embed=embed)
 
             return TribulationResult(
                 success=True,
@@ -212,7 +132,6 @@ class TribulationManager:
             desc = (
                 f"⚡ **Thiên Kiếp: {trib_c.name}**\n\n"
                 f"👤 {char.name}\n"
-                f"⏱️ {session.turn} lượt\n"
                 f"📊 Sát thương nhận: {damage_taken:,}\n\n"
                 f"💀 **Đột phá thất bại!**\n"
             )
@@ -224,7 +143,7 @@ class TribulationManager:
 
             embed = error_embed(desc)
 
-            await interaction.edit_original_response(embed=embed, view=ResultView())
+            await interaction.edit_original_response(embed=embed)
 
             return TribulationResult(
                 success=False,

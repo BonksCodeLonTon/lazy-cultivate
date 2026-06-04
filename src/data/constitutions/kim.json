@@ -396,6 +396,47 @@
         }
       }
     },
+    "process": {
+      "milestones": [
+        1,
+        3,
+        6,
+        9
+      ],
+      "levels": {
+        "1": {
+          "stat_bonuses": {}
+        },
+        "3": {
+          "stat_bonuses": {
+            "crit_rating": 40,
+            "bleed_on_hit_pct": 0.02
+          }
+        },
+        "6": {
+          "stat_bonuses": {
+            "crit_rating": 50,
+            "crit_dmg_rating": 60,
+            "armor_pen_pct": 0.02,
+            "crit_amp_vs": {
+              "bleed": {
+                "rating": 40
+              }
+            }
+          }
+        },
+        "9": {
+          "stat_bonuses": {
+            "crit_rating": 60,
+            "true_dmg_pct": 0.03,
+            "final_dmg_bonus": 0.12,
+            "dot_dmg_bonus_by_kind": {
+              "bleed": 0.1
+            }
+          }
+        }
+      }
+    },
     "special_requirements": null,
     "materials": {
       "MatDaoCotTinh": 4,

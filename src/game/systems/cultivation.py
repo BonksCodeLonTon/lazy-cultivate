@@ -570,6 +570,7 @@ def compute_constitution_bonuses(
     constitution_type: str,
     active_axis: str | None,
     body_realm: int,
+    process_levels: dict[str, int] | None = None,
 ) -> dict:
     """Merge ``stat_bonuses`` from every Thể Chất the active path can host.
 
@@ -588,6 +589,15 @@ def compute_constitution_bonuses(
     (``dot_can_crit``, ``poison_immunity``, ...) are never scaled, and stats
     in ``_AMP_EXCLUDED_STATS`` merge at base — they compound multiplicatively
     elsewhere and amplifying them produced one-shot damage against world bosses.
+
+    ``process_levels`` (Constitution Process seam) maps a constitution_key to
+    its active level. When provided, each active body's bonuses are resolved
+    through ``constitution_process.effective_stat_bonuses`` (flat
+    ``stat_bonuses`` + any milestone-band process layers up to that level)
+    before the Hỗn Độn amplification machinery runs. When ``None`` (the
+    default, and every current call site) the raw flat ``stat_bonuses`` is read
+    exactly as before — provably byte-identical, never touching the process
+    code path. Flag-gating happens at the future call site, not here.
     """
     if not constitution_type:
         return {}
@@ -619,7 +629,16 @@ def compute_constitution_bonuses(
         if not c:
             continue
         scale = mult if (mult > 1.0 and k not in carriers) else 1.0
-        for stat, val in (c.get("stat_bonuses") or {}).items():
+        if process_levels is not None:
+            # Constitution Process seam: resolve flat + milestone-band layers up
+            # to this body's active level. Local import breaks the cycle
+            # (constitution_process imports _merge_bonus_dict from this module).
+            from src.game.systems.constitution_process import effective_stat_bonuses
+            lvl = process_levels.get(k, 1)
+            raw_bonuses = effective_stat_bonuses(c, lvl)
+        else:
+            raw_bonuses = c.get("stat_bonuses") or {}
+        for stat, val in raw_bonuses.items():
             if stat == "all_passives_multiplier":
                 continue   # control field — never a real stat
             # Compound-offensive multipliers merge at base (see _AMP_EXCLUDED_STATS).

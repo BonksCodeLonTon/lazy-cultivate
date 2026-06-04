@@ -117,6 +117,7 @@
     { "item_key": "SupremeDuongTinh", "weight": 8000,  "qty_min": 1, "qty_max": 1,"pool_id": "r9_supreme" },
     { "item_key": "SupremeAmTinh",    "weight": 8000,  "qty_min": 1, "qty_max": 1,"pool_id": "r9_supreme" },
     { "item_key": "SupremeHonDonTinh","weight": 2400,  "qty_min": 1, "qty_max": 1,"pool_id": "r9_supreme" },
-    { "item_key": "ChestThien",       "weight": 4800,  "qty_min": 1, "qty_max": 1}
+    { "item_key": "ChestThien",       "weight": 4800,  "qty_min": 1, "qty_max": 1},
+    { "item_key": "ConsProcHoanTheTinh", "weight": 50, "qty_min": 1, "qty_max": 1}
   ]
 }

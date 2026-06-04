@@ -1,0 +1,56 @@
+[
+  {
+    "key": "ConsProcThangThe",
+    "vi": "Thăng Thể Đan",
+    "en": "Body-Ascension Pill",
+    "type": "constitution_process_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Đan dược dùng Đột Phá tiến trình Thể Chất từ Tầng cảnh giới (Sơ Khai → Tiểu Thành, gate 2→3). Tỉ lệ thành công gốc 85%."
+  },
+  {
+    "key": "ConsProcLuyenThe",
+    "vi": "Luyện Thể Tinh",
+    "en": "Body-Refining Essence",
+    "type": "constitution_process_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Tinh hoa dùng Đột Phá tiến trình Thể Chất (Tiểu Thành → Đại Thành, gate 5→6). Tỉ lệ thành công gốc 60%."
+  },
+  {
+    "key": "ConsProcDaoThe",
+    "vi": "Đạo Thể Quả",
+    "en": "Dao-Body Fruit",
+    "type": "constitution_process_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Đạo quả dùng Đột Phá tiến trình Thể Chất (Đại Thành → Viên Mãn, gate 8→9). Tỉ lệ thành công gốc 40%. Cực hiếm, chỉ rơi từ Đại Boss Thế Giới."
+  },
+  {
+    "key": "ConsProcHoThePhu",
+    "vi": "Hộ Thể Phù",
+    "en": "Body-Guarding Talisman",
+    "type": "constitution_process_material",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "description_vi": "Dùng kèm khi Đột Phá tiến trình Thể Chất: +20% tỉ lệ Đột Phá. Tiêu hao mỗi lần thử dù thành công hay thất bại."
+  },
+  {
+    "key": "ConsProcDinhTheChau",
+    "vi": "Định Thể Châu",
+    "en": "Body-Anchoring Pearl",
+    "type": "constitution_process_material",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "description_vi": "Dùng kèm khi Đột Phá tiến trình Thể Chất: nếu THẤT BẠI, vật phẩm gate không bị tiêu hao (được hoàn lại). Riêng Định Thể Châu vẫn tiêu hao."
+  },
+  {
+    "key": "ConsProcHoanTheTinh",
+    "vi": "Hoán Thể Tinh",
+    "en": "Body-Swap Essence",
+    "type": "constitution_process_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Đốt để đổi Thể Chất đang tu luyện (slot chính); tiến trình thân cũ được giữ lại. Cực hiếm, rơi từ Đại Boss Thế Giới và tầng đỉnh bí cảnh."
+  }
+]

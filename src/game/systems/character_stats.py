@@ -610,8 +610,21 @@ def compute_combat_stats(
         gem_keys_by_formation=gem_keys_by_formation,
         formation_stages=formation_stages,
     )
+    # Constitution Process read path — flag-gated. When OFF (default) we pass
+    # ``process_levels=None`` so ``compute_constitution_bonuses`` reads the flat
+    # ``stat_bonuses`` exactly as before (byte-identical, never touches the
+    # process code). When ON, a populated ``char.constitution_levels`` resolves
+    # each equipped body at its stored level; an empty map (NPC-style Characters
+    # built outside the DB pipeline) still collapses to ``None`` → inert.
+    from src.utils.config import settings
+    const_process_levels = (
+        (char.constitution_levels or None)
+        if settings.constitution_process_enabled
+        else None
+    )
     const_bonuses = compute_constitution_bonuses(
         char.constitution_type, active_axis, char.body_realm,
+        process_levels=const_process_levels,
     )
     # Per-element levels drive the linh_can stat scaling. NPC-style Characters
     # that don't carry ``linh_can_levels`` (built outside the DB pipeline) fall

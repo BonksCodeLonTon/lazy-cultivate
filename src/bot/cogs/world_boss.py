@@ -16,6 +16,9 @@ from src.db.models.world_boss import WorldBossInstance
 from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
+from src.db.repositories.constitution_process import (
+    award_constitution_xp, load_constitution_levels,
+)
 from src.db.repositories.skill_mastery import add_combat_xp, get_mastery_map
 from src.db.repositories.world_boss_repo import WorldBossRepository
 from src.game.constants.grades import Grade, GRADE_LABELS
@@ -203,6 +206,10 @@ async def _execute_boss_attack_inner(
             return
 
         char = _player_to_model(player)
+        # Constitution Process — flag-gated. OFF → empty map → inert flat read.
+        char.constitution_levels = await load_constitution_levels(
+            session, player.id, player.constitution_type
+        )
         from src.game.systems.character_stats import (
             active_formation_gem_keys, active_formation_gem_map, compute_combat_stats,
         )
@@ -368,6 +375,20 @@ async def _execute_boss_attack_inner(
                     )
                 except Exception as e:
                     log.exception("Skill mastery XP award failed (world boss): %s", e)
+
+            # Constitution Process XP — flag-gated, primary body only. A world
+            # boss attack is always the "world_boss" grade; surviving the round
+            # limit (the expected chip-away outcome) counts as a win, dying does
+            # not. Reuses the open session. Wrapped so a bookkeeping failure
+            # can't fail the attack.
+            if settings.constitution_process_enabled:
+                try:
+                    await award_constitution_xp(
+                        session, player, "world_boss",
+                        won=combat_result.reason != CombatEndReason.PLAYER_DEAD,
+                    )
+                except Exception as e:
+                    log.exception("Constitution XP award failed (world boss): %s", e)
 
     # Build post-attack embed — report damage actually credited to the shared pool.
     # Uses ``instance_hp_max`` (the DB row's spawn-time hp_max) so the displayed

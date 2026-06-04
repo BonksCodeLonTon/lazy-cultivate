@@ -15,6 +15,9 @@ from src.db.connection import get_session
 from src.db.repositories.equipment_repo import EquipmentRepository
 from src.db.repositories.inventory_repo import InventoryRepository
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
+from src.db.repositories.constitution_process import (
+    award_constitution_xp, load_constitution_levels,
+)
 from src.db.repositories.skill_mastery import add_combat_xp, get_mastery_map
 from src.utils.config import settings
 from src.game.constants.currencies import CURRENCY_CAP
@@ -40,6 +43,31 @@ RANK_EMOJIS = {"pho_thong": "🐾", "cuong_gia": "⚔️", "dai_nang": "🔥", "
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
+
+# Maps a dungeon's ``dungeon_type`` to the encounter grade the active body earns
+# (``constitution_process.combat_xp_gain``). Single-boss dungeons score "boss";
+# the element-tier Linh Căn cave scores "elite"; plain caves score "normal".
+# Unlisted types fall back to "normal". Auto-repeat farming overrides all of
+# these to "trash" (0 XP) — see ``_constitution_encounter_grade``.
+_CONSTITUTION_DUNGEON_GRADE: dict[str, str] = {
+    "normal": "normal",
+    "duoc_vien": "normal",
+    "linh_can": "elite",
+    "the_chat": "boss",
+    "cam_dia": "boss",
+}
+
+
+def _constitution_encounter_grade(dungeon_type: str, auto_mode: bool) -> str:
+    """Coarse encounter grade for Constitution Process XP from a bí cảnh clear.
+
+    Auto-repeat (AFK farm) runs are deliberately graded ``"trash"`` so they earn
+    0 XP — only deliberate, hands-on clears advance a body. Otherwise the grade
+    follows the dungeon type (single-boss → boss, Linh Căn → elite, else normal).
+    """
+    if auto_mode:
+        return "trash"
+    return _CONSTITUTION_DUNGEON_GRADE.get(dungeon_type, "normal")
 
 
 def _format_loot(loot: list[dict]) -> str:
@@ -528,6 +556,10 @@ async def _execute_dungeon(
             return
 
         char = _player_to_model(player)
+        # Constitution Process — flag-gated. OFF → empty map → inert flat read.
+        char.constitution_levels = await load_constitution_levels(
+            session, player.id, player.constitution_type
+        )
         ok, reason = check_can_enter(char, dungeon_key)
         if not ok:
             await interaction.edit_original_response(embed=error_embed(reason), view=None)
@@ -750,6 +782,9 @@ async def _execute_dungeon(
             await apply_offline_ticks(player, repo, player.active_axis or "qi")
 
             fresh_char = _player_to_model(player)
+            fresh_char.constitution_levels = await load_constitution_levels(
+                session, player.id, player.constitution_type
+            )
             fresh_gem_keys = active_formation_gem_keys(player)
             fresh_gem_map = active_formation_gem_map(player)
             fresh_equipped = [i for i in (player.item_instances or []) if i.location == "equipped"]
@@ -784,6 +819,25 @@ async def _execute_dungeon(
                 )
         except Exception as e:
             log.exception("Skill mastery XP award failed (dungeon): %s", e)
+
+    # Constitution Process XP — flag-gated, primary body only, once per run
+    # (mirrors Skill Mastery's award discipline). Grade maps from the coarse
+    # signals this site exposes: single-boss dungeons (the_chat/cam_dia) →
+    # "boss", linh_can element-tier → "elite", standard clears → "normal".
+    # Auto-repeat trash kills resolve to "trash" → 0 XP by table, so AFK farming
+    # never advances a body. Wrapped so a bookkeeping failure can't fail the run.
+    if settings.constitution_process_enabled:
+        try:
+            async with get_session() as session:
+                prepo = PlayerRepository(session)
+                cp_player = await prepo.get_by_discord_id(interaction.user.id)
+                if cp_player is not None:
+                    grade = _constitution_encounter_grade(dungeon_type, auto_mode)
+                    await award_constitution_xp(
+                        session, cp_player, grade, won=dungeon_success,
+                    )
+        except Exception as e:
+            log.exception("Constitution XP award failed (dungeon): %s", e)
 
     # In auto-mode the loop wrapper renders its own aggregated summary;
     # skip the per-run result view so the next iteration can take over.

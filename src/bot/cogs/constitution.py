@@ -45,10 +45,14 @@ from src.game.systems.the_chat import (
 )
 
 PHAM_THE_KEY = "ConstitutionPhamThe"
-from src.utils.embed_builder import base_embed, error_embed, success_embed
+from src.utils.config import settings
+from src.utils.embed_builder import base_embed, error_embed, progress_bar, success_embed
 from src.utils.discord_safe import safe_defer
 
 log = logging.getLogger(__name__)
+
+# ── Constitution Process (Tiến Trình) — Phase 6 UI wiring ──────────────────────
+HOAN_THE_TINH_KEY = "ConsProcHoanTheTinh"
 
 DAO_COT_KEY = "MatDaoCotTinh"
 DAO_COT_GRADE = Grade.THIEN
@@ -269,6 +273,109 @@ def _format_bonus_lines(bonuses: dict) -> list[str]:
     return lines
 
 
+# ── Constitution Process (Tiến Trình) helpers ──────────────────────────────────
+
+
+def _is_primary_body(player, const_key: str) -> bool:
+    """True if ``const_key`` is the player's cultivated PRIMARY (slot-0) body.
+
+    The single XP-earning / breakthrough body, matching ``award_constitution_xp``
+    and ``apply_breakthrough`` which both target ``get_constitutions(...)[0]``.
+    Hỗn Độn is never a standard primary, so it never surfaces the process UI.
+    """
+    equipped = get_constitutions(player.constitution_type)
+    return bool(equipped) and equipped[0] == const_key and const_key != HON_DON_KEY
+
+
+async def _process_snapshot(player_id: int, const_key: str) -> dict:
+    """One-round-trip read of what the Tiến Trình section + buttons need.
+
+    Returns ``{level, xp, gate_fails, owned}`` where ``owned`` maps the gate
+    mats / talismans / swap essence → grade-agnostic owned qty. Reads the
+    stored progress row (defaulting to L1/0/0 when absent — the L1 identity).
+    """
+    from src.game.constants.constitution_process import (
+        DINH_THE_CHAU_KEY,
+        GATES,
+        HO_THE_PHU_KEY,
+    )
+    from src.db.repositories import constitution_process as cp_repo
+
+    wanted = {g["item_key"] for g in GATES.values()}
+    wanted |= {HO_THE_PHU_KEY, DINH_THE_CHAU_KEY, HOAN_THE_TINH_KEY}
+
+    async with get_session() as session:
+        row = await cp_repo.get_progress(session, player_id, const_key)
+        irepo = InventoryRepository(session)
+        owned: dict[str, int] = {}
+        for inv in await irepo.get_all(player_id):
+            if inv.item_key in wanted:
+                owned[inv.item_key] = owned.get(inv.item_key, 0) + inv.quantity
+
+    if row is None:
+        return {"level": 1, "xp": 0, "gate_fails": 0, "owned": owned}
+    return {"level": row.level, "xp": row.xp, "gate_fails": row.gate_fails, "owned": owned}
+
+
+def _milestone_passive_names(const_data: dict, level: int) -> list[str]:
+    """Unlocked milestone passive names for the body at ``level``.
+
+    Pulls the ``vi`` (falling back to ``name``) of each ``process.levels[m]``
+    block for milestones ``m <= level``. A flat body (no ``process``) yields [].
+    """
+    process = const_data.get("process") or {}
+    names: list[str] = []
+    for m in process.get("milestones", []):
+        if m <= level:
+            block = process.get("levels", {}).get(str(m), {})
+            name = block.get("vi") or block.get("name")
+            if name:
+                names.append(name)
+    return names
+
+
+def _at_full_gate(snap: dict) -> bool:
+    """True when the active body sits at a ceiling (2/5/8) ready to Đột Phá.
+
+    Ceilings cap XP rollover so reaching one means ``xp`` is already maxed —
+    ``level in GATES`` is the sufficient condition the ⚔️ button gates on.
+    """
+    from src.game.constants.constitution_process import GATES
+
+    return snap["level"] in GATES
+
+
+def _process_section_lines(const_data: dict, snap: dict) -> list[str]:
+    """Render the Tiến Trình block: process bar + band + XP + unlocked passives.
+
+    A flat body (no ``process`` block) returns a single muted note. The bar /
+    band / XP all come from the pure ``progress_summary`` + ``band_label``.
+    """
+    from src.game.systems.constitution_process import progress_summary
+
+    if not const_data.get("process"):
+        return ["\n**🌀 Tiến Trình:** *chưa có tiến trình (Thể Chất phẳng).*"]
+
+    summ = progress_summary(snap["level"], snap["xp"])
+    bar = progress_bar(int(round(summ["ratio"] * 100)), 100, 12)
+    if summ["xp_next"] is not None:
+        xp_part = f"{summ['xp']}/{summ['xp_next']}"
+    elif summ["at_ceiling"]:
+        xp_part = "⚔️ Đỉnh Quan — sẵn sàng Đột Phá"
+    else:
+        xp_part = "MAX"
+
+    lines = [
+        "\n**🌀 Tiến Trình:** "
+        f"*{summ['band_vi']}* `{summ['level']}/{summ['cap']}`",
+        f"`{bar}` {xp_part}",
+    ]
+    passives = _milestone_passive_names(const_data, snap["level"])
+    if passives:
+        lines.append("✨ " + " • ".join(passives))
+    return lines
+
+
 # ── Embeds ────────────────────────────────────────────────────────────────────
 
 
@@ -340,6 +447,7 @@ def _hub_embed(player, key_counts: dict[str, int]) -> discord.Embed:
 
 def _detail_embed(
     player, const_data: dict, owned_materials: dict[str, int],
+    process_snap: dict | None = None,
 ) -> discord.Embed:
     rarity = const_data.get("rarity", "common")
     meta = _RARITY_META.get(rarity, _RARITY_META["common"])
@@ -351,6 +459,16 @@ def _detail_embed(
     bonus_lines = _format_bonus_lines(const_data.get("stat_bonuses", {}))
     if bonus_lines:
         desc_parts.append("\n**Chỉ số:**\n" + "\n".join(bonus_lines))
+
+    # ── Tiến Trình (Constitution Process) — flag-gated, primary body only ──
+    # When OFF, ``process_snap`` is never passed, so this is byte-identical to
+    # the pre-Phase-6 detail embed.
+    if (
+        settings.constitution_process_enabled
+        and process_snap is not None
+        and _is_primary_body(player, const_data["key"])
+    ):
+        desc_parts.extend(_process_section_lines(const_data, process_snap))
 
     cost_merit, cost_stones = _activation_cost(const_data)
     tags = [_rarity_label(rarity)]
@@ -704,6 +822,8 @@ class ConstitutionDetailView(discord.ui.View):
     def __init__(
         self, discord_id: int, const_key: str, back_fn,
         is_equipped: bool = False, in_tracker: bool = False,
+        show_process: bool = False, at_gate: bool = False,
+        can_swap: bool = False,
     ) -> None:
         super().__init__(timeout=300)
         self._discord_id = discord_id
@@ -732,6 +852,22 @@ class ConstitutionDetailView(discord.ui.View):
         )
         back_btn.callback = self._back_to_hub_cb
         self.add_item(back_btn)
+
+        # ── Tiến Trình controls (row 1) — only for the active primary body
+        # when the flag is ON. ⚔️ Đột Phá lights up only at a ceiling.
+        if show_process:
+            bt = discord.ui.Button(
+                label="⚔️ Đột Phá", style=discord.ButtonStyle.danger,
+                disabled=not at_gate, row=1,
+            )
+            bt.callback = self._breakthrough_cb
+            self.add_item(bt)
+        if can_swap:
+            sw = discord.ui.Button(
+                label="🔄 Hoán Thể", style=discord.ButtonStyle.secondary, row=1,
+            )
+            sw.callback = self._swap_cb
+            self.add_item(sw)
 
     async def _equip_cb(self, interaction: discord.Interaction) -> None:
         """Equip an already-unlocked Thể Chất (free, no roll)."""
@@ -1052,6 +1188,554 @@ class ConstitutionDetailView(discord.ui.View):
             rarity=rarity, element_filter=elem,
         )
 
+    async def _breakthrough_cb(self, interaction: discord.Interaction) -> None:
+        """Open the breakthrough confirm view (talisman toggles + trial)."""
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _open_breakthrough(
+            interaction, self._discord_id, self._const_key, self._back_fn,
+        )
+
+    async def _swap_cb(self, interaction: discord.Interaction) -> None:
+        """Open the Hoán Thể target picker."""
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _open_swap(
+            interaction, self._discord_id, self._const_key, self._back_fn,
+        )
+
+
+# ── Tiến Trình: Đột Phá (breakthrough) flow ────────────────────────────────────
+
+
+def _breakthrough_embed(
+    const_data: dict, snap: dict,
+    *, use_ho_the_phu: bool, use_dinh_the_chau: bool,
+) -> discord.Embed:
+    """Pre-roll confirm embed — gate mats, success %, and toggled talismans.
+
+    The success % comes from the pure ``breakthrough_preview`` factoring pity +
+    the currently-toggled Hộ Thể Phù, exactly like the skill-mastery detail.
+    """
+    from src.game.systems.constitution_process import breakthrough_preview
+
+    level = snap["level"]
+    owned = snap["owned"]
+    pv = breakthrough_preview(
+        level, snap["gate_fails"],
+        owned.get(_gate_item_key(level), 0),
+        use_ho_the_phu, use_dinh_the_chau,
+    )
+
+    embed = base_embed(
+        f"⚔️ Đột Phá: {const_data['vi']}", color=0xB8860B,
+    )
+    embed.add_field(name="Tầng", value=f"**{level}** → **{level + 1}**", inline=True)
+    if pv.get("at_gate"):
+        need = pv["required_qty"]
+        have = owned.get(pv["gate_item_key"], 0)
+        mark = "✅" if have >= need else "❌"
+        item = registry.get_item(pv["gate_item_key"])
+        item_name = item["vi"] if item else pv["gate_item_key"]
+        embed.add_field(
+            name="Nguyên liệu",
+            value=f"{mark} {item_name} ×**{need}** (có **{have}**)",
+            inline=True,
+        )
+        embed.add_field(
+            name="Tỉ lệ",
+            value=f"🎲 **{pv['success_pct']}%** (pity {snap['gate_fails']})",
+            inline=True,
+        )
+
+    toggles: list[str] = []
+    if use_ho_the_phu:
+        toggles.append("🛡️ Hộ Thể Phù (+20%)")
+    if use_dinh_the_chau:
+        toggles.append("💠 Định Thể Châu (hoàn liệu nếu thất bại)")
+    if toggles:
+        embed.add_field(name="Đang dùng kèm", value="\n".join(toggles), inline=False)
+
+    embed.description = (
+        "Vượt qua **Thí Luyện Thể Chất** trước, sau đó tung tỉ lệ đột phá.\n"
+        "*Thua thí luyện: không tiêu hao gì, rèn luyện thêm rồi thử lại.*"
+    )
+    return embed
+
+
+def _gate_item_key(level: int) -> str:
+    """Gate item key for a ceiling level, or "" when not a gate."""
+    from src.game.constants.constitution_process import GATES
+
+    gate = GATES.get(level)
+    return gate["item_key"] if gate else ""
+
+
+async def _open_breakthrough(
+    interaction: discord.Interaction, discord_id: int, const_key: str, back_fn,
+    *, use_ho_the_phu: bool = False, use_dinh_the_chau: bool = False,
+) -> None:
+    const_data = registry.get_constitution(const_key)
+    if not const_data:
+        await interaction.edit_original_response(
+            embed=error_embed("Thể Chất không tồn tại."), view=None,
+        )
+        return
+    async with get_session() as session:
+        prepo = PlayerRepository(session)
+        player = await prepo.get_by_discord_id(discord_id)
+        if player is None:
+            await interaction.edit_original_response(
+                embed=error_embed("Chưa có nhân vật."), view=None,
+            )
+            return
+        player_id = player.id
+    snap = await _process_snapshot(player_id, const_key)
+    embed = _breakthrough_embed(
+        const_data, snap,
+        use_ho_the_phu=use_ho_the_phu, use_dinh_the_chau=use_dinh_the_chau,
+    )
+    view = BreakthroughTrialView(
+        discord_id, const_key, back_fn, snap,
+        use_ho_the_phu=use_ho_the_phu, use_dinh_the_chau=use_dinh_the_chau,
+        can_attempt=_at_full_gate(snap),
+    )
+    await interaction.edit_original_response(embed=embed, view=view)
+
+
+class BreakthroughTrialView(discord.ui.View):
+    """Confirm view — owned-only talisman toggles, then ⚔️ runs the trial.
+
+    Mirrors ``skills.BreakthroughDetailView``: toggles default OFF and only
+    render when owned; the confirm button runs the interactive trial fight via
+    ``run_trial_combat``, and only on PLAYER_WIN applies the breakthrough.
+    """
+
+    def __init__(
+        self, discord_id: int, const_key: str, back_fn, snap: dict,
+        *, use_ho_the_phu: bool, use_dinh_the_chau: bool, can_attempt: bool,
+    ) -> None:
+        super().__init__(timeout=300)
+        self._discord_id = discord_id
+        self._const_key = const_key
+        self._back_fn = back_fn
+        self._snap = snap
+        self._use_ho = use_ho_the_phu
+        self._use_dinh = use_dinh_the_chau
+
+        from src.game.constants.constitution_process import (
+            DINH_THE_CHAU_KEY,
+            HO_THE_PHU_KEY,
+        )
+
+        owned = snap["owned"]
+        confirm = discord.ui.Button(
+            label="⚔️ Bắt Đầu Thí Luyện", style=discord.ButtonStyle.danger,
+            disabled=not can_attempt, row=0,
+        )
+        confirm.callback = self._confirm_cb
+        self.add_item(confirm)
+
+        if owned.get(HO_THE_PHU_KEY, 0) >= 1:
+            ho = discord.ui.Button(
+                label=("🛡️ Hộ Thể Phù ✓" if use_ho_the_phu else "🛡️ Hộ Thể Phù"),
+                style=(discord.ButtonStyle.primary if use_ho_the_phu
+                       else discord.ButtonStyle.secondary),
+                row=1,
+            )
+            ho.callback = self._toggle_ho_cb
+            self.add_item(ho)
+        if owned.get(DINH_THE_CHAU_KEY, 0) >= 1:
+            dinh = discord.ui.Button(
+                label=("💠 Định Thể Châu ✓" if use_dinh_the_chau else "💠 Định Thể Châu"),
+                style=(discord.ButtonStyle.primary if use_dinh_the_chau
+                       else discord.ButtonStyle.secondary),
+                row=1,
+            )
+            dinh.callback = self._toggle_dinh_cb
+            self.add_item(dinh)
+
+        back = discord.ui.Button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=2)
+        back.callback = self._back_cb
+        self.add_item(back)
+
+    def _guard(self, interaction: discord.Interaction) -> bool:
+        return interaction.user.id == self._discord_id
+
+    async def _toggle_ho_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _open_breakthrough(
+            interaction, self._discord_id, self._const_key, self._back_fn,
+            use_ho_the_phu=not self._use_ho, use_dinh_the_chau=self._use_dinh,
+        )
+
+    async def _toggle_dinh_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _open_breakthrough(
+            interaction, self._discord_id, self._const_key, self._back_fn,
+            use_ho_the_phu=self._use_ho, use_dinh_the_chau=not self._use_dinh,
+        )
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _open_detail(
+            interaction, self._discord_id, self._const_key, self._back_fn,
+        )
+
+    async def _confirm_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _run_breakthrough_trial(
+            interaction, self._discord_id, self._const_key, self._back_fn,
+            use_ho_the_phu=self._use_ho, use_dinh_the_chau=self._use_dinh,
+        )
+
+
+async def _run_breakthrough_trial(
+    interaction: discord.Interaction, discord_id: int, const_key: str, back_fn,
+    *, use_ho_the_phu: bool, use_dinh_the_chau: bool,
+) -> None:
+    """Build the player + trial combatants, run the fight, apply the result.
+
+    Win → ``apply_breakthrough`` resolves the roll + spends mats + persists.
+    Loss → nothing consumed; the player is told to train and retry.
+    """
+    from src.db.repositories.constitution_process import (
+        apply_breakthrough, load_constitution_levels,
+    )
+    from src.db.repositories.player_repo import _player_to_model
+    from src.game.constants.constitution_process import GATES
+    from src.game.systems.character_stats import (
+        active_formation_gem_keys, active_formation_gem_map, compute_combat_stats,
+    )
+    from src.game.engine.equipment import compute_equipment_stats
+    from src.game.systems.combat import (
+        CombatEndReason, build_enemy_combatant, build_player_combatant,
+    )
+    from src.game.systems.combat.trial_loop import run_trial_combat
+    from src.game.systems.dungeon import compute_realm_total
+    from src.db.repositories.skill_mastery import get_mastery_map
+
+    const_data = registry.get_constitution(const_key) or {}
+
+    async with get_session() as session:
+        prepo = PlayerRepository(session)
+        player = await prepo.get_by_discord_id(discord_id)
+        if player is None:
+            await interaction.edit_original_response(
+                embed=error_embed("Chưa có nhân vật."), view=None,
+            )
+            return
+
+        # Re-validate the gate from authoritative storage before fighting.
+        snap = await _process_snapshot(player.id, const_key)
+        level = snap["level"]
+        if level not in GATES:
+            await interaction.edit_original_response(
+                embed=error_embed("Thể Chất chưa đến ngưỡng Đột Phá."), view=None,
+            )
+            return
+
+        char = _player_to_model(player)
+        char.constitution_levels = await load_constitution_levels(
+            session, player.id, player.constitution_type
+        )
+        gem_keys = active_formation_gem_keys(player)
+        gem_map = active_formation_gem_map(player)
+        gem_count = len(gem_keys)
+        equipped_items = [i for i in (player.item_instances or []) if i.location == "equipped"]
+        equip_stats = compute_equipment_stats(equipped_items)
+        cs_preview = compute_combat_stats(
+            char, gem_count=gem_count, equip_stats=equip_stats,
+            gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+        )
+        if player.hp_current <= 0:
+            char.hp_current = cs_preview.hp_max
+        skill_keys = (
+            [s.skill_key for s in player.skills] if player.skills else ["SkillAtkKim1"]
+        )
+        skill_mastery = None
+        if settings.skill_mastery_enabled:
+            skill_mastery = await get_mastery_map(session, player.id)
+        realm_total = compute_realm_total(char)
+
+    player_c = build_player_combatant(
+        char, skill_keys, gem_count, equip_stats=equip_stats,
+        gem_keys=gem_keys, gem_keys_by_formation=gem_map,
+        skill_mastery=skill_mastery,
+    )
+
+    # Trial enemy: element-specific block if registered, else the default tier.
+    tier = GATES[level]["trial_tier"]
+    elem = const_data.get("element")
+    trial_key = f"cons_trial_{elem}_t{tier}" if elem else f"cons_trial_default_t{tier}"
+    enemy_c = build_enemy_combatant(trial_key, realm_total)
+    if enemy_c is None:
+        enemy_c = build_enemy_combatant(f"cons_trial_default_t{tier}", realm_total)
+    if enemy_c is None:
+        await interaction.edit_original_response(
+            embed=error_embed("Không tạo được Thí Luyện Thể Chất."), view=None,
+        )
+        return
+
+    reason = await run_trial_combat(
+        interaction, player_c, enemy_c, skill_keys, title="⚔️ Thí Luyện Thể Chất",
+    )
+
+    if reason != CombatEndReason.PLAYER_WIN:
+        embed = error_embed(
+            f"💀 **Thí Luyện thất bại** — **{const_data.get('vi', const_key)}** "
+            "chưa thể đột phá.\nKhông tiêu hao nguyên liệu. Rèn luyện thêm rồi thử lại."
+        )
+        await interaction.edit_original_response(
+            embed=embed,
+            view=_PostBreakthroughView(discord_id, const_key, back_fn),
+        )
+        return
+
+    # Trial won — resolve the roll, spend mats, persist (all in the helper).
+    async with get_session() as session:
+        prepo = PlayerRepository(session)
+        player = await prepo.get_by_discord_id(discord_id)
+        result = await apply_breakthrough(
+            session, player,
+            use_ho_the_phu=use_ho_the_phu,
+            use_dinh_the_chau=use_dinh_the_chau,
+            trial_won=True,
+            rng=random.Random(),
+        )
+
+    embed = _breakthrough_result_embed(const_data, result)
+    await interaction.edit_original_response(
+        embed=embed,
+        view=_PostBreakthroughView(discord_id, const_key, back_fn),
+    )
+
+
+def _breakthrough_result_embed(const_data: dict, result: dict) -> discord.Embed:
+    """Render the post-roll outcome: success (new level + passives) or fail (pity)."""
+    name = const_data.get("vi", const_data.get("key", "Thể Chất"))
+    outcome = result.get("outcome")
+
+    if outcome == "SUCCESS":
+        new_level = result["new_level"]
+        band_vi = result.get("new_band", ("", ""))[0]
+        passives = _milestone_passive_names(const_data, new_level)
+        msg = (
+            f"🎉 **Đột Phá thành công!** **{name}** lên Tầng **{new_level}**"
+            + (f" — *{band_vi}*" if band_vi else "")
+            + "."
+        )
+        if passives:
+            msg += "\n✨ Lĩnh ngộ: " + " • ".join(passives)
+        return success_embed(msg)
+
+    if outcome == "FAIL":
+        note = ""
+        if result.get("refunded_gate_mats"):
+            note = "\n💠 Định Thể Châu đã hoàn lại nguyên liệu đột phá."
+        else:
+            note = "\n🔥 Nguyên liệu đột phá đã tiêu hao."
+        return error_embed(
+            f"💨 **Đột Phá thất bại.** **{name}** giữ nguyên Tầng "
+            f"**{result['new_level']}**. Pity hiện tại: **{result['new_fails']}**." + note
+        )
+
+    if outcome == "NOT_ENOUGH_MATERIALS":
+        return error_embed("Không đủ nguyên liệu đột phá. Không tiêu hao gì.")
+    return error_embed("Không thể đột phá lúc này.")
+
+
+class _PostBreakthroughView(discord.ui.View):
+    """Single ◀ back-to-detail button shown after a trial/breakthrough resolves."""
+
+    def __init__(self, discord_id: int, const_key: str, back_fn) -> None:
+        super().__init__(timeout=300)
+        self._discord_id = discord_id
+        self._const_key = const_key
+        self._back_fn = back_fn
+        btn = discord.ui.Button(label="◀ Quay lại", style=discord.ButtonStyle.secondary)
+        btn.callback = self._back_cb
+        self.add_item(btn)
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _open_detail(
+            interaction, self._discord_id, self._const_key, self._back_fn,
+        )
+
+
+# ── Tiến Trình: Hoán Thể (body-swap) flow ──────────────────────────────────────
+
+
+def _swap_targets(player) -> list[str]:
+    """Valid Hoán Thể targets: equipped ∩ tracker, minus current primary & Hỗn Độn."""
+    equipped = get_constitutions(player.constitution_type)
+    tracker = set(get_tracker(player.constitution_tracker))
+    standard = [k for k in equipped if k != HON_DON_KEY]
+    if not standard:
+        return []
+    primary = standard[0]
+    return [k for k in standard if k != primary and k in tracker]
+
+
+async def _open_swap(
+    interaction: discord.Interaction, discord_id: int, const_key: str, back_fn,
+) -> None:
+    async with get_session() as session:
+        prepo = PlayerRepository(session)
+        player = await prepo.get_by_discord_id(discord_id)
+        if player is None:
+            await interaction.edit_original_response(
+                embed=error_embed("Chưa có nhân vật."), view=None,
+            )
+            return
+        targets = _swap_targets(player)
+        irepo = InventoryRepository(session)
+        owned_essence = (
+            await _inventory_counts(irepo, player.id, [HOAN_THE_TINH_KEY])
+        ).get(HOAN_THE_TINH_KEY, 0)
+
+    item = registry.get_item(HOAN_THE_TINH_KEY)
+    essence_name = item["vi"] if item else HOAN_THE_TINH_KEY
+    desc_parts = [
+        "🔄 **Hoán Thể** — đổi Thể Chất chủ tu (slot 0) đang được tích lũy "
+        "tiến trình. Thể Chất cũ giữ nguyên tiến trình đã đạt.",
+        f"\n{essence_name}: **{owned_essence}** (cần **1**).",
+    ]
+    if owned_essence < 1:
+        desc_parts.append(f"\n❌ Không đủ {essence_name}.")
+    if not targets:
+        desc_parts.append(
+            "\n*Chưa có Thể Chất hợp lệ để hoán đổi (cần trang bị ≥2 Thể Chất "
+            "đã lĩnh ngộ).*"
+        )
+    embed = base_embed("🔄 Hoán Thể", "\n".join(desc_parts), color=0xB8860B)
+    view = SwapTargetView(discord_id, const_key, back_fn, targets, owned_essence >= 1)
+    await interaction.edit_original_response(embed=embed, view=view)
+
+
+class SwapTargetView(discord.ui.View):
+    """Select the body to promote to primary; choosing one spends an essence."""
+
+    def __init__(
+        self, discord_id: int, const_key: str, back_fn,
+        targets: list[str], has_essence: bool,
+    ) -> None:
+        super().__init__(timeout=300)
+        self._discord_id = discord_id
+        self._const_key = const_key
+        self._back_fn = back_fn
+
+        if targets and has_essence:
+            options: list[discord.SelectOption] = []
+            for k in targets[:25]:
+                c = registry.get_constitution(k)
+                label = (c["vi"] if c else k)[:100]
+                meta = _RARITY_META.get(
+                    (c or {}).get("rarity", "common"), _RARITY_META["common"],
+                )
+                options.append(discord.SelectOption(
+                    label=label, value=k, emoji=meta["emoji"],
+                ))
+            select = discord.ui.Select(
+                placeholder="🔄 Chọn Thể Chất làm chủ tu mới...",
+                options=options, row=0,
+            )
+            select.callback = self._select_cb
+            self.add_item(select)
+
+        back = discord.ui.Button(label="◀ Quay lại", style=discord.ButtonStyle.secondary, row=1)
+        back.callback = self._back_cb
+        self.add_item(back)
+
+    async def _back_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        await _open_detail(
+            interaction, self._discord_id, self._const_key, self._back_fn,
+        )
+
+    async def _select_cb(self, interaction: discord.Interaction) -> None:
+        if interaction.user.id != self._discord_id:
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        from src.db.repositories.constitution_process import apply_swap
+
+        target_key = interaction.data["values"][0]
+        async with get_session() as session:
+            prepo = PlayerRepository(session)
+            player = await prepo.get_by_discord_id(interaction.user.id)
+            if player is None:
+                await interaction.edit_original_response(
+                    embed=error_embed("Chưa có nhân vật."), view=None,
+                )
+                return
+            result = await apply_swap(session, player, target_key)
+            await prepo.save(player)
+            # The new primary is the swapped-in target so the detail view
+            # re-renders against the right body's progress.
+            new_primary = (
+                target_key if result.get("outcome") == "SWAPPED" else self._const_key
+            )
+
+        if result.get("outcome") == "SWAPPED":
+            target = registry.get_constitution(target_key) or {}
+            embed = success_embed(
+                f"🔄 **Hoán Thể thành công!** Chủ tu mới: "
+                f"**{target.get('vi', target_key)}** (giữ nguyên tiến trình đã đạt).\n"
+                "💠 Tiêu hao 1 Hoán Thể Tinh."
+            )
+        else:
+            embed = error_embed(_swap_reject_msg(result.get("outcome")))
+            new_primary = self._const_key
+
+        await interaction.edit_original_response(
+            embed=embed,
+            view=_PostBreakthroughView(interaction.user.id, new_primary, self._back_fn),
+        )
+
+
+def _swap_reject_msg(outcome: str | None) -> str:
+    return {
+        "NO_ESSENCE": "Không đủ Hoán Thể Tinh.",
+        "NOT_EQUIPPED": "Thể Chất đó chưa được trang bị.",
+        "NOT_UNLOCKED": "Thể Chất đó chưa lĩnh ngộ.",
+        "ALREADY_PRIMARY": "Thể Chất đó đã là chủ tu rồi.",
+        "INVALID_TARGET": "Không thể chọn Hỗn Độn làm chủ tu.",
+        "DISABLED": "Tính năng chưa khai mở.",
+    }.get(outcome, "Không thể hoán thể lúc này.")
+
 
 # ── Entry points ──────────────────────────────────────────────────────────────
 
@@ -1125,11 +1809,26 @@ async def _open_detail(
 
     equipped = get_constitutions(player.constitution_type)
     tracker = get_tracker(player.constitution_tracker)
-    embed = _detail_embed(player, const_data, owned)
+
+    # Constitution Process — only loaded for the cultivated primary body when
+    # the flag is ON, so the dormant path stays a single inventory read.
+    is_primary = _is_primary_body(player, const_key)
+    process_snap = None
+    if settings.constitution_process_enabled and is_primary:
+        process_snap = await _process_snapshot(player.id, const_key)
+
+    embed = _detail_embed(player, const_data, owned, process_snap=process_snap)
     view = ConstitutionDetailView(
         discord_id, const_key, back_fn,
         is_equipped=(const_key in equipped),
         in_tracker=(const_key in tracker),
+        show_process=(process_snap is not None),
+        at_gate=bool(
+            process_snap
+            and const_data.get("process")
+            and _at_full_gate(process_snap)
+        ),
+        can_swap=is_primary,
     )
     await interaction.edit_original_response(embed=embed, view=view)
 

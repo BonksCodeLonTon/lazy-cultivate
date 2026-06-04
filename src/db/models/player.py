@@ -103,6 +103,11 @@ class Player(Base, TimestampMixin):
     skill_masteries: Mapped[list["CharacterSkillMastery"]] = relationship(
         "CharacterSkillMastery", back_populates="player", cascade="all, delete-orphan"
     )
+    constitution_progress: Mapped[list["CharacterConstitutionProgress"]] = relationship(
+        "CharacterConstitutionProgress",
+        back_populates="player",
+        cascade="all, delete-orphan",
+    )
     artifacts: Mapped[list[CharacterArtifact]] = relationship(
         "CharacterArtifact", back_populates="player", cascade="all, delete-orphan"
     )
@@ -125,6 +130,7 @@ from src.db.models.turn_tracker import TurnTracker  # noqa: E402
 from src.db.models.inventory import InventoryItem  # noqa: E402
 from src.db.models.skill import CharacterSkill, CharacterLearnedSkill  # noqa: E402
 from src.db.models.skill_mastery import CharacterSkillMastery  # noqa: E402
+from src.db.models.constitution_process import CharacterConstitutionProgress  # noqa: E402
 from src.db.models.artifact import CharacterArtifact  # noqa: E402
 from src.db.models.formation import CharacterFormation  # noqa: E402
 from src.db.models.market import MarketListing  # noqa: E402
