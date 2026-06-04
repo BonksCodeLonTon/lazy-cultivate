@@ -21,8 +21,9 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
 
     # Skill Mastery — gates the per-skill power_mult read path in combat.
-    # Default OFF keeps the feature provably inert until rollout.
-    skill_mastery_enabled: bool = False
+    # LAUNCHED: enabled by default. Off-path inertness is still pinned by tests
+    # that monkeypatch this to False, so the dormant path stays regression-safe.
+    skill_mastery_enabled: bool = True
 
     @property
     def database_url(self) -> str:

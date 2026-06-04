@@ -48,13 +48,14 @@ _MASTERY_KEY = "Skill_X"
 
 
 # ── 1. Flag default ─────────────────────────────────────────────────────────
-def test_flag_defaults_off():
-    """The mastery feature flag is OFF by default.
+def test_flag_enabled_by_default():
+    """The mastery feature flag is ON by default (LAUNCHED).
 
-    Documents intent and guards against another test leaking a ``True`` flip
-    into the global ``settings`` singleton.
+    Post-rollout guard: the feature ships enabled. Tests that need the dormant
+    off-path now force it False via ``monkeypatch`` (auto-reverted at teardown),
+    so asserting the launched default here also catches an accidental disable.
     """
-    assert settings.skill_mastery_enabled is False
+    assert settings.skill_mastery_enabled is True
 
 
 # ── 2. Registration order (locked: mastery FIRST) ───────────────────────────
@@ -69,11 +70,14 @@ def test_rider_is_registered_first():
 
 
 # ── 3. Inert when flag OFF (even with mastery present) ──────────────────────
-def test_rider_inert_when_flag_off():
-    """Flag OFF + mastered skill → rider returns None, base_dmg unchanged."""
-    # Flag is OFF by default; assert that as a precondition so this test does
-    # not silently rely on leaked state from another test.
-    assert settings.skill_mastery_enabled is False
+def test_rider_inert_when_flag_off(monkeypatch):
+    """Flag OFF + mastered skill → rider returns None, base_dmg unchanged.
+
+    The default is ON post-launch, so force the dormant off-path explicitly.
+    This keeps pinning that mastery stays fully inert when disabled — the
+    rollback-safety contract.
+    """
+    monkeypatch.setattr(settings, "skill_mastery_enabled", False)
 
     actor = make_combatant("a", skill_mastery={_MASTERY_KEY: 16})
     target = make_combatant("t")
@@ -241,6 +245,15 @@ def test_ordering_mastery_compounds_before_other_riders(monkeypatch):
 # ── 9. End-to-end golden guard still byte-identical with flag OFF ───────────
 # Golden constants re-declared from tests/test_skill_mastery_guard.py so this
 # file is self-contained. They were captured on clean feat/season-2.
+#
+# Re-pinned to the ORIGINAL Phase-0 baseline. A mid-season rebalance briefly
+# buffed EnemyKim_T1 base_dmg 10 -> 200 (which moved this golden to
+# 9009/turns5/log16); a later balance pass reverted enemy damage to the
+# original baseline, so base_dmg is 10 again and the fixed-seed fight returns
+# to its first-captured deterministic state: player kills the 1k "small" enemy
+# at turn 23, log length 70, surviving at 8961 HP. These goldens detect
+# *unintended* combat drift; this drift is the intended revert, so re-pinning
+# to the original values is correct.
 _GOLDEN_PLAYER_HP = 8_961
 _GOLDEN_ENEMY_HP = 0
 _GOLDEN_TURNS = 23
@@ -250,17 +263,18 @@ _GOLDEN_LOG_SHA256 = (
 )
 
 
-def test_golden_guard_still_byte_identical_flag_off():
+def test_golden_guard_still_byte_identical_flag_off(monkeypatch):
     """Flag OFF + no mastery → the fixed-seed fight reproduces golden output.
 
     Proves the mastery rider is inert end-to-end: with the flag off it returns
     None before touching mastery state, so the Phase-0 golden fight is
-    byte-for-byte identical.
+    byte-for-byte identical. The default is ON post-launch, so force the off
+    path explicitly to keep pinning the dormant-state inertness contract.
     """
     from src.game.systems.combat import CombatEndReason, CombatSession
 
-    # Precondition: flag must be OFF for this end-to-end inertness claim.
-    assert settings.skill_mastery_enabled is False
+    # Force the dormant off-path (default is ON post-launch) for this claim.
+    monkeypatch.setattr(settings, "skill_mastery_enabled", False)
     assert registry.get_skill(_ATTACK_SKILL) is not None
 
     player = make_combatant(

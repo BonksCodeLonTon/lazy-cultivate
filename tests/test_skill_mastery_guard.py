@@ -40,8 +40,17 @@ _ATTACK_SKILL = "EnemyKim_T1"
 
 # ── Golden constants — captured on clean feat/season-2 ─────────────────────
 # Player (10k HP "large" profile) vs a weaker enemy (1k HP "small" profile),
-# both spamming _ATTACK_SKILL, seed=0, max_turns=50. The player wins on
-# turn 23 with the enemy dead and these exact survivor values.
+# both spamming _ATTACK_SKILL, seed=0, max_turns=50. The player wins with
+# the enemy dead and these exact survivor values.
+#
+# Re-pinned to the ORIGINAL Phase-0 baseline. A mid-season rebalance briefly
+# buffed EnemyKim_T1 base_dmg 10 -> 200 (which moved this golden to
+# 9009/turns5/log16); a later balance pass reverted enemy damage to the
+# original baseline, so base_dmg is 10 again and the fixed-seed fight returns
+# to its first-captured deterministic state: player kills the 1k "small" enemy
+# at turn 23, log length 70, surviving at 8961 HP. This golden guards against
+# *unintended* combat drift; the drift here is the intended revert, so
+# re-pinning to the original values is correct.
 _GOLDEN_PLAYER_HP = 8_961
 _GOLDEN_ENEMY_HP = 0
 _GOLDEN_TURNS = 23
