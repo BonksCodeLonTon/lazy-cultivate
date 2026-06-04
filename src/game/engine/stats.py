@@ -50,6 +50,13 @@ class AttackStats:
     # without touching the generic ``final_dmg_bonus`` pool. Stacks
     # additively across sources.
     element_dmg_amp: dict[str, float] = field(default_factory=dict)
+    # Conditional, target-state crit amps threaded into ``apply_critical``.
+    # Set only when a build's "vs <state>" hunt is active for THIS hit (e.g.
+    # Thái Bạch Canh Kim's +40% crit chance / +20% crit dmg vs a bleeding
+    # target). Both default 0.0 → the pipeline call resolves byte-identically
+    # for every build that doesn't arm them.
+    bonus_crit_chance: float = 0.0
+    bonus_crit_dmg_mult: float = 0.0
 
 
 @dataclass(frozen=True)

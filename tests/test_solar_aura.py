@@ -201,12 +201,6 @@ def test_thai_duong_kit_all_stack():
     assert 20_000 - enemy.hp == 660
 
 
-# ── Registry: the new constitution exists and is wired ──────────────────────
-
-
-def test_thai_duong_constitution_is_registered():
-    c = registry.get_constitution("ConstitutionThaiDuongThanThe")
-    assert c is not None
-    assert c["rarity"] == "legendary"
-    assert c["element"] == "hoa"
-    assert c["stat_bonuses"]["solar_aura_pct"] > 0
+# NOTE: the registry-presence check for the specific solar-aura body was
+# dropped with the v12 roster removal — the synthetic-combatant aura tests
+# above already pin the engine mechanic without depending on shipped content.

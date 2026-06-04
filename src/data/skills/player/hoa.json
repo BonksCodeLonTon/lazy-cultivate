@@ -537,5 +537,24 @@
     },
     "formation_key": null,
     "description_vi": "Hai luồng liệt diễm — mỗi đòn 75% chồng 1 tầng Thiêu Đốt (feeder cho Hỏa Bạo)."
+  },
+  {
+    "key": "SkillHoaPhuongHoangBurst",
+    "vi": "Phượng Hoàng Lửa",
+    "en": "Phoenix Flame",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 3.0,
+      "matk": 3.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 1,
+    "effects": [],
+    "formation_key": null,
+    "description_vi": "Đòn phụ Phượng Hoàng Lửa — chỉ tự kích hoạt bởi Chân Dương Bất Diệt Thể (Phượng Hoàng Trọng Sinh) khi trùng sinh. Định tuyến đầy đủ (có thể bạo kích / chịu kháng Hỏa), 300% Công + 300% Pháp."
   }
 ]

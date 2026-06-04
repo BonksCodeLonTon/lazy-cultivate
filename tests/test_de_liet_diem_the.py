@@ -1,10 +1,13 @@
-"""Tests for the buffed ConstitutionHoaDiem_Leg (Đế Liệt Diệm Thể).
+"""Tests for the generic damage-conversion engine path (was Đế Liệt Diệm Thể).
 
-Mechanic: when the holder takes damage, ``damage_to_fire_convert_pct`` of
-the incoming amount is reclassified as fire damage to the holder, then
-mitigated by the holder's own hoa resistance. The unconverted remainder is
-taken as raw HP loss. Net effect: paired with high ``res_hoa``, the
-constitution turns a fraction of every hit into a soft tickle.
+Mechanic: when the holder takes damage, ``damage_taken_convert_pct`` of the
+incoming amount is reclassified as the named element's damage to the holder,
+then mitigated by the holder's own resistance to that element. The unconverted
+remainder is taken as raw HP loss. Net effect: paired with high elemental
+resistance, the conversion turns a fraction of every hit into a soft tickle.
+
+These tests exercise the engine path directly via synthetic combatants — they
+no longer depend on any shipped constitution body.
 """
 from __future__ import annotations
 
@@ -172,17 +175,11 @@ def test_element_dmg_bonus_amplifies_matching_skill():
     assert kim_stats.final_dmg_bonus == pytest.approx(0.0)
 
 
-# ── Registry sanity ─────────────────────────────────────────────────────────
-
-
-def test_de_liet_diem_constitution_uses_generic_dicts():
-    c = registry.get_constitution("ConstitutionHoaDiem_Leg")
-    assert c is not None
-    bonuses = c["stat_bonuses"]
-    assert bonuses["damage_taken_convert_pct"]["hoa"] == pytest.approx(0.40)
-    assert bonuses["element_dmg_bonus"]["hoa"] > 0
-    assert "damage_to_fire_convert_pct" not in bonuses
-    assert "damage_to_fire_reflect_pct" not in bonuses
+# ── Generic dict-merge sanity ────────────────────────────────────────────────
+# (The registry-presence check for the specific Đế Liệt Diệm body was dropped
+#  with the v12 roster removal — the conversion math above already pins the
+#  generic ``damage_taken_convert_pct`` / ``element_dmg_bonus`` engine path
+#  without depending on any shipped body.)
 
 
 def test_dict_bonuses_merge_per_element_additively():

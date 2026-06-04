@@ -30,17 +30,27 @@ from src.game.systems.cultivation import compute_constitution_bonuses
 from src.game.systems.constitution_process import effective_stat_bonuses
 from src.utils.config import settings
 
-# The live canary: an epic Kim crit/bleed body carrying a real ``process``
-# block (milestones [1, 3, 6, 9] over crit_rating / crit_dmg_rating /
-# bleed_on_hit_pct / true_dmg_pct / armor_pen_pct / final_dmg_bonus /
-# dot_dmg_bonus_by_kind / crit_amp_vs). NOT the Phase-0 guard body
-# (``ConstitutionKimCotThe``), which stays process-free so its flat golden
-# never moves.
-_CANARY = "ConstitutionTinhKimSatThe"
+# ── Synthetic, content-independent test bodies ───────────────────────────────
+# The v12 roster rebuild emptied the real constitution roster (only Phàm Thể
+# survives), so this engine test no longer leans on any shipped body. Instead
+# it injects two SYNTHETIC constitutions into the registry via an autouse
+# ``monkeypatch`` fixture — a process-bearing canary and a Hỗn Độn-style
+# amplifier — and pins the engine's flag-gating + milestone-composition +
+# amplification-exclusion contracts against THOSE. Roster content can be
+# rebuilt freely without ever touching this file again.
+#
+# The canary mirrors the shape the engine contract cares about: a process block
+# with milestones [1, 3, 6, 9] whose crit_rating milestones sum to +150
+# (40+50+60), whose m9 adds final_dmg_bonus +0.12 and true_dmg_pct +0.03 on top
+# of a flat true_dmg_pct 0.08 (→ 0.11 at L9). Flat stat_bonuses carry a
+# crit_rating + bleed_on_hit_pct so the body is a recognisable crit/bleed build.
+_CANARY = "SynthCanaryBody"
 
-# The Hỗn Độn carrier — ``all_passives_multiplier: 1.25`` amplifies OTHER
+# The Hỗn Độn-style carrier — ``all_passives_multiplier: 1.25`` amplifies OTHER
 # active bodies' numeric stats, but never the compound-offensive stats in
-# ``cultivation._AMP_EXCLUDED_STATS`` (final_dmg_bonus / true_dmg_pct / …).
+# ``cultivation._AMP_EXCLUDED_STATS`` (final_dmg_bonus / true_dmg_pct / …). A
+# crit_rating is included so the amplifier is genuinely active and the exclusion
+# assertion is meaningful, not a no-op.
 _HON_DON = "ConstitutionHonDon"
 
 _ATTACK_SKILL = "EnemyKim_T1"
@@ -48,6 +58,65 @@ _ATTACK_SKILL = "EnemyKim_T1"
 # Realm shape: body axis at realm 5 → ≥1 standard slot, so the canary is
 # always hosted in the first (always-active) slot.
 _BODY_REALM = 5
+
+
+_SYNTH_CANARY_DATA = {
+    "key": _CANARY,
+    "vi": "Thể Thử Nghiệm",
+    "en": "Synthetic Canary Body",
+    "rarity": "epic",
+    "element": "kim",
+    "roll_weight": 0,
+    "stat_bonuses": {
+        "crit_rating": 220,
+        "crit_dmg_rating": 200,
+        "bleed_on_hit_pct": 0.15,
+        "true_dmg_pct": 0.08,
+        "armor_pen_pct": 0.08,
+    },
+    "process": {
+        "milestones": [1, 3, 6, 9],
+        "levels": {
+            "1": {"stat_bonuses": {}},
+            "3": {"stat_bonuses": {"crit_rating": 40, "bleed_on_hit_pct": 0.02}},
+            "6": {"stat_bonuses": {"crit_rating": 50, "crit_dmg_rating": 60, "armor_pen_pct": 0.02}},
+            "9": {
+                "stat_bonuses": {
+                    "crit_rating": 60,
+                    "true_dmg_pct": 0.03,
+                    "final_dmg_bonus": 0.12,
+                    "dot_dmg_bonus_by_kind": {"bleed": 0.1},
+                }
+            },
+        },
+    },
+    "special_requirements": None,
+}
+
+# Hỗn Độn must exist under its canonical key — the amplification machinery
+# special-cases the ``all_passives_multiplier`` carrier by key identity (9th
+# slot). Inject a minimal 1.25x carrier carrying a single non-excluded stat.
+_SYNTH_HON_DON_DATA = {
+    "key": _HON_DON,
+    "vi": "Hỗn Độn Thử Nghiệm",
+    "en": "Synthetic Chaos Body",
+    "rarity": "legendary",
+    "element": None,
+    "roll_weight": 0,
+    "stat_bonuses": {
+        "all_passives_multiplier": 1.25,
+        "crit_rating": 100,
+    },
+    "special_requirements": None,
+}
+
+
+@pytest.fixture(autouse=True)
+def _inject_synthetic_bodies(monkeypatch):
+    """Register the synthetic canary + Hỗn Độn carrier for the duration of each
+    test, leaving the (now near-empty) real roster untouched."""
+    monkeypatch.setitem(registry.constitutions, _CANARY, _SYNTH_CANARY_DATA)
+    monkeypatch.setitem(registry.constitutions, _HON_DON, _SYNTH_HON_DON_DATA)
 
 
 def _make_char(constitution_type: str, levels: dict[str, int] | None = None) -> Character:

@@ -86,7 +86,7 @@ def build_player_combatant(
     combatant_fields = {f.name for f in fields(Combatant)}
     cs_kwargs = {k: v for k, v in asdict(cs).items() if k in combatant_fields}
 
-    return Combatant(
+    combatant = Combatant(
         key="player",
         name=char.name,
         hp=hp_current,
@@ -100,6 +100,58 @@ def build_player_combatant(
         skill_mastery=dict(skill_mastery or {}),
         **cs_kwargs,
     )
+    _stamp_constitution_process_effects(char, combatant)
+    return combatant
+
+
+def _stamp_constitution_process_effects(char: Character, combatant: Combatant) -> None:
+    """Stamp each active body's Constitution-Process milestone effects (the
+    ``effective_effects`` list) onto a freshly-built player combatant.
+
+    Flag-gated: a no-op unless ``settings.constitution_process_enabled`` is
+    True, so the dormant default leaves the combatant's ``effects`` map empty
+    exactly as before (Phase-0 guard stays byte-identical). Mirrors the
+    ``process_levels`` gate ``character_stats.compute_combat_stats`` already
+    uses for the *stat* layer — this is the matching seam for the *effect*
+    layer (BuffSatKhi etc.), which had no combat-read wiring until now.
+
+    Each effect is applied with its default duration (the Kim killing-body
+    passives carry ``duration: 999`` so they persist for the whole fight). The
+    body's stored level gates which milestone effects unlock — an L1 body only
+    gets the milestone-1 effects, an L9 body gets all of them.
+    """
+    from src.utils.config import settings
+
+    if not settings.constitution_process_enabled:
+        return
+    levels = char.constitution_levels or None
+    if not levels:
+        # Empty carrier collapses to the inert path (mirrors the stat seam's
+        # ``char.constitution_levels or None`` → ``process_levels=None``).
+        return
+
+    from src.game.engine.effects import EFFECTS, default_duration
+    from src.game.systems.constitution_process import effective_effects
+    from src.game.systems.the_chat import effective_constitutions
+
+    active_keys = effective_constitutions(
+        char.constitution_type, char.active_axis, char.body_realm,
+    )
+    for const_key in active_keys:
+        const_data = registry.get_constitution(const_key)
+        if not const_data or not const_data.get("process"):
+            continue
+        level = int(levels.get(const_key, 1))
+        for effect_key in effective_effects(const_data, level):
+            meta = EFFECTS.get(effect_key)
+            if meta is None:
+                continue
+            combatant.apply_effect(effect_key, default_duration(effect_key))
+            _hc = int(meta.stat_bonus.get("next_skill_hit_count", 0))
+            if _hc > 0:
+                combatant.next_skill_hit_count_bonus = max(
+                    combatant.next_skill_hit_count_bonus, _hc
+                )
 
 
 def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant | None:

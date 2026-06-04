@@ -1572,5 +1572,293 @@
     "stealable": false,
     "emoji": "🌿",
     "duration": 4
+  },
+  {
+    "key": "BuffSatKhi",
+    "vi": "Sát Khí",
+    "en": "Killing Aura",
+    "kind": "buff",
+    "description_vi": "Mỗi đòn đánh chồng 1 tầng Sát Khí (tối đa 5). Mỗi tầng +15 Bạo Kích và +25 Sát Thương Bạo Kích. Không mất khi hết lượt.",
+    "stat_bonus": {
+      "_sat_khi_crit_per": 15,
+      "_sat_khi_crit_dmg_per": 25
+    },
+    "scaling_rules": [
+      {
+        "key": "_sat_khi_crit_per",
+        "source": "stack:sat_khi",
+        "output": "crit_rating",
+        "max_output": 75
+      },
+      {
+        "key": "_sat_khi_crit_dmg_per",
+        "source": "stack:sat_khi",
+        "output": "crit_dmg_rating",
+        "max_output": 125
+      }
+    ],
+    "stack_cap": 5,
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🗡️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThienCuongChienY",
+    "vi": "Thiên Cương Chiến Ý",
+    "en": "Heaven Steel Battle Will",
+    "kind": "buff",
+    "description_vi": "Mỗi 10% HP bản thân đã mất cộng +5% sát thương cuối (tối đa +50%).",
+    "stat_bonus": {
+      "_tccy_fdb_per": 0.05
+    },
+    "scaling_rules": [
+      {
+        "key": "_tccy_fdb_per",
+        "source": "hp_missing_pct",
+        "output": "final_dmg_bonus",
+        "bucket": 0.10,
+        "max_output": 0.50
+      }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚔️",
+    "duration": 999
+  },
+  {
+    "key": "BuffSatKhiDaiThanh",
+    "vi": "Sát Khí Đại Thành",
+    "en": "Killing Aura Consummation",
+    "kind": "buff",
+    "description_vi": "Sát Khí đại thành — khi đủ 5 tầng Sát Khí, đòn đánh có thể kích hoạt Kiếm Lãng và áp chế công/pháp địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🗡️",
+    "duration": 999
+  },
+  {
+    "key": "BuffBachKimPhongVu",
+    "vi": "Bạch Kim Phong Vũ",
+    "en": "White Metal Storm",
+    "kind": "buff",
+    "description_vi": "Khi vết Chảy Máu duy trì trên địch, mỗi lượt tích 1 tầng (tối đa 5). Mỗi tầng +4% Công và +0.5% sát thương Chảy Máu.",
+    "stat_bonus": {
+      "_bkpv_atk_per": 0.04,
+      "_bkpv_bleed_per": 0.005
+    },
+    "scaling_rules": [
+      {
+        "key": "_bkpv_atk_per",
+        "source": "stack:bach_kim",
+        "output": "atk_pct",
+        "max_output": 0.20
+      },
+      {
+        "key": "_bkpv_bleed_per",
+        "source": "stack:bach_kim",
+        "output": "bleed_dmg_bonus",
+        "max_output": 0.025
+      }
+    ],
+    "stack_cap": 5,
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌪️",
+    "duration": 999
+  },
+  {
+    "key": "BuffNextSkillHitCount",
+    "vi": "Thái Bạch Túy Tiên",
+    "en": "White Star Reverie",
+    "kind": "buff",
+    "description_vi": "Đòn đánh kế tiếp +3 số lần đánh (1 lần/trận).",
+    "stat_bonus": {
+      "next_skill_hit_count": 3
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌟",
+    "duration": 999
+  },
+  {
+    "key": "BuffVanKhiGiaiKim",
+    "vi": "Vạn Khí Giai Kim",
+    "en": "All Arms Are Metal",
+    "kind": "buff",
+    "description_vi": "Toàn bộ chỉ số trang bị được khuếch đại suốt trận (tính sẵn khi vào trận).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚜️",
+    "duration": 999
+  },
+  {
+    "key": "BuffHuyetLapThaiBach",
+    "vi": "Huyết Lạp Thái Bạch",
+    "en": "White Star Bleed Hunter",
+    "kind": "buff",
+    "description_vi": "Khi đánh địch đang Chảy Máu: +tỉ lệ và +sát thương Bạo Kích lên mục tiêu đó; mỗi 3 lượt bản thân, đòn kế tiếp chắc chắn Bạo Kích.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🩸",
+    "duration": 999
+  },
+  {
+    "key": "BuffMaKhi",
+    "vi": "Ma Khí",
+    "en": "Demon Qi",
+    "kind": "buff",
+    "description_vi": "Mỗi đòn chồng 1 tầng Ma Khí (tối đa 6). Đủ 6 tầng: hút hồn và áp Thực Hồn lên địch, rồi reset.",
+    "stat_bonus": {},
+    "stack_cap": 6,
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌑",
+    "duration": 999
+  },
+  {
+    "key": "BuffHuAnhHoThe",
+    "vi": "Hư Ảnh Hộ Thể",
+    "en": "Phantom Ward",
+    "kind": "buff",
+    "description_vi": "Khi HP dưới 50%: +300 Né Tránh và 35% kháng debuff.",
+    "stat_bonus": {
+      "_hu_anh_eva": 300,
+      "_hu_anh_immune": 0.35
+    },
+    "scaling_rules": [
+      {
+        "key": "_hu_anh_eva",
+        "source": "constant",
+        "gate_source": "hp_pct",
+        "max": 0.50,
+        "output": "evasion_rating"
+      },
+      {
+        "key": "_hu_anh_immune",
+        "source": "constant",
+        "gate_source": "hp_pct",
+        "max": 0.50,
+        "output": "debuff_immune_pct"
+      }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "👻",
+    "duration": 999
+  },
+  {
+    "key": "BuffThienMaDongHoa",
+    "vi": "Thiên Ma Đồng Hóa",
+    "en": "Demon Assimilation",
+    "kind": "buff",
+    "description_vi": "Khi đang Nhập Ma: +40% sát thương và mỗi đòn Đạo Pháp Thôn Phệ (cướp chỉ số).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "😈",
+    "duration": 999
+  },
+  {
+    "key": "BuffMaDaoHoaThan",
+    "vi": "Ma Đạo Hóa Thần",
+    "en": "Demon Ascension",
+    "kind": "buff",
+    "description_vi": "Cứ mỗi 5 lượt của bản thân, tự động Nhập Ma trong 2 lượt.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "👹",
+    "duration": 999
+  },
+  {
+    "key": "BuffNhapMa",
+    "vi": "Nhập Ma",
+    "en": "Demon Trance",
+    "kind": "buff",
+    "description_vi": "Nhập ma trạng thái — Pháp Công tăng mạnh, mở khóa các đòn đồng hóa của Thiên Ma.",
+    "stat_bonus": {
+      "matk_pct": 0.15
+    },
+    "stealable": false,
+    "emoji": "👹",
+    "duration": 2
+  },
+  {
+    "key": "BuffHoaKhiTuongSinh",
+    "vi": "Hỏa Khí Tương Sinh",
+    "en": "Fire-Qi Symbiosis",
+    "kind": "buff",
+    "description_vi": "Khi địch đang cháy, mỗi lượt tích thêm Bạo Kích (tối đa +200). Khi địch hết cháy, dồn tích tan biến.",
+    "stat_bonus": {
+      "_hkts_crit_per": 20
+    },
+    "scaling_rules": [
+      {
+        "key": "_hkts_crit_per",
+        "source": "stack:burning_crit",
+        "output": "crit_rating",
+        "max_output": 200
+      }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔥",
+    "duration": 999
+  },
+  {
+    "key": "BuffChanDuongNietBan",
+    "vi": "Chân Dương Niết Bàn",
+    "en": "True Yang Nirvana",
+    "kind": "buff",
+    "description_vi": "Khi nhận đòn chí mạng, hồi sinh tại 20% HP (1 lần/trận).",
+    "stat_bonus": {
+      "revive_hp_pct": 0.20
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌅",
+    "duration": 999
+  },
+  {
+    "key": "BuffChanHoaPhanThien",
+    "vi": "Chân Hỏa Phần Thiên",
+    "en": "True Fire Sky-Burner",
+    "kind": "buff",
+    "description_vi": "Đánh địch đang cháy có cơ hội bùng sát thương; sát thương kỹ năng Hỏa tăng.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "☀️",
+    "duration": 999
+  },
+  {
+    "key": "BuffChanDuongDuHoa",
+    "vi": "Chân Dương Dư Hỏa",
+    "en": "Lingering True Yang Flame",
+    "kind": "buff",
+    "description_vi": "Vừa trùng sinh — dư hỏa rực cháy, sát thương cuối tăng mạnh trong thời gian ngắn.",
+    "stat_bonus": {
+      "final_dmg_bonus": 0.40
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔥",
+    "duration": 2
+  },
+  {
+    "key": "BuffPhuongHoangTrongSinh",
+    "vi": "Phượng Hoàng Trọng Sinh",
+    "en": "Phoenix Rebirth",
+    "kind": "buff",
+    "description_vi": "Tam Sinh Bất Diệt — hồi sinh tối đa 3 lần/trận, mỗi lần bùng dư hỏa và giáng Phượng Hoàng Lửa lên địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🦅",
+    "duration": 999
   }
 ]

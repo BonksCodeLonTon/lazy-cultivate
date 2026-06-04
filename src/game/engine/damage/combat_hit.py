@@ -114,6 +114,11 @@ def build_attack_stats(
         # Permanent per-element dmg bonus from constitutions / equipment
         # (generic dict pickup — replaces per-element flat fields).
         final_dmg_bonus += float(actor.element_dmg_bonus.get(skill_element, 0.0))
+    # Thiên Ma Đồng Hóa (L6) — while in the Nhập Ma trance, every hit gains a
+    # flat final-damage bonus. Gated on the L6+ magnitude AND the active trance,
+    # so it's inert for every other build (default field 0.0 / no buff).
+    if actor.nhap_ma_dmg_bonus > 0 and actor.has_effect("BuffNhapMa"):
+        final_dmg_bonus += actor.nhap_ma_dmg_bonus
     # Vạn Kiếm Quy Tông Sword-Heart stacks — +5% kim damage per stack,
     # routed through ``element_dmg_amp`` (applied at the elemental step)
     # so it amps ONLY kim damage and never feeds the generic
@@ -137,6 +142,17 @@ def build_attack_stats(
     # inner = {"rating": int, "dmg": int}. Missing keys default to 0 so a
     # build that doesn't roll the corresponding affix simply contributes
     # nothing.
+    # Thái Bạch Canh Kim — Huyết Lạp Thái Bạch (L9). When the actor armed the
+    # bleed-hunt and the target is bleeding, amp this hit's crit CHANCE + crit
+    # DMG MULT (threaded into ``apply_critical`` via AttackStats). Distinct from
+    # the rating-based ``crit_amp_vs["bleed"]`` lane below: these are direct
+    # chance / multiplier adds, not flat rating. Both 0.0 → inert for every
+    # other build (default Combatant fields).
+    bonus_crit_chance = 0.0
+    bonus_crit_dmg_mult = 0.0
+    if target.bleed_stacks > 0 and actor.bleed_hunter_crit_chance_bonus > 0:
+        bonus_crit_chance = actor.bleed_hunter_crit_chance_bonus
+        bonus_crit_dmg_mult = actor.bleed_hunter_crit_dmg_bonus
     if target.bleed_stacks > 0:
         _amp = actor.crit_amp_vs.get("bleed") or {}
         crit_rating += int(_amp.get("rating", 0))
@@ -150,7 +166,10 @@ def build_attack_stats(
         crit_rating += int(_amp.get("rating", 0))
         crit_dmg_rating += int(_amp.get("dmg", 0))
 
-    force_crit = target.has_effect(EffectKey.DEBUFF_DONG_BANG)
+    # Đông Băng auto-crit OR the Thái Bạch periodic guaranteed-crit arm. The
+    # arm is set by the PRE_TURN crit-cadence hook every Nth acted turn and
+    # consumed on the first landed cast (see casting.py). Default False → inert.
+    force_crit = target.has_effect(EffectKey.DEBUFF_DONG_BANG) or actor.bleed_hunter_crit_armed
 
     # ATK / MATK scale with current Energy Shield: depleted shield = depleted
     # punch. Constitutions like Nguyên Linh Khiên Thể (mage) and Cương Khiên
@@ -205,6 +224,8 @@ def build_attack_stats(
         accuracy_rating=accuracy_rating,
         crit_dmg_rating_to_dmg_pct=actor.crit_dmg_rating_to_dmg_pct,
         element_dmg_amp=element_dmg_amp,
+        bonus_crit_chance=bonus_crit_chance,
+        bonus_crit_dmg_mult=bonus_crit_dmg_mult,
     )
 
 

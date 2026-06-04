@@ -182,18 +182,6 @@ def test_auto_attack_path_defers_through_take_damage():
     assert len(holder.deferred_damage_queue) == 3  # N=3 → 3 queued installments
 
 
-# ── Registry sanity ─────────────────────────────────────────────────────────
-
-
-def test_thanh_tuyen_the_registered():
-    c = registry.get_constitution("ConstitutionThanhTuyenThe")
-    assert c is not None
-    assert c["rarity"] == "legendary"
-    assert c["element"] == "thuy"
-    bonuses = c["stat_bonuses"]
-    assert bonuses["damage_defer_turns"] == 3
-    assert bonuses["damage_defer_pct"] == pytest.approx(0.30)
-    # "Massive survivability" sanity floors
-    assert bonuses.get("hp_pct", 0) >= 0.20
-    assert bonuses.get("final_dmg_reduce", 0) >= 0.05
-    assert bonuses.get("hp_regen_pct", 0) > 0
+# NOTE: the registry-presence check for the specific damage-defer body was
+# dropped with the v12 roster removal — the synthetic-combatant defer tests
+# above already pin the engine mechanic without depending on shipped content.

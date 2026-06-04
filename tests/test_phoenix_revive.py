@@ -179,12 +179,6 @@ def test_phoenix_does_not_save_a_second_death():
     assert not enemy.is_alive()
 
 
-# ── Registry: HoaPhung_Leg now ships the revive ────────────────────────────
-
-
-def test_hoa_phung_leg_has_phoenix_revive():
-    c = registry.get_constitution("ConstitutionHoaPhung_Leg")
-    assert c is not None
-    bonuses = c["stat_bonuses"]
-    assert bonuses.get("phoenix_revive_pct") == pytest.approx(0.70)
-    assert bonuses.get("phoenix_revive_buff_pct") == pytest.approx(0.20)
+# NOTE: the registry-presence check for the specific phoenix-revive body was
+# dropped with the v12 roster removal — the synthetic-combatant revive tests
+# above already pin the engine mechanic without depending on shipped content.

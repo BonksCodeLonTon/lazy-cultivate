@@ -519,12 +519,31 @@
     "cooldown": 6,
     "base_dmg": 300,
     "bonus_dmg_per_target_def": 4.0,
-    "bonus_dmg_per_target_shield_pct": 0.20,
+    "bonus_dmg_per_target_shield_pct": 0.2,
     "bonus_dmg_cap": 4500,
     "effects": [
       "DebuffKimPheGiap"
     ],
     "formation_key": null,
     "description_vi": "Nuốt giáp địch: +4 ST nền mỗi điểm DEF + 20% Khiên hiện có của địch (tối đa +4500). In Phệ Giáp: giảm 25% DEF địch tới hết trận."
+  },
+  {
+    "key": "SkillKimKiemLang",
+    "vi": "Kiếm Lãng",
+    "en": "Sword Splash",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 2.0,
+      "matk": 2.0
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 1,
+    "effects": [],
+    "formation_key": null,
+    "description_vi": "Đòn phụ Kiếm Lãng — chỉ tự kích hoạt bởi Thiên Cương Phá Sát Thể (Sát Khí Đại Thành). Định tuyến đầy đủ (có thể bạo kích / chịu kháng Kim), 200% Công + 200% Pháp."
   }
 ]

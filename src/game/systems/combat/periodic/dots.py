@@ -71,6 +71,34 @@ def _process_dots(ctx: TurnContext) -> None:
     for effect_key, dot_dmg, is_crit in get_periodic_damage(combatant, ctx.rng):
         combatant.take_damage(dot_dmg, is_dot=True)
 
+        # Applier-heal DoTs (Thực Hồn-class) — heal the STRONGEST applier of
+        # this DoT for ``dot_applier_heal_pct × tick``. ``dot_dmg`` is the
+        # post-boss-cap, post-crit tick, so the boss cap also bounds the heal.
+        # The applier is read from the holder's ``dot_bonus_sources`` (the same
+        # map the caster-scaling tick uses) — strongest by recorded matk, the
+        # one whose stats produced the tick. Default 0.0 → no-op (no heal, no
+        # extra RNG) for every other DoT.
+        _heal_meta = EFFECTS.get(effect_key)
+        if _heal_meta is not None and _heal_meta.dot_applier_heal_pct > 0:
+            _applier_key = max(
+                combatant.dot_bonus_sources,
+                key=lambda k: combatant.dot_bonus_sources[k].get("caster_matk", 0),
+                default=None,
+            )
+            _applier = None
+            if _applier_key == session.player.key:
+                _applier = session.player
+            elif _applier_key == session.enemy.key:
+                _applier = session.enemy
+            if _applier is not None and _applier is not combatant and _applier.is_alive():
+                _heal = max(1, int(dot_dmg * _heal_meta.dot_applier_heal_pct))
+                _healed = session._apply_heal(_applier, _heal)
+                if _healed > 0:
+                    ctx.log.append(
+                        f"    🩻 **{_applier.name}** Thực Hồn hấp thu "
+                        f"+{_healed:,} HP ({int(_heal_meta.dot_applier_heal_pct * 100)}% ST hồn phách)"
+                    )
+
         # Cộng Sinh Luân Hồi (Mộc B5) — same-element DoT amp + HP/MP siphon.
         # Only the applier's passive-matched elements qualify. The amp
         # (``bonus_dot_pct_per_distinct_dot × distinct same-element DoTs``,

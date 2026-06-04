@@ -14,12 +14,20 @@ legacy ``_take_turn`` body so existing tests stay green:
   30  luu_tinh   — Lưu Tinh Cản Nguyệt (dynamic evasion/spd refresh)
   35  xuan_thu   — Xuân Thu Nhất Bút (Spring-Autumn rotation refresh)
   40  lieu_nhu   — Liễu Nhứ Tùy Phong (Mộc-DoT drift refresh)
+  40  thai_bach  — Thái Bạch Canh Kim (every-N-turn guaranteed-crit arm)
+  40  huyen_am   — Huyền Âm Thiên Ma (every-N-turn auto-Nhập-Ma)
   50  bo_bo      — Bộ Bộ Sinh Liên (heal-taken → mobility refresh)
   60  phu_dao    — Phù Dao Trực Thượng (altitude tier bump)
 
 Adding a new pre-turn aura means dropping a new module here and picking
 a priority that places it correctly in the chain — no edits to session.py.
 """
-from . import bo_bo, kinh_hoa, lieu_nhu, luu_ly, luu_tinh, phu_dao, xuan_thu  # noqa: F401
+from . import (  # noqa: F401
+    bo_bo, huyen_am, kinh_hoa, lieu_nhu, luu_ly, luu_tinh, phu_dao, thai_bach,
+    xuan_thu,
+)
 
-__all__ = ["bo_bo", "kinh_hoa", "lieu_nhu", "luu_ly", "luu_tinh", "phu_dao", "xuan_thu"]
+__all__ = [
+    "bo_bo", "huyen_am", "kinh_hoa", "lieu_nhu", "luu_ly", "luu_tinh",
+    "phu_dao", "thai_bach", "xuan_thu",
+]

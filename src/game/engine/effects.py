@@ -97,6 +97,14 @@ class EffectMeta:
     # effects that need anti-shield / mana-burn flavor (e.g. Lục Hồn Chú).
     dot_shield_drain_pct: float = 0.0
     dot_mp_drain_pct:     float = 0.0
+    # On each DoT tick, ``dot_applier_heal_pct`` × the (post-boss-cap) tick
+    # damage is healed back to the STRONGEST applier of this DoT (read from the
+    # holder's ``dot_bonus_sources`` — the same map the caster-scaling tick
+    # uses). Lets a soul-eating curse like Thực Hồn drain HP from the target
+    # straight into its caster. Default 0.0 → every existing DoT byte-identical
+    # (no heal, no extra RNG). Routed through ``session._apply_heal`` so
+    # bleed-heal-reduce / heal-can-crit behave consistently.
+    dot_applier_heal_pct: float = 0.0
     # Caster-stat-driven DoT tick. When EITHER field is > 0, the standard
     # ``power × dot_pct × DOT_POWER_COEF`` formula is bypassed for this effect
     # and the tick instead reads the strongest applier's recorded stats:
@@ -632,6 +640,42 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     # (not in stat_bonus), but listed here defensively so it never leaks as a
     # stat even if a future code path copies it into stat_bonus.
     "_sap",
+    # Thiên Cương Phá Sát Thể — Kim killing-body config (read by run_on_hit_procs):
+    # L3 Phá Giáp on-hit chances + L9 Kiếm Lãng splash gate/coefficients. Stamped
+    # in the constitution's milestone stat_bonuses so designers tune them in JSON,
+    # but consumed by the proc sweep rather than applied as real stats.
+    "kim_pha_giap_on_hit_chance",
+    "kim_pha_giap_high_sat_khi_chance",
+    "kim_sword_splash_at_max_sat_khi",
+    "kim_sword_splash_base_chance",
+    "kim_sword_splash_crit_coeff",
+    "kim_sword_splash_chance_cap",
+    # Thái Bạch Canh Kim Thể — Kim crit-bleeder config: L6 equipment-stat
+    # amplifier (consumed by the build-time pre-pass in character_stats), L3
+    # one-shot hit-count arm (seeded at build, consumed in cast_skill), and L9
+    # anti-bleed crit amps + periodic-crit cadence (read onto Combatant fields,
+    # threaded into the crit step / PRE_TURN hook). None ever render as a stat.
+    "equip_stat_amp_pct",
+    "next_skill_hit_count",
+    "kim_bleed_hunter_crit_chance_bonus",
+    "kim_bleed_hunter_crit_dmg_bonus",
+    "kim_periodic_crit_interval",
+    # Huyền Âm Thiên Ma Thể — Ám shadow-mage config: L1 shadow-stack gate, L6
+    # Nhập-Ma damage/stat-steal magnitude (read onto Combatant, consumed by the
+    # POST_HIT sweep + combat_hit), L9 auto-Nhập-Ma cadence (PRE_TURN hook).
+    # None ever render as a stat.
+    "shadow_stack_on_hit",
+    "nhap_ma_dmg_bonus",
+    "am_auto_nhap_ma_interval",
+    "am_nhap_ma_duration",
+    # Chân Dương Bất Diệt Thể — Hỏa phoenix config: L6 chance-gated burning amp
+    # (rolled at cast assembly) + L9 3-charge upgraded-revive config (read by
+    # the priority-5 ON_REVIVE hook). None ever render as a stat.
+    "hoa_burning_amp_chance",
+    "hoa_burning_amp_pct",
+    "hoa_revive_upgraded",
+    "hoa_revive_charges",
+    "hoa_revive_hp_pct_l9",
 })
 
 

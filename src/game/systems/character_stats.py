@@ -32,6 +32,77 @@ _SHOCK_PCT_DEFAULT  = meta_per_stack_pct("shock")
 _POISON_PCT_DEFAULT = meta_per_stack_pct("poison")
 
 
+# ── Per-constitution config-flag registry ──────────────────────────────────
+# Each entry is ``(combatstats_field, bonus_key, kind)``. These are the
+# "config-only" passive flags individual constitution bodies stamp into their
+# stat_bonuses (read by procs / hooks / combat_hit rather than applied as real
+# stats). They share a uniform shape: read from ``bonuses`` (and additively /
+# OR-merged from ``equip_stats``) under ``bonus_key``, then passed straight
+# through to the matching ``CombatStats`` field — no mid-function use. The
+# bonus_key may ALIAS the field name (e.g. ``kim_periodic_crit_interval`` →
+# ``bleed_hunter_periodic_interval``); the alias lives here so a new body adds
+# ONE dataclass field + ONE row instead of four scattered edits.
+#
+# ``kind`` drives both the coercion (float/int/bool) and the equip-merge rule:
+# numeric kinds add, bool kinds OR — exactly reproducing the per-line behavior
+# the four hand-written blocks used to encode.
+_CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
+    # Thiên Cương Phá Sát Thể (Kim killing-aura)
+    ("kim_pha_giap_on_hit_chance",       "kim_pha_giap_on_hit_chance",        float),
+    ("kim_pha_giap_high_sat_khi_chance", "kim_pha_giap_high_sat_khi_chance",  float),
+    ("kim_sword_splash_at_max_sat_khi",  "kim_sword_splash_at_max_sat_khi",   bool),
+    ("kim_sword_splash_base_chance",     "kim_sword_splash_base_chance",      float),
+    ("kim_sword_splash_crit_coeff",      "kim_sword_splash_crit_coeff",       float),
+    ("kim_sword_splash_chance_cap",      "kim_sword_splash_chance_cap",       float),
+    # Thái Bạch Canh Kim Thể (Kim crit-bleeder) — note the bonus-key aliases.
+    ("bleed_hunter_crit_chance_bonus",   "kim_bleed_hunter_crit_chance_bonus", float),
+    ("bleed_hunter_crit_dmg_bonus",      "kim_bleed_hunter_crit_dmg_bonus",    float),
+    ("bleed_hunter_periodic_interval",   "kim_periodic_crit_interval",         int),
+    # Huyền Âm Thiên Ma Thể (Ám shadow-mage) — note the bonus-key aliases.
+    ("shadow_stack_on_hit",              "shadow_stack_on_hit",               bool),
+    ("nhap_ma_dmg_bonus",                "nhap_ma_dmg_bonus",                 float),
+    ("nhap_ma_interval",                 "am_auto_nhap_ma_interval",          int),
+    ("nhap_ma_duration",                 "am_nhap_ma_duration",               int),
+    # Chân Dương Bất Diệt Thể (Hỏa phoenix tank-mage)
+    ("hoa_burning_amp_chance",           "hoa_burning_amp_chance",            float),
+    ("hoa_burning_amp_pct",              "hoa_burning_amp_pct",               float),
+    ("hoa_revive_upgraded",              "hoa_revive_upgraded",               bool),
+    ("hoa_revive_charges",               "hoa_revive_charges",                int),
+    ("hoa_revive_hp_pct_l9",             "hoa_revive_hp_pct_l9",              float),
+    # Quang silence-on-crit — the pre-existing pattern these mirror.
+    ("silence_on_crit_pct",              "silence_on_crit_pct",               float),
+]
+
+
+def _read_constitution_flags(
+    bonuses: dict, equip_stats: dict | None,
+) -> dict[str, float | int | bool]:
+    """Read every per-constitution config flag from ``bonuses`` (+ ``equip_stats``).
+
+    Reproduces the old per-line reads byte-for-byte: each flag is coerced to its
+    ``kind`` from ``bonuses[bonus_key]`` (default 0 / False), then, when
+    ``equip_stats`` is present, merged from ``equip_stats[bonus_key]`` — numeric
+    kinds add, bool kinds OR. Returns a ``{combatstats_field: value}`` map ready
+    to splat into the ``CombatStats(...)`` constructor.
+    """
+    out: dict[str, float | int | bool] = {}
+    for field_name, bonus_key, kind in _CONSTITUTION_FLAG_FIELDS:
+        if kind is bool:
+            value: float | int | bool = bool(bonuses.get(bonus_key, False))
+            if equip_stats:
+                value = value or bool(equip_stats.get(bonus_key, False))
+        elif kind is int:
+            value = int(bonuses.get(bonus_key, 0))
+            if equip_stats:
+                value += int(equip_stats.get(bonus_key, 0))
+        else:  # float
+            value = float(bonuses.get(bonus_key, 0.0))
+            if equip_stats:
+                value += float(equip_stats.get(bonus_key, 0.0))
+        out[field_name] = value
+    return out
+
+
 def active_formation_gem_keys(player) -> list[str]:
     """Flattened gem_keys across EVERY active formation slot.
 
@@ -206,6 +277,33 @@ class CombatStats:
     thorn_pct: float = 0.0
     thorn_from_shield: bool = False
     stun_on_hit_pct: float = 0.0
+    # ── Per-constitution config flags (registry-driven) ───────────────────
+    # These fields are populated via ``_read_constitution_flags`` /
+    # ``_CONSTITUTION_FLAG_FIELDS`` — a new body adds ONE field here plus ONE
+    # registry row (alias + kind), not four scattered edits. Read by
+    # procs / hooks / combat_hit, not applied as raw stats.
+    #   Thiên Cương Phá Sát Thể (Kim killing-aura)
+    kim_pha_giap_on_hit_chance: float = 0.0
+    kim_pha_giap_high_sat_khi_chance: float = 0.0
+    kim_sword_splash_at_max_sat_khi: bool = False
+    kim_sword_splash_base_chance: float = 0.0
+    kim_sword_splash_crit_coeff: float = 0.0
+    kim_sword_splash_chance_cap: float = 0.0
+    #   Thái Bạch Canh Kim Thể (Kim crit-bleeder)
+    bleed_hunter_crit_chance_bonus: float = 0.0
+    bleed_hunter_crit_dmg_bonus: float = 0.0
+    bleed_hunter_periodic_interval: int = 0
+    #   Huyền Âm Thiên Ma Thể (Ám shadow-mage)
+    shadow_stack_on_hit: bool = False
+    nhap_ma_dmg_bonus: float = 0.0
+    nhap_ma_interval: int = 0
+    nhap_ma_duration: int = 0
+    #   Chân Dương Bất Diệt Thể (Hỏa phoenix tank-mage)
+    hoa_burning_amp_chance: float = 0.0
+    hoa_burning_amp_pct: float = 0.0
+    hoa_revive_upgraded: bool = False
+    hoa_revive_charges: int = 0
+    hoa_revive_hp_pct_l9: float = 0.0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).
@@ -220,6 +318,9 @@ class CombatStats:
     mark_on_hit_pct: float = 0.0
     damage_bonus_from_evasion_pct: float = 0.0
     # ── Quang (light/silence/anti-heal) build ─────────────────────────────
+    # ``silence_on_crit_pct`` is also registry-driven (see
+    # ``_CONSTITUTION_FLAG_FIELDS``) — it stays here with its Quang kin for
+    # locality, but its read / equip-merge / passthrough run via the flag helper.
     silence_on_crit_pct: float = 0.0
     heal_reduce_on_hit_pct: float = 0.0
     cleanse_on_turn_pct: float = 0.0
@@ -672,6 +773,26 @@ def compute_combat_stats(
     # ``burn_dmg_bonus: 0.15`` — same data, no churn on the read sites.
     _denest_grouped_bonuses(bonuses)
 
+    # ── L6 Vạn Khí Giai Kim — equipment-stat amplifier (build-time pre-pass) ──
+    # Thái Bạch Canh Kim Thể's milestone-6 stamps a config-only
+    # ``equip_stat_amp_pct`` (×1.25) that amplifies ONLY the equipment-derived
+    # portion of the stat sheet, baked static for the whole battle. Runs BEFORE
+    # the equip-merge block below so every ``equip_stats.get(...)`` read sees the
+    # amplified value; the key is popped from ``bonuses`` so it never lands as a
+    # stat. Inert (no-op) when the body isn't equipped / the flag is off — the
+    # key is simply absent, leaving ``equip_stats`` untouched.
+    _equip_amp = float(bonuses.pop("equip_stat_amp_pct", 0.0))
+    if _equip_amp > 0 and equip_stats:
+        # Copy so we never mutate the caller's dict; amplify each numeric value
+        # (bools and nested dicts pass through unscaled — they aren't flat
+        # equipment magnitudes).
+        equip_stats = {
+            k: (v * (1.0 + _equip_amp)
+                if isinstance(v, (int, float)) and not isinstance(v, bool)
+                else v)
+            for k, v in equip_stats.items()
+        }
+
     # ── Base stats from cultivation ───────────────────────────────────────────
     hp_max   = compute_hp_max(char, bonuses)
     mp_max   = compute_mp_max(char, bonuses)
@@ -801,6 +922,15 @@ def compute_combat_stats(
     thorn_pct                    = float(bonuses.get("thorn_pct", 0.0))
     thorn_from_shield            = bool(bonuses.get("thorn_from_shield", False))
     stun_on_hit_pct              = float(bonuses.get("stun_on_hit_pct", 0.0))
+    # Per-constitution config flags (Kim killing-aura / crit-bleeder, Ám
+    # shadow-mage, Quang silence-on-crit) — read from ``bonuses`` and merged
+    # from ``equip_stats`` in one pass via the flag registry. ``equip_stats``
+    # is already finalised here (the L6 equip-amp pre-pass is the only thing
+    # that rebinds it, and it runs earlier), so merging now matches the old
+    # two-stage read-then-equip-merge byte-for-byte. The result is splatted into
+    # ``CombatStats(...)`` below. A new body adds ONE registry row, not four
+    # edits. See ``_CONSTITUTION_FLAG_FIELDS``.
+    _constitution_flags = _read_constitution_flags(bonuses, equip_stats)
     # Lôi-build fields
     shock_stack_cap_bonus        = int(bonuses.get("shock_stack_cap_bonus", 0))
     shock_per_stack_pct_bonus    = float(bonuses.get("shock_per_stack_pct_bonus", 0.0))
@@ -813,8 +943,7 @@ def compute_combat_stats(
     damage_bonus_from_evasion_pct= float(bonuses.get("damage_bonus_from_evasion_pct", 0.0))
     # ``crit_rating_vs_marked`` / ``crit_dmg_vs_marked`` and the Âm variants
     # are now consolidated into ``crit_amp_vs`` above.
-    # Quang-build fields
-    silence_on_crit_pct          = float(bonuses.get("silence_on_crit_pct", 0.0))
+    # Quang-build fields (``silence_on_crit_pct`` read via the flag registry)
     heal_reduce_on_hit_pct       = float(bonuses.get("heal_reduce_on_hit_pct", 0.0))
     cleanse_on_turn_pct          = float(bonuses.get("cleanse_on_turn_pct", 0.0))
     barrier_on_cleanse           = bool(bonuses.get("barrier_on_cleanse", False))
@@ -1109,6 +1238,9 @@ def compute_combat_stats(
         thorn_pct                    += float(equip_stats.get("thorn_pct", 0.0))
         thorn_from_shield             = thorn_from_shield or bool(equip_stats.get("thorn_from_shield", False))
         stun_on_hit_pct              += float(equip_stats.get("stun_on_hit_pct", 0.0))
+        # Per-constitution config flags (Kim / Ám / Quang silence) are merged
+        # from ``equip_stats`` inside ``_read_constitution_flags`` above — no
+        # per-flag equip line needed here. See ``_CONSTITUTION_FLAG_FIELDS``.
         # Lôi-build fields
         shock_stack_cap_bonus        += int(equip_stats.get("shock_stack_cap_bonus", 0))
         shock_per_stack_pct_bonus    += float(equip_stats.get("shock_per_stack_pct_bonus", 0.0))
@@ -1120,8 +1252,7 @@ def compute_combat_stats(
         mark_on_hit_pct              += float(equip_stats.get("mark_on_hit_pct", 0.0))
         damage_bonus_from_evasion_pct+= float(equip_stats.get("damage_bonus_from_evasion_pct", 0.0))
         # crit_rating_vs_marked / crit_dmg_vs_marked merged into crit_amp_vs above.
-        # Quang-build fields
-        silence_on_crit_pct          += float(equip_stats.get("silence_on_crit_pct", 0.0))
+        # Quang-build fields (``silence_on_crit_pct`` merged via the flag registry)
         heal_reduce_on_hit_pct       += float(equip_stats.get("heal_reduce_on_hit_pct", 0.0))
         cleanse_on_turn_pct          += float(equip_stats.get("cleanse_on_turn_pct", 0.0))
         barrier_on_cleanse            = barrier_on_cleanse or bool(equip_stats.get("barrier_on_cleanse", False))
@@ -1307,13 +1438,16 @@ def compute_combat_stats(
         thorn_pct=thorn_pct,
         thorn_from_shield=thorn_from_shield,
         stun_on_hit_pct=stun_on_hit_pct,
+        # Per-constitution config flags (Kim / Ám / Quang silence) — splatted
+        # from the flag registry's single read+merge pass. See
+        # ``_CONSTITUTION_FLAG_FIELDS`` / ``_read_constitution_flags``.
+        **_constitution_flags,
         shock_per_stack_pct=_SHOCK_PCT_DEFAULT + shock_per_stack_pct_bonus,
         shock_on_hit_pct=shock_on_hit_pct,
         turn_steal_pct=turn_steal_pct,
         poison_per_stack_pct=_POISON_PCT_DEFAULT + _per_stack_pct_bonus_by_kind.get("poison", 0.0),
         mark_on_hit_pct=mark_on_hit_pct,
         damage_bonus_from_evasion_pct=damage_bonus_from_evasion_pct,
-        silence_on_crit_pct=silence_on_crit_pct,
         heal_reduce_on_hit_pct=heal_reduce_on_hit_pct,
         cleanse_on_turn_pct=cleanse_on_turn_pct,
         barrier_on_cleanse=barrier_on_cleanse,

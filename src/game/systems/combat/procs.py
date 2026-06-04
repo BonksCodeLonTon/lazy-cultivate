@@ -21,7 +21,7 @@ from src.game.engine.damage import colorize_damage
 from src.game.engine.effects import EFFECTS, default_duration, effective_stack_cap
 from src.game.systems.combatant import Combatant
 
-from .helpers import _ON_HIT_PROCS, _propagate_stack_build
+from .helpers import _ON_HIT_PROCS, _propagate_dot_bonuses, _propagate_stack_build
 
 # Mirror multiplier on freeze_on_skill_chance — reflected freeze fires at
 # 1.67× the cast chance (≈ 25% when cast = 15%) so a defensive freeze build
@@ -47,7 +47,8 @@ def snapshot_original(combatant: Combatant, field: str, live_value: int) -> int:
 
 
 def run_on_hit_procs(
-    session: "CombatSession", actor: Combatant, target: Combatant, is_crit: bool
+    session: "CombatSession", actor: Combatant, target: Combatant, is_crit: bool,
+    skill_key: str = "",
 ) -> None:
     """Roll each chance-based on-hit proc from _ON_HIT_PROCS plus special cases.
 
@@ -56,6 +57,10 @@ def run_on_hit_procs(
       - paralysis_on_crit fires only on crit, always lands
       - freeze_on_skill_chance gates the freeze proc; mirror version
         scales by ``_FREEZE_MIRROR_BOOST``
+
+    ``skill_key`` is the key of the skill that landed this hit (``""`` when a
+    caller doesn't thread it — e.g. legacy test harnesses). The Kim Sát Khí
+    stamp reads it to skip re-stamping on the auto-fired Kiếm Lãng splash.
     """
     for spec in _ON_HIT_PROCS:
         chance = getattr(actor, spec["chance_attr"], 0.0)
@@ -98,6 +103,109 @@ def run_on_hit_procs(
         else:
             target.apply_effect(EffectKey.CC_MUTED, default_duration(EffectKey.CC_MUTED))
             session.log.append(f"    ✨ Thánh Quang Chế Ngự — câm lặng kích hoạt!")
+    # ── Kim killing-body sweep (Thiên Cương Phá Sát Thể) ─────────────────────
+    # All three blocks are no-ops unless the actor carries the Kim body's
+    # effects/flags (enemies, flag-off builds, and non-Kim players never own
+    # BuffSatKhi or non-zero kim_* flags), so this whole region stays inert
+    # outside the intended build. Ordering is load-bearing per the design:
+    # (a) stamp Sát Khí → (b) L3 Phá Giáp reads the post-stamp stack count →
+    # (c) L9 payoff fires only at exactly 5 stacks.
+    #
+    # (a) Sát Khí stamp — one stack per non-Kiếm-Lãng hit. Skipping the splash's
+    # own cast is what prevents a re-stamp / recursion loop (the splash routes
+    # back through run_on_hit_procs with skill_key == "SkillKimKiemLang").
+    if actor.has_effect("BuffSatKhi") and skill_key != "SkillKimKiemLang":
+        actor.add_stack("sat_khi", 1)
+    # (b) L3 Kim Phá Ngọc Toái — chance to apply Phá Giáp; the higher chance
+    # applies once Sát Khí is at 3+ stacks. Routed via inflict_debuff so target
+    # immunity / reflect handling stays consistent with every other debuff.
+    if actor.kim_pha_giap_on_hit_chance > 0:
+        pha_giap_chance = (
+            actor.kim_pha_giap_high_sat_khi_chance
+            if actor.sat_khi_stacks >= 3
+            else actor.kim_pha_giap_on_hit_chance
+        )
+        if session.rng.random() < pha_giap_chance:
+            from src.game.engine.effects import EFFECTS as _EFFECTS
+            _pg_meta = _EFFECTS.get("DebuffPhaGiap")
+            if _pg_meta is not None:
+                from .casting import inflict_debuff
+                inflict_debuff(session, "DebuffPhaGiap", _pg_meta, target, actor=actor)
+    # (c) L9 Sát Khí Đại Thành — at exactly 5 stacks while the marker buff is
+    # held: suppress the enemy's atk/matk (1-turn, refreshed each max-stack hit)
+    # and roll the Kiếm Lãng splash. Splash chance scales off the actor's own
+    # effective crit chance, capped.
+    #
+    # The ``skill_key != "SkillKimKiemLang"`` guard is RECURSION-CRITICAL: the
+    # splash routes its own hit back through run_on_hit_procs, and the actor is
+    # still at 5 stacks with the marker buff — without this guard the splash's
+    # own sweep would re-fire the payoff (suppression + another splash) and
+    # recurse without bound. The same guard already blocks the Sát Khí re-stamp
+    # in block (a).
+    if (
+        skill_key != "SkillKimKiemLang"
+        and actor.kim_sword_splash_at_max_sat_khi
+        and actor.sat_khi_stacks == 5
+        and actor.has_effect("BuffSatKhiDaiThanh")
+    ):
+        from src.game.engine.effects import EFFECTS as _EFFECTS, get_combat_modifiers
+        from src.game.engine.rating import crit_chance
+        from src.game.systems.combat.casting import cast_skill, inflict_debuff
+        from src.data.registry import registry as _registry
+        _kl_meta = _EFFECTS.get("DebuffKiemLangApChe")
+        if _kl_meta is not None:
+            inflict_debuff(session, "DebuffKiemLangApChe", _kl_meta, target, actor=actor)
+        eff_crit = crit_chance(
+            actor.crit_rating + int(get_combat_modifiers(actor).get("crit_rating", 0)), 0
+        )
+        splash_chance = min(
+            actor.kim_sword_splash_chance_cap,
+            actor.kim_sword_splash_base_chance
+            + actor.kim_sword_splash_crit_coeff * eff_crit,
+        )
+        if splash_chance > 0 and session.rng.random() < splash_chance and target.is_alive():
+            _kl_skill = _registry.get_skill("SkillKimKiemLang")
+            if _kl_skill is not None:
+                session.log.append(
+                    f"  🗡️ **{actor.name}** Sát Khí Đại Thành — **Kiếm Lãng** bùng nổ!"
+                )
+                # ``_suppress_extras=True`` keeps the splash from chaining /
+                # summoning, and the ``skill_key == "SkillKimKiemLang"`` guard in
+                # block (a) keeps its own on-hit sweep from re-stamping Sát Khí.
+                cast_skill(
+                    session, actor, target,
+                    "SkillKimKiemLang", _kl_skill, 0,
+                    _suppress_extras=True,
+                )
+
+    # ── Ám shadow-mage sweep (Huyền Âm Thiên Ma Thể) ─────────────────────────
+    # Inert unless the actor carries the body's flag/buff (enemies, flag-off,
+    # non-Ám players never set ``shadow_stack_on_hit`` or own BuffMaKhi).
+    #
+    # (a) L1 Hắc Ám Ngưng Tụ — +1 Ma Khí per hit; at the 6-stack cap, drain the
+    # target's soul (Hồn Phệ) + apply the Thực Hồn soul-eating DoT, then reset.
+    if actor.shadow_stack_on_hit and actor.has_effect("BuffMaKhi"):
+        actor.add_stack("shadow", 1)
+        if actor.shadow_stacks >= effective_stack_cap(actor, "BuffMaKhi"):
+            apply_soul_drain(session, actor, target)
+            from src.game.engine.effects import EFFECTS as _EFFECTS
+            _th_meta = _EFFECTS.get("DebuffThucHon")
+            if _th_meta is not None:
+                from .casting import inflict_debuff
+                # Seed the applier's stats into ``target.dot_bonus_sources`` so
+                # the caster-scaled (``dot_caster_matk_scale``) Thực Hồn tick
+                # reads ``actor.matk``. inflict_debuff only auto-propagates for
+                # ``dot_pct > 0`` DoTs, so a caster-scaled DoT must be seeded
+                # here (same helper the DoT tick + tests rely on).
+                _propagate_dot_bonuses(actor, target)
+                inflict_debuff(session, "DebuffThucHon", _th_meta, target, actor=actor)
+            actor.consume_stacks("shadow")
+    # (b) L6 Thiên Ma Đồng Hóa — while in the Nhập Ma trance, every hit also
+    # steals atk/matk/def from the target (Đạo Pháp Thôn Phệ). The +final_dmg
+    # half lives in combat_hit.py; this is the stat-steal half.
+    if actor.nhap_ma_dmg_bonus > 0 and actor.has_effect("BuffNhapMa"):
+        apply_stat_steal(session, actor, target)
+
     # Freeze proc — chance comes from ``freeze_on_skill_chance``. Mirror
     # version (in apply_reflect) scales by ``_FREEZE_MIRROR_BOOST`` so the
     # reflected freeze fires harder than the cast.

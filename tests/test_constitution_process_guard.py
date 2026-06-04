@@ -21,8 +21,10 @@ The contract this test guards:
 The golden constants were captured on the clean ``feat/season-2`` tree by
 running the fight twice and confirming byte-identical output (final HP of
 both combatants, total turns, ``CombatResult`` reason, log length, and a
-SHA-256 of the joined log). The player is a Kim crit/bleed body
-(``ConstitutionKimCotThe``: ``hp_pct`` / ``crit_rating`` / ``bleed_on_hit_pct``)
+SHA-256 of the joined log). The player is a Kim crit/bleed body (a SYNTHETIC
+``hp_pct`` / ``crit_rating`` / ``bleed_on_hit_pct`` body injected into the
+registry — see ``_SYNTH_GUARD_DATA`` — with the same footprint the original
+``ConstitutionKimCotThe`` carried, so the goldens are unchanged)
 whose bonuses are baked into the combatant via the production path
 (``character_stats.compute_combat_stats`` → ``compute_constitution_bonuses``
 → ``build_player_combatant``). The fight ends in a genuine kill, so the
@@ -39,6 +41,8 @@ from __future__ import annotations
 import hashlib
 import random
 
+import pytest
+
 from src.data.registry import registry
 from src.game.models.character import Character, CharacterStats
 from src.game.systems.character_stats import compute_combat_stats
@@ -50,10 +54,37 @@ from src.game.systems.combat import (
 )
 from src.game.systems.cultivation import compute_constitution_bonuses
 
-# A registered Kim crit/bleed body with a clear, non-empty stat_bonuses
-# footprint: hp_pct 0.03, crit_rating 60, bleed_on_hit_pct 0.04. These bake
-# into the player combatant through the real character_stats pipeline.
-_CONSTITUTION = "ConstitutionKimCotThe"
+# A SYNTHETIC, content-independent Kim crit/bleed body with a clear, non-empty
+# stat_bonuses footprint: hp_pct 0.03, crit_rating 60, bleed_on_hit_pct 0.04.
+# The v12 roster rebuild emptied the real roster, so this guard injects its own
+# body into the registry (autouse ``monkeypatch`` fixture below) rather than
+# depending on shipped content. The footprint is deliberately identical to the
+# old ``ConstitutionKimCotThe`` this guard used to read, so the frozen golden
+# combat output below stays byte-for-byte unchanged. NO process block — this
+# body must stay process-free so the flat golden never moves.
+_CONSTITUTION = "SynthGuardBody"
+
+_SYNTH_GUARD_DATA = {
+    "key": _CONSTITUTION,
+    "vi": "Thể Bảo Vệ Thử Nghiệm",
+    "en": "Synthetic Guard Body",
+    "rarity": "common",
+    "element": "kim",
+    "roll_weight": 0,
+    "stat_bonuses": {
+        "hp_pct": 0.03,
+        "crit_rating": 60,
+        "bleed_on_hit_pct": 0.04,
+    },
+    "special_requirements": None,
+}
+
+
+@pytest.fixture(autouse=True)
+def _inject_synthetic_body(monkeypatch):
+    """Register the synthetic guard body for each test, leaving the real
+    (near-empty) roster untouched."""
+    monkeypatch.setitem(registry.constitutions, _CONSTITUTION, _SYNTH_GUARD_DATA)
 
 # A real, registered low-cost attack skill so the fight exercises the full
 # _take_turn → damage pipeline each round (same key as the skill-mastery guard).

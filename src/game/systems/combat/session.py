@@ -916,10 +916,11 @@ class CombatSession:
     #   _burst_mana_stacks      — tests/test_combat_builds.py
     #   _try_phoenix_revive     — tests/test_phoenix_revive.py
     #   _apply_passive_auras    — tests/test_am_skills.py
-    #   _apply_stat_drain_aura  — tests/test_thon_thien_ma_the.py
 
-    def _run_on_hit_procs(self, actor: Combatant, target: Combatant, is_crit: bool) -> None:
-        run_on_hit_procs(self, actor, target, is_crit)
+    def _run_on_hit_procs(
+        self, actor: Combatant, target: Combatant, is_crit: bool, skill_key: str = "",
+    ) -> None:
+        run_on_hit_procs(self, actor, target, is_crit, skill_key=skill_key)
 
     def _apply_reactive_damage(self, actor: Combatant, target: Combatant, dmg: int) -> None:
         apply_reactive_damage(self, actor, target, dmg)

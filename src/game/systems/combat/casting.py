@@ -338,6 +338,27 @@ def cast_skill(
         # decorated function — no edits to cast_skill required.
         apply_dmg_bonus_riders(skill_data, actor, target, actor_mods, session.log)
 
+        # Chân Hỏa Phần Thiên (L6) — chance-gated burning amp. Per hit vs a
+        # burning target, roll ``hoa_burning_amp_chance``; on success fold
+        # ``hoa_burning_amp_pct`` into THIS cast's ``final_dmg_bonus`` (the
+        # ``actor_mods`` dict is rebuilt per cast_skill call, so each hit —
+        # including multi-hit replays and the phoenix burst — rolls
+        # independently). Distinct from the always-on ``bonus_dmg_vs_burn``
+        # lane (left at 0 for this body). Inert when the chance is 0 / the
+        # target isn't burning.
+        if (
+            actor.hoa_burning_amp_chance > 0
+            and target.burn_stacks > 0
+            and session.rng.random() < actor.hoa_burning_amp_chance
+        ):
+            actor_mods["final_dmg_bonus"] = (
+                actor_mods.get("final_dmg_bonus", 0.0) + actor.hoa_burning_amp_pct
+            )
+            session.log.append(
+                f"    ☀️ **{actor.name}** Chân Hỏa Phần Thiên "
+                f"— +{int(actor.hoa_burning_amp_pct * 100)}% ST (địch đang cháy)"
+            )
+
         # Skill element captured up-front — used by the pen helpers and
         # the CastContext bridge to the two-phase consumer registry.
         skill_elem = skill_data.get("element")
@@ -779,7 +800,7 @@ def cast_skill(
                 skill_pct=float(skill_data.get("true_dmg_pct", 0.0)),
             )
 
-            run_on_hit_procs(session, actor, target, is_crit=result.is_crit)
+            run_on_hit_procs(session, actor, target, is_crit=result.is_crit, skill_key=skill_key)
 
             # Element-gated stack-on-hit — every successful damaging hit whose
             # element matches an equipped skill's ``passive_stack_on_element_hit``
@@ -916,6 +937,15 @@ def cast_skill(
                 target.effects.pop(EffectKey.DEBUFF_DONG_BANG, None)
                 target.effect_overrides.pop(EffectKey.DEBUFF_DONG_BANG, None)
                 session.log.append(f"    🧊 Đông Băng vỡ tan trong đòn bạo kích!")
+
+            # Thái Bạch periodic guaranteed-crit — the arm is single-use: a
+            # landed damaging hit spends it so only THIS swing auto-crits. Reset
+            # here (after on-hit procs, mirroring the Đông Băng consume) so any
+            # "vs frozen"-style readers still saw force_crit during the hit. The
+            # ``> 0`` interval gate keeps this inert for every non-bleed-hunter
+            # actor (default field is False anyway).
+            if actor.bleed_hunter_crit_armed:
+                actor.bleed_hunter_crit_armed = False
 
             # Per-hit MP drain — Lục Thần Thương's Đoạn Linh strike rips a
             # fixed chunk of MP from the target on hit. ``drain_target_mp``
@@ -1133,6 +1163,13 @@ def cast_skill(
     #    pick the right slot of ``per_hit_specs`` and the terminal finisher
     #    can read each hit's landed status.
     hit_count = max(1, int(skill_data.get("hit_count", 1)))
+    # Thái Bạch Túy Tiên (L3) — one-shot "+N hit-count on the next cast". Seeded
+    # at battle start by the effect-stamp seam; only a top-level cast consumes it
+    # (``_suppress_extras`` gates out multi-hit replays / reactive casts so the
+    # bonus rides exactly one logical cast), then it's zeroed so it never re-arms.
+    if not _suppress_extras and actor.next_skill_hit_count_bonus > 0:
+        hit_count += actor.next_skill_hit_count_bonus
+        actor.next_skill_hit_count_bonus = 0
     for i in range(hit_count - 1):
         if not target.is_alive():
             break

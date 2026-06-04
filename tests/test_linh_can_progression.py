@@ -268,7 +268,7 @@ def test_compute_combat_stats_applies_breadth_multiplier_when_khi_tu():
         formation_realm=2, formation_level=1,
         active_axis="qi",
         linh_can=list(ALL_LINH_CAN), linh_can_levels=dict(levels),
-        constitution_type="ConstitutionVanTuong", stats=CharacterStats(),
+        constitution_type="", stats=CharacterStats(),
     )
     the_char = Character(
         player_id=2, discord_id=2, name="the",
@@ -276,7 +276,7 @@ def test_compute_combat_stats_applies_breadth_multiplier_when_khi_tu():
         formation_realm=1, formation_level=1,
         active_axis="body",
         linh_can=list(ALL_LINH_CAN), linh_can_levels=dict(levels),
-        constitution_type="ConstitutionVanTuong", stats=CharacterStats(),
+        constitution_type="", stats=CharacterStats(),
     )
     khi_cs = compute_combat_stats(khi_char)
     the_cs = compute_combat_stats(the_char)

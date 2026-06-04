@@ -28,6 +28,9 @@ _STACK_EFFECT_KEY: dict[str, str] = {
     "phong_nhan_thuc": "DebuffPhongNhanThuc",
     "tran_son_ha":     "DebuffTranSonHa",
     "loi_kiep_an":     "DebuffLoiKiepAn",
+    "sat_khi":         "BuffSatKhi",
+    "bach_kim":        "BuffBachKimPhongVu",
+    "shadow":          "BuffMaKhi",
 }
 
 
@@ -511,6 +514,81 @@ class Combatant:
     thorn_from_shield: bool = False
     # On-hit: chance to stun the target (any hit, not just bạo kích).
     stun_on_hit_pct: float = 0.0
+
+    # ── Kim (Metal / Killing-Aura) build — Thiên Cương Phá Sát Thể ────────────
+    # Sát Khí stacks — one added per non-Kiếm-Lãng hit while the holder carries
+    # ``BuffSatKhi`` (capped at 5 via ``_STACK_EFFECT_KEY``). Each stack folds
+    # +crit_rating / +crit_dmg_rating in via the buff's scaling_rules. Persists
+    # for the fight (the buff has duration 999 → never decays mid-combat).
+    sat_khi_stacks: int = 0
+    # L3 Kim Phá Ngọc Toái — base + high-stack on-hit Phá Giáp chances. The
+    # high value applies once ``sat_khi_stacks >= 3``. Both 0 → inert (enemies,
+    # flag-off, non-Kim bodies).
+    kim_pha_giap_on_hit_chance: float = 0.0
+    kim_pha_giap_high_sat_khi_chance: float = 0.0
+    # L9 Sát Khí Đại Thành — the Kiếm Lãng splash payoff config. Fires only at
+    # exactly 5 Sát Khí stacks while ``BuffSatKhiDaiThanh`` is held. Splash
+    # chance = min(cap, base + crit_coeff × effective crit chance). All-zero /
+    # False defaults keep the gate a no-op everywhere else.
+    kim_sword_splash_at_max_sat_khi: bool = False
+    kim_sword_splash_base_chance: float = 0.0
+    kim_sword_splash_crit_coeff: float = 0.0
+    kim_sword_splash_chance_cap: float = 0.0
+
+    # ── Kim (Metal / Evasive Crit-Bleeder) build — Thái Bạch Canh Kim Thể ─────
+    # Bạch Kim Phong Vũ stacks — +1 each PERIODIC tick while the opponent is
+    # bleeding, capped at 5 via ``_STACK_EFFECT_KEY``. Each stack folds +atk_pct
+    # / +bleed_dmg_bonus via the buff's scaling_rules. Never decays.
+    bach_kim_stacks: int = 0
+    # L3 Thái Bạch Túy Tiên — one-shot "+N hit-count on the next cast". Seeded
+    # at battle start by the effect-stamp seam; consumed (reset to 0) on the
+    # first top-level cast. 0 → inert.
+    next_skill_hit_count_bonus: int = 0
+    # L9 Huyết Lạp Thái Bạch — anti-bleed crit amps applied when the target is
+    # bleeding (threaded into the crit step via AttackStats), plus the
+    # every-N-acted-turns guaranteed-crit cadence. All-zero → inert.
+    bleed_hunter_crit_chance_bonus: float = 0.0
+    bleed_hunter_crit_dmg_bonus: float = 0.0
+    bleed_hunter_periodic_interval: int = 0
+    bleed_hunter_turn_counter: int = 0
+    bleed_hunter_crit_armed: bool = False
+
+    # ── Ám (Shadow / Demon-Trance Mage) build — Huyền Âm Thiên Ma Thể ─────────
+    # Ma Khí stacks — +1 per non-stat-steal hit while the holder carries
+    # ``BuffMaKhi`` (capped at 6 via ``_STACK_EFFECT_KEY``). At max the L1 proc
+    # fires Hồn Phệ + Thực Hồn then resets the counter. Never decays passively.
+    shadow_stacks: int = 0
+    # L1 gate — set by the body's flat ``shadow_stack_on_hit``. False → the
+    # POST_HIT shadow sweep is a no-op (enemies, flag-off, non-Ám bodies).
+    shadow_stack_on_hit: bool = False
+    # L6 Thiên Ma Đồng Hóa — while ``BuffNhapMa`` is active, +final_dmg and an
+    # on-hit Đạo Pháp Thôn Phệ (stat-steal). 0.0 → inert (only L6+ sets it).
+    nhap_ma_dmg_bonus: float = 0.0
+    # L9 Ma Đạo Hóa Thần — auto-Nhập-Ma cadence: every ``nhap_ma_interval``
+    # acted turns, self-apply ``BuffNhapMa`` for ``nhap_ma_duration`` turns.
+    # All-zero → the PRE_TURN hook never fires.
+    nhap_ma_turn_counter: int = 0
+    nhap_ma_interval: int = 0
+    nhap_ma_duration: int = 0
+
+    # ── Hỏa (Fire / Phoenix Tank-Mage) build — Chân Dương Bất Diệt Thể ────────
+    # L1 burning crit-ramp counter — +1 each PERIODIC tick while the opponent
+    # burns, reset to 0 when their burn drops. Read by ``BuffHoaKhiTuongSinh``'s
+    # scaling rule (``stack:burning_crit`` → +20 crit_rating/stack, cap +200 =
+    # 10 stacks). Manually capped in the periodic hook (not via add_stack), so
+    # no ``_STACK_EFFECT_KEY`` entry. Never decays except on the burn-drop reset.
+    burning_crit_stacks: int = 0
+    # L9 Phượng Hoàng Trọng Sinh — 3-charge upgraded revive config. The
+    # priority-5 ON_REVIVE hook fires while ``hoa_revive_upgraded`` and charges
+    # remain; each revive restores ``hoa_revive_hp_pct_l9`` of hp_max. All-zero
+    # / False → the hook is inert and the generic revive seams handle the death.
+    hoa_revive_charges: int = 0
+    hoa_revive_upgraded: bool = False
+    hoa_revive_hp_pct_l9: float = 0.0
+    # L6 Chân Hỏa Phần Thiên — per-hit chance to amp damage vs a burning target.
+    # Both 0.0 → inert (the cast-assembly roll never fires).
+    hoa_burning_amp_chance: float = 0.0
+    hoa_burning_amp_pct: float = 0.0
 
     # ── Phong (Wind / Evasion / Mark) build ──────────────────────────────────
     # On-hit: chance actor applies Ấn Phong on the target. Once marked the

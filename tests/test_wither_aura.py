@@ -193,12 +193,6 @@ def test_solar_and_wither_stack_independently():
     assert player.hp == 5_000 + 400
 
 
-# ── Registry: the new constitution exists and is wired ──────────────────────
-
-
-def test_kho_moc_constitution_is_registered():
-    c = registry.get_constitution("ConstitutionKhoMocThanThe")
-    assert c is not None
-    assert c["rarity"] == "legendary"
-    assert c["element"] == "moc"
-    assert c["stat_bonuses"]["wither_aura_pct"] > 0
+# NOTE: the registry-presence check for the specific wither-aura body was
+# dropped with the v12 roster removal — the synthetic-combatant aura tests
+# above already pin the engine mechanic without depending on shipped content.

@@ -36,6 +36,84 @@ def _not_yet_revived(ctx: TurnContext) -> bool:
     return not ctx.scratch.get("revived") and not ctx.actor.is_alive()
 
 
+def _phoenix_rebirth_ready(ctx: TurnContext) -> bool:
+    """Predicate for the L9 Phượng Hoàng Trọng Sinh 3-charge revive.
+
+    Gated tighter than ``_not_yet_revived`` so the hook only claims the death
+    for the upgraded Hỏa body that still has rebirth charges. When it fires it
+    sets ``ctx.scratch["revived"]`` like the other revive hooks, so the
+    lower-priority generic seams (phoenix / buff / chân mệnh) skip — at L9 the
+    body's own ``BuffChanDuongNietBan`` revive never triggers because this hook
+    claims the death first.
+    """
+    return (
+        _not_yet_revived(ctx)
+        and ctx.actor.hoa_revive_upgraded
+        and ctx.actor.hoa_revive_charges > 0
+    )
+
+
+@register_hook(
+    phase=TurnPhase.ON_REVIVE, name="phuong_hoang_trong_sinh", priority=5,
+    predicate=_phoenix_rebirth_ready,
+)
+def _phuong_hoang_trong_sinh(ctx: TurnContext) -> bool | None:
+    """Chân Dương Bất Diệt Thể L9 — Tam Sinh Bất Diệt 3-charge phoenix rebirth.
+
+    Fires at priority 5 (BEFORE phoenix=10 / buff=20 / chân mệnh=30) so it claims
+    the death first; the predicate already confirmed the body + a remaining
+    charge. Each rebirth: spend one charge, restore ``hoa_revive_hp_pct_l9`` of
+    hp_max, stamp ``BuffChanDuongDuHoa`` (+40% final dmg, 2 turns) BEFORE the
+    burst so the burst rides the buff, then drop Phượng Hoàng Lửa (300% atk +
+    300% matk) on the opponent. No recursion: this fires from ON_REVIVE, not a
+    per-hit sweep, and the burst is ``_suppress_extras=True``.
+    """
+    combatant = ctx.actor
+    combatant.hoa_revive_charges -= 1
+    revived_hp = max(1, int(combatant.hp_max * combatant.hoa_revive_hp_pct_l9))
+    combatant.hp = revived_hp
+
+    # The upgraded body still carries the L3 ``BuffChanDuongNietBan`` (effects
+    # accumulate across milestones), which would otherwise grant a 4th, weaker
+    # revive once the 3 phoenix charges are spent. Strip it so the L9 rebirth
+    # count is EXACTLY the charge total — matching the design ("3×/combat at
+    # L9; the generic buff seam never fires"). Idempotent pop.
+    combatant.effects.pop("BuffChanDuongNietBan", None)
+    combatant.effect_overrides.pop("BuffChanDuongNietBan", None)
+
+    # +40% post-revive window — applied BEFORE the burst so the burst is amped.
+    du_hoa_meta = EFFECTS.get("BuffChanDuongDuHoa")
+    du_hoa_dur = 2
+    if du_hoa_meta is not None:
+        combatant.apply_effect("BuffChanDuongDuHoa", du_hoa_dur)
+
+    ctx.log.append(
+        f"  🦅🔥 **{combatant.name}** **PHƯỢNG HOÀNG TRỌNG SINH!** "
+        f"Hồi sinh +{revived_hp:,}/{combatant.hp_max:,} HP "
+        f"(còn {combatant.hoa_revive_charges} lần) · Dư Hỏa +40% ST ({du_hoa_dur}t)"
+    )
+
+    opponent = ctx.target
+    if opponent.is_alive():
+        burst_data = registry.get_skill("SkillHoaPhuongHoangBurst")
+        if burst_data is not None:
+            ctx.log.append(
+                f"  🦅 **{combatant.name}** giáng **Phượng Hoàng Lửa** "
+                f"xuống **{opponent.name}**!"
+            )
+            # Lazy import to avoid the casting → revives import cycle (mirrors
+            # the chân mệnh hook's ``from .casting import inflict_debuff``).
+            from .casting import cast_skill
+            cast_skill(
+                ctx.session, combatant, opponent,
+                "SkillHoaPhuongHoangBurst", burst_data, 0,
+                _suppress_extras=True,
+            )
+
+    ctx.scratch["revived"] = True
+    return True
+
+
 @register_hook(
     phase=TurnPhase.ON_REVIVE, name="phoenix_revive", priority=10,
     predicate=_not_yet_revived,

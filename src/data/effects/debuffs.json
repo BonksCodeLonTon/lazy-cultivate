@@ -819,5 +819,33 @@
     "reflectable": false,
     "emoji": "🕯️",
     "duration": 3
+  },
+  {
+    "key": "DebuffKiemLangApChe",
+    "vi": "Kiếm Lãng Áp Chế",
+    "en": "Sword-Wave Suppression",
+    "kind": "debuff",
+    "description_vi": "Sát khí đại thành áp chế — công kích vật lý và pháp thuật đều suy giảm.",
+    "stat_bonus": {
+      "atk_pct": -0.10,
+      "matk_pct": -0.10
+    },
+    "stealable": false,
+    "emoji": "🗡️",
+    "duration": 1
+  },
+  {
+    "key": "DebuffThucHon",
+    "vi": "Thực Hồn",
+    "en": "Soul-Eating Hex",
+    "kind": "debuff",
+    "description_vi": "Hồn phách bị Âm khí gặm nhấm — mỗi lượt mất HP theo Pháp Công kẻ thi triển; kẻ thi triển hồi lại một phần.",
+    "dot_element": "am",
+    "dot_caster_matk_scale": 0.45,
+    "dot_applier_heal_pct": 0.50,
+    "boss_dot_cap_matk_scale": 5.0,
+    "cleansable": true,
+    "emoji": "🩻",
+    "duration": 3
   }
 ]

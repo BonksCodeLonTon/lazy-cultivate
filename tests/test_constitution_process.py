@@ -341,16 +341,29 @@ def test_breakthrough_preview_off_gate_and_on_gate():
 
 
 # ── 12. Inertness of the compute_constitution_bonuses seam ──────────────────
-def test_compute_constitution_bonuses_seam_inert_when_none():
+def test_compute_constitution_bonuses_seam_inert_when_none(monkeypatch):
     """``process_levels=None`` is byte-identical to the pre-existing call.
 
-    Proves the new optional argument does not perturb the real constitution
-    read path — the contract the Phase-0 guard relies on. Uses a REAL
-    registered constitution so the whole Hỗn Độn amplification machinery runs.
+    Proves the new optional argument does not perturb the constitution read
+    path — the contract the Phase-0 guard relies on. Injects a SYNTHETIC
+    flat body into the registry (the v12 rebuild emptied the real roster) so
+    the whole read path runs end-to-end without depending on shipped content.
     """
     from src.data.registry import registry
 
-    const_key = "ConstitutionKimCotThe"
+    const_key = "SynthInertBody"
+    monkeypatch.setitem(
+        registry.constitutions,
+        const_key,
+        {
+            "key": const_key,
+            "stat_bonuses": {
+                "hp_pct": 0.03,
+                "crit_rating": 60,
+                "bleed_on_hit_pct": 0.04,
+            },
+        },
+    )
     assert registry.get_constitution(const_key) is not None
 
     pre_existing = compute_constitution_bonuses(const_key, "body", 5)

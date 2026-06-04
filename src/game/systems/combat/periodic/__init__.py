@@ -10,6 +10,8 @@ green:
   10  endure         — Cội Nguồn Bất Tận announcement
   15  endure         — Thánh Tuyền deferred-damage payout
   20  dots           — DoT loop + U Minh MP drain + Bất Diệt Hỏa Chủng
+  25  thai_bach      — Bạch Kim Phong Vũ stack growth (opponent bleeding)
+  25  chan_duong     — Hỏa Khí Tương Sinh burning crit-ramp (opponent burning)
   30  summons        — per-summon damage tick
   40  solar_wither   — Thái Dương Thần Quang aura
   45  solar_wither   — Khô Mộc Hấp Thu aura
@@ -23,6 +25,7 @@ Adding a new periodic effect is one new module here plus picking a
 priority that places it correctly in the chain — no edits to session.py.
 """
 from . import (  # noqa: F401
+    chan_duong,
     dots,
     endure,
     expiry,
@@ -31,9 +34,10 @@ from . import (  # noqa: F401
     regen,
     solar_wither,
     summons,
+    thai_bach,
 )
 
 __all__ = [
-    "dots", "endure", "expiry", "fortify", "luc_duc",
-    "regen", "solar_wither", "summons",
+    "chan_duong", "dots", "endure", "expiry", "fortify", "luc_duc",
+    "regen", "solar_wither", "summons", "thai_bach",
 ]
