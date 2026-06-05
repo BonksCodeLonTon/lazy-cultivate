@@ -90,6 +90,14 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("moc_undying_cooldown_turns",       "moc_undying_cooldown_turns",       int),
     ("moc_undying_min_hp",               "moc_undying_min_hp",               int),
     ("moc_undying_heal_reduce_gate",     "moc_undying_heal_reduce_gate",     float),
+    # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config flags.
+    # ``dia_mach_stacks`` is a runtime counter (Combatant-only, excluded).
+    ("dia_mach_per_regen",                 "dia_mach_per_regen",                 bool),
+    ("tho_phys_immune_chance",             "tho_phys_immune_chance",             float),
+    ("tho_phys_immune_high_shield_chance", "tho_phys_immune_high_shield_chance", float),
+    ("tho_phys_immune_shield_gate",        "tho_phys_immune_shield_gate",        float),
+    ("tho_auto_slow_enabled",              "tho_auto_slow_enabled",              bool),
+    ("tho_earth_aura_shield_pct",          "tho_earth_aura_shield_pct",          float),
     # Quang silence-on-crit — the pre-existing pattern these mirror.
     ("silence_on_crit_pct",              "silence_on_crit_pct",               float),
     # Hoàng Cổ Thánh Thể (Universal Saint Body) — config flags.
@@ -358,6 +366,13 @@ class CombatStats:
     moc_undying_cooldown_turns: int = 0
     moc_undying_min_hp: int = 0
     moc_undying_heal_reduce_gate: float = 0.0
+    #   Kim Cang Bất Hoại Thể (Thổ indestructible shield body)
+    dia_mach_per_regen: bool = False
+    tho_phys_immune_chance: float = 0.0
+    tho_phys_immune_high_shield_chance: float = 0.0
+    tho_phys_immune_shield_gate: float = 0.0
+    tho_auto_slow_enabled: bool = False
+    tho_earth_aura_shield_pct: float = 0.0
     #   Hoàng Cổ Thánh Thể (Universal Saint Body)
     saint_qilin_cleanse_chance: float = 0.0
     saint_periodic_crit_interval: int = 0

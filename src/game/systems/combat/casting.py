@@ -670,6 +670,29 @@ def cast_skill(
                         f"hấp thụ {_absorbed:,} ST (giới hạn {int(_cap_pct * 100)}% HP tối đa/đòn)"
                     )
 
+            # Kim Cang Bất Hoại — L3 Kim Thân Hộ Pháp: roll to fully negate a
+            # physical hit. Chance depends on how full the defender's shield
+            # is relative to gate. Inert whenever either chance field is 0.
+            _attack_type = skill_data.get("attack_type", "magical")
+            if (
+                _attack_type == "physical"
+                and target.tho_phys_immune_chance > 0
+                and dmg > 0
+            ):
+                _gate = target.tho_phys_immune_shield_gate
+                _high_chance = target.tho_phys_immune_high_shield_chance
+                _cap = target.shield_cap()
+                if _cap > 0 and (target.shield / _cap) > _gate and _high_chance > 0:
+                    _negate_chance = _high_chance
+                else:
+                    _negate_chance = target.tho_phys_immune_chance
+                if session.rng.random() < _negate_chance:
+                    dmg = 0
+                    session.log.append(
+                        f"    💛 **{target.name}** Kim Thân Hộ Pháp — "
+                        f"vô hiệu đòn Vật Lý!"
+                    )
+
             bypass_dmg = int(dmg * bypass_pct) if bypass_pct > 0 else 0
             shielded_dmg = dmg - bypass_dmg
 

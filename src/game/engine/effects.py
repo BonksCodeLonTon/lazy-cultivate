@@ -716,6 +716,17 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "saint_realm_enabled",
     "saint_realm_interval",
     "saint_realm_duration",
+    # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
+    # consumed by the PERIODIC regen hook (dia_mach increment), the casting
+    # defender-step (L3 physical negate), and the two PERIODIC aura hooks
+    # (L6 auto-slow, L9 earth-aura). ``dia_mach_stacks`` is a runtime counter
+    # (Combatant-only) and never appears in stat_bonus.
+    "dia_mach_per_regen",
+    "tho_phys_immune_chance",
+    "tho_phys_immune_high_shield_chance",
+    "tho_phys_immune_shield_gate",
+    "tho_auto_slow_enabled",
+    "tho_earth_aura_shield_pct",
 })
 
 

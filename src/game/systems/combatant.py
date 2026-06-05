@@ -646,6 +646,30 @@ class Combatant:
     # PRE_TURN by the truong_xuan aura.
     moc_undying_cd: int = 0
 
+    # ── Thổ (Kim Cang Bất Hoại) build ────────────────────────────────────────
+    # L1 Đại Địa Căn Cơ — flag: bank a Địa Mạch stack each time the shield
+    # regen tick actually grants HP to the shield. False → the regen hook
+    # skips the increment entirely (every other body, flag-off path).
+    dia_mach_per_regen: bool = False
+    # Runtime counter for Địa Mạch stacks (NOT a config key, NOT in
+    # CombatStats / _CONSTITUTION_FLAG_FIELDS). Hard-capped at 6 by the regen
+    # hook. Each stack contributes +4% shield_max_pct + +0.8% shield_regen_pct
+    # via BuffDaiDiaCanCo's scaling_rules (source: "stat:dia_mach_stacks").
+    dia_mach_stacks: int = 0
+    # L3 Kim Thân Hộ Pháp — base physical-negate chance (rolls when shield is
+    # at or below the gate). 0.0 → inert (enemies, flag-off, non-Tho bodies).
+    tho_phys_immune_chance: float = 0.0
+    # L3 elevated negate chance when shield fraction > gate.
+    tho_phys_immune_high_shield_chance: float = 0.0
+    # L3 shield-fraction threshold (e.g. 0.50 = 50% of shield_cap).
+    tho_phys_immune_shield_gate: float = 0.0
+    # L6 Trọng Địa Khống Chế — when True, the PERIODIC hook auto-applies
+    # DebuffTroBuoc + DebuffLunDat to the opponent each turn. False → no-op.
+    tho_auto_slow_enabled: bool = False
+    # L9 Đại Địa Phản Phệ — per-turn damage dealt = actor.shield × this pct.
+    # 0.0 → the PERIODIC hook is inert (every non-Tho-L9 build).
+    tho_earth_aura_shield_pct: float = 0.0
+
     # ── Hoàng Cổ Thánh Thể (Universal Saint Body) build ──────────────────────
     # L5 Lân Tủy Thánh Hòa — per-hit chance to self-cleanse one debuff.
     # 0.0 → inert (the on-hit proc block is a no-op).

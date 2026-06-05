@@ -13,7 +13,9 @@ green:
   25  thai_bach      — Bạch Kim Phong Vũ stack growth (opponent bleeding)
   25  chan_duong     — Hỏa Khí Tương Sinh burning crit-ramp (opponent burning)
   30  summons        — per-summon damage tick
+  30  trong_dia      — Trọng Địa Khống Chế auto-slow (DebuffTroBuoc + DebuffLunDat)
   40  solar_wither   — Thái Dương Thần Quang aura
+  42  dai_dia        — Đại Địa Phản Phệ shield-scaled Thổ aura
   45  solar_wither   — Khô Mộc Hấp Thu aura
   46  huyen_thuy     — Hồi Triều Nộ Hải tidal flood (reservoir discharge)
   47  truong_xuan    — Trường Xuân Hồi Nguyên debuff-count regen
@@ -29,6 +31,7 @@ priority that places it correctly in the chain — no edits to session.py.
 """
 from . import (  # noqa: F401
     chan_duong,
+    dai_dia,
     dots,
     endure,
     expiry,
@@ -39,10 +42,12 @@ from . import (  # noqa: F401
     solar_wither,
     summons,
     thai_bach,
+    trong_dia,
     truong_xuan,
 )
 
 __all__ = [
-    "chan_duong", "dots", "endure", "expiry", "fortify", "huyen_thuy",
-    "luc_duc", "regen", "solar_wither", "summons", "thai_bach", "truong_xuan",
+    "chan_duong", "dai_dia", "dots", "endure", "expiry", "fortify",
+    "huyen_thuy", "luc_duc", "regen", "solar_wither", "summons", "thai_bach",
+    "trong_dia", "truong_xuan",
 ]

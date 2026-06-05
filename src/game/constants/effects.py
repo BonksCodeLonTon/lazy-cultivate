@@ -50,6 +50,11 @@ class EffectKey(StrEnum):
     BUFF_XUAN_THU_LUAN_CHUYEN = "BuffXuanThuLuanChuyen"  # Xuân Thu Nhất Bút — 4-turn season rotation (Spring: regen+DR / Autumn: dmg+crit-dmg)
     BUFF_NGHICH_LUU      = "BuffNghichLuu"   # Nghịch Lưu Phản Phệ — per-cast final_dmg_bonus sized by converted cooldown turns
     BUFF_MOC_LINH_CONG_SINH = "BuffMocLinhCongSinh"  # Mộc Linh Cộng Sinh — overheal banks into _sap, end-of-turn release as Mộc strike
+    # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) markers
+    BUFF_DAI_DIA_CAN_CO      = "BuffDaiDiaCanCo"      # L1 Đại Địa Căn Cơ — Địa Mạch stack scaling (shield_max + shield_regen via scaling_rules)
+    BUFF_KIM_THAN_HO_PHAP    = "BuffKimThanHoPhap"    # L3 Kim Thân Hộ Pháp — physical-negate chance marker
+    BUFF_TRONG_DIA_KHONG_CHE = "BuffTrongDiaKhongChe" # L6 Trọng Địa Khống Chế — auto-slow (DebuffTroBuoc + DebuffLunDat) per turn
+    BUFF_DAI_DIA_PHAN_PHE    = "BuffDaiDiaPhanPhe"    # L9 Đại Địa Phản Phệ — per-turn Thổ aura = shield × pct
     AURA_HUY_DIET        = "AuraHuyDiet"
 
     # ── Debuffs ──────────────────────────────────────────────────────────────

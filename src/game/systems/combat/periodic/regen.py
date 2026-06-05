@@ -61,6 +61,17 @@ def _regen(ctx: TurnContext) -> None:
                 f"  🪨 **{combatant.name}** Hộ Thuẫn hồi +{gained:,} khiên "
                 f"({combatant.shield:,}/{combatant.shield_cap():,})"
             )
+            # Kim Cang Bất Hoại — Địa Mạch: each shield-regen tick that
+            # actually grants shield earns one stack (cap 6). The scaling
+            # buff BuffDaiDiaCanCo reads ``dia_mach_stacks`` via
+            # ``stat:dia_mach_stacks`` scaling_rules to grow shield_max_pct
+            # and shield_regen_pct proportionally.
+            if combatant.dia_mach_per_regen and combatant.dia_mach_stacks < 6:
+                combatant.dia_mach_stacks = min(6, combatant.dia_mach_stacks + 1)
+                ctx.log.append(
+                    f"    🪨 **{combatant.name}** Địa Mạch "
+                    f"[×{combatant.dia_mach_stacks}/6]"
+                )
 
     # HP regen: pct (of hp_max) + flat, stacked.
     if not combatant.is_alive():

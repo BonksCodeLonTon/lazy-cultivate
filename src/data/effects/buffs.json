@@ -2087,5 +2087,70 @@
     "cleansable": false,
     "emoji": "🌌",
     "duration": 2
+  },
+  {
+    "key": "BuffDaiDiaCanCo",
+    "vi": "Đại Địa Căn Cơ",
+    "en": "Great Earth Foundation",
+    "kind": "buff",
+    "description_vi": "Nền tảng kim cang — mỗi tầng Địa Mạch tăng +4% Khiên tối đa và +0.8% tốc hồi Khiên (tối đa 6 tầng).",
+    "stat_bonus": {
+      "_ddcc_shield_max_per_stack": 0.04,
+      "_ddcc_shield_regen_per_stack": 0.008
+    },
+    "scaling_rules": [
+      {
+        "key": "_ddcc_shield_max_per_stack",
+        "source": "stat:dia_mach_stacks",
+        "output": "shield_max_pct",
+        "max_output": 0.24
+      },
+      {
+        "key": "_ddcc_shield_regen_per_stack",
+        "source": "stat:dia_mach_stacks",
+        "output": "shield_regen_pct",
+        "max_output": 0.048
+      }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🪨",
+    "duration": 999
+  },
+  {
+    "key": "BuffKimThanHoPhap",
+    "vi": "Kim Thân Hộ Pháp",
+    "en": "Golden Body Guardian",
+    "kind": "buff",
+    "description_vi": "Kim thân bất hoại — 40% vô hiệu một đòn Vật Lý; 55% khi Khiên còn trên 50%.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "💛",
+    "duration": 999
+  },
+  {
+    "key": "BuffTrongDiaKhongChe",
+    "vi": "Trọng Địa Khống Chế",
+    "en": "Heavy Earth Control",
+    "kind": "buff",
+    "description_vi": "Đại địa trấn áp — mỗi lượt tự áp Trói Buộc và Lún Đất lên kẻ địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⛰️",
+    "duration": 999
+  },
+  {
+    "key": "BuffDaiDiaPhanPhe",
+    "vi": "Đại Địa Phản Phệ",
+    "en": "Great Earth Retribution",
+    "kind": "buff",
+    "description_vi": "Đại địa phản phệ — mỗi lượt giáng sát thương Thổ bằng 8% dung lượng Khiên hiện tại lên kẻ địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🏔️",
+    "duration": 999
   }
 ]

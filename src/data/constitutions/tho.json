@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "key": "TheChat_KimCangBatHoai",
+    "vi": "Kim Cang Bất Hoại Thể",
+    "en": "Diamond Indestructible Body",
+    "element": "tho",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân luyện Kim Cang Bất Hoại — vững như núi, kiên như kim cương. Hộ thuẫn tự sinh không dứt, càng giữ càng dày; đại địa trói chân kẻ địch. Phòng ngự hóa thành sát ý — khiên càng dày, núi càng nghiền nát.",
+    "stat_bonuses": {
+      "hp_pct": 0.10, "def_pct": 0.10, "shield_max_pct": 0.15,
+      "shield_regen_pct": 0.08, "res_all": 0.12, "dia_mach_per_regen": true
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "hp_pct": 0.006, "def_pct": 0.005, "shield_max_pct": 0.005, "shield_regen_pct": 0.002 },
+      "levels": {
+        "1": { "passive_vi": "Đại Địa Căn Cơ", "passive_en": "Great Earth Foundation", "description_vi": "Nền tảng kim cang — +8% Khiên hồi/lượt, +12% kháng toàn. Mỗi lần Khiên tự hồi: +1 tầng Địa Mạch (tối đa 6) — mỗi tầng +4% Khiên tối đa, +0.8% tốc hồi Khiên.", "stat_bonuses": {}, "effects": ["BuffDaiDiaCanCo"] },
+        "3": { "passive_vi": "Kim Thân Hộ Pháp", "passive_en": "Golden Body Guardian", "description_vi": "Kim thân bất hoại — 40% vô hiệu một đòn Vật Lý; 55% khi Khiên còn trên 50%.", "stat_bonuses": { "def_pct": 0.08, "hp_pct": 0.04, "tho_phys_immune_chance": 0.40, "tho_phys_immune_high_shield_chance": 0.55, "tho_phys_immune_shield_gate": 0.50 }, "effects": ["BuffKimThanHoPhap"] },
+        "6": { "passive_vi": "Trọng Địa Khống Chế", "passive_en": "Heavy Earth Control", "description_vi": "Đại địa trấn áp — mỗi lượt tự áp Trói Buộc và Lún Đất lên kẻ địch (giảm tốc độ mạnh).", "stat_bonuses": { "hp_pct": 0.05, "shield_max_pct": 0.10, "tho_auto_slow_enabled": true }, "effects": ["BuffTrongDiaKhongChe"] },
+        "9": { "passive_vi": "Đại Địa Phản Phệ", "passive_en": "Great Earth Retribution", "description_vi": "Đại địa phản phệ — mỗi lượt giáng sát thương Thổ lên kẻ địch bằng 8% dung lượng Khiên hiện tại. Khiên càng dày, núi càng nghiền nát; phòng ngự hóa thành sát ý.", "stat_bonuses": { "def_pct": 0.08, "hp_pct": 0.06, "shield_max_pct": 0.10, "tho_earth_aura_shield_pct": 0.08 }, "effects": ["BuffDaiDiaPhanPhe"] }
+      }
+    }
+  }
+]
