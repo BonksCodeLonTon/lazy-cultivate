@@ -162,6 +162,7 @@ async def award_constitution_xp(
 
     Returns the updated row, or None on any no-op path.
     """
+    from src.data.registry import registry
     from src.game.systems.constitution_process import apply_combat_xp, combat_xp_gain
     from src.game.systems.the_chat import get_constitutions
     from src.utils.config import settings
@@ -179,8 +180,12 @@ async def award_constitution_xp(
 
     primary_key = equipped[0]
     row = await get_or_create(session, player.id, primary_key)
+    # Per-body XP table: a capstone with an empty ``xp_to_next`` advances ONLY
+    # by breakthrough, never by XP (apply_combat_xp returns at_ceiling at once).
+    process = (registry.get_constitution(primary_key) or {}).get("process")
     return await persist_combat_xp_result(
-        session, player.id, primary_key, apply_combat_xp(row.level, row.xp, gained)
+        session, player.id, primary_key,
+        apply_combat_xp(row.level, row.xp, gained, process),
     )
 
 
@@ -248,13 +253,14 @@ async def apply_breakthrough(
     the gate ``item_key``/``required_qty``, and (on SUCCESS/FAIL) ``new_band`` —
     the ``(vi, en)`` band label of the resulting level.
     """
+    from src.data.registry import registry
     from src.game.constants.constitution_process import (
         DINH_THE_CHAU_KEY,
-        GATES,
         HO_THE_PHU_KEY,
     )
     from src.game.systems.constitution_process import (
         band_label,
+        gates_for,
         resolve_constitution_breakthrough,
     )
     from src.game.systems.the_chat import get_constitutions
@@ -274,7 +280,10 @@ async def apply_breakthrough(
     irepo = InventoryRepository(session)
     owned = await _owned_counts(irepo, player.id)
 
-    gate = GATES.get(level)
+    # Per-body gate table (a capstone gates at every level with its own mats);
+    # default → global GATES for every standard body.
+    process = (registry.get_constitution(primary_key) or {}).get("process")
+    gate = gates_for(process).get(level)
     gate_item = gate["item_key"] if gate else None
     owned_gate_qty = owned.get(gate_item, 0) if gate_item else 0
 
@@ -286,6 +295,7 @@ async def apply_breakthrough(
         use_dinh_the_chau=use_dinh_the_chau and owned.get(DINH_THE_CHAU_KEY, 0) >= 1,
         trial_won=trial_won,
         roll=rng.random(),
+        process=process,
     )
 
     augmented = dict(result)

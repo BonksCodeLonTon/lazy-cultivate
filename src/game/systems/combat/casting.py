@@ -946,6 +946,9 @@ def cast_skill(
             # actor (default field is False anyway).
             if actor.bleed_hunter_crit_armed:
                 actor.bleed_hunter_crit_armed = False
+            # Hoàng Cổ Thánh Thể L6 — single-use arm consumed on first landed hit.
+            if actor.saint_crit_armed:
+                actor.saint_crit_armed = False
 
             # Per-hit MP drain — Lục Thần Thương's Đoạn Linh strike rips a
             # fixed chunk of MP from the target on hit. ``drain_target_mp``

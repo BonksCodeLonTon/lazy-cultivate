@@ -128,6 +128,11 @@ def build_attack_stats(
         element_dmg_amp["kim"] = element_dmg_amp.get("kim", 0.0) + 0.05 * actor.sword_heart_stacks
     if target.burn_stacks > 0 and actor.bonus_dmg_vs_burn > 0:
         final_dmg_bonus += actor.bonus_dmg_vs_burn
+    # Mộc Vương Thống Lĩnh (L3) — flat final-dmg bonus while the target is Làm
+    # Chậm (slowed). Mirror of the vs-burn block; 0.0 field → inert for everyone
+    # who didn't unlock the Trường Xuân Linh Mộc L3 milestone.
+    if actor.moc_vs_slowed_dmg_bonus > 0 and target.has_effect(EffectKey.DEBUFF_LAM_CHAM):
+        final_dmg_bonus += actor.moc_vs_slowed_dmg_bonus
     if (
         skill_element == "loi"
         and target.shock_stacks > 0
@@ -166,10 +171,16 @@ def build_attack_stats(
         crit_rating += int(_amp.get("rating", 0))
         crit_dmg_rating += int(_amp.get("dmg", 0))
 
-    # Đông Băng auto-crit OR the Thái Bạch periodic guaranteed-crit arm. The
-    # arm is set by the PRE_TURN crit-cadence hook every Nth acted turn and
-    # consumed on the first landed cast (see casting.py). Default False → inert.
-    force_crit = target.has_effect(EffectKey.DEBUFF_DONG_BANG) or actor.bleed_hunter_crit_armed
+    # Đông Băng auto-crit OR the Thái Bạch periodic guaranteed-crit arm OR the
+    # saint crit arm (L6 cadence) OR the Hoàng Cổ Thánh Vực realm window (L9).
+    # All three arms are consumed on the first landed cast (casting.py /
+    # hoang_co.py); the realm buff provides a multi-turn window. Default False.
+    force_crit = (
+        target.has_effect(EffectKey.DEBUFF_DONG_BANG)
+        or actor.bleed_hunter_crit_armed
+        or actor.saint_crit_armed
+        or actor.has_effect("BuffHoangCoThanhVuc")
+    )
 
     # ATK / MATK scale with current Energy Shield: depleted shield = depleted
     # punch. Constitutions like Nguyên Linh Khiên Thể (mage) and Cương Khiên

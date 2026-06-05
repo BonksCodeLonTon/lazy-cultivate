@@ -676,6 +676,46 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "hoa_revive_upgraded",
     "hoa_revive_charges",
     "hoa_revive_hp_pct_l9",
+    # Huyền Thủy Trường Sinh Thể — Thủy tidal counter-puncher config: L1 intake
+    # fraction + reservoir cap scale, L3 retaliate-freeze chance, L6 shatter
+    # fraction, L9 tidal-flood cadence/scaling. Read onto Combatant fields,
+    # consumed by apply_reactive_damage / run_on_hit_procs / the PERIODIC hook.
+    # None ever render as a stat.
+    "thuy_tide_intake_pct",
+    "thuy_reservoir_cap_matk_scale",
+    "thuy_retaliate_freeze_chance",
+    "thuy_shatter_tide_pct",
+    "thuy_tidal_flood_enabled",
+    "thuy_tidal_flood_interval",
+    "thuy_tidal_release_pct",
+    "thuy_tidal_depth_per_turn",
+    "thuy_tidal_depth_mult_cap",
+    "thuy_tidal_refill_pct",
+    # Trường Xuân Linh Mộc Thể — Mộc poison/eternal-spring config: L3 vs-slowed
+    # damage bonus (read in combat_hit), L6 debuff-count regen (PERIODIC hook),
+    # L9 guaranteed-poison + Undying Spring cheat-death (run_on_hit_procs /
+    # ON_REVIVE hook). Read onto Combatant fields; none ever render as a stat.
+    # ``poison_on_hit_pct`` is NOT here — it's a real on-hit chance attr like
+    # ``burn_on_hit_pct``.
+    "moc_vs_slowed_dmg_bonus",
+    "moc_regen_per_enemy_debuff",
+    "moc_regen_debuff_cap",
+    "moc_guaranteed_poison_on_attack",
+    "moc_guaranteed_poison_stacks",
+    "moc_undying_spring_enabled",
+    "moc_undying_cooldown_turns",
+    "moc_undying_min_hp",
+    "moc_undying_heal_reduce_gate",
+    # Hoàng Cổ Thánh Thể (Universal Saint Body) — config keys consumed by
+    # the PRE_TURN aura hook (hoang_co.py) and on-hit procs. The three
+    # runtime counters (saint_crit_turn_counter / saint_realm_turn_counter /
+    # saint_crit_armed) are Combatant-only and never appear in stat_bonus.
+    "saint_qilin_cleanse_chance",
+    "saint_periodic_crit_interval",
+    "saint_mp_on_hit_pct",
+    "saint_realm_enabled",
+    "saint_realm_interval",
+    "saint_realm_duration",
 })
 
 

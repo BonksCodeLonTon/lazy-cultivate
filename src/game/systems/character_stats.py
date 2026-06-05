@@ -69,8 +69,38 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("hoa_revive_upgraded",              "hoa_revive_upgraded",               bool),
     ("hoa_revive_charges",               "hoa_revive_charges",                int),
     ("hoa_revive_hp_pct_l9",             "hoa_revive_hp_pct_l9",              float),
+    # Huyền Thủy Trường Sinh Thể (Thủy tidal counter-puncher)
+    ("thuy_tide_intake_pct",             "thuy_tide_intake_pct",             float),
+    ("thuy_reservoir_cap_matk_scale",    "thuy_reservoir_cap_matk_scale",    float),
+    ("thuy_retaliate_freeze_chance",     "thuy_retaliate_freeze_chance",     float),
+    ("thuy_shatter_tide_pct",            "thuy_shatter_tide_pct",            float),
+    ("thuy_tidal_flood_enabled",         "thuy_tidal_flood_enabled",         bool),
+    ("thuy_tidal_flood_interval",        "thuy_tidal_flood_interval",        int),
+    ("thuy_tidal_release_pct",           "thuy_tidal_release_pct",           float),
+    ("thuy_tidal_depth_per_turn",        "thuy_tidal_depth_per_turn",        float),
+    ("thuy_tidal_depth_mult_cap",        "thuy_tidal_depth_mult_cap",        float),
+    ("thuy_tidal_refill_pct",            "thuy_tidal_refill_pct",            float),
+    # Trường Xuân Linh Mộc Thể (Mộc poison / eternal-spring tank)
+    ("moc_vs_slowed_dmg_bonus",          "moc_vs_slowed_dmg_bonus",          float),
+    ("moc_regen_per_enemy_debuff",       "moc_regen_per_enemy_debuff",       float),
+    ("moc_regen_debuff_cap",             "moc_regen_debuff_cap",             int),
+    ("moc_guaranteed_poison_on_attack",  "moc_guaranteed_poison_on_attack",  bool),
+    ("moc_guaranteed_poison_stacks",     "moc_guaranteed_poison_stacks",     int),
+    ("moc_undying_spring_enabled",       "moc_undying_spring_enabled",       bool),
+    ("moc_undying_cooldown_turns",       "moc_undying_cooldown_turns",       int),
+    ("moc_undying_min_hp",               "moc_undying_min_hp",               int),
+    ("moc_undying_heal_reduce_gate",     "moc_undying_heal_reduce_gate",     float),
     # Quang silence-on-crit — the pre-existing pattern these mirror.
     ("silence_on_crit_pct",              "silence_on_crit_pct",               float),
+    # Hoàng Cổ Thánh Thể (Universal Saint Body) — config flags.
+    # Runtime counters (saint_crit_turn_counter / saint_realm_turn_counter /
+    # saint_crit_armed) are Combatant-only and excluded here.
+    ("saint_qilin_cleanse_chance",       "saint_qilin_cleanse_chance",        float),
+    ("saint_periodic_crit_interval",     "saint_periodic_crit_interval",      int),
+    ("saint_mp_on_hit_pct",              "saint_mp_on_hit_pct",               float),
+    ("saint_realm_enabled",              "saint_realm_enabled",               bool),
+    ("saint_realm_interval",             "saint_realm_interval",              int),
+    ("saint_realm_duration",             "saint_realm_duration",              int),
 ]
 
 
@@ -188,6 +218,9 @@ class CombatStats:
     # ── Kim (bleed) build ─────────────────────────────────────────────────
     bleed_per_stack_pct: float = _BLEED_PCT_DEFAULT
     bleed_on_hit_pct: float = 0.0
+    # Mộc (Trường Xuân Linh Mộc) on-hit poison chance — rides the generic
+    # on-hit proc table like burn/bleed. 0.0 → never procs.
+    poison_on_hit_pct: float = 0.0
     bleed_heal_reduce: float = 0.0
     true_dmg_pct: float = 0.0
     # Generic life-steal — heal actor for X% of damage dealt on each hit.
@@ -304,6 +337,34 @@ class CombatStats:
     hoa_revive_upgraded: bool = False
     hoa_revive_charges: int = 0
     hoa_revive_hp_pct_l9: float = 0.0
+    #   Huyền Thủy Trường Sinh Thể (Thủy tidal counter-puncher)
+    thuy_tide_intake_pct: float = 0.0
+    thuy_reservoir_cap_matk_scale: float = 0.0
+    thuy_retaliate_freeze_chance: float = 0.0
+    thuy_shatter_tide_pct: float = 0.0
+    thuy_tidal_flood_enabled: bool = False
+    thuy_tidal_flood_interval: int = 0
+    thuy_tidal_release_pct: float = 0.0
+    thuy_tidal_depth_per_turn: float = 0.0
+    thuy_tidal_depth_mult_cap: float = 0.0
+    thuy_tidal_refill_pct: float = 0.0
+    #   Trường Xuân Linh Mộc Thể (Mộc poison / eternal-spring tank)
+    moc_vs_slowed_dmg_bonus: float = 0.0
+    moc_regen_per_enemy_debuff: float = 0.0
+    moc_regen_debuff_cap: int = 0
+    moc_guaranteed_poison_on_attack: bool = False
+    moc_guaranteed_poison_stacks: int = 0
+    moc_undying_spring_enabled: bool = False
+    moc_undying_cooldown_turns: int = 0
+    moc_undying_min_hp: int = 0
+    moc_undying_heal_reduce_gate: float = 0.0
+    #   Hoàng Cổ Thánh Thể (Universal Saint Body)
+    saint_qilin_cleanse_chance: float = 0.0
+    saint_periodic_crit_interval: int = 0
+    saint_mp_on_hit_pct: float = 0.0
+    saint_realm_enabled: bool = False
+    saint_realm_interval: int = 0
+    saint_realm_duration: int = 0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).
@@ -863,6 +924,7 @@ def compute_combat_stats(
     # Kim-build fields (bleed stack/per-stack pcts consolidated above in
     # ``_stack_cap_bonus_by_kind`` / ``_per_stack_pct_bonus_by_kind``)
     bleed_on_hit_pct        = float(bonuses.get("bleed_on_hit_pct", 0.0))
+    poison_on_hit_pct       = float(bonuses.get("poison_on_hit_pct", 0.0))
     bleed_heal_reduce       = float(bonuses.get("bleed_heal_reduce", 0.0))
     # Conditional crit amps consolidated into ``crit_amp_vs`` (see CombatStats).
     # JSON keeps flat ``crit_rating_vs_<state>`` / ``crit_dmg_vs_<state>``
@@ -1187,6 +1249,7 @@ def compute_combat_stats(
         # Kim-build fields (bleed stack cap / per-stack pct merged above
         # via ``_stack_cap_bonus_by_kind`` / ``_per_stack_pct_bonus_by_kind``)
         bleed_on_hit_pct        += float(equip_stats.get("bleed_on_hit_pct", 0.0))
+        poison_on_hit_pct       += float(equip_stats.get("poison_on_hit_pct", 0.0))
         bleed_heal_reduce       += float(equip_stats.get("bleed_heal_reduce", 0.0))
         # Conditional crit amps — merge bleed/marked/drained from equip into
         # the consolidated crit_amp_vs dict (see CombatStats). Equipment
@@ -1399,6 +1462,7 @@ def compute_combat_stats(
         dot_can_crit=dot_can_crit,
         bleed_per_stack_pct=_BLEED_PCT_DEFAULT + _per_stack_pct_bonus_by_kind.get("bleed", 0.0),
         bleed_on_hit_pct=bleed_on_hit_pct,
+        poison_on_hit_pct=poison_on_hit_pct,
         bleed_heal_reduce=bleed_heal_reduce,
         crit_amp_vs=crit_amp_vs,
         true_dmg_pct=true_dmg_pct,

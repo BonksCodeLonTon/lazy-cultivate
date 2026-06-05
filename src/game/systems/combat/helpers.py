@@ -260,6 +260,12 @@ _ON_HIT_PROCS: tuple[dict, ...] = (
         "log_fmt": "    🩸 Chảy Máu kích hoạt! [×{stacks}/{cap}]",
     },
     {
+        "chance_attr": "poison_on_hit_pct", "effect_key": EffectKey.DEBUFF_DOC_TO,
+        "stack_kind":  "poison",
+        "stacks_attr": "poison_stacks",
+        "log_fmt": "    🍃 Linh Mộc Chi Độc kích hoạt! [×{stacks}/{cap}]",
+    },
+    {
         "chance_attr": "shock_on_hit_pct", "effect_key": EffectKey.DEBUFF_SOC_DIEN,
         "stack_kind":  "shock",
         "stacks_attr": "shock_stacks",

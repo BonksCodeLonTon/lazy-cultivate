@@ -88,5 +88,35 @@
       "quang": 0.32,
       "am": 0.32
     }
+  },
+  {
+    "key": "cons_trial_default_t4",
+    "vi": "Thí Luyện Thể Hồn — Thánh Quan",
+    "en": "Body-Trial Spirit — Saint Gate",
+    "rank": "chi_ton",
+    "realm_level": 9,
+    "element": null,
+    "base_hp": 42000,
+    "base_spd": 42,
+    "base_atk": 320,
+    "base_matk": 390,
+    "base_def": 280,
+    "hp_scale": 1.35,
+    "mp_regen_pct": 0.26,
+    "skill_keys": ["EnemyBoss_R10_Devastate", "EnemyBoss_R10_BossAura", "EnemyApex_R7_Magical", "EnemyKim_T3"],
+    "base_crit_rating": 200,
+    "base_crit_dmg_rating": 280,
+    "final_dmg_bonus": 0.45,
+    "base_res": {
+      "kim": 0.60,
+      "tho": 0.55,
+      "loi": 0.50,
+      "phong": 0.48,
+      "moc": 0.45,
+      "thuy": 0.45,
+      "hoa": 0.45,
+      "quang": 0.42,
+      "am": 0.42
+    }
   }
 ]

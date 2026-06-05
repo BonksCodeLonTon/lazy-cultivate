@@ -1860,5 +1860,232 @@
     "cleansable": false,
     "emoji": "🦅",
     "duration": 999
+  },
+  {
+    "key": "BuffNapTrieuKho",
+    "vi": "Nạp Triều Khố",
+    "en": "Tide Intake",
+    "kind": "buff",
+    "description_vi": "Mỗi khi nhận sát thương, tích một phần vào Triều Khố (tối đa theo Pháp Công).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌊",
+    "duration": 999
+  },
+  {
+    "key": "BuffHanThuyDongBang",
+    "vi": "Hàn Thủy Đóng Băng",
+    "en": "Frostbind Riposte",
+    "kind": "buff",
+    "description_vi": "Khi bị tấn công, có cơ hội đóng băng kẻ tấn công.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "❄️",
+    "duration": 999
+  },
+  {
+    "key": "BuffBangToaiQuyet",
+    "vi": "Băng Toái Quyết",
+    "en": "Glacial Shatter",
+    "kind": "buff",
+    "description_vi": "Đánh địch đang Đóng Băng: dội một phần Triều Khố thành sát thương Thủy và phá băng.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🧊",
+    "duration": 999
+  },
+  {
+    "key": "BuffHoiTrieuNoHai",
+    "vi": "Hồi Triều Nộ Hải",
+    "en": "Returning Tide, Raging Sea",
+    "kind": "buff",
+    "description_vi": "Cứ mỗi vài lượt, dội Triều Khố thành sóng Thủy mạnh dần theo thời gian.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌊",
+    "duration": 999
+  },
+  {
+    "key": "BuffLinhMocChiDoc",
+    "vi": "Linh Mộc Chi Độc",
+    "en": "Spirit-Wood Venom",
+    "kind": "buff",
+    "description_vi": "Mỗi đòn đánh có cơ hội gieo Trúng Độc lên kẻ địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🍃",
+    "duration": 999
+  },
+  {
+    "key": "BuffMocVuongThongLinh",
+    "vi": "Mộc Vương Thống Lĩnh",
+    "en": "Wood-King Dominion",
+    "kind": "buff",
+    "description_vi": "Đòn đánh làm chậm kẻ địch; gây thêm sát thương lên mục tiêu đang bị Làm Chậm.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "👑",
+    "duration": 999
+  },
+  {
+    "key": "BuffTruongXuanHoiNguyen",
+    "vi": "Trường Xuân Hồi Nguyên",
+    "en": "Eternal Spring Renewal",
+    "kind": "buff",
+    "description_vi": "Cuối mỗi lượt, hồi HP theo số hiệu ứng bất lợi kẻ địch đang gánh chịu.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌱",
+    "duration": 999
+  },
+  {
+    "key": "BuffTruongXuanBatTu",
+    "vi": "Trường Xuân Bất Tử",
+    "en": "Undying Spring",
+    "kind": "buff",
+    "description_vi": "Khi xuân khí còn chảy, đòn chí mạng không giết được ta; mỗi đòn đánh chắc chắn gieo thêm độc.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌿",
+    "duration": 999
+  },
+  {
+    "key": "BuffLongLanKhaiGiap",
+    "vi": "Long Lân Khải Giáp",
+    "en": "Dragonscale Aegis",
+    "kind": "buff",
+    "description_vi": "Nền tảng thánh thể. Bắt đầu tích Hào Quang Củng Cố: mỗi lượt +1 tầng (tối đa 5), mỗi tầng +ST cuối VÀ +giảm ST.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🐲",
+    "duration": 999
+  },
+  {
+    "key": "BuffLongUyBatKhuat",
+    "vi": "Long Uy Bất Khuất",
+    "en": "Unyielding Dragon Might",
+    "kind": "buff",
+    "description_vi": "Uy áp chân long — +Công/+Pháp; Củng Cố mạnh thêm (+1%/tầng).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🐉",
+    "duration": 999
+  },
+  {
+    "key": "BuffPhuongVuTrungThang",
+    "vi": "Phượng Vũ Trùng Thăng",
+    "en": "Phoenix Ever-Rising",
+    "kind": "buff",
+    "description_vi": "Phượng vũ không tàn — càng chiến càng rực: Củng Cố bùng thêm (+1%/tầng). KHÔNG hồi sinh — chỉ vươn lên mạnh hơn.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🦅",
+    "duration": 999
+  },
+  {
+    "key": "BuffQuyVanHoDinh",
+    "vi": "Quy Văn Hộ Đỉnh",
+    "en": "Tortoise Ward",
+    "kind": "buff",
+    "description_vi": "Quy giáp trấn thân — +20% Khiên tối đa, +5% Khiên hồi/lượt; sau khi trúng đòn (không phải DoT): +12% giảm ST cho lượt kế.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🐢",
+    "duration": 999
+  },
+  {
+    "key": "BuffLanTuyThanhHoa",
+    "vi": "Lân Tủy Thánh Hòa",
+    "en": "Qilin Sanctity",
+    "kind": "buff",
+    "description_vi": "Kỳ lân thuần dương — mỗi đòn đánh 35% thanh tẩy 1 hiệu ứng bất lợi trên bản thân; Củng Cố +1%/tầng.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🦌",
+    "duration": 999
+  },
+  {
+    "key": "BuffThienTinhQuanDinh",
+    "vi": "Thiên Tinh Quán Đỉnh",
+    "en": "Heaven Star Crown",
+    "kind": "buff",
+    "description_vi": "Tinh quang quán đỉnh — +Bạo Kích, +ST Bạo Kích; mỗi 4 lượt, đòn kế tiếp chắc chắn Bạo Kích.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⭐",
+    "duration": 999
+  },
+  {
+    "key": "BuffDiaPhachBatHoai",
+    "vi": "Địa Phách Bất Hoại",
+    "en": "Earth Soul Indestructible",
+    "kind": "buff",
+    "description_vi": "Địa phách trấn thân — +12% HP; khi HP dưới 35%: +20% giảm sát thương (đại địa hộ trì).",
+    "stat_bonus": {
+      "_dia_phach_dr": 0.20
+    },
+    "scaling_rules": [
+      {
+        "key": "_dia_phach_dr",
+        "source": "constant",
+        "gate_source": "hp_pct",
+        "max": 0.3499,
+        "output": "final_dmg_reduce"
+      }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⛰️",
+    "duration": 999
+  },
+  {
+    "key": "BuffDaoVanQuyNhat",
+    "vi": "Đạo Văn Quy Nhất",
+    "en": "Dao Script Unity",
+    "kind": "buff",
+    "description_vi": "Đạo văn dung hợp vạn pháp — -20% hồi chiêu mọi kỹ năng; mỗi đòn đánh hồi 4% MP tối đa; Củng Cố +1.5%/tầng.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "☯️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThanTamThanhCot",
+    "vi": "Thần Tâm Thánh Cốt — Hoàng Cổ Hóa Thánh",
+    "en": "God-Heart, Holy Bone — Saintly Ascension",
+    "kind": "buff",
+    "description_vi": "Viên mãn cự nhân: +15% sát thương cuối vĩnh viễn, Củng Cố +2%/tầng. Cứ mỗi 5 lượt, bùng phát Hoàng Cổ Thánh Vực 2 lượt: chắc chắn Bạo Kích và miễn nhiễm khống chế cứng.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌟",
+    "duration": 999
+  },
+  {
+    "key": "BuffHoangCoThanhVuc",
+    "vi": "Hoàng Cổ Thánh Vực",
+    "en": "Primordial Saint Realm",
+    "kind": "buff",
+    "description_vi": "Thánh vực bùng phát — chắc chắn Bạo Kích và miễn nhiễm khống chế cứng trong thời gian hiệu lực.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌌",
+    "duration": 2
   }
 ]

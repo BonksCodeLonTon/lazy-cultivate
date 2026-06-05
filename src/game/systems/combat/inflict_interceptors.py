@@ -162,7 +162,7 @@ def _immune_hard_cc(
     freeze, silence, interrupt, knock-up). Soft debuffs (slow, armor
     shred, res shred, etc.) still apply normally.
     """
-    if not target.immune_hard_cc:
+    if not (target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc")):
         return False
     if not (meta.skips_turn or meta.prevents_skills):
         return False

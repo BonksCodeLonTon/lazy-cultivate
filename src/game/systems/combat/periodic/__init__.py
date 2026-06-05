@@ -15,6 +15,9 @@ green:
   30  summons        — per-summon damage tick
   40  solar_wither   — Thái Dương Thần Quang aura
   45  solar_wither   — Khô Mộc Hấp Thu aura
+  46  huyen_thuy     — Hồi Triều Nộ Hải tidal flood (reservoir discharge)
+  47  truong_xuan    — Trường Xuân Hồi Nguyên debuff-count regen
+  48  overheal       — Mộc Linh Cộng Sinh reservoir release (in overheal_reservoir.py)
   50  regen          — Thổ shield check + shield/HP/MP regen
   60  fortify        — Hào Quang Củng Cố stack + braced-turn decrement
   70  endure         — endure_remaining cooldown decrement
@@ -30,14 +33,16 @@ from . import (  # noqa: F401
     endure,
     expiry,
     fortify,
+    huyen_thuy,
     luc_duc,
     regen,
     solar_wither,
     summons,
     thai_bach,
+    truong_xuan,
 )
 
 __all__ = [
-    "chan_duong", "dots", "endure", "expiry", "fortify", "luc_duc",
-    "regen", "solar_wither", "summons", "thai_bach",
+    "chan_duong", "dots", "endure", "expiry", "fortify", "huyen_thuy",
+    "luc_duc", "regen", "solar_wither", "summons", "thai_bach", "truong_xuan",
 ]

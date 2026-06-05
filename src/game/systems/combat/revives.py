@@ -25,7 +25,7 @@ from src.data.registry import registry
 from src.game.constants.balance import MAX_FINAL_DMG_REDUCE
 from src.game.constants.effects import EffectKey
 from src.game.engine.damage.color import colorize_damage
-from src.game.engine.effects import EFFECTS
+from src.game.engine.effects import EFFECTS, get_combat_modifiers
 
 from .context import TurnContext
 from .hooks import TurnPhase, register_hook
@@ -110,6 +110,62 @@ def _phuong_hoang_trong_sinh(ctx: TurnContext) -> bool | None:
                 _suppress_extras=True,
             )
 
+    ctx.scratch["revived"] = True
+    return True
+
+
+def _spring_flowing(actor) -> bool:
+    """True while the Mộc body's healing is NOT choked off.
+
+    The Undying Spring only holds while the spring still flows — i.e. the body
+    has positive HP regen and no anti-heal pressure has pushed its
+    ``heal_taken_reduce`` up to the gate. An enemy that lands enough anti-heal
+    (Cắt Đứt etc.) chokes the spring and the cheat-death stops firing. Bleed is
+    a pure DoT in this game (no heal-reduce), so the single ``heal_taken_reduce``
+    aggregate is the whole signal.
+    """
+    heal_reduce = get_combat_modifiers(actor).get("heal_taken_reduce", 0.0)
+    return actor.hp_regen_pct > 0 and heal_reduce < actor.moc_undying_heal_reduce_gate
+
+
+def _undying_spring_ready(ctx: TurnContext) -> bool:
+    """Predicate for the L9 Trường Xuân Bất Tử cheat-death.
+
+    Gated tighter than ``_not_yet_revived`` so the hook only claims the death for
+    the Mộc body whose cooldown is ready AND whose spring is still flowing. When
+    it fires it sets ``ctx.scratch["revived"]`` like every other revive hook, so
+    the lower-priority generic seams skip.
+    """
+    actor = ctx.actor
+    return (
+        _not_yet_revived(ctx)
+        and actor.moc_undying_spring_enabled
+        and actor.moc_undying_cd == 0
+        and _spring_flowing(actor)
+    )
+
+
+@register_hook(
+    phase=TurnPhase.ON_REVIVE, name="truong_xuan_undying", priority=5,
+    predicate=_undying_spring_ready,
+)
+def _truong_xuan_undying(ctx: TurnContext) -> bool | None:
+    """Trường Xuân Linh Mộc L9 — Undying Spring death-defiance.
+
+    Fires at priority 5 (same tier as the Hỏa L9 phoenix; both are predicate-
+    gated so only the matching body's hook ever claims a given death). A lethal
+    hit leaves the body at ``moc_undying_min_hp`` (1) instead of killing it, then
+    locks the spring for ``moc_undying_cooldown_turns`` of the body's own turns
+    (decremented by the truong_xuan PRE_TURN aura). No burst, no stat buff — a
+    pure tanky cheat-death matching the "Eternal Spring" name.
+    """
+    combatant = ctx.actor
+    combatant.hp = max(1, combatant.moc_undying_min_hp)
+    combatant.moc_undying_cd = combatant.moc_undying_cooldown_turns
+    ctx.log.append(
+        f"  🌿♻️ **{combatant.name}** **TRƯỜNG XUÂN BẤT TỬ!** Xuân khí chưa tàn — "
+        f"trụ lại {combatant.hp:,} HP (hồi chiêu {combatant.moc_undying_cd} lượt)"
+    )
     ctx.scratch["revived"] = True
     return True
 

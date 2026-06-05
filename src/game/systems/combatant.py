@@ -590,6 +590,88 @@ class Combatant:
     hoa_burning_amp_chance: float = 0.0
     hoa_burning_amp_pct: float = 0.0
 
+    # ── Thủy (Water / Tidal Counter-Puncher) build — Huyền Thủy Trường Sinh ───
+    # The body's OWN Tide reservoir — deliberately ISOLATED from the skill
+    # ``SkillAtkThuyTrieuTichLang``'s ``thuy_tide`` pool above so a player who
+    # owns both never cross-feeds one into the other. Banks a fraction of damage
+    # TAKEN (L1), spent by Glacial Shatter (L6) and the Tidal Flood (L9).
+    thuy_intake_reservoir: int = 0
+    # L1 Nạp Triều Khố — intake fraction of damage taken + reservoir cap scale.
+    thuy_tide_intake_pct: float = 0.0
+    thuy_reservoir_cap_matk_scale: float = 0.0
+    # L3 Hàn Thủy Đóng Băng — on-hit-taken chance to freeze the attacker.
+    thuy_retaliate_freeze_chance: float = 0.0
+    # L6 Băng Toái Quyết — fraction of the reservoir released as a Thủy shatter
+    # strike when hitting a frozen target.
+    thuy_shatter_tide_pct: float = 0.0
+    # L9 Hồi Triều Nộ Hải — periodic tidal-flood config. The PERIODIC hook fires
+    # every ``thuy_tidal_flood_interval`` rounds, releasing
+    # ``thuy_tidal_release_pct × depth`` of the reservoir (depth grows with the
+    # round count, capped) and keeping ``thuy_tidal_refill_pct``. All-zero /
+    # False → the hook is inert.
+    thuy_tidal_flood_enabled: bool = False
+    thuy_tidal_flood_interval: int = 0
+    thuy_tidal_release_pct: float = 0.0
+    thuy_tidal_depth_per_turn: float = 0.0
+    thuy_tidal_depth_mult_cap: float = 0.0
+    thuy_tidal_refill_pct: float = 0.0
+
+    # ── Mộc (Wood / Poison / Eternal Spring) build — Trường Xuân Linh Mộc ─────
+    # L1 Linh Mộc Chi Độc — on-hit poison chance. Rides the generic on-hit proc
+    # table exactly like burn_on_hit_pct / bleed_on_hit_pct. 0.0 → never procs.
+    poison_on_hit_pct: float = 0.0
+    # L3 Mộc Vương Thống Lĩnh — flat final-dmg bonus vs a Làm Chậm target
+    # (mirror of bonus_dmg_vs_burn). 0.0 → inert.
+    moc_vs_slowed_dmg_bonus: float = 0.0
+    # L6 Trường Xuân Hồi Nguyên — heal hp_max × per-debuff each periodic phase,
+    # one tick per active enemy debuff up to ``moc_regen_debuff_cap``. Both 0 →
+    # the PERIODIC hook is inert.
+    moc_regen_per_enemy_debuff: float = 0.0
+    moc_regen_debuff_cap: int = 0
+    # L9 Trường Xuân Bất Tử — guaranteed poison on every attack (on top of the
+    # L1 proc) + the Undying Spring cheat-death. The ON_REVIVE hook fires while
+    # ``moc_undying_spring_enabled`` AND the cooldown is ready AND healing isn't
+    # choked off (heal_taken_reduce < ``moc_undying_heal_reduce_gate``); it
+    # leaves the body at ``moc_undying_min_hp`` and re-arms after
+    # ``moc_undying_cooldown_turns`` of the body's own turns. All-zero / False →
+    # every arm is inert.
+    moc_guaranteed_poison_on_attack: bool = False
+    moc_guaranteed_poison_stacks: int = 0
+    moc_undying_spring_enabled: bool = False
+    moc_undying_cooldown_turns: int = 0
+    moc_undying_min_hp: int = 1
+    moc_undying_heal_reduce_gate: float = 0.0
+    # Runtime-only cooldown counter (NOT a config key, NOT in CombatStats): set
+    # to ``moc_undying_cooldown_turns`` when the revive fires, decremented each
+    # PRE_TURN by the truong_xuan aura.
+    moc_undying_cd: int = 0
+
+    # ── Hoàng Cổ Thánh Thể (Universal Saint Body) build ──────────────────────
+    # L5 Lân Tủy Thánh Hòa — per-hit chance to self-cleanse one debuff.
+    # 0.0 → inert (the on-hit proc block is a no-op).
+    saint_qilin_cleanse_chance: float = 0.0
+    # L6 Thiên Tinh Quán Đỉnh — every-N-acted-turns guaranteed crit. Mirrors
+    # body #2's ``bleed_hunter_periodic_interval`` pattern exactly; a parallel
+    # counter + armed flag live below. 0 → the PRE_TURN hook is inert.
+    saint_periodic_crit_interval: int = 0
+    # L8 Đạo Văn Quy Nhất — fraction of mp_max restored per landed hit.
+    # 0.0 → no MP gain on hit.
+    saint_mp_on_hit_pct: float = 0.0
+    # L9 Thần Tâm Thánh Cốt — realm config. All-False/zero → the PRE_TURN
+    # hook never fires (enemies, flag-off, non-saint builds stay inert).
+    saint_realm_enabled: bool = False
+    saint_realm_interval: int = 0
+    saint_realm_duration: int = 0
+    # Runtime-only: acted-turn counter for the L6 guaranteed-crit cadence
+    # (NOT a config key, NOT in CombatStats / _CONSTITUTION_FLAG_FIELDS).
+    saint_crit_turn_counter: int = 0
+    # Runtime-only: separate counter for the L9 realm cadence so L6 crit
+    # arm and L9 realm fire on independent schedules.
+    saint_realm_turn_counter: int = 0
+    # Runtime armed flag for the L6 guaranteed crit (consumed on first
+    # landed hit, mirrors bleed_hunter_crit_armed).
+    saint_crit_armed: bool = False
+
     # ── Phong (Wind / Evasion / Mark) build ──────────────────────────────────
     # On-hit: chance actor applies Ấn Phong on the target. Once marked the
     # target loses evasion (via the debuff's stat_bonus) and the attacker gains

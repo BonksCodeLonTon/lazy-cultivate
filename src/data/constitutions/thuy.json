@@ -1,1 +1,66 @@
-[]
+[
+  {
+    "key": "TheChat_HuyenThuyTruongSinh",
+    "vi": "Huyền Thủy Trường Sinh Thể",
+    "en": "Dark Water Longevity Body",
+    "element": "thuy",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân luyện Huyền Thủy — chịu đòn như biển nuốt sóng, đóng băng kẻ địch, rồi dội cả đại dương trở lại. Càng đánh lâu, thủy triều càng dâng.",
+    "stat_bonuses": {
+      "hp_pct": 0.10,
+      "hp_regen_pct": 0.03,
+      "shield_regen_pct": 0.05,
+      "shield_max_pct": 0.12,
+      "thuy_tide_intake_pct": 0.25,
+      "thuy_reservoir_cap_matk_scale": 6.0
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "hp_pct": 0.006, "shield_regen_pct": 0.002, "shield_max_pct": 0.004 },
+      "levels": {
+        "1": {
+          "passive_vi": "Nạp Triều Khố",
+          "passive_en": "Tide Intake",
+          "description_vi": "Mỗi khi nhận sát thương, tích 25% lượng đó vào Triều Khố (tối đa 6× Pháp Công).",
+          "stat_bonuses": {},
+          "effects": ["BuffNapTrieuKho"]
+        },
+        "3": {
+          "passive_vi": "Hàn Thủy Đóng Băng",
+          "passive_en": "Frostbind Riposte",
+          "description_vi": "Khi bị tấn công: 45% đóng băng kẻ tấn công (2 lượt).",
+          "stat_bonuses": { "hp_pct": 0.05, "thuy_retaliate_freeze_chance": 0.45 },
+          "effects": ["BuffHanThuyDongBang"]
+        },
+        "6": {
+          "passive_vi": "Băng Toái Quyết",
+          "passive_en": "Glacial Shatter",
+          "description_vi": "Đánh địch đang Đóng Băng: Băng Toái — gây thêm sát thương Thủy bằng 30% Triều Khố + phá băng.",
+          "stat_bonuses": { "hp_pct": 0.05, "thuy_shatter_tide_pct": 0.30 },
+          "effects": ["BuffBangToaiQuyet"]
+        },
+        "9": {
+          "passive_vi": "Hồi Triều Nộ Hải",
+          "passive_en": "Returning Tide, Raging Sea",
+          "description_vi": "Cứ mỗi 4 lượt: dội Triều Khố thành sóng Thủy (mạnh dần theo số lượt, tối đa ×3), giữ lại 30%.",
+          "stat_bonuses": {
+            "hp_pct": 0.06,
+            "shield_regen_pct": 0.02,
+            "thuy_tidal_flood_enabled": true,
+            "thuy_tidal_flood_interval": 4,
+            "thuy_tidal_release_pct": 0.70,
+            "thuy_tidal_depth_per_turn": 0.05,
+            "thuy_tidal_depth_mult_cap": 3.0,
+            "thuy_tidal_refill_pct": 0.30
+          },
+          "effects": ["BuffHoiTrieuNoHai"]
+        }
+      }
+    }
+  }
+]

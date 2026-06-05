@@ -80,15 +80,56 @@ def run_on_hit_procs(
         else:
             session.log.append(spec["log_fmt"])
 
+    # Mộc build: Trường Xuân Bất Tử (L9) — guaranteed poison on EVERY attack, on
+    # top of the 55% L1 proc above. Inert unless the L9 flag is set; respects
+    # poison immunity (mirrors the manual gate in the kinh_hoa aura).
+    if actor.moc_guaranteed_poison_on_attack and actor.moc_guaranteed_poison_stacks > 0:
+        if target.poison_immunity:
+            session.log.append(f"    🛡️ **{target.name}** miễn nhiễm Trúng Độc!")
+        else:
+            _poison_dur = default_duration(EffectKey.DEBUFF_DOC_TO)
+            target.apply_effect(EffectKey.DEBUFF_DOC_TO, _poison_dur)
+            _propagate_stack_build(actor, target, "poison")
+            for _ in range(actor.moc_guaranteed_poison_stacks):
+                target.add_stack("poison", 1)
+            session.log.append(
+                "    🍃 Linh Mộc Chi Độc (bất biến) [×{stacks}/{cap}]".format(
+                    stacks=target.poison_stacks,
+                    cap=effective_stack_cap(target, str(EffectKey.DEBUFF_DOC_TO)),
+                )
+            )
+
+    # Hoàng Cổ Thánh Thể L5 — Lân Tủy Thánh Hòa: per-hit self-cleanse.
+    # Reuses the same cleansable-flag filter that quang.try_cleanse uses.
+    # Inert when chance 0.0 (default for all non-saint builds).
+    if actor.saint_qilin_cleanse_chance > 0 and session.rng.random() < actor.saint_qilin_cleanse_chance:
+        from src.game.engine.effects import EFFECTS as _EFFECTS_CLEANSE
+        _cleansable = [
+            k for k in list(actor.effects)
+            if (m := _EFFECTS_CLEANSE.get(k)) is not None and m.cleansable
+        ]
+        if _cleansable:
+            _removed = session.rng.choice(_cleansable)
+            del actor.effects[_removed]
+            actor.effect_overrides.pop(_removed, None)
+            session.log.append(
+                f"  🦌 **{actor.name}** Lân Tủy Thánh Hòa — thanh tẩy *{_removed}*"
+            )
+
+    # Hoàng Cổ Thánh Thể L8 — Đạo Văn Quy Nhất: restore MP per landed hit.
+    # One-liner; inert when field is 0.0 (all non-saint builds).
+    if actor.saint_mp_on_hit_pct > 0:
+        actor.mp = min(actor.mp_max, actor.mp + int(actor.mp_max * actor.saint_mp_on_hit_pct))
+
     # Thổ build: stun_on_hit — flat chance, respects hard-CC immunity
     if actor.stun_on_hit_pct > 0 and session.rng.random() < actor.stun_on_hit_pct:
-        if target.immune_hard_cc:
+        if target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc"):
             session.log.append(f"    🛡️ **{target.name}** miễn dịch Choáng!")
         else:
             target.apply_effect(EffectKey.CC_STUN, default_duration(EffectKey.CC_STUN))
             session.log.append(f"    💫 Choáng kích hoạt!")
     if is_crit and actor.paralysis_on_crit:
-        if target.immune_hard_cc:
+        if target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc"):
             session.log.append(
                 f"    🛡️ **{target.name}** miễn dịch Tê Liệt khi Bạo Kích!"
             )
@@ -98,7 +139,7 @@ def run_on_hit_procs(
     # Quang build: silence_on_crit — crit-gated CCMuted application.
     # Respects the same hard-CC immunity used by stun_on_hit.
     if is_crit and actor.silence_on_crit_pct > 0 and session.rng.random() < actor.silence_on_crit_pct:
-        if target.immune_hard_cc:
+        if target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc"):
             session.log.append(f"    🛡️ **{target.name}** miễn dịch Câm Lặng!")
         else:
             target.apply_effect(EffectKey.CC_MUTED, default_duration(EffectKey.CC_MUTED))
@@ -206,12 +247,37 @@ def run_on_hit_procs(
     if actor.nhap_ma_dmg_bonus > 0 and actor.has_effect("BuffNhapMa"):
         apply_stat_steal(session, actor, target)
 
+    # ── Huyền Thủy Trường Sinh — L6 Băng Toái Quyết (Glacial Shatter) ────────
+    # Hitting a FROZEN target releases ``thuy_shatter_tide_pct`` of the body's
+    # reservoir as a Thủy strike and breaks the ice. Inert unless the actor
+    # holds the L6 buff with a non-empty reservoir and the target is frozen.
+    if (
+        actor.thuy_shatter_tide_pct > 0
+        and actor.thuy_intake_reservoir > 0
+        and actor.has_effect("BuffBangToaiQuyet")
+        and target.has_effect(EffectKey.DEBUFF_DONG_BANG)
+    ):
+        from src.game.engine.damage import colorize_damage
+        from .thuy_tide import tide_strike
+        shatter = int(actor.thuy_intake_reservoir * actor.thuy_shatter_tide_pct)
+        dealt = tide_strike(actor, target, shatter)
+        if dealt > 0:
+            actor.thuy_intake_reservoir -= shatter
+            # Break the ice — the shatter consumes the freeze.
+            target.effects.pop(EffectKey.DEBUFF_DONG_BANG.value, None)
+            target.effect_overrides.pop(EffectKey.DEBUFF_DONG_BANG.value, None)
+            _tag = colorize_damage(f"-{dealt:,} HP", "thuy")
+            session.log.append(
+                f"    🧊 **{actor.name}** Băng Toái Quyết — dội Triều Khố "
+                f"({shatter:,}) phá băng → **{target.name}** {_tag}"
+            )
+
     # Freeze proc — chance comes from ``freeze_on_skill_chance``. Mirror
     # version (in apply_reflect) scales by ``_FREEZE_MIRROR_BOOST`` so the
     # reflected freeze fires harder than the cast.
     freeze_chance = actor.freeze_on_skill_chance
     if freeze_chance > 0 and session.rng.random() < freeze_chance:
-        if target.immune_hard_cc:
+        if target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc"):
             session.log.append(
                 f"    🛡️ **{target.name}** miễn dịch Đóng Băng!"
             )
@@ -243,7 +309,7 @@ def run_on_hit_procs(
         if aura_dst_meta is None:
             continue
         # Respect hard-CC immunity for stun/silence-style auras.
-        if target.immune_hard_cc and (
+        if (target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc")) and (
             aura_dst_meta.skips_turn or aura_dst_meta.prevents_skills
         ):
             continue
@@ -447,6 +513,48 @@ def apply_reactive_damage(
     adaptive-elemental-resist aegis hook (Tri Hành Hợp Nhất) at the tail.
     """
     from src.game.engine.effects import get_combat_modifiers
+
+    # ── Huyền Thủy Trường Sinh — defender-side tidal counter-punch ───────────
+    # ``target`` here is the DEFENDER (the holder taking ``dmg``); ``actor`` is
+    # the attacker. Both blocks are inert unless the defender carries the body's
+    # buffs / non-zero flags (enemies, flag-off, non-Thủy bodies).
+    #
+    # (5a) L1 Nạp Triều Khố — bank ``thuy_tide_intake_pct`` of the damage taken
+    # into the body's OWN reservoir (``thuy_intake_reservoir`` — isolated from
+    # the skill's ``thuy_tide``), clamped to ``cap_scale × matk``. Mirrors
+    # ``capture_overheal``.
+    if (
+        dmg > 0
+        and target.thuy_tide_intake_pct > 0
+        and target.has_effect("BuffNapTrieuKho")
+    ):
+        cap = int(target.thuy_reservoir_cap_matk_scale * target.matk)
+        if cap > 0:
+            gained = int(dmg * target.thuy_tide_intake_pct)
+            target.thuy_intake_reservoir = min(
+                cap, target.thuy_intake_reservoir + gained
+            )
+    # (5b) L3 Hàn Thủy Đóng Băng — chance to freeze the attacker on a hit taken.
+    # Mirrors the freeze-mirror pattern (respects hard-CC immunity).
+    if (
+        dmg > 0
+        and actor.is_alive()
+        and target.thuy_retaliate_freeze_chance > 0
+        and target.has_effect("BuffHanThuyDongBang")
+        and session.rng.random() < target.thuy_retaliate_freeze_chance
+    ):
+        if actor.immune_hard_cc or actor.has_effect("BuffHoangCoThanhVuc"):
+            session.log.append(
+                f"    🛡️ **{actor.name}** miễn dịch Hàn Thủy Đóng Băng!"
+            )
+        else:
+            dur = default_duration(EffectKey.DEBUFF_DONG_BANG)
+            actor.apply_effect(EffectKey.DEBUFF_DONG_BANG.value, dur)
+            session.log.append(
+                f"    ❄️ **{target.name}** Hàn Thủy Đóng Băng "
+                f"→ **{actor.name}** bị đông cứng!"
+            )
+
     reflect_total = target.reflect_pct + float(
         get_combat_modifiers(target).get("reflect_pct", 0.0)
     )
@@ -573,7 +681,7 @@ def apply_reflect(
     # ``_FREEZE_MIRROR_BOOST`` × multiplier on their reflected proc rate.
     freeze_chance = min(1.0, defender.freeze_on_skill_chance * _FREEZE_MIRROR_BOOST)
     if freeze_chance > 0 and session.rng.random() < freeze_chance:
-        if attacker.immune_hard_cc:
+        if attacker.immune_hard_cc or attacker.has_effect("BuffHoangCoThanhVuc"):
             session.log.append(
                 f"    🛡️ **{attacker.name}** miễn dịch Mirror Đóng Băng!"
             )

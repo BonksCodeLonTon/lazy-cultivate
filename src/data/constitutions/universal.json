@@ -21,4 +21,53 @@
       "MatDaoCotTinh": 1
     }
   }
+,
+  {
+    "key": "TheChat_HoangCoThanhThe",
+    "vi": "Hoàng Cổ Thánh Thể",
+    "en": "Primordial Ancient Saint Body",
+    "element": "universal",
+    "rarity": "mythic",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 120000, "stones": 0 },
+    "materials": { "HoangCoLongLan": 1 },
+    "description_vi": "Thân đúc từ di vật chín thượng cổ thánh thú. Không hồi sinh — vì không gục ngã. Càng chiến càng mạnh: mỗi đòn trao đổi đánh thức một truyền kỳ cổ xưa, đến khi hóa thành cự nhân bất diệt — đánh càng đau, chịu càng vững.",
+    "stat_bonuses": {
+      "atk_pct": 0.06,
+      "matk_pct": 0.06,
+      "hp_pct": 0.07,
+      "crit_rating": 90,
+      "fortify_per_turn_pct": 0.025,
+      "fortify_stack_cap": 5
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      "ceilings": [1, 2, 3, 4, 5, 6, 7, 8],
+      "xp_to_next": {},
+      "per_level_growth": { "atk_pct": 0.004, "matk_pct": 0.004, "hp_pct": 0.004, "crit_rating": 14 },
+      "gates": {
+        "1": { "item_key": "HoangCoPhuongVu",  "qty": 2,  "base_success": 0.80, "pity_per_fail": 0.05, "trial_tier": 1 },
+        "2": { "item_key": "HoangCoQuyVan",    "qty": 3,  "base_success": 0.72, "pity_per_fail": 0.05, "trial_tier": 1 },
+        "3": { "item_key": "HoangCoLanTuy",    "qty": 4,  "base_success": 0.64, "pity_per_fail": 0.06, "trial_tier": 2 },
+        "4": { "item_key": "HoangCoThienTinh", "qty": 5,  "base_success": 0.55, "pity_per_fail": 0.06, "trial_tier": 2 },
+        "5": { "item_key": "HoangCoDiaPhach",  "qty": 6,  "base_success": 0.46, "pity_per_fail": 0.07, "trial_tier": 2 },
+        "6": { "item_key": "HoangCoDaoVan",    "qty": 8,  "base_success": 0.38, "pity_per_fail": 0.08, "trial_tier": 3 },
+        "7": { "item_key": "HoangCoThanTam",   "qty": 10, "base_success": 0.30, "pity_per_fail": 0.09, "trial_tier": 3 },
+        "8": { "item_key": "HoangCoThanhCot",  "qty": 12, "base_success": 0.22, "pity_per_fail": 0.10, "trial_tier": 4 }
+      },
+      "levels": {
+        "1": { "passive_vi": "Long Lân Khải Giáp", "passive_en": "Dragonscale Aegis", "description_vi": "Nền tảng thánh thể. Bắt đầu tích Hào Quang Củng Cố: mỗi lượt +1 tầng (tối đa 5), mỗi tầng +ST cuối VÀ +giảm ST.", "stat_bonuses": {}, "effects": ["BuffLongLanKhaiGiap"] },
+        "2": { "passive_vi": "Long Uy Bất Khuất", "passive_en": "Unyielding Dragon Might", "description_vi": "Uy áp chân long — +Công/+Pháp; Củng Cố mạnh thêm (+1%/tầng).", "stat_bonuses": { "atk_pct": 0.03, "matk_pct": 0.03, "fortify_per_turn_pct": 0.010 }, "effects": ["BuffLongUyBatKhuat"] },
+        "3": { "passive_vi": "Phượng Vũ Trùng Thăng", "passive_en": "Phoenix Ever-Rising", "description_vi": "Phượng vũ không tàn — càng chiến càng rực: Củng Cố bùng thêm (+1%/tầng). KHÔNG hồi sinh — chỉ vươn lên mạnh hơn.", "stat_bonuses": { "hp_pct": 0.03, "fortify_per_turn_pct": 0.010 }, "effects": ["BuffPhuongVuTrungThang"] },
+        "4": { "passive_vi": "Quy Văn Hộ Đỉnh", "passive_en": "Tortoise Ward", "description_vi": "Quy giáp trấn thân — +20% Khiên tối đa, +5% Khiên hồi/lượt; sau khi trúng đòn (không phải DoT): +12% giảm ST cho lượt kế.", "stat_bonuses": { "hp_pct": 0.03, "shield_max_pct": 0.20, "shield_regen_pct": 0.05, "fortify_post_hit_dr_pct": 0.12 }, "effects": ["BuffQuyVanHoDinh"] },
+        "5": { "passive_vi": "Lân Tủy Thánh Hòa", "passive_en": "Qilin Sanctity", "description_vi": "Kỳ lân thuần dương — mỗi đòn đánh 35% thanh tẩy 1 hiệu ứng bất lợi trên bản thân; Củng Cố +1%/tầng.", "stat_bonuses": { "atk_pct": 0.03, "matk_pct": 0.03, "fortify_per_turn_pct": 0.010, "saint_qilin_cleanse_chance": 0.35 }, "effects": ["BuffLanTuyThanhHoa"] },
+        "6": { "passive_vi": "Thiên Tinh Quán Đỉnh", "passive_en": "Heaven Star Crown", "description_vi": "Tinh quang quán đỉnh — +Bạo Kích, +ST Bạo Kích; mỗi 4 lượt, đòn kế tiếp chắc chắn Bạo Kích.", "stat_bonuses": { "crit_rating": 110, "crit_dmg_rating": 160, "saint_periodic_crit_interval": 4 }, "effects": ["BuffThienTinhQuanDinh"] },
+        "7": { "passive_vi": "Địa Phách Bất Hoại", "passive_en": "Earth Soul Indestructible", "description_vi": "Địa phách trấn thân — +12% HP; khi HP dưới 35%: +20% giảm sát thương (đại địa hộ trì).", "stat_bonuses": { "hp_pct": 0.08 }, "effects": ["BuffDiaPhachBatHoai"] },
+        "8": { "passive_vi": "Đạo Văn Quy Nhất", "passive_en": "Dao Script Unity", "description_vi": "Đạo văn dung hợp vạn pháp — -20% hồi chiêu mọi kỹ năng; mỗi đòn đánh hồi 4% MP tối đa; Củng Cố +1.5%/tầng.", "stat_bonuses": { "cooldown_reduce": 0.20, "fortify_per_turn_pct": 0.015, "saint_mp_on_hit_pct": 0.04 }, "effects": ["BuffDaoVanQuyNhat"] },
+        "9": { "passive_vi": "Thần Tâm Thánh Cốt — Hoàng Cổ Hóa Thánh", "passive_en": "God-Heart, Holy Bone — Saintly Ascension", "description_vi": "Viên mãn cự nhân: +15% sát thương cuối vĩnh viễn, Củng Cố +2%/tầng (tổng ~9%/tầng × 5 tầng = +45% ST cuối VÀ +45% giảm ST khi đầy, đạt đỉnh ~lượt 5). Cứ mỗi 5 lượt, bùng phát Hoàng Cổ Thánh Vực 2 lượt: chắc chắn Bạo Kích và miễn nhiễm khống chế cứng.", "stat_bonuses": { "atk_pct": 0.05, "matk_pct": 0.05, "final_dmg_bonus": 0.15, "fortify_per_turn_pct": 0.020, "saint_realm_enabled": true, "saint_realm_interval": 5, "saint_realm_duration": 2 }, "effects": ["BuffThanTamThanhCot"] }
+      }
+    }
+  }
 ]

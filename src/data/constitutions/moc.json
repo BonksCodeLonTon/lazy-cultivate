@@ -1,1 +1,64 @@
-[]
+[
+  {
+    "key": "TheChat_TruongXuanLinhMoc",
+    "vi": "Trường Xuân Linh Mộc Thể",
+    "en": "Eternal Spring Spirit-Wood Body",
+    "element": "moc",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân hợp Linh Mộc trường xuân — mỗi đòn gieo độc, dây leo trói chậm kẻ địch, sinh cơ cuộn trào theo từng vết thương ta khắc lên chúng. Khi xuân khí chưa tàn, thân này không chết.",
+    "stat_bonuses": {
+      "matk_pct": 0.06,
+      "hp_regen_pct": 0.03,
+      "poison_on_hit_pct": 0.55,
+      "dot_dmg_bonus": 0.10
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "matk_pct": 0.004, "hp_regen_pct": 0.0015, "dot_dmg_bonus": 0.006 },
+      "levels": {
+        "1": {
+          "passive_vi": "Linh Mộc Chi Độc",
+          "passive_en": "Spirit-Wood Venom",
+          "description_vi": "Mỗi đòn đánh: 55% gieo Trúng Độc lên kẻ địch.",
+          "stat_bonuses": {},
+          "effects": ["BuffLinhMocChiDoc"]
+        },
+        "3": {
+          "passive_vi": "Mộc Vương Thống Lĩnh",
+          "passive_en": "Wood-King Dominion",
+          "description_vi": "Mỗi đòn: 40% Làm Chậm kẻ địch. Đánh địch đang bị Làm Chậm: +30% sát thương cuối.",
+          "stat_bonuses": { "matk_pct": 0.05, "slow_on_hit_pct": 0.40, "moc_vs_slowed_dmg_bonus": 0.30 },
+          "effects": ["BuffMocVuongThongLinh"]
+        },
+        "6": {
+          "passive_vi": "Trường Xuân Hồi Nguyên",
+          "passive_en": "Eternal Spring Renewal",
+          "description_vi": "Cuối mỗi lượt: hồi 1% HP tối đa cho mỗi hiệu ứng bất lợi kẻ địch đang chịu (tối đa 8 → +8% HP/lượt).",
+          "stat_bonuses": { "matk_pct": 0.05, "moc_regen_per_enemy_debuff": 0.01, "moc_regen_debuff_cap": 8 },
+          "effects": ["BuffTruongXuanHoiNguyen"]
+        },
+        "9": {
+          "passive_vi": "Trường Xuân Bất Tử",
+          "passive_en": "Undying Spring",
+          "description_vi": "Khi xuân khí còn chảy (hồi máu chưa bị chặn ≥50%): đòn chí mạng không giết được ta — trụ lại 1 HP (mỗi 5 lượt một lần). Mỗi đòn đánh chắc chắn gieo thêm 1 tầng Trúng Độc.",
+          "stat_bonuses": {
+            "matk_pct": 0.07,
+            "hp_regen_pct": 0.02,
+            "moc_undying_spring_enabled": true,
+            "moc_undying_cooldown_turns": 5,
+            "moc_undying_min_hp": 1,
+            "moc_undying_heal_reduce_gate": 0.50,
+            "moc_guaranteed_poison_on_attack": true,
+            "moc_guaranteed_poison_stacks": 1
+          },
+          "effects": ["BuffTruongXuanBatTu"]
+        }
+      }
+    }
+  }
+]

@@ -48,7 +48,7 @@ def _try_transfer_debuffs(ctx: TurnContext) -> None:
         return
     pick = ctx.rng.choice(candidates)
     meta = EFFECTS[pick]
-    if opponent.immune_hard_cc and (meta.skips_turn or meta.prevents_skills):
+    if (opponent.immune_hard_cc or opponent.has_effect("BuffHoangCoThanhVuc")) and (meta.skips_turn or meta.prevents_skills):
         return
     if pick == EffectKey.DEBUFF_DOC_TO and opponent.poison_immunity:
         return

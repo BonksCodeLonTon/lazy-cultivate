@@ -41,6 +41,50 @@ from src.game.systems.the_chat import (
 )
 
 
+# ── Per-body breakthrough-table override ─────────────────────────────────────
+# A constitution's optional ``process`` block may override the GLOBAL gate
+# tables so a body can gate differently — e.g. Hoàng Cổ Thánh Thể is a 9-stage
+# capstone with a material+trial gate at EVERY level (ceilings 1-8), pure
+# material gating (empty ``xp_to_next``). When a body declares none of these
+# keys (every standard body), the resolvers return the module globals, so the
+# breakthrough layer stays byte-identical to before. The pure breakthrough
+# functions below accept an optional ``process`` dict (the body's
+# ``const_data["process"]``) and route every table read through these — passing
+# ``None`` (the default) preserves the legacy global-table behavior for every
+# existing caller. JSON keys are strings; normalized to int here.
+
+
+def gates_for(process: dict | None) -> dict:
+    """Per-body gate table from ``process['gates']``, else the global GATES."""
+    if process and process.get("gates"):
+        return {int(k): v for k, v in process["gates"].items()}
+    return GATES
+
+
+def ceilings_for(process: dict | None) -> tuple[int, ...]:
+    """Per-body ceilings: explicit ``process['ceilings']`` → derived from gates →
+    global CEILINGS."""
+    if process:
+        if process.get("ceilings"):
+            return tuple(process["ceilings"])
+        if process.get("gates"):
+            return tuple(sorted(int(k) for k in process["gates"]))
+    return CEILINGS
+
+
+def xp_to_next_table_for(process: dict | None) -> dict:
+    """Per-body XP table from ``process['xp_to_next']``, else the global
+    XP_TO_NEXT.
+
+    A body that declares the key (even as empty ``{}``) overrides the global
+    table; an empty table makes EVERY level a ceiling — no XP advance, pure
+    material/trial gating (the 9-stage capstone model).
+    """
+    if process is not None and "xp_to_next" in process:
+        return {int(k): v for k, v in process["xp_to_next"].items()}
+    return XP_TO_NEXT
+
+
 def effective_stat_bonuses(const_data: dict, level: int) -> dict:
     """Compose a constitution's flat ``stat_bonuses`` with its process block.
 
@@ -115,14 +159,19 @@ def effective_effects(const_data: dict, level: int) -> list[str]:
     return out
 
 
-def xp_to_next(level: int) -> int | None:
-    """XP needed to advance from ``level``; None at ceilings 2/5/8 and MAX 9."""
-    return XP_TO_NEXT.get(level)
+def xp_to_next(level: int, process: dict | None = None) -> int | None:
+    """XP needed to advance from ``level``; None at ceilings and MAX.
+
+    ``process`` (a body's ``const_data['process']``) overrides the global XP
+    table when it declares ``xp_to_next``; default ``None`` → global table.
+    """
+    return xp_to_next_table_for(process).get(level)
 
 
-def is_ceiling(level: int) -> bool:
-    """True if ``level`` is a gated ceiling (2, 5, 8)."""
-    return level in CEILINGS
+def is_ceiling(level: int, process: dict | None = None) -> bool:
+    """True if ``level`` is a gated ceiling. ``process`` overrides the global
+    ceilings (2, 5, 8) when the body declares its own; default → global."""
+    return level in ceilings_for(process)
 
 
 def band_label(level: int) -> tuple[str, str]:
@@ -130,22 +179,29 @@ def band_label(level: int) -> tuple[str, str]:
     return BAND_LABELS[band_of(level)]
 
 
-def apply_combat_xp(level: int, xp: int, gained: int) -> tuple[int, int, bool]:
+def apply_combat_xp(
+    level: int, xp: int, gained: int, process: dict | None = None,
+) -> tuple[int, int, bool]:
     """Add combat ``gained`` XP and roll up levels within the current band.
 
-    Stops at a ceiling (2/5/8) or MAX_LEVEL. WHY: ceilings are trial+material
-    gated breakthroughs — XP alone cannot cross them. On reaching a stop,
-    surplus XP is discarded (locked decision): returns the stop level with
-    ``xp=0`` and ``at_ceiling=True``. Within a band, leftover XP carries into
-    the next level normally.
+    Stops at a ceiling or MAX_LEVEL. WHY: ceilings are trial+material gated
+    breakthroughs — XP alone cannot cross them. On reaching a stop, surplus XP
+    is discarded (locked decision): returns the stop level with ``xp=0`` and
+    ``at_ceiling=True``. Within a band, leftover XP carries into the next level
+    normally.
+
+    ``process`` overrides the XP table per-body; with an empty per-body table
+    (the pure-material capstone), EVERY level is an immediate ceiling so no XP
+    ever advances. Default ``None`` → global table (legacy behavior).
 
     Returns ``(new_level, new_xp, at_ceiling)``.
     """
+    xp_table = xp_to_next_table_for(process)
     new_level = level
     new_xp = xp + gained
 
     while True:
-        needed = XP_TO_NEXT.get(new_level)
+        needed = xp_table.get(new_level)
         if needed is None:
             # At a ceiling or MAX: no XP transition exists. Discard overshoot.
             return new_level, 0, True
@@ -165,13 +221,15 @@ def combat_xp_gain(grade: str, won: bool) -> int:
     return round(flat * XP_GRADE_SCALE.get(grade, 0.0))
 
 
-def breakthrough_chance(gate_level: int, fails: int, ho_the_phu: bool) -> float:
+def breakthrough_chance(
+    gate_level: int, fails: int, ho_the_phu: bool, process: dict | None = None,
+) -> float:
     """Success probability for the breakthrough at ``gate_level``.
 
     ``base_success + fails*pity_per_fail + Hộ Thể Phù bonus``, clamped to
-    [0.0, 1.0]. ``gate_level`` must be a key in GATES.
+    [0.0, 1.0]. ``gate_level`` must be a key in the (per-body or global) gates.
     """
-    gate = GATES[gate_level]
+    gate = gates_for(process)[gate_level]
     chance = gate["base_success"] + fails * gate["pity_per_fail"]
     if ho_the_phu:
         chance += HO_THE_PHU_BONUS
@@ -184,6 +242,7 @@ def resolve_breakthrough(
     ho_the_phu: bool,
     dinh_the_chau: bool,
     roll: float,
+    process: dict | None = None,
 ) -> dict:
     """Resolve one breakthrough attempt at ``gate_level`` against ``roll``.
 
@@ -193,10 +252,12 @@ def resolve_breakthrough(
     - Fail: level unchanged, fails incremented, gate stack consumed UNLESS
       Định Thể Châu refunds it.
     - Hộ Thể Phù is consumed on every attempt; Định Thể Châu only on a fail.
+
+    ``process`` selects the per-body gate table (default → global GATES).
     """
-    gate = GATES[gate_level]
+    gate = gates_for(process)[gate_level]
     qty = gate["qty"]
-    chance = breakthrough_chance(gate_level, fails, ho_the_phu)
+    chance = breakthrough_chance(gate_level, fails, ho_the_phu, process)
     success = roll < chance
 
     if success:
@@ -222,14 +283,15 @@ def resolve_breakthrough(
     }
 
 
-def progress_summary(level: int, xp: int) -> dict:
+def progress_summary(level: int, xp: int, process: dict | None = None) -> dict:
     """Pure UI snapshot of a single constitution's progression.
 
     ``ratio`` is the bar fill in [0, 1]; at a ceiling/MAX (``xp_next is None``)
-    it reads full.
+    it reads full. ``process`` selects the per-body XP/ceiling tables (default →
+    global).
     """
     vi, en = band_label(level)
-    xp_next = xp_to_next(level)
+    xp_next = xp_to_next(level, process)
     if xp_next is None:
         ratio = 1.0
     else:
@@ -241,7 +303,7 @@ def progress_summary(level: int, xp: int) -> dict:
         "cap": MAX_LEVEL,
         "xp": xp,
         "xp_next": xp_next,
-        "at_ceiling": is_ceiling(level),
+        "at_ceiling": is_ceiling(level, process),
         "ratio": ratio,
     }
 
@@ -252,19 +314,22 @@ def breakthrough_preview(
     owned_gate_qty: int,
     ho_the_phu: bool,
     dinh_the_chau: bool,
+    process: dict | None = None,
 ) -> dict:
     """Pure preview of the breakthrough at ``level`` for the UI.
 
-    Returns ``{at_gate: False}`` when ``level`` is not a ceiling. Otherwise
-    reports the gate item requirement, whether the player holds enough, the
-    success % (rounded, factoring pity + Hộ Thể Phù), and the trial tier.
-    ``dinh_the_chau`` doesn't move ``success_pct`` — it only refunds on
-    failure — but is accepted for a symmetric call site.
+    Returns ``{at_gate: False}`` when ``level`` is not a gate. Otherwise reports
+    the gate item requirement, whether the player holds enough, the success %
+    (rounded, factoring pity + Hộ Thể Phù), and the trial tier. ``dinh_the_chau``
+    doesn't move ``success_pct`` — it only refunds on failure — but is accepted
+    for a symmetric call site. ``process`` selects the per-body gate table
+    (default → global GATES).
     """
-    if level not in GATES:
+    gates = gates_for(process)
+    if level not in gates:
         return {"at_gate": False}
 
-    gate = GATES[level]
+    gate = gates[level]
     required_qty = gate["qty"]
     return {
         "at_gate": True,
@@ -272,7 +337,7 @@ def breakthrough_preview(
         "required_qty": required_qty,
         "owned_qty": owned_gate_qty,
         "has_enough": owned_gate_qty >= required_qty,
-        "success_pct": round(breakthrough_chance(level, gate_fails, ho_the_phu) * 100),
+        "success_pct": round(breakthrough_chance(level, gate_fails, ho_the_phu, process) * 100),
         "trial_tier": gate["trial_tier"],
     }
 
@@ -285,6 +350,7 @@ def resolve_constitution_breakthrough(
     use_dinh_the_chau: bool,
     trial_won: bool,
     roll: float,
+    process: dict | None = None,
 ) -> dict:
     """Resolve one full Constitution Process breakthrough attempt.
 
@@ -313,7 +379,8 @@ def resolve_constitution_breakthrough(
     chance_used}`` on SUCCESS/FAIL. The ``consumed`` map is keyed by the gate
     item plus the two optional aids (``0`` qty when not consumed).
     """
-    if level not in GATES:
+    _gates = gates_for(process)
+    if level not in _gates:
         return {"outcome": "NOT_AT_GATE"}
 
     # Losing the trial forfeits nothing — the trial is the gate to even attempt
@@ -321,14 +388,14 @@ def resolve_constitution_breakthrough(
     if not trial_won:
         return {"outcome": "TRIAL_LOST"}
 
-    gate = GATES[level]
+    gate = _gates[level]
     gate_item = gate["item_key"]
     required_qty = gate["qty"]
 
     if owned_gate_qty < required_qty:
         return {"outcome": "NOT_ENOUGH_MATERIALS"}
 
-    chance = breakthrough_chance(level, gate_fails, use_ho_the_phu)
+    chance = breakthrough_chance(level, gate_fails, use_ho_the_phu, process)
     success = roll < chance
 
     if success:

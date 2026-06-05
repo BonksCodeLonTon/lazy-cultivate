@@ -296,12 +296,15 @@ async def _process_snapshot(player_id: int, const_key: str) -> dict:
     """
     from src.game.constants.constitution_process import (
         DINH_THE_CHAU_KEY,
-        GATES,
         HO_THE_PHU_KEY,
     )
+    from src.game.systems.constitution_process import gates_for
     from src.db.repositories import constitution_process as cp_repo
 
-    wanted = {g["item_key"] for g in GATES.values()}
+    # Per-body gate items (a capstone gates with its own mats at every level) +
+    # the global gate items, so owned-qty reads cover whatever this body needs.
+    process = (registry.get_constitution(const_key) or {}).get("process")
+    wanted = {g["item_key"] for g in gates_for(process).values()}
     wanted |= {HO_THE_PHU_KEY, DINH_THE_CHAU_KEY, HOAN_THE_TINH_KEY}
 
     async with get_session() as session:
@@ -334,15 +337,18 @@ def _milestone_passive_names(const_data: dict, level: int) -> list[str]:
     return names
 
 
-def _at_full_gate(snap: dict) -> bool:
-    """True when the active body sits at a ceiling (2/5/8) ready to Đột Phá.
+def _at_full_gate(snap: dict, const_data: dict | None = None) -> bool:
+    """True when the active body sits at a gate ready to Đột Phá.
 
     Ceilings cap XP rollover so reaching one means ``xp`` is already maxed —
-    ``level in GATES`` is the sufficient condition the ⚔️ button gates on.
+    ``level in gates`` is the sufficient condition the ⚔️ button gates on.
+    ``const_data`` selects the per-body gate table (a 9-stage capstone gates at
+    every level); default → global gates.
     """
-    from src.game.constants.constitution_process import GATES
+    from src.game.systems.constitution_process import gates_for
 
-    return snap["level"] in GATES
+    process = (const_data or {}).get("process")
+    return snap["level"] in gates_for(process)
 
 
 def _process_section_lines(const_data: dict, snap: dict) -> list[str]:
@@ -356,7 +362,7 @@ def _process_section_lines(const_data: dict, snap: dict) -> list[str]:
     if not const_data.get("process"):
         return ["\n**🌀 Tiến Trình:** *chưa có tiến trình (Thể Chất phẳng).*"]
 
-    summ = progress_summary(snap["level"], snap["xp"])
+    summ = progress_summary(snap["level"], snap["xp"], const_data.get("process"))
     bar = progress_bar(int(round(summ["ratio"] * 100)), 100, 12)
     if summ["xp_next"] is not None:
         xp_part = f"{summ['xp']}/{summ['xp_next']}"
@@ -1227,10 +1233,11 @@ def _breakthrough_embed(
 
     level = snap["level"]
     owned = snap["owned"]
+    process = const_data.get("process")
     pv = breakthrough_preview(
         level, snap["gate_fails"],
-        owned.get(_gate_item_key(level), 0),
-        use_ho_the_phu, use_dinh_the_chau,
+        owned.get(_gate_item_key(level, process), 0),
+        use_ho_the_phu, use_dinh_the_chau, process,
     )
 
     embed = base_embed(
@@ -1269,11 +1276,14 @@ def _breakthrough_embed(
     return embed
 
 
-def _gate_item_key(level: int) -> str:
-    """Gate item key for a ceiling level, or "" when not a gate."""
-    from src.game.constants.constitution_process import GATES
+def _gate_item_key(level: int, process: dict | None = None) -> str:
+    """Gate item key for a ceiling level, or "" when not a gate.
 
-    gate = GATES.get(level)
+    ``process`` selects the per-body gate table; default → global gates.
+    """
+    from src.game.systems.constitution_process import gates_for
+
+    gate = gates_for(process).get(level)
     return gate["item_key"] if gate else ""
 
 
@@ -1304,7 +1314,7 @@ async def _open_breakthrough(
     view = BreakthroughTrialView(
         discord_id, const_key, back_fn, snap,
         use_ho_the_phu=use_ho_the_phu, use_dinh_the_chau=use_dinh_the_chau,
-        can_attempt=_at_full_gate(snap),
+        can_attempt=_at_full_gate(snap, const_data),
     )
     await interaction.edit_original_response(embed=embed, view=view)
 
@@ -1425,7 +1435,7 @@ async def _run_breakthrough_trial(
         apply_breakthrough, load_constitution_levels,
     )
     from src.db.repositories.player_repo import _player_to_model
-    from src.game.constants.constitution_process import GATES
+    from src.game.systems.constitution_process import gates_for
     from src.game.systems.character_stats import (
         active_formation_gem_keys, active_formation_gem_map, compute_combat_stats,
     )
@@ -1451,7 +1461,8 @@ async def _run_breakthrough_trial(
         # Re-validate the gate from authoritative storage before fighting.
         snap = await _process_snapshot(player.id, const_key)
         level = snap["level"]
-        if level not in GATES:
+        _gates = gates_for(const_data.get("process"))
+        if level not in _gates:
             await interaction.edit_original_response(
                 embed=error_embed("Thể Chất chưa đến ngưỡng Đột Phá."), view=None,
             )
@@ -1487,7 +1498,7 @@ async def _run_breakthrough_trial(
     )
 
     # Trial enemy: element-specific block if registered, else the default tier.
-    tier = GATES[level]["trial_tier"]
+    tier = _gates[level]["trial_tier"]
     elem = const_data.get("element")
     trial_key = f"cons_trial_{elem}_t{tier}" if elem else f"cons_trial_default_t{tier}"
     enemy_c = build_enemy_combatant(trial_key, realm_total)
@@ -1826,7 +1837,7 @@ async def _open_detail(
         at_gate=bool(
             process_snap
             and const_data.get("process")
-            and _at_full_gate(process_snap)
+            and _at_full_gate(process_snap, const_data)
         ),
         can_swap=is_primary,
     )
