@@ -1,1 +1,14 @@
-[]
+[{
+  "key":"TheChat_ThienLoiCuong","vi":"Thiên Lôi Cường Thể","en":"Heaven Thunder Strong Body",
+  "element":"loi","rarity":"legendary","roll_weight":0,"special_requirements":null,
+  "cost":{"merit":60000,"stones":0},"materials":{},
+  "description_vi":"Thân luyện Thiên Lôi Cường — sấm sét quán thân. Mỗi đòn giật điện, mỗi Bạo Kích tê liệt; càng nhanh hơn địch càng nặng đòn, đến khi lôi điện hóa thần, 30% sát thương Lôi xuyên thẳng thành Sát Thương Chuẩn.",
+  "stat_bonuses":{"matk_pct":0.07,"spd_pct":0.06,"crit_rating":110,"shock_on_hit_pct":0.50,"dot_dmg_bonus":0.08,"loi_te_liet_on_crit_chance":0.10,"loi_charge_enabled":true},
+  "process":{"max_level":9,"milestones":[1,3,6,9],
+    "per_level_growth":{"matk_pct":0.004,"spd_pct":0.004,"crit_rating":18},
+    "levels":{
+      "1":{"passive_vi":"Thiên Lôi Khí Thể","passive_en":"Heaven Thunder Qi Body","description_vi":"Đòn đánh 50% Sốc Điện; mỗi Bạo Kích 10% Tê Liệt (2 lượt). Mỗi lần DoT Lôi tick: +1 Tích Trữ (tối đa 10) → Lôi Bạo: đòn miễn phí 70% Pháp Công Sát Thương Chuẩn, reset.","stat_bonuses":{},"effects":["BuffThienLoiKhiThe"]},
+      "3":{"passive_vi":"Lôi Khí Bạo Phát","passive_en":"Thunder-Qi Eruption","description_vi":"Mỗi 10 Tốc Độ hơn địch → +5% sát thương cuối (tối đa +50%).","stat_bonuses":{"matk_pct":0.05,"crit_rating":80,"loi_spd_advantage_per_10":0.05,"loi_spd_advantage_cap":0.50},"effects":["BuffLoiKhiBaoPhat"]},
+      "6":{"passive_vi":"Điện Quang Phản Ứng","passive_en":"Lightning Reflex","description_vi":"Khi Bạo Kích HOẶC né: tự phóng đòn Sốc Điện phụ (60% sức).","stat_bonuses":{"spd_pct":0.05,"crit_rating":80,"loi_reflex_bonus_attack":true},"effects":["BuffDienQuangPhanUng"]},
+      "9":{"passive_vi":"Lôi Điện Hóa Thần","passive_en":"Lightning Apotheosis","description_vi":"Mọi sát thương hệ Lôi (đòn đánh + DoT) gây thêm 30% dưới dạng Sát Thương Chuẩn (xuyên kháng).","stat_bonuses":{"matk_pct":0.07,"crit_rating":100,"loi_bonus_true_dmg_pct":0.30},"effects":["BuffLoiDienHoaThan"]}
+    }}}]

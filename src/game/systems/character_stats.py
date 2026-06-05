@@ -108,6 +108,13 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("phong_dodge_crit_applies_an_phong", "phong_dodge_crit_applies_an_phong", bool),
     ("phong_unevadable_interval",         "phong_unevadable_interval",         int),
     ("phong_cuon_bay_on_crit_chance",     "phong_cuon_bay_on_crit_chance",     float),
+    # Thiên Lôi Cường Thể (Lôi shock/speed nuker)
+    ("loi_te_liet_on_crit_chance",        "loi_te_liet_on_crit_chance",        float),
+    ("loi_charge_enabled",                "loi_charge_enabled",                bool),
+    ("loi_spd_advantage_per_10",          "loi_spd_advantage_per_10",          float),
+    ("loi_spd_advantage_cap",             "loi_spd_advantage_cap",             float),
+    ("loi_reflex_bonus_attack",           "loi_reflex_bonus_attack",           bool),
+    ("loi_bonus_true_dmg_pct",            "loi_bonus_true_dmg_pct",            float),
     # Quang silence-on-crit — the pre-existing pattern these mirror.
     ("silence_on_crit_pct",              "silence_on_crit_pct",               float),
     # Hoàng Cổ Thánh Thể (Universal Saint Body) — config flags.
@@ -390,6 +397,13 @@ class CombatStats:
     phong_dodge_crit_applies_an_phong: bool = False
     phong_unevadable_interval: int = 0
     phong_cuon_bay_on_crit_chance: float = 0.0
+    #   Thiên Lôi Cường Thể (Lôi shock/speed nuker)
+    loi_te_liet_on_crit_chance: float = 0.0
+    loi_charge_enabled: bool = False
+    loi_spd_advantage_per_10: float = 0.0
+    loi_spd_advantage_cap: float = 0.0
+    loi_reflex_bonus_attack: bool = False
+    loi_bonus_true_dmg_pct: float = 0.0
     #   Hoàng Cổ Thánh Thể (Universal Saint Body)
     saint_qilin_cleanse_chance: float = 0.0
     saint_periodic_crit_interval: int = 0

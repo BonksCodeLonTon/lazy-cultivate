@@ -727,6 +727,16 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "phong_dodge_crit_applies_an_phong",
     "phong_unevadable_interval",
     "phong_cuon_bay_on_crit_chance",
+    # Thiên Lôi Cường Thể (Lôi shock/speed nuker) — config keys consumed by the
+    # crit POST_HIT (te-liet + reflex), the DoT-tick loop (charge burst + true
+    # rider), combat_hit (speed-advantage), and the L9 true-dmg rider. The
+    # ``loi_charge`` counter is runtime-only (Combatant) and never in stat_bonus.
+    "loi_te_liet_on_crit_chance",
+    "loi_charge_enabled",
+    "loi_spd_advantage_per_10",
+    "loi_spd_advantage_cap",
+    "loi_reflex_bonus_attack",
+    "loi_bonus_true_dmg_pct",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks

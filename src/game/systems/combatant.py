@@ -740,6 +740,23 @@ class Combatant:
     # 0.0 → inert.
     phong_cuon_bay_on_crit_chance: float = 0.0
 
+    # ── Lôi (Thiên Lôi Cường) build — shock/speed nuker ──────────────────────
+    # L1: per-crit chance to inflict DebuffTeLiet (paralysis). 0.0 → inert.
+    loi_te_liet_on_crit_chance: float = 0.0
+    # L1 Lôi Điện Tích Trữ — each Lôi DoT tick the applier causes banks a charge
+    # (cap 10); at 10 the applier auto-fires a 70%-matk TRUE burst + resets.
+    loi_charge_enabled: bool = False
+    loi_charge: int = 0  # runtime counter (NOT a config key)
+    # L3 Lôi Khí Bạo Phát — +per_10 final-dmg for every 10 effective SPD over the
+    # target, capped at loi_spd_advantage_cap. Both 0 → inert.
+    loi_spd_advantage_per_10: float = 0.0
+    loi_spd_advantage_cap: float = 0.0
+    # L6 Điện Quang Phản Ứng — on crit OR dodge, auto-fire a bonus shock attack.
+    loi_reflex_bonus_attack: bool = False
+    # L9 Lôi Điện Hóa Thần — deal +this fraction of Lôi-element damage (skill hits
+    # + DoT ticks) as TRUE damage (pierces resistance). 0.0 → inert.
+    loi_bonus_true_dmg_pct: float = 0.0
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.

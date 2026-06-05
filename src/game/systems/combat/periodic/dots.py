@@ -71,6 +71,34 @@ def _process_dots(ctx: TurnContext) -> None:
     for effect_key, dot_dmg, is_crit in get_periodic_damage(combatant, ctx.rng):
         combatant.take_damage(dot_dmg, is_dot=True)
 
+        # Thiên Lôi Cường — Lôi-DoT extras (the APPLIER is ``opponent`` here).
+        # When the body applied this Lôi-element DoT: (a) L9 Lôi Điện Hóa Thần
+        # true rider — +loi_bonus_true_dmg_pct of the tick as true damage; (b)
+        # Lôi Điện Tích Trữ — +1 charge per Lôi tick (cap 10), bursting a
+        # 70%-matk true hit at cap then resetting. Inert for non-Lôi appliers.
+        if opponent is not None and opponent.is_alive():
+            _loi_meta = EFFECTS.get(effect_key)
+            if _loi_meta is not None and _loi_meta.dot_element == "loi":
+                if opponent.loi_bonus_true_dmg_pct > 0 and combatant.is_alive():
+                    _loi_rider = int(dot_dmg * opponent.loi_bonus_true_dmg_pct)
+                    if _loi_rider > 0:
+                        combatant.take_damage(_loi_rider, bypass_shield=True)
+                        ctx.log.append(
+                            f"    🌐 **{opponent.name}** Lôi Điện Hóa Thần — "
+                            f"+{_loi_rider:,} Sát Thương Chuẩn (DoT Lôi)"
+                        )
+                if opponent.loi_charge_enabled:
+                    opponent.loi_charge = min(10, opponent.loi_charge + 1)
+                    if opponent.loi_charge >= 10 and combatant.is_alive():
+                        opponent.loi_charge = 0
+                        _loi_burst = max(1, int(0.70 * opponent.matk))
+                        combatant.take_damage(_loi_burst, bypass_shield=True)
+                        _loi_tag = colorize_damage(f"-{_loi_burst:,} HP", "loi")
+                        ctx.log.append(
+                            f"  ⚡ **{opponent.name}** Lôi Bạo bùng nổ → "
+                            f"**{combatant.name}** {_loi_tag} (Sát Thương Chuẩn)"
+                        )
+
         # Applier-heal DoTs (Thực Hồn-class) — heal the STRONGEST applier of
         # this DoT for ``dot_applier_heal_pct × tick``. ``dot_dmg`` is the
         # post-boss-cap, post-crit tick, so the boss cap also bounds the heal.

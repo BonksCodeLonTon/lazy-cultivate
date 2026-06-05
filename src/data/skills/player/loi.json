@@ -1415,5 +1415,25 @@
     },
     "formation_key": null,
     "description_vi": "Quá Tải Lôi Bạo — tiêu hết tầng Sốc Điện trên địch: mỗi tầng +5% sát thương cuối và +4% xuyên Kháng Lôi cho đòn này. Đổi lại, mọi kỹ năng Lôi khác của người niệm bị khóa thêm 2 lượt hồi chiêu."
+  },
+  {
+    "key": "SkillLoiBonusShock",
+    "vi": "Điện Quang Phản Ứng (Phụ)",
+    "en": "Lightning Reflex Strike",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 0.6
+    },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 1,
+    "effects": [],
+    "formation_key": null,
+    "chain_only": true,
+    "description_vi": "Đòn phụ tự động từ Điện Quang Phản Ứng (Thiên Lôi Cường Thể L6). Không thể niệm trực tiếp."
   }
 ]

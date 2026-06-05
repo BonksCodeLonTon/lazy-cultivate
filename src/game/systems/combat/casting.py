@@ -568,6 +568,22 @@ def cast_skill(
                 # evades). Mirrors the ``proc_on_hits_taken`` pattern but
                 # reads target.evades_count.
                 session._fire_target_evades_procs(actor, target)
+                # Thiên Lôi Cường L6 — Điện Quang Phản Ứng: the DEFENDER (if it
+                # carries the Lôi body) fires a bonus shock at the attacker on a
+                # successful dodge. Gated inside ``not _suppress_extras`` so the
+                # bonus cast (itself _suppress_extras=True) can't re-trigger it.
+                if target.loi_reflex_bonus_attack and actor.is_alive():
+                    _loi_bonus = registry.get_skill("SkillLoiBonusShock")
+                    if _loi_bonus is not None:
+                        session.log.append(
+                            f"  ⚡ **{target.name}** Điện Quang Phản Ứng — "
+                            f"Sốc Điện phản né!"
+                        )
+                        cast_skill(
+                            session, target, actor,
+                            "SkillLoiBonusShock", _loi_bonus, 0,
+                            _suppress_extras=True,
+                        )
         else:
             # Target damage reduction → actor's HP/MP/evasion/shield/mana-stack scaling
             target_dr = effective_damage_reduction(target, target_mods)
@@ -739,6 +755,19 @@ def cast_skill(
                 target.take_damage(shielded_dmg)
             if bypass_dmg > 0:
                 target.take_damage(bypass_dmg, bypass_shield=True)
+            # Thiên Lôi Cường L9 — Lôi Điện Hóa Thần: deal +loi_bonus_true_dmg_pct
+            # of a Lôi-element hit's damage as TRUE damage (straight to HP, pierces
+            # resistance). Inert unless skill is Lôi AND the actor unlocked L9.
+            if (
+                skill_elem == "loi" and actor.loi_bonus_true_dmg_pct > 0
+                and dmg > 0 and target.is_alive()
+            ):
+                _loi_true = int(dmg * actor.loi_bonus_true_dmg_pct)
+                if _loi_true > 0:
+                    target.take_damage(_loi_true, bypass_shield=True)
+                    session.log.append(
+                        f"    🌐 Lôi Điện Hóa Thần — +{_loi_true:,} Sát Thương Chuẩn (xuyên kháng)"
+                    )
             dealt_total += dmg
             absorbed = shield_before - target.shield
             if absorbed > 0:

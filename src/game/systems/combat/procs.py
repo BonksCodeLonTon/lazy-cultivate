@@ -144,6 +144,41 @@ def run_on_hit_procs(
         else:
             target.apply_effect(EffectKey.CC_MUTED, default_duration(EffectKey.CC_MUTED))
             session.log.append(f"    ✨ Thánh Quang Chế Ngự — câm lặng kích hoạt!")
+    # ── Thiên Lôi Cường Thể (Lôi shock/speed nuker) ──────────────────────────
+    # L1 Tê Liệt on crit — chance-gated paralysis. Respects hard-CC immunity.
+    # Inert unless the actor carries the L1 chance (non-Lôi builds never do).
+    if (
+        is_crit and actor.loi_te_liet_on_crit_chance > 0
+        and session.rng.random() < actor.loi_te_liet_on_crit_chance
+    ):
+        if target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc"):
+            session.log.append(f"    🛡️ **{target.name}** miễn dịch Tê Liệt!")
+        else:
+            from .casting import inflict_debuff
+            _tl_key = EffectKey.DEBUFF_TE_LIET.value
+            _tl_meta = EFFECTS.get(_tl_key)
+            if _tl_meta is not None:
+                inflict_debuff(session, _tl_key, _tl_meta, target, actor=actor)
+                session.log.append(f"    ⚡ Tê Liệt kích hoạt!")
+    # L6 Điện Quang Phản Ứng — bonus shock attack on CRIT (the dodge trigger
+    # lives in casting.py's on-evade block). RECURSION-GUARDED: the bonus shock
+    # routes back through run_on_hit_procs with skill_key == "SkillLoiBonusShock"
+    # — skipping it here is what stops the reflex from re-firing without bound.
+    if (
+        is_crit and actor.loi_reflex_bonus_attack
+        and skill_key != "SkillLoiBonusShock" and target.is_alive()
+    ):
+        from src.game.systems.combat.casting import cast_skill as _loi_cast
+        from src.data.registry import registry as _loi_reg
+        _bonus = _loi_reg.get_skill("SkillLoiBonusShock")
+        if _bonus is not None:
+            session.log.append(
+                f"  ⚡ **{actor.name}** Điện Quang Phản Ứng — Sốc Điện phụ!"
+            )
+            _loi_cast(
+                session, actor, target,
+                "SkillLoiBonusShock", _bonus, 0, _suppress_extras=True,
+            )
     # ── Kim killing-body sweep (Thiên Cương Phá Sát Thể) ─────────────────────
     # All three blocks are no-ops unless the actor carries the Kim body's
     # effects/flags (enemies, flag-off builds, and non-Kim players never own

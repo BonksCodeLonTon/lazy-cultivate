@@ -2220,5 +2220,53 @@
     "cleansable": false,
     "emoji": "💨",
     "duration": 999
+  },
+  {
+    "key": "BuffThienLoiKhiThe",
+    "vi": "Thiên Lôi Khí Thể",
+    "en": "Heaven Thunder Qi Body",
+    "kind": "buff",
+    "description_vi": "Đòn đánh 50% Sốc Điện; mỗi Bạo Kích 10% Tê Liệt. Mỗi DoT Lôi tick: tích Tích Trữ (tối đa 10) → Lôi Bạo đòn miễn phí.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚡",
+    "duration": 999
+  },
+  {
+    "key": "BuffLoiKhiBaoPhat",
+    "vi": "Lôi Khí Bạo Phát",
+    "en": "Thunder-Qi Eruption",
+    "kind": "buff",
+    "description_vi": "Mỗi 10 Tốc Độ hơn địch → +5% sát thương cuối (tối đa +50%).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌩️",
+    "duration": 999
+  },
+  {
+    "key": "BuffDienQuangPhanUng",
+    "vi": "Điện Quang Phản Ứng",
+    "en": "Lightning Reflex",
+    "kind": "buff",
+    "description_vi": "Khi Bạo Kích HOẶC né: tự phóng đòn Sốc Điện phụ (60% sức).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "✨",
+    "duration": 999
+  },
+  {
+    "key": "BuffLoiDienHoaThan",
+    "vi": "Lôi Điện Hóa Thần",
+    "en": "Lightning Apotheosis",
+    "kind": "buff",
+    "description_vi": "Mọi sát thương hệ Lôi (đòn đánh + DoT) gây thêm 30% dưới dạng Sát Thương Chuẩn.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌐",
+    "duration": 999
   }
 ]

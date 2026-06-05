@@ -19,7 +19,7 @@ from src.game.constants.balance import (
     SPD_EVASION_PER_POINT,
 )
 from src.game.constants.effects import EffectKey
-from src.game.engine.effects import EFFECTS, EffectKind
+from src.game.engine.effects import EFFECTS, EffectKind, get_combat_modifiers
 from src.game.engine.stats import AttackStats, DefenseStats
 
 if TYPE_CHECKING:
@@ -132,6 +132,21 @@ def build_attack_stats(
                 + float(actor_mods.get("phong_eva_conv_uplift", 0.0))
             )
             final_dmg_bonus += (_eva_total / 300.0) * _conv_rate
+    # Thiên Lôi Cường L3 — Lôi Khí Bạo Phát: speed-advantage. +per_10 final-dmg
+    # for every 10 EFFECTIVE SPD the actor has over the target (folds spd_pct
+    # mods on both sides — the body's +spd, the enemy's slows), capped. This is
+    # a cross-combatant comparison (needs the target's spd), so it lives here in
+    # build_attack_stats rather than a single-combatant scaling_rule. Inert (0
+    # field) for every non-Lôi build.
+    if actor.loi_spd_advantage_per_10 > 0:
+        _a_spd = actor.spd * (1.0 + actor_mods.get("spd_pct", 0.0))
+        _t_spd = target.spd * (1.0 + get_combat_modifiers(target).get("spd_pct", 0.0))
+        _spd_gap = _a_spd - _t_spd
+        if _spd_gap > 0:
+            final_dmg_bonus += min(
+                actor.loi_spd_advantage_cap,
+                (_spd_gap / 10.0) * actor.loi_spd_advantage_per_10,
+            )
     # Thiên Ma Đồng Hóa (L6) — while in the Nhập Ma trance, every hit gains a
     # flat final-damage bonus. Gated on the L6+ magnitude AND the active trance,
     # so it's inert for every other build (default field 0.0 / no buff).
