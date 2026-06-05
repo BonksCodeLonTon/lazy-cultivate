@@ -487,6 +487,17 @@ def cast_skill(
                 attack_stats = _dc_replace(attack_stats, force_crit=True)
             defense_stats = build_defense_stats(target, target_mods, actor, spd_evasion_bonus)
             pen_pct = lc_effects.get_pen_pct(actor, session.rng, session.log)
+            # Hỗn Nguyên Vô Cực — Vạn Pháp Vô Cản. A per-cast chance to treat the
+            # target's elemental resistance as 0% (full elemental penetration for
+            # this hit). Inert for every other build (chance 0.0).
+            if (
+                actor.omni_res_ignore_chance > 0
+                and session.rng.random() < actor.omni_res_ignore_chance
+            ):
+                pen_pct = 1.0
+                session.log.append(
+                    f"  ♾️ **{actor.name}** Vạn Pháp Vô Cản — xuyên thủng kháng tính địch!"
+                )
             result = calculate_damage(skill_obj, attack_stats, defense_stats, session.rng, pen_pct)
         finally:
             # Restore actor stats mutated pre-roll by element_pen_self,

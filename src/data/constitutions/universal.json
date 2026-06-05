@@ -70,4 +70,90 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_HonNguyenVoCuc",
+    "vi": "Hỗn Nguyên Vô Cực Thể",
+    "en": "Chaos-Origin Infinite Body",
+    "element": "universal",
+    "rarity": "mythic",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 120000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân dung hợp vạn nguyên — chín hành quy nhất. Không chuyên một hệ, mà thông tỏ cả chín: mỗi đòn đánh gom toàn bộ uy lực vạn nguyên đổ vào một kích. Càng chiến càng cộng hưởng, vô cực vô tận — vạn pháp quy tông.",
+    "stat_bonuses": {
+      "atk_pct": 0.04,
+      "matk_pct": 0.04,
+      "hp_pct": 0.05,
+      "def_pct": 0.03,
+      "res_all": 0.12,
+      "element_dmg_bonus": {
+        "kim": 0.02, "moc": 0.02, "thuy": 0.02, "hoa": 0.02, "tho": 0.02,
+        "loi": 0.02, "phong": 0.02, "quang": 0.02, "am": 0.02
+      },
+      "omni_sum_element_dmg": true
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": {
+        "atk_pct": 0.003, "matk_pct": 0.003, "hp_pct": 0.004, "def_pct": 0.002
+      },
+      "levels": {
+        "1": {
+          "passive_vi": "Vạn Nguyên Hợp Nhất",
+          "passive_en": "Myriad Origins United",
+          "description_vi": "Vạn nguyên hợp nhất — thông tỏ chín hành. Mỗi kỹ năng (bất kể thuộc tính) cộng dồn TOÀN BỘ tăng ích sát thương của cả chín nguyên tố (khởi +2%/nguyên tố → +18% ST cuối). Nền tảng cân bằng, +12% kháng toàn hệ.",
+          "stat_bonuses": {},
+          "effects": ["BuffVanNguyenHopNhat"]
+        },
+        "3": {
+          "passive_vi": "Vạn Hành Tinh Thông",
+          "passive_en": "Myriad Phases Mastered",
+          "description_vi": "Vạn hành tinh thông — đạo hạnh chín hành thâm sâu thêm: mỗi nguyên tố +2% (→+4%/nguyên tố, tổng +36% ST cuối); +Bạo Kích, +Công, +Pháp.",
+          "stat_bonuses": {
+            "crit_rating": 90,
+            "atk_pct": 0.03,
+            "matk_pct": 0.03,
+            "element_dmg_bonus": {
+              "kim": 0.02, "moc": 0.02, "thuy": 0.02, "hoa": 0.02, "tho": 0.02,
+              "loi": 0.02, "phong": 0.02, "quang": 0.02, "am": 0.02
+            }
+          },
+          "effects": ["BuffVanHanhTinhThong"]
+        },
+        "6": {
+          "passive_vi": "Vạn Pháp Phá Cản",
+          "passive_en": "Myriad Laws Pierce All",
+          "description_vi": "Vạn pháp phá cản — chín hành +1% (→+5%/nguyên tố, tổng +45% ST cuối); +HP, +Thủ. Mỗi đòn đánh 20% xem như kháng tính địch bằng 0% — vạn nguyên xuyên thấu vạn vật.",
+          "stat_bonuses": {
+            "hp_pct": 0.05,
+            "def_pct": 0.04,
+            "element_dmg_bonus": {
+              "kim": 0.01, "moc": 0.01, "thuy": 0.01, "hoa": 0.01, "tho": 0.01,
+              "loi": 0.01, "phong": 0.01, "quang": 0.01, "am": 0.01
+            },
+            "omni_res_ignore_chance": 0.20
+          },
+          "effects": ["BuffVanPhapPhaCan"]
+        },
+        "9": {
+          "passive_vi": "Vạn Pháp Quy Tông",
+          "passive_en": "All Laws Return to One",
+          "description_vi": "Vạn pháp quy tông — đạo hạnh viên mãn: chín hành +1% (→+6%/nguyên tố, tổng +54% ST cuối lên MỌI kỹ năng, tính theo thuộc tính chiêu thức); xuyên kháng tăng lên 40%. +Công, +Pháp.",
+          "stat_bonuses": {
+            "atk_pct": 0.04,
+            "matk_pct": 0.04,
+            "element_dmg_bonus": {
+              "kim": 0.01, "moc": 0.01, "thuy": 0.01, "hoa": 0.01, "tho": 0.01,
+              "loi": 0.01, "phong": 0.01, "quang": 0.01, "am": 0.01
+            },
+            "omni_res_ignore_chance": 0.20
+          },
+          "effects": ["BuffVanPhapQuyTong"]
+        }
+      }
+    }
+  }
 ]

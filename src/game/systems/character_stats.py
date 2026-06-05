@@ -133,6 +133,12 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("saint_realm_enabled",              "saint_realm_enabled",               bool),
     ("saint_realm_interval",             "saint_realm_interval",              int),
     ("saint_realm_duration",             "saint_realm_duration",              int),
+    # Hỗn Nguyên Vô Cực Thể (Universal omni-element amplifier) — config flags.
+    # ``omni_sum_element_dmg`` folds the WHOLE element_dmg_bonus dict into the
+    # skill's own-element bonus (Vạn Nguyên Quy Nhất). ``omni_res_ignore_chance``
+    # is the per-cast chance to zero the target's elemental resistance.
+    ("omni_sum_element_dmg",             "omni_sum_element_dmg",              bool),
+    ("omni_res_ignore_chance",           "omni_res_ignore_chance",           float),
 ]
 
 
@@ -425,6 +431,9 @@ class CombatStats:
     saint_realm_enabled: bool = False
     saint_realm_interval: int = 0
     saint_realm_duration: int = 0
+    #   Hỗn Nguyên Vô Cực Thể (Universal omni-element amplifier)
+    omni_sum_element_dmg: bool = False
+    omni_res_ignore_chance: float = 0.0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

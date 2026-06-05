@@ -777,6 +777,15 @@ class Combatant:
     # accumulates +5% final_dmg here (cap +50%). Runtime-only; read in combat_hit.
     quang_judgment_dmg_bonus: float = 0.0
 
+    # ── Hỗn Nguyên Vô Cực Thể (Universal omni-element amplifier) ──────────────
+    # ``omni_sum_element_dmg`` makes build_attack_stats fold the WHOLE
+    # ``element_dmg_bonus`` dict into the skill's OWN-element bonus — Vạn Nguyên
+    # Quy Nhất (a fire skill is paid the sum of every element's bonus, counted as
+    # fire damage). ``omni_res_ignore_chance`` is the per-cast chance to treat the
+    # target's elemental resistance as 0% (pen_pct → 1.0 in casting.py).
+    omni_sum_element_dmg: bool = False
+    omni_res_ignore_chance: float = 0.0
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.

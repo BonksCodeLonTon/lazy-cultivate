@@ -747,6 +747,11 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "quang_guardian_summon_matk_pct",
     "quang_judgment_strip_chance",
     "quang_judgment_applies_pha_giap",
+    # Hỗn Nguyên Vô Cực Thể (Universal omni-element amplifier) — config keys read
+    # off Combatant fields by combat_hit (the sum-all-elements branch) and by the
+    # cast damage roll (the res-ignore proc).
+    "omni_sum_element_dmg",
+    "omni_res_ignore_chance",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks

@@ -113,7 +113,15 @@ def build_attack_stats(
         final_dmg_bonus += actor_mods.get(f"dmg_bonus_{skill_element}", 0.0)
         # Permanent per-element dmg bonus from constitutions / equipment
         # (generic dict pickup — replaces per-element flat fields).
-        final_dmg_bonus += float(actor.element_dmg_bonus.get(skill_element, 0.0))
+        if actor.omni_sum_element_dmg:
+            # Hỗn Nguyên Vô Cực — Vạn Nguyên Quy Nhất. The body masters every
+            # element, so the skill's OWN-element bonus is the SUM of all nine
+            # elements' bonuses (a fire skill is paid hoa+moc+thuy+… as fire
+            # damage). The per-cast res-ignore (omni_res_ignore_chance) is handled
+            # separately in casting.py — this branch is purely the summed amp.
+            final_dmg_bonus += sum(actor.element_dmg_bonus.values())
+        else:
+            final_dmg_bonus += float(actor.element_dmg_bonus.get(skill_element, 0.0))
         # Phi Thiên Lăng Vân — L1 evasion→Phong conversion. PHONG skills only:
         # +``(eva_total / 300) × rate`` to final_dmg_bonus, NO cap. ``rate`` is
         # the Combatant base PLUS any per-300 uplift the BuffPhongTheTieuDao

@@ -2340,5 +2340,53 @@
     "cleansable": false,
     "emoji": "⚖️",
     "duration": 999
+  },
+  {
+    "key": "BuffVanNguyenHopNhat",
+    "vi": "Vạn Nguyên Hợp Nhất",
+    "en": "Myriad Origins United",
+    "kind": "buff",
+    "description_vi": "Thông tỏ chín hành — mỗi kỹ năng cộng dồn toàn bộ tăng ích sát thương của cả chín nguyên tố; +12% kháng toàn hệ.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "☯️",
+    "duration": 999
+  },
+  {
+    "key": "BuffVanHanhTinhThong",
+    "vi": "Vạn Hành Tinh Thông",
+    "en": "Myriad Phases Mastered",
+    "kind": "buff",
+    "description_vi": "Đạo hạnh chín hành thâm sâu — tổng tăng ích vạn nguyên dâng cao; +Bạo Kích, +Công, +Pháp.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 999
+  },
+  {
+    "key": "BuffVanPhapPhaCan",
+    "vi": "Vạn Pháp Phá Cản",
+    "en": "Myriad Laws Pierce All",
+    "kind": "buff",
+    "description_vi": "Vạn nguyên xuyên thấu — mỗi đòn đánh có cơ hội xem như kháng tính địch bằng 0%.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔆",
+    "duration": 999
+  },
+  {
+    "key": "BuffVanPhapQuyTong",
+    "vi": "Vạn Pháp Quy Tông",
+    "en": "All Laws Return to One",
+    "kind": "buff",
+    "description_vi": "Đạo hạnh viên mãn — chín hành quy nhất, mỗi kỹ năng cộng dồn toàn bộ tăng ích vạn nguyên; 40% xuyên thủng kháng tính địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "♾️",
+    "duration": 999
   }
 ]
