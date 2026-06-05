@@ -80,6 +80,15 @@ def _run_counter(
     cfg = block.get("counter")
     if not isinstance(cfg, dict) or not attacker.is_alive():
         return
+    # Optional ``chance`` gate (Phi Thiên Lăng Vân Lăng Vân Phản Kích). At 6
+    # Phong Vân stacks the counter is guaranteed (chance forced to 1.0).
+    # Absent ``chance`` (legacy evade_react buffs) → always fires.
+    chance = cfg.get("chance")
+    if chance is not None:
+        if defender.phong_van_stacks >= 6:
+            chance = 1.0
+        if float(chance) < 1.0 and session.rng.random() >= float(chance):
+            return
     element = str(cfg.get("element", "loi"))
     base = int(cfg.get("base_dmg", 0))
     matk_scale = float(cfg.get("matk_scale", 0.0))

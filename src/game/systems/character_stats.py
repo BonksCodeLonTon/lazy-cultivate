@@ -98,6 +98,16 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("tho_phys_immune_shield_gate",        "tho_phys_immune_shield_gate",        float),
     ("tho_auto_slow_enabled",              "tho_auto_slow_enabled",              bool),
     ("tho_earth_aura_shield_pct",          "tho_earth_aura_shield_pct",          float),
+    # Phi Thiên Lăng Vân Thể (Phong dodge-counter bruiser) — config flags.
+    # Runtime counters (phong_van_stacks, phong_crit_armed,
+    # phong_unevadable_armed, phong_skill_cast_counter) are Combatant-only
+    # and excluded here.
+    ("phong_eva_phong_dmg_per_300",       "phong_eva_phong_dmg_per_300",       float),
+    ("phong_van_dodge_stack",             "phong_van_dodge_stack",             bool),
+    ("phong_dodge_arms_crit",             "phong_dodge_arms_crit",             bool),
+    ("phong_dodge_crit_applies_an_phong", "phong_dodge_crit_applies_an_phong", bool),
+    ("phong_unevadable_interval",         "phong_unevadable_interval",         int),
+    ("phong_cuon_bay_on_crit_chance",     "phong_cuon_bay_on_crit_chance",     float),
     # Quang silence-on-crit — the pre-existing pattern these mirror.
     ("silence_on_crit_pct",              "silence_on_crit_pct",               float),
     # Hoàng Cổ Thánh Thể (Universal Saint Body) — config flags.
@@ -373,6 +383,13 @@ class CombatStats:
     tho_phys_immune_shield_gate: float = 0.0
     tho_auto_slow_enabled: bool = False
     tho_earth_aura_shield_pct: float = 0.0
+    #   Phi Thiên Lăng Vân Thể (Phong dodge-counter bruiser)
+    phong_eva_phong_dmg_per_300: float = 0.0
+    phong_van_dodge_stack: bool = False
+    phong_dodge_arms_crit: bool = False
+    phong_dodge_crit_applies_an_phong: bool = False
+    phong_unevadable_interval: int = 0
+    phong_cuon_bay_on_crit_chance: float = 0.0
     #   Hoàng Cổ Thánh Thể (Universal Saint Body)
     saint_qilin_cleanse_chance: float = 0.0
     saint_periodic_crit_interval: int = 0

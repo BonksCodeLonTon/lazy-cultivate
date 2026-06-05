@@ -716,6 +716,17 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "saint_realm_enabled",
     "saint_realm_interval",
     "saint_realm_duration",
+    # Phi Thiên Lăng Vân Thể (Phong dodge-counter bruiser) — config keys
+    # consumed by on-evade / on-hit hooks, cast_skill unevadable gate, and
+    # post-hit Cuốn Bay proc. Runtime counters (phong_van_stacks,
+    # phong_crit_armed, phong_unevadable_armed, phong_skill_cast_counter)
+    # are Combatant-only and never appear in stat_bonus.
+    "phong_eva_phong_dmg_per_300",
+    "phong_van_dodge_stack",
+    "phong_dodge_arms_crit",
+    "phong_dodge_crit_applies_an_phong",
+    "phong_unevadable_interval",
+    "phong_cuon_bay_on_crit_chance",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks

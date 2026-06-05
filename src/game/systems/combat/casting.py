@@ -283,6 +283,11 @@ def cast_skill(
             f"— +{bonus:,} ST (Cao Độ ×{_pd_alt})"
         )
     dealt_total = 0
+    # Phi Thiên Lăng Vân — L9 unevadable-arm consume flag. Set inside the
+    # damage block when this top-level cast spends the arm; read by the
+    # end-of-cast cadence block. Initialized here so support / 0-dmg casts
+    # (which skip the damage block) still resolve it cleanly.
+    _phong_bypass_this_cast = False
     # Cast context for the generic chain-skill cast_on triggers (crit / kill
     # / shield_break). Filled inside the damage block below; consumed by
     # ``cast_chain_skill`` at the bottom. Stays empty for support / 0-dmg
@@ -466,6 +471,11 @@ def cast_skill(
         skill_data = ctx.skill_data
 
         try:
+            # Phi Thiên Lăng Vân — L9 unevadable cadence: armed cast bypasses
+            # evasion entirely (inject bypass_evasion=True into the skill obj).
+            if not _suppress_extras and actor.phong_unevadable_armed:
+                _phong_bypass_this_cast = True
+                skill_data = {**skill_data, "bypass_evasion": True}
             skill_obj = _build_skill_obj(skill_key, skill_data, mp_cost, base_dmg_override=base_dmg)
             attack_stats = build_attack_stats(actor, target, actor_mods, skill_obj.element)
             # Per-skill ``force_crit: true`` — always crit (e.g. Hỏa Vân
@@ -521,6 +531,18 @@ def cast_skill(
                         f"    👤 **{target.name}** Quỷ Ảnh Mê Tung "
                         f"[×{target.quy_anh_stacks}/{cap}]"
                     )
+            # Phi Thiên Lăng Vân — L1 Phong Vân stack on dodge (+1, cap 6).
+            if target.phong_van_dodge_stack:
+                if target.phong_van_stacks < 6:
+                    target.phong_van_stacks += 1
+                    session.log.append(
+                        f"    🍃 **{target.name}** Phong Vân "
+                        f"[×{target.phong_van_stacks}/6]"
+                    )
+            # Phi Thiên Lăng Vân — L6 arm guaranteed crit on next cast.
+            if target.phong_dodge_arms_crit:
+                target.phong_crit_armed = True
+
             # Data-driven on-evade reactives — any active buff on the
             # defender carrying an ``evade_react`` block (or the legacy
             # ``proc_on_holder_evade_cast`` field) runs through the
@@ -972,6 +994,44 @@ def cast_skill(
             # Hoàng Cổ Thánh Thể L6 — single-use arm consumed on first landed hit.
             if actor.saint_crit_armed:
                 actor.saint_crit_armed = False
+            # Phi Thiên Lăng Vân L6 — consume dodge-armed crit on first landed hit.
+            if actor.phong_crit_armed:
+                actor.phong_crit_armed = False
+                # L6 Phi Thiên Hư Ảnh: armed crit → apply DebuffAnPhong to target.
+                if actor.phong_dodge_crit_applies_an_phong and result.is_crit:
+                    _an_phong_meta = EFFECTS.get(EffectKey.DEBUFF_AN_PHONG)
+                    if _an_phong_meta is not None and target.is_alive():
+                        inflict_debuff(
+                            session, EffectKey.DEBUFF_AN_PHONG,
+                            _an_phong_meta, target, actor=actor,
+                        )
+                        session.log.append(
+                            f"    🌫️ **{actor.name}** Phi Thiên Hư Ảnh "
+                            f"— áp Ấn Phong lên **{target.name}**!"
+                        )
+            # Phi Thiên Lăng Vân L9 — consume unevadable arm after this cast.
+            # The cadence counter reset + skipped-increment happens at the
+            # end-of-cast cadence block (gated on ``_phong_bypass_this_cast``)
+            # so the NEXT unevadable lands exactly ``interval`` casts later.
+            if _phong_bypass_this_cast:
+                actor.phong_unevadable_armed = False
+            # Phi Thiên Lăng Vân L9 — on crit, 50% Cuốn Bay.
+            if (
+                result.is_crit
+                and actor.phong_cuon_bay_on_crit_chance > 0
+                and target.is_alive()
+                and not target.immune_hard_cc
+                and session.rng.random() < actor.phong_cuon_bay_on_crit_chance
+            ):
+                _cuon_bay_meta = EFFECTS.get("DebuffCuonBay")
+                if _cuon_bay_meta is not None:
+                    inflict_debuff(
+                        session, "DebuffCuonBay", _cuon_bay_meta, target, actor=actor,
+                    )
+                    session.log.append(
+                        f"    💨 **{actor.name}** Thiên Phong Vô Ảnh "
+                        f"— Cuốn Bay **{target.name}**!"
+                    )
 
             # Per-hit MP drain — Lục Thần Thương's Đoạn Linh strike rips a
             # fixed chunk of MP from the target on hit. ``drain_target_mp``
@@ -1176,6 +1236,23 @@ def cast_skill(
             actor.consecutive_loi_casts = 0
 
     actor.set_cooldown(skill_key, skill_data.get("cooldown", 1))
+    # Phi Thiên Lăng Vân — L9 unevadable cadence counter. Only top-level
+    # casts count (``_suppress_extras`` already short-circuits above). The
+    # cast that CONSUMED the unevadable arm resets the counter to 0 and
+    # doesn't count itself, so the next unevadable lands exactly
+    # ``interval`` casts later (3 → 4th, 8th, 12th, …). Every other cast
+    # increments; the ``interval``-th arms the NEXT cast.
+    if actor.phong_unevadable_interval > 0:
+        if _phong_bypass_this_cast:
+            actor.phong_skill_cast_counter = 0
+        else:
+            actor.phong_skill_cast_counter += 1
+            if actor.phong_skill_cast_counter % actor.phong_unevadable_interval == 0:
+                actor.phong_unevadable_armed = True
+                session.log.append(
+                    f"    💨 **{actor.name}** Thiên Phong Vô Ảnh — "
+                    f"chiêu kế tiếp vô phương né!"
+                )
     # Per-fight ``usage_limit`` counter — only top-level casts bump the
     # counter (multi-hit follow-ups already short-circuit above). Filtering
     # against the limit lives in ``CombatSession._choose_skill``.

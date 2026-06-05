@@ -2152,5 +2152,73 @@
     "cleansable": false,
     "emoji": "🏔️",
     "duration": 999
+  },
+  {
+    "key": "BuffPhongTheTieuDao",
+    "vi": "Phong Thể Tiêu Dao",
+    "en": "Carefree Wind Body",
+    "kind": "buff",
+    "description_vi": "Cứ mỗi 300 Né Tránh → +8% sát thương hệ Phong; mỗi lần né +1 tầng Phong Vân (tối đa 6). Phong Vân tăng hệ số chuyển hóa; bị trúng đòn mất 2 tầng.",
+    "stat_bonus": {
+      "_pv_conv": 0.005
+    },
+    "scaling_rules": [
+      {
+        "key": "_pv_conv",
+        "source": "stat:phong_van_stacks",
+        "output": "phong_eva_conv_uplift",
+        "max_output": 0.03
+      }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🍃",
+    "duration": 999
+  },
+  {
+    "key": "BuffLangVanPhanKich",
+    "vi": "Lăng Vân Phản Kích",
+    "en": "Cloud-Riding Riposte",
+    "kind": "buff",
+    "description_vi": "Né được thì phản đòn — khi né thành công: 70% phản kích bằng 80% sức chiêu (Phong). Đủ 6 tầng Phong Vân: 100%.",
+    "stat_bonus": {},
+    "evade_react": {
+      "counter": {
+        "element": "phong",
+        "base_dmg": 2000,
+        "matk_scale": 0.8,
+        "chance": 0.70,
+        "log_emoji": "🌪️",
+        "log_name": "Lăng Vân Phản Kích"
+      }
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌪️",
+    "duration": 999
+  },
+  {
+    "key": "BuffPhiThienHuAnh",
+    "vi": "Phi Thiên Hư Ảnh",
+    "en": "Sky-Flight Phantom",
+    "kind": "buff",
+    "description_vi": "Sau khi né: đòn kế tiếp chắc chắn Bạo Kích và áp Ấn Phong lên mục tiêu.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌫️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThienPhongVoAnh",
+    "vi": "Thiên Phong Vô Ảnh",
+    "en": "Heaven Wind Formless",
+    "kind": "buff",
+    "description_vi": "Cứ mỗi 3 chiêu thi triển, chiêu kế tiếp KHÔNG THỂ bị né. Mỗi đòn Bạo Kích: 50% Cuốn Bay địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "💨",
+    "duration": 999
   }
 ]

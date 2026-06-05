@@ -708,6 +708,38 @@ class Combatant:
     # ``crit_rating_vs_marked`` / ``crit_dmg_vs_marked`` moved into the
     # consolidated ``crit_amp_vs`` dict above.
 
+    # ── Phong (Phi Thiên Lăng Vân) build ─────────────────────────────────────
+    # L1 Phong Thể Tiêu Dao — every 300 evasion_rating converts to +phong dmg.
+    # 0.0 → inert (every non-Phong-body and flag-off path).
+    phong_eva_phong_dmg_per_300: float = 0.0
+    # L1 Phong Vân stack gate — enables +1 stack on each successful dodge.
+    # False → the on-evade block skips the increment entirely.
+    phong_van_dodge_stack: bool = False
+    # Runtime counter for Phong Vân stacks (NOT a config key, NOT in
+    # CombatStats / _CONSTITUTION_FLAG_FIELDS). Hard-capped at 6 by the
+    # on-evade hook; decremented by 2 on each non-DoT hit taken.
+    phong_van_stacks: int = 0
+    # L6 Phi Thiên Hư Ảnh — arm a guaranteed crit after each successful dodge.
+    # False → the on-evade block skips the arm entirely.
+    phong_dodge_arms_crit: bool = False
+    # L6 — when the armed crit lands, apply DebuffAnPhong to the target.
+    phong_dodge_crit_applies_an_phong: bool = False
+    # Runtime armed flag for the L6 guaranteed crit (consumed on first
+    # landed damaging hit, mirrors saint_crit_armed / bleed_hunter_crit_armed).
+    # NOT a config key, NOT in CombatStats.
+    phong_crit_armed: bool = False
+    # L9 Thiên Phong Vô Ảnh — every N top-level casts, the next cast bypasses
+    # evasion entirely. 0 → the cadence hook is inert.
+    phong_unevadable_interval: int = 0
+    # Runtime armed flag — set when the counter modulo triggers; consumed on
+    # the first subsequent top-level cast. NOT a config key.
+    phong_unevadable_armed: bool = False
+    # Runtime cast counter for the L9 unevadable cadence. NOT a config key.
+    phong_skill_cast_counter: int = 0
+    # L9 — per-crit chance to inflict DebuffCuonBay on the target.
+    # 0.0 → inert.
+    phong_cuon_bay_on_crit_chance: float = 0.0
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.
@@ -1075,6 +1107,9 @@ class Combatant:
         # (shield, HP, deferred queue, element conversion).
         if not is_dot:
             self.hits_taken += 1
+            # Phi Thiên Lăng Vân — non-DoT hit taken drains 2 Phong Vân stacks.
+            if self.phong_van_stacks > 0:
+                self.phong_van_stacks = max(0, self.phong_van_stacks - 2)
         # Fortify Aura: any non-DoT incoming damage primes the post-hit brace
         # for the next combat resolution. Set BEFORE conversion/defer so even
         # a fully-deferred installment still arms the brace this turn.

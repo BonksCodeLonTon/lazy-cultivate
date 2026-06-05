@@ -114,6 +114,24 @@ def build_attack_stats(
         # Permanent per-element dmg bonus from constitutions / equipment
         # (generic dict pickup — replaces per-element flat fields).
         final_dmg_bonus += float(actor.element_dmg_bonus.get(skill_element, 0.0))
+        # Phi Thiên Lăng Vân — L1 evasion→Phong conversion. PHONG skills only:
+        # +``(eva_total / 300) × rate`` to final_dmg_bonus, NO cap. ``rate`` is
+        # the Combatant base PLUS any per-300 uplift the BuffPhongTheTieuDao
+        # scaling_rule folds into actor_mods at 6 Phong Vân stacks. ``eva_total``
+        # mirrors the defender's effective-evasion calc (base + mods + SPD-derived)
+        # so SPD-stacking Phong builds get paid too.
+        if skill_element == "phong" and actor.phong_eva_phong_dmg_per_300 > 0:
+            _eff_spd = max(1, round(actor.spd * (1.0 + actor_mods.get("spd_pct", 0.0))))
+            _eva_total = (
+                actor.evasion_rating
+                + int(actor_mods.get("evasion_rating", 0))
+                + spd_evasion_bonus(_eff_spd)
+            )
+            _conv_rate = (
+                actor.phong_eva_phong_dmg_per_300
+                + float(actor_mods.get("phong_eva_conv_uplift", 0.0))
+            )
+            final_dmg_bonus += (_eva_total / 300.0) * _conv_rate
     # Thiên Ma Đồng Hóa (L6) — while in the Nhập Ma trance, every hit gains a
     # flat final-damage bonus. Gated on the L6+ magnitude AND the active trance,
     # so it's inert for every other build (default field 0.0 / no buff).
@@ -172,14 +190,16 @@ def build_attack_stats(
         crit_dmg_rating += int(_amp.get("dmg", 0))
 
     # Đông Băng auto-crit OR the Thái Bạch periodic guaranteed-crit arm OR the
-    # saint crit arm (L6 cadence) OR the Hoàng Cổ Thánh Vực realm window (L9).
-    # All three arms are consumed on the first landed cast (casting.py /
-    # hoang_co.py); the realm buff provides a multi-turn window. Default False.
+    # saint crit arm (L6 cadence) OR the Hoàng Cổ Thánh Vực realm window (L9)
+    # OR the Phi Thiên Lăng Vân L6 dodge-armed crit.
+    # All arms (except the realm buff) are consumed on the first landed cast
+    # (casting.py / hoang_co.py). Default False.
     force_crit = (
         target.has_effect(EffectKey.DEBUFF_DONG_BANG)
         or actor.bleed_hunter_crit_armed
         or actor.saint_crit_armed
         or actor.has_effect("BuffHoangCoThanhVuc")
+        or actor.phong_crit_armed
     )
 
     # ATK / MATK scale with current Energy Shield: depleted shield = depleted

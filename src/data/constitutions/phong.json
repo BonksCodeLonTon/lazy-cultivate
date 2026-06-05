@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "key": "TheChat_PhiThienLangVan", "vi": "Phi Thiên Lăng Vân Thể", "en": "Sky-Soaring Cloud-Treading Body",
+    "element": "phong", "rarity": "legendary", "roll_weight": 0, "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 }, "materials": {},
+    "description_vi": "Thân pháp Phi Thiên Lăng Vân — bước trên mây, lướt theo gió. Né được thì phản đòn, càng né càng sắc; đến cảnh giới tối cao, đòn ta vô phương né.",
+    "stat_bonuses": { "spd_pct": 0.08, "evasion_rating": 180, "crit_rating": 100, "phong_eva_phong_dmg_per_300": 0.08, "phong_van_dodge_stack": true },
+    "process": {
+      "max_level": 9, "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "spd_pct": 0.004, "evasion_rating": 25, "crit_rating": 15 },
+      "levels": {
+        "1": { "passive_vi": "Phong Thể Tiêu Dao", "passive_en": "Carefree Wind Body", "description_vi": "+180 Né Tránh; cứ mỗi 300 Né Tránh → +8% sát thương hệ PHONG (không giới hạn). Mỗi lần né: +1 tầng Phong Vân (tối đa 6), tăng tỉ lệ chuyển hóa; bị trúng đòn: -2 tầng.", "stat_bonuses": {}, "effects": ["BuffPhongTheTieuDao"] },
+        "3": { "passive_vi": "Lăng Vân Phản Kích", "passive_en": "Cloud-Riding Riposte", "description_vi": "Né được thì phản đòn — khi né thành công: 70% phản kích bằng 80% sức chiêu (Phong). Đủ 6 tầng Phong Vân: 100%.", "stat_bonuses": { "spd_pct": 0.05, "evasion_rating": 150 }, "effects": ["BuffLangVanPhanKich"] },
+        "6": { "passive_vi": "Phi Thiên Hư Ảnh", "passive_en": "Sky-Flight Phantom", "description_vi": "Sau khi né: đòn kế tiếp chắc chắn Bạo Kích và áp Ấn Phong lên mục tiêu.", "stat_bonuses": { "crit_rating": 80, "evasion_rating": 80, "phong_dodge_arms_crit": true, "phong_dodge_crit_applies_an_phong": true }, "effects": ["BuffPhiThienHuAnh"] },
+        "9": { "passive_vi": "Thiên Phong Vô Ảnh", "passive_en": "Heaven Wind Formless", "description_vi": "Cứ mỗi 3 chiêu thi triển, chiêu kế tiếp KHÔNG THỂ bị né. Mỗi đòn Bạo Kích: 50% Cuốn Bay địch.", "stat_bonuses": { "spd_pct": 0.07, "crit_rating": 120, "phong_unevadable_interval": 3, "phong_cuon_bay_on_crit_chance": 0.50 }, "effects": ["BuffThienPhongVoAnh"] }
+      }
+    }
+  }
+]
