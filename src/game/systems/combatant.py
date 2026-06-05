@@ -786,6 +786,21 @@ class Combatant:
     omni_sum_element_dmg: bool = False
     omni_res_ignore_chance: float = 0.0
 
+    # ── Thiên Địa Nhân Hòa Thể (Universal Hòa Khí stack-scaler) ───────────────
+    # Hòa Khí climbs +``harmony_stack_per_turn`` each periodic phase up to
+    # ``harmony_stack_cap`` and never decays (periodic/nhan_hoa.py). The L1 ramp
+    # (+2% all stats/stack) and the L3/L9 thresholds read ``harmony_stacks`` via
+    # scaling_rules ``stat:harmony_stacks``. L6 radiates a backlash aura
+    # (``harmony_backlash_pct_per_stack`` × stacks × (atk+matk)) once stacks
+    # reach ``harmony_backlash_min_stacks``; L9 cleanses ``harmony_l9_cleanse``
+    # debuffs/turn at max stacks.
+    harmony_stack_per_turn: int = 0
+    harmony_stack_cap: int = 0
+    harmony_backlash_pct_per_stack: float = 0.0
+    harmony_backlash_min_stacks: int = 0
+    harmony_l9_cleanse: int = 0
+    harmony_stacks: int = 0  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.

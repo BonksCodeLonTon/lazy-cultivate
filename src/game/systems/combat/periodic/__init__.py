@@ -16,6 +16,7 @@ green:
   30  trong_dia      — Trọng Địa Khống Chế auto-slow (DebuffTroBuoc + DebuffLunDat)
   40  solar_wither   — Thái Dương Thần Quang aura
   42  dai_dia        — Đại Địa Phản Phệ shield-scaled Thổ aura
+  43  nhan_hoa       — Thiên Địa Nhân Hòa Hòa-Khí accrue + backlash + cleanse
   45  solar_wither   — Khô Mộc Hấp Thu aura
   46  huyen_thuy     — Hồi Triều Nộ Hải tidal flood (reservoir discharge)
   47  truong_xuan    — Trường Xuân Hồi Nguyên debuff-count regen
@@ -38,6 +39,7 @@ from . import (  # noqa: F401
     fortify,
     huyen_thuy,
     luc_duc,
+    nhan_hoa,
     regen,
     solar_wither,
     summons,
@@ -48,6 +50,6 @@ from . import (  # noqa: F401
 
 __all__ = [
     "chan_duong", "dai_dia", "dots", "endure", "expiry", "fortify",
-    "huyen_thuy", "luc_duc", "regen", "solar_wither", "summons", "thai_bach",
-    "trong_dia", "truong_xuan",
+    "huyen_thuy", "luc_duc", "nhan_hoa", "regen", "solar_wither", "summons",
+    "thai_bach", "trong_dia", "truong_xuan",
 ]

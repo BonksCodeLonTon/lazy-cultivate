@@ -752,6 +752,15 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     # cast damage roll (the res-ignore proc).
     "omni_sum_element_dmg",
     "omni_res_ignore_chance",
+    # Thiên Địa Nhân Hòa Thể (Universal Hòa Khí stack-scaler) — config keys read
+    # by the PERIODIC nhan_hoa hook (stack increment, L6 backlash, L9 cleanse).
+    # ``harmony_stacks`` is a runtime counter (Combatant-only) read by the L1/L3/L9
+    # scaling_rules but never appears in stat_bonus.
+    "harmony_stack_per_turn",
+    "harmony_stack_cap",
+    "harmony_backlash_pct_per_stack",
+    "harmony_backlash_min_stacks",
+    "harmony_l9_cleanse",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks

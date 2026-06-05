@@ -156,4 +156,74 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_ThienDiaNhanHoa",
+    "vi": "Thiên Địa Nhân Hòa Thể",
+    "en": "Heaven-Earth-Human Harmony Body",
+    "element": "universal",
+    "rarity": "mythic",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 120000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân hợp tam tài — Thiên, Địa, Nhân quy về một mối. Không chuyên một hệ mà cân bằng vạn vật: mỗi lượt giao chiến tích một tầng Hòa Khí, càng chiến càng hòa, càng hòa càng mạnh. Đến cực hạn, tam tài hợp nhất — công thủ sinh đều viên mãn.",
+    "stat_bonuses": {
+      "atk_pct": 0.04,
+      "matk_pct": 0.04,
+      "hp_pct": 0.05,
+      "def_pct": 0.03
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": {
+        "atk_pct": 0.003, "matk_pct": 0.003, "hp_pct": 0.004, "def_pct": 0.002
+      },
+      "levels": {
+        "1": {
+          "passive_vi": "Nhân Hòa Tích Lũy",
+          "passive_en": "Human Harmony Accumulation",
+          "description_vi": "Nhân hòa tích lũy — mỗi lượt +1 tầng Hòa Khí (tối đa 9, không bao giờ tan). Mỗi tầng: Công/Pháp/Thủ/Tốc đều +2% (đầy 9 tầng → +18% mọi chỉ số chiến đấu).",
+          "stat_bonuses": {
+            "harmony_stack_per_turn": 1,
+            "harmony_stack_cap": 9
+          },
+          "effects": ["BuffNhanHoaTichLuy"]
+        },
+        "3": {
+          "passive_vi": "Thiên Địa Tương Ứng",
+          "passive_en": "Heaven-Earth Correspondence",
+          "description_vi": "Thiên địa tương ứng — khi có ≥5 tầng Hòa Khí: +25% sát thương cuối và +15% giảm sát thương nhận vào. +HP, +Bạo Kích nền.",
+          "stat_bonuses": {
+            "hp_pct": 0.03,
+            "crit_rating": 60
+          },
+          "effects": ["BuffThienDiaTuongUng"]
+        },
+        "6": {
+          "passive_vi": "Hòa Khí Chiến Trường",
+          "passive_en": "Harmony Qi Battlefield",
+          "description_vi": "Hòa khí chiến trường — khi có ≥5 tầng Hòa Khí: mỗi lượt phát Hòa Khí phản phệ, giáng sát thương vô hệ lên địch bằng (số tầng × 6% Công+Pháp). Đầy 9 tầng → ~54% (Công+Pháp)/lượt. +HP, +Thủ.",
+          "stat_bonuses": {
+            "hp_pct": 0.04,
+            "def_pct": 0.03,
+            "harmony_backlash_pct_per_stack": 0.06,
+            "harmony_backlash_min_stacks": 5
+          },
+          "effects": ["BuffHoaKhiChienTruong"]
+        },
+        "9": {
+          "passive_vi": "Tam Tài Hợp Nhất",
+          "passive_en": "Three Talents United",
+          "description_vi": "Tam tài hợp nhất — khi đạt 9 tầng Hòa Khí, Thiên–Địa–Nhân hợp nhất vĩnh viễn: Thiên (+20% ST cuối, +90 Bạo Kích), Địa (+18% giảm ST, +6% hồi Khiên/lượt), Nhân (+5% hồi HP/lượt, mỗi lượt thanh tẩy 1 hiệu ứng bất lợi).",
+          "stat_bonuses": {
+            "hp_pct": 0.04,
+            "harmony_l9_cleanse": 1
+          },
+          "effects": ["BuffTamTaiHopNhat"]
+        }
+      }
+    }
+  }
 ]

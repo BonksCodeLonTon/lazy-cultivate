@@ -2388,5 +2388,84 @@
     "cleansable": false,
     "emoji": "♾️",
     "duration": 999
+  },
+  {
+    "key": "BuffNhanHoaTichLuy",
+    "vi": "Nhân Hòa Tích Lũy",
+    "en": "Human Harmony Accumulation",
+    "kind": "buff",
+    "description_vi": "Mỗi lượt tích 1 tầng Hòa Khí (tối đa 9, không tan). Mỗi tầng: Công, Pháp, Thủ, Tốc đều +2% — càng chiến càng hòa, càng hòa càng mạnh.",
+    "stat_bonus": {
+      "_nh_atk": 0.02,
+      "_nh_matk": 0.02,
+      "_nh_def": 0.02,
+      "_nh_spd": 0.02
+    },
+    "scaling_rules": [
+      { "key": "_nh_atk",  "source": "stat:harmony_stacks", "output": "atk_pct" },
+      { "key": "_nh_matk", "source": "stat:harmony_stacks", "output": "matk_pct" },
+      { "key": "_nh_def",  "source": "stat:harmony_stacks", "output": "def_pct" },
+      { "key": "_nh_spd",  "source": "stat:harmony_stacks", "output": "spd_pct" }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "☯️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThienDiaTuongUng",
+    "vi": "Thiên Địa Tương Ứng",
+    "en": "Heaven-Earth Correspondence",
+    "kind": "buff",
+    "description_vi": "Khi có ≥5 tầng Hòa Khí: +25% sát thương cuối và +15% giảm sát thương nhận vào — thiên địa tương ứng, thân tâm hợp nhất.",
+    "stat_bonus": {
+      "_td_fdb": 0.25,
+      "_td_dr": 0.15
+    },
+    "scaling_rules": [
+      { "key": "_td_fdb", "source": "constant", "gate_source": "stat:harmony_stacks", "min": 5, "output": "final_dmg_bonus" },
+      { "key": "_td_dr",  "source": "constant", "gate_source": "stat:harmony_stacks", "min": 5, "output": "final_dmg_reduce" }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 999
+  },
+  {
+    "key": "BuffHoaKhiChienTruong",
+    "vi": "Hòa Khí Chiến Trường",
+    "en": "Harmony Qi Battlefield",
+    "kind": "buff",
+    "description_vi": "Khi có ≥5 tầng Hòa Khí: mỗi lượt phát Hòa Khí phản phệ — giáng sát thương vô hệ lên địch bằng (số tầng × 6% Công+Pháp).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "☯️",
+    "duration": 999
+  },
+  {
+    "key": "BuffTamTaiHopNhat",
+    "vi": "Tam Tài Hợp Nhất",
+    "en": "Three Talents United",
+    "kind": "buff",
+    "description_vi": "Khi đạt 9 tầng Hòa Khí: Thiên–Địa–Nhân hợp nhất vĩnh viễn — +20% sát thương cuối, +90 Bạo Kích (Thiên); +18% giảm sát thương, +6% hồi Khiên/lượt (Địa); +5% hồi HP/lượt, mỗi lượt thanh tẩy 1 hiệu ứng bất lợi (Nhân).",
+    "stat_bonus": {
+      "_tt_fdb": 0.20,
+      "_tt_crit": 90,
+      "_tt_dr": 0.18,
+      "_tt_shield": 0.06,
+      "_tt_regen": 0.05
+    },
+    "scaling_rules": [
+      { "key": "_tt_fdb",    "source": "constant", "gate_source": "stat:harmony_stacks", "min": 9, "output": "final_dmg_bonus" },
+      { "key": "_tt_crit",   "source": "constant", "gate_source": "stat:harmony_stacks", "min": 9, "output": "crit_rating" },
+      { "key": "_tt_dr",     "source": "constant", "gate_source": "stat:harmony_stacks", "min": 9, "output": "final_dmg_reduce" },
+      { "key": "_tt_shield", "source": "constant", "gate_source": "stat:harmony_stacks", "min": 9, "output": "shield_regen_pct" },
+      { "key": "_tt_regen",  "source": "constant", "gate_source": "stat:harmony_stacks", "min": 9, "output": "hp_regen_pct" }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔱",
+    "duration": 999
   }
 ]

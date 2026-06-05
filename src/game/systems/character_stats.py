@@ -139,6 +139,14 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     # is the per-cast chance to zero the target's elemental resistance.
     ("omni_sum_element_dmg",             "omni_sum_element_dmg",              bool),
     ("omni_res_ignore_chance",           "omni_res_ignore_chance",           float),
+    # Thiên Địa Nhân Hòa Thể (Universal Hòa Khí stack-scaler) — config flags.
+    # ``harmony_stacks`` is a runtime counter (Combatant-only, excluded). The
+    # L1 ramp + L3/L9 thresholds read it via scaling_rules ``stat:harmony_stacks``.
+    ("harmony_stack_per_turn",           "harmony_stack_per_turn",           int),
+    ("harmony_stack_cap",                "harmony_stack_cap",                int),
+    ("harmony_backlash_pct_per_stack",   "harmony_backlash_pct_per_stack",   float),
+    ("harmony_backlash_min_stacks",      "harmony_backlash_min_stacks",      int),
+    ("harmony_l9_cleanse",               "harmony_l9_cleanse",               int),
 ]
 
 
@@ -434,6 +442,12 @@ class CombatStats:
     #   Hỗn Nguyên Vô Cực Thể (Universal omni-element amplifier)
     omni_sum_element_dmg: bool = False
     omni_res_ignore_chance: float = 0.0
+    #   Thiên Địa Nhân Hòa Thể (Universal Hòa Khí stack-scaler)
+    harmony_stack_per_turn: int = 0
+    harmony_stack_cap: int = 0
+    harmony_backlash_pct_per_stack: float = 0.0
+    harmony_backlash_min_stacks: int = 0
+    harmony_l9_cleanse: int = 0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).
