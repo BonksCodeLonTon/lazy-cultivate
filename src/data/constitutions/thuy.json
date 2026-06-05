@@ -63,4 +63,76 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_BacMinhBangPhach",
+    "vi": "Bắc Minh Băng Phách Thể",
+    "en": "Northern Darkness Ice Soul Body",
+    "element": "thuy",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân luyện Bắc Minh hàn phách — cửu âm hàn khí trấn áp vạn địch. Đòn ra hàn khí phong tỏa, làm chậm và bẻ gãy liên kích; băng phách đóng cứng, thôn thực linh lực địch dưỡng thân; đến cực hàn phong ấn — bế tắc mọi đường hồi phục.",
+    "stat_bonuses": {
+      "spd_pct": 0.06,
+      "hp_pct": 0.05,
+      "matk_pct": 0.04,
+      "def_pct": 0.02
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": {
+        "spd_pct": 0.004, "hp_pct": 0.004, "matk_pct": 0.003
+      },
+      "levels": {
+        "1": {
+          "passive_vi": "Cửu Âm Hàn Khí",
+          "passive_en": "Nine Yin Cold Aura",
+          "description_vi": "Cửu âm hàn khí — mỗi khi tấn công HOẶC bị tấn công: làm chậm địch và giảm số đòn đánh liên tiếp của chúng đi 1 (2 lượt).",
+          "stat_bonuses": {
+            "bm_cold_aura_enabled": true
+          },
+          "effects": ["BuffCuuAmHanKhi"]
+        },
+        "3": {
+          "passive_vi": "Băng Phách",
+          "passive_en": "Ice Soul",
+          "description_vi": "Băng phách — 45% mỗi đòn tấn công đóng băng địch 2 lượt; địch đang đóng băng nhận đòn kế chắc chắn bạo kích.",
+          "stat_bonuses": {
+            "hp_pct": 0.03,
+            "bm_freeze_on_attack_chance": 0.45
+          },
+          "effects": ["BuffBangPhach"]
+        },
+        "6": {
+          "passive_vi": "Bắc Minh Thôn Thực",
+          "passive_en": "Northern Darkness Devours",
+          "description_vi": "Bắc minh thôn thực — mỗi khi tấn công HOẶC bị tấn công: hút 8% MP địch, chuyển 50% lượng hút thành HP bản thân; mỗi lần hút thành công tích 1 tầng Hàn Khí (tối đa 9).",
+          "stat_bonuses": {
+            "hp_pct": 0.04,
+            "bm_mp_drain_pct": 0.08,
+            "bm_mp_drain_heal_pct": 0.50,
+            "bm_han_khi_cap": 9
+          },
+          "effects": ["BuffBacMinhThonThuc"]
+        },
+        "9": {
+          "passive_vi": "Cực Hàn Phong Ấn",
+          "passive_en": "Extreme Cold Sealing",
+          "description_vi": "Cực hàn phong ấn — 40% mỗi đòn tấn công áp Cực Hàn (giảm 90% hồi phục HP/MP/Khiên địch, 2 lượt; địch đóng băng → 70%). Đầy 9 tầng Hàn Khí: đòn kế chắc chắn đóng băng địch 3 lượt + bùng nổ sát thương = 30% tổng MP đã hút trong trận, rồi reset tầng.",
+          "stat_bonuses": {
+            "spd_pct": 0.03,
+            "bm_heal_reduce_chance": 0.40,
+            "bm_heal_reduce_vs_frozen_chance": 0.70,
+            "bm_burst_freeze_turns": 3,
+            "bm_burst_drain_pct": 0.30
+          },
+          "effects": ["BuffCucHanPhongAn"]
+        }
+      }
+    }
+  }
 ]

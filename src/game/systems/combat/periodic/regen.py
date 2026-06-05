@@ -16,7 +16,7 @@ One PERIODIC hook (priority 50) that runs four logically-related ticks:
 from __future__ import annotations
 
 from src.game.engine import linh_can_effects as lc_effects
-from src.game.engine.effects import get_combat_modifiers
+from src.game.engine.effects import get_combat_modifiers, regen_reduce_pct
 
 from ..context import TurnContext
 from ..hooks import TurnPhase, register_hook
@@ -26,6 +26,10 @@ from ..hooks import TurnPhase, register_hook
 def _regen(ctx: TurnContext) -> None:
     combatant = ctx.actor
     session = ctx.session
+
+    # Cực Hàn Phong Ấn — DebuffCucHan multiplicatively cuts ALL regen (HP/MP/
+    # shield) by ``regen_reduce_pct``. 1.0 (no cut) for every other combatant.
+    _regen_mult = 1.0 - regen_reduce_pct(combatant)
 
     # Periodic: Thổ Linh Căn — activate shield when HP is low.
     lc_effects.check_shield(combatant, ctx.log)
@@ -51,10 +55,10 @@ def _regen(ctx: TurnContext) -> None:
         # ``shield_regen_pct`` scales off the holder's own shield_cap so
         # high-shield builds regenerate proportionally to their investment.
         # ``shield_regen_flat`` adds on top.
-        regen = (
+        regen = int((
             int(combatant.shield_cap() * effective_shield_regen_pct)
             + combatant.shield_regen_flat
-        )
+        ) * _regen_mult)
         gained = combatant.add_shield(regen)
         if gained > 0:
             ctx.log.append(
@@ -80,7 +84,7 @@ def _regen(ctx: TurnContext) -> None:
     mods = get_combat_modifiers(combatant)
     effective_regen_pct = combatant.hp_regen_pct + mods.get("hp_regen_pct", 0.0)
     hp_pct_regen = int(combatant.hp_max * effective_regen_pct) if effective_regen_pct > 0 else 0
-    hp_total_regen = hp_pct_regen + max(0, combatant.hp_regen_flat)
+    hp_total_regen = int((hp_pct_regen + max(0, combatant.hp_regen_flat)) * _regen_mult)
     if hp_total_regen > 0 and combatant.hp < combatant.hp_max:
         applied = session._apply_heal(combatant, hp_total_regen)
         if applied > 0:
@@ -94,7 +98,7 @@ def _regen(ctx: TurnContext) -> None:
         0.0, combatant.mp_regen_pct + mods.get("mp_regen_pct", 0.0)
     )
     mp_pct_regen = int(combatant.mp_max * effective_mp_regen_pct) if effective_mp_regen_pct > 0 else 0
-    mp_total_regen = mp_pct_regen + max(0, combatant.mp_regen_flat)
+    mp_total_regen = int((mp_pct_regen + max(0, combatant.mp_regen_flat)) * _regen_mult)
     if mp_total_regen > 0 and combatant.mp < combatant.mp_max:
         mp_total_regen = max(1, mp_total_regen)
         combatant.mp = min(combatant.mp_max, combatant.mp + mp_total_regen)

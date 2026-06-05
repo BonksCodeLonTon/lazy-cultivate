@@ -761,6 +761,21 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "harmony_backlash_pct_per_stack",
     "harmony_backlash_min_stacks",
     "harmony_l9_cleanse",
+    # Bắc Minh Băng Phách Thể (Thủy disruptor) — config keys read off Combatant
+    # fields by run_on_hit_procs (bidirectional procs + Hàn Khí burst).
+    "bm_cold_aura_enabled",
+    "bm_freeze_on_attack_chance",
+    "bm_mp_drain_pct",
+    "bm_mp_drain_heal_pct",
+    "bm_han_khi_cap",
+    "bm_heal_reduce_chance",
+    "bm_heal_reduce_vs_frozen_chance",
+    "bm_burst_freeze_turns",
+    "bm_burst_drain_pct",
+    # DebuffCucHan carries this multiplicative regen cut (read by the regen hook
+    # via ``regen_reduce_pct`` below); kept out of get_combat_modifiers so it
+    # never renders as a stat or feeds an additive aggregate.
+    "regen_reduce_pct",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks
@@ -865,6 +880,23 @@ def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
     for cfg_key in _CONFIG_ONLY_STAT_KEYS:
         result.pop(cfg_key, None)
     return result
+
+
+def regen_reduce_pct(combatant: "Combatant") -> float:
+    """Strongest multiplicative regen cut from active effects (Cực Hàn Phong Ấn).
+
+    ``DebuffCucHan`` carries ``regen_reduce_pct: 0.90`` in its stat_bonus; the
+    regen hook multiplies HP/MP/shield regen by ``1 - this``. Read directly off
+    the effect metas (not via ``get_combat_modifiers``, which pops the key as
+    config-only). Returns the MAX so stacking sources don't compound past 100%.
+    0.0 for every combatant carrying no such debuff (the default everywhere).
+    """
+    reduce = 0.0
+    for effect_key in combatant.effects:
+        meta = EFFECTS.get(effect_key)
+        if meta is not None:
+            reduce = max(reduce, float(meta.stat_bonus.get("regen_reduce_pct", 0.0)))
+    return min(1.0, reduce)
 
 
 def get_periodic_damage(

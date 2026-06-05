@@ -847,5 +847,27 @@
     "cleansable": true,
     "emoji": "🩻",
     "duration": 3
+  },
+  {
+    "key": "DebuffReduceHitCount",
+    "vi": "Băng Phong Liên Kích",
+    "en": "Frost-Sealed Strikes",
+    "kind": "debuff",
+    "description_vi": "Hàn khí phong tỏa kinh mạch — số đòn đánh liên tiếp của kỹ năng giảm 1.",
+    "stat_bonus": {},
+    "cleansable": true,
+    "emoji": "🥶",
+    "duration": 2
+  },
+  {
+    "key": "DebuffCucHan",
+    "vi": "Cực Hàn Phong Ấn",
+    "en": "Extreme Cold Seal",
+    "kind": "debuff",
+    "description_vi": "Cực hàn phong ấn — mọi hiệu quả hồi phục (HP, MP, Khiên) giảm 90%.",
+    "stat_bonus": { "regen_reduce_pct": 0.90 },
+    "cleansable": true,
+    "emoji": "❄️",
+    "duration": 2
   }
 ]

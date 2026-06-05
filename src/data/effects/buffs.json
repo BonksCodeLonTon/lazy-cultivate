@@ -2467,5 +2467,53 @@
     "cleansable": false,
     "emoji": "🔱",
     "duration": 999
+  },
+  {
+    "key": "BuffCuuAmHanKhi",
+    "vi": "Cửu Âm Hàn Khí",
+    "en": "Nine Yin Cold Aura",
+    "kind": "buff",
+    "description_vi": "Hàn khí cửu âm bao quanh — mỗi khi tấn công hoặc bị tấn công: làm chậm địch và giảm số đòn liên tiếp của chúng.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🥶",
+    "duration": 999
+  },
+  {
+    "key": "BuffBangPhach",
+    "vi": "Băng Phách",
+    "en": "Ice Soul",
+    "kind": "buff",
+    "description_vi": "Băng phách ngưng tụ — 45% mỗi đòn đóng băng địch; địch đóng băng nhận đòn kế chắc chắn bạo kích.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "❄️",
+    "duration": 999
+  },
+  {
+    "key": "BuffBacMinhThonThuc",
+    "vi": "Bắc Minh Thôn Thực",
+    "en": "Northern Darkness Devours",
+    "kind": "buff",
+    "description_vi": "Bắc minh thôn thực — mỗi khi tấn công hoặc bị tấn công: hút MP địch chuyển thành HP bản thân; mỗi lần hút tích 1 tầng Hàn Khí.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 999
+  },
+  {
+    "key": "BuffCucHanPhongAn",
+    "vi": "Cực Hàn Phong Ấn",
+    "en": "Extreme Cold Sealing",
+    "kind": "buff",
+    "description_vi": "Cực hàn phong ấn — đòn tấn công áp Cực Hàn (giảm 90% hồi phục địch); đầy 9 tầng Hàn Khí: đòn kế đóng băng 3 lượt + bùng nổ theo tổng MP đã hút.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔱",
+    "duration": 999
   }
 ]

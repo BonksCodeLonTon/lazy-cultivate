@@ -1306,6 +1306,10 @@ def cast_skill(
     #    pick the right slot of ``per_hit_specs`` and the terminal finisher
     #    can read each hit's landed status.
     hit_count = max(1, int(skill_data.get("hit_count", 1)))
+    # Cửu Âm Hàn Khí (Bắc Minh Băng Phách L1) — DebuffReduceHitCount on the
+    # caster shaves one strike off their multi-hit attacks (floored at 1).
+    if hit_count > 1 and actor.has_effect("DebuffReduceHitCount"):
+        hit_count = max(1, hit_count - 1)
     # Thái Bạch Túy Tiên (L3) — one-shot "+N hit-count on the next cast". Seeded
     # at battle start by the effect-stamp seam; only a top-level cast consumes it
     # (``_suppress_extras`` gates out multi-hit replays / reactive casts so the

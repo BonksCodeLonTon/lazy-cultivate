@@ -48,6 +48,120 @@ def snapshot_original(combatant: Combatant, field: str, live_value: int) -> int:
     return live_value
 
 
+# ── Bắc Minh Băng Phách Thể (Thủy ice/freeze/MP-drain disruptor) ────────────
+_BM_SLOW = "DebuffLamCham"
+_BM_HIT_SHAVE = "DebuffReduceHitCount"
+_BM_FREEZE = EffectKey.DEBUFF_DONG_BANG.value
+_BM_HEAL_LOCK = "DebuffCucHan"
+
+
+def _bm_apply_cold_aura(
+    session: "CombatSession", holder: Combatant, victim: Combatant,
+) -> None:
+    """L1 Cửu Âm Hàn Khí — slow + hit-count shave on ``victim`` (immunity-gated)."""
+    if not victim.is_alive():
+        return
+    from .casting import inflict_debuff
+    for key in (_BM_SLOW, _BM_HIT_SHAVE):
+        meta = EFFECTS.get(key)
+        if meta is not None:
+            inflict_debuff(session, key, meta, victim, actor=holder)
+
+
+def _bm_mp_drain(
+    session: "CombatSession", drainer: Combatant, victim: Combatant,
+) -> None:
+    """L6 Bắc Minh Thôn Thực — drain ``victim`` MP → heal ``drainer``, bank Hàn Khí.
+
+    Self-gates on ``drainer.bm_mp_drain_pct`` so it's inert for every build that
+    isn't the body; ``han_khi_mp_drained_total`` accumulates for the L9 burst.
+    """
+    if drainer.bm_mp_drain_pct <= 0 or not victim.is_alive():
+        return
+    drained = int(victim.mp * drainer.bm_mp_drain_pct)
+    if drained <= 0:
+        return
+    victim.mp = max(0, victim.mp - drained)
+    drainer.han_khi_mp_drained_total += drained
+    heal = int(drained * drainer.bm_mp_drain_heal_pct)
+    if heal > 0:
+        session._apply_heal(drainer, heal)
+    if drainer.bm_han_khi_cap > 0 and drainer.han_khi_stacks < drainer.bm_han_khi_cap:
+        drainer.han_khi_stacks += 1
+    session.log.append(
+        f"  🌀 **{drainer.name}** Bắc Minh Thôn Thực → hút {drained:,} MP "
+        f"của **{victim.name}** (Hàn Khí ×{drainer.han_khi_stacks})"
+    )
+
+
+def _bm_try_freeze(
+    session: "CombatSession", target: Combatant, turns: int,
+) -> bool:
+    """Freeze ``target`` for ``turns`` unless hard-CC immune. Returns True on freeze."""
+    if not target.is_alive():
+        return False
+    if target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc"):
+        session.log.append(f"    🛡️ **{target.name}** miễn nhiễm đóng băng!")
+        return False
+    target.apply_effect(_BM_FREEZE, turns)
+    return True
+
+
+def run_bac_minh_procs(
+    session: "CombatSession", actor: Combatant, target: Combatant,
+) -> None:
+    """Bắc Minh Băng Phách on-hit logic, once per landed hit (``actor`` hits ``target``).
+
+    When ``actor`` holds the body it runs the full attack kit (cold aura, freeze,
+    MP drain, heal-reduce, Hàn Khí burst); when ``target`` holds it the
+    bidirectional half (cold aura + reverse MP drain) fires back at the attacker.
+    Every branch self-gates on the per-body config flags, so it's a no-op for
+    every other build.
+    """
+    # ── Attacker side: the holder is striking ────────────────────────────────
+    if actor.bm_cold_aura_enabled:
+        _bm_apply_cold_aura(session, actor, target)
+    _bm_mp_drain(session, actor, target)  # L6
+    if (
+        actor.bm_freeze_on_attack_chance > 0
+        and target.is_alive()
+        and session.rng.random() < actor.bm_freeze_on_attack_chance
+        and _bm_try_freeze(session, target, default_duration(EffectKey.DEBUFF_DONG_BANG))
+    ):
+        session.log.append(
+            f"    ❄️ **{actor.name}** Băng Phách → **{target.name}** đóng băng!"
+        )
+    if actor.bm_heal_reduce_chance > 0 and target.is_alive():
+        chance = actor.bm_heal_reduce_chance
+        if target.has_effect(_BM_FREEZE) and actor.bm_heal_reduce_vs_frozen_chance > chance:
+            chance = actor.bm_heal_reduce_vs_frozen_chance
+        if session.rng.random() < chance:
+            meta = EFFECTS.get(_BM_HEAL_LOCK)
+            if meta is not None:
+                from .casting import inflict_debuff
+                inflict_debuff(session, _BM_HEAL_LOCK, meta, target, actor=actor)
+    if (
+        actor.bm_burst_freeze_turns > 0
+        and actor.bm_han_khi_cap > 0
+        and actor.han_khi_stacks >= actor.bm_han_khi_cap
+        and target.is_alive()
+    ):
+        _bm_try_freeze(session, target, actor.bm_burst_freeze_turns)
+        burst = int(actor.han_khi_mp_drained_total * actor.bm_burst_drain_pct)
+        if burst > 0:
+            target.take_damage(burst)
+            session.log.append(
+                f"  🔱 **{actor.name}** Cực Hàn Bùng Nổ → **{target.name}** "
+                f"{colorize_damage(f'-{burst:,} HP', None)}"
+            )
+        actor.han_khi_stacks = 0
+
+    # ── Defender side: the holder is being struck (bidirectional L1 + L6) ─────
+    if target.bm_cold_aura_enabled and actor.is_alive():
+        _bm_apply_cold_aura(session, target, actor)
+    _bm_mp_drain(session, target, actor)  # L6 reverse drain
+
+
 def run_on_hit_procs(
     session: "CombatSession", actor: Combatant, target: Combatant, is_crit: bool,
     skill_key: str = "",
@@ -711,6 +825,10 @@ def apply_reactive_damage(
     # ``Combatant.take_damage``.
     from .defense_aegis import adapt_elem_res
     adapt_elem_res(target, skill_element, dmg)
+
+    # Bắc Minh Băng Phách — bidirectional ice/freeze/MP-drain kit. Self-gates on
+    # the per-body config flags (inert for every other build).
+    run_bac_minh_procs(session, actor, target)
 
 
 def apply_reflect(

@@ -147,6 +147,18 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("harmony_backlash_pct_per_stack",   "harmony_backlash_pct_per_stack",   float),
     ("harmony_backlash_min_stacks",      "harmony_backlash_min_stacks",      int),
     ("harmony_l9_cleanse",               "harmony_l9_cleanse",               int),
+    # Bắc Minh Băng Phách Thể (Thủy ice/freeze/MP-drain disruptor) — config flags.
+    # Runtime counters (han_khi_stacks, han_khi_mp_drained_total) are
+    # Combatant-only and excluded. All on-hit logic lives in run_on_hit_procs.
+    ("bm_cold_aura_enabled",             "bm_cold_aura_enabled",             bool),
+    ("bm_freeze_on_attack_chance",       "bm_freeze_on_attack_chance",       float),
+    ("bm_mp_drain_pct",                  "bm_mp_drain_pct",                  float),
+    ("bm_mp_drain_heal_pct",             "bm_mp_drain_heal_pct",             float),
+    ("bm_han_khi_cap",                   "bm_han_khi_cap",                   int),
+    ("bm_heal_reduce_chance",            "bm_heal_reduce_chance",            float),
+    ("bm_heal_reduce_vs_frozen_chance",  "bm_heal_reduce_vs_frozen_chance",  float),
+    ("bm_burst_freeze_turns",            "bm_burst_freeze_turns",            int),
+    ("bm_burst_drain_pct",               "bm_burst_drain_pct",               float),
 ]
 
 
@@ -448,6 +460,16 @@ class CombatStats:
     harmony_backlash_pct_per_stack: float = 0.0
     harmony_backlash_min_stacks: int = 0
     harmony_l9_cleanse: int = 0
+    #   Bắc Minh Băng Phách Thể (Thủy ice/freeze/MP-drain disruptor)
+    bm_cold_aura_enabled: bool = False
+    bm_freeze_on_attack_chance: float = 0.0
+    bm_mp_drain_pct: float = 0.0
+    bm_mp_drain_heal_pct: float = 0.0
+    bm_han_khi_cap: int = 0
+    bm_heal_reduce_chance: float = 0.0
+    bm_heal_reduce_vs_frozen_chance: float = 0.0
+    bm_burst_freeze_turns: int = 0
+    bm_burst_drain_pct: float = 0.0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

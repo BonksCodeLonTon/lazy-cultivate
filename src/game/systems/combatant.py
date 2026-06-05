@@ -801,6 +801,24 @@ class Combatant:
     harmony_l9_cleanse: int = 0
     harmony_stacks: int = 0  # runtime (NOT a config key)
 
+    # ── Bắc Minh Băng Phách Thể (Thủy ice/freeze/MP-drain disruptor) ──────────
+    # All on-hit logic (bidirectional slow+hit-shave, freeze, MP-drain→heal,
+    # heal-reduce, Hàn Khí burst) lives in run_on_hit_procs. ``han_khi_stacks``
+    # banks +1 per successful MP drain (cap ``bm_han_khi_cap``); at cap the next
+    # attack fires the Cực Hàn burst (3-turn freeze + dmg = bm_burst_drain_pct ×
+    # ``han_khi_mp_drained_total``, the running tally of all MP drained this fight).
+    bm_cold_aura_enabled: bool = False
+    bm_freeze_on_attack_chance: float = 0.0
+    bm_mp_drain_pct: float = 0.0
+    bm_mp_drain_heal_pct: float = 0.0
+    bm_han_khi_cap: int = 0
+    bm_heal_reduce_chance: float = 0.0
+    bm_heal_reduce_vs_frozen_chance: float = 0.0
+    bm_burst_freeze_turns: int = 0
+    bm_burst_drain_pct: float = 0.0
+    han_khi_stacks: int = 0  # runtime (NOT a config key)
+    han_khi_mp_drained_total: int = 0  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.
