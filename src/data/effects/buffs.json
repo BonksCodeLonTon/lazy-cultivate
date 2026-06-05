@@ -2268,5 +2268,77 @@
     "cleansable": false,
     "emoji": "🌐",
     "duration": 999
+  },
+  {
+    "key": "BuffHoPhap",
+    "vi": "Hộ Pháp",
+    "en": "Guardian Aura",
+    "kind": "buff",
+    "description_vi": "+10% giảm sát thương, +100 Kháng Bạo. Mỗi tầng Thánh Quang: +5% Lóa Mắt, +3% giảm sát thương (tối đa 5 tầng).",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.10,
+      "crit_res_rating": 100,
+      "_tq_blind_per": 0.05,
+      "_tq_dr_per": 0.03
+    },
+    "scaling_rules": [
+      { "key": "_tq_blind_per", "source": "stat:thanh_quang_stacks", "output": "blind_on_hit_pct", "max_output": 0.25 },
+      { "key": "_tq_dr_per",    "source": "stat:thanh_quang_stacks", "output": "final_dmg_reduce", "max_output": 0.15 }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🛡️",
+    "duration": 999
+  },
+  {
+    "key": "BuffTinhQuangTayTran",
+    "vi": "Tịnh Quang Tẩy Trần",
+    "en": "Pure Light Cleansing",
+    "kind": "buff",
+    "description_vi": "Cứ mỗi 3 lượt: tự thanh tẩy 1 hiệu ứng bất lợi khỏi bản thân.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "✨",
+    "duration": 999
+  },
+  {
+    "key": "BuffHoPhapThienGiap",
+    "vi": "Hộ Pháp Thiên Giáp",
+    "en": "Guardian Heaven Armor",
+    "kind": "buff",
+    "description_vi": "Vĩnh viễn triệu hồi Hộ Pháp Kim Cương — sát thương Quang mỗi lượt + ban hộ thể cho bản thân.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌟",
+    "duration": 999
+  },
+  {
+    "key": "BuffHoPhapKimCuong",
+    "vi": "Hộ Pháp Kim Cương",
+    "en": "Diamond Guardian Ward",
+    "kind": "buff",
+    "description_vi": "Hào quang từ Hộ Pháp Kim Cương: +10% giảm sát thương, +100 Kháng Bạo khi triệu hồi vật còn hiện diện.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.10,
+      "crit_res_rating": 100
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🛡️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThienQuangThamPhan",
+    "vi": "Thiên Quang Thẩm Phán",
+    "en": "Heaven Light Judgment",
+    "kind": "buff",
+    "description_vi": "Đánh kẻ địch có buff: 60% tước 1 buff của nó + áp Phá Giáp.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚖️",
+    "duration": 999
   }
 ]

@@ -757,6 +757,23 @@ class Combatant:
     # + DoT ticks) as TRUE damage (pierces resistance). 0.0 → inert.
     loi_bonus_true_dmg_pct: float = 0.0
 
+    # ── Tịnh Quang Hộ Pháp Thể (Quang guardian) build ────────────────────────
+    # L1 Thánh Quang — each landed blind banks a stack (cap 5); BuffHoPhap's
+    # scaling_rules turn the stacks into +blind chance + DR. Both inert by default.
+    quang_blind_stack: bool = False
+    thanh_quang_stacks: int = 0  # runtime counter (NOT a config key)
+    # L3 Tịnh Quang Tẩy Trần — every N acted turns, self-cleanse M debuffs.
+    quang_self_cleanse_interval: int = 0
+    quang_self_cleanse_count: int = 0
+    quang_cleanse_turn_counter: int = 0  # runtime (NOT a config key)
+    # L6 Hộ Pháp Thiên Giáp — spawn a permanent Holy Guardian summon dealing
+    # this fraction of matk/turn (Quang) + granting BuffHoPhapKimCuong. 0 → none.
+    quang_guardian_summon_matk_pct: float = 0.0
+    # L9 Thiên Quang Thẩm Phán — on hitting a buffed enemy, chance to strip a
+    # buff + apply Phá Giáp. 0.0 → inert.
+    quang_judgment_strip_chance: float = 0.0
+    quang_judgment_applies_pha_giap: bool = False
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.

@@ -115,6 +115,13 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("loi_spd_advantage_cap",             "loi_spd_advantage_cap",             float),
     ("loi_reflex_bonus_attack",           "loi_reflex_bonus_attack",           bool),
     ("loi_bonus_true_dmg_pct",            "loi_bonus_true_dmg_pct",            float),
+    # Tịnh Quang Hộ Pháp Thể (Quang guardian)
+    ("quang_blind_stack",                 "quang_blind_stack",                 bool),
+    ("quang_self_cleanse_interval",       "quang_self_cleanse_interval",       int),
+    ("quang_self_cleanse_count",          "quang_self_cleanse_count",          int),
+    ("quang_guardian_summon_matk_pct",    "quang_guardian_summon_matk_pct",    float),
+    ("quang_judgment_strip_chance",       "quang_judgment_strip_chance",       float),
+    ("quang_judgment_applies_pha_giap",   "quang_judgment_applies_pha_giap",   bool),
     # Quang silence-on-crit — the pre-existing pattern these mirror.
     ("silence_on_crit_pct",              "silence_on_crit_pct",               float),
     # Hoàng Cổ Thánh Thể (Universal Saint Body) — config flags.
@@ -404,6 +411,13 @@ class CombatStats:
     loi_spd_advantage_cap: float = 0.0
     loi_reflex_bonus_attack: bool = False
     loi_bonus_true_dmg_pct: float = 0.0
+    #   Tịnh Quang Hộ Pháp Thể (Quang guardian)
+    quang_blind_stack: bool = False
+    quang_self_cleanse_interval: int = 0
+    quang_self_cleanse_count: int = 0
+    quang_guardian_summon_matk_pct: float = 0.0
+    quang_judgment_strip_chance: float = 0.0
+    quang_judgment_applies_pha_giap: bool = False
     #   Hoàng Cổ Thánh Thể (Universal Saint Body)
     saint_qilin_cleanse_chance: float = 0.0
     saint_periodic_crit_interval: int = 0
@@ -430,6 +444,10 @@ class CombatStats:
     # locality, but its read / equip-merge / passthrough run via the flag helper.
     silence_on_crit_pct: float = 0.0
     heal_reduce_on_hit_pct: float = 0.0
+    # Tịnh Quang (guardian) on-hit blind chance — rides the generic _ON_HIT_PROCS
+    # table (DEBUFF_LOA_MAT). Was previously a Combatant-only field with no data
+    # path; wired here so constitutions/equipment can grant it.
+    blind_on_hit_pct: float = 0.0
     cleanse_on_turn_pct: float = 0.0
     barrier_on_cleanse: bool = False
     # ── Âm (shadow/soul-devour) build ─────────────────────────────────────
@@ -1053,6 +1071,7 @@ def compute_combat_stats(
     # are now consolidated into ``crit_amp_vs`` above.
     # Quang-build fields (``silence_on_crit_pct`` read via the flag registry)
     heal_reduce_on_hit_pct       = float(bonuses.get("heal_reduce_on_hit_pct", 0.0))
+    blind_on_hit_pct             = float(bonuses.get("blind_on_hit_pct", 0.0))
     cleanse_on_turn_pct          = float(bonuses.get("cleanse_on_turn_pct", 0.0))
     barrier_on_cleanse           = bool(bonuses.get("barrier_on_cleanse", False))
     heal_can_crit                = bool(bonuses.get("heal_can_crit", False))
@@ -1363,6 +1382,7 @@ def compute_combat_stats(
         # crit_rating_vs_marked / crit_dmg_vs_marked merged into crit_amp_vs above.
         # Quang-build fields (``silence_on_crit_pct`` merged via the flag registry)
         heal_reduce_on_hit_pct       += float(equip_stats.get("heal_reduce_on_hit_pct", 0.0))
+        blind_on_hit_pct             += float(equip_stats.get("blind_on_hit_pct", 0.0))
         cleanse_on_turn_pct          += float(equip_stats.get("cleanse_on_turn_pct", 0.0))
         barrier_on_cleanse            = barrier_on_cleanse or bool(equip_stats.get("barrier_on_cleanse", False))
         heal_can_crit                 = heal_can_crit or bool(equip_stats.get("heal_can_crit", False))
@@ -1559,6 +1579,7 @@ def compute_combat_stats(
         mark_on_hit_pct=mark_on_hit_pct,
         damage_bonus_from_evasion_pct=damage_bonus_from_evasion_pct,
         heal_reduce_on_hit_pct=heal_reduce_on_hit_pct,
+        blind_on_hit_pct=blind_on_hit_pct,
         cleanse_on_turn_pct=cleanse_on_turn_pct,
         barrier_on_cleanse=barrier_on_cleanse,
         heal_can_crit=heal_can_crit,

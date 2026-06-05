@@ -1,1 +1,76 @@
-[]
+[
+  {
+    "key": "TheChat_TinhQuangHoPhap",
+    "vi": "Tịnh Quang Hộ Pháp Thể",
+    "en": "Pure Light Guardian Body",
+    "element": "quang",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân luyện Tịnh Quang Hộ Pháp — ánh thánh quang che chở vạn vật. Đòn địch lóa mắt vô phương, tà khí tự tiêu, càng nguy càng vững; Hộ Pháp Kim Cương kề bên, trước kẻ kiêu ngạo thánh quang giáng phán — tước pháp phá giáp.",
+    "stat_bonuses": {
+      "def_pct": 0.08,
+      "hp_pct": 0.08,
+      "hp_regen_pct": 0.03,
+      "crit_res_rating": 120,
+      "blind_on_hit_pct": 0.45,
+      "quang_blind_stack": true
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": {
+        "def_pct": 0.005,
+        "hp_pct": 0.005,
+        "hp_regen_pct": 0.0015,
+        "crit_res_rating": 18
+      },
+      "levels": {
+        "1": {
+          "passive_vi": "Thánh Quang Hộ Thể",
+          "passive_en": "Holy Light Ward",
+          "description_vi": "Thánh quang hộ thân — đòn đánh 45% gây Lóa Mắt; thường trực Hộ Pháp (+10% giảm sát thương, +100 Kháng Bạo). Mỗi lần Lóa Mắt thành công: +1 tầng Thánh Quang (tối đa 5) — mỗi tầng +5% tỉ lệ Lóa Mắt, +3% giảm sát thương.",
+          "stat_bonuses": {},
+          "effects": ["BuffHoPhap"]
+        },
+        "3": {
+          "passive_vi": "Tịnh Quang Tẩy Trần",
+          "passive_en": "Pure Light Cleansing",
+          "description_vi": "Tịnh quang tẩy trần — cứ mỗi 3 lượt của bản thân, tự thanh tẩy 1 hiệu ứng bất lợi (có thể giải) trên bản thân.",
+          "stat_bonuses": {
+            "def_pct": 0.06,
+            "hp_pct": 0.04,
+            "quang_self_cleanse_interval": 3,
+            "quang_self_cleanse_count": 1
+          },
+          "effects": ["BuffTinhQuangTayTran"]
+        },
+        "6": {
+          "passive_vi": "Hộ Pháp Thiên Giáp",
+          "passive_en": "Guardian Heaven Armor",
+          "description_vi": "Hộ pháp thiên giáp — vĩnh viễn triệu hồi Hộ Pháp Kim Cương: mỗi lượt giáng sát thương Quang bằng 60% Pháp Công lên kẻ địch, đồng thời ban Hộ Pháp Kim Cương (+10% giảm sát thương, +100 Kháng Bạo) cho bản thân.",
+          "stat_bonuses": {
+            "hp_pct": 0.05,
+            "crit_res_rating": 100,
+            "quang_guardian_summon_matk_pct": 0.60
+          },
+          "effects": ["BuffHoPhapThienGiap"]
+        },
+        "9": {
+          "passive_vi": "Thiên Quang Thẩm Phán",
+          "passive_en": "Heaven Light Judgment",
+          "description_vi": "Thiên quang thẩm phán — đánh kẻ địch đang có buff: 60% tước 1 buff của nó VÀ áp Phá Giáp.",
+          "stat_bonuses": {
+            "def_pct": 0.06,
+            "hp_pct": 0.05,
+            "quang_judgment_strip_chance": 0.60,
+            "quang_judgment_applies_pha_giap": true
+          },
+          "effects": ["BuffThienQuangThamPhan"]
+        }
+      }
+    }
+  }
+]

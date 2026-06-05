@@ -131,7 +131,9 @@ def _stamp_constitution_process_effects(char: Character, combatant: Combatant) -
         return
 
     from src.game.engine.effects import EFFECTS, default_duration
-    from src.game.systems.constitution_process import effective_effects
+    from src.game.systems.constitution_process import (
+        effective_effects, effective_stat_bonuses,
+    )
     from src.game.systems.the_chat import effective_constitutions
 
     active_keys = effective_constitutions(
@@ -152,6 +154,21 @@ def _stamp_constitution_process_effects(char: Character, combatant: Combatant) -
                 combatant.next_skill_hit_count_bonus = max(
                     combatant.next_skill_hit_count_bonus, _hc
                 )
+        # Tịnh Quang Hộ Pháp L6 — spawn the permanent Holy Guardian summon. It
+        # ticks Quang damage each round via the summons periodic AND grants
+        # BuffHoPhapKimCuong (aura_buff → folds into get_combat_modifiers) while
+        # alive. turns=9999 → effectively permanent. Idempotent (one per body).
+        _g_sb = effective_stat_bonuses(const_data, level)
+        _g_pct = float(_g_sb.get("quang_guardian_summon_matk_pct", 0.0))
+        if _g_pct > 0 and not any(
+            s.get("aura_buff_key") == "BuffHoPhapKimCuong" for s in combatant.summons
+        ):
+            combatant.summons.append({
+                "vi": "Hộ Pháp Kim Cương", "emoji": "🛡️", "element": "quang",
+                "dmg": max(1, int(combatant.matk * _g_pct)), "turns": 9999,
+                "respect_target_res": True,
+                "aura_buff_key": "BuffHoPhapKimCuong", "aura_buff_overrides": None,
+            })
 
 
 def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant | None:

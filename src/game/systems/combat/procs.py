@@ -18,7 +18,9 @@ from src.game.constants.balance import (
 )
 from src.game.constants.effects import EffectKey
 from src.game.engine.damage import colorize_damage
-from src.game.engine.effects import EFFECTS, default_duration, effective_stack_cap
+from src.game.engine.effects import (
+    EFFECTS, EffectKind, default_duration, effective_stack_cap, get_combat_modifiers,
+)
 from src.game.systems.combatant import Combatant
 
 from .helpers import _ON_HIT_PROCS, _propagate_dot_bonuses, _propagate_stack_build
@@ -62,13 +64,30 @@ def run_on_hit_procs(
     caller doesn't thread it — e.g. legacy test harnesses). The Kim Sát Khí
     stamp reads it to skip re-stamping on the auto-fired Kiếm Lãng splash.
     """
+    # On-hit proc chances may be amped by active modifiers (buffs / scaling_rules)
+    # — e.g. Tịnh Quang's Thánh Quang stacks raise blind_on_hit_pct via BuffHoPhap.
+    # Additive: zero contribution (the default for every existing build) leaves the
+    # raw-field behavior byte-identical.
+    _actor_mods = get_combat_modifiers(actor)
     for spec in _ON_HIT_PROCS:
-        chance = getattr(actor, spec["chance_attr"], 0.0)
+        chance = getattr(actor, spec["chance_attr"], 0.0) + float(
+            _actor_mods.get(spec["chance_attr"], 0.0)
+        )
         if chance <= 0 or session.rng.random() >= chance:
             continue
         effect_key = spec["effect_key"]
         dur = default_duration(effect_key)
         target.apply_effect(effect_key, dur)
+        # Tịnh Quang Hộ Pháp — Thánh Quang: a landed blind banks a stack (cap 5),
+        # which BuffHoPhap's scaling_rules convert into +blind chance + DR.
+        if (
+            effect_key == EffectKey.DEBUFF_LOA_MAT
+            and actor.quang_blind_stack and actor.thanh_quang_stacks < 5
+        ):
+            actor.thanh_quang_stacks += 1
+            session.log.append(
+                f"    ☀️ Thánh Quang ngưng tụ [×{actor.thanh_quang_stacks}/5]"
+            )
         stack_kind = spec.get("stack_kind")
         if stack_kind:
             _propagate_stack_build(actor, target, stack_kind)
@@ -179,6 +198,28 @@ def run_on_hit_procs(
                 session, actor, target,
                 "SkillLoiBonusShock", _bonus, 0, _suppress_extras=True,
             )
+    # Tịnh Quang Hộ Pháp L9 — Thiên Quang Thẩm Phán: hitting a BUFFED enemy,
+    # chance to strip one of its buffs + apply Phá Giáp (reuses the strip logic
+    # + body #1's DebuffPhaGiap). Inert unless the L9 flag is set.
+    if actor.quang_judgment_strip_chance > 0 and target.is_alive():
+        _judg_buffs = [
+            k for k in list(target.effects)
+            if (m := EFFECTS.get(k)) is not None and m.kind is EffectKind.BUFF
+        ]
+        if _judg_buffs and session.rng.random() < actor.quang_judgment_strip_chance:
+            _pick = session.rng.choice(_judg_buffs)
+            target.effects.pop(_pick, None)
+            target.effect_overrides.pop(_pick, None)
+            _pm = EFFECTS.get(_pick)
+            session.log.append(
+                f"    ⚖️ **{actor.name}** Thiên Quang Thẩm Phán — tước "
+                f"{_pm.vi if _pm else _pick}"
+            )
+            if actor.quang_judgment_applies_pha_giap:
+                from .casting import inflict_debuff
+                _pg = EFFECTS.get("DebuffPhaGiap")
+                if _pg is not None:
+                    inflict_debuff(session, "DebuffPhaGiap", _pg, target, actor=actor)
     # ── Kim killing-body sweep (Thiên Cương Phá Sát Thể) ─────────────────────
     # All three blocks are no-ops unless the actor carries the Kim body's
     # effects/flags (enemies, flag-off builds, and non-Kim players never own
@@ -224,7 +265,7 @@ def run_on_hit_procs(
         and actor.sat_khi_stacks == 5
         and actor.has_effect("BuffSatKhiDaiThanh")
     ):
-        from src.game.engine.effects import EFFECTS as _EFFECTS, get_combat_modifiers
+        from src.game.engine.effects import EFFECTS as _EFFECTS
         from src.game.engine.rating import crit_chance
         from src.game.systems.combat.casting import cast_skill, inflict_debuff
         from src.data.registry import registry as _registry
@@ -352,7 +393,6 @@ def run_on_hit_procs(
         # passives like Chân Ma Chi Tâm can shrug off aura-on-hit spreads.
         # Aura procs don't get the actor's apply-bonus — that belongs to
         # explicit cast paths only.
-        from src.game.engine.effects import get_combat_modifiers
         immune_mod = float(get_combat_modifiers(target).get("debuff_immune_pct", 0.0))
         immune = max(0.0, min(1.0, target.debuff_immune_pct + immune_mod))
         effective = 1.0 - immune

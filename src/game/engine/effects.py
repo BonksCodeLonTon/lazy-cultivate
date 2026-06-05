@@ -737,6 +737,16 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "loi_spd_advantage_cap",
     "loi_reflex_bonus_attack",
     "loi_bonus_true_dmg_pct",
+    # Tịnh Quang Hộ Pháp Thể (Quang guardian) — config keys consumed by the blind
+    # proc loop (Thánh Quang stack), the PRE_TURN self-cleanse aura, the build-time
+    # guardian-summon spawn, and the L9 judgment POST_HIT. Runtime counters
+    # (thanh_quang_stacks, quang_cleanse_turn_counter) are Combatant-only.
+    "quang_blind_stack",
+    "quang_self_cleanse_interval",
+    "quang_self_cleanse_count",
+    "quang_guardian_summon_matk_pct",
+    "quang_judgment_strip_chance",
+    "quang_judgment_applies_pha_giap",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks
