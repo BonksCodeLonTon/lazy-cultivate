@@ -220,6 +220,23 @@ def run_on_hit_procs(
                 _pg = EFFECTS.get("DebuffPhaGiap")
                 if _pg is not None:
                     inflict_debuff(session, "DebuffPhaGiap", _pg, target, actor=actor)
+            # L9 buff — each strip giáng a 200% atk + 200% matk Quang burst AND
+            # ramps the guardian's own final_dmg by +5% (cap +50%, read in
+            # combat_hit). The pure-defense guardian's window of offense.
+            _judg_burst = max(1, int(2.0 * actor.atk + 2.0 * actor.matk))
+            if target.is_alive():
+                target.take_damage(_judg_burst)
+                _jtag = colorize_damage(f"-{_judg_burst:,} HP", "quang")
+                session.log.append(
+                    f"    ⚖️💥 **{actor.name}** Thiên Quang Thẩm Phán giáng phạt "
+                    f"→ **{target.name}** {_jtag}"
+                )
+            actor.quang_judgment_dmg_bonus = min(
+                0.50, actor.quang_judgment_dmg_bonus + 0.05
+            )
+            session.log.append(
+                f"    ☀️ Thánh Uy tăng tiến — +{int(actor.quang_judgment_dmg_bonus * 100)}% ST cuối"
+            )
     # ── Kim killing-body sweep (Thiên Cương Phá Sát Thể) ─────────────────────
     # All three blocks are no-ops unless the actor carries the Kim body's
     # effects/flags (enemies, flag-off builds, and non-Kim players never own
@@ -333,7 +350,6 @@ def run_on_hit_procs(
         and actor.has_effect("BuffBangToaiQuyet")
         and target.has_effect(EffectKey.DEBUFF_DONG_BANG)
     ):
-        from src.game.engine.damage import colorize_damage
         from .thuy_tide import tide_strike
         shatter = int(actor.thuy_intake_reservoir * actor.thuy_shatter_tide_pct)
         dealt = tide_strike(actor, target, shatter)

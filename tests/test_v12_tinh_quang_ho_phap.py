@@ -204,6 +204,31 @@ def test_l9_judgment_strips_buff_and_pha_giap(monkeypatch) -> None:
     assert enemy.has_effect("DebuffPhaGiap")     # armor broken
 
 
+def test_l9_judgment_burst_and_ramp(monkeypatch) -> None:
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(9)
+    enemy = _enemy()
+    enemy.shield = 0
+    enemy.apply_effect("BuffTangToc", 3)
+    session = _session(player, enemy)
+    session.rng.random = lambda: 0.0
+
+    hp_before = enemy.hp
+    run_on_hit_procs(session, player, enemy, is_crit=False, skill_key=_SKILL)
+    # Burst = 200% atk + 200% matk (raw Quang judgment).
+    assert hp_before - enemy.hp >= int(2.0 * player.atk + 2.0 * player.matk)
+    # Each strip ramps the guardian's own final_dmg +5%.
+    assert player.quang_judgment_dmg_bonus == pytest.approx(0.05)
+    from src.game.engine.damage.combat_hit import build_attack_stats
+    assert build_attack_stats(player, enemy, {}, "quang").final_dmg_bonus >= 0.05
+
+    # Cap binds at +50%.
+    player.quang_judgment_dmg_bonus = 0.48
+    enemy.apply_effect("BuffTangToc", 3)
+    run_on_hit_procs(session, player, enemy, is_crit=False, skill_key=_SKILL)
+    assert player.quang_judgment_dmg_bonus == pytest.approx(0.50)
+
+
 def test_l9_judgment_noop_vs_unbuffed(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(9)

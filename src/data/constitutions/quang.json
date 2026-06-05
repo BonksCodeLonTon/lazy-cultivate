@@ -61,7 +61,7 @@
         "9": {
           "passive_vi": "Thiên Quang Thẩm Phán",
           "passive_en": "Heaven Light Judgment",
-          "description_vi": "Thiên quang thẩm phán — đánh kẻ địch đang có buff: 60% tước 1 buff của nó VÀ áp Phá Giáp.",
+          "description_vi": "Thiên quang thẩm phán — đánh kẻ địch đang có buff: 60% tước 1 buff của nó VÀ áp Phá Giáp; mỗi lần tước buff: giáng 200% Công + 200% Pháp sát thương lên địch và bản thân +5% sát thương cuối (tối đa +50%).",
           "stat_bonuses": {
             "def_pct": 0.06,
             "hp_pct": 0.05,

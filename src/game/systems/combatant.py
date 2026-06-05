@@ -773,6 +773,9 @@ class Combatant:
     # buff + apply Phá Giáp. 0.0 → inert.
     quang_judgment_strip_chance: float = 0.0
     quang_judgment_applies_pha_giap: bool = False
+    # L9 buff: each successful strip deals a 200% atk + 200% matk burst AND
+    # accumulates +5% final_dmg here (cap +50%). Runtime-only; read in combat_hit.
+    quang_judgment_dmg_bonus: float = 0.0
 
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated

@@ -147,6 +147,11 @@ def build_attack_stats(
                 actor.loi_spd_advantage_cap,
                 (_spd_gap / 10.0) * actor.loi_spd_advantage_per_10,
             )
+    # Tịnh Quang Hộ Pháp L9 — Thánh Uy: the guardian's judgment ramps its own
+    # final damage by +5% per buff stripped (cap +50%, accrued in procs). 0.0 →
+    # inert for every non-guardian build.
+    if actor.quang_judgment_dmg_bonus > 0:
+        final_dmg_bonus += actor.quang_judgment_dmg_bonus
     # Thiên Ma Đồng Hóa (L6) — while in the Nhập Ma trance, every hit gains a
     # flat final-damage bonus. Gated on the L6+ magnitude AND the active trance,
     # so it's inert for every other build (default field 0.0 / no buff).
