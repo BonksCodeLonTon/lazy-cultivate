@@ -783,6 +783,40 @@ class CombatSession:
         if overheal > 0:
             from src.game.systems.combat.overheal_reservoir import capture_overheal
             capture_overheal(combatant, overheal)
+        # Thiên Thủy Thánh Thể — Thánh Tuyền Tẩy Lễ (L6): every applied heal has a
+        # chance (raised by Tịnh Hóa stacks) to cleanse one debuff; each cleanse
+        # banks a Tịnh Hóa stack (cap). While purified, each heal also refills MP
+        # = per-stack pct × HP healed. Self-gates on the per-body flag — this is
+        # the single heal chokepoint, so EVERY heal source feeds the loop.
+        if applied > 0 and combatant.tt_heal_cleanse_chance > 0:
+            chance = combatant.tt_heal_cleanse_chance + (
+                combatant.tt_tinh_hoa_stacks * combatant.tt_tinh_hoa_per_stack_cleanse
+            )
+            if self.rng.random() < chance:
+                cleansable = [
+                    k for k in list(combatant.effects)
+                    if (m := EFFECTS.get(k)) is not None and m.cleansable
+                ]
+                if cleansable:
+                    removed = self.rng.choice(cleansable)
+                    del combatant.effects[removed]
+                    combatant.effect_overrides.pop(removed, None)
+                    if (
+                        combatant.tt_tinh_hoa_cap > 0
+                        and combatant.tt_tinh_hoa_stacks < combatant.tt_tinh_hoa_cap
+                    ):
+                        combatant.tt_tinh_hoa_stacks += 1
+                    self.log.append(
+                        f"    💧 **{combatant.name}** Thánh Tuyền Tẩy Lễ — thanh tẩy "
+                        f"*{removed}* (Tịnh Hóa ×{combatant.tt_tinh_hoa_stacks})"
+                    )
+            if combatant.tt_tinh_hoa_stacks > 0 and combatant.tt_tinh_hoa_mp_on_heal_pct > 0:
+                mp_gain = int(
+                    applied * combatant.tt_tinh_hoa_mp_on_heal_pct
+                    * combatant.tt_tinh_hoa_stacks
+                )
+                if mp_gain > 0:
+                    combatant.mp = min(combatant.mp_max, combatant.mp + mp_gain)
         return applied
 
     def _apply_mana_gains(self, actor: Combatant, dmg: int) -> None:

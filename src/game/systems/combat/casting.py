@@ -771,6 +771,37 @@ def cast_skill(
                         f"nhu thắng cương, giảm {int(_pr * 100)}% ST Vật Lý"
                     )
 
+            # Quy Khư Thôn Hải (Thiên Thủy Thánh L9) — at full Tịnh Hóa the abyss
+            # swallows the next hit (ANY element): reduce by ``tt_abyss_reduce_pct``
+            # (never to 0 — a throttled soak, not an immunity), heal the swallowed
+            # portion (→ _apply_heal fires the L6 cleanse + Tịnh Hóa MP), reflect a
+            # fraction back, then spend all Tịnh Hóa. Fires BEFORE the shield split
+            # so the soak is on the full hit. Resets stacks → self-limits to one
+            # swallow per recharge. Inert unless the holder is charged.
+            if (
+                target.tt_abyss_threshold > 0
+                and target.tt_tinh_hoa_stacks >= target.tt_abyss_threshold
+                and dmg > 0
+            ):
+                swallowed = int(dmg * target.tt_abyss_reduce_pct)
+                if swallowed > 0:
+                    dmg = max(1, dmg - swallowed)
+                    target.tt_tinh_hoa_stacks = 0  # spend the charge
+                    if target.tt_abyss_reflect_pct > 0 and actor.is_alive():
+                        reflected = int(swallowed * target.tt_abyss_reflect_pct)
+                        if reflected > 0:
+                            actor.take_damage(reflected)
+                            session.log.append(
+                                f"    🌀 **{target.name}** Quy Khư Thôn Hải phản → "
+                                f"**{actor.name}** "
+                                f"{colorize_damage(f'-{reflected:,} HP', 'thuy')}"
+                            )
+                    healed = session._apply_heal(target, swallowed)
+                    session.log.append(
+                        f"    🌀 **{target.name}** Quy Khư Thôn Hải — nuốt "
+                        f"{swallowed:,} ST, hồi {healed:,} HP"
+                    )
+
             bypass_dmg = int(dmg * bypass_pct) if bypass_pct > 0 else 0
             shielded_dmg = dmg - bypass_dmg
 

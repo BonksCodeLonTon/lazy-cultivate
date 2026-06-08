@@ -2566,5 +2566,53 @@
     "cleansable": false,
     "emoji": "🌑",
     "duration": 999
+  },
+  {
+    "key": "BuffThanhTuyen",
+    "vi": "Thánh Tuyền",
+    "en": "Sacred Spring",
+    "kind": "buff",
+    "description_vi": "Mạch suối thiêng tuôn chảy — mỗi lượt tự hồi mạnh HP và MP.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⛲",
+    "duration": 999
+  },
+  {
+    "key": "BuffNhuThuyHoaKinh",
+    "vi": "Nhu Thủy Hóa Kình",
+    "en": "Soft Water Transforms Force",
+    "kind": "buff",
+    "description_vi": "Nhu thủy hóa kình — chuyển một phần sát thương nhận vào thành HP hồi, rồi phản phần còn lại về địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌊",
+    "duration": 999
+  },
+  {
+    "key": "BuffThanhTuyenTayLe",
+    "vi": "Thánh Tuyền Tẩy Lễ",
+    "en": "Sacred Spring Cleansing",
+    "kind": "buff",
+    "description_vi": "Mỗi lần hồi HP có cơ hội tự tẩy 1 debuff, tích Tịnh Hóa (tăng tỉ lệ tẩy + hồi MP theo lượng HP hồi).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "💧",
+    "duration": 999
+  },
+  {
+    "key": "BuffQuyKhuThonHai",
+    "vi": "Quy Khư Thôn Hải",
+    "en": "Abyss Devours the Sea",
+    "kind": "buff",
+    "description_vi": "Kháng Thủy mạnh + giảm sát thương; đầy 5 tầng Tịnh Hóa thì nuốt 80% đòn kế tiếp (mọi hệ), hồi lại và dội ngược về địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 999
   }
 ]

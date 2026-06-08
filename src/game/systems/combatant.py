@@ -838,6 +838,24 @@ class Combatant:
     hm_uyen_stacks: int = 0  # runtime (NOT a config key)
     hm_mp_drained_total: int = 0  # runtime (NOT a config key)
 
+    # ── Thiên Thủy Thánh Thể (Thủy holy-spring sustain tank) ──────────────────
+    # L1 regen is pure stats (hp_regen_pct/mp_regen_pct). L3 damage→heal+reflect
+    # rides apply_reactive_damage; L6 heal-cleanse + Tịnh Hóa + MP-on-heal rides
+    # _apply_heal; L9 ``res_thuy``/``final_dmg_reduce`` are real stats and the
+    # Quy Khư abyss-swallow (spend ``tt_tinh_hoa_stacks`` to soak one hit 80%,
+    # heal it, reflect, reset) lives in the casting defender block.
+    # ``tt_tinh_hoa_stacks`` banks +1 per L6 cleanse (cap ``tt_tinh_hoa_cap``).
+    tt_dmg_convert_heal_pct: float = 0.0
+    tt_reflect_remainder_pct: float = 0.0
+    tt_heal_cleanse_chance: float = 0.0
+    tt_tinh_hoa_cap: int = 0
+    tt_tinh_hoa_per_stack_cleanse: float = 0.0
+    tt_tinh_hoa_mp_on_heal_pct: float = 0.0
+    tt_abyss_threshold: int = 0
+    tt_abyss_reduce_pct: float = 0.0
+    tt_abyss_reflect_pct: float = 0.0
+    tt_tinh_hoa_stacks: int = 0  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.

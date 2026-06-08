@@ -841,6 +841,27 @@ def apply_reactive_damage(
                 f"→ **{actor.name}** bị đông cứng!"
             )
 
+    # ── Thiên Thủy Thánh Thể — defender-side damage→heal + reflect ───────────
+    # Nhu Thủy Hóa Kình (L3): the holder converts a fraction of the damage it
+    # just took into healing (routed through ``_apply_heal`` so the L6 cleanse +
+    # Tịnh Hóa MP-on-heal fire), then reflects a fraction of the REMAINDER back
+    # at the attacker. Self-gates on the per-body flag (inert for everyone else).
+    if dmg > 0 and target.tt_dmg_convert_heal_pct > 0:
+        healed = session._apply_heal(target, int(dmg * target.tt_dmg_convert_heal_pct))
+        if healed > 0:
+            session.log.append(
+                f"    🌊 **{target.name}** Nhu Thủy Hóa Kình → hồi {healed:,} HP"
+            )
+        if target.tt_reflect_remainder_pct > 0 and actor.is_alive():
+            remainder = int(dmg * (1.0 - target.tt_dmg_convert_heal_pct))
+            reflected = int(remainder * target.tt_reflect_remainder_pct)
+            if reflected > 0:
+                actor.take_damage(reflected)
+                session.log.append(
+                    f"    🪞 **{target.name}** phản chấn → **{actor.name}** "
+                    f"{colorize_damage(f'-{reflected:,} HP', 'thuy')}"
+                )
+
     reflect_total = target.reflect_pct + float(
         get_combat_modifiers(target).get("reflect_pct", 0.0)
     )

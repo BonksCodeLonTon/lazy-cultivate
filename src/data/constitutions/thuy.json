@@ -210,4 +210,78 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_ThienThuyThanh",
+    "vi": "Thiên Thủy Thánh Thể",
+    "en": "Heaven Water Sacred Body",
+    "element": "thuy",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân luyện Thiên Thủy thánh tuyền — bất diệt như mạch suối thiêng. Hồi phục cuồn cuộn, hóa lực đánh thành sinh khí, mỗi lần hồi máu tự tẩy uế. Hải nạp bách xuyên, càng tịnh hóa càng sâu — đến Quy Khư thì nuốt trọn một đòn, dội ngược về địch.",
+    "stat_bonuses": {
+      "hp_pct": 0.10,
+      "hp_regen_pct": 0.03,
+      "mp_regen_pct": 0.03
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": {
+        "hp_pct": 0.006, "hp_regen_pct": 0.003, "mp_regen_pct": 0.003
+      },
+      "levels": {
+        "1": {
+          "passive_vi": "Thánh Tuyền",
+          "passive_en": "Sacred Spring",
+          "description_vi": "Mạch suối thiêng tuôn chảy không ngừng — mỗi lượt tự hồi 7% HP tối đa và 10% MP tối đa (tăng dần theo giai đoạn).",
+          "stat_bonuses": {
+            "hp_regen_pct": 0.04,
+            "mp_regen_pct": 0.07
+          },
+          "effects": ["BuffThanhTuyen"]
+        },
+        "3": {
+          "passive_vi": "Nhu Thủy Hóa Kình",
+          "passive_en": "Soft Water Transforms Force",
+          "description_vi": "Nhu thủy hóa kình — mỗi khi nhận sát thương: chuyển 30% lượng đó thành HP hồi (kích hoạt Tẩy Lễ), rồi phản 15% phần còn lại ngược về kẻ tấn công.",
+          "stat_bonuses": {
+            "hp_pct": 0.04,
+            "tt_dmg_convert_heal_pct": 0.30,
+            "tt_reflect_remainder_pct": 0.15
+          },
+          "effects": ["BuffNhuThuyHoaKinh"]
+        },
+        "6": {
+          "passive_vi": "Thánh Tuyền Tẩy Lễ",
+          "passive_en": "Sacred Spring Cleansing",
+          "description_vi": "Mỗi lần hồi HP (bất kỳ nguồn nào): 50% xóa 1 debuff bất lợi, tích 1 tầng Tịnh Hóa (tối đa 5). Mỗi tầng: +8% tỉ lệ tẩy + mỗi lần hồi máu hồi thêm MP = 10% lượng HP hồi/tầng.",
+          "stat_bonuses": {
+            "hp_pct": 0.03,
+            "tt_heal_cleanse_chance": 0.50,
+            "tt_tinh_hoa_cap": 5,
+            "tt_tinh_hoa_per_stack_cleanse": 0.08,
+            "tt_tinh_hoa_mp_on_heal_pct": 0.10
+          },
+          "effects": ["BuffThanhTuyenTayLe"]
+        },
+        "9": {
+          "passive_vi": "Quy Khư Thôn Hải",
+          "passive_en": "Abyss Devours the Sea",
+          "description_vi": "Thánh thể trấn thủy — kháng Thủy +40%, giảm thêm 5% mọi sát thương. Đầy 5 tầng Tịnh Hóa: mở Quy Khư — nuốt 80% đòn kế tiếp (mọi hệ, KHÔNG về 0), hồi lại phần nuốt được, dội 25% ngược về địch, rồi tiêu sạch Tịnh Hóa.",
+          "stat_bonuses": {
+            "res_thuy": 0.40,
+            "final_dmg_reduce": 0.05,
+            "tt_abyss_threshold": 5,
+            "tt_abyss_reduce_pct": 0.80,
+            "tt_abyss_reflect_pct": 0.25
+          },
+          "effects": ["BuffQuyKhuThonHai"]
+        }
+      }
+    }
+  }
 ]

@@ -172,6 +172,21 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("hm_corrode_poison_stacks",         "hm_corrode_poison_stacks",         int),
     ("hm_corrode_bleed_stacks",          "hm_corrode_bleed_stacks",          int),
     ("hm_drown_burst_drain_pct",         "hm_drown_burst_drain_pct",         float),
+    # Thiên Thủy Thánh Thể (Thủy holy-spring sustain tank) — config flags.
+    # L9 ``res_thuy``/``final_dmg_reduce`` are REAL stats (handled by the normal
+    # resistance/aggregate path, NOT here). These are the mechanic flags consumed
+    # by apply_reactive_damage (L3 convert/reflect), _apply_heal (L6 cleanse +
+    # Tịnh Hóa), and the casting defender block (L9 abyss swallow). Runtime
+    # counter ``tt_tinh_hoa_stacks`` is Combatant-only and excluded.
+    ("tt_dmg_convert_heal_pct",          "tt_dmg_convert_heal_pct",          float),
+    ("tt_reflect_remainder_pct",         "tt_reflect_remainder_pct",         float),
+    ("tt_heal_cleanse_chance",           "tt_heal_cleanse_chance",           float),
+    ("tt_tinh_hoa_cap",                  "tt_tinh_hoa_cap",                  int),
+    ("tt_tinh_hoa_per_stack_cleanse",    "tt_tinh_hoa_per_stack_cleanse",    float),
+    ("tt_tinh_hoa_mp_on_heal_pct",       "tt_tinh_hoa_mp_on_heal_pct",       float),
+    ("tt_abyss_threshold",               "tt_abyss_threshold",               int),
+    ("tt_abyss_reduce_pct",              "tt_abyss_reduce_pct",              float),
+    ("tt_abyss_reflect_pct",             "tt_abyss_reflect_pct",             float),
 ]
 
 
@@ -492,6 +507,16 @@ class CombatStats:
     hm_corrode_poison_stacks: int = 0
     hm_corrode_bleed_stacks: int = 0
     hm_drown_burst_drain_pct: float = 0.0
+    # Thiên Thủy Thánh Thể (Thủy holy-spring sustain tank)
+    tt_dmg_convert_heal_pct: float = 0.0
+    tt_reflect_remainder_pct: float = 0.0
+    tt_heal_cleanse_chance: float = 0.0
+    tt_tinh_hoa_cap: int = 0
+    tt_tinh_hoa_per_stack_cleanse: float = 0.0
+    tt_tinh_hoa_mp_on_heal_pct: float = 0.0
+    tt_abyss_threshold: int = 0
+    tt_abyss_reduce_pct: float = 0.0
+    tt_abyss_reflect_pct: float = 0.0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

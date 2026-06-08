@@ -792,6 +792,20 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "hm_corrode_poison_stacks",
     "hm_corrode_bleed_stacks",
     "hm_drown_burst_drain_pct",
+    # Thiên Thủy Thánh Thể (Thủy holy-spring sustain tank) — config keys read off
+    # Combatant fields by apply_reactive_damage (L3 convert/reflect), _apply_heal
+    # (L6 cleanse + Tịnh Hóa), and the casting defender block (L9 abyss swallow).
+    # ``res_thuy``/``final_dmg_reduce`` are NOT here — they're real aggregated
+    # stats. ``tt_tinh_hoa_stacks`` is a runtime counter, never in stat_bonus.
+    "tt_dmg_convert_heal_pct",
+    "tt_reflect_remainder_pct",
+    "tt_heal_cleanse_chance",
+    "tt_tinh_hoa_cap",
+    "tt_tinh_hoa_per_stack_cleanse",
+    "tt_tinh_hoa_mp_on_heal_pct",
+    "tt_abyss_threshold",
+    "tt_abyss_reduce_pct",
+    "tt_abyss_reflect_pct",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks
