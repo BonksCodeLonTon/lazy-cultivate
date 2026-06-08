@@ -11,9 +11,9 @@
       "atk": 0.0,
       "matk": 1.0
     },
-    "mp_cost": 38,
+    "mp_cost": 17,
     "cooldown": 2,
-    "base_dmg": 210,
+    "base_dmg": 65,
     "effects": [],
     "formation_key": null
   },
@@ -29,9 +29,9 @@
       "atk": 0.0,
       "matk": 1.0
     },
-    "mp_cost": 23,
+    "mp_cost": 10,
     "cooldown": 2,
-    "base_dmg": 110,
+    "base_dmg": 65,
     "effects": [
       "DebuffDocTo"
     ],
@@ -49,9 +49,9 @@
       "atk": 0.0,
       "matk": 1.0
     },
-    "mp_cost": 10,
+    "mp_cost": 5,
     "cooldown": 1,
-    "base_dmg": 25,
+    "base_dmg": 15,
     "effects": [
       "DebuffDocTo"
     ],
@@ -79,7 +79,7 @@
     "key": "SkillMocAncientTreeSummon",
     "vi": "Triệu Hồi Cổ Mộc Hộ Pháp",
     "en": "Summon Ancient Tree Warden",
-    "scroll_grade": 2,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "moc",
     "attack_type": "magical",
@@ -127,11 +127,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.0
+      "matk": 1.1
     },
     "mp_cost": 125,
     "cooldown": 4,
-    "base_dmg": 750,
+    "base_dmg": 250,
     "effects": [
       "DebuffDocTo",
       "DebuffBaoMon"
@@ -158,11 +158,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.1
+      "matk": 1.162
     },
     "mp_cost": 81,
     "cooldown": 3,
-    "base_dmg": 560,
+    "base_dmg": 250,
     "effects": [
       "DebuffDocTo",
       "DebuffTroBuoc"
@@ -1023,9 +1023,9 @@
       "atk": 0.0,
       "matk": 1.67
     },
-    "mp_cost": 88,
+    "mp_cost": 20,
     "cooldown": 3,
-    "base_dmg": 235,
+    "base_dmg": 110,
     "effects": [
       "DebuffDocTo"
     ],

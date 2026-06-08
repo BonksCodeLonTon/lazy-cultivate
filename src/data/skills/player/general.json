@@ -288,9 +288,9 @@
       "atk": 1.5,
       "matk": 0.5
     },
-    "mp_cost": 37,
+    "mp_cost": 17,
     "cooldown": 4,
-    "base_dmg": 90,
+    "base_dmg": 55,
     "effects": [],
     "formation_key": null,
     "description_vi": "Đòn chân khí vô thuộc tính — dùng được cho mọi Linh Căn."

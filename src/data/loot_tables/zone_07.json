@@ -69,21 +69,21 @@
     },
     {
       "item_key": "GemKim_4",
-      "weight": 30000,
+      "weight": 1875,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone7_gem4"
     },
     {
       "item_key": "GemMoc_4",
-      "weight": 30000,
+      "weight": 1875,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone7_gem4"
     },
     {
       "item_key": "GemThuy_4",
-      "weight": 30000,
+      "weight": 1875,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone7_gem4"
@@ -248,6 +248,12 @@
     {
       "item_key": "MasteryDinhDaoChau",
       "weight": 20000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcThangThe",
+      "weight": 9000,
       "qty_min": 1,
       "qty_max": 1
     }

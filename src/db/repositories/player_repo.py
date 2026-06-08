@@ -126,7 +126,10 @@ class PlayerRepository:
 
 
 
-        # Assign one starting skill that matches a random element from the player's Linh Căn
+        # Assign one starting skill: a grade-1 (basic) attack matching a
+        # random element from the player's Linh Căn. Every element has a
+        # grade-1 attack in the ladder, so any single-element Linh Căn still
+        # gets a starter.
         from src.data.registry import registry as _registry
         from src.db.models.skill import CharacterSkill
 
@@ -140,8 +143,7 @@ class PlayerRepository:
                 if not s.get("key", "").startswith("Enemy")
                 and s.get("element") == elem
                 and s.get("category") == "attack"
-                and s.get("realm", 99) == 1
-                and s.get("mp_cost", 999) <= 15
+                and s.get("scroll_grade") == 1
             ]
             if candidates:
                 start_skill_key = random.choice(candidates)

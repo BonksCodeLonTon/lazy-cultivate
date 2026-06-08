@@ -6,7 +6,7 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "hoa",
-    "base_hp": 320,
+    "base_hp": 300,
     "base_spd": 10,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -16,7 +16,7 @@
     ],
     "base_atk": 15,
     "base_matk": 30,
-    "base_def": 15,
+    "base_def": 27,
     "mp_regen_pct": 0.04
   },
   {
@@ -26,7 +26,7 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "moc",
-    "base_hp": 288,
+    "base_hp": 300,
     "base_spd": 8,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -36,7 +36,7 @@
     ],
     "base_atk": 15,
     "base_matk": 30,
-    "base_def": 15,
+    "base_def": 27,
     "mp_regen_pct": 0.04
   },
   {
@@ -46,7 +46,7 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "thuy",
-    "base_hp": 256,
+    "base_hp": 250,
     "base_spd": 12,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -56,7 +56,7 @@
     ],
     "base_atk": 15,
     "base_matk": 30,
-    "base_def": 15,
+    "base_def": 27,
     "mp_regen_pct": 0.04
   },
   {
@@ -70,7 +70,7 @@
     "base_spd": 8,
     "base_atk": 40,
     "base_matk": 20,
-    "base_def": 30,
+    "base_def": 54,
     "hp_scale": 1.5,
     "mp_regen_pct": 0.05,
     "skill_keys": [
@@ -86,7 +86,7 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "kim",
-    "base_hp": 352,
+    "base_hp": 350,
     "base_spd": 9,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -96,7 +96,7 @@
     ],
     "base_atk": 30,
     "base_matk": 15,
-    "base_def": 18,
+    "base_def": 32,
     "mp_regen_pct": 0.04
   },
   {
@@ -106,7 +106,7 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "loi",
-    "base_hp": 304,
+    "base_hp": 300,
     "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -116,7 +116,7 @@
     ],
     "base_atk": 15,
     "base_matk": 30,
-    "base_def": 15,
+    "base_def": 27,
     "mp_regen_pct": 0.04
   },
   {
@@ -126,7 +126,7 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "phong",
-    "base_hp": 272,
+    "base_hp": 250,
     "base_spd": 14,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -136,7 +136,7 @@
     ],
     "base_atk": 30,
     "base_matk": 15,
-    "base_def": 18,
+    "base_def": 32,
     "mp_regen_pct": 0.04
   },
   {
@@ -146,7 +146,7 @@
     "rank": "pho_thong",
     "realm_level": 1,
     "element": "thuy",
-    "base_hp": 336,
+    "base_hp": 350,
     "base_spd": 9,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -156,7 +156,7 @@
     ],
     "base_atk": 15,
     "base_matk": 30,
-    "base_def": 15,
+    "base_def": 27,
     "mp_regen_pct": 0.04
   }
 ]

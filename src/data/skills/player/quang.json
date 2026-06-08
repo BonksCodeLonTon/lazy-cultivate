@@ -9,11 +9,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.83
+      "matk": 1.863
     },
     "mp_cost": 173,
     "cooldown": 7,
-    "base_dmg": 414,
+    "base_dmg": 250,
     "effects": [
       "DebuffPhaGiap"
     ],
@@ -373,12 +373,12 @@
       "atk": 0.0,
       "matk": 1.67
     },
-    "mp_cost": 40,
+    "mp_cost": 18,
     "cooldown": 4,
-    "base_dmg": 95,
+    "base_dmg": 55,
     "effects": [],
     "formation_key": null,
-    "description_vi": "Quang Tiễn — một mũi quang cơ bản, gây sát thương Quang theo MATK."
+    "description_vi": "Quang Tiễn — gây sát thương Quang theo MATK."
   },
   {
     "key": "SkillDefQuang1",
@@ -422,17 +422,17 @@
     ],
     "effect_chances": {
       "DebuffPhaGiap": 1.0,
-      "DebuffLoaMat": 0.5
+      "DebuffLoaMat": 0.3
     },
     "effect_overrides": {
       "DebuffPhaGiap": {
         "stat_bonus": {
-          "final_dmg_reduce": -0.22
+          "final_dmg_reduce": -0.08
         },
-        "duration": 4
+        "duration": 2
       }
     },
     "formation_key": null,
-    "description_vi": "Thánh quang phá giáp — Phá Giáp (−22% Giảm Sát Thương) kèm 50% Lóa Mắt."
+    "description_vi": "Thánh quang phá giáp — Phá Giáp (−8% Giảm Sát Thương) trong 2 lượt. 30% Lóa Mắt."
   }
 ]

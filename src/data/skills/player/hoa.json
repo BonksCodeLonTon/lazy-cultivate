@@ -482,9 +482,9 @@
       "atk": 0.0,
       "matk": 1.67
     },
-    "mp_cost": 40,
+    "mp_cost": 18,
     "cooldown": 4,
-    "base_dmg": 95,
+    "base_dmg": 55,
     "effects": [],
     "formation_key": null,
     "description_vi": "Hỏa Cầu — một quả cầu lửa cơ bản, gây sát thương Hỏa theo MATK."
@@ -501,9 +501,9 @@
       "atk": 0.0,
       "matk": 1.67
     },
-    "mp_cost": 88,
+    "mp_cost": 20,
     "cooldown": 3,
-    "base_dmg": 235,
+    "base_dmg": 110,
     "effects": [
       "DebuffThieuDot"
     ],

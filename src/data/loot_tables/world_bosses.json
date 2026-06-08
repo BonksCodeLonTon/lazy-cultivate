@@ -3686,7 +3686,7 @@
     },
     {
       "item_key": "GemKim_4",
-      "weight": 90000,
+      "weight": 27500,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -3746,13 +3746,13 @@
     },
     {
       "item_key": "GemMoc_4",
-      "weight": 90000,
+      "weight": 27500,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemThuy_4",
-      "weight": 90000,
+      "weight": 27500,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -3850,7 +3850,7 @@
     },
     {
       "item_key": "GemMoc_4",
-      "weight": 90000,
+      "weight": 27500,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -3904,13 +3904,13 @@
     },
     {
       "item_key": "GemKim_4",
-      "weight": 95000,
+      "weight": 27500,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemThuy_4",
-      "weight": 95000,
+      "weight": 27500,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -4008,7 +4008,7 @@
     },
     {
       "item_key": "GemThuy_4",
-      "weight": 90000,
+      "weight": 27500,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -4050,13 +4050,13 @@
     },
     {
       "item_key": "GemKim_4",
-      "weight": 90000,
+      "weight": 27500,
       "qty_min": 1,
       "qty_max": 2
     },
     {
       "item_key": "GemMoc_4",
-      "weight": 90000,
+      "weight": 27500,
       "qty_min": 1,
       "qty_max": 2
     },
@@ -4223,6 +4223,12 @@
       "weight": 1600,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcDaoThe",
+      "weight": 1600,
+      "qty_min": 1,
+      "qty_max": 1
     }
   ],
   "LootWorldBossRealm8_KimMoc": [
@@ -4312,6 +4318,12 @@
     },
     {
       "item_key": "MatThienDaoTuy",
+      "weight": 1600,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcDaoThe",
       "weight": 1600,
       "qty_min": 1,
       "qty_max": 1
@@ -4407,6 +4419,12 @@
       "weight": 1600,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcDaoThe",
+      "weight": 1600,
+      "qty_min": 1,
+      "qty_max": 1
     }
   ],
   "LootWorldBossRealm9_Tien": [
@@ -4497,6 +4515,24 @@
     {
       "item_key": "MasteryThongThienDaoQua",
       "weight": 8,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcDaoThe",
+      "weight": 1600,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcDinhTheChau",
+      "weight": 1200,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcHoanTheTinh",
+      "weight": 200,
       "qty_min": 1,
       "qty_max": 1
     }
@@ -4609,6 +4645,24 @@
       "weight": 8,
       "qty_min": 1,
       "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcDaoThe",
+      "weight": 1600,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcDinhTheChau",
+      "weight": 1200,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcHoanTheTinh",
+      "weight": 200,
+      "qty_min": 1,
+      "qty_max": 1
     }
   ],
   "LootWorldBossRealm9_ThoThan": [
@@ -4711,6 +4765,24 @@
     {
       "item_key": "MasteryThongThienDaoQua",
       "weight": 8,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcDaoThe",
+      "weight": 1600,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcDinhTheChau",
+      "weight": 1200,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcHoanTheTinh",
+      "weight": 200,
       "qty_min": 1,
       "qty_max": 1
     }

@@ -66,7 +66,7 @@ REALM_POWER_BONUS_PER_STAGE: float = 0.008  # +0.8 % per stage
 # ── Enemy scaling ─────────────────────────────────────────────────────────────
 # HP scale: realm_scale = 1.0 + (player_realm_total / ENEMY_SCALE_MAX) * ENEMY_HP_SCALE_FACTOR
 ENEMY_SCALE_MAX: int = 81               # denominator (max single-axis stages)
-ENEMY_HP_SCALE_FACTOR: float = 2.0      # at max realm: 3× base HP
+ENEMY_HP_SCALE_FACTOR: float = 1.2      # at max realm: 2.2× base HP (re-tuned: 2.8 over-tanked high realms)
 ENEMY_DMG_BONUS_SCALE: float = 1.5     # at max realm: +150 % damage
 ENEMY_BASE_ELEM_RES: float = 0.10      # 10% elemental resistance for enemy's own element
 

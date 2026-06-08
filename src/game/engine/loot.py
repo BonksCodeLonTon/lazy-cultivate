@@ -19,7 +19,7 @@ from __future__ import annotations
 # Target *aggregate* drop share per loot roll for any scroll of the given
 # grade. Per-scroll weights are derived dynamically from these so the share
 # holds across zones (see ``inject_scroll_drops``).
-SCROLL_DROP_TARGET_SHARE: dict[int, float] = {3: 0.05, 4: 0.01}
+SCROLL_DROP_TARGET_SHARE: dict[int, float] = {3: 0.003125, 4: 0.000625}
 
 
 def inject_scroll_drops(
@@ -51,7 +51,8 @@ def inject_scroll_drops(
                      carry a realm field).
         static:      The zone's static drop entries (used to size injection).
         target_share: Optional override for share targets. Default keeps
-                     grade-3 at 5% and grade-4 at 1% per roll.
+                     grade-3 at 0.3125% and grade-4 at 0.0625% per roll
+                     (kept low because auto/AFK farm rolls ~90% of kills).
 
     Returns:
         List of drop entries (``item_key``, ``weight``, ``qty_min/max``).

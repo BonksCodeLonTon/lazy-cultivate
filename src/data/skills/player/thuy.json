@@ -3,7 +3,7 @@
     "key": "SkillAtkVongXuyenNhuocThuy_R7",
     "vi": "Vong Xuyên Nhược Thủy",
     "en": "Wang-Chuan Weak Water",
-    "scroll_grade": 1,
+    "scroll_grade": 4,
     "category": "attack",
     "element": "thuy",
     "attack_type": "magical",
@@ -241,8 +241,8 @@
     "cooldown": 4,
     "base_dmg": 2100,
     "bonus_dmg_vs_hp_above": {
-      "hp_pct": 0.70,
-      "dmg_bonus": 0.40
+      "hp_pct": 0.7,
+      "dmg_bonus": 0.4
     },
     "effects": [],
     "formation_key": null,
@@ -334,9 +334,9 @@
       "atk": 0.0,
       "matk": 1.67
     },
-    "mp_cost": 40,
+    "mp_cost": 18,
     "cooldown": 4,
-    "base_dmg": 95,
+    "base_dmg": 55,
     "effects": [],
     "formation_key": null,
     "description_vi": "Thủy Tiễn — một mũi nước cơ bản, gây sát thương Thủy theo MATK."

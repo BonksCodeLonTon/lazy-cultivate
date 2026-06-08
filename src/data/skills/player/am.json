@@ -177,12 +177,12 @@
       },
       "DebuffSuyKhi": {
         "stat_bonus": {
-          "atk_pct": -0.10
+          "atk_pct": -0.1
         }
       },
       "DebuffPhapNhuoc": {
         "stat_bonus": {
-          "matk_pct": -0.10
+          "matk_pct": -0.1
         }
       },
       "BuffDoanTuyet": {
@@ -243,13 +243,13 @@
     "effect_overrides": {
       "DebuffPhapNhuoc": {
         "stat_bonus": {
-          "matk_pct": -0.20
+          "matk_pct": -0.2
         },
         "duration": 4
       },
       "DebuffLinhLucKiet": {
         "stat_bonus": {
-          "mp_regen_pct": -0.20
+          "mp_regen_pct": -0.2
         },
         "duration": 4
       }
@@ -278,7 +278,7 @@
       "element": "am",
       "count": 3,
       "turns": 3,
-      "dmg_pct_of_atk": 0.40,
+      "dmg_pct_of_atk": 0.4,
       "on_hit_debuff": {
         "key": "DebuffAmThucKy",
         "overrides": {
@@ -306,7 +306,7 @@
     "effects": [
       "ApplyStatSteal"
     ],
-    "stat_steal_pct": 0.10,
+    "stat_steal_pct": 0.1,
     "stat_steal_procs": 1,
     "formation_key": null,
     "description_vi": "Sưu Hồn Đoạt Phách — không gây sát thương trực tiếp, nhưng cộng cho bản thân **10% chỉ số gốc** của mình (Công / Pháp / Phòng) bằng cách rút trực tiếp từ đối thủ. Trần vĩnh viễn = 10% chỉ số gốc của bản thân — chiêu này ăn trọn cap trong một lần phát."
@@ -430,9 +430,9 @@
     "effect_overrides": {
       "BuffVoTuongThienMa": {
         "stat_bonus": {
-          "damage_convert_am": 0.40,
-          "res_am": 0.50,
-          "am_max_resist_bonus": 0.10
+          "damage_convert_am": 0.4,
+          "res_am": 0.5,
+          "am_max_resist_bonus": 0.1
         }
       }
     },
@@ -585,9 +585,9 @@
       "atk": 0.0,
       "matk": 1.67
     },
-    "mp_cost": 40,
+    "mp_cost": 18,
     "cooldown": 4,
-    "base_dmg": 95,
+    "base_dmg": 55,
     "effects": [],
     "formation_key": null,
     "description_vi": "Âm Sát — một đòn âm khí cơ bản, gây sát thương Âm theo MATK."
@@ -604,9 +604,9 @@
       "atk": 0.0,
       "matk": 1.67
     },
-    "mp_cost": 88,
+    "mp_cost": 20,
     "cooldown": 3,
-    "base_dmg": 235,
+    "base_dmg": 110,
     "effects": [
       "DebuffLoaMat"
     ],
@@ -615,27 +615,6 @@
     },
     "formation_key": null,
     "description_vi": "U Ám Phất — quất một roi u ám, 35% xác suất gây Lóa Mắt lên địch."
-  },
-  {
-    "key": "SkillDefAm1",
-    "vi": "Âm Khí Hộ Thể",
-    "en": "Shade-Qi Guard",
-    "scroll_grade": 1,
-    "category": "defense",
-    "element": "am",
-    "attack_type": "magical",
-    "dmg_scale": {
-      "atk": 0.0,
-      "matk": 0.0
-    },
-    "mp_cost": 5,
-    "cooldown": 3,
-    "base_dmg": 0,
-    "effects": [
-      "BuffThuyKinh"
-    ],
-    "formation_key": null,
-    "description_vi": "Âm khí cuộn quanh thân — giảm 15% sát thương phải nhận."
   },
   {
     "key": "SkillAtkAmXeRach2",

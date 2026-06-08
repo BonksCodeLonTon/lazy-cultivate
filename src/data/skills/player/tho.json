@@ -381,9 +381,9 @@
       "atk": 1.67,
       "matk": 0.0
     },
-    "mp_cost": 37,
+    "mp_cost": 17,
     "cooldown": 4,
-    "base_dmg": 90,
+    "base_dmg": 55,
     "effects": [],
     "formation_key": null,
     "description_vi": "Thạch Kích — một đòn đá cơ bản, gây sát thương Thổ theo CÔNG."

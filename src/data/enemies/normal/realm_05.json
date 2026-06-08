@@ -6,7 +6,7 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "hoa",
-    "base_hp": 2380,
+    "base_hp": 4550,
     "base_spd": 12,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -16,7 +16,7 @@
     ],
     "base_atk": 65,
     "base_matk": 130,
-    "base_def": 55,
+    "base_def": 77,
     "mp_regen_pct": 0.06,
     "base_res": {
       "hoa": 0.12
@@ -29,7 +29,7 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "kim",
-    "base_hp": 2550,
+    "base_hp": 4900,
     "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -39,7 +39,7 @@
     ],
     "base_atk": 130,
     "base_matk": 65,
-    "base_def": 70,
+    "base_def": 98,
     "mp_regen_pct": 0.06,
     "base_res": {
       "kim": 0.12
@@ -52,7 +52,7 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "loi",
-    "base_hp": 2040,
+    "base_hp": 3950,
     "base_spd": 14,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -62,7 +62,7 @@
     ],
     "base_atk": 65,
     "base_matk": 130,
-    "base_def": 55,
+    "base_def": 77,
     "mp_regen_pct": 0.06,
     "base_res": {
       "loi": 0.12
@@ -75,7 +75,7 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "moc",
-    "base_hp": 2295,
+    "base_hp": 4400,
     "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -85,7 +85,7 @@
     ],
     "base_atk": 65,
     "base_matk": 130,
-    "base_def": 55,
+    "base_def": 77,
     "mp_regen_pct": 0.06,
     "base_res": {
       "moc": 0.12
@@ -98,7 +98,7 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "thuy",
-    "base_hp": 2720,
+    "base_hp": 5200,
     "base_spd": 11,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -108,7 +108,7 @@
     ],
     "base_atk": 65,
     "base_matk": 130,
-    "base_def": 55,
+    "base_def": 77,
     "mp_regen_pct": 0.06,
     "base_res": {
       "thuy": 0.12
@@ -121,7 +121,7 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "phong",
-    "base_hp": 1870,
+    "base_hp": 3600,
     "base_spd": 16,
     "hp_scale": 1.5,
     "skill_keys": [
@@ -131,7 +131,7 @@
     ],
     "base_atk": 130,
     "base_matk": 65,
-    "base_def": 70,
+    "base_def": 98,
     "mp_regen_pct": 0.06,
     "base_res": {
       "phong": 0.12
@@ -144,11 +144,11 @@
     "rank": "hung_manh",
     "realm_level": 5,
     "element": "tho",
-    "base_hp": 3000,
+    "base_hp": 5750,
     "base_spd": 11,
     "base_atk": 180,
     "base_matk": 140,
-    "base_def": 90,
+    "base_def": 126,
     "hp_scale": 1.5,
     "mp_regen_pct": 0.07,
     "skill_keys": [

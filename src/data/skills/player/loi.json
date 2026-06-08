@@ -8,12 +8,12 @@
     "element": "loi",
     "attack_type": "magical",
     "dmg_scale": {
-      "atk": 0.4,
-      "matk": 1.0
+      "atk": 0.554,
+      "matk": 1.384
     },
-    "mp_cost": 309,
+    "mp_cost": 20,
     "cooldown": 6,
-    "base_dmg": 2940,
+    "base_dmg": 110,
     "effects": [
       "DebuffTeLiet",
       "DebuffSetDanh",
@@ -47,11 +47,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.0
+      "matk": 1.18
     },
-    "mp_cost": 162,
+    "mp_cost": 20,
     "cooldown": 5,
-    "base_dmg": 1150,
+    "base_dmg": 110,
     "effects": [],
     "formation_key": null
   },
@@ -65,11 +65,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.05
+      "matk": 1.144
     },
-    "mp_cost": 102,
+    "mp_cost": 20,
     "cooldown": 4,
-    "base_dmg": 720,
+    "base_dmg": 110,
     "effects": [
       "DebuffSocDien",
       "DebuffSocDien",
@@ -92,11 +92,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.0
+      "matk": 1.007
     },
-    "mp_cost": 49,
+    "mp_cost": 20,
     "cooldown": 2,
-    "base_dmg": 285,
+    "base_dmg": 110,
     "effects": [],
     "formation_key": null
   },
@@ -204,11 +204,11 @@
     "attack_type": "magical",
     "dmg_scale": {
       "atk": 0.0,
-      "matk": 1.1
+      "matk": 1.186
     },
     "mp_cost": 96,
     "cooldown": 4,
-    "base_dmg": 680,
+    "base_dmg": 250,
     "effects": [
       "DebuffTeLiet",
       "DebuffSetDanh"
@@ -1275,9 +1275,9 @@
       "atk": 0.0,
       "matk": 1.67
     },
-    "mp_cost": 40,
+    "mp_cost": 18,
     "cooldown": 4,
-    "base_dmg": 95,
+    "base_dmg": 55,
     "effects": [],
     "formation_key": null,
     "description_vi": "Lôi Kích — một đòn lôi điện cơ bản, gây sát thương Lôi theo MATK."
@@ -1294,9 +1294,9 @@
       "atk": 0.0,
       "matk": 1.67
     },
-    "mp_cost": 88,
+    "mp_cost": 20,
     "cooldown": 3,
-    "base_dmg": 235,
+    "base_dmg": 110,
     "effects": [
       "DebuffSocDien"
     ],

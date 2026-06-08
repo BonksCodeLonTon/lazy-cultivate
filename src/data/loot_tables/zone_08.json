@@ -75,35 +75,35 @@
     },
     {
       "item_key": "GemKim_4",
-      "weight": 80000,
+      "weight": 5000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone8_gem4"
     },
     {
       "item_key": "GemMoc_4",
-      "weight": 80000,
+      "weight": 5000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone8_gem4"
     },
     {
       "item_key": "GemLoi_4",
-      "weight": 80000,
+      "weight": 5000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone8_gem4"
     },
     {
       "item_key": "GemHoa_4",
-      "weight": 80000,
+      "weight": 5000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone8_gem4"
     },
     {
       "item_key": "GemThuy_4",
-      "weight": 80000,
+      "weight": 5000,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone8_gem4"
@@ -262,6 +262,24 @@
     {
       "item_key": "MasteryDinhDaoChau",
       "weight": 20000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcThangThe",
+      "weight": 9000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcLuyenThe",
+      "weight": 4000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "ConsProcHoThePhu",
+      "weight": 6000,
       "qty_min": 1,
       "qty_max": 1
     }

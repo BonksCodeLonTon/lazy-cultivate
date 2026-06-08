@@ -492,49 +492,49 @@
     },
     {
       "item_key": "GemKim_4",
-      "weight": 25000,
+      "weight": 1562,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_dia_gem4"
     },
     {
       "item_key": "GemMoc_4",
-      "weight": 25000,
+      "weight": 1562,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_dia_gem4"
     },
     {
       "item_key": "GemThuy_4",
-      "weight": 25000,
+      "weight": 1562,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_dia_gem4"
     },
     {
       "item_key": "GemHoa_4",
-      "weight": 25000,
+      "weight": 1562,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_dia_gem4"
     },
     {
       "item_key": "GemTho_4",
-      "weight": 25000,
+      "weight": 1562,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_dia_gem4"
     },
     {
       "item_key": "GemLoi_4",
-      "weight": 25000,
+      "weight": 1562,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_dia_gem4"
     },
     {
       "item_key": "GemPhong_4",
-      "weight": 25000,
+      "weight": 1562,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_dia_gem4"
@@ -622,49 +622,49 @@
     },
     {
       "item_key": "GemKim_4",
-      "weight": 50000,
+      "weight": 3125,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_thien_gem4"
     },
     {
       "item_key": "GemMoc_4",
-      "weight": 50000,
+      "weight": 3125,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_thien_gem4"
     },
     {
       "item_key": "GemLoi_4",
-      "weight": 50000,
+      "weight": 3125,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_thien_gem4"
     },
     {
       "item_key": "GemHoa_4",
-      "weight": 50000,
+      "weight": 3125,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_thien_gem4"
     },
     {
       "item_key": "GemThuy_4",
-      "weight": 50000,
+      "weight": 3125,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_thien_gem4"
     },
     {
       "item_key": "GemPhong_4",
-      "weight": 50000,
+      "weight": 3125,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_thien_gem4"
     },
     {
       "item_key": "GemTho_4",
-      "weight": 50000,
+      "weight": 3125,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "chest_thien_gem4"

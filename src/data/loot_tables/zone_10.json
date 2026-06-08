@@ -26,49 +26,49 @@
     },
     {
       "item_key": "GemKim_4",
-      "weight": 150000,
+      "weight": 9375,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone10_gem4"
     },
     {
       "item_key": "GemMoc_4",
-      "weight": 150000,
+      "weight": 9375,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone10_gem4"
     },
     {
       "item_key": "GemLoi_4",
-      "weight": 150000,
+      "weight": 9375,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone10_gem4"
     },
     {
       "item_key": "GemHoa_4",
-      "weight": 150000,
+      "weight": 9375,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone10_gem4"
     },
     {
       "item_key": "GemThuy_4",
-      "weight": 150000,
+      "weight": 9375,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone10_gem4"
     },
     {
       "item_key": "GemPhong_4",
-      "weight": 150000,
+      "weight": 9375,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone10_gem4"
     },
     {
       "item_key": "GemTho_4",
-      "weight": 150000,
+      "weight": 9375,
       "qty_min": 1,
       "qty_max": 1,
       "pool_id": "zone10_gem4"

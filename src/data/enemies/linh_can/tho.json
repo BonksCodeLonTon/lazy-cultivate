@@ -41,7 +41,7 @@
     "rank": "tinh_anh",
     "realm_level": 2,
     "element": "tho",
-    "base_hp": 2520,
+    "base_hp": 7850,
     "base_spd": 9,
     "hp_scale": 1.8,
     "skill_keys": [
@@ -76,7 +76,7 @@
     "rank": "tinh_anh",
     "realm_level": 3,
     "element": "tho",
-    "base_hp": 2900,
+    "base_hp": 6400,
     "base_spd": 16,
     "hp_scale": 1.65,
     "skill_keys": [
@@ -111,7 +111,7 @@
     "rank": "cuong_gia",
     "realm_level": 4,
     "element": "tho",
-    "base_hp": 6000,
+    "base_hp": 9200,
     "base_spd": 10,
     "hp_scale": 1.9,
     "skill_keys": [
@@ -146,7 +146,7 @@
     "rank": "cuong_gia",
     "realm_level": 5,
     "element": "tho",
-    "base_hp": 7800,
+    "base_hp": 14950,
     "base_spd": 18,
     "hp_scale": 1.8,
     "skill_keys": [
@@ -183,7 +183,7 @@
     "rank": "hung_manh",
     "realm_level": 6,
     "element": "tho",
-    "base_hp": 16800,
+    "base_hp": 22700,
     "base_spd": 12,
     "hp_scale": 2.0,
     "skill_keys": [
@@ -219,7 +219,7 @@
     "rank": "hung_manh",
     "realm_level": 7,
     "element": "tho",
-    "base_hp": 21000,
+    "base_hp": 10300,
     "base_spd": 21,
     "hp_scale": 1.95,
     "skill_keys": [
@@ -257,7 +257,7 @@
     "rank": "dai_nang",
     "realm_level": 8,
     "element": "tho",
-    "base_hp": 48000,
+    "base_hp": 26400,
     "base_spd": 13,
     "hp_scale": 2.2,
     "skill_keys": [
@@ -293,7 +293,7 @@
     "rank": "dai_nang",
     "realm_level": 9,
     "element": "tho",
-    "base_hp": 56000,
+    "base_hp": 36400,
     "base_spd": 22,
     "hp_scale": 2.05,
     "skill_keys": [
@@ -331,7 +331,7 @@
     "rank": "chi_ton",
     "realm_level": 10,
     "element": "tho",
-    "base_hp": 92000,
+    "base_hp": 148600,
     "base_spd": 23,
     "hp_scale": 2.2,
     "skill_keys": [
