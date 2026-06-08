@@ -2614,5 +2614,53 @@
     "cleansable": false,
     "emoji": "🌀",
     "duration": 999
+  },
+  {
+    "key": "BuffLuuLyThuanTam",
+    "vi": "Lưu Ly Thuẫn Tâm",
+    "en": "Glazed Aegis Heart",
+    "kind": "buff",
+    "description_vi": "Tâm hóa lưu ly — Khiên dày thêm và tự vá nhanh hơn.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🛡️",
+    "duration": 999
+  },
+  {
+    "key": "BuffQuyThuanHoaNguyen",
+    "vi": "Quy Thuẫn Hóa Nguyên",
+    "en": "All Returns to the Aegis",
+    "kind": "buff",
+    "description_vi": "Mọi hiệu quả hồi HP nhận vào chuyển hết thành hồi Khiên.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "💠",
+    "duration": 999
+  },
+  {
+    "key": "BuffThuanPhanCuong",
+    "vi": "Thuẫn Phản Cương",
+    "en": "Aegis Turns to Edge",
+    "kind": "buff",
+    "description_vi": "Lấy thuẫn làm đao — mỗi đòn cộng thêm sát thương theo lượng Khiên hiện có.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚔️",
+    "duration": 999
+  },
+  {
+    "key": "BuffLuuLyBatDiet",
+    "vi": "Lưu Ly Bất Diệt",
+    "en": "Indestructible Glaze",
+    "kind": "buff",
+    "description_vi": "Mỗi trận một lần: khi Khiên vỡ và đòn đánh sắp chạm thân, tấm thuẫn tái tạo — vô hiệu đòn đó + hồi 40% Khiên tối đa.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔷",
+    "duration": 999
   }
 ]

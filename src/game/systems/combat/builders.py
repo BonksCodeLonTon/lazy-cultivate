@@ -79,6 +79,11 @@ def build_player_combatant(
     # runtime-only sources (e.g. shield_max_per_spd buff aura) get layered
     # on top by ``Combatant.shield_cap`` during play but aren't pre-credited.
     shield_current = max(0, min(char.shield_current, cs.shield_max))
+    # Lưu Ly Thuẫn Thân — the aegis IS the health pool (hp_max 1), so a fight
+    # always starts at full shield; a persisted 0 would mean instant death on
+    # the first hit.
+    if cs.shield_only_body:
+        shield_current = cs.shield_max
 
     # Carry every field CombatStats and Combatant share — field names match
     # by construction (see character_stats.CombatStats). Any CombatStats-only

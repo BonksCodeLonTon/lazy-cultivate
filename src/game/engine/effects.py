@@ -806,6 +806,16 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "tt_abyss_threshold",
     "tt_abyss_reduce_pct",
     "tt_abyss_reflect_pct",
+    # Lưu Ly Thuẫn Thân Thể (universal shield-only aegis body) — config keys
+    # consumed at build (compute_combat_stats HP→shield conversion) and in
+    # take_damage (force-shield + L9 reform) / _apply_heal (L3 heal→shield).
+    # ``damage_bonus_from_shield_pct`` is NOT here — it's a real stat (L6 reuses
+    # it). ``aegis_reform_just_triggered`` is a runtime flag, never in stat_bonus.
+    "shield_only_body",
+    "shield_from_hp_max_pct",
+    "heal_to_shield_pct",
+    "aegis_reform_charges",
+    "aegis_reform_shield_pct",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks

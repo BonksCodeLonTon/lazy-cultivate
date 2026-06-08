@@ -856,6 +856,20 @@ class Combatant:
     tt_abyss_reflect_pct: float = 0.0
     tt_tinh_hoa_stacks: int = 0  # runtime (NOT a config key)
 
+    # ── Lưu Ly Thuẫn Thân Thể (universal shield-only aegis body) ──────────────
+    # No flesh: hp_max is locked to 1 at build and the would-be HP pool becomes
+    # shield. ``shield_only_body`` makes take_damage force ALL damage through the
+    # shield (bypass_shield / is_dot can't skip it). L3 ``heal_to_shield_pct``
+    # routes heals into shield (_apply_heal); L6 reuses ``damage_bonus_from_shield_pct``;
+    # L9 ``aegis_reform_charges`` is a once-per-fight shield reform consumed in
+    # take_damage when a hit would breach the broken shield.
+    shield_only_body: bool = False
+    shield_from_hp_max_pct: float = 0.0
+    heal_to_shield_pct: float = 0.0
+    aegis_reform_charges: int = 0
+    aegis_reform_shield_pct: float = 0.0
+    aegis_reform_just_triggered: bool = False  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.
@@ -1322,8 +1336,15 @@ class Combatant:
         # so a shielded target can't repair while being shield-pierced.
         # Snapshot pre-absorption amount so the Lôi Thần Khải hook below can
         # account for damage routed through both shield and HP in a single read.
-        pre_absorb_amount = amount if not is_dot else 0
-        if not is_dot and amount > 0:
+        # Lưu Ly Thuẫn Thân — the aegis body has hp_max 1 and forces ALL damage
+        # through the shield: true-damage, shield-pierce, and DoT can't bypass it.
+        # So the shield-absorption step runs even for is_dot/bypass_shield calls.
+        force_shield = self.shield_only_body
+        if force_shield:
+            bypass_shield = False
+        shield_eligible = (not is_dot) or force_shield
+        pre_absorb_amount = amount if shield_eligible else 0
+        if shield_eligible and amount > 0:
             if self.shield > 0 and not bypass_shield:
                 absorbed = min(self.shield, amount)
                 self.shield -= absorbed
@@ -1331,6 +1352,21 @@ class Combatant:
             self.shield_recharge_pause = max(
                 self.shield_recharge_pause, self.shield_recharge_delay,
             )
+            # Lưu Ly Bất Diệt (L9) — when a hit pierces the shattered shield and
+            # would reach the 1-HP flesh, the aegis reforms once per fight:
+            # restore part of the cap and negate this blow. Silent (the model has
+            # no log handle) — the caller reads ``aegis_reform_just_triggered`` to
+            # log, mirroring Endure. Without a charge, the leftover ends the body.
+            if (
+                force_shield
+                and amount > 0
+                and self.aegis_reform_charges > 0
+                and self.aegis_reform_shield_pct > 0
+            ):
+                self.aegis_reform_charges -= 1
+                self.shield = int(self.shield_cap() * self.aegis_reform_shield_pct)
+                self.aegis_reform_just_triggered = True
+                amount = 0
 
         # Step 4 — HP damage (leftover spill or full DoT amount).
         hp_before = self.hp

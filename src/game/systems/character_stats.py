@@ -187,6 +187,17 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("tt_abyss_threshold",               "tt_abyss_threshold",               int),
     ("tt_abyss_reduce_pct",              "tt_abyss_reduce_pct",              float),
     ("tt_abyss_reflect_pct",             "tt_abyss_reflect_pct",             float),
+    # Lưu Ly Thuẫn Thân Thể (universal shield-only aegis body) — config flags.
+    # ``shield_only_body`` + ``shield_from_hp_max_pct`` sit in the FLAT
+    # stat_bonuses so the core mechanic (hp_max→1, shield absorbs everything) is
+    # always-on when equipped; the conversion itself happens in compute_combat_stats.
+    # L6 reuses the existing ``damage_bonus_from_shield_pct`` field (no row here).
+    # ``aegis_reform_just_triggered`` is a runtime flag (Combatant-only, excluded).
+    ("shield_only_body",                 "shield_only_body",                 bool),
+    ("shield_from_hp_max_pct",           "shield_from_hp_max_pct",           float),
+    ("heal_to_shield_pct",               "heal_to_shield_pct",               float),
+    ("aegis_reform_charges",             "aegis_reform_charges",             int),
+    ("aegis_reform_shield_pct",          "aegis_reform_shield_pct",          float),
 ]
 
 
@@ -517,6 +528,12 @@ class CombatStats:
     tt_abyss_threshold: int = 0
     tt_abyss_reduce_pct: float = 0.0
     tt_abyss_reflect_pct: float = 0.0
+    # Lưu Ly Thuẫn Thân Thể (universal shield-only aegis body)
+    shield_only_body: bool = False
+    shield_from_hp_max_pct: float = 0.0
+    heal_to_shield_pct: float = 0.0
+    aegis_reform_charges: int = 0
+    aegis_reform_shield_pct: float = 0.0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).
@@ -1551,6 +1568,16 @@ def compute_combat_stats(
     hp_max, shield_max_base, hp_to_shield_pct = _apply_hp_to_shield(
         hp_max, shield_max_base, hp_to_shield_pct,
     )
+    # Lưu Ly Thuẫn Thân — the aegis body has no flesh: convert the ENTIRE
+    # remaining hp_max into shield (× the conversion ratio) and lock hp_max to 1.
+    # Runs after _apply_hp_to_shield so any partial conversion already folded in.
+    # Combat-only — the persistent Character HP is untouched (this builds the
+    # in-fight Combatant). With hp_max 1, take_damage forces all damage through
+    # the shield (true-dmg / pierce / DoT can't bypass).
+    if bool(bonuses.get("shield_only_body", False)):
+        _aegis_ratio = float(bonuses.get("shield_from_hp_max_pct", 1.0))
+        shield_max_base += int(hp_max * _aegis_ratio)
+        hp_max = 1
     spd_final, def_stat, atk = _apply_pill_buffs(
         char, spd_final, def_stat, atk, element_dmg_bonus,
     )

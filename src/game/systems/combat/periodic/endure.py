@@ -34,6 +34,24 @@ def _endure_announcement(ctx: TurnContext) -> None:
     combatant.endure_just_triggered = False
 
 
+@register_hook(phase=TurnPhase.PERIODIC, name="aegis_reform_announcement", priority=11)
+def _aegis_reform_announcement(ctx: TurnContext) -> None:
+    """Lưu Ly Bất Diệt (L9) — announce the once-per-fight aegis reform.
+
+    The reform itself fires silently inside ``take_damage`` (the model has no
+    log handle); this clears the flag and shows the survival message, mirroring
+    ``endure_announcement``.
+    """
+    combatant = ctx.actor
+    if not combatant.aegis_reform_just_triggered:
+        return
+    ctx.log.append(
+        f"  🔷 **{combatant.name}** **Lưu Ly Bất Diệt** — thuẫn lưu ly tái tạo, "
+        f"vô hiệu đòn chí mạng (Khiên {combatant.shield:,})"
+    )
+    combatant.aegis_reform_just_triggered = False
+
+
 @register_hook(phase=TurnPhase.PERIODIC, name="thanh_tuyen_deferred", priority=15)
 def _thanh_tuyen_deferred(ctx: TurnContext) -> None:
     combatant = ctx.actor

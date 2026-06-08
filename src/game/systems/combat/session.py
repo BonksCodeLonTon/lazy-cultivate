@@ -769,6 +769,11 @@ class CombatSession:
         heal_bonus = float(mods.get("heal_taken_bonus", 0.0))
         if heal_bonus > 0:
             amount = max(1, int(amount * (1.0 + heal_bonus)))
+        # Lưu Ly Thuẫn Thân — Quy Thuẫn Hóa Nguyên (L3): the aegis body has no
+        # flesh to heal (hp_max 1), so route healing into the shield instead. All
+        # heal reductions/crit above still applied; returns the shield restored.
+        if combatant.heal_to_shield_pct > 0 and amount > 0:
+            return combatant.add_shield(int(amount * combatant.heal_to_shield_pct))
         room = max(0, combatant.hp_max - combatant.hp)
         applied = min(amount, room)
         combatant.hp += applied

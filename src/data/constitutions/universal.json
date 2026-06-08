@@ -226,4 +226,73 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_LuuLyThuanThan",
+    "vi": "Lưu Ly Thuẫn Thân Thể",
+    "en": "Glazed Aegis Body",
+    "element": "universal",
+    "rarity": "mythic",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 120000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân hóa lưu ly — xác thịt tan thành một tấm thuẫn pha lê bất hoại. Không còn HP (vĩnh viễn còn 1): toàn bộ sinh lực dồn vào Khiên, mà KHÔNG sát thương nào xuyên qua được Khiên — sát thương chuẩn, xuyên thuẫn, hành quyết, DoT đều buộc phải đập vào Khiên trước. Khiên còn thì gần như bất tử; Khiên vỡ thì một hạt bụi cũng kết liễu.",
+    "stat_bonuses": {
+      "shield_only_body": true,
+      "shield_from_hp_max_pct": 1.2,
+      "shield_max_pct": 0.15,
+      "shield_regen_pct": 0.05
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": {
+        "shield_max_pct": 0.005, "shield_regen_pct": 0.003
+      },
+      "levels": {
+        "1": {
+          "passive_vi": "Lưu Ly Thuẫn Tâm",
+          "passive_en": "Glazed Aegis Heart",
+          "description_vi": "Tâm hóa lưu ly — Khiên dày thêm và tự vá nhanh hơn (+Khiên tối đa, +hồi Khiên).",
+          "stat_bonuses": {
+            "shield_max_pct": 0.10,
+            "shield_regen_pct": 0.03
+          },
+          "effects": ["BuffLuuLyThuanTam"]
+        },
+        "3": {
+          "passive_vi": "Quy Thuẫn Hóa Nguyên",
+          "passive_en": "All Returns to the Aegis",
+          "description_vi": "Không còn xác thịt để hồi máu — MỌI hiệu quả hồi HP nhận vào chuyển hết thành hồi Khiên (lực hồi sinh nuôi tấm thuẫn).",
+          "stat_bonuses": {
+            "shield_regen_pct": 0.02,
+            "heal_to_shield_pct": 1.0
+          },
+          "effects": ["BuffQuyThuanHoaNguyen"]
+        },
+        "6": {
+          "passive_vi": "Thuẫn Phản Cương",
+          "passive_en": "Aegis Turns to Edge",
+          "description_vi": "Lấy thuẫn làm đao — mỗi đòn đánh cộng thêm sát thương bằng 5% lượng Khiên hiện có.",
+          "stat_bonuses": {
+            "shield_max_pct": 0.10,
+            "damage_bonus_from_shield_pct": 0.05
+          },
+          "effects": ["BuffThuanPhanCuong"]
+        },
+        "9": {
+          "passive_vi": "Lưu Ly Bất Diệt",
+          "passive_en": "Indestructible Glaze",
+          "description_vi": "Mỗi trận một lần: khi đòn đánh xuyên thủng Khiên đã vỡ và sắp chạm tới phần thân 1 HP, tấm thuẫn lưu ly tự tái tạo — vô hiệu đòn đó và hồi lại 40% Khiên tối đa.",
+          "stat_bonuses": {
+            "shield_regen_pct": 0.03,
+            "aegis_reform_charges": 1,
+            "aegis_reform_shield_pct": 0.40
+          },
+          "effects": ["BuffLuuLyBatDiet"]
+        }
+      }
+    }
+  }
 ]
