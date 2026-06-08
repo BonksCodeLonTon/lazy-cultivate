@@ -776,6 +776,22 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     # via ``regen_reduce_pct`` below); kept out of get_combat_modifiers so it
     # never renders as a stat or feeds an additive aggregate.
     "regen_reduce_pct",
+    # Huyền Minh Nhược Thể (Thủy attrition disruptor) — config keys read off
+    # Combatant fields by casting.py (L1 physical-only reduce + per-cast L9
+    # corrosion + on-evade Uyên) and run_huyen_minh_procs (L3 drain + L9 drown
+    # burst). ``phys_dmg_reduce_pct`` is read direct off the Combatant field, so
+    # it's popped here too (never an aggregated stat). Runtime counters
+    # (hm_uyen_stacks, hm_mp_drained_total) are Combatant-only and never in
+    # stat_bonus; ``hm_uyen_per_stack_evasion`` is a scaling-rule placeholder on
+    # BuffHuyenMinhHuTinh (popped by _apply_scaling_rules, not here).
+    "phys_dmg_reduce_pct",
+    "hm_mp_drain_pct",
+    "hm_mp_drain_heal_pct",
+    "hm_hp_siphon_pct",
+    "hm_uyen_cap",
+    "hm_corrode_poison_stacks",
+    "hm_corrode_bleed_stacks",
+    "hm_drown_burst_drain_pct",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks

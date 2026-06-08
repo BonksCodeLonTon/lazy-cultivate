@@ -819,6 +819,25 @@ class Combatant:
     han_khi_stacks: int = 0  # runtime (NOT a config key)
     han_khi_mp_drained_total: int = 0  # runtime (NOT a config key)
 
+    # ── Huyền Minh Nhược Thể (Thủy anti-physical attrition disruptor) ──────────
+    # L1 ``phys_dmg_reduce_pct`` is a real defender-side stat (read in casting.py,
+    # physical attack_type only). L3 drain (bidirectional MP→HP siphon, dry-siphon
+    # banks Uyên), L6 evasion + Uyên-on-dodge ramp, L9 per-cast guaranteed
+    # poison+bleed corrosion + Hủ Thủy Ấn + drown burst all live in
+    # run_huyen_minh_procs / casting.py. ``hm_uyen_stacks`` banks +1 per dry-siphon
+    # or successful dodge (cap ``hm_uyen_cap``); at cap the next attack fires the
+    # drown burst (dmg = hm_drown_burst_drain_pct × ``hm_mp_drained_total``).
+    phys_dmg_reduce_pct: float = 0.0
+    hm_mp_drain_pct: float = 0.0
+    hm_mp_drain_heal_pct: float = 0.0
+    hm_hp_siphon_pct: float = 0.0
+    hm_uyen_cap: int = 0
+    hm_corrode_poison_stacks: int = 0
+    hm_corrode_bleed_stacks: int = 0
+    hm_drown_burst_drain_pct: float = 0.0
+    hm_uyen_stacks: int = 0  # runtime (NOT a config key)
+    hm_mp_drained_total: int = 0  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.

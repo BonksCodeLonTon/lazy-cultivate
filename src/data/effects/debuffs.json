@@ -869,5 +869,16 @@
     "cleansable": true,
     "emoji": "❄️",
     "duration": 2
+  },
+  {
+    "key": "DebuffHuThuyAn",
+    "vi": "Hủ Thủy Ấn",
+    "en": "Rotten-Water Mark",
+    "kind": "debuff",
+    "description_vi": "Hủ thủy gặm mòn — thân mang đồng thời Độc và Chảy Máu nên mọi DoT nhận vào +50% và mọi nguồn hồi máu giảm 40%.",
+    "stat_bonus": { "dot_taken_bonus": 0.50, "heal_taken_reduce": 0.40 },
+    "cleansable": true,
+    "emoji": "🌫️",
+    "duration": 3
   }
 ]

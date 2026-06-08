@@ -553,6 +553,15 @@ def cast_skill(
             # Phi Thiên Lăng Vân — L6 arm guaranteed crit on next cast.
             if target.phong_dodge_arms_crit:
                 target.phong_crit_armed = True
+            # Huyền Minh Nhược — L6 Uyên (Abyss Depth) on dodge: each successful
+            # evade deepens the abyss (+1, cap ``hm_uyen_cap``), folding into
+            # evasion via BuffHuyenMinhHuTinh's scaling_rule (stack:hm_uyen).
+            if target.hm_uyen_cap > 0 and target.hm_uyen_stacks < target.hm_uyen_cap:
+                target.hm_uyen_stacks += 1
+                session.log.append(
+                    f"    🌑 **{target.name}** Uyên "
+                    f"[×{target.hm_uyen_stacks}/{target.hm_uyen_cap}]"
+                )
 
             # Data-driven on-evade reactives — any active buff on the
             # defender carrying an ``evade_react`` block (or the legacy
@@ -742,6 +751,26 @@ def cast_skill(
                         f"vô hiệu đòn Vật Lý!"
                     )
 
+            # Nhược Thủy Chi Nhu (Huyền Minh Nhược L1) — physical-only reduction
+            # lane. Multiplies AFTER all pipeline mitigation + the Kim Thân negate,
+            # BEFORE the shield split, gated on physical attack_type so magical/true
+            # bypass it entirely (the body's deliberate caster weakness). Capped at
+            # 0.75 to mirror the armor cap; a separate multiplicative lane from the
+            # generic ``final_dmg_reduce`` so a dedicated phys-tank can stack both.
+            if (
+                _attack_type == "physical"
+                and target.phys_dmg_reduce_pct > 0
+                and dmg > 0
+            ):
+                _pr = min(0.75, target.phys_dmg_reduce_pct)
+                _pr_before = dmg
+                dmg = max(1, int(dmg * (1.0 - _pr)))
+                if _pr_before > dmg:
+                    session.log.append(
+                        f"    🌊 **{target.name}** Nhược Thủy Chi Nhu — "
+                        f"nhu thắng cương, giảm {int(_pr * 100)}% ST Vật Lý"
+                    )
+
             bypass_dmg = int(dmg * bypass_pct) if bypass_pct > 0 else 0
             shielded_dmg = dmg - bypass_dmg
 
@@ -886,6 +915,44 @@ def cast_skill(
             )
 
             run_on_hit_procs(session, actor, target, is_crit=result.is_crit, skill_key=skill_key)
+
+            # Huyền Minh Nhược Thể — L9 Hắc Thủy Diệt Thế: per-CAST guaranteed
+            # corrosion. ``not _suppress_extras`` gates out multi-hit replays so a
+            # multi-hit skill stamps the DoTs exactly once per logical cast (not
+            # per hit). On a landed damaging hit the holder applies poison + bleed;
+            # when the target then carries BOTH, the Hủ Thủy Ấn mark (DoT +50% /
+            # heal −40%) is applied/refreshed. Self-gates on the L9 flag.
+            if (
+                actor.hm_corrode_poison_stacks > 0
+                and not _suppress_extras
+                and target.is_alive()
+                and dmg > 0
+            ):
+                if not target.poison_immunity:
+                    target.apply_effect(
+                        EffectKey.DEBUFF_DOC_TO,
+                        default_duration(EffectKey.DEBUFF_DOC_TO),
+                    )
+                    _propagate_stack_build(actor, target, "poison")
+                    for _ in range(actor.hm_corrode_poison_stacks):
+                        target.add_stack("poison", 1)
+                target.apply_effect(
+                    EffectKey.DEBUFF_CHAY_MAU,
+                    default_duration(EffectKey.DEBUFF_CHAY_MAU),
+                )
+                _propagate_stack_build(actor, target, "bleed")
+                for _ in range(actor.hm_corrode_bleed_stacks):
+                    target.add_stack("bleed", 1)
+                session.log.append(
+                    f"    🌑 **{actor.name}** Hắc Thủy Diệt Thế → "
+                    f"Độc ×{target.poison_stacks} + Chảy Máu ×{target.bleed_stacks}"
+                )
+                if target.poison_stacks > 0 and target.bleed_stacks > 0:
+                    _huthuy = EFFECTS.get("DebuffHuThuyAn")
+                    if _huthuy is not None:
+                        inflict_debuff(
+                            session, "DebuffHuThuyAn", _huthuy, target, actor=actor,
+                        )
 
             # Element-gated stack-on-hit — every successful damaging hit whose
             # element matches an equipped skill's ``passive_stack_on_element_hit``

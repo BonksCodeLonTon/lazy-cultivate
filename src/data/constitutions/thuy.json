@@ -135,4 +135,79 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_HuyenMinhNhuoc",
+    "vi": "Huyền Minh Nhược Thể",
+    "en": "Dark Underworld Weak Water Body",
+    "element": "thuy",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân luyện Nhược Thủy — nhu thắng cương, lực đánh vào tan như sóng vỗ vách đá. Hút linh khí địch dưỡng thân, gặm mòn nguyên khí chúng theo thời gian. Càng đánh lâu, vực Huyền Minh càng sâu, kẻ địch càng chìm. Khắc võ phu, sợ pháp tu.",
+    "stat_bonuses": {
+      "hp_pct": 0.10,
+      "def_pct": 0.06,
+      "hp_regen_pct": 0.03,
+      "evasion_rating": 160
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": {
+        "hp_pct": 0.005, "def_pct": 0.004, "matk_pct": 0.003
+      },
+      "levels": {
+        "1": {
+          "passive_vi": "Nhược Thủy Chi Nhu",
+          "passive_en": "Yielding Weak Water",
+          "description_vi": "Nhu thắng cương — riêng sát thương Vật Lý phải nhận giảm 25% (đè lên giáp, sau toàn bộ pipeline). Sát thương Pháp Thuật và Chuẩn xuyên thẳng qua: thân này khắc võ phu, sợ pháp tu.",
+          "stat_bonuses": {
+            "def_pct": 0.04,
+            "phys_dmg_reduce_pct": 0.25
+          },
+          "effects": ["BuffNhuocThuyChiNhu"]
+        },
+        "3": {
+          "passive_vi": "Nhược Thủy Thôn Khí",
+          "passive_en": "Weak Water Devours Qi",
+          "description_vi": "Mỗi đòn tấn công HOẶC bị tấn công: hút 10% MP hiện tại của địch, chuyển 50% thành HP bản thân. Nếu địch đã cạn MP: thôn thực sinh khí — hút 2% HP tối đa địch (hồi 50% cho thân) và tích 1 tầng Uyên.",
+          "stat_bonuses": {
+            "hp_pct": 0.04,
+            "hm_mp_drain_pct": 0.10,
+            "hm_mp_drain_heal_pct": 0.50,
+            "hm_hp_siphon_pct": 0.02
+          },
+          "effects": ["BuffNhuocThuyThonKhi"]
+        },
+        "6": {
+          "passive_vi": "Huyền Minh Hư Tĩnh",
+          "passive_en": "Dark Underworld Hollow Stillness",
+          "description_vi": "Vực Huyền Minh tĩnh lặng nuốt mọi lực — +320 Né Tránh và giảm thêm 15% MỌI sát thương phải nhận (lane chung, vá một phần lỗ hổng trước pháp tu). Mỗi tầng Uyên còn cộng +30 Né. Mỗi lần né thành công tích 1 tầng Uyên (tối đa 7).",
+          "stat_bonuses": {
+            "hp_pct": 0.03,
+            "final_dmg_reduce": 0.15,
+            "evasion_rating": 320,
+            "hm_uyen_cap": 7
+          },
+          "effects": ["BuffHuyenMinhHuTinh"]
+        },
+        "9": {
+          "passive_vi": "Hắc Thủy Diệt Thế",
+          "passive_en": "Black Water Drowns the World",
+          "description_vi": "Mỗi đòn đánh chắc chắn in 2 tầng Độc Tố + 1 tầng Chảy Máu lên địch. Địch mang ĐỒNG THỜI Độc lẫn Chảy Máu: dính Hủ Thủy Ấn — mọi DoT +50% và mọi nguồn hồi máu giảm 40%. Đầy 7 tầng Uyên: đòn kế nhấn chìm — sát thương Thủy = 25% tổng MP đã hút trong trận + làm chậm 2 lượt, rồi reset tầng Uyên.",
+          "stat_bonuses": {
+            "hp_pct": 0.04,
+            "def_pct": 0.03,
+            "hm_corrode_poison_stacks": 2,
+            "hm_corrode_bleed_stacks": 1,
+            "hm_drown_burst_drain_pct": 0.25
+          },
+          "effects": ["BuffHacThuyDietThe"]
+        }
+      }
+    }
+  }
 ]

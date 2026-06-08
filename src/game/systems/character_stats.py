@@ -159,6 +159,19 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("bm_heal_reduce_vs_frozen_chance",  "bm_heal_reduce_vs_frozen_chance",  float),
     ("bm_burst_freeze_turns",            "bm_burst_freeze_turns",            int),
     ("bm_burst_drain_pct",               "bm_burst_drain_pct",               float),
+    # Huyền Minh Nhược Thể (Thủy anti-physical attrition disruptor) — config flags.
+    # ``phys_dmg_reduce_pct`` is a real defender-side stat read in casting.py;
+    # the rest are config flags consumed by run_huyen_minh_procs + the per-cast
+    # corrosion + the on-evade Uyên hook. Runtime counters (hm_uyen_stacks,
+    # hm_mp_drained_total) are Combatant-only and excluded.
+    ("phys_dmg_reduce_pct",              "phys_dmg_reduce_pct",              float),
+    ("hm_mp_drain_pct",                  "hm_mp_drain_pct",                  float),
+    ("hm_mp_drain_heal_pct",             "hm_mp_drain_heal_pct",             float),
+    ("hm_hp_siphon_pct",                 "hm_hp_siphon_pct",                 float),
+    ("hm_uyen_cap",                      "hm_uyen_cap",                      int),
+    ("hm_corrode_poison_stacks",         "hm_corrode_poison_stacks",         int),
+    ("hm_corrode_bleed_stacks",          "hm_corrode_bleed_stacks",          int),
+    ("hm_drown_burst_drain_pct",         "hm_drown_burst_drain_pct",         float),
 ]
 
 
@@ -470,6 +483,15 @@ class CombatStats:
     bm_heal_reduce_vs_frozen_chance: float = 0.0
     bm_burst_freeze_turns: int = 0
     bm_burst_drain_pct: float = 0.0
+    # Huyền Minh Nhược Thể (Thủy anti-physical attrition disruptor)
+    phys_dmg_reduce_pct: float = 0.0
+    hm_mp_drain_pct: float = 0.0
+    hm_mp_drain_heal_pct: float = 0.0
+    hm_hp_siphon_pct: float = 0.0
+    hm_uyen_cap: int = 0
+    hm_corrode_poison_stacks: int = 0
+    hm_corrode_bleed_stacks: int = 0
+    hm_drown_burst_drain_pct: float = 0.0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

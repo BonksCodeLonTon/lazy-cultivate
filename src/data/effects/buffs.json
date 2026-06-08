@@ -2515,5 +2515,56 @@
     "cleansable": false,
     "emoji": "🔱",
     "duration": 999
+  },
+  {
+    "key": "BuffNhuocThuyChiNhu",
+    "vi": "Nhược Thủy Chi Nhu",
+    "en": "Yielding Weak Water",
+    "kind": "buff",
+    "description_vi": "Nhu thắng cương — riêng sát thương Vật Lý phải nhận giảm mạnh. Pháp Thuật và Chuẩn xuyên thẳng qua.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌊",
+    "duration": 999
+  },
+  {
+    "key": "BuffNhuocThuyThonKhi",
+    "vi": "Nhược Thủy Thôn Khí",
+    "en": "Weak Water Devours Qi",
+    "kind": "buff",
+    "description_vi": "Mỗi khi tấn công hoặc bị tấn công: hút MP địch dưỡng thân; địch cạn MP thì thôn thực sinh khí, tích tầng Uyên.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🩸",
+    "duration": 999
+  },
+  {
+    "key": "BuffHuyenMinhHuTinh",
+    "vi": "Huyền Minh Hư Tĩnh",
+    "en": "Dark Underworld Hollow Stillness",
+    "kind": "buff",
+    "description_vi": "Vực Huyền Minh tĩnh lặng nuốt mọi lực — +Né Tránh, giảm sát thương chung; mỗi tầng Uyên +30 Né. Né thành công tích 1 tầng Uyên.",
+    "stat_bonus": { "hm_uyen_per_stack_evasion": 30 },
+    "scaling_rules": [
+      { "key": "hm_uyen_per_stack_evasion", "source": "stack:hm_uyen", "output": "evasion_rating" }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌑",
+    "duration": 999
+  },
+  {
+    "key": "BuffHacThuyDietThe",
+    "vi": "Hắc Thủy Diệt Thế",
+    "en": "Black Water Drowns the World",
+    "kind": "buff",
+    "description_vi": "Mỗi đòn đánh chắc chắn in Độc Tố + Chảy Máu; địch dính cả hai thì gánh Hủ Thủy Ấn (DoT +50%, hồi máu −40%). Đầy 7 tầng Uyên: đòn kế nhấn chìm bùng nổ.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌑",
+    "duration": 999
   }
 ]

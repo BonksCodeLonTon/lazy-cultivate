@@ -162,6 +162,87 @@ def run_bac_minh_procs(
     _bm_mp_drain(session, target, actor)  # L6 reverse drain
 
 
+# ── Huyền Minh Nhược Thể (Thủy anti-physical attrition disruptor) ────────────
+_HM_SLOW = "DebuffLamCham"
+
+
+def _hm_drain(
+    session: "CombatSession", drainer: Combatant, victim: Combatant,
+) -> None:
+    """L3 Nhược Thủy Thôn Khí — drain ``victim`` MP → heal ``drainer``; on MP-dry,
+    siphon HP instead and bank an Uyên stack.
+
+    Self-gates on ``drainer.hm_mp_drain_pct`` so it's inert for every build that
+    isn't the body. ``hm_mp_drained_total`` accumulates for the L9 drown burst.
+    """
+    if drainer.hm_mp_drain_pct <= 0 or not victim.is_alive():
+        return
+    if victim.mp > 0:
+        drained = int(victim.mp * drainer.hm_mp_drain_pct)
+        if drained <= 0:
+            return
+        victim.mp = max(0, victim.mp - drained)
+        drainer.hm_mp_drained_total += drained
+        heal = int(drained * drainer.hm_mp_drain_heal_pct)
+        if heal > 0:
+            session._apply_heal(drainer, heal)
+        session.log.append(
+            f"  🩸 **{drainer.name}** Nhược Thủy Thôn Khí → hút {drained:,} MP "
+            f"của **{victim.name}**"
+        )
+        return
+    # MP-dry: thôn thực sinh khí — siphon HP, heal, bank Uyên (gated on L3 siphon).
+    if drainer.hm_hp_siphon_pct <= 0:
+        return
+    siphon = max(1, int(victim.hp_max * drainer.hm_hp_siphon_pct))
+    victim.take_damage(siphon)
+    heal = int(siphon * drainer.hm_mp_drain_heal_pct)
+    if heal > 0:
+        session._apply_heal(drainer, heal)
+    if drainer.hm_uyen_cap > 0 and drainer.hm_uyen_stacks < drainer.hm_uyen_cap:
+        drainer.hm_uyen_stacks += 1
+    session.log.append(
+        f"  🌊 **{drainer.name}** Thôn Thực Sinh Khí → hút {siphon:,} HP "
+        f"của **{victim.name}** (Uyên ×{drainer.hm_uyen_stacks})"
+    )
+
+
+def run_huyen_minh_procs(
+    session: "CombatSession", actor: Combatant, target: Combatant,
+) -> None:
+    """Huyền Minh Nhược on-hit logic, once per landed hit (``actor`` hits ``target``).
+
+    Attacker side: L3 drain (MP→HP siphon) + L9 drown burst once Uyên is full.
+    Defender side: the holder being struck drains the attacker back (bidirectional
+    L3). Every branch self-gates on the per-body config flags, so it's a no-op for
+    every other build. The L9 corrosion (guaranteed poison+bleed) is per-CAST and
+    lives in cast_skill, not here.
+    """
+    # ── Attacker side: the holder is striking ────────────────────────────────
+    _hm_drain(session, actor, target)  # L3
+    if (
+        actor.hm_drown_burst_drain_pct > 0
+        and actor.hm_uyen_cap > 0
+        and actor.hm_uyen_stacks >= actor.hm_uyen_cap
+        and target.is_alive()
+    ):
+        burst = int(actor.hm_mp_drained_total * actor.hm_drown_burst_drain_pct)
+        if burst > 0:
+            target.take_damage(burst)
+            session.log.append(
+                f"  🌑 **{actor.name}** Hắc Thủy Nhấn Chìm → **{target.name}** "
+                f"{colorize_damage(f'-{burst:,} HP', 'thuy')}"
+            )
+        meta = EFFECTS.get(_HM_SLOW)
+        if meta is not None:
+            from .casting import inflict_debuff
+            inflict_debuff(session, _HM_SLOW, meta, target, actor=actor)
+        actor.hm_uyen_stacks = 0
+
+    # ── Defender side: the holder is being struck (bidirectional L3 drain) ─────
+    _hm_drain(session, target, actor)
+
+
 def run_on_hit_procs(
     session: "CombatSession", actor: Combatant, target: Combatant, is_crit: bool,
     skill_key: str = "",
@@ -829,6 +910,7 @@ def apply_reactive_damage(
     # Bắc Minh Băng Phách — bidirectional ice/freeze/MP-drain kit. Self-gates on
     # the per-body config flags (inert for every other build).
     run_bac_minh_procs(session, actor, target)
+    run_huyen_minh_procs(session, actor, target)
 
 
 def apply_reflect(
