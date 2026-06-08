@@ -13,9 +13,20 @@ most characterization tests need enough HP buffer to observe ticks.
 from __future__ import annotations
 
 import random
+import sys
 from typing import Any
 
 import pytest
+
+# Windows consoles default to cp1252; the game's Vietnamese strings show up in
+# test ids and tracebacks and would otherwise raise UnicodeEncodeError. Force
+# UTF-8 on the output streams so the suite runs without the historical
+# ``PYTHONIOENCODING=utf-8`` command prefix (teammates and CI included).
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
+    except (AttributeError, ValueError):  # pragma: no cover - non-reconfigurable stream
+        pass
 
 from src.data.registry import registry
 from src.game.systems.combat import CombatSession

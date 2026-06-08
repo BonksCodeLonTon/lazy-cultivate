@@ -26,6 +26,7 @@ ENV/
 # Testing & coverage
 .pytest_cache/
 .coverage
+coverage.xml
 htmlcov/
 .tox/
 
@@ -48,8 +49,10 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Claude Code session files
-.claude/
+# Claude Code: share the team harness (agents, hooks, commands, project
+# settings + CLAUDE.md) but keep machine-local and runtime files out of git.
+.claude/settings.local.json
+.claude/*.lock
 
 # CodeGraph index (generated, local)
 .codegraph/

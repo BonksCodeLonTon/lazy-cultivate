@@ -1,0 +1,28 @@
+[tool.pytest.ini_options]
+# Single source of truth for test runs. Replaces the ad-hoc
+# `PYTHONIOENCODING=utf-8 python -m pytest ...` invocations that had
+# accumulated in .claude/settings.local.json. UTF-8 is now handled at the
+# harness level (settings.json env) and in tests/conftest.py, so plain
+# `pytest` works on Windows consoles too.
+minversion = "7.0"
+testpaths = ["tests"]
+
+# Tests opt in to async with @pytest.mark.asyncio (see CLAUDE.md). "strict"
+# matches that convention and silences the pytest-asyncio mode warning.
+asyncio_mode = "strict"
+
+# -ra: summarize everything except passes (surfaces skips/xfails/failures).
+addopts = "-ra -p no:cacheprovider"
+
+# Categorization markers (optional today; declared so adopting them later
+# does not trigger "unknown marker" warnings).
+markers = [
+    "unit: fast, isolated unit tests",
+    "integration: tests that touch external systems (DB, network)",
+    "slow: long-running tests",
+]
+
+filterwarnings = [
+    # Third-party: discord.py imports the deprecated stdlib `audioop`.
+    "ignore::DeprecationWarning:discord.player",
+]

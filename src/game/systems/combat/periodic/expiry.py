@@ -47,12 +47,12 @@ def _expiry(ctx: TurnContext) -> None:
         if not meta:
             continue
 
-        if meta.expire_dmg_pct_hp_max > 0 and combatant.hp_current > 0:
+        if meta.expire_dmg_pct_hp_max > 0 and combatant.hp > 0:
             fall_dmg = max(
-                1, int(combatant.stats.hp_max * meta.expire_dmg_pct_hp_max)
+                1, int(combatant.hp_max * meta.expire_dmg_pct_hp_max)
             )
             element = meta.expire_dmg_element or "physical"
-            combatant.hp_current = max(0, combatant.hp_current - fall_dmg)
+            combatant.hp = max(0, combatant.hp - fall_dmg)
             ctx.log.append(
                 f"  💢 **{combatant.name}** rơi xuống đất — "
                 f"−{fall_dmg:,} HP ({element})"
