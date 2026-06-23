@@ -20,11 +20,9 @@ def _arm_periodic_crit(ctx: TurnContext) -> None:
     actor = ctx.actor
     if not actor.has_effect("BuffHuyetLapThaiBach"):
         return
-    interval = actor.bleed_hunter_periodic_interval
-    if interval <= 0:
-        return
-    actor.bleed_hunter_turn_counter += 1
-    if actor.bleed_hunter_turn_counter % interval == 0:
+    if actor.tick_cadence(
+        "bleed_hunter_turn_counter", actor.bleed_hunter_periodic_interval
+    ):
         actor.bleed_hunter_crit_armed = True
         ctx.log.append(
             f"  🩸 **{actor.name}** Huyết Lạp Thái Bạch — đòn kế tiếp chắc chắn Bạo Kích!"

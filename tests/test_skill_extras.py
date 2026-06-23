@@ -167,7 +167,8 @@ def test_chain_skill_skipped_when_target_not_equipped():
 def test_auto_cast_finds_skill_when_threshold_met():
     actor = make_combatant("a")
     actor.skill_keys = ["FinisherKey"]
-    target = make_combatant("t", burn_stacks=5)
+    target = make_combatant("t")
+    target.burn_stacks = 5
     finisher = {
         "auto_cast_on_stacks": {"stack": "burn", "threshold": 5, "consume": True},
     }
@@ -180,7 +181,8 @@ def test_auto_cast_finds_skill_when_threshold_met():
 def test_auto_cast_returns_none_below_threshold():
     actor = make_combatant("a")
     actor.skill_keys = ["FinisherKey"]
-    target = make_combatant("t", burn_stacks=2)
+    target = make_combatant("t")
+    target.burn_stacks = 2
     finisher = {"auto_cast_on_stacks": {"stack": "burn", "threshold": 5}}
     with patch.object(registry, "get_skill", return_value=finisher):
         key, data = find_auto_cast_skill(actor, target)
@@ -189,7 +191,8 @@ def test_auto_cast_returns_none_below_threshold():
 
 def test_auto_cast_consume_clears_stacks():
     actor = make_combatant("a")
-    target = make_combatant("t", burn_stacks=8)
+    target = make_combatant("t")
+    target.burn_stacks = 8
     skill_data = {"auto_cast_on_stacks": {"stack": "burn", "consume": True}}
     session = make_session(actor, target)
     consume_auto_cast_stacks(session, actor, target, skill_data)
@@ -200,7 +203,8 @@ def test_auto_cast_picks_highest_threshold():
     """Two qualifying skills → the one with the higher threshold wins."""
     actor = make_combatant("a")
     actor.skill_keys = ["Low", "High"]
-    target = make_combatant("t", burn_stacks=9)
+    target = make_combatant("t")
+    target.burn_stacks = 9
     skills = {
         "Low":  {"auto_cast_on_stacks": {"stack": "burn", "threshold": 3}},
         "High": {"auto_cast_on_stacks": {"stack": "burn", "threshold": 7}},

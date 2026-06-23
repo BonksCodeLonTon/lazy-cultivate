@@ -8,12 +8,35 @@ from sqlalchemy import inspect, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
+from src.data.registry import registry
 from src.db.models.player import Player
+from src.db.models.skill import CharacterSkill
 from src.db.models.turn_tracker import TurnTracker
 from src.game.constants.currencies import BONUS_TURNS
 from src.game.constants.linh_can import (
     ALL_LINH_CAN, format_linh_can, parse_linh_can, parse_linh_can_levels,
 )
+
+
+def is_castable_grade1_starter(skill: dict) -> bool:
+    """Whether ``skill`` is a directly-castable grade-1 attack eligible as a
+    fresh player's starter.
+
+    Excludes enemy skills and the constitution-proc "đòn phụ" sub-strikes
+    (SkillKimKiemLang / SkillHoaPhuongHoangBurst / SkillLoiBonusShock): those
+    share ``scroll_grade=1`` / ``category="attack"`` / an element but have
+    ``base_dmg=1``, ``mp_cost=0`` and only self-trigger from a constitution a
+    new player doesn't own — handing one out would leave a near-useless skill
+    bar. Real grade-1 starters have ``base_dmg`` >= 15. Callers additionally
+    match the skill's ``element`` to the player's Linh Căn.
+    """
+    return (
+        not skill.get("key", "").startswith("Enemy")
+        and skill.get("category") == "attack"
+        and skill.get("scroll_grade") == 1
+        and skill.get("base_dmg", 0) > 1
+        and not skill.get("chain_only")
+    )
 
 
 # Loader options shared by ``get_by_discord_id`` / ``get_by_id`` — the full
@@ -128,10 +151,9 @@ class PlayerRepository:
 
         # Assign one starting skill: a grade-1 (basic) attack matching a
         # random element from the player's Linh Căn. Every element has a
-        # grade-1 attack in the ladder, so any single-element Linh Căn still
-        # gets a starter.
-        from src.data.registry import registry as _registry
-        from src.db.models.skill import CharacterSkill
+        # castable grade-1 attack in the ladder (``is_castable_grade1_starter``
+        # documents why proc-only sub-strikes are excluded), so any
+        # single-element Linh Căn still gets a usable starter.
 
         # Try each element in the player's linh căn (shuffled for randomness)
         shuffled_elements = list(linh_can_list)
@@ -139,11 +161,8 @@ class PlayerRepository:
         start_skill_key: str | None = None
         for elem in shuffled_elements:
             candidates = [
-                s["key"] for s in _registry.skills.values()
-                if not s.get("key", "").startswith("Enemy")
-                and s.get("element") == elem
-                and s.get("category") == "attack"
-                and s.get("scroll_grade") == 1
+                s["key"] for s in registry.skills.values()
+                if is_castable_grade1_starter(s) and s.get("element") == elem
             ]
             if candidates:
                 start_skill_key = random.choice(candidates)
@@ -206,8 +225,6 @@ def _roll_starter_constitution(linh_can_list: list[str]) -> str:
     ``progresses_from`` and are filtered out so a starter never leap-frogs
     into a partially-broken seal.
     """
-    from src.data.registry import registry
-
     player_elems = set(linh_can_list)
 
     if random.random() < LEGENDARY_STARTER_RATE:

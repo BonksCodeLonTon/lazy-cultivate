@@ -47,4 +47,80 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_LietDiemPhanThien",
+    "vi": "Liệt Diễm Phần Thiên Thể",
+    "en": "Raging Flame Heaven-Burning Body",
+    "element": "hoa",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân luyện Liệt Diễm — ngọn lửa Phần Thiên càng cháy càng nóng. Không bùng nổ tức thì như hỏa pháo; nó thiêu đốt, rồi nuốt chính ngọn lửa đó mà lớn mạnh. Càng đánh lâu lửa càng dữ, đến cực điểm hóa thân Hỏa Thần thiêu rụi vạn vật. Sợ nhất đòn chớp nhoáng kết liễu trước khi lửa kịp bùng.",
+    "stat_bonuses": {
+      "matk_pct": 0.07,
+      "crit_dmg_rating": 120,
+      "element_dmg_bonus": { "hoa": 0.12 },
+      "burn_on_hit_pct": 0.50
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": {
+        "matk_pct": 0.004, "crit_dmg_rating": 12
+      },
+      "levels": {
+        "1": {
+          "passive_vi": "Phần Thiên Chi Nộ",
+          "passive_en": "Wrath of Heaven-Burning",
+          "description_vi": "Càng chiến lửa càng nóng — mỗi lượt giao chiến cộng dồn 1 tầng Phần Thiên (tối đa 12, không tan). Mỗi tầng: +1% Pháp Công (đầy → +12%) VÀ +15 Bạo Kích (đầy → +180). Lửa càng cháy lâu càng mạnh.",
+          "stat_bonuses": {
+            "matk_pct": 0.04,
+            "crit_dmg_rating": 40,
+            "lietdiem_burn_per_turn": 1,
+            "lietdiem_burn_cap": 12
+          },
+          "effects": ["BuffPhanThienChiNo"]
+        },
+        "3": {
+          "passive_vi": "Liệt Diễm Khởi Nguyên",
+          "passive_en": "Blazing Flame Genesis",
+          "description_vi": "Ngọn lửa không bao giờ tắt — +35% cơ hội gây Thiêu Đốt (tổng 85%); sát thương Thiêu Đốt +25%; +18% sát thương lên mục tiêu đang cháy; +20% sát thương kỹ năng Hỏa.",
+          "stat_bonuses": {
+            "burn_on_hit_pct": 0.35,
+            "burn_dmg_bonus": 0.25,
+            "bonus_dmg_vs_burn": 0.18,
+            "element_dmg_bonus": { "hoa": 0.20 }
+          },
+          "effects": ["BuffLietDiemKhoiNguyen"]
+        },
+        "6": {
+          "passive_vi": "Vạn Hỏa Thần Phục",
+          "passive_en": "Myriad-Flame Subjugation",
+          "description_vi": "Lấy lửa nuôi lửa — khi trúng đòn hệ Hỏa, hấp thu 1 tầng Vạn Hỏa (tối đa 3). Mỗi tầng +6% sát thương kỹ năng Hỏa (đầy → +18%). Càng bị thiêu càng mạnh.",
+          "stat_bonuses": {
+            "matk_pct": 0.05,
+            "lietdiem_van_hoa_absorb": true,
+            "lietdiem_van_hoa_cap": 3
+          },
+          "effects": ["BuffVanHoaThanPhuc"]
+        },
+        "9": {
+          "passive_vi": "Hỏa Thần Hóa Thân",
+          "passive_en": "Fire-God Avatar",
+          "description_vi": "Sát thương Thiêu Đốt giờ có thể Bạo Kích. Cứ mỗi 5 lượt, hóa thân Hỏa Thần 2 lượt: +250 Bạo Kích, +400 ST Bạo Kích, +10% sát thương cuối, và lửa hộ thân giảm 60% sát thương vật lý phải nhận (chặn tối đa 75%, KHÔNG miễn nhiễm).",
+          "stat_bonuses": {
+            "matk_pct": 0.05,
+            "dot_can_crit": true,
+            "lietdiem_avatar_enabled": true,
+            "lietdiem_avatar_interval": 5,
+            "lietdiem_avatar_duration": 2
+          },
+          "effects": ["BuffHoaThanHoaThan"]
+        }
+      }
+    }
+  }
 ]

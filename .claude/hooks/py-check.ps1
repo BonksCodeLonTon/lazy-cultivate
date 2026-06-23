@@ -45,6 +45,8 @@ $env:PYTHONUTF8 = '1'
 # py_compile's real exit code. Start-Process avoids that and yields a clean ExitCode.
 $tmpOut = [System.IO.Path]::GetTempFileName()
 $tmpErr = [System.IO.Path]::GetTempFileName()
+$code = 0
+$detail = ''
 try {
     $proc = Start-Process -FilePath $py `
         -ArgumentList @('-m', 'py_compile', "`"$path`"") `
@@ -52,6 +54,10 @@ try {
         -RedirectStandardOutput $tmpOut -RedirectStandardError $tmpErr
     $code = $proc.ExitCode
     $detail = (Get-Content -LiteralPath $tmpErr -Raw -ErrorAction SilentlyContinue)
+} catch {
+    # Interpreter missing / Start-Process failed — fail OPEN (leave $code=0) so
+    # the hook never disrupts an edit just because python isn't resolvable.
+    $code = 0
 } finally {
     Remove-Item -LiteralPath $tmpOut, $tmpErr -Force -ErrorAction SilentlyContinue
 }

@@ -86,9 +86,9 @@ def test_body_registered_and_shape() -> None:
 def test_composition_l1_and_l9_effects() -> None:
     data = _body_data()
     assert effective_stat_bonuses(data, 1) == data["stat_bonuses"]
-    assert effective_effects(data, 1) == ["BuffHoPhap"]
+    assert effective_effects(data, 1) == ["BuffHoPhapThanhQuang"]
     assert effective_effects(data, 9) == [
-        "BuffHoPhap", "BuffTinhQuangTayTran",
+        "BuffHoPhapThanhQuang", "BuffTinhQuangTayTran",
         "BuffHoPhapThienGiap", "BuffThienQuangThamPhan",
     ]
 
@@ -111,8 +111,8 @@ def test_l1_blind_and_guardian_buff(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(1)
     assert player.blind_on_hit_pct == pytest.approx(0.45)
-    assert player.has_effect("BuffHoPhap")
-    # BuffHoPhap grants +10% DR + 100 crit-res.
+    assert player.has_effect("BuffHoPhapThanhQuang")
+    # BuffHoPhapThanhQuang grants +10% DR + 100 crit-res.
     mods = get_combat_modifiers(player)
     assert mods.get("final_dmg_reduce", 0.0) >= 0.10
     assert mods.get("crit_res_rating", 0) >= 100
@@ -128,7 +128,7 @@ def test_thanh_quang_stacks_on_blind(monkeypatch) -> None:
     for _ in range(7):
         run_on_hit_procs(session, player, enemy, is_crit=False, skill_key=_SKILL)
     assert player.thanh_quang_stacks == 5  # caps at 5
-    # At 5 stacks BuffHoPhap's scaling_rules add +0.15 DR and +0.25 blind chance.
+    # At 5 stacks BuffHoPhapThanhQuang's scaling_rules add +0.15 DR and +0.25 blind chance.
     mods = get_combat_modifiers(player)
     assert mods.get("final_dmg_reduce", 0.0) == pytest.approx(0.10 + 0.15)
     assert mods.get("blind_on_hit_pct", 0.0) == pytest.approx(0.25)
@@ -163,8 +163,8 @@ def test_l6_guardian_summon_present_and_buffs(monkeypatch) -> None:
     g = guardians[0]
     assert g["element"] == "quang"
     assert g["dmg"] == max(1, int(player.matk * 0.60))
-    # The summon's aura folds into the owner's stats: BuffHoPhap (0.10) + the
-    # summon's BuffHoPhapKimCuong (0.10) = 0.20 DR.
+    # The summon's aura folds into the owner's stats: BuffHoPhapThanhQuang (0.10)
+    # + the summon's BuffHoPhapKimCuong (0.10) = 0.20 DR.
     mods = get_combat_modifiers(player)
     assert mods.get("final_dmg_reduce", 0.0) == pytest.approx(0.20)
 
@@ -258,7 +258,7 @@ def test_no_revive(monkeypatch) -> None:
 def test_flag_off_inert() -> None:
     assert settings.constitution_process_enabled is False
     player = _player(9)
-    for key in ("BuffHoPhap", "BuffTinhQuangTayTran", "BuffHoPhapThienGiap",
+    for key in ("BuffHoPhapThanhQuang", "BuffTinhQuangTayTran", "BuffHoPhapThienGiap",
                 "BuffThienQuangThamPhan"):
         assert not player.has_effect(key)
     # Milestone flags inert; no guardian summon.

@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from src.data.registry import registry
+from src.game.constants.balance import MAX_PHYS_REDUCTION
 from src.game.constants.effects import EffectKey
 from src.game.engine import linh_can_effects as lc_effects
 from src.game.engine.damage import (
@@ -19,7 +20,7 @@ from src.game.engine.damage import (
 from src.game.engine.damage.true_damage import apply_true_damage
 from src.game.engine.effects import (
     EFFECTS, EffectKind, EffectMeta, check_attack_miss, default_duration,
-    effective_stack_cap, get_combat_modifiers,
+    effective_phys_dmg_reduce, effective_stack_cap, get_combat_modifiers,
 )
 from src.game.systems.combatant import Combatant
 from src.game.systems.skill_mastery import power_mult
@@ -751,25 +752,23 @@ def cast_skill(
                         f"vô hiệu đòn Vật Lý!"
                     )
 
-            # Nhược Thủy Chi Nhu (Huyền Minh Nhược L1) — physical-only reduction
-            # lane. Multiplies AFTER all pipeline mitigation + the Kim Thân negate,
-            # BEFORE the shield split, gated on physical attack_type so magical/true
-            # bypass it entirely (the body's deliberate caster weakness). Capped at
-            # 0.75 to mirror the armor cap; a separate multiplicative lane from the
-            # generic ``final_dmg_reduce`` so a dedicated phys-tank can stack both.
-            if (
-                _attack_type == "physical"
-                and target.phys_dmg_reduce_pct > 0
-                and dmg > 0
-            ):
-                _pr = min(0.75, target.phys_dmg_reduce_pct)
-                _pr_before = dmg
-                dmg = max(1, int(dmg * (1.0 - _pr)))
-                if _pr_before > dmg:
-                    session.log.append(
-                        f"    🌊 **{target.name}** Nhược Thủy Chi Nhu — "
-                        f"nhu thắng cương, giảm {int(_pr * 100)}% ST Vật Lý"
-                    )
+            # Physical-only reduction lane. Multiplies AFTER all pipeline
+            # mitigation + the Kim Thân negate, BEFORE the shield split, gated on
+            # physical attack_type so magical/true bypass it. Capped at
+            # ``MAX_PHYS_REDUCTION`` (armor cap); a separate multiplicative lane
+            # from generic ``final_dmg_reduce``.
+            # Shared by Huyền Minh Nhược (L1, permanent field) and Liệt Diễm Phần
+            # Thiên (L9 Hỏa Thần avatar, a temporary buff) — ``effective_phys_dmg_reduce``
+            # reads BOTH the field and active-effect metas, so the avatar's window works.
+            if _attack_type == "physical" and dmg > 0:
+                _pr = min(MAX_PHYS_REDUCTION, effective_phys_dmg_reduce(target))
+                if _pr > 0:
+                    _pr_before = dmg
+                    dmg = max(1, int(dmg * (1.0 - _pr)))
+                    if _pr_before > dmg:
+                        session.log.append(
+                            f"    🛡️ **{target.name}** giảm {int(_pr * 100)}% ST Vật Lý"
+                        )
 
             # Quy Khư Thôn Hải (Thiên Thủy Thánh L9) — at full Tịnh Hóa the abyss
             # swallows the next hit (ANY element): reduce by ``tt_abyss_reduce_pct``
@@ -1383,14 +1382,14 @@ def cast_skill(
     if actor.phong_unevadable_interval > 0:
         if _phong_bypass_this_cast:
             actor.phong_skill_cast_counter = 0
-        else:
-            actor.phong_skill_cast_counter += 1
-            if actor.phong_skill_cast_counter % actor.phong_unevadable_interval == 0:
-                actor.phong_unevadable_armed = True
-                session.log.append(
-                    f"    💨 **{actor.name}** Thiên Phong Vô Ảnh — "
-                    f"chiêu kế tiếp vô phương né!"
-                )
+        elif actor.tick_cadence(
+            "phong_skill_cast_counter", actor.phong_unevadable_interval
+        ):
+            actor.phong_unevadable_armed = True
+            session.log.append(
+                f"    💨 **{actor.name}** Thiên Phong Vô Ảnh — "
+                f"chiêu kế tiếp vô phương né!"
+            )
     # Per-fight ``usage_limit`` counter — only top-level casts bump the
     # counter (multi-hit follow-ups already short-circuit above). Filtering
     # against the limit lives in ``CombatSession._choose_skill``.

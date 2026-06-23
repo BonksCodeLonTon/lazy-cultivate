@@ -30,23 +30,16 @@ def _saint_cadence(ctx: TurnContext) -> None:
     actor = ctx.actor
 
     # ── L6 Thiên Tinh Quán Đỉnh — every-N-turn guaranteed crit ──────────────
-    interval = actor.saint_periodic_crit_interval
-    if interval > 0:
-        actor.saint_crit_turn_counter += 1
-        if actor.saint_crit_turn_counter % interval == 0:
-            actor.saint_crit_armed = True
-            ctx.log.append(
-                f"  ⭐ **{actor.name}** Thiên Tinh Quán Đỉnh — đòn kế tiếp chắc chắn Bạo Kích!"
-            )
+    if actor.tick_cadence("saint_crit_turn_counter", actor.saint_periodic_crit_interval):
+        actor.saint_crit_armed = True
+        ctx.log.append(
+            f"  ⭐ **{actor.name}** Thiên Tinh Quán Đỉnh — đòn kế tiếp chắc chắn Bạo Kích!"
+        )
 
     # ── L9 Thần Tâm Thánh Cốt — every-N-turn Saint Realm window ─────────────
     if not actor.saint_realm_enabled:
         return
-    realm_interval = actor.saint_realm_interval
-    if realm_interval <= 0:
-        return
-    actor.saint_realm_turn_counter += 1
-    if actor.saint_realm_turn_counter % realm_interval == 0:
+    if actor.tick_cadence("saint_realm_turn_counter", actor.saint_realm_interval):
         duration = max(1, actor.saint_realm_duration)
         actor.apply_effect("BuffHoangCoThanhVuc", duration)
         ctx.log.append(

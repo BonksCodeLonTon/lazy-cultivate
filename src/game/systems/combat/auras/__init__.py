@@ -20,17 +20,19 @@ legacy ``_take_turn`` body so existing tests stay green:
   60  phu_dao    — Phù Dao Trực Thượng (altitude tier bump)
    5  truong_xuan — Trường Xuân Linh Mộc (Undying Spring cooldown tick)
   38  hoang_co   — Hoàng Cổ Thánh Thể (L6 crit-arm + L9 Saint Realm cadence)
+  39  lietdiem   — Liệt Diễm Phần Thiên (L9 Hỏa Thần avatar cadence)
   12  tinh_quang — Tịnh Quang Hộ Pháp (L3 every-3-turn self-cleanse)
 
 Adding a new pre-turn aura means dropping a new module here and picking
 a priority that places it correctly in the chain — no edits to session.py.
 """
 from . import (  # noqa: F401
-    bo_bo, hoang_co, huyen_am, kinh_hoa, lieu_nhu, luu_ly, luu_tinh, phu_dao,
-    thai_bach, tinh_quang, truong_xuan, xuan_thu,
+    bo_bo, hoang_co, huyen_am, kinh_hoa, lietdiem, lieu_nhu, luu_ly, luu_tinh,
+    phu_dao, thai_bach, tinh_quang, truong_xuan, xuan_thu,
 )
 
 __all__ = [
-    "bo_bo", "hoang_co", "huyen_am", "kinh_hoa", "lieu_nhu", "luu_ly",
-    "luu_tinh", "phu_dao", "thai_bach", "tinh_quang", "truong_xuan", "xuan_thu",
+    "bo_bo", "hoang_co", "huyen_am", "kinh_hoa", "lietdiem", "lieu_nhu",
+    "luu_ly", "luu_tinh", "phu_dao", "thai_bach", "tinh_quang", "truong_xuan",
+    "xuan_thu",
 ]

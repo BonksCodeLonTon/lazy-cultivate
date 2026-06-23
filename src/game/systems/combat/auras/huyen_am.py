@@ -21,11 +21,7 @@ def _auto_nhap_ma(ctx: TurnContext) -> None:
     actor = ctx.actor
     if not actor.has_effect("BuffMaDaoHoaThan"):
         return
-    interval = actor.nhap_ma_interval
-    if interval <= 0:
-        return
-    actor.nhap_ma_turn_counter += 1
-    if actor.nhap_ma_turn_counter % interval == 0:
+    if actor.tick_cadence("nhap_ma_turn_counter", actor.nhap_ma_interval):
         actor.apply_effect("BuffNhapMa", max(1, actor.nhap_ma_duration))
         ctx.log.append(
             f"  👹 **{actor.name}** Ma Đạo Hóa Thần — tự động **Nhập Ma** "

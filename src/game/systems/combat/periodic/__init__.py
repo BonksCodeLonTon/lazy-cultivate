@@ -12,6 +12,7 @@ green:
   20  dots           — DoT loop + U Minh MP drain + Bất Diệt Hỏa Chủng
   25  thai_bach      — Bạch Kim Phong Vũ stack growth (opponent bleeding)
   25  chan_duong     — Hỏa Khí Tương Sinh burning crit-ramp (opponent burning)
+  26  lietdiem       — Phần Thiên Chi Nộ ramp (L1; avatar cadence is a PRE_TURN aura)
   30  summons        — per-summon damage tick
   30  trong_dia      — Trọng Địa Khống Chế auto-slow (DebuffTroBuoc + DebuffLunDat)
   40  solar_wither   — Thái Dương Thần Quang aura
@@ -38,6 +39,7 @@ from . import (  # noqa: F401
     expiry,
     fortify,
     huyen_thuy,
+    lietdiem,
     luc_duc,
     nhan_hoa,
     regen,
@@ -50,6 +52,6 @@ from . import (  # noqa: F401
 
 __all__ = [
     "chan_duong", "dai_dia", "dots", "endure", "expiry", "fortify",
-    "huyen_thuy", "luc_duc", "nhan_hoa", "regen", "solar_wither", "summons",
-    "thai_bach", "trong_dia", "truong_xuan",
+    "huyen_thuy", "lietdiem", "luc_duc", "nhan_hoa", "regen", "solar_wither",
+    "summons", "thai_bach", "trong_dia", "truong_xuan",
 ]

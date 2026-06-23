@@ -33,7 +33,7 @@
           "passive_en": "Holy Light Ward",
           "description_vi": "Thánh quang hộ thân — đòn đánh 45% gây Lóa Mắt; thường trực Hộ Pháp (+10% giảm sát thương, +100 Kháng Bạo). Mỗi lần Lóa Mắt thành công: +1 tầng Thánh Quang (tối đa 5) — mỗi tầng +5% tỉ lệ Lóa Mắt, +3% giảm sát thương.",
           "stat_bonuses": {},
-          "effects": ["BuffHoPhap"]
+          "effects": ["BuffHoPhapThanhQuang"]
         },
         "3": {
           "passive_vi": "Tịnh Quang Tẩy Trần",

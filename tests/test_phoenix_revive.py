@@ -132,9 +132,9 @@ def test_revive_with_zero_buff_only_restores_hp():
 def test_revive_clears_dot_stacks_and_effects():
     p = make_combatant(
         "p", hp=0, hp_max=10_000,
-        burn_stacks=4, bleed_stacks=3, shock_stacks=2,
         phoenix_revive_pct=0.70,
     )
+    p.burn_stacks, p.bleed_stacks, p.shock_stacks = 4, 3, 2
     p.effects["DebuffThieuDot"] = 5
     session = make_session(p, make_combatant("e"))
     session._try_phoenix_revive(p)

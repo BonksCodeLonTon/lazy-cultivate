@@ -141,6 +141,20 @@ class EffectMeta:
     # balance.py constants + gear bonuses).
     stack_cap: int = 0
     per_stack_pct: float = 0.0
+    # ── Declarative stacking (generic, data-driven) ─────────────────────────
+    # ``stackable`` makes ``apply_effect`` ADD a stack on every (re)application
+    # — capped at ``max_stack`` (folding in overrides / ``stack_cap_bonuses`` via
+    # ``effective_stack_cap``) and stored in ``Combatant.effect_stacks`` keyed by
+    # this effect — so a new stacking status needs NO bespoke ``<kind>_stacks``
+    # field, hand-written increment, or expiry-reset line. Non-stackable effects
+    # (the default) just refresh duration exactly as before. ``expire`` controls
+    # the stacks when the duration ends: ``"drop"`` clears them all (today's
+    # universal behavior); ``"decay"`` peels one stack per tick (reserved).
+    # ``max_stack`` is the canonical cap for stackable effects; the older
+    # ``stack_cap`` still drives the DoT (``stack_kind``) path.
+    stackable: bool = False
+    max_stack: int = 1
+    expire: str = "drop"
     # Default chance to apply this effect when listed in a skill's
     # ``effects`` array. ``apply_skill_effects`` and ``apply_support_skill``
     # use it as the fallback when the skill JSON omits an explicit
@@ -366,7 +380,14 @@ def effective_stack_cap(combatant: "Combatant", effect_key: str) -> int:
     to the existing ``<kind>_stack_cap`` field for now.
     """
     meta = EFFECTS.get(effect_key)
-    base = int(meta.stack_cap) if meta is not None else 0
+    # Stackable effects declare their cap via ``max_stack``; the DoT
+    # (``stack_kind``) path keeps reading ``stack_cap``.
+    if meta is None:
+        base = 0
+    elif getattr(meta, "stackable", False):
+        base = int(meta.max_stack)
+    else:
+        base = int(meta.stack_cap)
 
     # Per-instance override on this effect's own entry (max-merge).
     override = combatant.effect_overrides.get(effect_key) or {}
@@ -475,8 +496,13 @@ def _resolve_scaling_source(combatant: "Combatant", source: str) -> float:
         mp_max = max(1, getattr(combatant, "mp_max", 1))
         return max(0.0, 1.0 - float(getattr(combatant, "mp", 0)) / mp_max)
     if source.startswith("stack:"):
-        attr = source[6:] + "_stacks"
-        return float(getattr(combatant, attr, 0))
+        name = source[6:]
+        # New declarative stacks live in ``effect_stacks`` keyed by effect key;
+        # legacy stacks keep their ``<name>_stacks`` Combatant attribute.
+        es = getattr(combatant, "effect_stacks", None)
+        if es and name in es:
+            return float(es[name])
+        return float(getattr(combatant, name + "_stacks", 0))
     if source.startswith("stat:"):
         # Direct read of a Combatant attribute. Lets a rule scale off raw
         # stats (evasion_rating, atk, matk, etc.) instead of resource %s
@@ -816,6 +842,18 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "heal_to_shield_pct",
     "aegis_reform_charges",
     "aegis_reform_shield_pct",
+    # Liệt Diễm Phần Thiên Thể (Hỏa fire nuker) — config keys read off Combatant
+    # fields by periodic/lietdiem.py (ramp + avatar cadence) and apply_reactive_damage
+    # (L6 fire-absorb). The ramp/absorb stat OUTPUTS (matk_pct/crit_rating/dmg_bonus_hoa)
+    # are real stats via scaling_rules; ``dot_can_crit`` (L9) is a real stat too.
+    # Runtime counters (lietdiem_*_stacks / _counter) are Combatant-only.
+    "lietdiem_burn_per_turn",
+    "lietdiem_burn_cap",
+    "lietdiem_van_hoa_absorb",
+    "lietdiem_van_hoa_cap",
+    "lietdiem_avatar_enabled",
+    "lietdiem_avatar_interval",
+    "lietdiem_avatar_duration",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks
@@ -937,6 +975,25 @@ def regen_reduce_pct(combatant: "Combatant") -> float:
         if meta is not None:
             reduce = max(reduce, float(meta.stat_bonus.get("regen_reduce_pct", 0.0)))
     return min(1.0, reduce)
+
+
+def effective_phys_dmg_reduce(combatant: "Combatant") -> float:
+    """Physical-only damage reduction from the static field AND active effects.
+
+    ``phys_dmg_reduce_pct`` is read DIRECTLY off the Combatant field in casting.py
+    (it's config-only, so get_combat_modifiers pops it). Body #15 sets the field
+    permanently from the constitution; body #17's Hỏa Thần avatar grants it via a
+    temporary BUFF (BuffHoaThanHoaThan) whose stat_bonus carries the key — so the
+    casting hook must also see active-effect contributions. Returns the MAX of the
+    field and any active effect's ``phys_dmg_reduce_pct`` (the casting hook caps it
+    at 0.75 / MAX_PHYS_REDUCTION). 0.0 for every combatant carrying neither.
+    """
+    reduce = float(getattr(combatant, "phys_dmg_reduce_pct", 0.0))
+    for effect_key in combatant.effects:
+        meta = EFFECTS.get(effect_key)
+        if meta is not None:
+            reduce = max(reduce, float(meta.stat_bonus.get("phys_dmg_reduce_pct", 0.0)))
+    return reduce
 
 
 def get_periodic_damage(

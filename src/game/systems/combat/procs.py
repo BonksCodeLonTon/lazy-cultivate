@@ -260,7 +260,7 @@ def run_on_hit_procs(
     stamp reads it to skip re-stamping on the auto-fired Kiếm Lãng splash.
     """
     # On-hit proc chances may be amped by active modifiers (buffs / scaling_rules)
-    # — e.g. Tịnh Quang's Thánh Quang stacks raise blind_on_hit_pct via BuffHoPhap.
+    # — e.g. Tịnh Quang's Thánh Quang stacks raise blind_on_hit_pct via BuffHoPhapThanhQuang.
     # Additive: zero contribution (the default for every existing build) leaves the
     # raw-field behavior byte-identical.
     _actor_mods = get_combat_modifiers(actor)
@@ -274,7 +274,7 @@ def run_on_hit_procs(
         dur = default_duration(effect_key)
         target.apply_effect(effect_key, dur)
         # Tịnh Quang Hộ Pháp — Thánh Quang: a landed blind banks a stack (cap 5),
-        # which BuffHoPhap's scaling_rules convert into +blind chance + DR.
+        # which BuffHoPhapThanhQuang's scaling_rules convert into +blind chance + DR.
         if (
             effect_key == EffectKey.DEBUFF_LOA_MAT
             and actor.quang_blind_stack and actor.thanh_quang_stacks < 5
@@ -861,6 +861,17 @@ def apply_reactive_damage(
                     f"    🪞 **{target.name}** phản chấn → **{actor.name}** "
                     f"{colorize_damage(f'-{reflected:,} HP', 'thuy')}"
                 )
+
+    # ── Liệt Diễm Phần Thiên Thể — L6 Vạn Hỏa Thần Phục ─────────────────────
+    # The holder (defender) absorbs incoming FIRE into power: a Hỏa hit banks a
+    # Vạn Hỏa stack (cap), which BuffVanHoaThanPhuc's scaling_rule converts into
+    # dmg_bonus_hoa. Self-gates on the per-body flag + the hit's element.
+    if dmg > 0 and target.lietdiem_van_hoa_absorb and skill_element == "hoa":
+        if target.add_stack("lietdiem_van_hoa", 1):
+            session.log.append(
+                f"    🔥 **{target.name}** Vạn Hỏa Thần Phục — hấp thu lửa "
+                f"[×{target.lietdiem_van_hoa_stacks}/{target.lietdiem_van_hoa_cap}]"
+            )
 
     reflect_total = target.reflect_pct + float(
         get_combat_modifiers(target).get("reflect_pct", 0.0)

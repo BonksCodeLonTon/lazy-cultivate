@@ -598,8 +598,9 @@ def test_heal_crit_respects_bleed_heal_reduce():
     actor = make_combatant(
         "a", hp=100, hp_max=1_000,
         heal_can_crit=True,
-        bleed_stacks=1, bleed_heal_reduce=0.5,
+        bleed_heal_reduce=0.5,
     )
+    actor.bleed_stacks = 1
     target = make_combatant("t")
     session = make_session(actor, target, seed=13)
     session.rng.random = lambda: 0.0  # type: ignore[method-assign]

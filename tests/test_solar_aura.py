@@ -135,13 +135,14 @@ def test_aura_scales_with_burn_dmg_bonus():
 def test_aura_bonus_vs_burning_target_only_applies_with_stacks():
     # Without stacks
     p1 = make_combatant("p1", solar_aura_pct=0.04, bonus_dmg_vs_burn=0.50)
-    e1 = make_combatant("e1", hp=20_000, hp_max=20_000, burn_stacks=0)
+    e1 = make_combatant("e1", hp=20_000, hp_max=20_000)
     make_session(p1, e1)._process_periodic(p1)
     no_burn_dmg = 20_000 - e1.hp
 
     # With stacks
     p2 = make_combatant("p2", solar_aura_pct=0.04, bonus_dmg_vs_burn=0.50)
-    e2 = make_combatant("e2", hp=20_000, hp_max=20_000, burn_stacks=3)
+    e2 = make_combatant("e2", hp=20_000, hp_max=20_000)
+    e2.burn_stacks = 3
     make_session(p2, e2)._process_periodic(p2)
     burn_dmg = 20_000 - e2.hp
 
@@ -191,7 +192,8 @@ def test_thai_duong_kit_all_stack():
         bonus_dmg_vs_burn=0.20,
         element_pen={"hoa": 0.15},
     )
-    enemy = make_combatant("e", hp=20_000, hp_max=20_000, burn_stacks=2, resistances={"hoa": 0.10})
+    enemy = make_combatant("e", hp=20_000, hp_max=20_000, resistances={"hoa": 0.10})
+    enemy.burn_stacks = 2
     make_session(player, enemy)._process_periodic(player)
 
     # base = 10_000 × 0.04 = 400

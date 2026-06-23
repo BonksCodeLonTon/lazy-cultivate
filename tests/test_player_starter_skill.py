@@ -27,7 +27,10 @@ from src.db.models.base import Base
 from src.db.models.player import Player
 from src.db.models.skill import CharacterSkill
 from src.db.models.turn_tracker import TurnTracker
-from src.db.repositories.player_repo import PlayerRepository
+from src.db.repositories.player_repo import (
+    PlayerRepository,
+    is_castable_grade1_starter,
+)
 from src.game.constants.linh_can import parse_linh_can
 
 
@@ -85,6 +88,16 @@ async def test_new_player_gets_one_grade1_attack_starter(session):
         assert skill["element"] in elements, (
             f"starter element {skill['element']!r} not in player Linh Căn {elements}"
         )
+        # The starter must be a *usable* attack, not a constitution-proc "đòn
+        # phụ" sub-strike (base_dmg=1, chain_only) — those share grade/category
+        # but only self-trigger from a constitution a fresh player lacks.
+        assert skill.get("base_dmg", 0) > 1, (
+            f"starter {starter.skill_key!r} has base_dmg={skill.get('base_dmg')} "
+            f"— a proc sub-strike, not a castable starter"
+        )
+        assert not skill.get("chain_only"), (
+            f"starter {starter.skill_key!r} is chain_only — cannot be cast directly"
+        )
 
     assert saw_single_element, (
         "expected at least one single-element Linh Căn across 20 rolls — "
@@ -95,21 +108,23 @@ async def test_new_player_gets_one_grade1_attack_starter(session):
 
 @pytest.mark.asyncio
 async def test_every_element_has_a_grade1_attack_for_starters():
-    """The starter fix relies on every element owning ≥1 grade-1 attack;
-    assert that invariant directly so a future data edit that drops one is
-    caught here rather than as a rare empty-skill-bar spawn."""
+    """The starter fix relies on every element owning ≥1 *castable* grade-1
+    attack; assert that invariant directly so a future data edit that drops one
+    (or leaves only proc sub-strikes) is caught here rather than as a rare
+    empty/broken-skill-bar spawn.
+
+    The check reuses ``is_castable_grade1_starter`` — the exact predicate
+    ``PlayerRepository.create`` filters on — so a proc-only sub-strike never
+    counts toward the invariant and the two call sites cannot drift apart.
+    """
     by_element: dict[str, int] = {}
     for s in registry.skills.values():
-        if (
-            not s.get("key", "").startswith("Enemy")
-            and s.get("category") == "attack"
-            and s.get("scroll_grade") == 1
-            and s.get("element")
-        ):
+        if is_castable_grade1_starter(s) and s.get("element"):
             by_element[s["element"]] = by_element.get(s["element"], 0) + 1
 
     for elem in ("kim", "moc", "thuy", "hoa", "tho", "loi", "phong", "quang", "am"):
         assert by_element.get(elem, 0) >= 1, (
-            f"element {elem!r} has no grade-1 attack skill — a new player whose "
-            f"Linh Căn is only {elem!r} would spawn with no starter skill"
+            f"element {elem!r} has no castable grade-1 attack skill — a new "
+            f"player whose Linh Căn is only {elem!r} would spawn with no usable "
+            f"starter skill"
         )

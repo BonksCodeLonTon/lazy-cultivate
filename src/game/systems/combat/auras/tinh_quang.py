@@ -21,11 +21,9 @@ from ..hooks import TurnPhase, register_hook
 @register_hook(phase=TurnPhase.PRE_TURN, name="tinh_quang_self_cleanse", priority=12)
 def _self_cleanse(ctx: TurnContext) -> None:
     actor = ctx.actor
-    interval = actor.quang_self_cleanse_interval
-    if interval <= 0:
-        return
-    actor.quang_cleanse_turn_counter += 1
-    if actor.quang_cleanse_turn_counter % interval != 0:
+    if not actor.tick_cadence(
+        "quang_cleanse_turn_counter", actor.quang_self_cleanse_interval
+    ):
         return
 
     count = max(1, actor.quang_self_cleanse_count)

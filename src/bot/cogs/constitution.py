@@ -118,6 +118,10 @@ _BONUS_FORMATTERS: list[tuple[str, str]] = [
     ("hp_pct",                        "❤️ HP +{pct:.0f}%"),
     ("hp_flat_per_realm",             "❤️ HP +{flat}/Cảnh Giới"),
     ("mp_pct",                        "💙 MP +{pct:.0f}%"),
+    ("atk_pct",                       "⚔️ Công +{pct:.0f}%"),
+    ("matk_pct",                      "🔮 Pháp Công +{pct:.0f}%"),
+    ("def_pct",                       "🛡️ Phòng Thủ +{pct:.0f}%"),
+    ("spd_pct",                       "⚡ Tốc Độ +{pct:.0f}%"),
     ("cultivation_speed_bonus",       "⚡ Tốc độ tu luyện +{pct:.0f}%"),
     ("final_dmg_bonus",               "⚔️ ST cuối +{pct:.0f}%"),
     ("final_dmg_reduce",              "🛡️ Giảm ST +{pct:.0f}%"),
@@ -135,6 +139,7 @@ _BONUS_FORMATTERS: list[tuple[str, str]] = [
     ("heal_pct",                      "✨ Trị liệu +{pct:.0f}%"),
     ("burn_on_hit_pct",               "🔥 Thiêu Đốt +{pct:.0f}%"),
     ("bleed_on_hit_pct",              "🩸 Chảy Máu +{pct:.0f}%"),
+    ("poison_on_hit_pct",             "☠️ Trúng Độc +{pct:.0f}%"),
     ("shock_on_hit_pct",              "⚡ Sốc Điện +{pct:.0f}%"),
     ("mark_on_hit_pct",               "🎯 Ấn Phong +{pct:.0f}%"),
     ("blind_on_hit_pct",              "🌫️ Lóa Mắt +{pct:.0f}%"),
@@ -191,6 +196,7 @@ _BONUS_FORMATTERS: list[tuple[str, str]] = [
     ("phoenix_revive_buff_pct",       "🔥 Buff sau Niết Bàn: +{pct:.0f}% chỉ số chiến đấu"),
     ("bleed_dmg_bonus",               "🩸 ST Chảy Máu +{pct:.0f}%"),
     ("poison_dmg_bonus",              "☠️ ST Độc +{pct:.0f}%"),
+    ("dot_dmg_bonus",                 "🔥 ST DoT (mọi loại) +{pct:.0f}%"),
     ("all_passives_multiplier",       "🌌 Khuếch đại mọi passive ×{flat2:.1f}"),
 ]
 _BOOL_FLAGS: list[tuple[str, str]] = [

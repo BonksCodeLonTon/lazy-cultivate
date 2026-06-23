@@ -450,19 +450,6 @@
     "duration": 4
   },
   {
-    "key": "BuffHoPhap",
-    "vi": "Hộ Pháp",
-    "en": "Dharma Protection",
-    "kind": "buff",
-    "description_vi": "Hộ pháp bảo vệ toàn diện, giảm sát thương và tăng kháng bạo kích.",
-    "stat_bonus": {
-      "final_dmg_reduce": 0.25,
-      "crit_res_rating": 100
-    },
-    "emoji": "🔮",
-    "duration": 4
-  },
-  {
     "key": "BuffHuKhong",
     "vi": "Hư Không Thân",
     "en": "Void Body",
@@ -2272,7 +2259,20 @@
   {
     "key": "BuffHoPhap",
     "vi": "Hộ Pháp",
-    "en": "Guardian Aura",
+    "en": "Dharma Protection",
+    "kind": "buff",
+    "description_vi": "Hộ pháp bảo vệ toàn diện, giảm sát thương và tăng kháng bạo kích.",
+    "stat_bonus": {
+      "final_dmg_reduce": 0.25,
+      "crit_res_rating": 100
+    },
+    "emoji": "🔮",
+    "duration": 4
+  },
+  {
+    "key": "BuffHoPhapThanhQuang",
+    "vi": "Hộ Pháp Thánh Quang",
+    "en": "Holy Light Guardian Aura",
     "kind": "buff",
     "description_vi": "+10% giảm sát thương, +100 Kháng Bạo. Mỗi tầng Thánh Quang: +5% Lóa Mắt, +3% giảm sát thương (tối đa 5 tầng).",
     "stat_bonus": {
@@ -2662,5 +2662,65 @@
     "cleansable": false,
     "emoji": "🔷",
     "duration": 999
+  },
+  {
+    "key": "BuffPhanThienChiNo",
+    "vi": "Phần Thiên Chi Nộ",
+    "en": "Wrath of Heaven-Burning",
+    "kind": "buff",
+    "description_vi": "Mỗi lượt +1 tầng Phần Thiên (cap 12). Mỗi tầng +1% Pháp Công và +15 Bạo Kích.",
+    "stat_bonus": { "_lietdiem_ramp_matk": 0.01, "_lietdiem_ramp_crit": 15 },
+    "scaling_rules": [
+      { "key": "_lietdiem_ramp_matk", "source": "stat:lietdiem_burn_stacks", "output": "matk_pct", "max_output": 0.12 },
+      { "key": "_lietdiem_ramp_crit", "source": "stat:lietdiem_burn_stacks", "output": "crit_rating", "max_output": 180 }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔥",
+    "duration": 999
+  },
+  {
+    "key": "BuffLietDiemKhoiNguyen",
+    "vi": "Liệt Diễm Khởi Nguyên",
+    "en": "Blazing Flame Genesis",
+    "kind": "buff",
+    "description_vi": "Ngọn lửa không bao giờ tắt — cơ hội Thiêu Đốt cao, Thiêu Đốt mạnh hơn, và sát thương tăng lên mục tiêu đang cháy.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔥",
+    "duration": 999
+  },
+  {
+    "key": "BuffVanHoaThanPhuc",
+    "vi": "Vạn Hỏa Thần Phục",
+    "en": "Myriad-Flame Subjugation",
+    "kind": "buff",
+    "description_vi": "Trúng đòn Hỏa → +1 tầng Vạn Hỏa (cap 3). Mỗi tầng +6% sát thương kỹ năng Hỏa.",
+    "stat_bonus": { "_lietdiem_van_hoa_per_stack": 0.06 },
+    "scaling_rules": [
+      { "key": "_lietdiem_van_hoa_per_stack", "source": "stack:lietdiem_van_hoa", "output": "dmg_bonus_hoa" }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔥",
+    "duration": 999
+  },
+  {
+    "key": "BuffHoaThanHoaThan",
+    "vi": "Hỏa Thần Hóa Thân",
+    "en": "Fire-God Avatar",
+    "kind": "buff",
+    "description_vi": "Hóa thân Hỏa Thần 2 lượt — +250 Bạo Kích, +400 ST Bạo Kích, +10% ST cuối, giảm 60% ST vật lý phải nhận (chặn tối đa 75%, không miễn nhiễm).",
+    "stat_bonus": {
+      "crit_rating": 250,
+      "crit_dmg_rating": 400,
+      "final_dmg_bonus": 0.10,
+      "phys_dmg_reduce_pct": 0.60
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔥",
+    "duration": 2
   }
 ]

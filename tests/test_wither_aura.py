@@ -165,8 +165,9 @@ def test_leech_heal_reduced_when_holder_is_bleeding():
     other heal that flows through ``_apply_heal``."""
     player = make_combatant(
         "p", hp=5_000, hp_max=10_000, wither_aura_pct=0.04,
-        bleed_stacks=1, bleed_heal_reduce=0.50,
+        bleed_heal_reduce=0.50,
     )
+    player.bleed_stacks = 1
     enemy = make_combatant("e", hp=20_000, hp_max=20_000)
     make_session(player, enemy)._process_periodic(player)
 

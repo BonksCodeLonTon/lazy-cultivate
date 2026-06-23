@@ -9,9 +9,10 @@ from typing import Optional
 # ``effective_stack_cap`` (which folds in EffectMeta defaults, per-instance
 # ``effect_overrides[<key>].stack_cap``, and ``stack_cap_bonuses`` from
 # gear/constitutions/linh_can). Kinds whose cap comes from a different
-# source (mana → ``self.mana_stack_cap`` field) are absent here and
-# short-circuit inside ``Combatant.add_stack``. Adding a new stack kind is
-# one entry here plus a Combatant ``_stacks`` field — no helper method needed.
+# source (mana → ``self.mana_stack_cap``; lietdiem_van_hoa →
+# ``self.lietdiem_van_hoa_cap``) are absent here and short-circuit inside
+# ``Combatant.add_stack``. Adding a new stack kind is one entry here plus a
+# Combatant ``_stacks`` field — no helper method needed.
 _STACK_EFFECT_KEY: dict[str, str] = {
     "burn":       "DebuffThieuDot",
     "bleed":      "DebuffChayMau",
@@ -32,6 +33,50 @@ _STACK_EFFECT_KEY: dict[str, str] = {
     "bach_kim":        "BuffBachKimPhongVu",
     "shadow":          "BuffMaKhi",
 }
+
+
+# Legacy effect-key → Combatant fields zeroed when that effect expires (the
+# pre-declarative stack / charge counters). New stacking statuses use
+# ``effect_stacks`` + ``EffectMeta.stackable`` instead and need NO row here;
+# migrate an entry onto that path to delete its row. ``tick_effects`` walks
+# this table instead of a hand-written ``if`` per effect.
+_LEGACY_EXPIRE_RESETS: dict[str, tuple[str, ...]] = {
+    "DebuffNghiepHoa":          ("nghiep_hoa_stacks",),
+    "DebuffNghiepHoaHongLien":  ("nghiep_hoa_stacks",),
+    "DebuffCuuKhuc":            ("cuu_khuc_atk_reduce_active",
+                                 "cuu_khuc_res_shred_active"),
+    "BuffPhuDao":               ("phu_dao_altitude",),
+    "BuffVoTuongPhong":         ("vo_tuong_phong_charges",),
+}
+
+
+class _StackProxy:
+    """Descriptor backing a legacy ``<kind>_stacks`` attribute with the unified
+    ``effect_stacks`` store, keyed by the effect that owns the stacks.
+
+    Lets every existing ``combatant.<kind>_stacks`` read/write site keep working
+    verbatim while the storage moves into ``effect_stacks`` — so the count is
+    capped, scaled (``stat:``/``stack:`` rules), and cleared on the owning
+    effect's expiry through one generic path, no bespoke field needed. A zero
+    write removes the key to keep ``effect_stacks`` sparse (so ``stacks_of`` and
+    membership checks stay clean).
+    """
+    __slots__ = ("_key",)
+
+    def __init__(self, effect_key: str) -> None:
+        self._key = effect_key
+
+    def __get__(self, obj, owner=None):
+        if obj is None:
+            return self
+        return obj.effect_stacks.get(self._key, 0)
+
+    def __set__(self, obj, value) -> None:
+        v = int(value)
+        if v:
+            obj.effect_stacks[self._key] = v
+        else:
+            obj.effect_stacks.pop(self._key, None)
 
 
 @dataclass
@@ -114,6 +159,12 @@ class Combatant:
     # dot_element). Read by ``effects.get_combat_modifiers`` and the DoT
     # tick path. Cleared automatically when the effect expires.
     effect_overrides: dict[str, dict] = field(default_factory=dict)
+    # Declarative stack counts for ``stackable`` effects, keyed by effect key.
+    # The single home for stacks of any effect that opts into generic stacking
+    # (``EffectMeta.stackable``): ``apply_effect`` banks here (capped at
+    # ``effective_stack_cap``) and ``tick_effects`` clears the entry on expiry —
+    # no bespoke ``<kind>_stacks`` field required.
+    effect_stacks: dict[str, int] = field(default_factory=dict)
     # Skill cooldowns: skill_key → turns_remaining
     cooldowns: dict[str, int] = field(default_factory=dict)
     skill_keys: list[str] = field(default_factory=list)
@@ -172,7 +223,7 @@ class Combatant:
     # (default 5) via ``effective_stack_cap`` — gear / constitution / Linh
     # Căn bonuses (``dot_stack_cap_bonus: {burn: N}``) flow through
     # ``stack_cap_bonuses["DebuffThieuDot"]``.
-    burn_stacks: int = 0
+    burn_stacks = _StackProxy("DebuffThieuDot")
     # Bonus damage multiplier vs targets that currently have burn stacks.
     # e.g. 0.25 → +25% final damage if target has any burn stack.
     bonus_dmg_vs_burn: float = 0.0
@@ -188,7 +239,7 @@ class Combatant:
     # ``_dot_amp``. Stack cap rides on ``EffectMeta.stack_cap`` (read via
     # ``effective_stack_cap``); per-stack pct/amp flow attacker → target via
     # ``_propagate_stack_build`` so attacker gear/build still influences the tick.
-    chan_hoa_stacks: int = 0
+    chan_hoa_stacks = _StackProxy("DebuffChanHoa")
     chan_hoa_per_stack_pct: float = 0.02
     chan_hoa_per_stack_fire_amp: float = 0.04
 
@@ -203,14 +254,14 @@ class Combatant:
     # stack drains ``u_minh_per_stack_mp_pct × mp_max`` from the holder per
     # turn for as long as DebuffUMinh is active. No HP damage. Stacks clear
     # when the debuff expires. Cap from ``EffectMeta.stack_cap``.
-    u_minh_stacks: int = 0
+    u_minh_stacks = _StackProxy("DebuffUMinh")
     u_minh_per_stack_mp_pct: float = 0.05
 
     # Hỏa Vân — fire-cloud mark. Stack counter consumed by the
     # ``SkillAtkHoaVanSauThienKiem_R7`` finisher (auto-cast on 5 stacks).
     # No DoT damage; stacks just track combo state. Cap from
     # ``EffectMeta.stack_cap``; clears when ``DebuffHoaVan`` expires.
-    hoa_van_stacks: int = 0
+    hoa_van_stacks = _StackProxy("DebuffHoaVan")
 
     # Phượng Hỏa — phoenix-fire mark reflected onto attackers by the
     # BuffPhuongHoangChanHoa defensive aura. Each stack ticks a fire DoT
@@ -218,7 +269,7 @@ class Combatant:
     # incoming healing (folded via the per-stack heal-reduce placeholder in
     # get_combat_modifiers). Stacks clear when DebuffPhuongHoa expires.
     # Cap from ``EffectMeta.stack_cap``.
-    phuong_hoa_stacks: int = 0
+    phuong_hoa_stacks = _StackProxy("DebuffPhuongHoa")
     phuong_hoa_per_stack_pct: float = 0.02
 
     # Lưu Ly Tịnh Hỏa — cleanse counter. Each successful cleanse pulse from
@@ -227,7 +278,7 @@ class Combatant:
     # scaling rule. The cap rides on ``EffectMeta.stack_cap`` (read via
     # ``effective_stack_cap``) since there's no gear/build hook scaling it.
     # Counter resets to 0 when the buff expires.
-    luu_ly_tinh_hoa_stacks: int = 0
+    luu_ly_tinh_hoa_stacks = _StackProxy("BuffLuuLyTinhHoa")
 
     # Generic flat stack-cap bonuses, keyed by effect_key. Gear / constitution
     # / Linh Căn / formation effects all write here at character-build time
@@ -363,7 +414,7 @@ class Combatant:
     # ── Kim (Bleed) build support ─────────────────────────────────────────────
     # Bleed stacks: like burn, but physical (kim element) and slows healing.
     # Cap via ``EffectMeta.stack_cap`` + ``stack_cap_bonuses["DebuffChayMau"]``.
-    bleed_stacks: int = 0
+    bleed_stacks = _StackProxy("DebuffChayMau")
     # Per-stack bleed damage fraction of hp_max.
     bleed_per_stack_pct: float = 0.005
     # When holder has bleed stacks, incoming heals are multiplied by (1 - bleed_heal_reduce).
@@ -396,7 +447,7 @@ class Combatant:
     # max(atk, matk) × DOT_POWER_COEF. Stacks reset to 0 when the
     # DebuffDocTo effect fully expires. Cap via ``EffectMeta.stack_cap`` +
     # ``stack_cap_bonuses["DebuffDocTo"]``.
-    poison_stacks: int = 0
+    poison_stacks = _StackProxy("DebuffDocTo")
     poison_per_stack_pct: float = 0.008
 
     # ── Mộc (Wood / Poison Leech) build ──────────────────────────────────────
@@ -758,7 +809,7 @@ class Combatant:
     loi_bonus_true_dmg_pct: float = 0.0
 
     # ── Tịnh Quang Hộ Pháp Thể (Quang guardian) build ────────────────────────
-    # L1 Thánh Quang — each landed blind banks a stack (cap 5); BuffHoPhap's
+    # L1 Thánh Quang — each landed blind banks a stack (cap 5); BuffHoPhapThanhQuang's
     # scaling_rules turn the stacks into +blind chance + DR. Both inert by default.
     quang_blind_stack: bool = False
     thanh_quang_stacks: int = 0  # runtime counter (NOT a config key)
@@ -870,6 +921,24 @@ class Combatant:
     aegis_reform_shield_pct: float = 0.0
     aegis_reform_just_triggered: bool = False  # runtime (NOT a config key)
 
+    # ── Liệt Diễm Phần Thiên Thể (Hỏa escalating fire nuker) ──────────────────
+    # L1 ramp: periodic increments ``lietdiem_burn_stacks`` (+per_turn, cap), the
+    # buff's scaling_rules convert it to matk_pct + crit_rating. L6 absorb: a hoa
+    # hit taken banks ``lietdiem_van_hoa_stacks`` (cap), the buff scales it into
+    # dmg_bonus_hoa. L9 avatar: the periodic increments ``lietdiem_avatar_counter``
+    # and stamps BuffHoaThanHoaThan every ``interval`` turns; L9 also grants
+    # dot_can_crit (a real stat, not here).
+    lietdiem_burn_per_turn: int = 0
+    lietdiem_burn_cap: int = 0
+    lietdiem_van_hoa_absorb: bool = False
+    lietdiem_van_hoa_cap: int = 0
+    lietdiem_avatar_enabled: bool = False
+    lietdiem_avatar_interval: int = 0
+    lietdiem_avatar_duration: int = 0
+    lietdiem_burn_stacks: int = 0  # runtime (NOT a config key)
+    lietdiem_van_hoa_stacks: int = 0  # runtime (NOT a config key)
+    lietdiem_avatar_counter: int = 0  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.
@@ -925,7 +994,7 @@ class Combatant:
     # Lôi-element hit as flat final-damage amplification (non-Lôi skills do
     # not trigger the bonus). Cap via ``EffectMeta.stack_cap`` +
     # ``stack_cap_bonuses["DebuffSocDien"]``.
-    shock_stacks: int = 0
+    shock_stacks = _StackProxy("DebuffSocDien")
     # Per-stack final-damage multiplier the attacker adds when a Lôi-element
     # hit lands on a shocked target. e.g. 0.03 → +3% final damage per stack.
     shock_per_stack_pct: float = 0.03
@@ -960,7 +1029,7 @@ class Combatant:
     # for ``thuy_mark_detonate_lost_hp_pct × (hp_max - hp)`` and resets
     # the counter to 0. Stacks clear when DebuffNhuocThuyAn expires. Cap
     # from ``EffectMeta.stack_cap``.
-    thuy_mark_stacks: int = 0
+    thuy_mark_stacks = _StackProxy("DebuffNhuocThuyAn")
 
     # ── Thủy (Cửu Khúc Hoàng Hà) formation mark build ─────────────────────────
     # Player-side tunables — single dict (mirrors ``toa_hon_amp`` /
@@ -1015,7 +1084,7 @@ class Combatant:
     # own tunables, which would never trigger). Stacks clear when
     # DebuffCuuKhuc expires. Cap from ``EffectMeta.stack_cap`` (default 9;
     # gates 3/6/9 use the cap as their max).
-    cuu_khuc_stacks: int = 0
+    cuu_khuc_stacks = _StackProxy("DebuffCuuKhuc")
     cuu_khuc_atk_reduce_active: float = 0.0
     cuu_khuc_res_shred_active: float = 0.0
     # Vạn Kiếp Lôi Ngục Trận — formation prison tax mark. Each round while
@@ -1024,7 +1093,7 @@ class Combatant:
     # / -res_loi expand from the meta's ``scaling_rules`` keyed off
     # ``stack:loi_kiep_an``. Milestone-bolts and the 10-stack Vạn Kiếp Phán
     # capstone read this counter from inside the formation cast.
-    loi_kiep_an_stacks: int = 0
+    loi_kiep_an_stacks = _StackProxy("DebuffLoiKiepAn")
     # Thất Sát Trảm Trận — pure marker counter built by every Kim hit while
     # the formation is active. No DoT, no stat reduction; the threshold (7)
     # gates the formation_skill's true-damage execute via
@@ -1060,7 +1129,7 @@ class Combatant:
     # ``final_dmg_taken_bonus`` linearly per stack. Cap from the meta's
     # ``stack_cap`` (default 7); cleared on debuff expiry. Stack increment
     # lives in ``inflict_debuff`` alongside burn/bleed/shock/poison blocks.
-    phong_nhan_thuc_stacks: int = 0
+    phong_nhan_thuc_stacks = _StackProxy("DebuffPhongNhanThuc")
     # Trấn Sơn Hà Ấn (Mountain-River Suppression Seal) stacks. Read via
     # the data-driven ``scaling_rules`` on ``DebuffTranSonHa`` (source:
     # ``stack:tran_son_ha``) to scale ``final_dmg_bonus`` by -0.08/stack on
@@ -1070,7 +1139,7 @@ class Combatant:
     # blocks. The skill ``SkillSonHaAn`` reads
     # ``seal_refresh_dmg_bonus`` on the spec to compound its own strike when
     # the target already carries the seal — see ``casting.cast_skill``.
-    tran_son_ha_stacks: int = 0
+    tran_son_ha_stacks = _StackProxy("DebuffTranSonHa")
     # Địa Mạch Quy Chân (Earth Vein Return-to-Truth) stacks. Gained when
     # the holder of ``SkillDiaMachQuyChan`` takes damage from an enemy.
     # While stacks > 0, every attack the holder makes gets a flat bonus
@@ -1516,6 +1585,8 @@ class Combatant:
             return 0
         if kind == "mana":
             cap = self.mana_stack_cap
+        elif kind == "lietdiem_van_hoa":
+            cap = self.lietdiem_van_hoa_cap  # per-body config field, like mana
         else:
             effect_key = _STACK_EFFECT_KEY.get(kind)
             if effect_key is None:
@@ -1525,6 +1596,25 @@ class Combatant:
         before = int(getattr(self, field))
         setattr(self, field, min(cap, before + count))
         return int(getattr(self, field)) - before
+
+    def tick_cadence(self, counter_field: str, interval: int) -> bool:
+        """Advance a turn/cast cadence counter; return True when it fires.
+
+        Increments ``self.<counter_field>`` by one and returns True on the
+        ``interval``-th call (new value a positive multiple of ``interval``).
+        A non-positive ``interval`` disables the cadence: the counter is left
+        untouched and False returned, so callers can pass a raw config field
+        without a separate ``> 0`` guard.
+
+        Consolidates the ``counter += 1; if counter % interval == 0`` idiom
+        shared by the per-turn aura/cast cadences (Hoàng Cổ, Thái Bạch, Huyền
+        Âm, Tịnh Quang, Liệt Diễm, Phi Thiên).
+        """
+        if interval <= 0:
+            return False
+        new_val = int(getattr(self, counter_field)) + 1
+        setattr(self, counter_field, new_val)
+        return new_val % interval == 0
 
     def shield_cap(self) -> int:
         """Maximum shield value this combatant can hold.
@@ -1583,8 +1673,13 @@ class Combatant:
     def has_effect(self, effect: str) -> bool:
         return self.effects.get(effect, 0) > 0
 
+    def stacks_of(self, effect: str) -> int:
+        """Current stack count for a ``stackable`` effect (0 if none)."""
+        return self.effect_stacks.get(effect, 0)
+
     def apply_effect(
         self, effect: str, duration: int, overrides: dict | None = None,
+        stacks: int = 1,
     ) -> None:
         """Apply or refresh an effect with optional per-instance overrides.
 
@@ -1610,6 +1705,16 @@ class Combatant:
         if effect == "BuffVoTuongPhong":
             merged_ov = self.effect_overrides.get(effect) or overrides or {}
             self.vo_tuong_phong_charges = int(merged_ov.get("formless_charges", 3))
+        # Declarative stacking — when the effect opts in (``EffectMeta.stackable``),
+        # every (re)application banks ``stacks`` more, capped, stored generically
+        # in ``effect_stacks``. Inert for the default non-stackable effects.
+        from src.game.engine.effects import EFFECTS, effective_stack_cap
+        _meta = EFFECTS.get(effect)
+        if _meta is not None and getattr(_meta, "stackable", False):
+            cap = effective_stack_cap(self, effect)
+            self.effect_stacks[effect] = min(
+                cap, self.effect_stacks.get(effect, 0) + max(0, int(stacks)),
+            )
 
     def tick_effects(self) -> list[str]:
         expired = [k for k, v in self.effects.items() if v <= 1]
@@ -1618,55 +1723,17 @@ class Combatant:
         # has to re-stamp them rather than inherit a stale magnitude.
         for k in expired:
             self.effect_overrides.pop(k, None)
-        # Burn stacks decay with the burn debuff: when DebuffThieuDot expires,
-        # all remaining stacks are cleared.
-        if "DebuffThieuDot" in expired:
-            self.burn_stacks = 0
-        if "DebuffChanHoa" in expired:
-            self.chan_hoa_stacks = 0
-        # Nghiệp Hỏa stacks are coupled to BOTH the marker (Hồng Liên) and
-        # the DoT itself — when either expires, the karma-fire stops burning.
-        if "DebuffNghiepHoa" in expired or "DebuffNghiepHoaHongLien" in expired:
-            self.nghiep_hoa_stacks = 0
-        if "DebuffUMinh" in expired:
-            self.u_minh_stacks = 0
-        if "DebuffPhuongHoa" in expired:
-            self.phuong_hoa_stacks = 0
-        if "DebuffHoaVan" in expired:
-            self.hoa_van_stacks = 0
-        if "BuffLuuLyTinhHoa" in expired:
-            self.luu_ly_tinh_hoa_stacks = 0
-        if "DebuffChayMau" in expired:
-            self.bleed_stacks = 0
-        if "DebuffSocDien" in expired:
-            self.shock_stacks = 0
-        if "DebuffDocTo" in expired:
-            self.poison_stacks = 0
-        if "DebuffNhuocThuyAn" in expired:
-            self.thuy_mark_stacks = 0
-        if "DebuffCuuKhuc" in expired:
-            self.cuu_khuc_stacks = 0
-            self.cuu_khuc_atk_reduce_active = 0.0
-            self.cuu_khuc_res_shred_active = 0.0
-        # Whirlwind altitude is bound to BuffPhuDao's lifetime — when the
-        # buff times out naturally, the charge dissipates with it.
-        if "BuffPhuDao" in expired:
-            self.phu_dao_altitude = 0
-        # Wind-Blade Erosion stacks die with the debuff.
-        if "DebuffPhongNhanThuc" in expired:
-            self.phong_nhan_thuc_stacks = 0
-        # Mountain-River Suppression Seal stacks die with the debuff.
-        if "DebuffTranSonHa" in expired:
-            self.tran_son_ha_stacks = 0
-        # Lôi Kiếp Ấn stacks die with the prison mark (cleanse, expire, or
-        # capstone Vạn Kiếp Phán consume — the latter clears via apply_effect
-        # remove before re-stamping for the next cycle).
-        if "DebuffLoiKiepAn" in expired:
-            self.loi_kiep_an_stacks = 0
-        # Vô Tướng Phong charges die with the buff (either by natural
-        # duration expiry here, or by charge-exhaustion in inflict_debuff).
-        if "BuffVoTuongPhong" in expired:
-            self.vo_tuong_phong_charges = 0
+        # Generic declarative stacks: an expired stackable effect drops its
+        # whole stack ("drop"). Future ``expire`` modes hook here.
+        for k in expired:
+            self.effect_stacks.pop(k, None)
+        # Legacy per-mechanic stack / charge fields (pre-declarative) reset to
+        # zero when their backing effect ends. This data table replaces ~25
+        # hand-written ``if`` branches; migrating an entry onto ``effect_stacks``
+        # (``EffectMeta.stackable``) retires its row.
+        for k in expired:
+            for attr in _LEGACY_EXPIRE_RESETS.get(k, ()):
+                setattr(self, attr, type(getattr(self, attr))(0))
         return expired
 
     def tick_cooldowns(self) -> None:
