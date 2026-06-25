@@ -134,3 +134,31 @@ def test_non_stackable_effect_does_not_bank():
     c = _combatant()
     c.apply_effect("DebuffThieuDot", 3)
     assert c.effect_stacks == {}
+
+
+# ── Free-floating runtime counters (separate stack_counters store) ───────────
+
+
+def test_free_floating_counter_uses_separate_store():
+    c = _combatant()
+    c.thanh_quang_stacks = 4
+    c.harmony_stacks = 3
+    assert c.thanh_quang_stacks == 4 and c.harmony_stacks == 3
+    assert c.stack_counters == {"thanh_quang": 4, "harmony": 3}
+    assert c.effect_stacks == {}              # kept apart from effect-bound stacks
+
+
+def test_free_floating_counter_survives_effect_expiry():
+    c = _combatant()
+    c.lietdiem_burn_stacks = 9
+    c.apply_effect("DebuffThieuDot", 1)       # unrelated effect expires this tick
+    c.tick_effects()
+    assert c.lietdiem_burn_stacks == 9        # free counters skip the expiry sweep
+
+
+def test_free_floating_counter_scaling_source():
+    from src.game.engine.effects import _resolve_scaling_source as _resolve
+    c = _combatant()
+    c.harmony_stacks = 5
+    assert _resolve(c, "stat:harmony_stacks") == 5.0
+    assert _resolve(c, "stack:harmony") == 5.0

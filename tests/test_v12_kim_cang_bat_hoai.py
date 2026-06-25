@@ -124,7 +124,7 @@ def _has_tho_field(field_name: str) -> bool:
     """Return True if Combatant has the given tho-specific field."""
     from dataclasses import fields as dc_fields
     from src.game.systems.combatant import Combatant
-    return any(f.name == field_name for f in dc_fields(Combatant))
+    return (hasattr(Combatant, field_name) or any(f.name == field_name for f in dc_fields(Combatant)))
 
 
 # ── 1. Composition (pure seam — JSON only) ────────────────────────────────────

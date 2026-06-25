@@ -61,22 +61,24 @@ class _StackProxy:
     write removes the key to keep ``effect_stacks`` sparse (so ``stacks_of`` and
     membership checks stay clean).
     """
-    __slots__ = ("_key",)
+    __slots__ = ("_key", "_store")
 
-    def __init__(self, effect_key: str) -> None:
-        self._key = effect_key
+    def __init__(self, key: str, store: str = "effect_stacks") -> None:
+        self._key = key
+        self._store = store
 
     def __get__(self, obj, owner=None):
         if obj is None:
             return self
-        return obj.effect_stacks.get(self._key, 0)
+        return getattr(obj, self._store).get(self._key, 0)
 
     def __set__(self, obj, value) -> None:
+        d = getattr(obj, self._store)
         v = int(value)
         if v:
-            obj.effect_stacks[self._key] = v
+            d[self._key] = v
         else:
-            obj.effect_stacks.pop(self._key, None)
+            d.pop(self._key, None)
 
 
 @dataclass
@@ -165,6 +167,10 @@ class Combatant:
     # ``effective_stack_cap``) and ``tick_effects`` clears the entry on expiry —
     # no bespoke ``<kind>_stacks`` field required.
     effect_stacks: dict[str, int] = field(default_factory=dict)
+    # Free-floating runtime stack counters — NOT bound to a held effect's
+    # lifetime (own bespoke reset logic). Same descriptor mechanism, a
+    # separate store so the effect-expiry sweep never touches them.
+    stack_counters: dict[str, int] = field(default_factory=dict)
     # Skill cooldowns: skill_key → turns_remaining
     cooldowns: dict[str, int] = field(default_factory=dict)
     skill_keys: list[str] = field(default_factory=list)
@@ -247,7 +253,7 @@ class Combatant:
     # ``DebuffNghiepHoaHongLien``, every incoming debuff/CC pushes a stack
     # onto ``DebuffNghiepHoa`` (3 % hp_max fire DoT per stack). Stack cap
     # rides on ``EffectMeta.stack_cap`` (99 as a safety rail).
-    nghiep_hoa_stacks: int = 0
+    nghiep_hoa_stacks = _StackProxy("nghiep_hoa", store="stack_counters")
     nghiep_hoa_per_stack_pct: float = 0.03
 
     # U Minh Quỷ Hỏa — underworld ghost-fire mark. Pure MP-burn DoT: each
@@ -330,7 +336,7 @@ class Combatant:
     # ``BuffQuyAnhMeTung`` marker. ``get_combat_modifiers`` expands the
     # per-stack stat_bonus values into concrete ``evasion_rating`` /
     # ``spd_pct`` contributions when this counter is > 0.
-    quy_anh_stacks: int = 0
+    quy_anh_stacks = _StackProxy("quy_anh", store="stack_counters")
     # Thánh Tuyền Thể — only ``damage_defer_pct`` of incoming damage is
     # deferred; the rest (``1 - damage_defer_pct``) is taken immediately.
     # The deferred portion is split into ``damage_defer_turns`` chunks queued
@@ -350,7 +356,7 @@ class Combatant:
     fortify_per_turn_pct: float = 0.0
     fortify_stack_cap: int = 0
     fortify_post_hit_dr_pct: float = 0.0
-    fortify_stacks: int = 0
+    fortify_stacks = _StackProxy("fortify", store="stack_counters")
     fortify_braced_turns: int = 0
     # Loot economy passives — additive on top of the session's baseline
     # ``loot_qty_multiplier`` / ``loot_luck_pct`` (elite roll, dungeon grade).
@@ -474,7 +480,7 @@ class Combatant:
     mp_leech_pct: float = 0.0
     # Mana-stack accumulator. Gained per attack/skill cast; each stack adds
     # mana_stack_dmg_bonus × final_dmg_bonus, or can be burst-consumed.
-    mana_stacks: int = 0
+    mana_stacks = _StackProxy("mana", store="stack_counters")
     mana_stack_cap: int = 10
     mana_stack_per_attack: int = 0      # passive: stacks gained each turn
     mana_stack_dmg_bonus: float = 0.0   # per-stack final-damage bonus
@@ -536,7 +542,7 @@ class Combatant:
     # single dungeon entry; resets when player_c is rebuilt.
     kill_buff_per_kill_pct: float = 0.0
     kill_buff_cap: int = 0
-    kill_streak_stacks: int = 0
+    kill_streak_stacks = _StackProxy("kill_streak", store="stack_counters")
     # Multi-Strike — per-attack chance to land an additional hit at reduced
     # damage. Resolved in casting.py after the main hit; the second strike
     # reuses the same skill's ``take_damage`` path so DR/shield/resists all
@@ -571,7 +577,7 @@ class Combatant:
     # ``BuffSatKhi`` (capped at 5 via ``_STACK_EFFECT_KEY``). Each stack folds
     # +crit_rating / +crit_dmg_rating in via the buff's scaling_rules. Persists
     # for the fight (the buff has duration 999 → never decays mid-combat).
-    sat_khi_stacks: int = 0
+    sat_khi_stacks = _StackProxy("sat_khi", store="stack_counters")
     # L3 Kim Phá Ngọc Toái — base + high-stack on-hit Phá Giáp chances. The
     # high value applies once ``sat_khi_stacks >= 3``. Both 0 → inert (enemies,
     # flag-off, non-Kim bodies).
@@ -590,7 +596,7 @@ class Combatant:
     # Bạch Kim Phong Vũ stacks — +1 each PERIODIC tick while the opponent is
     # bleeding, capped at 5 via ``_STACK_EFFECT_KEY``. Each stack folds +atk_pct
     # / +bleed_dmg_bonus via the buff's scaling_rules. Never decays.
-    bach_kim_stacks: int = 0
+    bach_kim_stacks = _StackProxy("bach_kim", store="stack_counters")
     # L3 Thái Bạch Túy Tiên — one-shot "+N hit-count on the next cast". Seeded
     # at battle start by the effect-stamp seam; consumed (reset to 0) on the
     # first top-level cast. 0 → inert.
@@ -608,7 +614,7 @@ class Combatant:
     # Ma Khí stacks — +1 per non-stat-steal hit while the holder carries
     # ``BuffMaKhi`` (capped at 6 via ``_STACK_EFFECT_KEY``). At max the L1 proc
     # fires Hồn Phệ + Thực Hồn then resets the counter. Never decays passively.
-    shadow_stacks: int = 0
+    shadow_stacks = _StackProxy("shadow", store="stack_counters")
     # L1 gate — set by the body's flat ``shadow_stack_on_hit``. False → the
     # POST_HIT shadow sweep is a no-op (enemies, flag-off, non-Ám bodies).
     shadow_stack_on_hit: bool = False
@@ -628,7 +634,7 @@ class Combatant:
     # scaling rule (``stack:burning_crit`` → +20 crit_rating/stack, cap +200 =
     # 10 stacks). Manually capped in the periodic hook (not via add_stack), so
     # no ``_STACK_EFFECT_KEY`` entry. Never decays except on the burn-drop reset.
-    burning_crit_stacks: int = 0
+    burning_crit_stacks = _StackProxy("burning_crit", store="stack_counters")
     # L9 Phượng Hoàng Trọng Sinh — 3-charge upgraded revive config. The
     # priority-5 ON_REVIVE hook fires while ``hoa_revive_upgraded`` and charges
     # remain; each revive restores ``hoa_revive_hp_pct_l9`` of hp_max. All-zero
@@ -706,7 +712,7 @@ class Combatant:
     # CombatStats / _CONSTITUTION_FLAG_FIELDS). Hard-capped at 6 by the regen
     # hook. Each stack contributes +4% shield_max_pct + +0.8% shield_regen_pct
     # via BuffDaiDiaCanCo's scaling_rules (source: "stat:dia_mach_stacks").
-    dia_mach_stacks: int = 0
+    dia_mach_stacks = _StackProxy("dia_mach", store="stack_counters")
     # L3 Kim Thân Hộ Pháp — base physical-negate chance (rolls when shield is
     # at or below the gate). 0.0 → inert (enemies, flag-off, non-Tho bodies).
     tho_phys_immune_chance: float = 0.0
@@ -769,7 +775,7 @@ class Combatant:
     # Runtime counter for Phong Vân stacks (NOT a config key, NOT in
     # CombatStats / _CONSTITUTION_FLAG_FIELDS). Hard-capped at 6 by the
     # on-evade hook; decremented by 2 on each non-DoT hit taken.
-    phong_van_stacks: int = 0
+    phong_van_stacks = _StackProxy("phong_van", store="stack_counters")
     # L6 Phi Thiên Hư Ảnh — arm a guaranteed crit after each successful dodge.
     # False → the on-evade block skips the arm entirely.
     phong_dodge_arms_crit: bool = False
@@ -812,7 +818,7 @@ class Combatant:
     # L1 Thánh Quang — each landed blind banks a stack (cap 5); BuffHoPhapThanhQuang's
     # scaling_rules turn the stacks into +blind chance + DR. Both inert by default.
     quang_blind_stack: bool = False
-    thanh_quang_stacks: int = 0  # runtime counter (NOT a config key)
+    thanh_quang_stacks = _StackProxy("thanh_quang", store="stack_counters")  # runtime counter (NOT a config key)
     # L3 Tịnh Quang Tẩy Trần — every N acted turns, self-cleanse M debuffs.
     quang_self_cleanse_interval: int = 0
     quang_self_cleanse_count: int = 0
@@ -850,7 +856,7 @@ class Combatant:
     harmony_backlash_pct_per_stack: float = 0.0
     harmony_backlash_min_stacks: int = 0
     harmony_l9_cleanse: int = 0
-    harmony_stacks: int = 0  # runtime (NOT a config key)
+    harmony_stacks = _StackProxy("harmony", store="stack_counters")  # runtime (NOT a config key)
 
     # ── Bắc Minh Băng Phách Thể (Thủy ice/freeze/MP-drain disruptor) ──────────
     # All on-hit logic (bidirectional slow+hit-shave, freeze, MP-drain→heal,
@@ -867,7 +873,7 @@ class Combatant:
     bm_heal_reduce_vs_frozen_chance: float = 0.0
     bm_burst_freeze_turns: int = 0
     bm_burst_drain_pct: float = 0.0
-    han_khi_stacks: int = 0  # runtime (NOT a config key)
+    han_khi_stacks = _StackProxy("han_khi", store="stack_counters")  # runtime (NOT a config key)
     han_khi_mp_drained_total: int = 0  # runtime (NOT a config key)
 
     # ── Huyền Minh Nhược Thể (Thủy anti-physical attrition disruptor) ──────────
@@ -886,7 +892,7 @@ class Combatant:
     hm_corrode_poison_stacks: int = 0
     hm_corrode_bleed_stacks: int = 0
     hm_drown_burst_drain_pct: float = 0.0
-    hm_uyen_stacks: int = 0  # runtime (NOT a config key)
+    hm_uyen_stacks = _StackProxy("hm_uyen", store="stack_counters")  # runtime (NOT a config key)
     hm_mp_drained_total: int = 0  # runtime (NOT a config key)
 
     # ── Thiên Thủy Thánh Thể (Thủy holy-spring sustain tank) ──────────────────
@@ -905,7 +911,7 @@ class Combatant:
     tt_abyss_threshold: int = 0
     tt_abyss_reduce_pct: float = 0.0
     tt_abyss_reflect_pct: float = 0.0
-    tt_tinh_hoa_stacks: int = 0  # runtime (NOT a config key)
+    tt_tinh_hoa_stacks = _StackProxy("tt_tinh_hoa", store="stack_counters")  # runtime (NOT a config key)
 
     # ── Lưu Ly Thuẫn Thân Thể (universal shield-only aegis body) ──────────────
     # No flesh: hp_max is locked to 1 at build and the would-be HP pool becomes
@@ -935,8 +941,8 @@ class Combatant:
     lietdiem_avatar_enabled: bool = False
     lietdiem_avatar_interval: int = 0
     lietdiem_avatar_duration: int = 0
-    lietdiem_burn_stacks: int = 0  # runtime (NOT a config key)
-    lietdiem_van_hoa_stacks: int = 0  # runtime (NOT a config key)
+    lietdiem_burn_stacks = _StackProxy("lietdiem_burn", store="stack_counters")  # runtime (NOT a config key)
+    lietdiem_van_hoa_stacks = _StackProxy("lietdiem_van_hoa", store="stack_counters")  # runtime (NOT a config key)
     lietdiem_avatar_counter: int = 0  # runtime (NOT a config key)
 
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
@@ -1099,7 +1105,7 @@ class Combatant:
     # gates the formation_skill's true-damage execute via
     # ``consume_target_marks_for_execute``. Cap and meta default duration
     # live on ``EffectMeta(DebuffSatAn)``.
-    sat_an_stacks: int = 0
+    sat_an_stacks = _StackProxy("sat_an", store="stack_counters")
     # Cuồng Phong Đại Trận — combo + burst counters. ``consecutive_phong_casts``
     # is the resettable combo chain (cap 5, reset on any non-Phong top-level
     # cast or basic attack); the formation's aura buff reads this via
@@ -1149,7 +1155,6 @@ class Combatant:
     # and resets to 0. Increment + auto-cast hook live in
     # ``casting._bump_dia_mach_stack``; conversion read in
     # ``build_attack_stats``.
-    dia_mach_stacks: int = 0
     # Phù Dao Trực Thượng altitude — gained while ``BuffPhuDao`` is active,
     # consumed by the next attack-skill cast (multiplies its base_dmg and
     # rolls a per-stack DebuffCuonBay rider). Per-cast tunables
@@ -1245,7 +1250,7 @@ class Combatant:
     # full sword swarm (10 summons of "Vạn Kiếm" → +5 stacks). Each stack
     # adds 5% kim damage in ``build_attack_stats`` (gated on skill element).
     # Capped at 10 by the consume path; resets per fight (Combatant rebuild).
-    sword_heart_stacks: int = 0
+    sword_heart_stacks = _StackProxy("sword_heart", store="stack_counters")
     # Per-Sword-Heart-stack damage reduction — granted by Hộ Thể Kiếm Cương's
     # passive (3% DR per stack). Folds into ``effective_damage_reduction``
     # alongside ``fortify_per_turn_pct``. Default 0 so a character without
