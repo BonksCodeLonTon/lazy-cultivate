@@ -25,7 +25,12 @@ from src.data.registry import registry
 from src.game.constants.balance import MAX_FINAL_DMG_REDUCE
 from src.game.constants.effects import EffectKey
 from src.game.engine.damage.color import colorize_damage
-from src.game.engine.effects import EFFECTS, get_combat_modifiers
+from src.game.engine.effects import (
+    EFFECTS,
+    EffectKind,
+    default_duration,
+    get_combat_modifiers,
+)
 
 from .context import TurnContext
 from .hooks import TurnPhase, register_hook
@@ -165,6 +170,82 @@ def _truong_xuan_undying(ctx: TurnContext) -> bool | None:
     ctx.log.append(
         f"  🌿♻️ **{combatant.name}** **TRƯỜNG XUÂN BẤT TỬ!** Xuân khí chưa tàn — "
         f"trụ lại {combatant.hp:,} HP (hồi chiêu {combatant.moc_undying_cd} lượt)"
+    )
+    ctx.scratch["revived"] = True
+    return True
+
+
+def _niet_ban_rebirth_ready(ctx: TurnContext) -> bool:
+    """Predicate for the Niết Bàn Bất Diệt L6 once-per-fight nirvana rebirth.
+
+    Gated tighter than ``_not_yet_revived`` so the hook only claims the death for
+    the Niết Bàn body whose single rebirth charge is unused. Sets
+    ``ctx.scratch["revived"]`` when it fires so the lower-priority generic seams
+    skip (the body has no BuffChanDuongNietBan-style fallback to suppress).
+    """
+    return (
+        _not_yet_revived(ctx)
+        and ctx.actor.niet_ban_revive_enabled
+        and not ctx.actor.niet_ban_revive_used
+    )
+
+
+@register_hook(
+    phase=TurnPhase.ON_REVIVE, name="niet_ban_trong_sinh", priority=5,
+    predicate=_niet_ban_rebirth_ready,
+)
+def _niet_ban_trong_sinh(ctx: TurnContext) -> bool | None:
+    """Niết Bàn Bất Diệt Thể L6 — once-per-fight Nirvana Rebirth.
+
+    Fires at priority 5 (before the generic phoenix=10 / buff=20 / chân-mệnh=30
+    seams) so it claims the death; the predicate already confirmed the body and an
+    unspent charge. Restores ``niet_ban_revive_pct`` of hp_max (+5% per accumulated
+    Nghiệp Hỏa tier), then — when ``niet_ban_revive_clear_debuffs`` — wipes every
+    debuff for a clean slate (resets the stack-DoT carriers + drops debuff-kind
+    effects). When L9 (``niet_ban_post_revive_boost``) is unlocked it stamps
+    BuffCuuChuyenNietBan, the 4-turn +50% all-stat berserk window. No burst, no
+    recursion (fires from ON_REVIVE, not a per-hit sweep).
+    """
+    combatant = ctx.actor
+    combatant.niet_ban_revive_used = True
+
+    pct = combatant.niet_ban_revive_pct + (
+        combatant.nb_nghiep_tier * combatant.nb_nghiep_revive_pct_per_tier
+    )
+    revived_hp = max(1, int(combatant.hp_max * pct))
+    combatant.hp = revived_hp
+
+    cleared = 0
+    if combatant.niet_ban_revive_clear_debuffs:
+        # Reset the stack-DoT carriers (burn/bleed/shock/poison proxies), then
+        # drop every debuff-kind effect — Nirvana burns the karma away.
+        combatant.burn_stacks = 0
+        combatant.bleed_stacks = 0
+        combatant.shock_stacks = 0
+        combatant.poison_stacks = 0
+        for effect_key in list(combatant.effects):
+            meta = EFFECTS.get(effect_key)
+            if meta is not None and meta.kind == EffectKind.DEBUFF:
+                combatant.effects.pop(effect_key, None)
+                combatant.effect_overrides.pop(effect_key, None)
+                cleared += 1
+
+    boost_tag = ""
+    if combatant.niet_ban_post_revive_boost and EFFECTS.get("BuffCuuChuyenNietBan"):
+        dur = default_duration("BuffCuuChuyenNietBan")
+        combatant.apply_effect("BuffCuuChuyenNietBan", dur)
+        boost_tag = f" · **Cửu Chuyển Niết Bàn** +50% toàn chỉ số ({dur}t)"
+
+    nghiep_tag = (
+        f" · Nghiệp Hỏa ×{combatant.nb_nghiep_tier}"
+        if combatant.nb_nghiep_tier > 0 else ""
+    )
+    ctx.log.append(
+        f"  🔥♻️ **{combatant.name}** **NIẾT BÀN TRỌNG SINH!** "
+        f"Hồi sinh +{revived_hp:,}/{combatant.hp_max:,} HP"
+        + (f" · xóa {cleared} debuff" if cleared else "")
+        + nghiep_tag
+        + boost_tag
     )
     ctx.scratch["revived"] = True
     return True

@@ -123,4 +123,80 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_NietBanBatDiet",
+    "vi": "Niết Bàn Bất Diệt Thể",
+    "en": "Nirvana Inextinguishable Body",
+    "element": "hoa",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân luyện Niết Bàn Hỏa — tắm trong biển lửa mà sinh cơ, kháng Hỏa đến cực hạn rồi lấy phần dư mà phản công. Chết một lần duy nhất, hồi sinh trong ngọn lửa cửu chuyển, toàn thân bùng cháy mạnh gấp bội. Càng thiêu địch, nghiệp hỏa càng tinh luyện chính mình. Khác Chân Dương (hồi sinh nhiều lần để bùng nổ), Niết Bàn là cây trường-sinh hút lửa: một lần tái sinh duy nhất nhưng hóa thành cuồng thể toàn diện.",
+    "stat_bonuses": {
+      "matk_pct": 0.05,
+      "hp_pct": 0.10,
+      "hp_regen_pct": 0.03,
+      "crit_dmg_rating": 80
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": {
+        "hp_pct": 0.005, "hp_regen_pct": 0.001, "crit_dmg_rating": 8
+      },
+      "levels": {
+        "1": {
+          "passive_vi": "Dục Hỏa Sinh Cơ",
+          "passive_en": "Fire Tempers Life Force",
+          "description_vi": "Tắm lửa mà sống — miễn nhiễm mọi debuff hệ Hỏa (Thiêu Đốt, Nghiệp Hỏa…). Giới hạn kháng Hỏa nâng lên 90%. Kháng Hỏa vượt 90% chuyển thành sát thương Hỏa theo tỉ lệ 1:1 (dư 5% kháng → +5% ST Hỏa) — KHÔNG miễn nhiễm, vẫn nhận tối thiểu 10% đòn Hỏa. Đồng thời khởi động Nghiệp Hỏa: mỗi đòn Thiêu Đốt tick lên địch tích 1 vi tầng (10 vi tầng = 1 tầng Nghiệp, tối đa 3 tầng).",
+          "stat_bonuses": {
+            "hoa_max_resist_bonus": 0.15,
+            "hoa_overcap_to_dmg": true,
+            "immune_hoa_skill_debuffs": true,
+            "nb_nghiep_accumulate": true,
+            "res_hoa": 0.15
+          },
+          "effects": ["BuffDucHoaSinhCo", "BuffNghiepHoa"]
+        },
+        "3": {
+          "passive_vi": "Phượng Hoàng Chân Hỏa",
+          "passive_en": "Phoenix True Fire",
+          "description_vi": "Chân hỏa phượng hoàng — +200 Bạo Kích Sát Thương; sát thương kỹ năng Hỏa +25%; mọi sát thương Thiêu Đốt (DoT) +40%.",
+          "stat_bonuses": {
+            "crit_dmg_rating": 200,
+            "element_dmg_bonus": { "hoa": 0.25 },
+            "dot_dmg_bonus": 0.40,
+            "res_hoa": 0.10
+          },
+          "effects": ["BuffNietBanPhuongHoangChanHoa"]
+        },
+        "6": {
+          "passive_vi": "Niết Bàn Trọng Sinh",
+          "passive_en": "Nirvana Rebirth",
+          "description_vi": "Khi nhận đòn chí mạng: hồi sinh tại 50% HP và xóa sạch toàn bộ debuff đang mang (1 lần/trận). Mỗi tầng Nghiệp Hỏa cộng thêm +5% HP hồi sinh (đầy 3 tầng → hồi sinh 65% HP).",
+          "stat_bonuses": {
+            "niet_ban_revive_enabled": true,
+            "niet_ban_revive_pct": 0.50,
+            "niet_ban_revive_clear_debuffs": true,
+            "nb_nghiep_revive_pct_per_tier": 0.05,
+            "res_hoa": 0.10
+          },
+          "effects": ["BuffNietBanTrongSinh"]
+        },
+        "9": {
+          "passive_vi": "Cửu Chuyển Niết Bàn",
+          "passive_en": "Nine-Turn Nirvana",
+          "description_vi": "Sau khi Niết Bàn Trọng Sinh kích hoạt: toàn bộ chỉ số tăng 50% trong 4 lượt (Pháp Công/Phòng/Tốc +50%, Bạo Kích +250, ST Bạo Kích +300) và sát thương Hỏa +30% bổ sung. Phượng hoàng cửu chuyển, càng đốt càng rực.",
+          "stat_bonuses": {
+            "niet_ban_post_revive_boost": true,
+            "res_hoa": 0.10
+          },
+          "effects": []
+        }
+      }
+    }
+  }
 ]

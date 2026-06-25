@@ -2722,5 +2722,72 @@
     "cleansable": false,
     "emoji": "🔥",
     "duration": 2
+  },
+  {
+    "key": "BuffDucHoaSinhCo",
+    "vi": "Dục Hỏa Sinh Cơ",
+    "en": "Fire Tempers Life Force",
+    "kind": "buff",
+    "description_vi": "Tắm lửa mà sống — miễn nhiễm debuff hệ Hỏa, giới hạn kháng Hỏa nâng lên 90%, kháng Hỏa vượt 90% chuyển thành sát thương Hỏa (1:1).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔥",
+    "duration": 999
+  },
+  {
+    "key": "BuffNghiepHoa",
+    "vi": "Nghiệp Hỏa Tích Lũy",
+    "en": "Karmic Fire Accumulation",
+    "kind": "buff",
+    "description_vi": "Mỗi đòn Thiêu Đốt tick lên địch tích 1 vi tầng Nghiệp Hỏa (10 vi tầng = 1 tầng, tối đa 3). Mỗi tầng: +8% ST Hỏa, +12% ST Thiêu Đốt, +5% HP hồi sinh. Lửa nghiệp đốt địch đồng thời tinh luyện chính mình.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🜂",
+    "duration": 999
+  },
+  {
+    "key": "BuffNietBanPhuongHoangChanHoa",
+    "vi": "Phượng Hoàng Chân Hỏa",
+    "en": "Phoenix True Fire",
+    "kind": "buff",
+    "description_vi": "Chân hỏa phượng hoàng — +200 Bạo Kích Sát Thương, sát thương kỹ năng Hỏa +25%, mọi sát thương Thiêu Đốt (DoT) +40%.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🦅",
+    "duration": 999
+  },
+  {
+    "key": "BuffNietBanTrongSinh",
+    "vi": "Niết Bàn Trọng Sinh",
+    "en": "Nirvana Rebirth",
+    "kind": "buff",
+    "description_vi": "Khi nhận đòn chí mạng: hồi sinh tại 50% HP (+5% mỗi tầng Nghiệp Hỏa) và xóa sạch toàn bộ debuff. 1 lần/trận.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "♻️",
+    "duration": 999
+  },
+  {
+    "key": "BuffCuuChuyenNietBan",
+    "vi": "Cửu Chuyển Niết Bàn",
+    "en": "Nine-Turn Nirvana",
+    "kind": "buff",
+    "description_vi": "Phượng hoàng cửu chuyển — sau hồi sinh, toàn bộ chỉ số +50% (Pháp Công/Phòng/Tốc), Bạo Kích +250, ST Bạo Kích +300, sát thương Hỏa +30%. Kéo dài 4 lượt.",
+    "stat_bonus": {
+      "matk_pct": 0.50,
+      "def_pct": 0.50,
+      "spd_pct": 0.50,
+      "crit_rating": 250,
+      "crit_dmg_rating": 300,
+      "dmg_bonus_hoa": 0.30
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 4
   }
 ]

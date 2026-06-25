@@ -945,6 +945,30 @@ class Combatant:
     lietdiem_van_hoa_stacks = _StackProxy("lietdiem_van_hoa", store="stack_counters")  # runtime (NOT a config key)
     lietdiem_avatar_counter: int = 0  # runtime (NOT a config key)
 
+    # ── Niết Bàn Bất Diệt Thể (Hỏa lifesteal-res nirvana berserker) ───────────
+    # L1: ``hoa_overcap_to_dmg`` lifts Hỏa res to 90% (via the existing
+    # ``hoa_max_resist_bonus`` lane) and spills the overcap into element_dmg_bonus.hoa
+    # (overcap block in compute_combat_stats, build-time). ``immune_hoa_skill_debuffs``
+    # is read by the niet_ban_hoa_debuff inflict-interceptor. L6: a dedicated
+    # ON_REVIVE hook (revives.py) reads ``niet_ban_revive_*`` to revive once at
+    # ``niet_ban_revive_pct`` (+5%/Nghiệp tier), clear debuffs, and — when
+    # ``niet_ban_post_revive_boost`` (L9) — stamp BuffCuuChuyenNietBan. Nghiệp Hỏa:
+    # the niet_ban PERIODIC hook counts the holder's fire DoTs ticking on the foe
+    # into ``nb_nghiep_progress``; every 10 rolls a ``nb_nghiep_tier`` (cap 3) and
+    # monotonically bumps element_dmg_bonus.hoa / dot_dmg_bonus (fields read live
+    # by combat_hit / dot.py). ``niet_ban_revive_used`` is the once-per-fight latch.
+    hoa_overcap_to_dmg: bool = False
+    immune_hoa_skill_debuffs: bool = False
+    nb_nghiep_accumulate: bool = False
+    nb_nghiep_revive_pct_per_tier: float = 0.0
+    niet_ban_revive_enabled: bool = False
+    niet_ban_revive_pct: float = 0.0
+    niet_ban_revive_clear_debuffs: bool = False
+    niet_ban_post_revive_boost: bool = False
+    nb_nghiep_tier: int = 0  # runtime (NOT a config key) — 0..3 accumulated tiers
+    nb_nghiep_progress: int = 0  # runtime (NOT a config key) — 0..9 micro-progress
+    niet_ban_revive_used: bool = False  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.

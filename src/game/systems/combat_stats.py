@@ -207,6 +207,25 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("lietdiem_avatar_enabled",          "lietdiem_avatar_enabled",          bool),
     ("lietdiem_avatar_interval",         "lietdiem_avatar_interval",         int),
     ("lietdiem_avatar_duration",         "lietdiem_avatar_duration",         int),
+    # Niết Bàn Bất Diệt Thể (Hỏa lifesteal-res nirvana berserker) — config flags.
+    # L1 lifts the Hỏa res soft-cap to 0.90 (``hoa_max_resist_bonus``, existing
+    # lane) and spills the overcap into ``element_dmg_bonus.hoa`` (overcap block
+    # in compute_combat_stats reads ``hoa_overcap_to_dmg``); immune to Hỏa-DoT
+    # debuffs (interceptor reads ``immune_hoa_skill_debuffs``). L6 one-use revive
+    # (revives.py dedicated hook reads ``niet_ban_revive_*``); L9 arms the
+    # post-revive berserk (``niet_ban_post_revive_boost``). Nghiệp Hỏa tiers
+    # accumulate via the niet_ban periodic hook (gate ``nb_nghiep_accumulate``,
+    # revive bump ``nb_nghiep_revive_pct_per_tier``). Runtime counters
+    # (nb_nghiep_tier / nb_nghiep_progress / niet_ban_revive_used) are
+    # Combatant-only and excluded.
+    ("hoa_overcap_to_dmg",               "hoa_overcap_to_dmg",               bool),
+    ("immune_hoa_skill_debuffs",         "immune_hoa_skill_debuffs",         bool),
+    ("nb_nghiep_accumulate",             "nb_nghiep_accumulate",             bool),
+    ("nb_nghiep_revive_pct_per_tier",    "nb_nghiep_revive_pct_per_tier",    float),
+    ("niet_ban_revive_enabled",          "niet_ban_revive_enabled",          bool),
+    ("niet_ban_revive_pct",              "niet_ban_revive_pct",              float),
+    ("niet_ban_revive_clear_debuffs",    "niet_ban_revive_clear_debuffs",    bool),
+    ("niet_ban_post_revive_boost",       "niet_ban_post_revive_boost",       bool),
 ]
 
 
@@ -509,6 +528,15 @@ class CombatStats:
     lietdiem_avatar_enabled: bool = False
     lietdiem_avatar_interval: int = 0
     lietdiem_avatar_duration: int = 0
+    # Niết Bàn Bất Diệt Thể (Hỏa lifesteal-res nirvana berserker)
+    hoa_overcap_to_dmg: bool = False
+    immune_hoa_skill_debuffs: bool = False
+    nb_nghiep_accumulate: bool = False
+    nb_nghiep_revive_pct_per_tier: float = 0.0
+    niet_ban_revive_enabled: bool = False
+    niet_ban_revive_pct: float = 0.0
+    niet_ban_revive_clear_debuffs: bool = False
+    niet_ban_post_revive_boost: bool = False
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

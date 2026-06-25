@@ -774,6 +774,9 @@ def compute_combat_stats(
     resistances: dict[str, float] = {
         e.value: getattr(char.stats, RESISTANCE_KEYS[e]) for e in ALL_ELEMENTS
     }
+    # Innate Hỏa res snapshot — kept unclamped for the Niết Bàn overcap→dmg
+    # conversion below (the per-add clamps would otherwise hide any excess > cap).
+    _base_hoa_res = resistances.get("hoa", 0.0)
 
     res_all = bonuses.get("res_all", 0.0)
     if res_all:
@@ -1020,6 +1023,33 @@ def compute_combat_stats(
         cap = min(MAX_ELEMENTAL_RES, soft)
         if resistances[elem] > cap:
             resistances[elem] = cap
+
+    # Niết Bàn Bất Diệt Thể L1 — Hỏa-res overcap → Hỏa damage (1:1). The body
+    # lifts the Hỏa cap to 0.90 (``hoa_max_resist_bonus``); any innate/gear/Linh
+    # Căn fire-res STACKED beyond that cap is normally wasted, so spill the excess
+    # into ``element_dmg_bonus['hoa']`` instead. Re-sum the raw (unclamped) Hỏa res
+    # from its static sources — the per-add clamps above already capped the stored
+    # value at 0.90, hiding the overflow. NOT a 0-damage gate: resistances['hoa']
+    # stays capped at 0.90 (≥10% of every Hỏa hit still lands); only the *surplus*
+    # res becomes offense. Gated → inert for every non-Niết-Bàn build.
+    if bool(bonuses.get("hoa_overcap_to_dmg", False)):
+        raw_hoa_res = (
+            _base_hoa_res
+            + float(bonuses.get("res_all", 0.0))
+            + float(bonuses.get("res_hoa", 0.0))
+        )
+        if form_elem == "hoa":
+            raw_hoa_res += float(res_elem)
+        if equip_stats:
+            raw_hoa_res += float(equip_stats.get("res_all", 0.0))
+            raw_hoa_res += float(equip_stats.get("res_hoa", 0.0))
+        hoa_cap = min(
+            MAX_ELEMENTAL_RES,
+            RES_SOFT_CAP + float(element_max_resist_bonus.get("hoa", 0.0)),
+        )
+        overcap = max(0.0, raw_hoa_res - hoa_cap)
+        if overcap > 0:
+            element_dmg_bonus["hoa"] = element_dmg_bonus.get("hoa", 0.0) + overcap
 
     # Stack-cap bonuses dict — per-kind DoT caps + shock routed to debuff keys.
     stack_cap_bonuses = _build_stack_cap_bonuses(
