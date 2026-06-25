@@ -2728,7 +2728,7 @@
     "vi": "Dục Hỏa Sinh Cơ",
     "en": "Fire Tempers Life Force",
     "kind": "buff",
-    "description_vi": "Tắm lửa mà sống — miễn nhiễm debuff hệ Hỏa, giới hạn kháng Hỏa nâng lên 90%, kháng Hỏa vượt 90% chuyển thành sát thương Hỏa (1:1).",
+    "description_vi": "Tắm lửa mà sống — giới hạn kháng Hỏa nâng lên 90%, kháng Hỏa vượt 90% chuyển thành sát thương Hỏa (1:1).",
     "stat_bonus": {},
     "stealable": false,
     "cleansable": false,

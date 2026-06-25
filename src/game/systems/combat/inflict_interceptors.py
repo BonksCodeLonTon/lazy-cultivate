@@ -99,32 +99,6 @@ def _poison_immunity(
 
 
 @register_pre_stamp_interceptor
-def _niet_ban_hoa_debuff_immunity(
-    session: "CombatSession", effect_key: str, meta: "EffectMeta",
-    target: "Combatant", actor: "Combatant | None",
-    overrides: "dict | None",
-) -> bool:
-    """Niết Bàn Bất Diệt Thể L1 — immune to every Hỏa-element debuff.
-
-    ``immune_hoa_skill_debuffs`` aborts the stamp for any debuff whose damage
-    element is Hỏa — the burn/ignite family (DebuffThieuDot / DotChay / NghiepHoa
-    / PhuongHoa / ChanHoa). Identified by ``dot_element == 'hoa'`` (the per-effect
-    fire tag), honouring a per-cast ``dot_element`` override too. Non-DoT fire
-    utility shreds that carry no element tag (e.g. DebuffHoaXuyenThau res-shred)
-    fall through — those aren't damage debuffs. Gated → inert for non-Niết-Bàn.
-    """
-    if not getattr(target, "immune_hoa_skill_debuffs", False):
-        return False
-    is_hoa = meta.dot_element == "hoa" or (overrides or {}).get("dot_element") == "hoa"
-    if not is_hoa:
-        return False
-    session.log.append(
-        f"    🔥🛡️ **{target.name}** thân Niết Bàn miễn nhiễm debuff Hỏa **{meta.vi}**!"
-    )
-    return True
-
-
-@register_pre_stamp_interceptor
 def _vo_tuong_phong_absorber(
     session: "CombatSession", effect_key: str, meta: "EffectMeta",
     target: "Combatant", actor: "Combatant | None",

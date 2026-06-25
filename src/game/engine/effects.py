@@ -856,13 +856,11 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "lietdiem_avatar_duration",
     # Niết Bàn Bất Diệt Thể (Hỏa lifesteal-res nirvana berserker) — config keys.
     # ``hoa_overcap_to_dmg`` is read build-time (overcap → element_dmg_bonus.hoa);
-    # ``immune_hoa_skill_debuffs`` by the inflict-interceptor; the niet_ban_revive_*
-    # / post_revive / nb_nghiep_* keys by the ON_REVIVE + PERIODIC hooks. The per-tier
-    # OUTPUTS (element_dmg_bonus.hoa / dot_dmg_bonus) are real fields the hook mutates
-    # directly. Runtime counters (nb_nghiep_tier / _progress / niet_ban_revive_used)
-    # are Combatant-only.
+    # the niet_ban_revive_* / post_revive / nb_nghiep_* keys by the ON_REVIVE +
+    # PERIODIC hooks. The per-tier OUTPUTS (element_dmg_bonus.hoa / dot_dmg_bonus)
+    # are real fields the hook mutates directly. Runtime counters (nb_nghiep_tier /
+    # _progress / niet_ban_revive_used) are Combatant-only.
     "hoa_overcap_to_dmg",
-    "immune_hoa_skill_debuffs",
     "nb_nghiep_accumulate",
     "nb_nghiep_revive_pct_per_tier",
     "niet_ban_revive_enabled",

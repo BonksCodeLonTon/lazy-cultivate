@@ -4,10 +4,9 @@ The 3rd Hỏa body: a fire-LIFESTEAL nirvana berserker (vs Chân Dương's offen
 multi-revive phoenix, Liệt Diễm's escalating nuker). Its identity is "bathe in
 fire, die ONCE, come back as an all-stat berserker":
 
-  L1 Dục Hỏa Sinh Cơ   — immune to every Hỏa-DoT debuff; lifts the Hỏa res cap to
-                         0.90; fire res STACKED past 0.90 spills 1:1 into Hỏa
-                         damage (overcap→offense, NOT a 0-damage gate); seeds
-                         Nghiệp Hỏa accumulation.
+  L1 Dục Hỏa Sinh Cơ   — lifts the Hỏa res cap to 0.90; fire res STACKED past 0.90
+                         spills 1:1 into Hỏa damage (overcap→offense, NOT a
+                         0-damage gate); seeds Nghiệp Hỏa accumulation.
   L3 Phượng Hoàng Chân Hỏa — +200 crit_dmg, +25% Hỏa skill dmg, +40% all DoT.
   L6 Niết Bàn Trọng Sinh   — one-use revive @50% HP (+5%/Nghiệp tier) + clear all
                              debuffs.
@@ -36,7 +35,6 @@ from src.game.models.character import Character, CharacterStats
 from src.game.systems.combat import (
     CombatSession, build_enemy_combatant, build_player_combatant,
 )
-from src.game.systems.combat.casting import inflict_debuff
 from src.game.systems.constitution_process import effective_effects
 from src.utils.config import settings
 
@@ -107,7 +105,7 @@ def test_body_registered_and_shape() -> None:
     # Flat is pure stats; every mechanic config lives in the milestones.
     flat = data["stat_bonuses"]
     for cfg in (
-        "hoa_overcap_to_dmg", "immune_hoa_skill_debuffs", "nb_nghiep_accumulate",
+        "hoa_overcap_to_dmg", "nb_nghiep_accumulate",
         "niet_ban_revive_enabled", "niet_ban_post_revive_boost",
     ):
         assert cfg not in flat
@@ -138,7 +136,6 @@ def test_config_flags_per_level(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     p1 = _player(1)
     assert p1.hoa_overcap_to_dmg is True
-    assert p1.immune_hoa_skill_debuffs is True
     assert p1.nb_nghiep_accumulate is True
     p6 = _player(6)
     assert p6.niet_ban_revive_enabled is True
@@ -184,28 +181,6 @@ def test_l1_no_overcap_when_under_cap(monkeypatch) -> None:
     player = _player(1, res_hoa=0.0, linh_can=["kim"])
     assert player.resistances["hoa"] < 0.90
     assert player.element_dmg_bonus.get("hoa", 0.0) == pytest.approx(0.0)
-
-
-def test_l1_immune_to_hoa_dot_debuff(monkeypatch) -> None:
-    monkeypatch.setattr(settings, "constitution_process_enabled", True)
-    player = _player(1)
-    enemy = _enemy()
-    session = _session(player, enemy)
-    burn = EFFECTS.get("DebuffThieuDot")
-    assert burn is not None and burn.dot_element == "hoa"
-    inflict_debuff(session, "DebuffThieuDot", burn, player, actor=enemy)
-    assert not player.has_effect("DebuffThieuDot")  # fire debuff blocked
-
-
-def test_l1_non_hoa_debuff_still_lands(monkeypatch) -> None:
-    monkeypatch.setattr(settings, "constitution_process_enabled", True)
-    player = _player(1)
-    enemy = _enemy()
-    session = _session(player, enemy)
-    slow = EFFECTS.get("DebuffLamCham")
-    assert slow is not None and slow.dot_element != "hoa"
-    inflict_debuff(session, "DebuffLamCham", slow, player, actor=enemy)
-    assert player.has_effect("DebuffLamCham")  # non-fire debuff unaffected
 
 
 # ── 3. L3 Phượng Hoàng Chân Hỏa — crit + Hỏa + DoT amps ─────────────────────
@@ -330,7 +305,6 @@ def test_flag_off_is_inert() -> None:
     assert settings.constitution_process_enabled is False
     player = _player(9, res_hoa=0.80)
     assert player.hoa_overcap_to_dmg is False
-    assert player.immune_hoa_skill_debuffs is False
     assert player.niet_ban_revive_enabled is False
     assert player.nb_nghiep_accumulate is False
     # No cap-lift and no overcap spill while dormant.

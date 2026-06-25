@@ -151,11 +151,10 @@
         "1": {
           "passive_vi": "Dục Hỏa Sinh Cơ",
           "passive_en": "Fire Tempers Life Force",
-          "description_vi": "Tắm lửa mà sống — miễn nhiễm mọi debuff hệ Hỏa (Thiêu Đốt, Nghiệp Hỏa…). Giới hạn kháng Hỏa nâng lên 90%. Kháng Hỏa vượt 90% chuyển thành sát thương Hỏa theo tỉ lệ 1:1 (dư 5% kháng → +5% ST Hỏa) — KHÔNG miễn nhiễm, vẫn nhận tối thiểu 10% đòn Hỏa. Đồng thời khởi động Nghiệp Hỏa: mỗi đòn Thiêu Đốt tick lên địch tích 1 vi tầng (10 vi tầng = 1 tầng Nghiệp, tối đa 3 tầng).",
+          "description_vi": "Tắm lửa mà sống — giới hạn kháng Hỏa nâng lên 90%. Kháng Hỏa vượt 90% chuyển thành sát thương Hỏa theo tỉ lệ 1:1 (dư 5% kháng → +5% ST Hỏa) — KHÔNG miễn nhiễm, vẫn nhận tối thiểu 10% đòn Hỏa. Đồng thời khởi động Nghiệp Hỏa: mỗi đòn Thiêu Đốt tick lên địch tích 1 vi tầng (10 vi tầng = 1 tầng Nghiệp, tối đa 3 tầng).",
           "stat_bonuses": {
             "hoa_max_resist_bonus": 0.15,
             "hoa_overcap_to_dmg": true,
-            "immune_hoa_skill_debuffs": true,
             "nb_nghiep_accumulate": true,
             "res_hoa": 0.15
           },
