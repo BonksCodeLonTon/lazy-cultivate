@@ -108,6 +108,11 @@ _DIA_MACH_STACK_CAP = 5
 # Thánh Sơn Bất Động Thể — L3 shield→dmg ratio gets the full bonus at this many
 # Kiên Cố stacks (the sheet's "4 tầng" breakpoint).
 _THANH_SON_L3_STACK_GATE = 4
+# L3 per-cast true-damage cap = this fraction of the TARGET's max HP, so a colossal
+# Thổ shield can't deliver an unbounded unmitigable burst (a fortress shouldn't
+# out-nuke dedicated nukers). True damage scales with shield, so a flat % cut alone
+# still grows without bound — the cap is what actually tames it.
+_THANH_SON_TRUE_DMG_CAP_PCT = 0.12
 
 
 def _bump_dia_mach_stack(
@@ -1025,6 +1030,12 @@ def cast_skill(
                 if actor.thanh_son_kien_co_stacks >= _THANH_SON_L3_STACK_GATE:
                     _ts_pct += actor.thanh_son_l3_full_bonus
                 _ts_true = int(actor.shield * _ts_pct)
+                # Per-cast cap — clamp to a slice of the target's max HP so a huge
+                # shield can't deliver an unbounded unmitigable burst.
+                if target.hp_max > 0:
+                    _ts_true = min(
+                        _ts_true, int(target.hp_max * _THANH_SON_TRUE_DMG_CAP_PCT)
+                    )
                 if _ts_true > 0:
                     target.take_damage(_ts_true, bypass_shield=True)
                     session.log.append(

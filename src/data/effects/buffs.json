@@ -2883,7 +2883,7 @@
     "vi": "Thái Sơn Áp Đỉnh",
     "en": "Mt. Tai Crushing Peak",
     "kind": "buff",
-    "description_vi": "Mỗi cast giáng Sát Thương Chuẩn = 70% Khiên (+20% từ 4 tầng Kiên Cố); mỗi đòn 60% Bào Mòn / 35% Choáng 2 lượt.",
+    "description_vi": "Mỗi cast giáng Sát Thương Chuẩn = 35% Khiên (+10% từ 4 tầng Kiên Cố, tối đa 12% HP tối đa địch); mỗi đòn 60% Bào Mòn / 35% Choáng 2 lượt.",
     "stat_bonus": {},
     "stealable": false,
     "cleansable": false,

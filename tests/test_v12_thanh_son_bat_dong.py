@@ -127,8 +127,8 @@ def test_config_flags_per_level(monkeypatch) -> None:
     assert p1.thanh_son_kien_co_on_hit is True
     assert p1.thanh_son_kien_co_cap == 8
     p3 = _player(3)
-    assert p3.thanh_son_dmg_from_shield_pct == pytest.approx(0.70)
-    assert p3.thanh_son_l3_full_bonus == pytest.approx(0.20)
+    assert p3.thanh_son_dmg_from_shield_pct == pytest.approx(0.35)
+    assert p3.thanh_son_l3_full_bonus == pytest.approx(0.10)
     assert p3.thanh_son_bao_mon_chance == pytest.approx(0.60)
     assert p3.thanh_son_stun_chance == pytest.approx(0.35)
     p9 = _player(9)
@@ -177,24 +177,51 @@ def test_l3_true_dmg_from_shield(monkeypatch) -> None:
     player = _player(3)
     player.crit_rating = 0
     player.thanh_son_kien_co_stacks = 0      # below the 4-stack breakpoint
-    player.shield = 200_000
+    player.shield = 200_000                  # 35% = 70k, well under the 12%-maxHP cap
     loss_on = _cast_enemy_loss(player)
     player.thanh_son_dmg_from_shield_pct = 0.0  # disable L3 → measure skill alone
     loss_off = _cast_enemy_loss(player)
-    assert loss_on - loss_off == int(200_000 * 0.70)
+    assert loss_on - loss_off == int(200_000 * 0.35)
 
 
 def test_l3_full_bonus_at_4_stacks(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(3)
     player.crit_rating = 0
-    player.thanh_son_kien_co_stacks = 4      # at the breakpoint → +20% ratio
-    player.shield = 200_000
-    expected = int(200_000 * (0.70 + 0.20))  # match the code's float path (0.8999…)
+    player.thanh_son_kien_co_stacks = 4      # at the breakpoint → +10% ratio
+    player.shield = 200_000                  # 45% = 90k, under the 12%-maxHP cap
+    expected = int(200_000 * (0.35 + 0.10))  # match the code's float path (0.4499…)
     loss_on = _cast_enemy_loss(player)
     player.thanh_son_dmg_from_shield_pct = 0.0
     loss_off = _cast_enemy_loss(player)
     assert loss_on - loss_off == expected
+
+
+def test_l3_true_dmg_capped_at_target_maxhp_pct(monkeypatch) -> None:
+    """A colossal shield is capped at 12% of the target's max HP per cast."""
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(3)
+    player.crit_rating = 0
+    player.thanh_son_kien_co_stacks = 0
+    player.shield = 10**8                    # 35% = 35M — far above the cap
+    enemy = _enemy(hp=10**9)
+    enemy.hp_max = 100_000                   # cap = 12% × 100k = 12_000
+    session = _session(player, enemy)
+    session.rng.random = lambda: 0.99
+    skill = registry.get_skill(_ATTACK)
+    before = enemy.hp
+    cast_skill(session, player, enemy, _ATTACK, dict(skill), skill.get("mp_cost", 0))
+    loss_on = before - enemy.hp
+    # disable L3, re-measure the skill alone on an identical enemy
+    player.thanh_son_dmg_from_shield_pct = 0.0
+    enemy2 = _enemy(hp=10**9)
+    enemy2.hp_max = 100_000
+    session2 = _session(player, enemy2)
+    session2.rng.random = lambda: 0.99
+    before2 = enemy2.hp
+    cast_skill(session2, player, enemy2, _ATTACK, dict(skill), skill.get("mp_cost", 0))
+    loss_off = before2 - enemy2.hp
+    assert loss_on - loss_off == int(100_000 * 0.12)  # capped, not 35M
 
 
 def test_l3_riders_apply_bao_mon_and_stun(monkeypatch) -> None:

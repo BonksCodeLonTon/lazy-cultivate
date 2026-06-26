@@ -5237,11 +5237,11 @@
       "khi_cap": 5
     },
     "thanh_son_bao_mon_chance": 0.6,
-    "thanh_son_dmg_from_shield_pct": 0.7,
+    "thanh_son_dmg_from_shield_pct": 0.35,
     "thanh_son_immovable_enabled": true,
     "thanh_son_kien_co_cap": 8,
     "thanh_son_kien_co_on_hit": true,
-    "thanh_son_l3_full_bonus": 0.2,
+    "thanh_son_l3_full_bonus": 0.1,
     "thanh_son_stun_chance": 0.35,
     "thanh_son_stun_turns": 2,
     "thanh_son_survive_shield_pct": 0.3,

@@ -130,10 +130,10 @@
         "3": {
           "passive_vi": "Thái Sơn Áp Đỉnh",
           "passive_en": "Mt. Tai Crushing Peak",
-          "description_vi": "Sức nặng Thái Sơn — mỗi lần thi triển kỹ năng giáng thêm Sát Thương Chuẩn (xuyên giáp) = 70% Khiên hiện tại (+20% khi có từ 4 tầng Kiên Cố). Mỗi đòn đánh trúng: 60% gây Bào Mòn, 35% gây Choáng 2 lượt. Càng nhiều giáp, đòn càng nặng.",
+          "description_vi": "Sức nặng Thái Sơn — mỗi lần thi triển kỹ năng giáng thêm Sát Thương Chuẩn (xuyên giáp) = 35% Khiên hiện tại (+10% khi có từ 4 tầng Kiên Cố), tối đa 12% HP tối đa của địch mỗi lần. Mỗi đòn đánh trúng: 60% gây Bào Mòn, 35% gây Choáng 2 lượt. Càng nhiều giáp, đòn càng nặng.",
           "stat_bonuses": {
-            "thanh_son_dmg_from_shield_pct": 0.70,
-            "thanh_son_l3_full_bonus": 0.20,
+            "thanh_son_dmg_from_shield_pct": 0.35,
+            "thanh_son_l3_full_bonus": 0.10,
             "thanh_son_bao_mon_chance": 0.60,
             "thanh_son_stun_chance": 0.35,
             "thanh_son_stun_turns": 2
