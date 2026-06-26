@@ -967,6 +967,28 @@ class Combatant:
     nb_nghiep_progress: int = 0  # runtime (NOT a config key) — 0..9 micro-progress
     niet_ban_revive_used: bool = False  # runtime (NOT a config key)
 
+    # ── Hậu Thổ Thần Thể (Thổ HP-vampire growth juggernaut) ───────────────────
+    # L1 ``run_hau_tho_procs`` (procs.py): each landed hit siphons
+    # ``hau_tho_hp_steal_pct`` (+0.5%/Địa Mạch tier) of the foe's CURRENT HP,
+    # grows ``hp_max`` + heals by it, and banks it in ``hau_tho_stolen_total``.
+    # ``hau_tho_accumulate`` gates the Địa Mạch tiers: every 1% of the foe's
+    # max-HP siphoned (tracked in ``hau_tho_steal_progress``) rolls one
+    # ``hau_tho_tier`` (cap 10); at tier 10 a one-time +10% hp_max fires
+    # (``hau_tho_tier10_applied`` latch). L3 (casting.py) per-cast true damage =
+    # max(hp_max×``hau_tho_dmg_from_maxhp_pct``, shield×(``hau_tho_dmg_from_shield_pct``
+    # + tier×0.03)). L9 ``hau_tho_rebirth_enabled`` → revives.py survives one lethal
+    # hit at HP = ``hau_tho_stolen_total`` (``hau_tho_rebirth_used`` latch).
+    hau_tho_hp_steal_pct: float = 0.0
+    hau_tho_accumulate: bool = False
+    hau_tho_dmg_from_maxhp_pct: float = 0.0
+    hau_tho_dmg_from_shield_pct: float = 0.0
+    hau_tho_rebirth_enabled: bool = False
+    hau_tho_stolen_total: int = 0  # runtime (NOT a config key)
+    hau_tho_tier: int = 0  # runtime (NOT a config key) — 0..10 Địa Mạch tiers
+    hau_tho_steal_progress: float = 0.0  # runtime (NOT a config key) — frac toward next tier
+    hau_tho_rebirth_used: bool = False  # runtime (NOT a config key)
+    hau_tho_tier10_applied: bool = False  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.

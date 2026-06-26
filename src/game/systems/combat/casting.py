@@ -984,6 +984,30 @@ def cast_skill(
                             session, "DebuffHuThuyAn", _huthuy, target, actor=actor,
                         )
 
+            # Hậu Thổ Thần Thể — L3 Trọng Lực Chưởng Khống: once per CAST, deal
+            # bonus TRUE damage = max(maxhp × pct, shield × (pct + Địa Mạch tier ×
+            # 0.03)), straight to HP (pierces resistance & shield). ``not
+            # _suppress_extras`` → exactly once per logical cast (multi-hit replays
+            # don't multiply it). Self-gates on the L3 flag → inert otherwise.
+            if (
+                actor.hau_tho_dmg_from_maxhp_pct > 0
+                and not _suppress_extras
+                and target.is_alive()
+                and dmg > 0
+            ):
+                _ht_from_hp = int(actor.hp_max * actor.hau_tho_dmg_from_maxhp_pct)
+                _ht_shield_pct = (
+                    actor.hau_tho_dmg_from_shield_pct + actor.hau_tho_tier * 0.03
+                )
+                _ht_from_shield = int(actor.shield * _ht_shield_pct)
+                _ht_true = max(_ht_from_hp, _ht_from_shield)
+                if _ht_true > 0:
+                    target.take_damage(_ht_true, bypass_shield=True)
+                    session.log.append(
+                        f"    ⛰️ Trọng Lực Chưởng Khống — +{_ht_true:,} "
+                        f"Sát Thương Chuẩn (xuyên giáp)"
+                    )
+
             # Element-gated stack-on-hit — every successful damaging hit whose
             # element matches an equipped skill's ``passive_stack_on_element_hit``
             # entry stacks the named kind on the target. Scans both

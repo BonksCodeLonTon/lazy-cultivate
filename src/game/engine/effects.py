@@ -867,6 +867,16 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "niet_ban_revive_pct",
     "niet_ban_revive_clear_debuffs",
     "niet_ban_post_revive_boost",
+    # Hậu Thổ Thần Thể (Thổ HP-vampire growth juggernaut) — config keys read by
+    # run_hau_tho_procs (steal), casting.py (L3 true-dmg), revives.py (L9). The
+    # L3 OUTPUT is direct true-damage, not a stat. Runtime counters
+    # (hau_tho_stolen_total / _tier / _steal_progress / _rebirth_used /
+    # _tier10_applied) are Combatant-only.
+    "hau_tho_hp_steal_pct",
+    "hau_tho_accumulate",
+    "hau_tho_dmg_from_maxhp_pct",
+    "hau_tho_dmg_from_shield_pct",
+    "hau_tho_rebirth_enabled",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks

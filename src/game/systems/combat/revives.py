@@ -251,6 +251,48 @@ def _niet_ban_trong_sinh(ctx: TurnContext) -> bool | None:
     return True
 
 
+def _hau_tho_rebirth_ready(ctx: TurnContext) -> bool:
+    """Predicate for the Hậu Thổ L9 Luân Hồi Quy Tắc once-per-fight survive.
+
+    Gated tighter than ``_not_yet_revived``: only the Hậu Thổ body with an unspent
+    charge AND a non-empty steal pool claims the death (0 stolen → no save, so the
+    body can't cheat death without having vampired first). Sets
+    ``ctx.scratch["revived"]`` when it fires so the lower-priority generic seams skip.
+    """
+    return (
+        _not_yet_revived(ctx)
+        and ctx.actor.hau_tho_rebirth_enabled
+        and not ctx.actor.hau_tho_rebirth_used
+        and ctx.actor.hau_tho_stolen_total > 0
+    )
+
+
+@register_hook(
+    phase=TurnPhase.ON_REVIVE, name="hau_tho_luan_hoi", priority=5,
+    predicate=_hau_tho_rebirth_ready,
+)
+def _hau_tho_luan_hoi(ctx: TurnContext) -> bool | None:
+    """Hậu Thổ Thần Thể L9 — Luân Hồi Quy Tắc cheat-death.
+
+    Fires at priority 5 (before the generic phoenix=10 / buff=20 / chân-mệnh=30
+    seams) so it claims the death; the predicate already confirmed the body, an
+    unspent charge, and a non-empty steal pool. Survives the lethal hit with HP =
+    total HP stolen from enemies this battle (capped at the holder's grown max HP).
+    The more aggressively the body vampired, the stronger the rebirth. No burst, no
+    recursion (fires from ON_REVIVE, not a per-hit sweep).
+    """
+    combatant = ctx.actor
+    combatant.hau_tho_rebirth_used = True
+    revived_hp = max(1, min(combatant.hp_max, combatant.hau_tho_stolen_total))
+    combatant.hp = revived_hp
+    ctx.log.append(
+        f"  ⛰️♻️ **{combatant.name}** **LUÂN HỒI QUY TẮC!** Hồi sinh với "
+        f"{revived_hp:,} HP (= tổng máu đã hút trong trận)"
+    )
+    ctx.scratch["revived"] = True
+    return True
+
+
 @register_hook(
     phase=TurnPhase.ON_REVIVE, name="phoenix_revive", priority=10,
     predicate=_not_yet_revived,

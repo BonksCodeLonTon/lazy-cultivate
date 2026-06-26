@@ -243,6 +243,73 @@ def run_huyen_minh_procs(
     _hm_drain(session, target, actor)
 
 
+# Hậu Thổ Thần Thể — Địa Mạch tuning (all in run_hau_tho_procs).
+_HAU_THO_STEAL_PER_TIER = 0.005   # +0.5% steal rate / Địa Mạch tier
+_HAU_THO_TIER_CAP = 10
+_HAU_THO_TIER_FRACTION = 0.01     # 1% of foe max-HP siphoned = +1 tier
+_HAU_THO_TIER10_MAXHP_PCT = 0.10  # one-time +10% max HP at tier 10
+
+
+def run_hau_tho_procs(
+    session: "CombatSession", actor: Combatant, target: Combatant,
+) -> None:
+    """Hậu Thổ Thần Thể on-hit logic, once per landed hit (``actor`` hits ``target``).
+
+    L1 Đại Địa Tức Nhưỡng — each strike siphons a fraction of the foe's CURRENT HP:
+    the stolen HP is GROWN onto the holder's max HP (permanent for the battle) and
+    healed, and banked in ``hau_tho_stolen_total`` (the L9 Luân Hồi revive pool).
+    The steal rate climbs +0.5%/Địa Mạch tier. The Địa Mạch accumulation
+    (``hau_tho_accumulate``) banks each 1% of the foe's MAX HP siphoned into a tier
+    (cap 10); reaching 10 grants a one-time +10% max HP. Attacker-side only (the
+    body is a striker, not reactive). Self-gates → no-op for every other build.
+    """
+    if actor.hau_tho_hp_steal_pct <= 0 or not target.is_alive():
+        return
+    rate = actor.hau_tho_hp_steal_pct + actor.hau_tho_tier * _HAU_THO_STEAL_PER_TIER
+    stolen = int(target.hp * rate)
+    if stolen <= 0:
+        return
+    # Direct siphon: the foe loses exactly ``stolen`` (a true drain that ignores
+    # shield/DR — matches "hút HP"); the holder grows + heals by the same amount.
+    target.hp = max(0, target.hp - stolen)
+    actor.hp_max += stolen
+    actor.hp += stolen
+    actor.hau_tho_stolen_total += stolen
+    session.log.append(
+        f"  ⛰️ **{actor.name}** Đại Địa Tức Nhưỡng hút {stolen:,} HP "
+        f"→ HP tối đa {actor.hp_max:,}"
+    )
+
+    # Địa Mạch Hấp Thụ — bank each 1% of the foe's MAX HP siphoned into a tier.
+    # ``hau_tho_steal_progress`` is a MONOTONIC cumulative fraction (never reset);
+    # the tier is floor(progress / 0.01) so repeated-subtraction float drift can't
+    # lose a tier. +1e-9 epsilon absorbs the last-ulp error on exact multiples.
+    if not actor.hau_tho_accumulate or target.hp_max <= 0 \
+            or actor.hau_tho_tier >= _HAU_THO_TIER_CAP:
+        return
+    actor.hau_tho_steal_progress += stolen / target.hp_max
+    target_tier = min(
+        _HAU_THO_TIER_CAP,
+        int(actor.hau_tho_steal_progress / _HAU_THO_TIER_FRACTION + 1e-9),
+    )
+    if target_tier <= actor.hau_tho_tier:
+        return
+    actor.hau_tho_tier = target_tier
+    if actor.hau_tho_tier >= _HAU_THO_TIER_CAP and not actor.hau_tho_tier10_applied:
+        actor.hau_tho_tier10_applied = True
+        bonus = int(actor.hp_max * _HAU_THO_TIER10_MAXHP_PCT)
+        actor.hp_max += bonus
+        actor.hp += bonus
+        session.log.append(
+            f"  ⛰️ **{actor.name}** Địa Mạch viên mãn — HP tối đa +10% "
+            f"(→ {actor.hp_max:,})"
+        )
+    session.log.append(
+        f"  ⛰️ **{actor.name}** Địa Mạch Hấp Thụ "
+        f"[×{actor.hau_tho_tier}/{_HAU_THO_TIER_CAP}]"
+    )
+
+
 def run_on_hit_procs(
     session: "CombatSession", actor: Combatant, target: Combatant, is_crit: bool,
     skill_key: str = "",
@@ -943,6 +1010,7 @@ def apply_reactive_damage(
     # the per-body config flags (inert for every other build).
     run_bac_minh_procs(session, actor, target)
     run_huyen_minh_procs(session, actor, target)
+    run_hau_tho_procs(session, actor, target)
 
 
 def apply_reflect(

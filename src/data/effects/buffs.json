@@ -2789,5 +2789,65 @@
     "cleansable": false,
     "emoji": "🌀",
     "duration": 4
+  },
+  {
+    "key": "BuffDaiDiaTucNhuong",
+    "vi": "Đại Địa Tức Nhưỡng",
+    "en": "Great Earth Nurturing Soil",
+    "kind": "buff",
+    "description_vi": "Đất lành nuôi vạn vật — hồi HP/MP mỗi lượt; mỗi đòn hút 4% HP địch cộng vĩnh viễn vào HP tối đa bản thân.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌍",
+    "duration": 999
+  },
+  {
+    "key": "BuffDiaMachHapThu",
+    "vi": "Địa Mạch Hấp Thụ",
+    "en": "Earth-Vein Absorption",
+    "kind": "buff",
+    "description_vi": "Hút đủ 1% HP tối đa địch → +1 tầng Địa Mạch (tối đa 10). Mỗi tầng: +0.5% tỉ lệ hút, +3% tỉ lệ Khiên→sát thương; đủ 10 tầng → HP tối đa +10%.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⛰️",
+    "duration": 999
+  },
+  {
+    "key": "BuffTrongLucChuongKhong",
+    "vi": "Trọng Lực Chưởng Khống",
+    "en": "Gravity Control",
+    "kind": "buff",
+    "description_vi": "Mỗi lần thi triển kỹ năng giáng thêm Sát Thương Chuẩn = cao hơn giữa 25% HP tối đa và 40% Khiên hiện tại (xuyên mọi kháng & giáp).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🪨",
+    "duration": 999
+  },
+  {
+    "key": "BuffDiaMauHoTri",
+    "vi": "Địa Mẫu Hộ Trì",
+    "en": "Earth Mother Protection",
+    "kind": "buff",
+    "description_vi": "Địa mẫu chở che — giảm thêm 30% sát thương nhận vào, kháng toàn +18%, hồi HP mỗi lượt mạnh hơn.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🛡️",
+    "duration": 999
+  },
+  {
+    "key": "BuffLuanHoiQuyTac",
+    "vi": "Luân Hồi Quy Tắc",
+    "en": "Cycle of Reincarnation",
+    "kind": "buff",
+    "description_vi": "Khi nhận đòn chí tử: sống sót 1 lần/trận với HP bằng tổng lượng HP đã hút từ địch trong trận.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "♻️",
+    "duration": 999
   }
 ]

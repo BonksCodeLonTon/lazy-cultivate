@@ -26,4 +26,71 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_HauThoThanThe",
+    "vi": "Hậu Thổ Thần Thể",
+    "en": "Great Earth God Body",
+    "element": "tho",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân luyện Hậu Thổ — đất dày chở vạn vật, càng nuốt càng lớn. Hút sinh khí kẻ địch mà bồi đắp chính mình, thân vóc hóa thành núi non; rồi lấy cái nặng của núi mà nghiền nát đối thủ bằng sát thương xuyên giáp. Khác Kim Cang (tường khiên tĩnh, vô hiệu vật lý), Hậu Thổ là cây trường-sinh hút máu: càng đánh càng phình to, bất tử nhờ chính lượng máu đã hút.",
+    "stat_bonuses": {
+      "hp_pct": 0.12,
+      "hp_regen_pct": 0.03,
+      "mp_regen_pct": 0.03
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "hp_pct": 0.006, "hp_regen_pct": 0.001, "mp_regen_pct": 0.001 },
+      "levels": {
+        "1": {
+          "passive_vi": "Đại Địa Tức Nhưỡng",
+          "passive_en": "Great Earth Nurturing Soil",
+          "description_vi": "Đất lành nuôi vạn vật — hồi 5% HP và 6% MP mỗi lượt. Mỗi đòn tấn công hút 4% HP hiện tại của địch, cộng VĨNH VIỄN vào HP tối đa bản thân (trong trận) và hồi đúng lượng đó. Khởi động Địa Mạch Hấp Thụ: cứ hút đủ 1% HP tối đa của địch → +1 tầng Địa Mạch (tối đa 10); mỗi tầng +0.5% tỉ lệ hút và +3% tỉ lệ Khiên→sát thương; đủ 10 tầng → HP tối đa +10% bổ sung.",
+          "stat_bonuses": {
+            "hp_regen_pct": 0.05,
+            "mp_regen_pct": 0.06,
+            "hau_tho_hp_steal_pct": 0.04,
+            "hau_tho_accumulate": true
+          },
+          "effects": ["BuffDaiDiaTucNhuong", "BuffDiaMachHapThu"]
+        },
+        "3": {
+          "passive_vi": "Trọng Lực Chưởng Khống",
+          "passive_en": "Gravity Control",
+          "description_vi": "Trọng lực đại địa — mỗi lần thi triển kỹ năng, giáng thêm Sát Thương Chuẩn (xuyên mọi kháng & giáp) bằng giá trị CAO HƠN giữa 25% HP tối đa và 40% Khiên hiện tại (tỉ lệ Khiên +3% mỗi tầng Địa Mạch). Khuyến khích xây cả HP lẫn giáp.",
+          "stat_bonuses": {
+            "hau_tho_dmg_from_maxhp_pct": 0.25,
+            "hau_tho_dmg_from_shield_pct": 0.40
+          },
+          "effects": ["BuffTrongLucChuongKhong"]
+        },
+        "6": {
+          "passive_vi": "Địa Mẫu Hộ Trì",
+          "passive_en": "Earth Mother Protection",
+          "description_vi": "Địa mẫu chở che — giảm thêm 30% sát thương nhận vào, kháng toàn +18%, và hồi HP mỗi lượt mạnh hơn nhiều (+5% HP/lượt bổ sung).",
+          "stat_bonuses": {
+            "final_dmg_reduce": 0.30,
+            "res_all": 0.18,
+            "hp_regen_pct": 0.05
+          },
+          "effects": ["BuffDiaMauHoTri"]
+        },
+        "9": {
+          "passive_vi": "Luân Hồi Quy Tắc",
+          "passive_en": "Cycle of Reincarnation",
+          "description_vi": "Quy tắc luân hồi — khi nhận đòn chí tử, sống sót 1 lần/trận với HP bằng tổng lượng HP đã hút được từ địch trong trận",
+          "stat_bonuses": {
+            "hau_tho_rebirth_enabled": true
+          },
+          "effects": ["BuffLuanHoiQuyTac"]
+        }
+      }
+    }
+  }
 ]

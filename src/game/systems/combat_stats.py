@@ -224,6 +224,19 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("niet_ban_revive_pct",              "niet_ban_revive_pct",              float),
     ("niet_ban_revive_clear_debuffs",    "niet_ban_revive_clear_debuffs",    bool),
     ("niet_ban_post_revive_boost",       "niet_ban_post_revive_boost",       bool),
+    # Hậu Thổ Thần Thể (Thổ HP-vampire growth juggernaut) — config flags.
+    # L1 on-hit HP-steal → permanent max-HP growth (run_hau_tho_procs reads
+    # ``hau_tho_hp_steal_pct``; the ``hau_tho_accumulate`` gate drives the Địa Mạch
+    # tier accrual). L3 per-cast true-dmg = max(maxhp×``hau_tho_dmg_from_maxhp_pct``,
+    # shield×``hau_tho_dmg_from_shield_pct`` + tier bump) (casting.py). L9 lethal-
+    # survive with total stolen (revives.py reads ``hau_tho_rebirth_enabled``).
+    # Runtime counters (hau_tho_stolen_total / hau_tho_tier / hau_tho_steal_progress
+    # / hau_tho_rebirth_used / hau_tho_tier10_applied) are Combatant-only, excluded.
+    ("hau_tho_hp_steal_pct",             "hau_tho_hp_steal_pct",             float),
+    ("hau_tho_accumulate",               "hau_tho_accumulate",               bool),
+    ("hau_tho_dmg_from_maxhp_pct",       "hau_tho_dmg_from_maxhp_pct",       float),
+    ("hau_tho_dmg_from_shield_pct",      "hau_tho_dmg_from_shield_pct",      float),
+    ("hau_tho_rebirth_enabled",          "hau_tho_rebirth_enabled",          bool),
 ]
 
 
@@ -534,6 +547,12 @@ class CombatStats:
     niet_ban_revive_pct: float = 0.0
     niet_ban_revive_clear_debuffs: bool = False
     niet_ban_post_revive_boost: bool = False
+    # Hậu Thổ Thần Thể (Thổ HP-vampire growth juggernaut)
+    hau_tho_hp_steal_pct: float = 0.0
+    hau_tho_accumulate: bool = False
+    hau_tho_dmg_from_maxhp_pct: float = 0.0
+    hau_tho_dmg_from_shield_pct: float = 0.0
+    hau_tho_rebirth_enabled: bool = False
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).
