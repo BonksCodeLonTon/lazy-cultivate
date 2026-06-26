@@ -93,4 +93,75 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_ThanhSonBatDong",
+    "vi": "Thánh Sơn Bất Động Thể",
+    "en": "Sacred Mountain Immovable Body",
+    "element": "tho",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân luyện Thánh Sơn — sừng sững bất động, càng bị đánh càng cứng. Mỗi đòn giáng xuống chỉ khiến núi thêm vững (tích Kiên Cố), rồi lấy sức nặng nghìn cân của giáp mà đè bẹp, choáng váng kẻ phạm. Khác Kim Cang (tường khiên) và Hậu Thổ (hút máu phình to), Thánh Sơn là pháo đài bất khả xâm phạm: thắng bằng cách trơ lì sống lâu hơn đối thủ. Nhược điểm duy nhất — bị khống chế (choáng) sẽ làm rạn Kiên Cố.",
+    "stat_bonuses": {
+      "def_pct": 0.10,
+      "shield_max_pct": 0.12,
+      "crit_res_rating": 100
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "def_pct": 0.005, "shield_max_pct": 0.005, "crit_res_rating": 10 },
+      "levels": {
+        "1": {
+          "passive_vi": "Kiên Như Bàn Thạch",
+          "passive_en": "Solid as Bedrock",
+          "description_vi": "Vững như bàn thạch — kháng tổng +12%, giảm 20% sát thương nhận vào. Mỗi khi BỊ tấn công: tích 1 tầng Kiên Cố (tối đa 8). Mỗi tầng: kháng +2%, giảm thương thêm 1.5% (đầy 8 tầng → +16% kháng, +12% giảm thương). Càng bị đánh càng cứng.",
+          "stat_bonuses": {
+            "res_all": 0.12,
+            "final_dmg_reduce": 0.20,
+            "thanh_son_kien_co_on_hit": true,
+            "thanh_son_kien_co_cap": 8
+          },
+          "effects": ["BuffKienNhuBanThach", "BuffKienCo"]
+        },
+        "3": {
+          "passive_vi": "Thái Sơn Áp Đỉnh",
+          "passive_en": "Mt. Tai Crushing Peak",
+          "description_vi": "Sức nặng Thái Sơn — mỗi lần thi triển kỹ năng giáng thêm Sát Thương Chuẩn (xuyên giáp) = 70% Khiên hiện tại (+20% khi có từ 4 tầng Kiên Cố). Mỗi đòn đánh trúng: 60% gây Bào Mòn, 35% gây Choáng 2 lượt. Càng nhiều giáp, đòn càng nặng.",
+          "stat_bonuses": {
+            "thanh_son_dmg_from_shield_pct": 0.70,
+            "thanh_son_l3_full_bonus": 0.20,
+            "thanh_son_bao_mon_chance": 0.60,
+            "thanh_son_stun_chance": 0.35,
+            "thanh_son_stun_turns": 2
+          },
+          "effects": ["BuffThaiSonApDinh"]
+        },
+        "6": {
+          "passive_vi": "Bất Động Minh Vương",
+          "passive_en": "Immovable Wisdom King",
+          "description_vi": "Bất động minh vương — +280 kháng chí mạng, giảm thêm 35% sát thương nhận vào, và 60% cơ hội phủi sạch mọi debuff (kháng debuff mạnh, luôn thường trực).",
+          "stat_bonuses": {
+            "crit_res_rating": 280,
+            "final_dmg_reduce": 0.35,
+            "debuff_immune_pct": 0.60
+          },
+          "effects": ["BuffBatDongMinhVuong"]
+        },
+        "9": {
+          "passive_vi": "Vạn Vật Quy Trần",
+          "passive_en": "All Things Return to Dust",
+          "description_vi": "Vạn vật quy trần — khi Kiên Cố ĐẦY (8 tầng): không thể bị giết bởi một đòn đánh đơn lẻ (HP tối thiểu còn 1 sau đòn), đồng thời hồi 30% Khiên. Bị Choáng làm rạn 1 tầng Kiên Cố → rớt xuống dưới 8 → lại có thể chết. (DoT vẫn có thể kết liễu ở 1 HP.)",
+          "stat_bonuses": {
+            "thanh_son_immovable_enabled": true,
+            "thanh_son_survive_shield_pct": 0.30
+          },
+          "effects": ["BuffVanVatQuyTran"]
+        }
+      }
+    }
+  }
 ]

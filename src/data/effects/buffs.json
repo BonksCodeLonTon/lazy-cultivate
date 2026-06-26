@@ -2849,5 +2849,69 @@
     "cleansable": false,
     "emoji": "♻️",
     "duration": 999
+  },
+  {
+    "key": "BuffKienNhuBanThach",
+    "vi": "Kiên Như Bàn Thạch",
+    "en": "Solid as Bedrock",
+    "kind": "buff",
+    "description_vi": "Vững như bàn thạch — kháng +12%, giảm 20% sát thương; mỗi khi bị đánh tích 1 tầng Kiên Cố (tối đa 8).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🪨",
+    "duration": 999
+  },
+  {
+    "key": "BuffKienCo",
+    "vi": "Kiên Cố",
+    "en": "Fortitude",
+    "kind": "buff",
+    "description_vi": "Mỗi tầng Kiên Cố (tích khi bị đánh, tối đa 8): kháng tổng +2%, giảm sát thương +1.5%. Bị Choáng làm rạn 1 tầng.",
+    "stat_bonus": { "_kc_res": 0.02, "_kc_dr": 0.015 },
+    "scaling_rules": [
+      { "key": "_kc_res", "source": "stack:thanh_son_kien_co", "output": "res_all", "max_output": 0.16 },
+      { "key": "_kc_dr", "source": "stack:thanh_son_kien_co", "output": "final_dmg_reduce", "max_output": 0.12 }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⛰️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThaiSonApDinh",
+    "vi": "Thái Sơn Áp Đỉnh",
+    "en": "Mt. Tai Crushing Peak",
+    "kind": "buff",
+    "description_vi": "Mỗi cast giáng Sát Thương Chuẩn = 70% Khiên (+20% từ 4 tầng Kiên Cố); mỗi đòn 60% Bào Mòn / 35% Choáng 2 lượt.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🏔️",
+    "duration": 999
+  },
+  {
+    "key": "BuffBatDongMinhVuong",
+    "vi": "Bất Động Minh Vương",
+    "en": "Immovable Wisdom King",
+    "kind": "buff",
+    "description_vi": "+280 kháng chí mạng, giảm thêm 35% sát thương, 60% cơ hội phủi sạch debuff.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🗿",
+    "duration": 999
+  },
+  {
+    "key": "BuffVanVatQuyTran",
+    "vi": "Vạn Vật Quy Trần",
+    "en": "All Things Return to Dust",
+    "kind": "buff",
+    "description_vi": "Khi Kiên Cố đầy (8 tầng): không thể chết từ một đòn (HP tối thiểu còn 1) + hồi 30% Khiên. Bị Choáng rạn 1 tầng → mất hiệu lực.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⛰️",
+    "duration": 999
   }
 ]

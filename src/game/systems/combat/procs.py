@@ -310,6 +310,45 @@ def run_hau_tho_procs(
     )
 
 
+def run_thanh_son_procs(
+    session: "CombatSession", actor: Combatant, target: Combatant,
+) -> None:
+    """Thánh Sơn Bất Động Thể on-hit logic, once per landed hit.
+
+    Attacker side (``actor`` holds the body, striking ``target``): L3 Thái Sơn Áp
+    Đỉnh per-hit riders — chance to apply Bào Mòn (armor erosion) and Choáng (stun).
+    Defender side (``target`` holds the body, being struck): L1 Kiên Như Bàn Thạch —
+    +1 Kiên Cố stack (capped), the defensive accumulation that BuffKienCo's
+    scaling_rules turn into live res_all + final_dmg_reduce. Each branch self-gates
+    on the per-body flags → no-op for every other build.
+    """
+    # ── Attacker side: the holder strikes → erode + stun ──────────────────────
+    if actor.thanh_son_bao_mon_chance > 0 and target.is_alive() \
+            and session.rng.random() < actor.thanh_son_bao_mon_chance:
+        meta = EFFECTS.get("DebuffBaoMon")
+        if meta is not None:
+            from .casting import inflict_debuff
+            inflict_debuff(session, "DebuffBaoMon", meta, target, actor=actor)
+    if actor.thanh_son_stun_chance > 0 and target.is_alive() \
+            and session.rng.random() < actor.thanh_son_stun_chance:
+        meta = EFFECTS.get(EffectKey.CC_STUN.value)
+        if meta is not None:
+            from .casting import inflict_debuff
+            inflict_debuff(
+                session, EffectKey.CC_STUN.value, meta, target, actor=actor,
+                overrides={"duration": actor.thanh_son_stun_turns} if actor.thanh_son_stun_turns else None,
+            )
+
+    # ── Defender side: the holder is struck → bank Kiên Cố ────────────────────
+    if target.thanh_son_kien_co_on_hit and target.thanh_son_kien_co_cap > 0 \
+            and target.thanh_son_kien_co_stacks < target.thanh_son_kien_co_cap:
+        target.thanh_son_kien_co_stacks += 1
+        session.log.append(
+            f"  🪨 **{target.name}** Kiên Cố "
+            f"[×{target.thanh_son_kien_co_stacks}/{target.thanh_son_kien_co_cap}]"
+        )
+
+
 def run_on_hit_procs(
     session: "CombatSession", actor: Combatant, target: Combatant, is_crit: bool,
     skill_key: str = "",
@@ -1011,6 +1050,7 @@ def apply_reactive_damage(
     run_bac_minh_procs(session, actor, target)
     run_huyen_minh_procs(session, actor, target)
     run_hau_tho_procs(session, actor, target)
+    run_thanh_son_procs(session, actor, target)
 
 
 def apply_reflect(

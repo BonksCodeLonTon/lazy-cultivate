@@ -52,6 +52,23 @@ def _aegis_reform_announcement(ctx: TurnContext) -> None:
     combatant.aegis_reform_just_triggered = False
 
 
+@register_hook(phase=TurnPhase.PERIODIC, name="thanh_son_immovable_announcement", priority=12)
+def _thanh_son_immovable_announcement(ctx: TurnContext) -> None:
+    """Vạn Vật Quy Trần (Thánh Sơn L9) — announce the Kiên-Cố-gated last-stand.
+
+    The survive-at-1 + shield restore fires silently inside ``take_damage``; this
+    clears the flag and shows the message, mirroring ``aegis_reform_announcement``.
+    """
+    combatant = ctx.actor
+    if not combatant.thanh_son_immovable_just_triggered:
+        return
+    ctx.log.append(
+        f"  🗿 **{combatant.name}** **VẠN VẬT QUY TRẦN** — Thánh Sơn bất động, "
+        f"trụ lại 1 HP + tái tạo Khiên {combatant.shield:,}"
+    )
+    combatant.thanh_son_immovable_just_triggered = False
+
+
 @register_hook(phase=TurnPhase.PERIODIC, name="thanh_tuyen_deferred", priority=15)
 def _thanh_tuyen_deferred(ctx: TurnContext) -> None:
     combatant = ctx.actor

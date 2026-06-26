@@ -877,6 +877,21 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "hau_tho_dmg_from_maxhp_pct",
     "hau_tho_dmg_from_shield_pct",
     "hau_tho_rebirth_enabled",
+    # Thánh Sơn Bất Động Thể (Thổ immovable fortress) — config keys read by
+    # run_thanh_son_procs (Kiên Cố stack + Bào Mòn/Stun riders), casting.py (L3
+    # true-dmg), take_damage (L9 survive). The L1 per-stack res/DR OUTPUTS come
+    # from BuffKienCo's scaling_rules (real stats). Runtime counters
+    # (thanh_son_kien_co_stacks / thanh_son_immovable_just_triggered) are
+    # Combatant-only.
+    "thanh_son_kien_co_on_hit",
+    "thanh_son_kien_co_cap",
+    "thanh_son_dmg_from_shield_pct",
+    "thanh_son_l3_full_bonus",
+    "thanh_son_bao_mon_chance",
+    "thanh_son_stun_chance",
+    "thanh_son_stun_turns",
+    "thanh_son_immovable_enabled",
+    "thanh_son_survive_shield_pct",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
     # consumed by the PERIODIC regen hook (dia_mach increment), the casting
     # defender-step (L3 physical negate), and the two PERIODIC aura hooks

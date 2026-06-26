@@ -105,6 +105,9 @@ def _bump_luu_quang_stack(
 
 
 _DIA_MACH_STACK_CAP = 5
+# Thánh Sơn Bất Động Thể — L3 shield→dmg ratio gets the full bonus at this many
+# Kiên Cố stacks (the sheet's "4 tầng" breakpoint).
+_THANH_SON_L3_STACK_GATE = 4
 
 
 def _bump_dia_mach_stack(
@@ -1005,6 +1008,27 @@ def cast_skill(
                     target.take_damage(_ht_true, bypass_shield=True)
                     session.log.append(
                         f"    ⛰️ Trọng Lực Chưởng Khống — +{_ht_true:,} "
+                        f"Sát Thương Chuẩn (xuyên giáp)"
+                    )
+
+            # Thánh Sơn Bất Động Thể — L3 Thái Sơn Áp Đỉnh: once per CAST, bonus
+            # TRUE damage = shield × (base + l3_full_bonus once Kiên Cố ≥ 4), straight
+            # to HP (pierces giáp). ``not _suppress_extras`` → once per logical cast.
+            if (
+                actor.thanh_son_dmg_from_shield_pct > 0
+                and not _suppress_extras
+                and target.is_alive()
+                and dmg > 0
+                and actor.shield > 0
+            ):
+                _ts_pct = actor.thanh_son_dmg_from_shield_pct
+                if actor.thanh_son_kien_co_stacks >= _THANH_SON_L3_STACK_GATE:
+                    _ts_pct += actor.thanh_son_l3_full_bonus
+                _ts_true = int(actor.shield * _ts_pct)
+                if _ts_true > 0:
+                    target.take_damage(_ts_true, bypass_shield=True)
+                    session.log.append(
+                        f"    🏔️ Thái Sơn Áp Đỉnh — +{_ts_true:,} "
                         f"Sát Thương Chuẩn (xuyên giáp)"
                     )
 
@@ -1949,6 +1973,21 @@ def inflict_debuff(
                 {k: v for k, v in stamp.items() if k != "stat_bonus"} or None
             )
     target.apply_effect(effect_key, dur, overrides=stamp)
+
+    # Thánh Sơn Bất Động Thể — Kiên Cố's weakness. Any hard CC (turn-skip class:
+    # stun / freeze / paralysis) that lands on the holder cracks ONE Kiên Cố stack,
+    # dropping it below the cap and disarming the L9 immovable death-immunity until
+    # it's rebuilt. Self-gates on the holder carrying Kiên Cố → inert otherwise.
+    if (
+        meta.skips_turn
+        and target.thanh_son_kien_co_cap > 0
+        and target.thanh_son_kien_co_stacks > 0
+    ):
+        target.thanh_son_kien_co_stacks -= 1
+        session.log.append(
+            f"    🪨💥 **{target.name}** bị **{meta.vi}** — rạn 1 tầng Kiên Cố "
+            f"[×{target.thanh_son_kien_co_stacks}/{target.thanh_son_kien_co_cap}]"
+        )
 
     # Phù Dao CC reset — a holder of ``BuffPhuDao`` who eats a lockout CC
     # (skips_turn / prevents_skills) is knocked off the whirlwind and loses

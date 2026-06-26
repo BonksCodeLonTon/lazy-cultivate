@@ -237,6 +237,25 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("hau_tho_dmg_from_maxhp_pct",       "hau_tho_dmg_from_maxhp_pct",       float),
     ("hau_tho_dmg_from_shield_pct",      "hau_tho_dmg_from_shield_pct",      float),
     ("hau_tho_rebirth_enabled",          "hau_tho_rebirth_enabled",          bool),
+    # Thánh Sơn Bất Động Thể (Thổ immovable fortress) — config flags.
+    # L1 defensive Kiên Cố stack: gained when struck (run_thanh_son_procs reads
+    # ``thanh_son_kien_co_on_hit`` / ``_cap``; BuffKienCo's scaling_rules turn the
+    # ``thanh_son_kien_co_stacks`` counter into live res_all + final_dmg_reduce).
+    # L3 per-cast shield→true-dmg (casting.py reads ``_dmg_from_shield_pct`` +
+    # ``_l3_full_bonus`` once stacks≥4) + per-hit Bào Mòn / Stun riders
+    # (``_bao_mon_chance`` / ``_stun_chance`` / ``_stun_turns``). L9 survive-at-1
+    # (take_damage reads ``_immovable_enabled`` + gate stacks==cap; restores
+    # ``_survive_shield_pct``). Runtime (thanh_son_kien_co_stacks /
+    # thanh_son_immovable_just_triggered) are Combatant-only.
+    ("thanh_son_kien_co_on_hit",         "thanh_son_kien_co_on_hit",         bool),
+    ("thanh_son_kien_co_cap",            "thanh_son_kien_co_cap",            int),
+    ("thanh_son_dmg_from_shield_pct",    "thanh_son_dmg_from_shield_pct",    float),
+    ("thanh_son_l3_full_bonus",          "thanh_son_l3_full_bonus",          float),
+    ("thanh_son_bao_mon_chance",         "thanh_son_bao_mon_chance",         float),
+    ("thanh_son_stun_chance",            "thanh_son_stun_chance",            float),
+    ("thanh_son_stun_turns",             "thanh_son_stun_turns",             int),
+    ("thanh_son_immovable_enabled",      "thanh_son_immovable_enabled",      bool),
+    ("thanh_son_survive_shield_pct",     "thanh_son_survive_shield_pct",     float),
 ]
 
 
@@ -553,6 +572,16 @@ class CombatStats:
     hau_tho_dmg_from_maxhp_pct: float = 0.0
     hau_tho_dmg_from_shield_pct: float = 0.0
     hau_tho_rebirth_enabled: bool = False
+    # Thánh Sơn Bất Động Thể (Thổ immovable fortress)
+    thanh_son_kien_co_on_hit: bool = False
+    thanh_son_kien_co_cap: int = 0
+    thanh_son_dmg_from_shield_pct: float = 0.0
+    thanh_son_l3_full_bonus: float = 0.0
+    thanh_son_bao_mon_chance: float = 0.0
+    thanh_son_stun_chance: float = 0.0
+    thanh_son_stun_turns: int = 0
+    thanh_son_immovable_enabled: bool = False
+    thanh_son_survive_shield_pct: float = 0.0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

@@ -989,6 +989,29 @@ class Combatant:
     hau_tho_rebirth_used: bool = False  # runtime (NOT a config key)
     hau_tho_tier10_applied: bool = False  # runtime (NOT a config key)
 
+    # ── Thánh Sơn Bất Động Thể (Thổ immovable fortress) ───────────────────────
+    # L1 Kiên Cố: ``run_thanh_son_procs`` defender-side adds +1 ``thanh_son_kien_co_stacks``
+    # per hit taken (cap ``thanh_son_kien_co_cap``); BuffKienCo's scaling_rules turn the
+    # counter into live res_all + final_dmg_reduce. L3 (casting.py per-cast): true dmg =
+    # shield × (``thanh_son_dmg_from_shield_pct`` + ``thanh_son_l3_full_bonus`` once
+    # stacks≥4); attacker-side per-hit Bào Mòn (``thanh_son_bao_mon_chance``) + Choáng
+    # (``thanh_son_stun_chance`` / ``thanh_son_stun_turns``). L9 (take_damage): while
+    # ``thanh_son_immovable_enabled`` AND stacks == cap, a would-be-lethal non-DoT hit
+    # leaves HP at 1 + restores ``thanh_son_survive_shield_pct`` of shield_cap (sets
+    # ``thanh_son_immovable_just_triggered`` for the periodic announcer). A landed Choáng
+    # strips 1 Kiên Cố (inflict_debuff) → drops below cap → mortal again.
+    thanh_son_kien_co_on_hit: bool = False
+    thanh_son_kien_co_cap: int = 0
+    thanh_son_dmg_from_shield_pct: float = 0.0
+    thanh_son_l3_full_bonus: float = 0.0
+    thanh_son_bao_mon_chance: float = 0.0
+    thanh_son_stun_chance: float = 0.0
+    thanh_son_stun_turns: int = 0
+    thanh_son_immovable_enabled: bool = False
+    thanh_son_survive_shield_pct: float = 0.0
+    thanh_son_kien_co_stacks = _StackProxy("thanh_son_kien_co", store="stack_counters")  # runtime (NOT a config key)
+    thanh_son_immovable_just_triggered: bool = False  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.
@@ -1518,6 +1541,25 @@ class Combatant:
         if not is_dot and pre_absorb_amount > 0:
             from src.game.systems.combat.defense_aegis import accumulate_stored_charge
             accumulate_stored_charge(self, pre_absorb_amount)
+
+        # Step 4.5 — Thánh Sơn Bất Động Thể L9 Vạn Vật Quy Trần. While Kiên Cố is
+        # FULL, a would-be-lethal NON-DoT hit cannot kill: HP is floored at 1 and a
+        # slice of the shield cap is restored. Unlike endure there is NO cooldown —
+        # the gate IS the full stack count, so any hard CC (which cracks a Kiên Cố
+        # stack via inflict_debuff, dropping below cap) disarms it until rebuilt.
+        # DoTs bypass it (``is_dot``), keeping the wall vulnerable to sustained
+        # pressure. Runs before Endure so the body's own last-stand claims the kill.
+        if (
+            self.hp == 0
+            and not is_dot
+            and self.thanh_son_immovable_enabled
+            and self.thanh_son_kien_co_cap > 0
+            and self.thanh_son_kien_co_stacks >= self.thanh_son_kien_co_cap
+        ):
+            self.hp = 1
+            if self.thanh_son_survive_shield_pct > 0:
+                self.shield += int(self.shield_cap() * self.thanh_son_survive_shield_pct)
+            self.thanh_son_immovable_just_triggered = True
 
         # Step 5 — Endure (Cội Nguồn Bất Tận). When a hit would kill the
         # holder and the cooldown is not engaged, clamp HP to a survival
