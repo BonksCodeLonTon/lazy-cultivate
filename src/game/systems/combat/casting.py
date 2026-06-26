@@ -113,6 +113,10 @@ _THANH_SON_L3_STACK_GATE = 4
 # out-nuke dedicated nukers). True damage scales with shield, so a flat % cut alone
 # still grows without bound — the cap is what actually tames it.
 _THANH_SON_TRUE_DMG_CAP_PCT = 0.12
+# Hậu Thổ Thần Thể — same bound on its L3 max(maxHP, shield)→true-dmg. Its max HP
+# GROWS all fight via the L1 HP-steal, so the true damage scales unbounded without
+# a cap relative to the target's max HP.
+_HAU_THO_TRUE_DMG_CAP_PCT = 0.12
 
 
 def _bump_dia_mach_stack(
@@ -1009,6 +1013,12 @@ def cast_skill(
                 )
                 _ht_from_shield = int(actor.shield * _ht_shield_pct)
                 _ht_true = max(_ht_from_hp, _ht_from_shield)
+                # Per-cast cap — clamp to a slice of the target's max HP so the
+                # ever-growing max-HP can't deliver an unbounded unmitigable burst.
+                if target.hp_max > 0:
+                    _ht_true = min(
+                        _ht_true, int(target.hp_max * _HAU_THO_TRUE_DMG_CAP_PCT)
+                    )
                 if _ht_true > 0:
                     target.take_damage(_ht_true, bypass_shield=True)
                     session.log.append(

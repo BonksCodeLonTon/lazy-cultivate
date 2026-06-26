@@ -247,6 +247,33 @@ def test_l3_true_dmg_picks_higher_shield(monkeypatch) -> None:
     assert loss_on - loss_off == expected
 
 
+def test_l3_true_dmg_capped_at_target_maxhp_pct(monkeypatch) -> None:
+    """A colossal shield/maxHP is capped at 12% of the target's max HP per cast."""
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(3)
+    player.hau_tho_hp_steal_pct = 0.0
+    player.crit_rating = 0
+    player.shield = 10**8                    # 40% = 40M — far above the cap
+    enemy = _enemy(hp=10**9)
+    enemy.hp_max = 100_000                   # cap = 12% × 100k = 12_000
+    session = _session(player, enemy)
+    session.rng.random = lambda: 0.99
+    skill = registry.get_skill(_ATTACK)
+    before = enemy.hp
+    cast_skill(session, player, enemy, _ATTACK, dict(skill), skill.get("mp_cost", 0))
+    loss_on = before - enemy.hp
+    player.hau_tho_dmg_from_maxhp_pct = 0.0
+    player.hau_tho_dmg_from_shield_pct = 0.0
+    enemy2 = _enemy(hp=10**9)
+    enemy2.hp_max = 100_000
+    session2 = _session(player, enemy2)
+    session2.rng.random = lambda: 0.99
+    before2 = enemy2.hp
+    cast_skill(session2, player, enemy2, _ATTACK, dict(skill), skill.get("mp_cost", 0))
+    loss_off = before2 - enemy2.hp
+    assert loss_on - loss_off == int(100_000 * 0.12)  # capped, not 40M
+
+
 # ── 5. L6 Địa Mẫu Hộ Trì — DR / res / regen ────────────────────────────────
 
 

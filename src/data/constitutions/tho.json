@@ -63,7 +63,7 @@
         "3": {
           "passive_vi": "Trọng Lực Chưởng Khống",
           "passive_en": "Gravity Control",
-          "description_vi": "Trọng lực đại địa — mỗi lần thi triển kỹ năng, giáng thêm Sát Thương Chuẩn (xuyên mọi kháng & giáp) bằng giá trị CAO HƠN giữa 25% HP tối đa và 40% Khiên hiện tại (tỉ lệ Khiên +3% mỗi tầng Địa Mạch). Khuyến khích xây cả HP lẫn giáp.",
+          "description_vi": "Trọng lực đại địa — mỗi lần thi triển kỹ năng, giáng thêm Sát Thương Chuẩn (xuyên mọi kháng & giáp) bằng giá trị CAO HƠN giữa 25% HP tối đa và 40% Khiên hiện tại (tỉ lệ Khiên +3% mỗi tầng Địa Mạch), tối đa 12% HP tối đa của địch mỗi lần. Khuyến khích xây cả HP lẫn giáp.",
           "stat_bonuses": {
             "hau_tho_dmg_from_maxhp_pct": 0.25,
             "hau_tho_dmg_from_shield_pct": 0.40
