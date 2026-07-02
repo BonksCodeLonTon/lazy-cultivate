@@ -990,11 +990,14 @@ def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
 
     # Config-only keys — stamped in ``stat_bonus`` so designers can tune
     # without touching engine constants, but consumed by hooks elsewhere
-    # (casting / on-evade / inflict_debuff). Pop them here so they never
+    # (casting / on-evade / inflict_debuff). Drop them here so they never
     # masquerade as real stats. Scaling-rule placeholders are popped by
     # ``_apply_scaling_rules``; this list is only for non-scaling config.
-    for cfg_key in _CONFIG_ONLY_STAT_KEYS:
-        result.pop(cfg_key, None)
+    # Intersect from the (small) result side — this is THE combat hot path
+    # (~30 calls/turn) and the config-key list grows with every body, so
+    # iterating the full list per call costs millions of no-op pops.
+    for cfg_key in _CONFIG_ONLY_STAT_KEYS & result.keys():
+        del result[cfg_key]
     return result
 
 
