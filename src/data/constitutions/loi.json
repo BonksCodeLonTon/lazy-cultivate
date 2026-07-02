@@ -116,7 +116,7 @@
           "passive_vi": "Dẫn Lôi Luyện Thể",
           "passive_en": "Thunder-Channeling Tempered Body",
           "description_vi": "Mỗi đòn trúng: 70% Sốc Điện; 30% Tê Liệt (2 lượt) — từ 5 tầng Vạn Lôi nâng thành 40% Choáng (2 lượt).",
-          "stat_bonuses": { "matk_pct": 0.05, "crit_rating": 80, "tk_soc_dien_chance": 0.70, "tk_te_liet_chance": 0.30, "tk_stun_chance": 0.40, "tk_stun_stack_gate": 5, "tk_stun_turns": 2 },
+          "stat_bonuses": { "matk_pct": 0.05, "crit_rating": 80, "shock_on_hit_pct": 0.70, "tk_te_liet_chance": 0.30, "tk_stun_chance": 0.40, "tk_stun_stack_gate": 5, "tk_stun_turns": 2 },
           "effects": ["BuffDanLoiLuyenThe"]
         },
         "6": {

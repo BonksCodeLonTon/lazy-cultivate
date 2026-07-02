@@ -913,7 +913,6 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "tk_stack_on_cast",
     "tk_stack_on_struck",
     "tk_van_loi_cap",
-    "tk_soc_dien_chance",
     "tk_te_liet_chance",
     "tk_stun_chance",
     "tk_stun_stack_gate",

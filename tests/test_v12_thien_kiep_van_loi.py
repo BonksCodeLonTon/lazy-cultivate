@@ -105,7 +105,7 @@ def test_body_registered_and_shape() -> None:
     assert data["cost"]["merit"] == 60000
     assert data["process"]["milestones"] == [1, 3, 6, 9]
     flat = data["stat_bonuses"]
-    for cfg in ("tk_van_loi_cap", "tk_soc_dien_chance", "tk_evasion_shred_pct",
+    for cfg in ("tk_van_loi_cap", "tk_te_liet_chance", "tk_evasion_shred_pct",
                 "tk_execute_chance"):
         assert cfg not in flat
     assert flat["matk_pct"] == 0.06
@@ -133,7 +133,9 @@ def test_config_flags_per_level(monkeypatch) -> None:
     assert p1.tk_stack_on_cast == 1
     assert p1.tk_stack_on_struck == 2
     p3 = _player(3)
-    assert p3.tk_soc_dien_chance == pytest.approx(0.70)
+    # L3's Sốc Điện rides the GENERIC shock_on_hit_pct lane (additive with
+    # any linh-căn / gear shock contribution).
+    assert p3.shock_on_hit_pct >= 0.70
     assert p3.tk_te_liet_chance == pytest.approx(0.30)
     assert p3.tk_stun_chance == pytest.approx(0.40)
     assert p3.tk_stun_stack_gate == 5
@@ -233,11 +235,16 @@ def test_l3_riders_apply_soc_dien_and_te_liet(monkeypatch) -> None:
     player = _player(3)
     enemy = _enemy()
     session = _session(player, enemy)
-    session.rng.random = lambda: 0.0  # both rider rolls land
+    session.rng.random = lambda: 0.0  # every rider roll lands
+    # Tê Liệt (conditional roll) lives in the body proc…
     run_thien_kiep_procs(session, player, enemy, dmg=1_000, skill_element="loi")
-    assert enemy.has_effect("DebuffSocDien")
     assert enemy.has_effect("DebuffTeLiet")     # below the 5-stack gate
     assert not enemy.has_effect("CCStun")
+    # …while Sốc Điện rides the generic shock_on_hit_pct lane on a real cast.
+    player.crit_rating = 0
+    skill = registry.get_skill(_LOI_ATTACK)
+    cast_skill(session, player, enemy, _LOI_ATTACK, dict(skill), 0)
+    assert enemy.has_effect("DebuffSocDien")
 
 
 def test_l3_stun_upgrade_at_stack_gate(monkeypatch) -> None:
@@ -384,7 +391,7 @@ def test_flag_off_is_inert() -> None:
     assert settings.constitution_process_enabled is False
     player = _player(9)
     assert player.tk_van_loi_cap == 0
-    assert player.tk_soc_dien_chance == 0.0
+    assert player.tk_te_liet_chance == 0.0
     assert player.tk_evasion_shred_pct == 0.0
     assert player.tk_extra_hits == 0
     assert player.tk_execute_chance == 0.0

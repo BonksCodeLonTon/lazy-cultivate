@@ -273,7 +273,6 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("tk_stack_on_cast",                 "tk_stack_on_cast",                 int),
     ("tk_stack_on_struck",               "tk_stack_on_struck",               int),
     ("tk_van_loi_cap",                   "tk_van_loi_cap",                   int),
-    ("tk_soc_dien_chance",               "tk_soc_dien_chance",               float),
     ("tk_te_liet_chance",                "tk_te_liet_chance",                float),
     ("tk_stun_chance",                   "tk_stun_chance",                   float),
     ("tk_stun_stack_gate",               "tk_stun_stack_gate",               int),
@@ -695,7 +694,6 @@ class CombatStats:
     tk_stack_on_cast: int = 0
     tk_stack_on_struck: int = 0
     tk_van_loi_cap: int = 0
-    tk_soc_dien_chance: float = 0.0
     tk_te_liet_chance: float = 0.0
     tk_stun_chance: float = 0.0
     tk_stun_stack_gate: int = 0

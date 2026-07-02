@@ -396,12 +396,8 @@ def run_thien_kiep_procs(
     if dmg <= 0:
         return
     # ── Attacker side: L3 CC riders ────────────────────────────────────────
-    if actor.tk_soc_dien_chance > 0 and target.is_alive() \
-            and session.rng.random() < actor.tk_soc_dien_chance:
-        meta = EFFECTS.get("DebuffSocDien")
-        if meta is not None:
-            from .casting import inflict_debuff
-            inflict_debuff(session, "DebuffSocDien", meta, target, actor=actor)
+    # (The L3 Sốc Điện rides the GENERIC ``shock_on_hit_pct`` lane in the
+    # _ON_HIT_PROCS table — only the conditional Tê-Liệt/stun roll lives here.)
     if actor.tk_te_liet_chance > 0 and target.is_alive():
         from .casting import inflict_debuff
         if actor.tk_stun_stack_gate > 0 \

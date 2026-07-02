@@ -1037,7 +1037,6 @@ class Combatant:
     tk_stack_on_cast: int = 0
     tk_stack_on_struck: int = 0
     tk_van_loi_cap: int = 0
-    tk_soc_dien_chance: float = 0.0
     tk_te_liet_chance: float = 0.0
     tk_stun_chance: float = 0.0
     tk_stun_stack_gate: int = 0
