@@ -69,6 +69,25 @@ def _thanh_son_immovable_announcement(ctx: TurnContext) -> None:
     combatant.thanh_son_immovable_just_triggered = False
 
 
+@register_hook(phase=TurnPhase.PERIODIC, name="thanh_son_kien_co_crack_announcement", priority=13)
+def _thanh_son_kien_co_crack_announcement(ctx: TurnContext) -> None:
+    """Kiên Cố crack fallback announcer.
+
+    The strip fires silently inside ``Combatant.apply_effect`` (the model has no
+    log handle). ``inflict_debuff`` consumes the flag immediately with the
+    debuff's name; this fallback only fires for the direct-``apply_effect`` CC
+    paths (Bắc Minh freeze, stun_on_hit, retaliate freezes, aura transfers).
+    """
+    combatant = ctx.actor
+    if not combatant.thanh_son_kien_co_just_cracked:
+        return
+    ctx.log.append(
+        f"  🪨💥 **{combatant.name}** trúng khống chế — rạn 1 tầng Kiên Cố "
+        f"[×{combatant.thanh_son_kien_co_stacks}/{combatant.thanh_son_kien_co_cap}]"
+    )
+    combatant.thanh_son_kien_co_just_cracked = False
+
+
 @register_hook(phase=TurnPhase.PERIODIC, name="thanh_tuyen_deferred", priority=15)
 def _thanh_tuyen_deferred(ctx: TurnContext) -> None:
     combatant = ctx.actor

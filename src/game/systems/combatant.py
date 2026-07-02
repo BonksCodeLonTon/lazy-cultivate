@@ -998,8 +998,9 @@ class Combatant:
     # (``thanh_son_stun_chance`` / ``thanh_son_stun_turns``). L9 (take_damage): while
     # ``thanh_son_immovable_enabled`` AND stacks == cap, a would-be-lethal non-DoT hit
     # leaves HP at 1 + restores ``thanh_son_survive_shield_pct`` of shield_cap (sets
-    # ``thanh_son_immovable_just_triggered`` for the periodic announcer). A landed Choáng
-    # strips 1 Kiên Cố (inflict_debuff) → drops below cap → mortal again.
+    # ``thanh_son_immovable_just_triggered`` for the periodic announcer). Any landed
+    # turn-skip CC strips 1 Kiên Cố (in ``apply_effect``, the single stamp site, so
+    # direct-apply freeze/stun procs crack too) → drops below cap → mortal again.
     thanh_son_kien_co_on_hit: bool = False
     thanh_son_kien_co_cap: int = 0
     thanh_son_dmg_from_shield_pct: float = 0.0
@@ -1011,6 +1012,7 @@ class Combatant:
     thanh_son_survive_shield_pct: float = 0.0
     thanh_son_kien_co_stacks = _StackProxy("thanh_son_kien_co", store="stack_counters")  # runtime (NOT a config key)
     thanh_son_immovable_just_triggered: bool = False  # runtime (NOT a config key)
+    thanh_son_kien_co_just_cracked: bool = False  # runtime (NOT a config key)
 
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
@@ -1542,13 +1544,16 @@ class Combatant:
             from src.game.systems.combat.defense_aegis import accumulate_stored_charge
             accumulate_stored_charge(self, pre_absorb_amount)
 
-        # Step 4.5 — Thánh Sơn Bất Động Thể L9 Vạn Vật Quy Trần. While Kiên Cố is
+        # Step 4.7 — Thánh Sơn Bất Động Thể L9 Vạn Vật Quy Trần. While Kiên Cố is
         # FULL, a would-be-lethal NON-DoT hit cannot kill: HP is floored at 1 and a
         # slice of the shield cap is restored. Unlike endure there is NO cooldown —
         # the gate IS the full stack count, so any hard CC (which cracks a Kiên Cố
-        # stack via inflict_debuff, dropping below cap) disarms it until rebuilt.
-        # DoTs bypass it (``is_dot``), keeping the wall vulnerable to sustained
-        # pressure. Runs before Endure so the body's own last-stand claims the kill.
+        # stack at the ``apply_effect`` stamp site, dropping below cap) disarms it
+        # until rebuilt. DoTs bypass it (``is_dot``), keeping the wall vulnerable to
+        # sustained pressure. Runs before Endure so the body's own last-stand claims
+        # the kill. The restore routes through ``add_shield`` so it clamps at
+        # shield_cap — repeated triggers (bypass-shield true damage never drains
+        # the pool) must not compound shield past the cap.
         if (
             self.hp == 0
             and not is_dot
@@ -1558,7 +1563,7 @@ class Combatant:
         ):
             self.hp = 1
             if self.thanh_son_survive_shield_pct > 0:
-                self.shield += int(self.shield_cap() * self.thanh_son_survive_shield_pct)
+                self.add_shield(int(self.shield_cap() * self.thanh_son_survive_shield_pct))
             self.thanh_son_immovable_just_triggered = True
 
         # Step 5 — Endure (Cội Nguồn Bất Tận). When a hit would kill the
@@ -1806,6 +1811,23 @@ class Combatant:
             self.effect_stacks[effect] = min(
                 cap, self.effect_stacks.get(effect, 0) + max(0, int(stacks)),
             )
+        # Thánh Sơn Bất Động Thể — Kiên Cố's weakness. ANY landed hard CC
+        # (turn-skip class: stun / freeze / paralysis) cracks ONE Kiên Cố stack,
+        # disarming the L9 immovable gate until rebuilt. Lives HERE — the single
+        # effect-stamp site — rather than in ``inflict_debuff``, so direct
+        # ``apply_effect`` CC paths (Bắc Minh freeze, stun_on_hit, retaliate
+        # freezes, aura transfers) can't bypass the designed counterplay.
+        # ``thanh_son_kien_co_just_cracked`` lets seams with a log handle
+        # announce it (inflict_debuff immediately; the periodic announcer as a
+        # fallback for the direct paths).
+        if (
+            _meta is not None
+            and getattr(_meta, "skips_turn", False)
+            and self.thanh_son_kien_co_cap > 0
+            and self.thanh_son_kien_co_stacks > 0
+        ):
+            self.thanh_son_kien_co_stacks -= 1
+            self.thanh_son_kien_co_just_cracked = True
 
     def tick_effects(self) -> list[str]:
         expired = [k for k, v in self.effects.items() if v <= 1]

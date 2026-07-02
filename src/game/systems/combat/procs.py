@@ -251,29 +251,44 @@ _HAU_THO_TIER10_MAXHP_PCT = 0.10  # one-time +10% max HP at tier 10
 
 
 def run_hau_tho_procs(
-    session: "CombatSession", actor: Combatant, target: Combatant,
+    session: "CombatSession", actor: Combatant, target: Combatant, dmg: int,
 ) -> None:
-    """Hậu Thổ Thần Thể on-hit logic, once per landed hit (``actor`` hits ``target``).
+    """Hậu Thổ Thần Thể on-hit logic, once per landed damaging hit (``actor`` hits ``target``).
 
     L1 Đại Địa Tức Nhưỡng — each strike siphons a fraction of the foe's CURRENT HP:
     the stolen HP is GROWN onto the holder's max HP (permanent for the battle) and
-    healed, and banked in ``hau_tho_stolen_total`` (the L9 Luân Hồi revive pool).
-    The steal rate climbs +0.5%/Địa Mạch tier. The Địa Mạch accumulation
+    healed via the central heal pipeline (so heal-reduction counters apply), and
+    banked in ``hau_tho_stolen_total`` (the L9 Luân Hồi revive pool). The steal
+    rate climbs +0.5%/Địa Mạch tier. The Địa Mạch accumulation
     (``hau_tho_accumulate``) banks each 1% of the foe's MAX HP siphoned into a tier
     (cap 10); reaching 10 grants a one-time +10% max HP. Attacker-side only (the
     body is a striker, not reactive). Self-gates → no-op for every other build.
+
+    Guards: ``dmg <= 0`` (a fully negated hit steals nothing — matches the body's
+    own L3 gate); dead actor (a reflect-kill earlier in the same reactive pass must
+    stay dead and go through the ON_REVIVE cascade, not be undone by the heal);
+    ``is_world_boss`` (the shared boss pool is off-limits to hp_max-mutation
+    mechanics, same convention as the Âm soul-drain).
     """
-    if actor.hau_tho_hp_steal_pct <= 0 or not target.is_alive():
+    if (
+        actor.hau_tho_hp_steal_pct <= 0
+        or dmg <= 0
+        or not actor.is_alive()
+        or not target.is_alive()
+        or target.is_world_boss
+    ):
         return
     rate = actor.hau_tho_hp_steal_pct + actor.hau_tho_tier * _HAU_THO_STEAL_PER_TIER
     stolen = int(target.hp * rate)
     if stolen <= 0:
         return
     # Direct siphon: the foe loses exactly ``stolen`` (a true drain that ignores
-    # shield/DR — matches "hút HP"); the holder grows + heals by the same amount.
+    # shield/DR — matches "hút HP"); the holder grows by the full amount, then the
+    # HP top-up routes through ``_apply_heal`` so heal_taken_reduce / heal-lock
+    # debuffs remain real counterplay against the sustain loop.
     target.hp = max(0, target.hp - stolen)
     actor.hp_max += stolen
-    actor.hp += stolen
+    session._apply_heal(actor, stolen)
     actor.hau_tho_stolen_total += stolen
     session.log.append(
         f"  ⛰️ **{actor.name}** Đại Địa Tức Nhưỡng hút {stolen:,} HP "
@@ -311,17 +326,21 @@ def run_hau_tho_procs(
 
 
 def run_thanh_son_procs(
-    session: "CombatSession", actor: Combatant, target: Combatant,
+    session: "CombatSession", actor: Combatant, target: Combatant, dmg: int,
 ) -> None:
-    """Thánh Sơn Bất Động Thể on-hit logic, once per landed hit.
+    """Thánh Sơn Bất Động Thể on-hit logic, once per landed damaging hit.
 
     Attacker side (``actor`` holds the body, striking ``target``): L3 Thái Sơn Áp
     Đỉnh per-hit riders — chance to apply Bào Mòn (armor erosion) and Choáng (stun).
     Defender side (``target`` holds the body, being struck): L1 Kiên Như Bàn Thạch —
     +1 Kiên Cố stack (capped), the defensive accumulation that BuffKienCo's
     scaling_rules turn into live res_all + final_dmg_reduce. Each branch self-gates
-    on the per-body flags → no-op for every other build.
+    on the per-body flags → no-op for every other build. A hit fully negated to 0
+    (``dmg <= 0``) triggers neither branch — no CC riders off a negated hit, no
+    stack banked for a hit that dealt nothing (matches the body's own L3 gate).
     """
+    if dmg <= 0:
+        return
     # ── Attacker side: the holder strikes → erode + stun ──────────────────────
     if actor.thanh_son_bao_mon_chance > 0 and target.is_alive() \
             and session.rng.random() < actor.thanh_son_bao_mon_chance:
@@ -340,7 +359,11 @@ def run_thanh_son_procs(
             )
 
     # ── Defender side: the holder is struck → bank Kiên Cố ────────────────────
-    if target.thanh_son_kien_co_on_hit and target.thanh_son_kien_co_cap > 0 \
+    # ``target.is_alive()`` — a defender killed earlier in the same cast (e.g. by
+    # a per-cast true-damage rider) must not bank a posthumous stack that would
+    # survive into a later revive (mirrors the attacker-side branches above).
+    if target.thanh_son_kien_co_on_hit and target.is_alive() \
+            and target.thanh_son_kien_co_cap > 0 \
             and target.thanh_son_kien_co_stacks < target.thanh_son_kien_co_cap:
         target.thanh_son_kien_co_stacks += 1
         session.log.append(
@@ -1049,8 +1072,8 @@ def apply_reactive_damage(
     # the per-body config flags (inert for every other build).
     run_bac_minh_procs(session, actor, target)
     run_huyen_minh_procs(session, actor, target)
-    run_hau_tho_procs(session, actor, target)
-    run_thanh_son_procs(session, actor, target)
+    run_hau_tho_procs(session, actor, target, dmg)
+    run_thanh_son_procs(session, actor, target, dmg)
 
 
 def apply_reflect(

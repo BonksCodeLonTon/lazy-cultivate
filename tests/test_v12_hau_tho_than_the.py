@@ -145,7 +145,7 @@ def test_l1_steal_grows_maxhp_heals_and_drains(monkeypatch) -> None:
     session = _session(player, enemy)
     hp_max0 = player.hp_max
     player.hp = hp_max0 - 30_000  # room to heal
-    run_hau_tho_procs(session, player, enemy)
+    run_hau_tho_procs(session, player, enemy, dmg=1_000)
     stolen = int(100_000 * 0.04)  # 4000
     assert enemy.hp == 100_000 - stolen           # foe drained
     assert player.hp_max == hp_max0 + stolen      # permanent max-HP growth
@@ -160,10 +160,73 @@ def test_l1_no_steal_when_flag_off() -> None:
     enemy = _enemy(hp=100_000)
     session = _session(player, enemy)
     hp_max0 = player.hp_max
-    run_hau_tho_procs(session, player, enemy)
+    run_hau_tho_procs(session, player, enemy, dmg=1_000)
     assert enemy.hp == 100_000
     assert player.hp_max == hp_max0
     assert player.hau_tho_stolen_total == 0
+
+
+def test_l1_no_steal_on_negated_hit(monkeypatch) -> None:
+    """A hit fully negated to 0 damage (Kim Cang Kim Thân) steals nothing."""
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(1)
+    enemy = _enemy(hp=100_000)
+    session = _session(player, enemy)
+    hp_max0 = player.hp_max
+    run_hau_tho_procs(session, player, enemy, dmg=0)
+    assert enemy.hp == 100_000
+    assert player.hp_max == hp_max0
+    assert player.hau_tho_stolen_total == 0
+
+
+def test_l1_dead_actor_does_not_unheal_death(monkeypatch) -> None:
+    """An actor killed mid-pass (e.g. by reflect, which runs before this proc in
+    ``apply_reactive_damage``) must NOT be resurrected by the steal-heal — death
+    has to go through the ON_REVIVE cascade, spending revive charges."""
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(1)
+    enemy = _enemy(hp=100_000)
+    session = _session(player, enemy)
+    player.hp = 0  # reflect-killed earlier in the same reactive pass
+    run_hau_tho_procs(session, player, enemy, dmg=1_000)
+    assert player.hp == 0            # stays dead
+    assert enemy.hp == 100_000       # a corpse siphons nothing
+
+
+def test_l1_no_steal_from_world_boss(monkeypatch) -> None:
+    """The shared world-boss pool is off-limits to hp_max-mutation mechanics —
+    same guard convention as the Âm soul-drain (builders sets ``is_world_boss``)."""
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(1)
+    enemy = _enemy(hp=10**9)
+    enemy.is_world_boss = True
+    session = _session(player, enemy)
+    hp_max0 = player.hp_max
+    run_hau_tho_procs(session, player, enemy, dmg=1_000)
+    assert enemy.hp == 10**9
+    assert player.hp_max == hp_max0
+    assert player.hau_tho_stolen_total == 0
+
+
+def test_l1_steal_heal_respects_heal_reduction(monkeypatch) -> None:
+    """The HP top-up routes through ``session._apply_heal`` — a heal-lock debuff
+    (Hủ Thủy Ấn, heal_taken_reduce 0.40) reduces the sustain, while the max-HP
+    growth and the L9 bank stay at the full stolen amount (growth isn't a heal)."""
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(1)
+    player.hau_tho_accumulate = False  # isolate the raw steal from tier growth
+    player.apply_effect("DebuffHuThuyAn", 3)
+    enemy = _enemy(hp=100_000)
+    session = _session(player, enemy)
+    hp_max0 = player.hp_max
+    player.hp = hp_max0 - 30_000  # room to heal
+    run_hau_tho_procs(session, player, enemy, dmg=1_000)
+    stolen = int(100_000 * 0.04)               # 4000 drained + grown + banked
+    assert enemy.hp == 100_000 - stolen
+    assert player.hp_max == hp_max0 + stolen
+    assert player.hau_tho_stolen_total == stolen
+    healed = int(stolen * (1.0 - 0.40))        # top-up reduced to 2400
+    assert player.hp == (hp_max0 - 30_000) + healed
 
 
 # ── 3. Địa Mạch Hấp Thụ — tier accumulation ────────────────────────────────
@@ -174,7 +237,7 @@ def test_stack_accrues_tiers_from_steal(monkeypatch) -> None:
     player = _player(1)
     enemy = _enemy(hp=100_000)  # full HP → one 4%-steal = 0.04 progress = 4 tiers
     session = _session(player, enemy)
-    run_hau_tho_procs(session, player, enemy)
+    run_hau_tho_procs(session, player, enemy, dmg=1_000)
     assert player.hau_tho_tier == 4  # 0.04 / 0.01 per tier
 
 
@@ -185,7 +248,7 @@ def test_stack_per_tier_raises_steal_rate(monkeypatch) -> None:
     player.hau_tho_accumulate = False  # freeze tier so we read the raised rate cleanly
     enemy = _enemy(hp=100_000)
     session = _session(player, enemy)
-    run_hau_tho_procs(session, player, enemy)
+    run_hau_tho_procs(session, player, enemy, dmg=1_000)
     assert player.hau_tho_stolen_total == int(100_000 * 0.06)  # 6000, not 4000
 
 
@@ -199,7 +262,7 @@ def test_stack_caps_at_10_and_grants_maxhp(monkeypatch) -> None:
     for _ in range(8):
         if player.hau_tho_tier >= 10 and hp_before_cap is None:
             hp_before_cap = player.hp_max
-        run_hau_tho_procs(session, player, enemy)
+        run_hau_tho_procs(session, player, enemy, dmg=1_000)
     assert player.hau_tho_tier == 10
     assert player.hau_tho_tier10_applied is True
 

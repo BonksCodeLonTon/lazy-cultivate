@@ -146,7 +146,7 @@ def test_l1_kien_co_accrues_on_hit_and_caps(monkeypatch) -> None:
     session = _session(player, enemy)
     # ``player`` is the TARGET (being struck) → banks Kiên Cố. Strike 12× > cap 8.
     for _ in range(12):
-        run_thanh_son_procs(session, enemy, player)
+        run_thanh_son_procs(session, enemy, player, dmg=1_000)
     assert player.thanh_son_kien_co_stacks == 8  # capped
 
 
@@ -230,9 +230,33 @@ def test_l3_riders_apply_bao_mon_and_stun(monkeypatch) -> None:
     enemy = _enemy()
     session = _session(player, enemy)
     session.rng.random = lambda: 0.0  # both rider rolls land
-    run_thanh_son_procs(session, player, enemy)  # player attacks → riders on enemy
+    run_thanh_son_procs(session, player, enemy, dmg=1_000)  # player attacks → riders on enemy
     assert enemy.has_effect("DebuffBaoMon")
     assert enemy.has_effect("CCStun")
+
+
+def test_l3_riders_skip_negated_hit(monkeypatch) -> None:
+    """A hit fully negated to 0 damage triggers no CC riders and banks no stack."""
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(3)
+    enemy = _enemy()
+    session = _session(player, enemy)
+    session.rng.random = lambda: 0.0  # rolls would land if the gate let them
+    run_thanh_son_procs(session, player, enemy, dmg=0)
+    assert not enemy.has_effect("DebuffBaoMon")
+    assert not enemy.has_effect("CCStun")
+
+
+def test_no_posthumous_kien_co_stack(monkeypatch) -> None:
+    """A holder killed earlier in the same cast (per-cast true-dmg rider) must
+    not bank a Kiên Cố stack that would survive into a later revive."""
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(1)
+    enemy = _enemy()
+    session = _session(player, enemy)
+    player.hp = 0  # died mid-cast, before apply_reactive_damage ran
+    run_thanh_son_procs(session, enemy, player, dmg=1_000)
+    assert player.thanh_son_kien_co_stacks == 0
 
 
 # ── 4. Kiên Cố weakness — hard CC strips a stack ────────────────────────────
@@ -248,7 +272,22 @@ def test_stun_strips_kien_co(monkeypatch) -> None:
     stun = EFFECTS.get("CCStun")
     assert stun is not None and stun.skips_turn
     inflict_debuff(session, "CCStun", stun, player, actor=enemy)
-    assert player.thanh_son_kien_co_stacks == 7  # cracked
+    assert player.thanh_son_kien_co_stacks == 7  # cracked exactly once, not twice
+    assert player.thanh_son_kien_co_just_cracked is False  # consumed by the announce
+
+
+def test_direct_apply_effect_cc_also_cracks_kien_co(monkeypatch) -> None:
+    """The crack lives at the ``apply_effect`` stamp site — hard-CC paths that
+    bypass ``inflict_debuff`` (Bắc Minh freeze, stun_on_hit, retaliate freezes)
+    must crack too, or the L9 immovable gate has no counterplay against them."""
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(9)
+    player.thanh_son_kien_co_stacks = player.thanh_son_kien_co_cap
+    freeze = EFFECTS.get("DebuffDongBang")
+    assert freeze is not None and freeze.skips_turn
+    player.apply_effect("DebuffDongBang", 2)  # direct stamp — no inflict_debuff
+    assert player.thanh_son_kien_co_stacks == player.thanh_son_kien_co_cap - 1
+    assert player.thanh_son_kien_co_just_cracked is True  # fallback announcer flag
 
 
 # ── 5. L6 Bất Động Minh Vương — crit-res / DR / debuff-shrug ────────────────
@@ -275,6 +314,21 @@ def test_l9_survives_lethal_at_full_stacks(monkeypatch) -> None:
     assert player.hp == 1                            # cannot die from one hit
     assert player.shield > 0                         # 30% shield restored
     assert player.thanh_son_immovable_just_triggered is True
+
+
+def test_l9_shield_restore_clamped_at_cap(monkeypatch) -> None:
+    """The restore routes through ``add_shield`` — repeated triggers (bypass-shield
+    true damage never drains the pool) must not compound shield past shield_cap."""
+    monkeypatch.setattr(settings, "constitution_process_enabled", True)
+    player = _player(9)
+    player.thanh_son_kien_co_stacks = player.thanh_son_kien_co_cap
+    cap = player.shield_cap()
+    assert cap > 0
+    player.shield = cap                              # pool already full
+    player.hp = 5_000
+    player.take_damage(10**9, bypass_shield=True)    # lethal true damage
+    assert player.hp == 1
+    assert player.shield == cap                      # clamped — not 130% of cap
 
 
 def test_l9_no_survive_below_full_stacks(monkeypatch) -> None:
@@ -309,7 +363,7 @@ def test_flag_off_is_inert() -> None:
     enemy = _enemy()
     session = _session(player, enemy)
     # No Kiên Cố accrual while dormant.
-    run_thanh_son_procs(session, enemy, player)
+    run_thanh_son_procs(session, enemy, player, dmg=1_000)
     assert player.thanh_son_kien_co_stacks == 0
     # No last-stand → a lethal hit kills.
     player.shield = 0

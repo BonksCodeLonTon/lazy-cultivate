@@ -1995,16 +1995,11 @@ def inflict_debuff(
             )
     target.apply_effect(effect_key, dur, overrides=stamp)
 
-    # Thánh Sơn Bất Động Thể — Kiên Cố's weakness. Any hard CC (turn-skip class:
-    # stun / freeze / paralysis) that lands on the holder cracks ONE Kiên Cố stack,
-    # dropping it below the cap and disarming the L9 immovable death-immunity until
-    # it's rebuilt. Self-gates on the holder carrying Kiên Cố → inert otherwise.
-    if (
-        meta.skips_turn
-        and target.thanh_son_kien_co_cap > 0
-        and target.thanh_son_kien_co_stacks > 0
-    ):
-        target.thanh_son_kien_co_stacks -= 1
+    # Thánh Sơn Kiên Cố crack — the strip itself lives in ``Combatant.apply_effect``
+    # (the single effect-stamp site, so direct-apply CC paths crack too); here we
+    # just consume the flag to announce it while we still have the debuff's name.
+    if target.thanh_son_kien_co_just_cracked:
+        target.thanh_son_kien_co_just_cracked = False
         session.log.append(
             f"    🪨💥 **{target.name}** bị **{meta.vi}** — rạn 1 tầng Kiên Cố "
             f"[×{target.thanh_son_kien_co_stacks}/{target.thanh_son_kien_co_cap}]"
