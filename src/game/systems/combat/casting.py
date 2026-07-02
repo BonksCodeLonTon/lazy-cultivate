@@ -123,6 +123,10 @@ _HAU_THO_SHIELD_PCT_PER_TIER = 0.03
 # (L1 dmg amp + Năng Lượng accrual, L6 extra hits). Named-skill gating keys on
 # this constant so the skill data itself stays untouched.
 _CT_NAMED_SKILL = "SkillLoiCuuThienNguLoiChanQuyet"
+# Tiêu Dao Thần Thể — the movement skill whose cast triggers the L1 wind
+# resonance (Phù Dao Trực Thượng; the L3 arm / Tiêu Dao Cảnh fire on ANY
+# movement-category cast).
+_TD_RESONANCE_SKILL = "SkillMovPhuDao_R8"
 
 
 def _deal_capped_true_dmg(
@@ -515,6 +519,22 @@ def cast_skill(
             if not _suppress_extras and actor.phong_unevadable_armed:
                 _phong_bypass_this_cast = True
                 skill_data = {**skill_data, "bypass_evasion": True}
+            # Tiêu Dao Thần — L3 Phù Du Bộ Pháp armed strike: the cast after a
+            # movement skill is unevadable + force-crit + pierces def
+            # (``_td_pierce`` rides skill_data so multi-hit replays keep it).
+            # Consumed here, once per armed cast.
+            if not _suppress_extras and actor.td_strike_armed and base_dmg > 0:
+                actor.td_strike_armed = False
+                skill_data = {
+                    **skill_data,
+                    "bypass_evasion": True, "force_crit": True, "_td_pierce": True,
+                }
+                session.log.append(
+                    f"    👣 **{actor.name}** Phù Du Bộ Pháp — đòn tất trúng, tất Bạo Kích!"
+                )
+            # Tiêu Dao Thần — L9 Hóa Bằng: every attack in the form is unevadable.
+            if not _suppress_extras and actor.has_effect("BuffHoaBang"):
+                skill_data = {**skill_data, "bypass_evasion": True}
             skill_obj = _build_skill_obj(skill_key, skill_data, mp_cost, base_dmg_override=base_dmg)
             attack_stats = build_attack_stats(actor, target, actor_mods, skill_obj.element)
             # Per-skill ``force_crit: true`` — always crit (e.g. Hỏa Vân
@@ -540,6 +560,15 @@ def cast_skill(
                     final_dmg_bonus=attack_stats.final_dmg_bonus + _ct_amp,
                 )
             defense_stats = build_defense_stats(target, target_mods, actor, spd_evasion_bonus)
+            # Tiêu Dao Thần — L3 armed strike pierces a slice of the target's
+            # armor for every hit of the armed cast (``_td_pierce`` stamped at
+            # consumption above; DefenseStats is frozen → replace).
+            if skill_data.get("_td_pierce") and actor.td_pierce_def_pct > 0:
+                from dataclasses import replace as _dc_replace
+                defense_stats = _dc_replace(
+                    defense_stats,
+                    def_stat=int(defense_stats.def_stat * (1.0 - min(0.90, actor.td_pierce_def_pct))),
+                )
             pen_pct = lc_effects.get_pen_pct(actor, session.rng, session.log)
             # Hỗn Nguyên Vô Cực — Vạn Pháp Vô Cản. A per-cast chance to treat the
             # target's elemental resistance as 0% (full elemental penetration for
@@ -1501,7 +1530,33 @@ def cast_skill(
         else:
             actor.consecutive_loi_casts = 0
 
-    actor.set_cooldown(skill_key, skill_data.get("cooldown", 1))
+    _cd_turns = skill_data.get("cooldown", 1)
+    _is_movement = skill_data.get("category") == "movement"
+    # Tiêu Dao Thần — L3 Phù Du Bộ Pháp: movement skills cool down faster
+    # (floored at 1 so a short bộ pháp can't hit zero and loop every turn).
+    if _is_movement and actor.td_mov_cd_reduce_pct > 0:
+        _cd_turns = max(1, int(round(_cd_turns * (1.0 - actor.td_mov_cd_reduce_pct))))
+    actor.set_cooldown(skill_key, _cd_turns)
+    # Tiêu Dao Thần — post-movement triggers (top-level casts only; replays
+    # short-circuit above): L1 Phù Dao resonance, L3 armed strike, Tiêu Dao
+    # Cảnh accrual. Each self-gates on its flag → inert for other builds.
+    if _is_movement:
+        if actor.td_resonance_enabled and skill_key == _TD_RESONANCE_SKILL:
+            actor.apply_effect("BuffNguPhongCongHuong", 3)
+            session.log.append(
+                f"    🌬️ **{actor.name}** Ngự Phong Cộng Hưởng — gió nâng thân pháp!"
+            )
+        if actor.td_post_mov_arm and not actor.td_strike_armed:
+            actor.td_strike_armed = True
+            session.log.append(
+                f"    👣 **{actor.name}** Phù Du Bộ Pháp — đòn kế tiếp tất trúng!"
+            )
+        if actor.td_canh_cap > 0 and actor.td_canh_stacks < actor.td_canh_cap:
+            actor.td_canh_stacks += 1
+            session.log.append(
+                f"    🍃 **{actor.name}** Tiêu Dao Cảnh "
+                f"[×{actor.td_canh_stacks}/{actor.td_canh_cap}]"
+            )
     # Phi Thiên Lăng Vân — L9 unevadable cadence counter. Only top-level
     # casts count (``_suppress_extras`` already short-circuits above). The
     # cast that CONSUMED the unevadable arm resets the counter to 0 and
@@ -1567,6 +1622,10 @@ def cast_skill(
     if not _suppress_extras and actor.ct_skill_extra_hits > 0 \
             and skill_key == _CT_NAMED_SKILL:
         hit_count += actor.ct_skill_extra_hits
+    # Tiêu Dao Thần — L9 Hóa Bằng: every attack in the form strikes extra times.
+    if not _suppress_extras and actor.td_bang_extra_hits > 0 \
+            and actor.has_effect("BuffHoaBang") and hit_count >= 1 and base_dmg > 0:
+        hit_count += actor.td_bang_extra_hits
     for i in range(hit_count - 1):
         if not target.is_alive():
             break

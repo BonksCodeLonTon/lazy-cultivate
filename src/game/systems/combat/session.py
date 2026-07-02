@@ -265,6 +265,16 @@ class CombatSession:
 
         # CC check — any skips_turn effect (stun/freeze/knockup) or probabilistic paralysis
         cc_key = check_cc_skip_turn(actor, self.rng)
+        # Tiêu Dao Vô Cực — the shrug itself happens inside check_cc_skip_turn
+        # (the single CC chokepoint); this just announces it with the CC's name.
+        if actor.td_cc_just_shrugged:
+            _shrug_meta = EFFECTS.get(actor.td_cc_just_shrugged)
+            _shrug_name = _shrug_meta.vi if _shrug_meta else actor.td_cc_just_shrugged
+            actor.td_cc_just_shrugged = None
+            self.log.append(
+                f"  🕊️ **{actor.name}** Tiêu Dao Vô Cực — thân như gió thoảng, "
+                f"xuyên qua **{_shrug_name}**!"
+            )
         if cc_key:
             meta = EFFECTS.get(cc_key)
             cc_name = meta.vi if meta else cc_key

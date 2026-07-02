@@ -1076,6 +1076,41 @@ class Combatant:
     ct_nang_luong_stacks = _StackProxy("ct_nang_luong", store="stack_counters")  # runtime (NOT a config key)
     ct_burst_turn_counter: int = 0  # runtime (NOT a config key)
 
+    # ── Tiêu Dao Thần Thể (Phong movement-dancer / dual-form transformer) ─────
+    # L1: casting Phù Dao Trực Thượng (casting.py ``_TD_RESONANCE_SKILL``)
+    # stamps BuffNguPhongCongHuong (``td_resonance_enabled``); every movement
+    # cast banks +1 Tiêu Dao Cảnh (``td_canh_stacks``, cap ``td_canh_cap``, no
+    # reset; every ``td_canh_per_turn`` stacks = +1 form turn). L3: movement
+    # cast arms ``td_strike_armed`` — the next attack is unevadable +
+    # force-crit + pierces ``td_pierce_def_pct`` of def; movement cooldowns
+    # shrink ``td_mov_cd_reduce_pct``. L6: ``td_cc_shrug_pct`` chance to act
+    # through any turn-skip CC (check_cc_skip_turn sets
+    # ``td_cc_just_shrugged`` for the session log). L9: every
+    # ``td_form_interval`` acted turns (auras/tieu_dao.py) transform for
+    # ``td_form_duration`` (+stack bonus) turns — HP under ``td_con_hp_gate``
+    # → BuffHoaCon (take_damage banks HP lost into ``td_con_bank``; expiry
+    # releases × ``td_con_release_mult`` as capped true dmg + heals
+    # ``td_con_heal_pct``), else BuffHoaBang (+``td_bang_extra_hits`` hits,
+    # force-crit via combat_hit, unevadable via casting).
+    td_resonance_enabled: bool = False
+    td_canh_cap: int = 0
+    td_canh_per_turn: int = 0
+    td_post_mov_arm: bool = False
+    td_pierce_def_pct: float = 0.0
+    td_mov_cd_reduce_pct: float = 0.0
+    td_cc_shrug_pct: float = 0.0
+    td_form_interval: int = 0
+    td_form_duration: int = 0
+    td_con_hp_gate: float = 0.0
+    td_con_release_mult: float = 0.0
+    td_con_heal_pct: float = 0.0
+    td_bang_extra_hits: int = 0
+    td_canh_stacks = _StackProxy("td_canh", store="stack_counters")  # runtime (NOT a config key)
+    td_form_turn_counter: int = 0  # runtime (NOT a config key)
+    td_strike_armed: bool = False  # runtime (NOT a config key)
+    td_con_bank: int = 0  # runtime (NOT a config key)
+    td_cc_just_shrugged: str | None = None  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.
@@ -1580,6 +1615,14 @@ class Combatant:
         # Counts HP loss only (shield-absorbed damage doesn't qualify as
         # "HP damage taken in this turn"). Reset to 0 in ``CombatSession.step``.
         self.damage_taken_this_turn += hp_before - self.hp
+
+        # Step 4.4 — Hóa Côn absorption bank (Tiêu Dao Thần L9). While the Côn
+        # form is up, every point of HP actually lost (all sources, DoT
+        # included — the leviathan swallows the whole storm) is banked; when
+        # the form expires, periodic/expiry.py releases the bank as capped
+        # true damage + a heal. Inert without the form buff.
+        if hp_before > self.hp and self.effects.get("BuffHoaCon", 0) > 0:
+            self.td_con_bank += hp_before - self.hp
 
         # Step 4.5 — Damage→MP conduit (Cửu Thiên Lôi Giáp). A fraction of
         # the HP loss is channeled into MP for the holder. Reads from

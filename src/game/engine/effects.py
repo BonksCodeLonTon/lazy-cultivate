@@ -941,6 +941,27 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "ct_burst_duration",
     "ct_burst_te_liet_chance",
     "ct_burst_bonus_turn_gate",
+    # Tiêu Dao Thần Thể (Phong movement-dancer / dual-form transformer) —
+    # config keys read off Combatant fields by casting.py (post-movement
+    # triggers + armed strike + movement CDR), check_cc_skip_turn (CC shrug),
+    # auras/tieu_dao.py (form cadence), take_damage (Côn bank) and
+    # periodic/expiry.py (Côn release). The form OUTPUTS (spd_pct /
+    # final_dmg_reduce) live in BuffHoaBang / BuffHoaCon stat_bonus (real
+    # stats). Runtime (td_canh_stacks / td_form_turn_counter /
+    # td_strike_armed / td_con_bank / td_cc_just_shrugged) are Combatant-only.
+    "td_resonance_enabled",
+    "td_canh_cap",
+    "td_canh_per_turn",
+    "td_post_mov_arm",
+    "td_pierce_def_pct",
+    "td_mov_cd_reduce_pct",
+    "td_cc_shrug_pct",
+    "td_form_interval",
+    "td_form_duration",
+    "td_con_hp_gate",
+    "td_con_release_mult",
+    "td_con_heal_pct",
+    "td_bang_extra_hits",
 })
 
 
@@ -1160,10 +1181,24 @@ def check_cc_skip_turn(
         meta = EFFECTS.get(effect_key)
         if not meta:
             continue
-        if meta.skips_turn:
-            return effect_key
-        if meta.skip_turn_chance > 0.0 and rng.random() < meta.skip_turn_chance:
-            return effect_key
+        would_skip = meta.skips_turn or (
+            meta.skip_turn_chance > 0.0 and rng.random() < meta.skip_turn_chance
+        )
+        if not would_skip:
+            continue
+        # Tiêu Dao Vô Cực (Tiêu Dao Thần L6) — chance to act straight through
+        # any turn-skip CC. Lives HERE — the single chokepoint every CC source
+        # funnels into — so no apply-path can bypass it (the Kiên Cố lesson).
+        # The CC stays stamped (its other riders still apply); only the lost
+        # turn is shrugged. ``td_cc_just_shrugged`` is consumed by the session
+        # for the announcement log.
+        if (
+            combatant.td_cc_shrug_pct > 0
+            and rng.random() < combatant.td_cc_shrug_pct
+        ):
+            combatant.td_cc_just_shrugged = effect_key
+            continue
+        return effect_key
     return None
 
 

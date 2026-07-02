@@ -307,6 +307,34 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("ct_burst_duration",                "ct_burst_duration",                int),
     ("ct_burst_te_liet_chance",          "ct_burst_te_liet_chance",          float),
     ("ct_burst_bonus_turn_gate",         "ct_burst_bonus_turn_gate",         int),
+    # Tiêu Dao Thần Thể (Phong movement-dancer / dual-form transformer) —
+    # config flags. L1: casting Phù Dao Trực Thượng stamps the resonance buff
+    # (``td_resonance_enabled``); every movement cast banks +1 Tiêu Dao Cảnh
+    # (cap ``td_canh_cap``, no reset; every ``td_canh_per_turn`` stacks = +1
+    # form turn). L3: movement cast arms the next attack (``td_post_mov_arm``
+    # → unevadable + force-crit + pierce ``td_pierce_def_pct`` of def) and
+    # movement cooldowns shrink ``td_mov_cd_reduce_pct``. L6: act through
+    # turn-skip CC at ``td_cc_shrug_pct`` (check_cc_skip_turn — the single CC
+    # chokepoint). L9: every ``td_form_interval`` acted turns auto-transform
+    # for ``td_form_duration`` (+stack bonus) turns — HP below
+    # ``td_con_hp_gate`` → Hóa Côn (bank HP lost; on expiry release ×
+    # ``td_con_release_mult`` as capped true dmg + heal ``td_con_heal_pct``),
+    # else Hóa Bằng (+``td_bang_extra_hits`` hits, force-crit, unevadable).
+    # Runtime (td_canh_stacks / td_form_turn_counter / td_strike_armed /
+    # td_con_bank / td_cc_just_shrugged) are Combatant-only.
+    ("td_resonance_enabled",             "td_resonance_enabled",             bool),
+    ("td_canh_cap",                      "td_canh_cap",                      int),
+    ("td_canh_per_turn",                 "td_canh_per_turn",                 int),
+    ("td_post_mov_arm",                  "td_post_mov_arm",                  bool),
+    ("td_pierce_def_pct",                "td_pierce_def_pct",                float),
+    ("td_mov_cd_reduce_pct",             "td_mov_cd_reduce_pct",             float),
+    ("td_cc_shrug_pct",                  "td_cc_shrug_pct",                  float),
+    ("td_form_interval",                 "td_form_interval",                 int),
+    ("td_form_duration",                 "td_form_duration",                 int),
+    ("td_con_hp_gate",                   "td_con_hp_gate",                   float),
+    ("td_con_release_mult",              "td_con_release_mult",              float),
+    ("td_con_heal_pct",                  "td_con_heal_pct",                  float),
+    ("td_bang_extra_hits",               "td_bang_extra_hits",               int),
 ]
 
 
@@ -659,6 +687,20 @@ class CombatStats:
     ct_burst_duration: int = 0
     ct_burst_te_liet_chance: float = 0.0
     ct_burst_bonus_turn_gate: int = 0
+    # Tiêu Dao Thần Thể (Phong movement-dancer / dual-form transformer)
+    td_resonance_enabled: bool = False
+    td_canh_cap: int = 0
+    td_canh_per_turn: int = 0
+    td_post_mov_arm: bool = False
+    td_pierce_def_pct: float = 0.0
+    td_mov_cd_reduce_pct: float = 0.0
+    td_cc_shrug_pct: float = 0.0
+    td_form_interval: int = 0
+    td_form_duration: int = 0
+    td_con_hp_gate: float = 0.0
+    td_con_release_mult: float = 0.0
+    td_con_heal_pct: float = 0.0
+    td_bang_extra_hits: int = 0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

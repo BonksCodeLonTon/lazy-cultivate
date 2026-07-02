@@ -15,5 +15,53 @@
         "9": { "passive_vi": "Thiên Phong Vô Ảnh", "passive_en": "Heaven Wind Formless", "description_vi": "Cứ mỗi 3 chiêu thi triển, chiêu kế tiếp KHÔNG THỂ bị né. Mỗi đòn Bạo Kích: 50% Cuốn Bay địch.", "stat_bonuses": { "spd_pct": 0.07, "crit_rating": 120, "phong_unevadable_interval": 3, "phong_cuon_bay_on_crit_chance": 0.50 }, "effects": ["BuffThienPhongVoAnh"] }
       }
     }
+  },
+  {
+    "key": "TheChat_TieuDaoThan",
+    "vi": "Tiêu Dao Thần Thể",
+    "en": "Free-Wandering God Body",
+    "element": "phong",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân hòa đại đạo tiêu dao — cưỡi gió mà đi, mỗi bước thân pháp nạp một tầng cảnh giới. Đòn sau bộ pháp không thể né, khống chế khó bám thân, đến lúc hóa hình: Bằng bay chín vạn dặm hoặc Côn lặn Bắc Minh nuốt trọn cuồng phong.",
+    "stat_bonuses": { "spd_pct": 0.07, "evasion_rating": 140, "crit_rating": 80 },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "spd_pct": 0.004, "evasion_rating": 12, "crit_rating": 12 },
+      "levels": {
+        "1": {
+          "passive_vi": "Ngự Phong Nhi Hành",
+          "passive_en": "Riding Wind While Walking",
+          "description_vi": "Tốc độ +18%, né tránh +280. Thi triển Phù Dao Trực Thượng: cộng hưởng +20% tốc độ +200 né tránh (3 lượt). Mỗi lần dùng thân pháp: +1 tầng Tiêu Dao Cảnh (tối đa 6, không tụt).",
+          "stat_bonuses": { "spd_pct": 0.18, "evasion_rating": 280, "td_resonance_enabled": true, "td_canh_cap": 6, "td_canh_per_turn": 3 },
+          "effects": ["BuffNguPhongNhiHanh"]
+        },
+        "3": {
+          "passive_vi": "Phù Du Bộ Pháp",
+          "passive_en": "Ephemeral Step Technique",
+          "description_vi": "Sau mỗi lần dùng thân pháp: đòn kế tiếp không thể né tránh, chắc chắn Bạo Kích và xuyên 50% giáp. Hồi chiêu thân pháp giảm 30%.",
+          "stat_bonuses": { "spd_pct": 0.05, "crit_rating": 60, "td_post_mov_arm": true, "td_pierce_def_pct": 0.50, "td_mov_cd_reduce_pct": 0.30 },
+          "effects": ["BuffPhuDuBoPhap"]
+        },
+        "6": {
+          "passive_vi": "Tiêu Dao Vô Cực",
+          "passive_en": "Carefree Without Limit",
+          "description_vi": "Thân như gió thoảng — 65% hành động xuyên qua mọi khống chế mất lượt (Choáng / Đóng Băng / Tê Liệt / Cuốn Bay).",
+          "stat_bonuses": { "spd_pct": 0.05, "evasion_rating": 100, "td_cc_shrug_pct": 0.65 },
+          "effects": ["BuffTieuDaoVoCuc"]
+        },
+        "9": {
+          "passive_vi": "Hóa Bằng · Hóa Côn",
+          "passive_en": "Transform into Peng / Kun",
+          "description_vi": "Mỗi 8 lượt tự hóa hình 3 lượt (+1 lượt mỗi 3 Tiêu Dao Cảnh, tối đa +2): HP khỏe → HÓA BẰNG (tốc độ +100%, chắc chắn Bạo Kích, +1 lần đánh, đòn không thể né); HP dưới 45% → HÓA CÔN (giảm 60% sát thương, tích toàn bộ HP mất; hết hình thái phun trả thành Sát Thương Chuẩn có giới hạn + hồi 20% HP tối đa).",
+          "stat_bonuses": { "matk_pct": 0.06, "crit_rating": 80, "td_form_interval": 8, "td_form_duration": 3, "td_con_hp_gate": 0.45, "td_con_release_mult": 1.5, "td_con_heal_pct": 0.20, "td_bang_extra_hits": 1 },
+          "effects": ["BuffHoaBangHoaCon"]
+        }
+      }
+    }
   }
 ]

@@ -3049,5 +3049,89 @@
     "cleansable": false,
     "emoji": "🌩️",
     "duration": 2
+  },
+  {
+    "key": "BuffNguPhongNhiHanh",
+    "vi": "Ngự Phong Nhi Hành",
+    "en": "Riding Wind While Walking",
+    "kind": "buff",
+    "description_vi": "Cưỡi gió mà đi — tốc độ và né tránh vượt phàm; Phù Dao Trực Thượng cộng hưởng thêm gió; mỗi bước thân pháp nạp Tiêu Dao Cảnh.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🍃",
+    "duration": 999
+  },
+  {
+    "key": "BuffNguPhongCongHuong",
+    "vi": "Ngự Phong Cộng Hưởng",
+    "en": "Wind-Riding Resonance",
+    "kind": "buff",
+    "description_vi": "Phù Dao Trực Thượng cộng hưởng với thân thể tiêu dao — +20% tốc độ, +200 né tránh.",
+    "stat_bonus": { "spd_pct": 0.20, "evasion_rating": 200 },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌬️",
+    "duration": 3
+  },
+  {
+    "key": "BuffPhuDuBoPhap",
+    "vi": "Phù Du Bộ Pháp",
+    "en": "Ephemeral Step Technique",
+    "kind": "buff",
+    "description_vi": "Bước chân phù du — sau thân pháp, đòn kế tiếp không thể né, chắc chắn Bạo Kích, xuyên 50% giáp; thân pháp hồi chiêu nhanh hơn 30%.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "👣",
+    "duration": 999
+  },
+  {
+    "key": "BuffTieuDaoVoCuc",
+    "vi": "Tiêu Dao Vô Cực",
+    "en": "Carefree Without Limit",
+    "kind": "buff",
+    "description_vi": "Thân như gió thoảng, khống chế khó bám — 65% hành động xuyên qua mọi hiệu ứng mất lượt.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🕊️",
+    "duration": 999
+  },
+  {
+    "key": "BuffHoaBangHoaCon",
+    "vi": "Hóa Bằng · Hóa Côn",
+    "en": "Peng-Kun Transformation",
+    "kind": "buff",
+    "description_vi": "Cứ 8 lượt tự hóa hình theo thế trận: Bằng bay chín vạn dặm (tấn công) hoặc Côn lặn Bắc Minh (hấp thu rồi phun trả).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🐦",
+    "duration": 999
+  },
+  {
+    "key": "BuffHoaBang",
+    "vi": "Hóa Bằng",
+    "en": "Peng Form",
+    "kind": "buff",
+    "description_vi": "Đại Bằng giương cánh — tốc độ +100%, mọi đòn chắc chắn Bạo Kích, +1 lần đánh và không thể né tránh.",
+    "stat_bonus": { "spd_pct": 1.0 },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🦅",
+    "duration": 3
+  },
+  {
+    "key": "BuffHoaCon",
+    "vi": "Hóa Côn",
+    "en": "Kun Form",
+    "kind": "buff",
+    "description_vi": "Huyền Côn lặn Bắc Minh — giảm 60% sát thương nhận vào, tích lại toàn bộ HP mất; khi hết hình thái phun trả thành Sát Thương Chuẩn (có giới hạn) và hồi 20% HP tối đa.",
+    "stat_bonus": { "final_dmg_reduce": 0.60 },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🐋",
+    "duration": 3
   }
 ]

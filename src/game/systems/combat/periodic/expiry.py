@@ -58,6 +58,28 @@ def _expiry(ctx: TurnContext) -> None:
                 f"−{fall_dmg:,} HP ({element})"
             )
 
+        # Hóa Côn release (Tiêu Dao Thần L9) — the leviathan surfaces: the HP
+        # banked while the form soaked (take_damage Step 4.4) erupts back as
+        # capped true damage (the shared per-cast rider tail) and the holder
+        # heals a slice of max HP. Fires only on natural expiry — a cleansed
+        # form never reaches this branch (tick_effects contract above).
+        if key == "BuffHoaCon" and combatant.td_con_bank > 0:
+            from ..casting import _deal_capped_true_dmg
+            release = int(combatant.td_con_bank * combatant.td_con_release_mult)
+            combatant.td_con_bank = 0
+            if release > 0 and opponent.is_alive():
+                _deal_capped_true_dmg(
+                    session, opponent, release, "🐋 Côn Hiện — Bắc Minh phun trào",
+                )
+            if combatant.td_con_heal_pct > 0 and combatant.is_alive():
+                healed = session._apply_heal(
+                    combatant, int(combatant.hp_max * combatant.td_con_heal_pct)
+                )
+                if healed > 0:
+                    ctx.log.append(
+                        f"  🐋 **{combatant.name}** Côn ẩn dưỡng thương +{healed:,} HP"
+                    )
+
         if meta.on_expire_apply:
             next_key, next_override = meta.on_expire_apply
             next_meta = EFFECTS.get(next_key)

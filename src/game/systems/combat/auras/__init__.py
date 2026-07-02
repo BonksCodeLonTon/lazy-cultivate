@@ -20,6 +20,7 @@ legacy ``_take_turn`` body so existing tests stay green:
   60  phu_dao    — Phù Dao Trực Thượng (altitude tier bump)
    5  truong_xuan — Trường Xuân Linh Mộc (Undying Spring cooldown tick)
   36  cuu_thien  — Cửu Thiên Huyền Lôi (L9 Thần Lôi Giáng Thế burst cadence)
+  37  tieu_dao   — Tiêu Dao Thần (L9 Hóa Bằng / Hóa Côn form cadence)
   38  hoang_co   — Hoàng Cổ Thánh Thể (L6 crit-arm + L9 Saint Realm cadence)
   39  lietdiem   — Liệt Diễm Phần Thiên (L9 Hỏa Thần avatar cadence)
   12  tinh_quang — Tịnh Quang Hộ Pháp (L3 every-3-turn self-cleanse)
@@ -29,11 +30,11 @@ a priority that places it correctly in the chain — no edits to session.py.
 """
 from . import (  # noqa: F401
     bo_bo, cuu_thien, hoang_co, huyen_am, kinh_hoa, lietdiem, lieu_nhu, luu_ly,
-    luu_tinh, phu_dao, thai_bach, tinh_quang, truong_xuan, xuan_thu,
+    luu_tinh, phu_dao, thai_bach, tieu_dao, tinh_quang, truong_xuan, xuan_thu,
 )
 
 __all__ = [
     "bo_bo", "cuu_thien", "hoang_co", "huyen_am", "kinh_hoa", "lietdiem",
-    "lieu_nhu", "luu_ly", "luu_tinh", "phu_dao", "thai_bach", "tinh_quang",
-    "truong_xuan", "xuan_thu",
+    "lieu_nhu", "luu_ly", "luu_tinh", "phu_dao", "thai_bach", "tieu_dao",
+    "tinh_quang", "truong_xuan", "xuan_thu",
 ]
