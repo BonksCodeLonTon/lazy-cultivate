@@ -506,35 +506,27 @@ def run_cuong_phong_procs(
 ) -> None:
     """Cửu Thiên Cương Phong Thể on-hit riders, once per landed damaging hit.
 
-    Attacker side only (``actor`` holds the body): L1 Phong Nhận — auto Ấn
-    Phong + Chảy Máu chance + 1 Phong Nhận Tích banked ON THE TARGET (cap
-    ``cp_tich_cap``; per-target by construction, dies with them); L3 Xuyên Tâm
-    Phong — DebuffPhongXuyenThau on every hit; L9 storm rider — Cuốn Bay
-    chance while BuffCuongPhongBao is up; and the full-Tích Cương Phong Xuyên
-    (capped true dmg + guaranteed Cuốn Bay, Tích reset). All debuffs route
-    through ``inflict_debuff``. Self-gates → no-op for every other build; a
-    negated hit (``dmg <= 0``) triggers nothing.
+    Attacker side only (``actor`` holds the body). L1's Ấn Phong + Chảy Máu
+    ride the GENERIC on-hit lanes (``mark_on_hit_pct`` / ``bleed_on_hit_pct``
+    in the _ON_HIT_PROCS table) — this helper only banks the body-specific
+    Phong Nhận Tích (+1 per hit ON THE TARGET, cap ``cp_tich_cap``;
+    per-target by construction, dies with them); L3 Xuyên Tâm Phong —
+    DebuffPhongXuyenThau on every hit; L9 storm rider — Cuốn Bay chance while
+    BuffCuongPhongBao is up; and the full-Tích Cương Phong Xuyên (capped true
+    dmg + guaranteed Cuốn Bay, Tích reset). All debuffs route through
+    ``inflict_debuff``. Self-gates → no-op for every other build; a negated
+    hit (``dmg <= 0``) triggers nothing.
     """
     if dmg <= 0 or not actor.is_alive() or not target.is_alive():
         return
     from .casting import inflict_debuff, _deal_capped_true_dmg
-    # ── L1 Phong Nhận: mark + bleed + Tích ─────────────────────────────────
-    if actor.cp_an_phong_on_hit:
-        meta = EFFECTS.get("DebuffAnPhong")
-        if meta is not None:
-            inflict_debuff(session, "DebuffAnPhong", meta, target, actor=actor)
-        if actor.cp_bleed_on_hit_chance > 0 and target.is_alive() \
-                and session.rng.random() < actor.cp_bleed_on_hit_chance:
-            meta = EFFECTS.get("DebuffChayMau")
-            if meta is not None:
-                inflict_debuff(session, "DebuffChayMau", meta, target, actor=actor)
-        if actor.cp_tich_cap > 0 and target.is_alive() \
-                and target.cp_tich_stacks < actor.cp_tich_cap:
-            target.cp_tich_stacks += 1
-            session.log.append(
-                f"  🌪️ **{target.name}** Phong Nhận Tích "
-                f"[×{target.cp_tich_stacks}/{actor.cp_tich_cap}]"
-            )
+    # ── L1 Phong Nhận: bank Tích on the target ─────────────────────────────
+    if actor.cp_tich_cap > 0 and target.cp_tich_stacks < actor.cp_tich_cap:
+        target.cp_tich_stacks += 1
+        session.log.append(
+            f"  🌪️ **{target.name}** Phong Nhận Tích "
+            f"[×{target.cp_tich_stacks}/{actor.cp_tich_cap}]"
+        )
     # ── L3 Xuyên Tâm Phong: Phong res shred ────────────────────────────────
     if actor.cp_phong_shred_on_hit and target.is_alive():
         meta = EFFECTS.get("DebuffPhongXuyenThau")

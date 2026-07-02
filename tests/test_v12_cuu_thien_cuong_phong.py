@@ -129,8 +129,10 @@ def test_new_effects_registered() -> None:
 def test_config_flags_per_level(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     p1 = _player(1)
-    assert p1.cp_an_phong_on_hit is True
-    assert p1.cp_bleed_on_hit_chance == pytest.approx(0.50)
+    # L1's mark + bleed ride the GENERIC on-hit lanes (real stats, additive
+    # with the phong linh-căn's own mark contribution).
+    assert p1.mark_on_hit_pct >= 1.0
+    assert p1.bleed_on_hit_pct >= 0.50
     assert p1.cp_tich_cap == 8
     p3 = _player(3)
     assert p3.cp_phong_shred_on_hit is True
@@ -152,16 +154,21 @@ def test_config_flags_per_level(monkeypatch) -> None:
 
 
 def test_l1_marks_bleed_and_tich(monkeypatch) -> None:
+    """Ấn Phong + Chảy Máu fire through the GENERIC _ON_HIT_PROCS lanes
+    (mark_on_hit_pct 1.0 / bleed_on_hit_pct 0.50) on a real cast; the Tích
+    bank is the only body-specific rider."""
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(1)
+    player.crit_rating = 0
     enemy = _enemy()
     session = _session(player, enemy)
-    session.rng.random = lambda: 0.0            # bleed roll lands
-    run_cuong_phong_procs(session, player, enemy, dmg=1_000)
+    session.rng.random = lambda: 0.0            # every proc roll lands
+    skill = registry.get_skill(_ATTACK)
+    cast_skill(session, player, enemy, _ATTACK, dict(skill), 0)
     assert enemy.has_effect("DebuffAnPhong")
     assert enemy.has_effect("DebuffChayMau")
     assert enemy.bleed_stacks >= 1
-    assert enemy.cp_tich_stacks == 1
+    assert enemy.cp_tich_stacks == 3            # one per landed hit of the 3-hit cast
 
 
 def test_l1_tich_caps_and_negated_hit_inert(monkeypatch) -> None:
@@ -169,7 +176,7 @@ def test_l1_tich_caps_and_negated_hit_inert(monkeypatch) -> None:
     player = _player(1)
     enemy = _enemy()
     session = _session(player, enemy)
-    session.rng.random = lambda: 0.99           # bleed roll fails
+    session.rng.random = lambda: 0.99
     for _ in range(12):
         run_cuong_phong_procs(session, player, enemy, dmg=1_000)
     assert enemy.cp_tich_stacks == 8            # capped (no L9 → no spend)
@@ -323,7 +330,8 @@ def test_l9_no_execute_below_cap(monkeypatch) -> None:
 def test_flag_off_is_inert() -> None:
     assert settings.constitution_process_enabled is False
     player = _player(9)
-    assert player.cp_an_phong_on_hit is False
+    assert player.mark_on_hit_pct < 1.0   # only the linh-căn baseline remains
+    assert player.cp_tich_cap == 0
     assert player.cp_pierce_def_pct == 0.0
     assert player.cp_bonus_strike_chance == 0.0
     assert player.cp_storm_interval == 0

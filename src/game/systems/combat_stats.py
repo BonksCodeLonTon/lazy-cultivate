@@ -336,12 +336,15 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("td_con_heal_pct",                  "td_con_heal_pct",                  float),
     ("td_bang_extra_hits",               "td_bang_extra_hits",               int),
     # Cửu Thiên Cương Phong Thể (Phong anti-evasion wind-blade shredder) —
-    # config flags. L1: per-hit Ấn Phong + ``cp_bleed_on_hit_chance`` Chảy Máu
-    # + 1 Phong Nhận Tích on the TARGET (cap ``cp_tich_cap``; per-target by
-    # construction — the counter lives on the enemy Combatant). L3: per-hit
-    # DebuffPhongXuyenThau (``cp_phong_shred_on_hit``) + sustained armor
-    # pierce ``cp_pierce_def_pct`` upgraded to ``cp_pierce_def_pct_high`` once
-    # the target carries ≥ ``cp_pierce_tich_gate`` Tích. L6: per-hit
+    # config flags. L1's Ấn Phong + Chảy Máu ride the EXISTING generic on-hit
+    # lanes (``mark_on_hit_pct`` 1.0 / ``bleed_on_hit_pct`` 0.50 in the
+    # milestone stat_bonuses — real stats, no per-body flags); only the Phong
+    # Nhận Tích accrual is body-specific (+1/hit on the TARGET, cap
+    # ``cp_tich_cap``; per-target by construction — the counter lives on the
+    # enemy Combatant). L3: per-hit DebuffPhongXuyenThau
+    # (``cp_phong_shred_on_hit``) + sustained armor pierce
+    # ``cp_pierce_def_pct`` upgraded to ``cp_pierce_def_pct_high`` once the
+    # target carries ≥ ``cp_pierce_tich_gate`` Tích. L6: per-hit
     # ``cp_bonus_strike_chance`` to auto-fire SkillPhongBonusStrike
     # (run_on_hit_procs — needs the skill_key recursion guard). L9: every
     # ``cp_storm_interval`` acted turns → BuffCuongPhongBao for
@@ -351,8 +354,6 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     # (``cp_tich_execute_atk_scale`` × ATK capped true dmg + Cuốn Bay, Tích
     # reset). Runtime (cp_tich_stacks on the target / cp_storm_turn_counter)
     # are Combatant-only.
-    ("cp_an_phong_on_hit",               "cp_an_phong_on_hit",               bool),
-    ("cp_bleed_on_hit_chance",           "cp_bleed_on_hit_chance",           float),
     ("cp_tich_cap",                      "cp_tich_cap",                      int),
     ("cp_phong_shred_on_hit",            "cp_phong_shred_on_hit",            bool),
     ("cp_pierce_def_pct",                "cp_pierce_def_pct",                float),
@@ -731,8 +732,6 @@ class CombatStats:
     td_con_heal_pct: float = 0.0
     td_bang_extra_hits: int = 0
     # Cửu Thiên Cương Phong Thể (Phong anti-evasion wind-blade shredder)
-    cp_an_phong_on_hit: bool = False
-    cp_bleed_on_hit_chance: float = 0.0
     cp_tich_cap: int = 0
     cp_phong_shred_on_hit: bool = False
     cp_pierce_def_pct: float = 0.0

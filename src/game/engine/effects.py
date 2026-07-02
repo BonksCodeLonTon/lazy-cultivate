@@ -968,8 +968,6 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     # bonus strike), casting.py (sustained pierce + storm extra hits /
     # unevadable) and auras/cuong_phong.py (storm cadence). Runtime
     # (cp_tich_stacks / cp_storm_turn_counter) are Combatant-only.
-    "cp_an_phong_on_hit",
-    "cp_bleed_on_hit_chance",
     "cp_tich_cap",
     "cp_phong_shred_on_hit",
     "cp_pierce_def_pct",

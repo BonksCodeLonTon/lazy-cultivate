@@ -85,7 +85,7 @@
           "passive_vi": "Phong Nhận",
           "passive_en": "Wind Blade",
           "description_vi": "Mỗi đòn trúng: khắc Ấn Phong (né tránh −150) + 50% Chảy Máu, và tích 1 tầng Phong Nhận Tích lên mục tiêu (tối đa 8).",
-          "stat_bonuses": { "cp_an_phong_on_hit": true, "cp_bleed_on_hit_chance": 0.50, "cp_tich_cap": 8 },
+          "stat_bonuses": { "mark_on_hit_pct": 1.0, "bleed_on_hit_pct": 0.50, "cp_tich_cap": 8 },
           "effects": ["BuffPhongNhan"]
         },
         "3": {
