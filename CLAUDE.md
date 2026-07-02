@@ -49,7 +49,7 @@ src/bot/cogs/               One cog per feature (Discord layer only, no game log
                                cogs/world_boss.py / cogs/arena.py — there is no combat.py cog)
 src/game/
   constants/                Immutable game rules: realms, elements, grades, currencies, linh_can
-  models/                   Pure Python dataclasses (no DB) — Character, Enemy, Item, Skill
+  models/                   Pure Python dataclasses (no DB) — Character, Item, Skill
   systems/                  Core game logic — cultivation, cultivation_service, combatant,
                               character_stats, status, skills, formation, inventory,
                               economy, trade, dungeon, world_boss, alchemy, forge, chest,

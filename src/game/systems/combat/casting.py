@@ -1524,7 +1524,7 @@ def cast_skill(
 
     # 2. Charge bonus — increment cast count, detonate on every Nth cast.
     if base_dmg > 0:
-        apply_charge_bonus(session, actor, target, skill_key, skill_data, dealt_total)
+        apply_charge_bonus(session, actor, target, skill_key, skill_data)
 
     # 3. Chain skill — automatically fire a follow-up skill at scaled damage.
     #    ``skill_key`` is forwarded so ``cast_on: every_n_casts`` has a

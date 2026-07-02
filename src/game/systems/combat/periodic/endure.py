@@ -1,11 +1,15 @@
 """Survival-related periodic ticks.
 
-Three hooks live here because they all manage "stay-alive" state and
-their order matters relative to the DoT loop:
+These hooks all manage "stay-alive" state and their order matters
+relative to the DoT loop:
 
   * ``endure_announcement`` (priority 10) — logs ``endure_just_triggered``
     and clears the flag. Runs first so the survival message shows up
     before any periodic damage in the same tick.
+  * ``aegis_reform_announcement`` (11), ``thanh_son_immovable_announcement``
+    (12), ``thanh_son_kien_co_crack_announcement`` (13) — flag-consuming
+    announcers for survival mechanics that fire silently inside the model
+    (``take_damage`` / ``apply_effect`` have no log handle).
   * ``thanh_tuyen_deferred`` (priority 15) — pays out one queued
     installment of Thánh Tuyền deferred damage. Bypasses
     ``take_damage`` to avoid re-deferring the already-deferred chunk.

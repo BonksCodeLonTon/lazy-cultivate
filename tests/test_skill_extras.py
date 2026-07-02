@@ -74,12 +74,12 @@ def test_charge_bonus_fires_every_n_casts():
     skill_data = {"charge_bonus": {"every": 3, "amount": 500}}
     session = make_session(actor, target)
     # Cast 1 + 2: counter increments, no detonation
-    apply_charge_bonus(session, actor, target, "K", skill_data, base_dmg_dealt=100)
-    apply_charge_bonus(session, actor, target, "K", skill_data, base_dmg_dealt=100)
+    apply_charge_bonus(session, actor, target, "K", skill_data)
+    apply_charge_bonus(session, actor, target, "K", skill_data)
     assert target.hp == 100_000
     assert actor.skill_cast_counts["K"] == 2
     # Cast 3: detonates +500, counter resets
-    apply_charge_bonus(session, actor, target, "K", skill_data, base_dmg_dealt=100)
+    apply_charge_bonus(session, actor, target, "K", skill_data)
     assert target.hp == 99_500
     assert actor.skill_cast_counts["K"] == 0
 
@@ -89,8 +89,8 @@ def test_charge_bonus_isolated_per_skill():
     target = make_combatant("t", hp=100_000, hp_max=100_000)
     spec = {"charge_bonus": {"every": 2, "amount": 100}}
     session = make_session(actor, target)
-    apply_charge_bonus(session, actor, target, "Skill1", spec, 0)
-    apply_charge_bonus(session, actor, target, "Skill2", spec, 0)
+    apply_charge_bonus(session, actor, target, "Skill1", spec)
+    apply_charge_bonus(session, actor, target, "Skill2", spec)
     # Each skill counts independently — neither has charged yet.
     assert target.hp == 100_000
     assert actor.skill_cast_counts == {"Skill1": 1, "Skill2": 1}

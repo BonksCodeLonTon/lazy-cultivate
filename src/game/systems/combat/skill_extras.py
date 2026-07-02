@@ -95,7 +95,7 @@ def _apply_defender_elemental(
 
 def apply_charge_bonus(
     session: "CombatSession", actor: Combatant, target: Combatant,
-    skill_key: str, skill_data: dict, base_dmg_dealt: int,
+    skill_key: str, skill_data: dict,
 ) -> None:
     """Increment per-skill cast count and detonate the bonus on every Nth cast."""
     spec = skill_data.get("charge_bonus")
