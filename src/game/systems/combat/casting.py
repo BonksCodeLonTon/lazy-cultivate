@@ -119,6 +119,10 @@ _CONSTITUTION_TRUE_DMG_CAP_PCT = 0.12
 # mỗi tầng" promised by BuffDiaMachHapThu; sibling per-tier knobs are the
 # _HAU_THO_* constants in procs.py).
 _HAU_THO_SHIELD_PCT_PER_TIER = 0.03
+# Cửu Thiên Huyền Lôi Thể — the ONE signature skill the whole body amplifies
+# (L1 dmg amp + Năng Lượng accrual, L6 extra hits). Named-skill gating keys on
+# this constant so the skill data itself stays untouched.
+_CT_NAMED_SKILL = "SkillLoiCuuThienNguLoiChanQuyet"
 
 
 def _deal_capped_true_dmg(
@@ -520,6 +524,21 @@ def cast_skill(
             if skill_data.get("force_crit") and not attack_stats.force_crit:
                 from dataclasses import replace as _dc_replace
                 attack_stats = _dc_replace(attack_stats, force_crit=True)
+            # Cửu Thiên Huyền Lôi — Tử Tiêu Lôi Khí: the body's signature art
+            # hits harder for the holder (+``ct_skill_dmg_amp``, plus
+            # +``ct_nang_luong_dmg_per_stack`` per banked Năng Lượng). Folded
+            # into final_dmg_bonus so it composes with the pipeline like every
+            # other amp. Inert for other builds / other skills (amp 0.0).
+            if actor.ct_skill_dmg_amp > 0 and skill_key == _CT_NAMED_SKILL:
+                from dataclasses import replace as _dc_replace
+                _ct_amp = (
+                    actor.ct_skill_dmg_amp
+                    + actor.ct_nang_luong_stacks * actor.ct_nang_luong_dmg_per_stack
+                )
+                attack_stats = _dc_replace(
+                    attack_stats,
+                    final_dmg_bonus=attack_stats.final_dmg_bonus + _ct_amp,
+                )
             defense_stats = build_defense_stats(target, target_mods, actor, spd_evasion_bonus)
             pen_pct = lc_effects.get_pen_pct(actor, session.rng, session.log)
             # Hỗn Nguyên Vô Cực — Vạn Pháp Vô Cản. A per-cast chance to treat the
@@ -588,6 +607,18 @@ def cast_skill(
             # Phi Thiên Lăng Vân — L6 arm guaranteed crit on next cast.
             if target.phong_dodge_arms_crit:
                 target.phong_crit_armed = True
+            # Cửu Thiên Huyền Lôi — L3 Thiểm Điện Thân Pháp: a successful dodge
+            # loads next turn's lightning. Stamped duration 2 so the buff
+            # survives this round's expiry tick and covers the holder's next
+            # turn (+``ct_dodge_loi_amp`` Lôi damage via dmg_bonus_loi).
+            if target.ct_dodge_loi_amp > 0:
+                target.apply_effect(
+                    "BuffThiemDienPhanKich", 2,
+                    overrides={"stat_bonus": {"dmg_bonus_loi": target.ct_dodge_loi_amp}},
+                )
+                session.log.append(
+                    f"    ⚡ **{target.name}** Thiểm Điện Phản Kích — nạp sét cho lượt kế!"
+                )
             # Huyền Minh Nhược — L6 Uyên (Abyss Depth) on dodge: each successful
             # evade deepens the abyss (+1, cap ``hm_uyen_cap``), folding into
             # evasion via BuffHuyenMinhHuTinh's scaling_rule (stack:hm_uyen).
@@ -1493,6 +1524,21 @@ def cast_skill(
     # against the limit lives in ``CombatSession._choose_skill``.
     actor.skill_usage_count[skill_key] = actor.skill_usage_count.get(skill_key, 0) + 1
 
+    # Cửu Thiên Huyền Lôi — Năng Lượng: each USE of the signature art banks a
+    # stack (cap ``ct_nang_luong_cap``, never resets), feeding the L1 amp and
+    # the L9 window's bonus turn. Counted per top-level cast, hit or miss
+    # ("mỗi lần được dùng").
+    if (
+        actor.ct_nang_luong_cap > 0
+        and skill_key == _CT_NAMED_SKILL
+        and actor.ct_nang_luong_stacks < actor.ct_nang_luong_cap
+    ):
+        actor.ct_nang_luong_stacks += 1
+        session.log.append(
+            f"    🔋 **{actor.name}** Năng Lượng "
+            f"[×{actor.ct_nang_luong_stacks}/{actor.ct_nang_luong_cap}]"
+        )
+
     # ── Skill-extras hooks (opt-in via JSON fields) ──────────────────────
     # 1. Multi-hit: replay damage path ``hit_count - 1`` more times. Each
     #    follow-up rolls its own crit/evade and fires on-hit procs but pays
@@ -1516,6 +1562,11 @@ def cast_skill(
     # cast (unlike the one-shot Thái Bạch bonus above, this never zeroes).
     if not _suppress_extras and actor.tk_extra_hits > 0:
         hit_count += actor.tk_extra_hits
+    # Cửu Thiên Huyền Lôi (L6) — the signature art strikes +N extra times,
+    # sustained, gated to the ONE named skill.
+    if not _suppress_extras and actor.ct_skill_extra_hits > 0 \
+            and skill_key == _CT_NAMED_SKILL:
+        hit_count += actor.ct_skill_extra_hits
     for i in range(hit_count - 1):
         if not target.is_alive():
             break

@@ -880,5 +880,15 @@
     "cleansable": true,
     "emoji": "🌫️",
     "duration": 3
+  },
+  {
+    "key": "DebuffLoiXuyenThau",
+    "vi": "Lôi Xuyên Thấu",
+    "en": "Lightning Penetration",
+    "kind": "debuff",
+    "description_vi": "Lôi khí xuyên thủng hộ thể, giảm mạnh kháng Lôi.",
+    "stat_bonus": { "res_loi": -0.22 },
+    "emoji": "🔻",
+    "duration": 4
   }
 ]

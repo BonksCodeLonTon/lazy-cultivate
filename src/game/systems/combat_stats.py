@@ -283,6 +283,30 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("tk_execute_chance",                "tk_execute_chance",                float),
     ("tk_execute_hp_pct",                "tk_execute_hp_pct",                float),
     ("tk_execute_stack_gate",            "tk_execute_stack_gate",            int),
+    # Cửu Thiên Huyền Lôi Thể (Lôi signature-art channeler) — config flags.
+    # L1: per-hit Tê Liệt (run_cuu_thien_procs reads ``ct_te_liet_on_hit_chance``)
+    # + named-skill amp (casting.py bumps the named cast's final_dmg_bonus by
+    # ``ct_skill_dmg_amp`` + ``ct_nang_luong_dmg_per_stack`` × Năng Lượng stacks;
+    # stacks accrue +1 per named cast, cap ``ct_nang_luong_cap``, no reset).
+    # L3: dodge stamps BuffThiemDienPhanKich (casting.py is_evaded block, gated
+    # ``ct_dodge_loi_amp``). L6: per-hit DebuffLoiXuyenThau
+    # (``ct_loi_shred_on_hit``) + named-skill ``ct_skill_extra_hits``. L9:
+    # every-``ct_burst_interval``-turn Thần Lôi Giáng Thế window for
+    # ``ct_burst_duration`` turns (+1 at ``ct_burst_bonus_turn_gate`` stacks;
+    # auras/cuu_thien.py); during the window hits auto-apply Sốc Điện + Sét
+    # Đánh and Tê Liệt at ``ct_burst_te_liet_chance``. Runtime
+    # (ct_nang_luong_stacks / ct_burst_turn_counter) are Combatant-only.
+    ("ct_te_liet_on_hit_chance",         "ct_te_liet_on_hit_chance",         float),
+    ("ct_skill_dmg_amp",                 "ct_skill_dmg_amp",                 float),
+    ("ct_nang_luong_cap",                "ct_nang_luong_cap",                int),
+    ("ct_nang_luong_dmg_per_stack",      "ct_nang_luong_dmg_per_stack",      float),
+    ("ct_dodge_loi_amp",                 "ct_dodge_loi_amp",                 float),
+    ("ct_loi_shred_on_hit",              "ct_loi_shred_on_hit",              bool),
+    ("ct_skill_extra_hits",              "ct_skill_extra_hits",              int),
+    ("ct_burst_interval",                "ct_burst_interval",                int),
+    ("ct_burst_duration",                "ct_burst_duration",                int),
+    ("ct_burst_te_liet_chance",          "ct_burst_te_liet_chance",          float),
+    ("ct_burst_bonus_turn_gate",         "ct_burst_bonus_turn_gate",         int),
 ]
 
 
@@ -623,6 +647,18 @@ class CombatStats:
     tk_execute_chance: float = 0.0
     tk_execute_hp_pct: float = 0.0
     tk_execute_stack_gate: int = 0
+    # Cửu Thiên Huyền Lôi Thể (Lôi signature-art channeler)
+    ct_te_liet_on_hit_chance: float = 0.0
+    ct_skill_dmg_amp: float = 0.0
+    ct_nang_luong_cap: int = 0
+    ct_nang_luong_dmg_per_stack: float = 0.0
+    ct_dodge_loi_amp: float = 0.0
+    ct_loi_shred_on_hit: bool = False
+    ct_skill_extra_hits: int = 0
+    ct_burst_interval: int = 0
+    ct_burst_duration: int = 0
+    ct_burst_te_liet_chance: float = 0.0
+    ct_burst_bonus_turn_gate: int = 0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

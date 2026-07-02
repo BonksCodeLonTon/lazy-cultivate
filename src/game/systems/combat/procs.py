@@ -459,6 +459,48 @@ def run_thien_kiep_procs(
         )
 
 
+def run_cuu_thien_procs(
+    session: "CombatSession", actor: Combatant, target: Combatant, dmg: int,
+) -> None:
+    """Cửu Thiên Huyền Lôi Thể on-hit riders, once per landed damaging hit.
+
+    Attacker side only (``actor`` holds the body): L1 Tử Tiêu Lôi Khí Tê Liệt
+    chance — boosted to ``ct_burst_te_liet_chance`` while the L9 Thần Lôi Giáng
+    Thế window is up (single roll, never two); L6 Lôi Trì Ngự Khống applies
+    DebuffLoiXuyenThau (res_loi shred) on every hit; during the L9 window every
+    hit also auto-applies Sốc Điện + Sét Đánh. All via ``inflict_debuff`` so
+    immunities / debuff-shrug / the Kiên Cố crack apply. Self-gates → no-op for
+    every other build; a negated hit (``dmg <= 0``) triggers nothing.
+    """
+    if dmg <= 0 or not target.is_alive():
+        return
+    _in_burst = actor.has_effect("BuffThanLoiGiangThe")
+    # L1 Tê Liệt — one roll at the better of base / burst-window chance.
+    _te_chance = actor.ct_te_liet_on_hit_chance
+    if _in_burst and actor.ct_burst_te_liet_chance > _te_chance:
+        _te_chance = actor.ct_burst_te_liet_chance
+    if _te_chance > 0 and session.rng.random() < _te_chance:
+        meta = EFFECTS.get("DebuffTeLiet")
+        if meta is not None:
+            from .casting import inflict_debuff
+            inflict_debuff(session, "DebuffTeLiet", meta, target, actor=actor)
+    # L6 Lôi Xuyên Thấu — guaranteed on-hit res_loi shred.
+    if actor.ct_loi_shred_on_hit and target.is_alive():
+        meta = EFFECTS.get("DebuffLoiXuyenThau")
+        if meta is not None:
+            from .casting import inflict_debuff
+            inflict_debuff(session, "DebuffLoiXuyenThau", meta, target, actor=actor)
+    # L9 window riders — every hit auto-applies Sốc Điện + Sét Đánh.
+    if _in_burst and target.is_alive():
+        from .casting import inflict_debuff
+        for _rider in ("DebuffSocDien", "DebuffSetDanh"):
+            if not target.is_alive():
+                break
+            meta = EFFECTS.get(_rider)
+            if meta is not None:
+                inflict_debuff(session, _rider, meta, target, actor=actor)
+
+
 def run_on_hit_procs(
     session: "CombatSession", actor: Combatant, target: Combatant, is_crit: bool,
     skill_key: str = "",
@@ -1162,6 +1204,7 @@ def apply_reactive_damage(
     run_hau_tho_procs(session, actor, target, dmg)
     run_thanh_son_procs(session, actor, target, dmg)
     run_thien_kiep_procs(session, actor, target, dmg, skill_element)
+    run_cuu_thien_procs(session, actor, target, dmg)
 
 
 def apply_reflect(

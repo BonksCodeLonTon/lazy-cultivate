@@ -2977,5 +2977,77 @@
     "cleansable": false,
     "emoji": "🌩️",
     "duration": 999
+  },
+  {
+    "key": "BuffTuTieuLoiKhi",
+    "vi": "Tử Tiêu Lôi Khí",
+    "en": "Purple Sky Thunder Qi",
+    "kind": "buff",
+    "description_vi": "Lôi khí tử tiêu quán thân — mỗi đòn 30% Tê Liệt; Cửu Thiên Ngự Lôi Chân Quyết +60% sát thương và tích Năng Lượng theo lần dùng.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌩️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThiemDienThanPhap",
+    "vi": "Thiểm Điện Thân Pháp",
+    "en": "Lightning Flash Movement",
+    "kind": "buff",
+    "description_vi": "Thân pháp nhanh như chớp giật — né thành công nạp sét cho lượt kế tiếp (+40% sát thương Lôi).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "💨",
+    "duration": 999
+  },
+  {
+    "key": "BuffThiemDienPhanKich",
+    "vi": "Thiểm Điện Phản Kích",
+    "en": "Lightning Flash Riposte",
+    "kind": "buff",
+    "description_vi": "Vừa né được đòn — sét đã nạp đầy tay: sát thương Lôi +40% trong lượt kế tiếp.",
+    "stat_bonus": { "dmg_bonus_loi": 0.40 },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚡",
+    "duration": 2
+  },
+  {
+    "key": "BuffLoiTriNguKhong",
+    "vi": "Lôi Trì Ngự Khống",
+    "en": "Thunder Pool Dominion",
+    "kind": "buff",
+    "description_vi": "Lôi trì mở rộng — mỗi đòn khắc Lôi Xuyên Thấu; Cửu Thiên Ngự Lôi Chân Quyết phóng thêm 3 đạo sét.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 999
+  },
+  {
+    "key": "BuffThanLoiDietThe",
+    "vi": "Thần Lôi Diệt Thế",
+    "en": "Divine Thunder World Destruction",
+    "kind": "buff",
+    "description_vi": "Cứ 7 lượt, thần lôi giáng thế 2 lượt (3 lượt khi đủ 5 Năng Lượng): tốc độ +100%, sát thương Lôi +50%, chắc chắn Bạo Kích, đòn đánh tự gắn Sốc Điện + Sét Đánh.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌩️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThanLoiGiangThe",
+    "vi": "Thần Lôi Giáng Thế",
+    "en": "Divine Thunder Descends",
+    "kind": "buff",
+    "description_vi": "Trạng thái thần lôi: tốc độ +100%, sát thương Lôi +50%, mọi đòn chắc chắn Bạo Kích và tự gắn Sốc Điện + Sét Đánh.",
+    "stat_bonus": { "spd_pct": 1.0, "dmg_bonus_loi": 0.50 },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌩️",
+    "duration": 2
   }
 ]

@@ -227,6 +227,7 @@ def build_attack_stats(
         or actor.bleed_hunter_crit_armed
         or actor.saint_crit_armed
         or actor.has_effect("BuffHoangCoThanhVuc")
+        or actor.has_effect("BuffThanLoiGiangThe")
         or actor.phong_crit_armed
     )
 

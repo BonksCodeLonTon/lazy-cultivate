@@ -923,6 +923,24 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "tk_execute_chance",
     "tk_execute_hp_pct",
     "tk_execute_stack_gate",
+    # Cửu Thiên Huyền Lôi Thể (Lôi signature-art channeler) — config keys read
+    # off Combatant fields by casting.py (named-skill amp + extra hits + Năng
+    # Lượng accrual + dodge stamp), run_cuu_thien_procs (Tê Liệt / Lôi shred /
+    # burst riders) and auras/cuu_thien.py (burst cadence). The window OUTPUTS
+    # (spd_pct / dmg_bonus_loi) live in BuffThanLoiGiangThe's stat_bonus (real
+    # stats). Runtime (ct_nang_luong_stacks / ct_burst_turn_counter) are
+    # Combatant-only.
+    "ct_te_liet_on_hit_chance",
+    "ct_skill_dmg_amp",
+    "ct_nang_luong_cap",
+    "ct_nang_luong_dmg_per_stack",
+    "ct_dodge_loi_amp",
+    "ct_loi_shred_on_hit",
+    "ct_skill_extra_hits",
+    "ct_burst_interval",
+    "ct_burst_duration",
+    "ct_burst_te_liet_chance",
+    "ct_burst_bonus_turn_gate",
 })
 
 

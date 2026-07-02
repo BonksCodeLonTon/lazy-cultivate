@@ -1049,6 +1049,33 @@ class Combatant:
     tk_execute_stack_gate: int = 0
     tk_van_loi_stacks = _StackProxy("tk_van_loi", store="stack_counters")  # runtime (NOT a config key)
 
+    # ── Cửu Thiên Huyền Lôi Thể (Lôi signature-art channeler) ─────────────────
+    # Everything orbits ONE named skill (casting.py ``_CT_NAMED_SKILL`` =
+    # SkillLoiCuuThienNguLoiChanQuyet). L1: per-hit ``ct_te_liet_on_hit_chance``
+    # Tê Liệt (run_cuu_thien_procs) + named-cast amp ``ct_skill_dmg_amp`` +
+    # Năng Lượng (``ct_nang_luong_stacks``: +1/named cast, cap
+    # ``ct_nang_luong_cap``, no reset; +``ct_nang_luong_dmg_per_stack`` amp each).
+    # L3: successful dodge stamps BuffThiemDienPhanKich (+40% Lôi next turn,
+    # gated ``ct_dodge_loi_amp``). L6: per-hit DebuffLoiXuyenThau
+    # (``ct_loi_shred_on_hit``) + ``ct_skill_extra_hits`` on the named cast.
+    # L9: every ``ct_burst_interval`` acted turns → BuffThanLoiGiangThe for
+    # ``ct_burst_duration`` (+1 at ``ct_burst_bonus_turn_gate`` stacks) via
+    # auras/cuu_thien.py; window = spd/loi-amp buff + force-crit (combat_hit)
+    # + auto Sốc Điện/Sét Đánh + ``ct_burst_te_liet_chance`` Tê Liệt per hit.
+    ct_te_liet_on_hit_chance: float = 0.0
+    ct_skill_dmg_amp: float = 0.0
+    ct_nang_luong_cap: int = 0
+    ct_nang_luong_dmg_per_stack: float = 0.0
+    ct_dodge_loi_amp: float = 0.0
+    ct_loi_shred_on_hit: bool = False
+    ct_skill_extra_hits: int = 0
+    ct_burst_interval: int = 0
+    ct_burst_duration: int = 0
+    ct_burst_te_liet_chance: float = 0.0
+    ct_burst_bonus_turn_gate: int = 0
+    ct_nang_luong_stacks = _StackProxy("ct_nang_luong", store="stack_counters")  # runtime (NOT a config key)
+    ct_burst_turn_counter: int = 0  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.
