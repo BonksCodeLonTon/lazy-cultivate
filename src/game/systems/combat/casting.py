@@ -1059,6 +1059,29 @@ def cast_skill(
                     "🏔️ Thái Sơn Áp Đỉnh",
                 )
 
+            # Thiên Kiếp Vạn Lôi Thể — L1 Vạn Lôi accrual, attacker side: each
+            # landed Lôi CAST charges +``tk_stack_on_cast`` tầng (``not
+            # _suppress_extras`` → multi-hit replays don't multiply it). The
+            # defender-side accrual (struck BY a Lôi skill) lives in
+            # ``run_thien_kiep_procs``. Self-gates on the L1 cap → inert
+            # otherwise.
+            if (
+                actor.tk_van_loi_cap > 0
+                and actor.tk_stack_on_cast > 0
+                and not _suppress_extras
+                and dmg > 0
+                and skill_elem == "loi"
+                and actor.tk_van_loi_stacks < actor.tk_van_loi_cap
+            ):
+                actor.tk_van_loi_stacks = min(
+                    actor.tk_van_loi_cap,
+                    actor.tk_van_loi_stacks + actor.tk_stack_on_cast,
+                )
+                session.log.append(
+                    f"    🌩️ **{actor.name}** Vạn Lôi "
+                    f"[×{actor.tk_van_loi_stacks}/{actor.tk_van_loi_cap}]"
+                )
+
             # Element-gated stack-on-hit — every successful damaging hit whose
             # element matches an equipped skill's ``passive_stack_on_element_hit``
             # entry stacks the named kind on the target. Scans both
@@ -1489,6 +1512,10 @@ def cast_skill(
     if not _suppress_extras and actor.next_skill_hit_count_bonus > 0:
         hit_count += actor.next_skill_hit_count_bonus
         actor.next_skill_hit_count_bonus = 0
+    # Thiên Kiếp Vạn Lôi Thể (L9) — SUSTAINED extra hits on every top-level
+    # cast (unlike the one-shot Thái Bạch bonus above, this never zeroes).
+    if not _suppress_extras and actor.tk_extra_hits > 0:
+        hit_count += actor.tk_extra_hits
     for i in range(hit_count - 1):
         if not target.is_alive():
             break

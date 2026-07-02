@@ -281,6 +281,7 @@ def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant 
         immune_hard_cc=bool(enemy_data.get("immune_hard_cc", False)),
         immune_stat_mutation=bool(enemy_data.get("immune_stat_mutation", False)),
         phase_lock_config=phase_lock_cfg,
+        rank=rank,
     )
 
 

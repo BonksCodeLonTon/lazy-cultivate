@@ -2913,5 +2913,69 @@
     "cleansable": false,
     "emoji": "⛰️",
     "duration": 999
+  },
+  {
+    "key": "BuffLoiDienThanHoa",
+    "vi": "Lôi Điện Thân Hòa",
+    "en": "Lightning-Body Harmony",
+    "kind": "buff",
+    "description_vi": "Thân hòa cùng lôi điện — kháng Lôi +60%, mỗi đạo sét (tự phóng hoặc trúng phải) nạp thêm Vạn Lôi.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌩️",
+    "duration": 999
+  },
+  {
+    "key": "BuffVanLoi",
+    "vi": "Vạn Lôi",
+    "en": "Myriad Thunder",
+    "kind": "buff",
+    "description_vi": "Mỗi tầng Vạn Lôi (tối đa 10): +20 bạo kích sát thương, +2% tốc độ. Tích khi phóng hoặc trúng kỹ năng Lôi.",
+    "stat_bonus": { "_tk_cdr": 20, "_tk_spd": 0.02 },
+    "scaling_rules": [
+      { "key": "_tk_cdr", "source": "stack:tk_van_loi", "output": "crit_dmg_rating", "max_output": 200 },
+      { "key": "_tk_spd", "source": "stack:tk_van_loi", "output": "spd_pct", "max_output": 0.20 }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚡",
+    "duration": 999
+  },
+  {
+    "key": "BuffDanLoiLuyenThe",
+    "vi": "Dẫn Lôi Luyện Thể",
+    "en": "Thunder-Channeling Tempered Body",
+    "kind": "buff",
+    "description_vi": "Dẫn sét vào đòn đánh — mỗi đòn trúng: 70% Sốc Điện, 30% Tê Liệt; đủ 5 tầng Vạn Lôi nâng thành 40% Choáng.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚡",
+    "duration": 999
+  },
+  {
+    "key": "BuffThienPhat",
+    "vi": "Thiên Phạt",
+    "en": "Heavenly Punishment",
+    "kind": "buff",
+    "description_vi": "Mắt phạt của trời — né tránh hữu hiệu của mục tiêu giảm 60% trước đòn đánh của thân thể này.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "👁️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThienKiep",
+    "vi": "Thiên Kiếp",
+    "en": "Heavenly Tribulation",
+    "kind": "buff",
+    "description_vi": "Thiên kiếp giáng thế — sát thương Lôi +35%, mọi đòn +1 lần đánh; địch thường kiệt sức dưới 20% HP có thể bị chấp hành tại chỗ.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌩️",
+    "duration": 999
   }
 ]

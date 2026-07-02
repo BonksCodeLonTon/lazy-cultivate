@@ -145,6 +145,11 @@ class Combatant:
     # shared HP pool stays authoritative and can't be trivialized by a
     # single attack's local-sim mutations.
     is_world_boss: bool = False
+    # Enemy rank string from the enemy JSON ("pho_thong"/"cuong_gia"/"hung_manh"
+    # /"tinh_anh"/"dai_nang"/"chi_ton"/beast specials). Empty for players and
+    # summons — rank-gated mechanics (Thiên Kiếp execute) treat "" as exempt,
+    # so players can never be executed in the arena.
+    rank: str = ""
     # Blocks any mechanic that permanently mutates the target's stats —
     # currently Âm Hồn Phệ soul-drain (hp_max shrink) and Đạo Pháp Thôn Phệ
     # stat-steal (atk/matk/def_stat siphon). World bosses get this implicitly
@@ -1014,6 +1019,35 @@ class Combatant:
     thanh_son_kien_co_stacks = _StackProxy("thanh_son_kien_co", store="stack_counters")  # runtime (NOT a config key)
     thanh_son_immovable_just_triggered: bool = False  # runtime (NOT a config key)
     thanh_son_kien_co_just_cracked: bool = False  # runtime (NOT a config key)
+
+    # ── Thiên Kiếp Vạn Lôi Thể (Lôi tribulation CC-lockdown executioner) ──────
+    # L1 Vạn Lôi accrual: +``tk_stack_on_cast`` per own landed Lôi CAST
+    # (casting.py, per-cast) and +``tk_stack_on_struck`` when STRUCK by a Lôi
+    # skill (run_thien_kiep_procs, defender side), cap ``tk_van_loi_cap``, never
+    # decays; BuffVanLoi's scaling_rules turn ``tk_van_loi_stacks`` into live
+    # crit_dmg_rating + spd_pct. L3 per-hit riders (run_thien_kiep_procs):
+    # ``tk_soc_dien_chance`` Sốc Điện + ``tk_te_liet_chance`` Tê Liệt, the
+    # latter upgraded to a ``tk_stun_chance`` Choáng(``tk_stun_turns``) roll once
+    # stacks ≥ ``tk_stun_stack_gate``. L6: ``tk_evasion_shred_pct`` — the
+    # ATTACKER-side evasion shred applied in build_defense_stats. L9:
+    # ``tk_extra_hits`` sustained hit_count bonus; HP-gated execute vs
+    # common-rank foes (``tk_execute_chance`` roll when target ≤
+    # ``tk_execute_hp_pct`` of max HP; at ``tk_execute_stack_gate`` stacks the
+    # roll is skipped and stacks reset).
+    tk_stack_on_cast: int = 0
+    tk_stack_on_struck: int = 0
+    tk_van_loi_cap: int = 0
+    tk_soc_dien_chance: float = 0.0
+    tk_te_liet_chance: float = 0.0
+    tk_stun_chance: float = 0.0
+    tk_stun_stack_gate: int = 0
+    tk_stun_turns: int = 0
+    tk_evasion_shred_pct: float = 0.0
+    tk_extra_hits: int = 0
+    tk_execute_chance: float = 0.0
+    tk_execute_hp_pct: float = 0.0
+    tk_execute_stack_gate: int = 0
+    tk_van_loi_stacks = _StackProxy("tk_van_loi", store="stack_counters")  # runtime (NOT a config key)
 
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated

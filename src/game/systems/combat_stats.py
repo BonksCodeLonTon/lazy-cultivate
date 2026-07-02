@@ -256,6 +256,33 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("thanh_son_stun_turns",             "thanh_son_stun_turns",             int),
     ("thanh_son_immovable_enabled",      "thanh_son_immovable_enabled",      bool),
     ("thanh_son_survive_shield_pct",     "thanh_son_survive_shield_pct",     float),
+    # Thiên Kiếp Vạn Lôi Thể (Lôi tribulation CC-lockdown executioner) — config
+    # flags. L1 Vạn Lôi accrual (casting.py per-cast attacker side reads
+    # ``tk_stack_on_cast``; run_thien_kiep_procs defender side reads
+    # ``tk_stack_on_struck`` when the incoming skill is Lôi; ``tk_van_loi_cap``
+    # gates both; BuffVanLoi's scaling_rules turn the ``tk_van_loi_stacks``
+    # counter into live crit_dmg_rating + spd_pct). L3 per-hit CC riders
+    # (run_thien_kiep_procs: ``tk_soc_dien_chance`` / ``tk_te_liet_chance``,
+    # upgraded to a ``tk_stun_chance`` Choáng roll once stacks ≥
+    # ``tk_stun_stack_gate``). L6 attacker-side evasion shred
+    # (build_defense_stats reads ``tk_evasion_shred_pct`` off the ATTACKER).
+    # L9: ``tk_extra_hits`` sustained hit_count bonus (casting.py); HP-gated
+    # execute vs common-rank enemies (``tk_execute_chance`` /
+    # ``tk_execute_hp_pct``; at ``tk_execute_stack_gate`` stacks the roll is
+    # skipped and stacks reset). Runtime (tk_van_loi_stacks) is Combatant-only.
+    ("tk_stack_on_cast",                 "tk_stack_on_cast",                 int),
+    ("tk_stack_on_struck",               "tk_stack_on_struck",               int),
+    ("tk_van_loi_cap",                   "tk_van_loi_cap",                   int),
+    ("tk_soc_dien_chance",               "tk_soc_dien_chance",               float),
+    ("tk_te_liet_chance",                "tk_te_liet_chance",                float),
+    ("tk_stun_chance",                   "tk_stun_chance",                   float),
+    ("tk_stun_stack_gate",               "tk_stun_stack_gate",               int),
+    ("tk_stun_turns",                    "tk_stun_turns",                    int),
+    ("tk_evasion_shred_pct",             "tk_evasion_shred_pct",             float),
+    ("tk_extra_hits",                    "tk_extra_hits",                    int),
+    ("tk_execute_chance",                "tk_execute_chance",                float),
+    ("tk_execute_hp_pct",                "tk_execute_hp_pct",                float),
+    ("tk_execute_stack_gate",            "tk_execute_stack_gate",            int),
 ]
 
 
@@ -582,6 +609,20 @@ class CombatStats:
     thanh_son_stun_turns: int = 0
     thanh_son_immovable_enabled: bool = False
     thanh_son_survive_shield_pct: float = 0.0
+    # Thiên Kiếp Vạn Lôi Thể (Lôi tribulation CC-lockdown executioner)
+    tk_stack_on_cast: int = 0
+    tk_stack_on_struck: int = 0
+    tk_van_loi_cap: int = 0
+    tk_soc_dien_chance: float = 0.0
+    tk_te_liet_chance: float = 0.0
+    tk_stun_chance: float = 0.0
+    tk_stun_stack_gate: int = 0
+    tk_stun_turns: int = 0
+    tk_evasion_shred_pct: float = 0.0
+    tk_extra_hits: int = 0
+    tk_execute_chance: float = 0.0
+    tk_execute_hp_pct: float = 0.0
+    tk_execute_stack_gate: int = 0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

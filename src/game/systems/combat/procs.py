@@ -372,6 +372,93 @@ def run_thanh_son_procs(
         )
 
 
+# Thiên Kiếp Vạn Lôi Thể — L9 Chấp Hành rank gate. Only common-tier foes can be
+# executed: elites (dai_nang), bosses (chi_ton), beast specials (than_thu /
+# tien_thu) and world bosses are exempt, as are players/summons (rank "").
+_TK_EXECUTABLE_RANKS = frozenset({"pho_thong", "cuong_gia", "hung_manh", "tinh_anh"})
+
+
+def run_thien_kiep_procs(
+    session: "CombatSession", actor: Combatant, target: Combatant, dmg: int,
+    skill_element: str | None,
+) -> None:
+    """Thiên Kiếp Vạn Lôi Thể on-hit logic, once per landed damaging hit.
+
+    Attacker side (``actor`` holds the body): L3 Dẫn Lôi Luyện Thể per-hit CC
+    riders — Sốc Điện chance, plus Tê Liệt upgraded to a Choáng roll once Vạn
+    Lôi stacks reach the gate — and the L9 Chấp Hành execute (HP-gated,
+    common-rank-only; at the stack gate the chance roll is skipped and stacks
+    reset). Defender side (``target`` holds the body): being STRUCK by a Lôi
+    skill banks +``tk_stack_on_struck`` Vạn Lôi (the own-cast accrual lives in
+    casting.py, per cast). Each branch self-gates → no-op for other builds.
+    A negated hit (``dmg <= 0``) triggers nothing.
+    """
+    if dmg <= 0:
+        return
+    # ── Attacker side: L3 CC riders ────────────────────────────────────────
+    if actor.tk_soc_dien_chance > 0 and target.is_alive() \
+            and session.rng.random() < actor.tk_soc_dien_chance:
+        meta = EFFECTS.get("DebuffSocDien")
+        if meta is not None:
+            from .casting import inflict_debuff
+            inflict_debuff(session, "DebuffSocDien", meta, target, actor=actor)
+    if actor.tk_te_liet_chance > 0 and target.is_alive():
+        from .casting import inflict_debuff
+        if actor.tk_stun_stack_gate > 0 \
+                and actor.tk_van_loi_stacks >= actor.tk_stun_stack_gate:
+            # Stack breakpoint reached — the paralysis roll upgrades to a stun.
+            if actor.tk_stun_chance > 0 \
+                    and session.rng.random() < actor.tk_stun_chance:
+                meta = EFFECTS.get(EffectKey.CC_STUN.value)
+                if meta is not None:
+                    inflict_debuff(
+                        session, EffectKey.CC_STUN.value, meta, target, actor=actor,
+                        overrides={"duration": actor.tk_stun_turns} if actor.tk_stun_turns else None,
+                    )
+        elif session.rng.random() < actor.tk_te_liet_chance:
+            meta = EFFECTS.get("DebuffTeLiet")
+            if meta is not None:
+                inflict_debuff(session, "DebuffTeLiet", meta, target, actor=actor)
+    # ── Attacker side: L9 Chấp Hành (HP-gated execute) ─────────────────────
+    if (
+        actor.tk_execute_chance > 0
+        and target.is_alive()
+        and not target.is_world_boss
+        and target.rank in _TK_EXECUTABLE_RANKS
+        and actor.tk_execute_hp_pct > 0
+        and target.hp <= int(target.hp_max * actor.tk_execute_hp_pct)
+    ):
+        auto = (
+            actor.tk_execute_stack_gate > 0
+            and actor.tk_van_loi_stacks >= actor.tk_execute_stack_gate
+        )
+        if auto or session.rng.random() < actor.tk_execute_chance:
+            if auto:
+                actor.tk_van_loi_stacks = 0  # the guaranteed execute spends all Vạn Lôi
+            target.take_damage(target.hp, bypass_shield=True)
+            session.log.append(
+                f"  🌩️⚔️ **{actor.name}** THIÊN KIẾP CHẤP HÀNH — "
+                f"sét trời xử tử **{target.name}**!"
+                + (" (tiêu 10 tầng Vạn Lôi)" if auto else "")
+            )
+    # ── Defender side: struck by a Lôi skill → bank Vạn Lôi ────────────────
+    if (
+        target.tk_van_loi_cap > 0
+        and target.tk_stack_on_struck > 0
+        and target.is_alive()
+        and skill_element == "loi"
+        and target.tk_van_loi_stacks < target.tk_van_loi_cap
+    ):
+        target.tk_van_loi_stacks = min(
+            target.tk_van_loi_cap,
+            target.tk_van_loi_stacks + target.tk_stack_on_struck,
+        )
+        session.log.append(
+            f"  🌩️ **{target.name}** Vạn Lôi nạp điện "
+            f"[×{target.tk_van_loi_stacks}/{target.tk_van_loi_cap}]"
+        )
+
+
 def run_on_hit_procs(
     session: "CombatSession", actor: Combatant, target: Combatant, is_crit: bool,
     skill_key: str = "",
@@ -1074,6 +1161,7 @@ def apply_reactive_damage(
     run_huyen_minh_procs(session, actor, target)
     run_hau_tho_procs(session, actor, target, dmg)
     run_thanh_son_procs(session, actor, target, dmg)
+    run_thien_kiep_procs(session, actor, target, dmg, skill_element)
 
 
 def apply_reflect(

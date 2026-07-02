@@ -339,13 +339,22 @@ def build_defense_stats(
     # buff-driven temporary armor boosts so a future "Stone-Skin" buff with
     # ``def_pct: 0.30`` actually affects mitigation.
     effective_def_stat = int(target.def_stat * (1.0 + float(target_mods.get("def_pct", 0.0))))
+    # Thiên Phạt (Thiên Kiếp Vạn Lôi L6) — ATTACKER-side evasion shred: the
+    # target's whole effective evasion (base + mods + SPD conversion) is scaled
+    # down before the dodge roll. Probabilistic counter to dodge builds — never
+    # a guaranteed hit (bypass_evasion stays skill-only).
+    effective_evasion = (
+        target.evasion_rating
+        + int(target_mods.get("evasion_rating", 0))
+        + spd_evasion_bonus(effective_spd)
+        + evasion_pct_bonus
+    )
+    if actor.tk_evasion_shred_pct > 0 and effective_evasion > 0:
+        effective_evasion = int(
+            effective_evasion * (1.0 - min(0.90, actor.tk_evasion_shred_pct))
+        )
     return DefenseStats(
-        evasion_rating=(
-            target.evasion_rating
-            + int(target_mods.get("evasion_rating", 0))
-            + spd_evasion_bonus(effective_spd)
-            + evasion_pct_bonus
-        ),
+        evasion_rating=effective_evasion,
         crit_res_rating=target.crit_res_rating + int(target_mods.get("crit_res_rating", 0)),
         def_stat=effective_def_stat,
         resistances=effective_res,

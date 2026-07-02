@@ -903,6 +903,26 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "tho_phys_immune_shield_gate",
     "tho_auto_slow_enabled",
     "tho_earth_aura_shield_pct",
+    # Thiên Kiếp Vạn Lôi Thể (Lôi tribulation CC-lockdown executioner) — config
+    # keys read off Combatant fields by casting.py (per-cast Vạn Lôi accrual +
+    # sustained ``tk_extra_hits``), run_thien_kiep_procs (L3 CC riders, L9
+    # execute, defender stack-on-struck) and build_defense_stats (attacker-side
+    # ``tk_evasion_shred_pct``). The per-stack OUTPUTS (crit_dmg_rating /
+    # spd_pct) come from BuffVanLoi's scaling_rules (real stats). Runtime
+    # counter (tk_van_loi_stacks) is Combatant-only.
+    "tk_stack_on_cast",
+    "tk_stack_on_struck",
+    "tk_van_loi_cap",
+    "tk_soc_dien_chance",
+    "tk_te_liet_chance",
+    "tk_stun_chance",
+    "tk_stun_stack_gate",
+    "tk_stun_turns",
+    "tk_evasion_shred_pct",
+    "tk_extra_hits",
+    "tk_execute_chance",
+    "tk_execute_hp_pct",
+    "tk_execute_stack_gate",
 })
 
 
