@@ -135,8 +135,8 @@
             "thanh_son_dmg_from_shield_pct": 0.35,
             "thanh_son_l3_full_bonus": 0.10,
             "thanh_son_bao_mon_chance": 0.60,
-            "thanh_son_stun_chance": 0.35,
-            "thanh_son_stun_turns": 2
+            "stun_on_hit_pct": 0.35,
+            "stun_on_hit_turns": 2
           },
           "effects": ["BuffThaiSonApDinh"]
         },

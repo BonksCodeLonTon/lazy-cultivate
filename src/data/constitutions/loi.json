@@ -157,7 +157,7 @@
           "passive_vi": "Tử Tiêu Lôi Khí",
           "passive_en": "Purple Sky Thunder Qi",
           "description_vi": "Mỗi đòn trúng: 30% Tê Liệt (2 lượt). Cửu Thiên Ngự Lôi Chân Quyết +60% sát thương; mỗi lần thi triển tích 1 tầng Năng Lượng (tối đa 5, không tụt) — mỗi tầng cộng thêm +12% sát thương cho chính chiêu đó.",
-          "stat_bonuses": { "ct_te_liet_on_hit_chance": 0.30, "ct_skill_dmg_amp": 0.60, "ct_nang_luong_cap": 5, "ct_nang_luong_dmg_per_stack": 0.12 },
+          "stat_bonuses": { "te_liet_on_hit_pct": 0.30, "ct_skill_dmg_amp": 0.60, "ct_nang_luong_cap": 5, "ct_nang_luong_dmg_per_stack": 0.12 },
           "effects": ["BuffTuTieuLoiKhi"]
         },
         "3": {
@@ -171,14 +171,14 @@
           "passive_vi": "Lôi Trì Ngự Khống",
           "passive_en": "Thunder Pool Dominion",
           "description_vi": "Mỗi đòn trúng khắc Lôi Xuyên Thấu (kháng Lôi −22%, 4 lượt). Cửu Thiên Ngự Lôi Chân Quyết đánh thêm +3 lần mỗi lần thi triển.",
-          "stat_bonuses": { "crit_rating": 80, "ct_loi_shred_on_hit": true, "ct_skill_extra_hits": 3 },
+          "stat_bonuses": { "crit_rating": 80, "loi_shred_on_hit_pct": 1.0, "ct_skill_extra_hits": 3 },
           "effects": ["BuffLoiTriNguKhong"]
         },
         "9": {
           "passive_vi": "Thần Lôi Diệt Thế",
           "passive_en": "Divine Thunder World Destruction",
           "description_vi": "Mỗi 7 lượt nhập trạng thái Thần Lôi Giáng Thế 2 lượt (3 lượt khi đủ 5 Năng Lượng): tốc độ +100%, sát thương Lôi +50%, mọi đòn chắc chắn Bạo Kích và tự gắn Sốc Điện + Sét Đánh, 50% Tê Liệt.",
-          "stat_bonuses": { "matk_pct": 0.06, "crit_rating": 90, "ct_burst_interval": 7, "ct_burst_duration": 2, "ct_burst_te_liet_chance": 0.50, "ct_burst_bonus_turn_gate": 5 },
+          "stat_bonuses": { "matk_pct": 0.06, "crit_rating": 90, "ct_burst_interval": 7, "ct_burst_duration": 2, "ct_burst_bonus_turn_gate": 5 },
           "effects": ["BuffThanLoiDietThe"]
         }
       }

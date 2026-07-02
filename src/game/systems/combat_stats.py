@@ -147,7 +147,6 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     # Runtime counters (han_khi_stacks, han_khi_mp_drained_total) are
     # Combatant-only and excluded. All on-hit logic lives in run_on_hit_procs.
     ("bm_cold_aura_enabled",             "bm_cold_aura_enabled",             bool),
-    ("bm_freeze_on_attack_chance",       "bm_freeze_on_attack_chance",       float),
     ("bm_mp_drain_pct",                  "bm_mp_drain_pct",                  float),
     ("bm_mp_drain_heal_pct",             "bm_mp_drain_heal_pct",             float),
     ("bm_han_khi_cap",                   "bm_han_khi_cap",                   int),
@@ -252,8 +251,6 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("thanh_son_dmg_from_shield_pct",    "thanh_son_dmg_from_shield_pct",    float),
     ("thanh_son_l3_full_bonus",          "thanh_son_l3_full_bonus",          float),
     ("thanh_son_bao_mon_chance",         "thanh_son_bao_mon_chance",         float),
-    ("thanh_son_stun_chance",            "thanh_son_stun_chance",            float),
-    ("thanh_son_stun_turns",             "thanh_son_stun_turns",             int),
     ("thanh_son_immovable_enabled",      "thanh_son_immovable_enabled",      bool),
     ("thanh_son_survive_shield_pct",     "thanh_son_survive_shield_pct",     float),
     # Thiên Kiếp Vạn Lôi Thể (Lôi tribulation CC-lockdown executioner) — config
@@ -283,28 +280,25 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("tk_execute_hp_pct",                "tk_execute_hp_pct",                float),
     ("tk_execute_stack_gate",            "tk_execute_stack_gate",            int),
     # Cửu Thiên Huyền Lôi Thể (Lôi signature-art channeler) — config flags.
-    # L1: per-hit Tê Liệt (run_cuu_thien_procs reads ``ct_te_liet_on_hit_chance``)
+    # L1: per-hit Tê Liệt rides the GENERIC ``te_liet_on_hit_pct`` lane
     # + named-skill amp (casting.py bumps the named cast's final_dmg_bonus by
     # ``ct_skill_dmg_amp`` + ``ct_nang_luong_dmg_per_stack`` × Năng Lượng stacks;
     # stacks accrue +1 per named cast, cap ``ct_nang_luong_cap``, no reset).
     # L3: dodge stamps BuffThiemDienPhanKich (casting.py is_evaded block, gated
     # ``ct_dodge_loi_amp``). L6: per-hit DebuffLoiXuyenThau
-    # (``ct_loi_shred_on_hit``) + named-skill ``ct_skill_extra_hits``. L9:
+    # (generic ``loi_shred_on_hit_pct`` lane) + named-skill ``ct_skill_extra_hits``. L9:
     # every-``ct_burst_interval``-turn Thần Lôi Giáng Thế window for
     # ``ct_burst_duration`` turns (+1 at ``ct_burst_bonus_turn_gate`` stacks;
     # auras/cuu_thien.py); during the window hits auto-apply Sốc Điện + Sét
-    # Đánh and Tê Liệt at ``ct_burst_te_liet_chance``. Runtime
+    # Đánh; the shock/te-liet boosts ride the window buff stat_bonus. Runtime
     # (ct_nang_luong_stacks / ct_burst_turn_counter) are Combatant-only.
-    ("ct_te_liet_on_hit_chance",         "ct_te_liet_on_hit_chance",         float),
     ("ct_skill_dmg_amp",                 "ct_skill_dmg_amp",                 float),
     ("ct_nang_luong_cap",                "ct_nang_luong_cap",                int),
     ("ct_nang_luong_dmg_per_stack",      "ct_nang_luong_dmg_per_stack",      float),
     ("ct_dodge_loi_amp",                 "ct_dodge_loi_amp",                 float),
-    ("ct_loi_shred_on_hit",              "ct_loi_shred_on_hit",              bool),
     ("ct_skill_extra_hits",              "ct_skill_extra_hits",              int),
     ("ct_burst_interval",                "ct_burst_interval",                int),
     ("ct_burst_duration",                "ct_burst_duration",                int),
-    ("ct_burst_te_liet_chance",          "ct_burst_te_liet_chance",          float),
     ("ct_burst_bonus_turn_gate",         "ct_burst_bonus_turn_gate",         int),
     # Tiêu Dao Thần Thể (Phong movement-dancer / dual-form transformer) —
     # config flags. L1: casting Phù Dao Trực Thượng stamps the resonance buff
@@ -341,7 +335,7 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     # Nhận Tích accrual is body-specific (+1/hit on the TARGET, cap
     # ``cp_tich_cap``; per-target by construction — the counter lives on the
     # enemy Combatant). L3: per-hit DebuffPhongXuyenThau
-    # (``cp_phong_shred_on_hit``) + sustained armor pierce
+    # (generic ``phong_shred_on_hit_pct`` lane) + sustained armor pierce
     # ``cp_pierce_def_pct`` upgraded to ``cp_pierce_def_pct_high`` once the
     # target carries ≥ ``cp_pierce_tich_gate`` Tích. L6: per-hit
     # ``cp_bonus_strike_chance`` to auto-fire SkillPhongBonusStrike
@@ -354,7 +348,6 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     # reset). Runtime (cp_tich_stacks on the target / cp_storm_turn_counter)
     # are Combatant-only.
     ("cp_tich_cap",                      "cp_tich_cap",                      int),
-    ("cp_phong_shred_on_hit",            "cp_phong_shred_on_hit",            bool),
     ("cp_pierce_def_pct",                "cp_pierce_def_pct",                float),
     ("cp_pierce_def_pct_high",           "cp_pierce_def_pct_high",           float),
     ("cp_pierce_tich_gate",              "cp_pierce_tich_gate",              int),
@@ -364,6 +357,16 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("cp_storm_cuon_bay_chance",         "cp_storm_cuon_bay_chance",         float),
     ("cp_storm_extra_hits",              "cp_storm_extra_hits",              int),
     ("cp_tich_execute_atk_scale",        "cp_tich_execute_atk_scale",        float),
+    # ── Generic on-hit lane extensions (NOT per-body; shared like
+    # mark/bleed/stun_on_hit_pct). ``te_liet_on_hit_pct`` and the two
+    # ``<elem>_shred_on_hit_pct`` chances are _ON_HIT_PROCS table rows —
+    # real stats (buff/gear contributions aggregate; NOT config-only).
+    # ``stun_on_hit_turns`` optionally overrides the generic stun proc's
+    # default 1-turn duration (config-only).
+    ("te_liet_on_hit_pct",               "te_liet_on_hit_pct",               float),
+    ("loi_shred_on_hit_pct",             "loi_shred_on_hit_pct",             float),
+    ("phong_shred_on_hit_pct",           "phong_shred_on_hit_pct",           float),
+    ("stun_on_hit_turns",                "stun_on_hit_turns",                int),
 ]
 
 
@@ -625,7 +628,6 @@ class CombatStats:
     harmony_l9_cleanse: int = 0
     #   Bắc Minh Băng Phách Thể (Thủy ice/freeze/MP-drain disruptor)
     bm_cold_aura_enabled: bool = False
-    bm_freeze_on_attack_chance: float = 0.0
     bm_mp_drain_pct: float = 0.0
     bm_mp_drain_heal_pct: float = 0.0
     bm_han_khi_cap: int = 0
@@ -686,8 +688,6 @@ class CombatStats:
     thanh_son_dmg_from_shield_pct: float = 0.0
     thanh_son_l3_full_bonus: float = 0.0
     thanh_son_bao_mon_chance: float = 0.0
-    thanh_son_stun_chance: float = 0.0
-    thanh_son_stun_turns: int = 0
     thanh_son_immovable_enabled: bool = False
     thanh_son_survive_shield_pct: float = 0.0
     # Thiên Kiếp Vạn Lôi Thể (Lôi tribulation CC-lockdown executioner)
@@ -704,16 +704,13 @@ class CombatStats:
     tk_execute_hp_pct: float = 0.0
     tk_execute_stack_gate: int = 0
     # Cửu Thiên Huyền Lôi Thể (Lôi signature-art channeler)
-    ct_te_liet_on_hit_chance: float = 0.0
     ct_skill_dmg_amp: float = 0.0
     ct_nang_luong_cap: int = 0
     ct_nang_luong_dmg_per_stack: float = 0.0
     ct_dodge_loi_amp: float = 0.0
-    ct_loi_shred_on_hit: bool = False
     ct_skill_extra_hits: int = 0
     ct_burst_interval: int = 0
     ct_burst_duration: int = 0
-    ct_burst_te_liet_chance: float = 0.0
     ct_burst_bonus_turn_gate: int = 0
     # Tiêu Dao Thần Thể (Phong movement-dancer / dual-form transformer)
     td_resonance_enabled: bool = False
@@ -731,7 +728,6 @@ class CombatStats:
     td_bang_extra_hits: int = 0
     # Cửu Thiên Cương Phong Thể (Phong anti-evasion wind-blade shredder)
     cp_tich_cap: int = 0
-    cp_phong_shred_on_hit: bool = False
     cp_pierce_def_pct: float = 0.0
     cp_pierce_def_pct_high: float = 0.0
     cp_pierce_tich_gate: int = 0
@@ -741,6 +737,11 @@ class CombatStats:
     cp_storm_cuon_bay_chance: float = 0.0
     cp_storm_extra_hits: int = 0
     cp_tich_execute_atk_scale: float = 0.0
+    # Generic on-hit lane extensions (shared, like mark/bleed/stun_on_hit_pct)
+    te_liet_on_hit_pct: float = 0.0
+    loi_shred_on_hit_pct: float = 0.0
+    phong_shred_on_hit_pct: float = 0.0
+    stun_on_hit_turns: int = 0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

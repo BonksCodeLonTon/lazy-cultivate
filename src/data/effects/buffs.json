@@ -3044,7 +3044,7 @@
     "en": "Divine Thunder Descends",
     "kind": "buff",
     "description_vi": "Trạng thái thần lôi: tốc độ +100%, sát thương Lôi +50%, mọi đòn chắc chắn Bạo Kích và tự gắn Sốc Điện + Sét Đánh.",
-    "stat_bonus": { "spd_pct": 1.0, "dmg_bonus_loi": 0.50 },
+    "stat_bonus": { "spd_pct": 1.0, "dmg_bonus_loi": 0.50, "shock_on_hit_pct": 1.0, "te_liet_on_hit_pct": 0.20 },
     "stealable": false,
     "cleansable": false,
     "emoji": "🌩️",

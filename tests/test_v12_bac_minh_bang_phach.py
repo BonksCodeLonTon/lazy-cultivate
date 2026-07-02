@@ -106,8 +106,10 @@ def test_new_effects_registered() -> None:
 def test_config_flags_per_level(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     assert _player(1).bm_cold_aura_enabled is True
-    assert _player(1).bm_freeze_on_attack_chance == 0.0
-    assert _player(3).bm_freeze_on_attack_chance == pytest.approx(0.45)
+    assert _player(1).freeze_on_skill_chance < 0.45
+    # Freeze rides the GENERIC freeze_on_skill_chance lane (additive with
+    # any linh-căn contribution).
+    assert _player(3).freeze_on_skill_chance >= 0.45
     assert _player(6).bm_mp_drain_pct == pytest.approx(0.08)
     assert _player(6).bm_han_khi_cap == 9
     assert _player(9).bm_heal_reduce_chance == pytest.approx(0.40)
@@ -174,7 +176,10 @@ def test_l3_freeze_fires(monkeypatch) -> None:
     enemy = _enemy()
     session = _session(player, enemy)
     session.rng.random = lambda: 0.0  # < 0.45 → freeze
-    run_bac_minh_procs(session, player, enemy)
+    # Freeze rides the GENERIC freeze_on_skill_chance lane (run_on_hit_procs).
+    player.crit_rating = 0
+    skill = registry.get_skill(_SKILL)
+    cast_skill(session, player, enemy, _SKILL, dict(skill), 0)
     assert enemy.has_effect("DebuffDongBang")
 
 
@@ -184,7 +189,9 @@ def test_l3_freeze_misses_on_high_roll(monkeypatch) -> None:
     enemy = _enemy()
     session = _session(player, enemy)
     session.rng.random = lambda: 0.99  # ≥ 0.45 → no freeze
-    run_bac_minh_procs(session, player, enemy)
+    player.crit_rating = 0
+    skill = registry.get_skill(_SKILL)
+    cast_skill(session, player, enemy, _SKILL, dict(skill), 0)
     assert not enemy.has_effect("DebuffDongBang")
 
 
@@ -297,7 +304,7 @@ def test_flag_off_inert() -> None:
         assert not player.has_effect(key)
     # All config in the milestones → flag-off the body is fully inert.
     assert player.bm_cold_aura_enabled is False
-    assert player.bm_freeze_on_attack_chance == 0.0
+    assert player.freeze_on_skill_chance < 0.45
     assert player.bm_mp_drain_pct == 0.0
     assert player.bm_heal_reduce_chance == 0.0
     enemy = _enemy()
@@ -312,4 +319,4 @@ def test_flag_off_resolves_to_flat() -> None:
     from src.game.systems.cultivation import compute_constitution_bonuses
     flat = compute_constitution_bonuses(_BODY, "qi", 6)
     assert flat == _body_data()["stat_bonuses"]
-    assert "bm_freeze_on_attack_chance" not in flat
+    assert "freeze_on_skill_chance" not in flat

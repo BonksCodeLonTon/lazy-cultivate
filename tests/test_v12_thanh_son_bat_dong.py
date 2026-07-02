@@ -133,7 +133,9 @@ def test_config_flags_per_level(monkeypatch) -> None:
     assert p3.thanh_son_dmg_from_shield_pct == pytest.approx(0.35)
     assert p3.thanh_son_l3_full_bonus == pytest.approx(0.10)
     assert p3.thanh_son_bao_mon_chance == pytest.approx(0.60)
-    assert p3.thanh_son_stun_chance == pytest.approx(0.35)
+    # Choáng rides the GENERIC stun lane (+ duration override).
+    assert p3.stun_on_hit_pct >= 0.35
+    assert p3.stun_on_hit_turns == 2
     p9 = _player(9)
     assert p9.thanh_son_immovable_enabled is True
     assert p9.thanh_son_survive_shield_pct == pytest.approx(0.30)
@@ -232,10 +234,16 @@ def test_l3_riders_apply_bao_mon_and_stun(monkeypatch) -> None:
     player = _player(3)
     enemy = _enemy()
     session = _session(player, enemy)
-    session.rng.random = lambda: 0.0  # both rider rolls land
-    run_thanh_son_procs(session, player, enemy, dmg=1_000)  # player attacks → riders on enemy
+    session.rng.random = lambda: 0.0  # every rider roll lands
+    # Bào Mòn (body proc) — the Choáng rider rides the generic stun lane, so
+    # drive a real cast for it (run_on_hit_procs consumes the table + specials).
+    run_thanh_son_procs(session, player, enemy, dmg=1_000)
     assert enemy.has_effect("DebuffBaoMon")
+    player.crit_rating = 0
+    skill = registry.get_skill(_ATTACK)
+    cast_skill(session, player, enemy, _ATTACK, dict(skill), 0)
     assert enemy.has_effect("CCStun")
+    assert enemy.effects["CCStun"] == 2      # stun_on_hit_turns override
 
 
 def test_l3_riders_skip_negated_hit(monkeypatch) -> None:

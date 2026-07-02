@@ -111,7 +111,7 @@ def test_body_registered_and_shape() -> None:
     assert data["cost"]["merit"] == 60000
     assert data["process"]["milestones"] == [1, 3, 6, 9]
     flat = data["stat_bonuses"]
-    for cfg in ("ct_te_liet_on_hit_chance", "ct_skill_dmg_amp",
+    for cfg in ("te_liet_on_hit_pct", "ct_skill_dmg_amp",
                 "ct_burst_interval", "ct_skill_extra_hits"):
         assert cfg not in flat
     assert flat["spd_pct"] == 0.06
@@ -137,19 +137,19 @@ def test_new_effects_registered() -> None:
 def test_config_flags_per_level(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     p1 = _player(1)
-    assert p1.ct_te_liet_on_hit_chance == pytest.approx(0.30)
+    # Tê Liệt rides the GENERIC te_liet_on_hit_pct lane.
+    assert p1.te_liet_on_hit_pct >= 0.30
     assert p1.ct_skill_dmg_amp == pytest.approx(0.60)
     assert p1.ct_nang_luong_cap == 5
     assert p1.ct_nang_luong_dmg_per_stack == pytest.approx(0.12)
     p3 = _player(3)
     assert p3.ct_dodge_loi_amp == pytest.approx(0.40)
     p6 = _player(6)
-    assert p6.ct_loi_shred_on_hit is True
+    assert p6.loi_shred_on_hit_pct >= 1.0    # generic shred lane
     assert p6.ct_skill_extra_hits == 3
     p9 = _player(9)
     assert p9.ct_burst_interval == 7
     assert p9.ct_burst_duration == 2
-    assert p9.ct_burst_te_liet_chance == pytest.approx(0.50)
     assert p9.ct_burst_bonus_turn_gate == 5
 
 
@@ -242,9 +242,11 @@ def test_l6_shred_applied_on_hit(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(6)
     enemy = _enemy()
+    player.crit_rating = 0
     session = _session(player, enemy)
-    session.rng.random = lambda: 0.99            # Tê Liệt roll fails; shred is guaranteed
-    run_cuu_thien_procs(session, player, enemy, dmg=1_000)
+    session.rng.random = lambda: 0.5             # shred lane at 1.0 still lands
+    skill = registry.get_skill(_OTHER_LOI)
+    cast_skill(session, player, enemy, _OTHER_LOI, dict(skill), 0)
     assert enemy.has_effect("DebuffLoiXuyenThau")
     mods = get_combat_modifiers(enemy)
     assert mods.get("res_loi", 0.0) == pytest.approx(-0.22)
@@ -270,14 +272,18 @@ def test_l6_named_skill_extra_hits(monkeypatch) -> None:
 def test_l1_te_liet_rider_and_negated_hit(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(1)
+    player.crit_rating = 0
     enemy = _enemy()
     session = _session(player, enemy)
-    session.rng.random = lambda: 0.0
-    run_cuu_thien_procs(session, player, enemy, dmg=1_000)
-    assert enemy.has_effect("DebuffTeLiet")
+    session.rng.random = lambda: 0.0             # lane roll lands
+    skill = registry.get_skill(_OTHER_LOI)
+    cast_skill(session, player, enemy, _OTHER_LOI, dict(skill), 0)
+    assert enemy.has_effect("DebuffTeLiet")      # generic te_liet lane
+    # The body proc itself stays dmg-gated (window Sét Đánh rider).
+    player.apply_effect("BuffThanLoiGiangThe", 2)
     enemy2 = _enemy()
     run_cuu_thien_procs(session, player, enemy2, dmg=0)  # negated hit
-    assert not enemy2.has_effect("DebuffTeLiet")
+    assert not enemy2.has_effect("DebuffSetDanh")
 
 
 # ── 5. L9 — Thần Lôi Giáng Thế burst window ─────────────────────────────────
@@ -329,22 +335,26 @@ def test_l9_window_riders_auto_apply(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(9)
     player.apply_effect("BuffThanLoiGiangThe", 2)
+    player.crit_rating = 0
     enemy = _enemy()
     session = _session(player, enemy)
-    session.rng.random = lambda: 0.45            # < 0.50 burst Tê Liệt, > 0.30 base
-    run_cuu_thien_procs(session, player, enemy, dmg=1_000)
-    assert enemy.has_effect("DebuffSocDien")     # guaranteed in window
-    assert enemy.has_effect("DebuffSetDanh")     # guaranteed in window
-    assert enemy.has_effect("DebuffTeLiet")      # boosted 50% roll landed
+    session.rng.random = lambda: 0.45            # < 0.50 boosted Tê Liệt, > 0.30 base
+    skill = registry.get_skill(_OTHER_LOI)
+    cast_skill(session, player, enemy, _OTHER_LOI, dict(skill), 0)
+    assert enemy.has_effect("DebuffSocDien")     # shock lane at 1.0 in window
+    assert enemy.has_effect("DebuffSetDanh")     # body proc, window-gated
+    assert enemy.has_effect("DebuffTeLiet")      # 0.30 + 0.20 window boost
 
 
 def test_l9_no_riders_outside_window(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(9)
     enemy = _enemy()
+    player.crit_rating = 0
     session = _session(player, enemy)
     session.rng.random = lambda: 0.45            # base 30% Tê Liệt roll fails
-    run_cuu_thien_procs(session, player, enemy, dmg=1_000)
+    skill = registry.get_skill(_OTHER_LOI)
+    cast_skill(session, player, enemy, _OTHER_LOI, dict(skill), 0)
     assert not enemy.has_effect("DebuffSocDien")
     assert not enemy.has_effect("DebuffSetDanh")
     assert not enemy.has_effect("DebuffTeLiet")

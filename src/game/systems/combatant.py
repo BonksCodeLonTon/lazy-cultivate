@@ -870,7 +870,6 @@ class Combatant:
     # attack fires the Cực Hàn burst (3-turn freeze + dmg = bm_burst_drain_pct ×
     # ``han_khi_mp_drained_total``, the running tally of all MP drained this fight).
     bm_cold_aura_enabled: bool = False
-    bm_freeze_on_attack_chance: float = 0.0
     bm_mp_drain_pct: float = 0.0
     bm_mp_drain_heal_pct: float = 0.0
     bm_han_khi_cap: int = 0
@@ -1001,7 +1000,7 @@ class Combatant:
     # counter into live res_all + final_dmg_reduce. L3 (casting.py per-cast): true dmg =
     # shield × (``thanh_son_dmg_from_shield_pct`` + ``thanh_son_l3_full_bonus`` once
     # stacks≥4); attacker-side per-hit Bào Mòn (``thanh_son_bao_mon_chance``) + Choáng
-    # (``thanh_son_stun_chance`` / ``thanh_son_stun_turns``). L9 (take_damage): while
+    # (generic ``stun_on_hit_pct`` + ``stun_on_hit_turns`` lane). L9 (take_damage): while
     # ``thanh_son_immovable_enabled`` AND stacks == cap, a would-be-lethal non-DoT hit
     # leaves HP at 1 + restores ``thanh_son_survive_shield_pct`` of shield_cap (sets
     # ``thanh_son_immovable_just_triggered`` for the periodic announcer). Any landed
@@ -1012,8 +1011,6 @@ class Combatant:
     thanh_son_dmg_from_shield_pct: float = 0.0
     thanh_son_l3_full_bonus: float = 0.0
     thanh_son_bao_mon_chance: float = 0.0
-    thanh_son_stun_chance: float = 0.0
-    thanh_son_stun_turns: int = 0
     thanh_son_immovable_enabled: bool = False
     thanh_son_survive_shield_pct: float = 0.0
     thanh_son_kien_co_stacks = _StackProxy("thanh_son_kien_co", store="stack_counters")  # runtime (NOT a config key)
@@ -1050,27 +1047,24 @@ class Combatant:
 
     # ── Cửu Thiên Huyền Lôi Thể (Lôi signature-art channeler) ─────────────────
     # Everything orbits ONE named skill (casting.py ``_CT_NAMED_SKILL`` =
-    # SkillLoiCuuThienNguLoiChanQuyet). L1: per-hit ``ct_te_liet_on_hit_chance``
+    # SkillLoiCuuThienNguLoiChanQuyet). L1: per-hit generic ``te_liet_on_hit_pct``
     # Tê Liệt (run_cuu_thien_procs) + named-cast amp ``ct_skill_dmg_amp`` +
     # Năng Lượng (``ct_nang_luong_stacks``: +1/named cast, cap
     # ``ct_nang_luong_cap``, no reset; +``ct_nang_luong_dmg_per_stack`` amp each).
     # L3: successful dodge stamps BuffThiemDienPhanKich (+40% Lôi next turn,
     # gated ``ct_dodge_loi_amp``). L6: per-hit DebuffLoiXuyenThau
-    # (``ct_loi_shred_on_hit``) + ``ct_skill_extra_hits`` on the named cast.
+    # (generic ``loi_shred_on_hit_pct`` lane) + ``ct_skill_extra_hits`` on the named cast.
     # L9: every ``ct_burst_interval`` acted turns → BuffThanLoiGiangThe for
     # ``ct_burst_duration`` (+1 at ``ct_burst_bonus_turn_gate`` stacks) via
     # auras/cuu_thien.py; window = spd/loi-amp buff + force-crit (combat_hit)
-    # + auto Sốc Điện/Sét Đánh + ``ct_burst_te_liet_chance`` Tê Liệt per hit.
-    ct_te_liet_on_hit_chance: float = 0.0
+    # + auto Sốc Điện/Sét Đánh (shock/te-liet boosts via the buff stat_bonus).
     ct_skill_dmg_amp: float = 0.0
     ct_nang_luong_cap: int = 0
     ct_nang_luong_dmg_per_stack: float = 0.0
     ct_dodge_loi_amp: float = 0.0
-    ct_loi_shred_on_hit: bool = False
     ct_skill_extra_hits: int = 0
     ct_burst_interval: int = 0
     ct_burst_duration: int = 0
-    ct_burst_te_liet_chance: float = 0.0
     ct_burst_bonus_turn_gate: int = 0
     ct_nang_luong_stacks = _StackProxy("ct_nang_luong", store="stack_counters")  # runtime (NOT a config key)
     ct_burst_turn_counter: int = 0  # runtime (NOT a config key)
@@ -1116,7 +1110,7 @@ class Combatant:
     # flags); run_cuong_phong_procs only banks 1 Phong Nhận Tích per hit ON
     # THE TARGET (``cp_tich_stacks`` lives on the enemy — per-target by
     # construction, dies with them; cap ``cp_tich_cap``). L3: per-hit
-    # DebuffPhongXuyenThau (``cp_phong_shred_on_hit``) + sustained pierce
+    # DebuffPhongXuyenThau (generic ``phong_shred_on_hit_pct`` lane) + sustained pierce
     # ``cp_pierce_def_pct`` → ``cp_pierce_def_pct_high`` at ≥
     # ``cp_pierce_tich_gate`` Tích (casting, frozen-DefenseStats replace).
     # L6: ``cp_bonus_strike_chance`` per hit to fire SkillPhongBonusStrike
@@ -1128,7 +1122,6 @@ class Combatant:
     # (``cp_tich_execute_atk_scale`` × ATK via the shared capped true-dmg
     # rider + guaranteed Cuốn Bay; Tích resets).
     cp_tich_cap: int = 0
-    cp_phong_shred_on_hit: bool = False
     cp_pierce_def_pct: float = 0.0
     cp_pierce_def_pct_high: float = 0.0
     cp_pierce_tich_gate: int = 0
@@ -1140,6 +1133,16 @@ class Combatant:
     cp_tich_execute_atk_scale: float = 0.0
     cp_tich_stacks = _StackProxy("cp_tich", store="stack_counters")  # runtime (NOT a config key)
     cp_storm_turn_counter: int = 0  # runtime (NOT a config key)
+
+    # ── Generic on-hit lane extensions (shared, like mark/bleed_on_hit_pct) ───
+    # ``te_liet_on_hit_pct`` (hard-CC-immune-respecting _ON_HIT_PROCS row) and
+    # the two elemental-shred chances are real stats — buff/gear contributions
+    # aggregate via get_combat_modifiers in the proc table's chance read.
+    # ``stun_on_hit_turns`` overrides the generic stun proc's default duration.
+    te_liet_on_hit_pct: float = 0.0
+    loi_shred_on_hit_pct: float = 0.0
+    phong_shred_on_hit_pct: float = 0.0
+    stun_on_hit_turns: int = 0
 
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated

@@ -135,7 +135,7 @@ def test_config_flags_per_level(monkeypatch) -> None:
     assert p1.bleed_on_hit_pct >= 0.50
     assert p1.cp_tich_cap == 8
     p3 = _player(3)
-    assert p3.cp_phong_shred_on_hit is True
+    assert p3.phong_shred_on_hit_pct >= 1.0   # generic shred lane
     assert p3.cp_pierce_def_pct == pytest.approx(0.25)
     assert p3.cp_pierce_def_pct_high == pytest.approx(0.40)
     assert p3.cp_pierce_tich_gate == 4
@@ -192,9 +192,11 @@ def test_l3_shred_applied(monkeypatch) -> None:
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(3)
     enemy = _enemy()
+    player.crit_rating = 0
     session = _session(player, enemy)
-    session.rng.random = lambda: 0.99
-    run_cuong_phong_procs(session, player, enemy, dmg=1_000)
+    session.rng.random = lambda: 0.5              # shred lane at 1.0 still lands
+    skill = registry.get_skill(_ATTACK)
+    cast_skill(session, player, enemy, _ATTACK, dict(skill), 0)
     assert enemy.has_effect("DebuffPhongXuyenThau")
     mods = get_combat_modifiers(enemy)
     assert mods.get("res_phong", 0.0) == pytest.approx(-0.20)

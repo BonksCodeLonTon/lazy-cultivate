@@ -122,15 +122,8 @@ def run_bac_minh_procs(
     if actor.bm_cold_aura_enabled:
         _bm_apply_cold_aura(session, actor, target)
     _bm_mp_drain(session, actor, target)  # L6
-    if (
-        actor.bm_freeze_on_attack_chance > 0
-        and target.is_alive()
-        and session.rng.random() < actor.bm_freeze_on_attack_chance
-        and _bm_try_freeze(session, target, default_duration(EffectKey.DEBUFF_DONG_BANG))
-    ):
-        session.log.append(
-            f"    ❄️ **{actor.name}** Băng Phách → **{target.name}** đóng băng!"
-        )
+    # (L3's freeze-on-attack rides the GENERIC ``freeze_on_skill_chance``
+    # lane in run_on_hit_procs — same immunity checks, same default duration.)
     if actor.bm_heal_reduce_chance > 0 and target.is_alive():
         chance = actor.bm_heal_reduce_chance
         if target.has_effect(_BM_FREEZE) and actor.bm_heal_reduce_vs_frozen_chance > chance:
@@ -348,15 +341,8 @@ def run_thanh_son_procs(
         if meta is not None:
             from .casting import inflict_debuff
             inflict_debuff(session, "DebuffBaoMon", meta, target, actor=actor)
-    if actor.thanh_son_stun_chance > 0 and target.is_alive() \
-            and session.rng.random() < actor.thanh_son_stun_chance:
-        meta = EFFECTS.get(EffectKey.CC_STUN.value)
-        if meta is not None:
-            from .casting import inflict_debuff
-            inflict_debuff(
-                session, EffectKey.CC_STUN.value, meta, target, actor=actor,
-                overrides={"duration": actor.thanh_son_stun_turns} if actor.thanh_son_stun_turns else None,
-            )
+    # (The L3 Choáng rider rides the GENERIC ``stun_on_hit_pct`` +
+    # ``stun_on_hit_turns`` lane in run_on_hit_procs.)
 
     # ── Defender side: the holder is struck → bank Kiên Cố ────────────────────
     # ``target.is_alive()`` — a defender killed earlier in the same cast (e.g. by
@@ -461,7 +447,7 @@ def run_cuu_thien_procs(
     """Cửu Thiên Huyền Lôi Thể on-hit riders, once per landed damaging hit.
 
     Attacker side only (``actor`` holds the body): L1 Tử Tiêu Lôi Khí Tê Liệt
-    chance — boosted to ``ct_burst_te_liet_chance`` while the L9 Thần Lôi Giáng
+    chance — boosted via the window buff stat_bonus while the L9 Thần Lôi Giáng
     Thế window is up (single roll, never two); L6 Lôi Trì Ngự Khống applies
     DebuffLoiXuyenThau (res_loi shred) on every hit; during the L9 window every
     hit also auto-applies Sốc Điện + Sét Đánh. All via ``inflict_debuff`` so
@@ -470,31 +456,15 @@ def run_cuu_thien_procs(
     """
     if dmg <= 0 or not target.is_alive():
         return
-    _in_burst = actor.has_effect("BuffThanLoiGiangThe")
-    # L1 Tê Liệt — one roll at the better of base / burst-window chance.
-    _te_chance = actor.ct_te_liet_on_hit_chance
-    if _in_burst and actor.ct_burst_te_liet_chance > _te_chance:
-        _te_chance = actor.ct_burst_te_liet_chance
-    if _te_chance > 0 and session.rng.random() < _te_chance:
-        meta = EFFECTS.get("DebuffTeLiet")
+    # (L1 Tê Liệt rides the GENERIC ``te_liet_on_hit_pct`` lane; the L9 window
+    # boosts it +0.20 and adds guaranteed Sốc Điện via BuffThanLoiGiangThe's
+    # stat_bonus. L6's Lôi Xuyên Thấu rides ``loi_shred_on_hit_pct``. Only the
+    # window's Sét Đánh rider — no generic lane — lives here.)
+    if actor.has_effect("BuffThanLoiGiangThe"):
+        meta = EFFECTS.get("DebuffSetDanh")
         if meta is not None:
             from .casting import inflict_debuff
-            inflict_debuff(session, "DebuffTeLiet", meta, target, actor=actor)
-    # L6 Lôi Xuyên Thấu — guaranteed on-hit res_loi shred.
-    if actor.ct_loi_shred_on_hit and target.is_alive():
-        meta = EFFECTS.get("DebuffLoiXuyenThau")
-        if meta is not None:
-            from .casting import inflict_debuff
-            inflict_debuff(session, "DebuffLoiXuyenThau", meta, target, actor=actor)
-    # L9 window riders — every hit auto-applies Sốc Điện + Sét Đánh.
-    if _in_burst and target.is_alive():
-        from .casting import inflict_debuff
-        for _rider in ("DebuffSocDien", "DebuffSetDanh"):
-            if not target.is_alive():
-                break
-            meta = EFFECTS.get(_rider)
-            if meta is not None:
-                inflict_debuff(session, _rider, meta, target, actor=actor)
+            inflict_debuff(session, "DebuffSetDanh", meta, target, actor=actor)
 
 
 def run_cuong_phong_procs(
@@ -523,11 +493,7 @@ def run_cuong_phong_procs(
             f"  🌪️ **{target.name}** Phong Nhận Tích "
             f"[×{target.cp_tich_stacks}/{actor.cp_tich_cap}]"
         )
-    # ── L3 Xuyên Tâm Phong: Phong res shred ────────────────────────────────
-    if actor.cp_phong_shred_on_hit and target.is_alive():
-        meta = EFFECTS.get("DebuffPhongXuyenThau")
-        if meta is not None:
-            inflict_debuff(session, "DebuffPhongXuyenThau", meta, target, actor=actor)
+    # (L3's Phong Xuyên Thấu rides the GENERIC ``phong_shred_on_hit_pct`` lane.)
     # ── L9 storm rider: Cuốn Bay while the steel wind rages ────────────────
     if (
         actor.cp_storm_cuon_bay_chance > 0 and target.is_alive()
@@ -581,6 +547,13 @@ def run_on_hit_procs(
             _actor_mods.get(spec["chance_attr"], 0.0)
         )
         if chance <= 0 or session.rng.random() >= chance:
+            continue
+        # ``hard_cc`` rows (turn-skip class, e.g. Tê Liệt) respect the same
+        # hard-CC immunity the special-case stun/freeze procs below honor.
+        if spec.get("hard_cc") and (
+            target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc")
+        ):
+            session.log.append(f"    🛡️ **{target.name}** miễn dịch khống chế!")
             continue
         effect_key = spec["effect_key"]
         dur = default_duration(effect_key)
@@ -647,12 +620,15 @@ def run_on_hit_procs(
     if actor.saint_mp_on_hit_pct > 0:
         actor.mp = min(actor.mp_max, actor.mp + int(actor.mp_max * actor.saint_mp_on_hit_pct))
 
-    # Thổ build: stun_on_hit — flat chance, respects hard-CC immunity
+    # Thổ build: stun_on_hit — flat chance, respects hard-CC immunity.
+    # ``stun_on_hit_turns`` optionally overrides the default 1-turn duration
+    # (Thánh Sơn L3 stuns for 2).
     if actor.stun_on_hit_pct > 0 and session.rng.random() < actor.stun_on_hit_pct:
         if target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc"):
             session.log.append(f"    🛡️ **{target.name}** miễn dịch Choáng!")
         else:
-            target.apply_effect(EffectKey.CC_STUN, default_duration(EffectKey.CC_STUN))
+            _stun_dur = actor.stun_on_hit_turns or default_duration(EffectKey.CC_STUN)
+            target.apply_effect(EffectKey.CC_STUN, _stun_dur)
             session.log.append(f"    💫 Choáng kích hoạt!")
     if is_crit and actor.paralysis_on_crit:
         if target.immune_hard_cc or target.has_effect("BuffHoangCoThanhVuc"):

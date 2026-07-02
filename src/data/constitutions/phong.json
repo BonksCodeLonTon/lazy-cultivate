@@ -92,7 +92,7 @@
           "passive_vi": "Xuyên Tâm Phong",
           "passive_en": "Heart-Piercing Wind",
           "description_vi": "Mỗi đòn trúng khắc Phong Xuyên Thấu (kháng Phong −20%, 4 lượt). Đòn đánh xuyên 25% giáp — nâng lên 40% khi mục tiêu mang ≥4 Phong Nhận Tích.",
-          "stat_bonuses": { "atk_pct": 0.05, "crit_rating": 60, "cp_phong_shred_on_hit": true, "cp_pierce_def_pct": 0.25, "cp_pierce_def_pct_high": 0.40, "cp_pierce_tich_gate": 4 },
+          "stat_bonuses": { "atk_pct": 0.05, "crit_rating": 60, "phong_shred_on_hit_pct": 1.0, "cp_pierce_def_pct": 0.25, "cp_pierce_def_pct_high": 0.40, "cp_pierce_tich_gate": 4 },
           "effects": ["BuffXuyenTamPhong"]
         },
         "6": {

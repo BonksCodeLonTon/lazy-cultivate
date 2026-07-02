@@ -287,6 +287,22 @@ _ON_HIT_PROCS: tuple[dict, ...] = (
         "chance_attr": "blind_on_hit_pct", "effect_key": EffectKey.DEBUFF_LOA_MAT,
         "log_fmt": "    🌫️ Lóa Mắt kích hoạt!",
     },
+    # Tê Liệt is turn-skip-class CC — the ``hard_cc`` marker makes the proc
+    # loop respect hard-CC immunity (world bosses, Hoàng Cổ Thánh Vực).
+    {
+        "chance_attr": "te_liet_on_hit_pct", "effect_key": EffectKey.DEBUFF_TE_LIET,
+        "hard_cc": True,
+        "log_fmt": "    ⚡ Tê Liệt kích hoạt!",
+    },
+    # Elemental-resist shreds (the XuyenThau family as on-hit lanes).
+    {
+        "chance_attr": "loi_shred_on_hit_pct", "effect_key": "DebuffLoiXuyenThau",
+        "log_fmt": "    🔻 Lôi Xuyên Thấu kích hoạt!",
+    },
+    {
+        "chance_attr": "phong_shred_on_hit_pct", "effect_key": "DebuffPhongXuyenThau",
+        "log_fmt": "    🔻 Phong Xuyên Thấu kích hoạt!",
+    },
 )
 
 

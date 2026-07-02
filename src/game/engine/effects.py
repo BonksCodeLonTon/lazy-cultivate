@@ -790,7 +790,6 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     # Bắc Minh Băng Phách Thể (Thủy disruptor) — config keys read off Combatant
     # fields by run_on_hit_procs (bidirectional procs + Hàn Khí burst).
     "bm_cold_aura_enabled",
-    "bm_freeze_on_attack_chance",
     "bm_mp_drain_pct",
     "bm_mp_drain_heal_pct",
     "bm_han_khi_cap",
@@ -888,8 +887,6 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "thanh_son_dmg_from_shield_pct",
     "thanh_son_l3_full_bonus",
     "thanh_son_bao_mon_chance",
-    "thanh_son_stun_chance",
-    "thanh_son_stun_turns",
     "thanh_son_immovable_enabled",
     "thanh_son_survive_shield_pct",
     # Kim Cang Bất Hoại Thể (Thổ indestructible shield body) — config keys
@@ -929,16 +926,13 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     # (spd_pct / dmg_bonus_loi) live in BuffThanLoiGiangThe's stat_bonus (real
     # stats). Runtime (ct_nang_luong_stacks / ct_burst_turn_counter) are
     # Combatant-only.
-    "ct_te_liet_on_hit_chance",
     "ct_skill_dmg_amp",
     "ct_nang_luong_cap",
     "ct_nang_luong_dmg_per_stack",
     "ct_dodge_loi_amp",
-    "ct_loi_shred_on_hit",
     "ct_skill_extra_hits",
     "ct_burst_interval",
     "ct_burst_duration",
-    "ct_burst_te_liet_chance",
     "ct_burst_bonus_turn_gate",
     # Tiêu Dao Thần Thể (Phong movement-dancer / dual-form transformer) —
     # config keys read off Combatant fields by casting.py (post-movement
@@ -968,7 +962,6 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     # unevadable) and auras/cuong_phong.py (storm cadence). Runtime
     # (cp_tich_stacks / cp_storm_turn_counter) are Combatant-only.
     "cp_tich_cap",
-    "cp_phong_shred_on_hit",
     "cp_pierce_def_pct",
     "cp_pierce_def_pct_high",
     "cp_pierce_tich_gate",
@@ -978,6 +971,10 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "cp_storm_cuon_bay_chance",
     "cp_storm_extra_hits",
     "cp_tich_execute_atk_scale",
+    # Generic stun-duration override (stun_on_hit_pct's sibling; the CHANCE
+    # stats te_liet/loi_shred/phong_shred_on_hit_pct are real stats — buffs
+    # contribute through get_combat_modifiers — so they are NOT listed here).
+    "stun_on_hit_turns",
 })
 
 

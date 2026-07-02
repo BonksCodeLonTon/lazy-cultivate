@@ -103,7 +103,7 @@
           "description_vi": "Băng phách — 45% mỗi đòn tấn công đóng băng địch 2 lượt; địch đang đóng băng nhận đòn kế chắc chắn bạo kích.",
           "stat_bonuses": {
             "hp_pct": 0.03,
-            "bm_freeze_on_attack_chance": 0.45
+            "freeze_on_skill_chance": 0.45
           },
           "effects": ["BuffBangPhach"]
         },
