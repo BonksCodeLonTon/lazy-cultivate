@@ -6,16 +6,19 @@ more you hit it (vs Kim Cang's shield-recursion wall, Hậu Thổ's HP-vampire g
   L1 Kiên Như Bàn Thạch  — +12% res, +20% DR; each hit TAKEN banks +1 Kiên Cố (cap
                            8). BuffKienCo's scaling_rules turn the stack count into
                            live res_all (+2%/stack) + final_dmg_reduce (+1.5%/stack).
-  L3 Thái Sơn Áp Đỉnh    — per CAST, bonus TRUE dmg = 70% shield (+20% at ≥4 Kiên
-                           Cố); per-hit 60% Bào Mòn / 35% Choáng 2t.
+  L3 Thái Sơn Áp Đỉnh    — per CAST, bonus TRUE dmg = 35% shield (+10% at ≥4 Kiên
+                           Cố), capped at 12% of the TARGET's max HP; per-hit 60%
+                           Bào Mòn / 35% Choáng 2t.
   L6 Bất Động Minh Vương — +280 crit_res, +35% DR, 60% debuff-shrug (real stats).
   L9 Vạn Vật Quy Trần    — while Kiên Cố is FULL (8): a would-be-lethal NON-DoT hit
-                           leaves HP at 1 + restores 30% shield. Hard CC cracks a
-                           Kiên Cố stack → drops below cap → mortal again.
+                           leaves HP at 1 + restores 30% shield (via add_shield →
+                           clamped at cap). Hard CC cracks a Kiên Cố stack → drops
+                           below cap → mortal again.
 
-Reuses: the on-hit proc seam (run_thanh_son_procs), the per-cast shield→true-dmg
-seam, BuffKienCo scaling_rules, the take_damage survival step, and the inflict_debuff
-post-stamp hook for the CC stack-strip.
+Reuses: the on-hit proc seam (run_thanh_son_procs, dmg>0-gated), the shared
+_deal_capped_true_dmg per-cast rider, BuffKienCo scaling_rules, the take_damage
+survival step, and the Combatant.apply_effect stamp site for the CC stack-strip
+(so direct-apply CC paths crack too).
 
 Flag hygiene: every flag-ON test flips the global via ``monkeypatch.setattr`` so it
 auto-reverts; the dormant default is never left mutated.

@@ -976,7 +976,8 @@ class Combatant:
     # ``hau_tho_tier`` (cap 10); at tier 10 a one-time +10% hp_max fires
     # (``hau_tho_tier10_applied`` latch). L3 (casting.py) per-cast true damage =
     # max(hp_max×``hau_tho_dmg_from_maxhp_pct``, shield×(``hau_tho_dmg_from_shield_pct``
-    # + tier×0.03)). L9 ``hau_tho_rebirth_enabled`` → revives.py survives one lethal
+    # + tier×_HAU_THO_SHIELD_PCT_PER_TIER)), capped per _CONSTITUTION_TRUE_DMG_CAP_PCT.
+    # L9 ``hau_tho_rebirth_enabled`` → revives.py survives one lethal
     # hit at HP = ``hau_tho_stolen_total`` (``hau_tho_rebirth_used`` latch).
     hau_tho_hp_steal_pct: float = 0.0
     hau_tho_accumulate: bool = False

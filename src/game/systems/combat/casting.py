@@ -108,15 +108,37 @@ _DIA_MACH_STACK_CAP = 5
 # Thánh Sơn Bất Động Thể — L3 shield→dmg ratio gets the full bonus at this many
 # Kiên Cố stacks (the sheet's "4 tầng" breakpoint).
 _THANH_SON_L3_STACK_GATE = 4
-# L3 per-cast true-damage cap = this fraction of the TARGET's max HP, so a colossal
-# Thổ shield can't deliver an unbounded unmitigable burst (a fortress shouldn't
-# out-nuke dedicated nukers). True damage scales with shield, so a flat % cut alone
-# still grows without bound — the cap is what actually tames it.
-_THANH_SON_TRUE_DMG_CAP_PCT = 0.12
-# Hậu Thổ Thần Thể — same bound on its L3 max(maxHP, shield)→true-dmg. Its max HP
-# GROWS all fight via the L1 HP-steal, so the true damage scales unbounded without
-# a cap relative to the target's max HP.
-_HAU_THO_TRUE_DMG_CAP_PCT = 0.12
+# ONE balance policy for every constitution's per-cast true-damage rider (Hậu Thổ
+# max(maxHP, shield)→dmg, Thánh Sơn shield→dmg, future pool-scaling bodies): the
+# unmitigable burst is clamped to this fraction of the TARGET's max HP. The pools
+# these riders scale off grow unbounded (stolen max HP, colossal shields), so a
+# flat ratio cut alone still grows without bound — the relative cap is what
+# actually tames it (a fortress shouldn't out-nuke dedicated nukers).
+_CONSTITUTION_TRUE_DMG_CAP_PCT = 0.12
+# Hậu Thổ Thần Thể — L3 shield-ratio bump per Địa Mạch tier (the "+3% Khiên→dmg
+# mỗi tầng" promised by BuffDiaMachHapThu; sibling per-tier knobs are the
+# _HAU_THO_* constants in procs.py).
+_HAU_THO_SHIELD_PCT_PER_TIER = 0.03
+
+
+def _deal_capped_true_dmg(
+    session: "CombatSession", target: Combatant, amount: int, label: str,
+) -> None:
+    """Shared tail of every constitution L3 per-cast true-damage rider.
+
+    Clamps ``amount`` to ``_CONSTITUTION_TRUE_DMG_CAP_PCT`` of the target's max
+    HP, applies it shield-piercing, and logs — one place so the cap, formula,
+    and log line can't drift between bodies. Only the amount computation is
+    genuinely per-body; new riders call this instead of copying the tail.
+    """
+    if target.hp_max > 0:
+        amount = min(amount, int(target.hp_max * _CONSTITUTION_TRUE_DMG_CAP_PCT))
+    if amount <= 0:
+        return
+    target.take_damage(amount, bypass_shield=True)
+    session.log.append(
+        f"    {label} — +{amount:,} Sát Thương Chuẩn (xuyên giáp)"
+    )
 
 
 def _bump_dia_mach_stack(
@@ -997,8 +1019,8 @@ def cast_skill(
                         )
 
             # Hậu Thổ Thần Thể — L3 Trọng Lực Chưởng Khống: once per CAST, deal
-            # bonus TRUE damage = max(maxhp × pct, shield × (pct + Địa Mạch tier ×
-            # 0.03)), straight to HP (pierces resistance & shield). ``not
+            # bonus TRUE damage = max(maxhp × pct, shield × (pct + Địa Mạch tier
+            # bump)), capped + applied via ``_deal_capped_true_dmg``. ``not
             # _suppress_extras`` → exactly once per logical cast (multi-hit replays
             # don't multiply it). Self-gates on the L3 flag → inert otherwise.
             if (
@@ -1009,26 +1031,19 @@ def cast_skill(
             ):
                 _ht_from_hp = int(actor.hp_max * actor.hau_tho_dmg_from_maxhp_pct)
                 _ht_shield_pct = (
-                    actor.hau_tho_dmg_from_shield_pct + actor.hau_tho_tier * 0.03
+                    actor.hau_tho_dmg_from_shield_pct
+                    + actor.hau_tho_tier * _HAU_THO_SHIELD_PCT_PER_TIER
                 )
                 _ht_from_shield = int(actor.shield * _ht_shield_pct)
-                _ht_true = max(_ht_from_hp, _ht_from_shield)
-                # Per-cast cap — clamp to a slice of the target's max HP so the
-                # ever-growing max-HP can't deliver an unbounded unmitigable burst.
-                if target.hp_max > 0:
-                    _ht_true = min(
-                        _ht_true, int(target.hp_max * _HAU_THO_TRUE_DMG_CAP_PCT)
-                    )
-                if _ht_true > 0:
-                    target.take_damage(_ht_true, bypass_shield=True)
-                    session.log.append(
-                        f"    ⛰️ Trọng Lực Chưởng Khống — +{_ht_true:,} "
-                        f"Sát Thương Chuẩn (xuyên giáp)"
-                    )
+                _deal_capped_true_dmg(
+                    session, target, max(_ht_from_hp, _ht_from_shield),
+                    "⛰️ Trọng Lực Chưởng Khống",
+                )
 
             # Thánh Sơn Bất Động Thể — L3 Thái Sơn Áp Đỉnh: once per CAST, bonus
-            # TRUE damage = shield × (base + l3_full_bonus once Kiên Cố ≥ 4), straight
-            # to HP (pierces giáp). ``not _suppress_extras`` → once per logical cast.
+            # TRUE damage = shield × (base + l3_full_bonus once Kiên Cố ≥ 4),
+            # capped + applied via ``_deal_capped_true_dmg``. ``not
+            # _suppress_extras`` → once per logical cast.
             if (
                 actor.thanh_son_dmg_from_shield_pct > 0
                 and not _suppress_extras
@@ -1039,19 +1054,10 @@ def cast_skill(
                 _ts_pct = actor.thanh_son_dmg_from_shield_pct
                 if actor.thanh_son_kien_co_stacks >= _THANH_SON_L3_STACK_GATE:
                     _ts_pct += actor.thanh_son_l3_full_bonus
-                _ts_true = int(actor.shield * _ts_pct)
-                # Per-cast cap — clamp to a slice of the target's max HP so a huge
-                # shield can't deliver an unbounded unmitigable burst.
-                if target.hp_max > 0:
-                    _ts_true = min(
-                        _ts_true, int(target.hp_max * _THANH_SON_TRUE_DMG_CAP_PCT)
-                    )
-                if _ts_true > 0:
-                    target.take_damage(_ts_true, bypass_shield=True)
-                    session.log.append(
-                        f"    🏔️ Thái Sơn Áp Đỉnh — +{_ts_true:,} "
-                        f"Sát Thương Chuẩn (xuyên giáp)"
-                    )
+                _deal_capped_true_dmg(
+                    session, target, int(actor.shield * _ts_pct),
+                    "🏔️ Thái Sơn Áp Đỉnh",
+                )
 
             # Element-gated stack-on-hit — every successful damaging hit whose
             # element matches an equipped skill's ``passive_stack_on_element_hit``

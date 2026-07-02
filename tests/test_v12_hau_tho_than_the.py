@@ -4,20 +4,23 @@ The 2nd Thổ body: an HP-VAMPIRE growth juggernaut (vs Kim Cang Bất Hoại's 
 shield-wall + physical-negate). Identity: eat the enemy, become a mountain, crush
 back with unmitigable true damage.
 
-  L1 Đại Địa Tức Nhưỡng — +5% HP/+6% MP regen; each strike siphons 4% of the foe's
-                          CURRENT HP → permanently GROWS the holder's max HP (+heal)
-                          and banks it in the steal pool. Seeds Địa Mạch: every 1%
+  L1 Đại Địa Tức Nhưỡng — +5% HP/+6% MP regen; each damaging strike (dmg>0, live
+                          actor, not vs world boss) siphons 4% of the foe's CURRENT
+                          HP → permanently GROWS the holder's max HP + heals via the
+                          central heal pipeline (heal-reduction counters apply) and
+                          banks it in the steal pool. Seeds Địa Mạch: every 1%
                           of the foe's MAX HP siphoned → +1 tier (cap 10; +0.5%
                           steal & +3% shield→dmg per tier; +10% max HP at 10).
   L3 Trọng Lực Chưởng Khống — per CAST, bonus TRUE damage = max(25% max HP, 40%
-                          shield + tier bump), pierces resistance & shield.
+                          shield + tier bump), pierces resistance & shield, capped
+                          at 12% of the TARGET's max HP per cast.
   L6 Địa Mẫu Hộ Trì    — +30% final_dmg_reduce, +18% res_all, big HP regen.
   L9 Luân Hồi Quy Tắc  — on a lethal hit, survive once with HP = total HP stolen
                           this battle (0 stolen → no save).
 
 Reuses: the on-hit attacker proc seam (run_hau_tho_procs, like run_bac_minh_procs),
-the loi-true-dmg injection point (per-cast, gated not _suppress_extras), and the
-ON_REVIVE hook seam (dedicated priority-5 hook like Niết Bàn / Chân Dương).
+the shared _deal_capped_true_dmg per-cast rider (gated not _suppress_extras), and
+the ON_REVIVE hook seam (dedicated priority-5 hook like Niết Bàn / Chân Dương).
 
 Flag hygiene: every flag-ON test flips the global via ``monkeypatch.setattr`` so it
 auto-reverts; the dormant default is never left mutated.
