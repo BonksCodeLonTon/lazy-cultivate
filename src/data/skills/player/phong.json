@@ -588,5 +588,23 @@
     },
     "formation_key": null,
     "description_vi": "Truy Kích Liên Vũ — mỗi lần niệm liên tiếp KHÔNG bị khống chế cộng dồn 1 tầng Liên Vũ (tối đa 6): mỗi tầng +220 ST gốc và +4% sát thương cuối cho đòn này. Bị khống chế hoặc niệm hệ khác thì chuỗi gãy."
+  },
+  {
+    "key": "SkillPhongBonusStrike",
+    "vi": "Phong Bạo (Phụ)",
+    "en": "Wind Rampage Strike",
+    "scroll_grade": 1,
+    "category": "attack",
+    "element": "phong",
+    "attack_type": "physical",
+    "dmg_scale": { "atk": 0.6, "matk": 0.0 },
+    "mp_cost": 0,
+    "cooldown": 0,
+    "base_dmg": 1,
+    "effects": ["DebuffAnPhong"],
+    "effect_chances": { "DebuffAnPhong": 1.0 },
+    "formation_key": null,
+    "chain_only": true,
+    "description_vi": "Lưỡi gió phụ tự phóng từ Phong Bạo (Cửu Thiên Cương Phong L6) — 60% Công, khắc Ấn Phong."
   }
 ]

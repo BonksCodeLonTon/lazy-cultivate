@@ -63,5 +63,53 @@
         }
       }
     }
+  },
+  {
+    "key": "TheChat_CuuThienCuongPhong",
+    "vi": "Cửu Thiên Cương Phong Thể",
+    "en": "Nine Heavens Steel Wind Body",
+    "element": "phong",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân rèn từ cương phong cửu thiên — mỗi đòn là một lưỡi gió: khắc ấn, rạch máu, xuyên kháng xuyên giáp. Phong Nhận tích trên thân địch, đủ tám tầng thì Cương Phong Xuyên phá giáp; đến kỳ bão thép nổi lên, không đòn nào trượt, không đòn nào không bạo.",
+    "stat_bonuses": { "atk_pct": 0.06, "spd_pct": 0.05, "crit_rating": 100 },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "atk_pct": 0.004, "spd_pct": 0.003, "crit_rating": 15 },
+      "levels": {
+        "1": {
+          "passive_vi": "Phong Nhận",
+          "passive_en": "Wind Blade",
+          "description_vi": "Mỗi đòn trúng: khắc Ấn Phong (né tránh −150) + 50% Chảy Máu, và tích 1 tầng Phong Nhận Tích lên mục tiêu (tối đa 8).",
+          "stat_bonuses": { "cp_an_phong_on_hit": true, "cp_bleed_on_hit_chance": 0.50, "cp_tich_cap": 8 },
+          "effects": ["BuffPhongNhan"]
+        },
+        "3": {
+          "passive_vi": "Xuyên Tâm Phong",
+          "passive_en": "Heart-Piercing Wind",
+          "description_vi": "Mỗi đòn trúng khắc Phong Xuyên Thấu (kháng Phong −20%, 4 lượt). Đòn đánh xuyên 25% giáp — nâng lên 40% khi mục tiêu mang ≥4 Phong Nhận Tích.",
+          "stat_bonuses": { "atk_pct": 0.05, "crit_rating": 60, "cp_phong_shred_on_hit": true, "cp_pierce_def_pct": 0.25, "cp_pierce_def_pct_high": 0.40, "cp_pierce_tich_gate": 4 },
+          "effects": ["BuffXuyenTamPhong"]
+        },
+        "6": {
+          "passive_vi": "Phong Bạo",
+          "passive_en": "Wind Rampage",
+          "description_vi": "Bạo kích sát thương +220. Mỗi đòn trúng: 35% tự phóng thêm một đòn Phong Bạo (60% Công) kèm Ấn Phong.",
+          "stat_bonuses": { "crit_dmg_rating": 220, "cp_bonus_strike_chance": 0.35 },
+          "effects": ["BuffPhongBao"]
+        },
+        "9": {
+          "passive_vi": "Cương Phong",
+          "passive_en": "Steel Wind",
+          "description_vi": "Mỗi 7 lượt nổi bão thép 3 lượt: mọi đòn không thể né, chắc chắn Bạo Kích, +1 lần đánh và 35% Cuốn Bay. Đủ 8 Phong Nhận Tích: bùng nổ Cương Phong Xuyên — Sát Thương Chuẩn bằng 150% Công (có giới hạn) + Cuốn Bay chắc chắn, tiêu hết Tích.",
+          "stat_bonuses": { "atk_pct": 0.06, "crit_rating": 80, "cp_storm_interval": 7, "cp_storm_duration": 3, "cp_storm_cuon_bay_chance": 0.35, "cp_storm_extra_hits": 1, "cp_tich_execute_atk_scale": 1.50 },
+          "effects": ["BuffCuongPhong"]
+        }
+      }
+    }
   }
 ]

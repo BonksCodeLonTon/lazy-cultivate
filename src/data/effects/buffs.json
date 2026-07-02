@@ -3133,5 +3133,65 @@
     "cleansable": false,
     "emoji": "🐋",
     "duration": 3
+  },
+  {
+    "key": "BuffPhongNhan",
+    "vi": "Phong Nhận",
+    "en": "Wind Blade",
+    "kind": "buff",
+    "description_vi": "Mỗi đòn là một lưỡi gió — khắc Ấn Phong, rạch Chảy Máu, tích Phong Nhận Tích trên thân địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌪️",
+    "duration": 999
+  },
+  {
+    "key": "BuffXuyenTamPhong",
+    "vi": "Xuyên Tâm Phong",
+    "en": "Heart-Piercing Wind",
+    "kind": "buff",
+    "description_vi": "Gió xuyên tâm — mỗi đòn khắc Phong Xuyên Thấu; đòn đánh xuyên giáp, càng nhiều Tích càng xuyên sâu.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🗡️",
+    "duration": 999
+  },
+  {
+    "key": "BuffPhongBao",
+    "vi": "Phong Bạo",
+    "en": "Wind Rampage",
+    "kind": "buff",
+    "description_vi": "Cuồng phong nộ khí — bạo kích nặng hơn, mỗi đòn có thể phóng thêm một lưỡi Phong Bạo kèm Ấn Phong.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚔️",
+    "duration": 999
+  },
+  {
+    "key": "BuffCuongPhong",
+    "vi": "Cương Phong",
+    "en": "Steel Wind",
+    "kind": "buff",
+    "description_vi": "Cứ 7 lượt nổi bão thép 3 lượt — không đòn nào trượt, không đòn nào không bạo; đủ 8 Tích thì Cương Phong Xuyên phá giáp.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 999
+  },
+  {
+    "key": "BuffCuongPhongBao",
+    "vi": "Cương Phong Bạo",
+    "en": "Steel Wind Storm",
+    "kind": "buff",
+    "description_vi": "Bão thép đang gào thét — mọi đòn không thể né tránh, chắc chắn Bạo Kích, đánh thêm một lần và có thể cuốn bay địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌪️",
+    "duration": 3
   }
 ]

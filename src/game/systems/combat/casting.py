@@ -535,6 +535,10 @@ def cast_skill(
             # Tiêu Dao Thần — L9 Hóa Bằng: every attack in the form is unevadable.
             if not _suppress_extras and actor.has_effect("BuffHoaBang"):
                 skill_data = {**skill_data, "bypass_evasion": True}
+            # Cửu Thiên Cương Phong — L9 storm: every attack in the window is
+            # unevadable (force-crit rides the combat_hit OR-chain).
+            if not _suppress_extras and actor.has_effect("BuffCuongPhongBao"):
+                skill_data = {**skill_data, "bypass_evasion": True}
             skill_obj = _build_skill_obj(skill_key, skill_data, mp_cost, base_dmg_override=base_dmg)
             attack_stats = build_attack_stats(actor, target, actor_mods, skill_obj.element)
             # Per-skill ``force_crit: true`` — always crit (e.g. Hỏa Vân
@@ -568,6 +572,19 @@ def cast_skill(
                 defense_stats = _dc_replace(
                     defense_stats,
                     def_stat=int(defense_stats.def_stat * (1.0 - min(0.90, actor.td_pierce_def_pct))),
+                )
+            # Cửu Thiên Cương Phong — L3 Xuyên Tâm Phong: SUSTAINED armor
+            # pierce on every attack, deepening once the target carries the
+            # Tích gate (the earned version of the sheet's 0-evasion jackpot).
+            if actor.cp_pierce_def_pct > 0:
+                from dataclasses import replace as _dc_replace
+                _cp_pct = actor.cp_pierce_def_pct
+                if actor.cp_pierce_tich_gate > 0 \
+                        and target.cp_tich_stacks >= actor.cp_pierce_tich_gate:
+                    _cp_pct = max(_cp_pct, actor.cp_pierce_def_pct_high)
+                defense_stats = _dc_replace(
+                    defense_stats,
+                    def_stat=int(defense_stats.def_stat * (1.0 - min(0.90, _cp_pct))),
                 )
             pen_pct = lc_effects.get_pen_pct(actor, session.rng, session.log)
             # Hỗn Nguyên Vô Cực — Vạn Pháp Vô Cản. A per-cast chance to treat the
@@ -1626,6 +1643,10 @@ def cast_skill(
     if not _suppress_extras and actor.td_bang_extra_hits > 0 \
             and actor.has_effect("BuffHoaBang") and hit_count >= 1 and base_dmg > 0:
         hit_count += actor.td_bang_extra_hits
+    # Cửu Thiên Cương Phong — L9 storm: extra strikes while the window is up.
+    if not _suppress_extras and actor.cp_storm_extra_hits > 0 \
+            and actor.has_effect("BuffCuongPhongBao") and base_dmg > 0:
+        hit_count += actor.cp_storm_extra_hits
     for i in range(hit_count - 1):
         if not target.is_alive():
             break

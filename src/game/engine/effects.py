@@ -962,6 +962,25 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "td_con_release_mult",
     "td_con_heal_pct",
     "td_bang_extra_hits",
+    # Cửu Thiên Cương Phong Thể (Phong anti-evasion wind-blade shredder) —
+    # config keys read off Combatant fields by run_cuong_phong_procs (L1
+    # marks/bleed/Tích + L9 storm rider + Tích execute), run_on_hit_procs (L6
+    # bonus strike), casting.py (sustained pierce + storm extra hits /
+    # unevadable) and auras/cuong_phong.py (storm cadence). Runtime
+    # (cp_tich_stacks / cp_storm_turn_counter) are Combatant-only.
+    "cp_an_phong_on_hit",
+    "cp_bleed_on_hit_chance",
+    "cp_tich_cap",
+    "cp_phong_shred_on_hit",
+    "cp_pierce_def_pct",
+    "cp_pierce_def_pct_high",
+    "cp_pierce_tich_gate",
+    "cp_bonus_strike_chance",
+    "cp_storm_interval",
+    "cp_storm_duration",
+    "cp_storm_cuon_bay_chance",
+    "cp_storm_extra_hits",
+    "cp_tich_execute_atk_scale",
 })
 
 

@@ -890,5 +890,15 @@
     "stat_bonus": { "res_loi": -0.22 },
     "emoji": "🔻",
     "duration": 4
+  },
+  {
+    "key": "DebuffPhongXuyenThau",
+    "vi": "Phong Xuyên Thấu",
+    "en": "Wind Penetration",
+    "kind": "debuff",
+    "description_vi": "Cương phong xuyên thủng hộ thể, giảm mạnh kháng Phong.",
+    "stat_bonus": { "res_phong": -0.20 },
+    "emoji": "🔻",
+    "duration": 4
   }
 ]

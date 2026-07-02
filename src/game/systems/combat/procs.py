@@ -501,6 +501,72 @@ def run_cuu_thien_procs(
                 inflict_debuff(session, _rider, meta, target, actor=actor)
 
 
+def run_cuong_phong_procs(
+    session: "CombatSession", actor: Combatant, target: Combatant, dmg: int,
+) -> None:
+    """Cửu Thiên Cương Phong Thể on-hit riders, once per landed damaging hit.
+
+    Attacker side only (``actor`` holds the body): L1 Phong Nhận — auto Ấn
+    Phong + Chảy Máu chance + 1 Phong Nhận Tích banked ON THE TARGET (cap
+    ``cp_tich_cap``; per-target by construction, dies with them); L3 Xuyên Tâm
+    Phong — DebuffPhongXuyenThau on every hit; L9 storm rider — Cuốn Bay
+    chance while BuffCuongPhongBao is up; and the full-Tích Cương Phong Xuyên
+    (capped true dmg + guaranteed Cuốn Bay, Tích reset). All debuffs route
+    through ``inflict_debuff``. Self-gates → no-op for every other build; a
+    negated hit (``dmg <= 0``) triggers nothing.
+    """
+    if dmg <= 0 or not actor.is_alive() or not target.is_alive():
+        return
+    from .casting import inflict_debuff, _deal_capped_true_dmg
+    # ── L1 Phong Nhận: mark + bleed + Tích ─────────────────────────────────
+    if actor.cp_an_phong_on_hit:
+        meta = EFFECTS.get("DebuffAnPhong")
+        if meta is not None:
+            inflict_debuff(session, "DebuffAnPhong", meta, target, actor=actor)
+        if actor.cp_bleed_on_hit_chance > 0 and target.is_alive() \
+                and session.rng.random() < actor.cp_bleed_on_hit_chance:
+            meta = EFFECTS.get("DebuffChayMau")
+            if meta is not None:
+                inflict_debuff(session, "DebuffChayMau", meta, target, actor=actor)
+        if actor.cp_tich_cap > 0 and target.is_alive() \
+                and target.cp_tich_stacks < actor.cp_tich_cap:
+            target.cp_tich_stacks += 1
+            session.log.append(
+                f"  🌪️ **{target.name}** Phong Nhận Tích "
+                f"[×{target.cp_tich_stacks}/{actor.cp_tich_cap}]"
+            )
+    # ── L3 Xuyên Tâm Phong: Phong res shred ────────────────────────────────
+    if actor.cp_phong_shred_on_hit and target.is_alive():
+        meta = EFFECTS.get("DebuffPhongXuyenThau")
+        if meta is not None:
+            inflict_debuff(session, "DebuffPhongXuyenThau", meta, target, actor=actor)
+    # ── L9 storm rider: Cuốn Bay while the steel wind rages ────────────────
+    if (
+        actor.cp_storm_cuon_bay_chance > 0 and target.is_alive()
+        and actor.has_effect("BuffCuongPhongBao")
+        and session.rng.random() < actor.cp_storm_cuon_bay_chance
+    ):
+        meta = EFFECTS.get("DebuffCuonBay")
+        if meta is not None:
+            inflict_debuff(session, "DebuffCuonBay", meta, target, actor=actor)
+    # ── Full-Tích payoff: Cương Phong Xuyên ────────────────────────────────
+    if (
+        actor.cp_tich_execute_atk_scale > 0 and target.is_alive()
+        and actor.cp_tich_cap > 0
+        and target.cp_tich_stacks >= actor.cp_tich_cap
+    ):
+        target.cp_tich_stacks = 0  # the pierce spends every Tích
+        _deal_capped_true_dmg(
+            session, target,
+            int(actor.atk * actor.cp_tich_execute_atk_scale),
+            "🌪️⚔️ Cương Phong Xuyên",
+        )
+        if target.is_alive():
+            meta = EFFECTS.get("DebuffCuonBay")
+            if meta is not None:
+                inflict_debuff(session, "DebuffCuonBay", meta, target, actor=actor)
+
+
 def run_on_hit_procs(
     session: "CombatSession", actor: Combatant, target: Combatant, is_crit: bool,
     skill_key: str = "",
@@ -650,6 +716,27 @@ def run_on_hit_procs(
             _loi_cast(
                 session, actor, target,
                 "SkillLoiBonusShock", _bonus, 0, _suppress_extras=True,
+            )
+    # Cửu Thiên Cương Phong L6 — Phong Bạo: chance per landed hit to auto-fire
+    # a bonus wind blade (60% ATK + Ấn Phong). RECURSION-GUARDED the same way
+    # as the Lôi reflex above: the bonus strike routes back through
+    # run_on_hit_procs with its own skill_key — skipping it stops the storm
+    # from re-firing without bound.
+    if (
+        actor.cp_bonus_strike_chance > 0
+        and skill_key != "SkillPhongBonusStrike" and target.is_alive()
+        and session.rng.random() < actor.cp_bonus_strike_chance
+    ):
+        from src.game.systems.combat.casting import cast_skill as _cp_cast
+        from src.data.registry import registry as _cp_reg
+        _cp_bonus = _cp_reg.get_skill("SkillPhongBonusStrike")
+        if _cp_bonus is not None:
+            session.log.append(
+                f"  🌪️ **{actor.name}** Phong Bạo — lưỡi gió phụ!"
+            )
+            _cp_cast(
+                session, actor, target,
+                "SkillPhongBonusStrike", _cp_bonus, 0, _suppress_extras=True,
             )
     # Tịnh Quang Hộ Pháp L9 — Thiên Quang Thẩm Phán: hitting a BUFFED enemy,
     # chance to strip one of its buffs + apply Phá Giáp (reuses the strip logic
@@ -1205,6 +1292,7 @@ def apply_reactive_damage(
     run_thanh_son_procs(session, actor, target, dmg)
     run_thien_kiep_procs(session, actor, target, dmg, skill_element)
     run_cuu_thien_procs(session, actor, target, dmg)
+    run_cuong_phong_procs(session, actor, target, dmg)
 
 
 def apply_reflect(

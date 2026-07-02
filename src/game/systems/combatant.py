@@ -1111,6 +1111,37 @@ class Combatant:
     td_con_bank: int = 0  # runtime (NOT a config key)
     td_cc_just_shrugged: str | None = None  # runtime (NOT a config key)
 
+    # ── Cửu Thiên Cương Phong Thể (Phong anti-evasion wind-blade shredder) ────
+    # L1 (run_cuong_phong_procs): per-hit Ấn Phong + ``cp_bleed_on_hit_chance``
+    # Chảy Máu + 1 Phong Nhận Tích banked ON THE TARGET (``cp_tich_stacks``
+    # lives on the enemy — per-target by construction, dies with them; cap
+    # ``cp_tich_cap``). L3: per-hit DebuffPhongXuyenThau
+    # (``cp_phong_shred_on_hit``) + sustained pierce ``cp_pierce_def_pct`` →
+    # ``cp_pierce_def_pct_high`` at ≥ ``cp_pierce_tich_gate`` Tích (casting,
+    # frozen-DefenseStats replace). L6: ``cp_bonus_strike_chance`` per hit to
+    # fire SkillPhongBonusStrike (run_on_hit_procs, skill_key-guarded). L9:
+    # every ``cp_storm_interval`` acted turns → BuffCuongPhongBao for
+    # ``cp_storm_duration`` (auras/cuong_phong.py): unevadable + force-crit +
+    # ``cp_storm_extra_hits`` + ``cp_storm_cuon_bay_chance`` Cuốn Bay/hit. At
+    # full Tích the next hit fires Cương Phong Xuyên
+    # (``cp_tich_execute_atk_scale`` × ATK via the shared capped true-dmg
+    # rider + guaranteed Cuốn Bay; Tích resets).
+    cp_an_phong_on_hit: bool = False
+    cp_bleed_on_hit_chance: float = 0.0
+    cp_tich_cap: int = 0
+    cp_phong_shred_on_hit: bool = False
+    cp_pierce_def_pct: float = 0.0
+    cp_pierce_def_pct_high: float = 0.0
+    cp_pierce_tich_gate: int = 0
+    cp_bonus_strike_chance: float = 0.0
+    cp_storm_interval: int = 0
+    cp_storm_duration: int = 0
+    cp_storm_cuon_bay_chance: float = 0.0
+    cp_storm_extra_hits: int = 0
+    cp_tich_execute_atk_scale: float = 0.0
+    cp_tich_stacks = _StackProxy("cp_tich", store="stack_counters")  # runtime (NOT a config key)
+    cp_storm_turn_counter: int = 0  # runtime (NOT a config key)
+
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.
