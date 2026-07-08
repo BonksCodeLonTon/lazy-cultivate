@@ -21,6 +21,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models.constitution_process import CharacterConstitutionProgress
 from src.db.repositories.inventory_repo import InventoryRepository
+import time
 
 
 async def get_progress(
@@ -62,6 +63,7 @@ async def get_or_create(
         level=1,
         xp=0,
         gate_fails=0,
+        breakthrough_cooldown_until=None,
     )
     session.add(progress)
     await session.flush()
@@ -206,6 +208,13 @@ async def persist_breakthrough_result(
     progress = await get_or_create(session, player_id, constitution_key)
     progress.level = breakthrough_result["new_level"]
     progress.gate_fails = breakthrough_result["new_fails"]
+    # On failure, set a short cooldown window to prevent immediate retry abuse.
+    # Default cooldown is 5 minutes (300s); success clears the cooldown.
+    outcome = breakthrough_result.get("outcome")
+    if outcome == "FAIL":
+        progress.breakthrough_cooldown_until = int(time.time()) + 300
+    else:
+        progress.breakthrough_cooldown_until = None
     await session.flush()
     return progress
 
@@ -276,6 +285,10 @@ async def apply_breakthrough(
     primary_key = equipped[0]
     row = await get_or_create(session, player.id, primary_key)
     level = row.level
+    # Enforce in-DB cooldown set on prior failures.
+    if getattr(row, "breakthrough_cooldown_until", None):
+        if int(time.time()) < int(row.breakthrough_cooldown_until):
+            return {"outcome": "COOLDOWN", "cooldown_until": row.breakthrough_cooldown_until}
 
     irepo = InventoryRepository(session)
     owned = await _owned_counts(irepo, player.id)

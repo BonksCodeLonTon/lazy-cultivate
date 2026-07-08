@@ -222,18 +222,32 @@ def combat_xp_gain(grade: str, won: bool) -> int:
 
 
 def breakthrough_chance(
-    gate_level: int, fails: int, ho_the_phu: bool, process: dict | None = None,
+    gate_level: int,
+    fails: int,
+    ho_the_phu: bool,
+    process: dict | None = None,
+    small_levels_passed: int = 0,
+    big_realms_completed: int = 0,
+    pill_bonus: float = 0.0,
 ) -> float:
     """Success probability for the breakthrough at ``gate_level``.
 
-    ``base_success + fails*pity_per_fail + Hộ Thể Phù bonus``, clamped to
-    [0.0, 1.0]. ``gate_level`` must be a key in the (per-body or global) gates.
+    New formula (data-driven):
+
+      base = 0.95 - small_levels_passed*0.02 - big_realms_completed*0.10
+      chance = base + pill_bonus + fails*pity_per_fail + Hộ Thể Phù bonus
+
+    The result is clamped into [0.05, 0.95] to enforce a minimum/soft-cap
+    on player-facing probabilities. The additional parameters are optional
+    and default to zero for backward compatibility with existing callers.
     """
     gate = gates_for(process)[gate_level]
-    chance = gate["base_success"] + fails * gate["pity_per_fail"]
+    base = 0.95 - float(small_levels_passed) * 0.02 - float(big_realms_completed) * 0.10
+    chance = base + float(pill_bonus) + fails * gate["pity_per_fail"]
     if ho_the_phu:
         chance += HO_THE_PHU_BONUS
-    return max(0.0, min(1.0, chance))
+    # Clamp to a sensible floor/ceiling for UX (5%..95%).
+    return max(0.05, min(0.95, chance))
 
 
 def resolve_breakthrough(

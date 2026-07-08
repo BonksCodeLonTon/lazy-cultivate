@@ -37,6 +37,9 @@ class CharacterConstitutionProgress(Base):
     level: Mapped[int] = mapped_column(SmallInteger, default=1, nullable=False)
     xp: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     gate_fails: Mapped[int] = mapped_column(SmallInteger, default=0, nullable=False)
+    breakthrough_cooldown_until: Mapped[int | None] = mapped_column(
+        Integer, default=None, nullable=True
+    )
 
     player: Mapped["Player"] = relationship(
         "Player", back_populates="constitution_progress"
