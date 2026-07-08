@@ -44,7 +44,7 @@ src/bot/client.py           CultivationBot — loads cogs, syncs slash commands
 src/bot/cogs/               One cog per feature (Discord layer only, no game logic)
                               cultivation, status, skills, equipment, dungeon, world_boss,
                               formation, inventory, shop, trade, direct_trade, forge, alchemy,
-                              linh_can, constitution, arena, handbook, recycle, admin
+                              linh_can, the_tu, constitution, arena, handbook, recycle, admin
                               (combat slash commands live in cogs/skills.py / cogs/dungeon.py /
                                cogs/world_boss.py / cogs/arena.py — there is no combat.py cog)
 src/game/
@@ -54,7 +54,7 @@ src/game/
                               character_stats, status, skills, formation, inventory,
                               economy, trade, dungeon, world_boss, alchemy, forge, chest,
                               tribulation, linh_can, linh_can_environment, the_chat,
-                              merit, pill_buffs, recycle, toxicity
+                              body_parts, merit, pill_buffs, recycle, toxicity
     combat/                 Combat subpackage — session (CombatSession orchestrator), phase,
                               procs, casting, bursts, builders, helpers, skill_extras
   engine/                   Low-level computation
@@ -116,4 +116,6 @@ src/utils/
 - **Linh Căn (spiritual root)**: 9 elements (Kim/Mộc/Thủy/Hỏa/Thổ/Lôi/Phong/Quang/Âm), each with its own effect module in `engine/linh_can_effects/`
 - **Item grades**: Hoàng < Huyền < Địa < Thiên
 - **Skill types**: Thiên (attack) / Địa (defense) / Nhân (support/CC) / Trận Pháp
-- **Constitution (Thể Chất)**: unlocked at Nhập Thánh Cấp 9 (`dao_ti_unlocked` flag on Character)
+- **Constitution (Thể Chất)**: unlocked at Nhập Thánh Cấp 9 (`dao_ti_unlocked` flag on Character); every path carries exactly **1** standard Thể Chất (`the_chat.max_slots` == 1)
+- **Constitution balance envelope**: BEFORE authoring or editing any Thể Chất, consult `docs/constitution_balance_bands.json` — the tunable stat-band + combat-benchmark envelope (per-rarity cumulative-L9 caps, immunity-chance rule, engine hard-cap and design-rule references). Size the kit with `python scripts/check_constitution_balance.py <key> --fight`; the bands are enforced by `tests/test_constitution_balance_bands.py` + `tests/test_constitution_power_bench.py`, so exceeding one means either trim the body or deliberately raise the band in the JSON (update its `_anchor` note)
+- **Bách Thể Chú Linh (Thể Tu rework)**: each Luyện Thể realm unlocks a body part (9 total); infuse with typed **Tinh Huyết** (vital essence) dropped in the `thap_van_dai_son` dungeon family — `game/systems/body_parts.py`, `/thetu` cog, bonuses apply only while `active_axis == "body"`. Essence rarity ladder normal→magic→rare→legendary→mythic = distinct beast families per zone depth; feeding a part enough of one essence triggers **Giác Tỉnh** (awakening): special effect + (legendary/mythic) a granted combat skill (`no_scroll` skills in `skills/player/vital_awakening.json`, injected in `combat/builders.py`); content baked by `scripts/gen_thap_van_dai_son.py`

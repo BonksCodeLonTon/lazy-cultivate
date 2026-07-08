@@ -1,0 +1,149 @@
+{
+  "_doc": [
+    "Constitution balance bands — THE tunable envelope every Thể Chất must fit.",
+    "Enforced by tests/test_constitution_balance_bands.py: for each process body",
+    "the CUMULATIVE L9 kit (flat stat_bonuses + every milestone's stat_bonuses",
+    "+ per_level_growth × (max_level−1)) is summed per category below and must",
+    "not exceed the rarity's max. To give a new body more room, RAISE the band",
+    "here deliberately — the test failing is the signal that a new body would",
+    "power-creep past the existing roster.",
+    "Caps were derived 2026-07-08 from the 26-body roster: each value is the",
+    "current roster maximum (rounded up slightly), so the strongest existing",
+    "specialist DEFINES its band. Categories a rarity has never used carry a",
+    "small starter allowance instead of 0 so minor use doesn't need a re-tune.",
+    "Custom per-body mechanic flags (cp_*, qm_*, vc_*, ...) cannot be banded",
+    "generically — those are governed by the design rules below + review."
+  ],
+  "resist_immunity_chance_max": 0.85,
+  "_resist_note": "Any stat key containing 'immune'/'resist'/'negate' authored on a constitution must stay ≤ this — total (1.0) immunity is banned by design (the #24 Tiêu Dao ruling). Stun-class counterplay must always exist.",
+  "categories": {
+    "offense_pct": {
+      "includes": ["atk_pct", "matk_pct"],
+      "max": { "legendary": 0.30, "mythic": 0.42 },
+      "_anchor": "leg: ThienCuongPhaSat 0.29 | myt: HoangCoThanhThe 0.404"
+    },
+    "final_dmg_bonus": {
+      "includes": ["final_dmg_bonus"],
+      "max": { "legendary": 0.10, "mythic": 0.15 },
+      "_anchor": "myt: HoangCoThanhThe 0.15 (L9 capstone); legendaries currently use ramps/conditionals instead of flat fdb"
+    },
+    "crit_rating": {
+      "includes": ["crit_rating"],
+      "max": { "legendary": 520, "mythic": 320 },
+      "_anchor": "leg: ThienLoiCuong 514 | myt: HoangCoThanhThe 312"
+    },
+    "crit_dmg_rating": {
+      "includes": ["crit_dmg_rating"],
+      "max": { "legendary": 560, "mythic": 240 },
+      "_anchor": "leg: ThienCuongPhaSat 550"
+    },
+    "element_dmg_total": {
+      "includes_nested": ["element_dmg_bonus"],
+      "max": { "legendary": 0.35, "mythic": 0.55 },
+      "_anchor": "leg: ThienKiepVanLoi 0.35 | myt: HonNguyenVoCuc 0.54 (omni-sum identity). REMEMBER: element_dmg part-scales in body-part/equip stacks — see the-tu memory (author value × ~45 rule for Tinh Huyết)."
+    },
+    "final_dmg_reduce": {
+      "includes": ["final_dmg_reduce"],
+      "max": { "legendary": 0.55, "mythic": 0.20 },
+      "_anchor": "leg: ThanhSonBatDong 0.55 (THE wall identity — do not creep past it) | engine hard cap 0.90 shared with gear/linh-căn/formations"
+    },
+    "typed_dmg_reduce": {
+      "includes": ["phys_dmg_reduce_pct"],
+      "max": { "legendary": 0.25, "mythic": 0.25 },
+      "_anchor": "leg: HuyenMinhNhuoc 0.25 | myt: VoCauLuuLy 0.20 | engine clamp 0.75 in casting"
+    },
+    "reflect_total": {
+      "includes": ["reflect_pct", "magic_reflect_pct", "thorn_pct"],
+      "max": { "legendary": 0.15, "mythic": 0.40 },
+      "_anchor": "myt: VoCauLuuLy 0.35 base (56% with Vô Cấu ramp; per-hit clamp 10% attacker max HP). Generic reflect_pct engine clamp 0.50."
+    },
+    "hp_pct": {
+      "includes": ["hp_pct"],
+      "max": { "legendary": 0.32, "mythic": 0.30 },
+      "_anchor": "leg: HuyenThuyTruongSinh 0.308"
+    },
+    "def_pct": {
+      "includes": ["def_pct"],
+      "max": { "legendary": 0.30, "mythic": 0.15 },
+      "_anchor": "leg: KimCangBatHoai 0.30"
+    },
+    "res_all": {
+      "includes": ["res_all"],
+      "max": { "legendary": 0.18, "mythic": 0.15 },
+      "_anchor": "leg: HauThoThanThe 0.18 | per-element engine cap 0.90"
+    },
+    "crit_res_rating": {
+      "includes": ["crit_res_rating"],
+      "max": { "legendary": 460, "mythic": 300 },
+      "_anchor": "leg: ThanhSonBatDong 460"
+    },
+    "regen_total_pct": {
+      "includes": ["hp_regen_pct", "shield_regen_pct"],
+      "max": { "legendary": 0.15, "mythic": 0.16 },
+      "_anchor": "leg: HauThoThanThe 0.138 | myt: LuuLyThuanThan 0.154"
+    },
+    "spd_pct": {
+      "includes": ["spd_pct"],
+      "max": { "legendary": 0.39, "mythic": 0.10 },
+      "_anchor": "leg: TieuDaoThan 0.382"
+    },
+    "evasion_rating": {
+      "includes": ["evasion_rating"],
+      "max": { "legendary": 620, "mythic": 450 },
+      "_anchor": "leg: TieuDaoThan 616 (dodge identity) | myt: ThaiAmDao 356 (yin-moon evasion identity — band raised 200→450 on 2026-07-08 when the body was authored)"
+    },
+    "shield_pct": {
+      "includes": ["shield_max_pct"],
+      "max": { "legendary": 0.40, "mythic": 0.40 },
+      "_anchor": "leg: KimCangBatHoai 0.39 | myt: LuuLyThuanThan 0.39"
+    }
+  },
+  "combat_benchmark": {
+    "_doc": [
+      "Live-combat envelope — catches what stat bands can't: proc/cadence/rider",
+      "power from custom mechanics. Enforced by tests/test_constitution_power_bench.py:",
+      "every L9 body fights the anchor elite on fixed seeds with a fixed generic",
+      "kit and must land inside the thresholds. Calibrated 2026-07-08:",
+      "Phàm Thể baseline avg_ttk 14.0 / end_pool 50%; roster spread avg_ttk",
+      "3.8 (ThaiBachCanhKim) … 13.6 (ThanhSonBatDong), end_pool 57% … 100%.",
+      "avg_ttk_min is the OVER-tune tripwire (nobody may nuke meaningfully",
+      "faster than the current top assassin); avg_ttk_max + end_pool_min say a",
+      "body must beat the no-constitution baseline on at least that axis."
+    ],
+    "enemy_key": "DuocVienR6_02",
+    "player_realm_total_vs_enemy": 27,
+    "seeds": [1, 2, 3, 4, 5],
+    "max_turns": 60,
+    "skills": ["SkillAtkKim1", "SkillAtkHoa1"],
+    "char": { "body_realm": 6, "qi_realm": 6, "formation_realm": 6, "active_axis": "qi", "linh_can": "kim", "linh_can_level": 5 },
+    "thresholds": {
+      "min_wins": 5,
+      "avg_ttk_min": 3.0,
+      "avg_ttk_max": 14.0,
+      "end_pool_min": 0.50
+    }
+  },
+  "engine_hard_caps_reference": {
+    "_doc": "NOT tunable here — coded clamps, listed so band tuning stays inside them.",
+    "MAX_FINAL_DMG_REDUCE": { "value": 0.90, "where": "src/game/constants/balance.py" },
+    "MAX_PHYS_REDUCTION": { "value": 0.75, "where": "src/game/constants/balance.py (def/(def+K) curve cap)" },
+    "MAX_ELEMENTAL_RES": { "value": 0.90, "where": "src/game/constants/balance.py" },
+    "life_steal_pct": { "value": 0.60, "where": "src/game/systems/character_stats.py clamp" },
+    "reflect_pct": { "value": 0.50, "where": "src/game/systems/character_stats.py clamp (generic all-damage reflect)" },
+    "magic_reflect_rate": { "value": 0.85, "where": "src/game/systems/combat/procs.py (rate cap)" },
+    "magic_reflect_per_hit": { "value": 0.10, "where": "procs.py _VC_REFLECT_CAP_ATTACKER_HP_PCT — fraction of ATTACKER max HP" },
+    "constitution_true_dmg_rider": { "value": 0.12, "where": "casting.py _CONSTITUTION_TRUE_DMG_CAP_PCT — every per-cast rider MUST go through _deal_capped_true_dmg" },
+    "hp_to_shield_pct": { "value": 0.95, "where": "character_stats.py _apply_hp_to_shield clamp" },
+    "linh_can_fdr_stack": { "value": 0.45, "where": "src/game/constants/linh_can.py LINH_CAN_FDR_STACK_CAP" }
+  },
+  "design_rules_reference": [
+    "No total immunity: every shrug/negate/resist is a chance ≤ 0.85, and stun-class CC must always have a lane in (VoCauLuuLy keeps CCStun open; HoangCo's Thánh Vực is a 2-turn window, not permanent).",
+    "No flat 0-damage gates: 'immune to X-element skills' is banned — use high-but-capped resist or a charge-spend soak that never reaches 0 (ThienThuyThanh precedent).",
+    "Revive/cheat-death only when it IS the theme (ChanDuongBatDiet phoenix, TruongXuan spring) — 'not every constitution has revive'.",
+    "Per-cast true-damage riders always through casting._deal_capped_true_dmg (12% target-max-HP clamp). Never copy the tail.",
+    "Conversion-rate stats (reflect, dmg-per-def/shield/hp, damage_from_heal, cleanse_retaliate...) must NEVER scale with part/level multipliers — NO_SCALE family.",
+    "Every runtime stack counter needs an authored cap field, and re-declaring an int cap across milestones DOUBLES it (registry int-merge) — declare caps once.",
+    "Before adding an on-hit debuff flag, check the generic _ON_HIT_PROCS lanes in combat/helpers.py (burn/bleed/poison/shock/mark/slow/heal_reduce/blind/te_liet/loi_shred/phong_shred).",
+    "New engine immunity/resist gates go in inflict_interceptors.py as one decorated function — never inline guards in inflict_debuff."
+  ]
+}
