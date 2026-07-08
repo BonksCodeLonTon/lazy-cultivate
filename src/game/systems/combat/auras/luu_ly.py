@@ -15,7 +15,7 @@ data-driven ``EffectMeta.cleansable`` flag so oddly-keyed debuffs (e.g.
 from __future__ import annotations
 
 from src.game.constants.effects import EffectKey
-from src.game.engine.effects import EFFECTS, effective_stack_cap
+from src.game.engine.effects import EFFECTS, EffectKind, effective_stack_cap
 
 from ..context import TurnContext
 from ..hooks import TurnPhase, register_hook
@@ -51,6 +51,11 @@ def _process_luu_ly_tinh_hoa(ctx: TurnContext) -> None:
         "luu_ly_cleanse_chance",
         EFFECTS[EffectKey.BUFF_LUU_LY_TINH_HOA].stat_bonus.get("luu_ly_cleanse_chance", 0.30),
     ))
+    # Vô Cấu Lưu Ly L3 (Lưu Ly Cộng Hưởng) — the body resonates with its
+    # namesake skill: every cleanse roll is guaranteed, and each successful
+    # cleanse below also strips one enemy buff.
+    if actor.vc_tinh_hoa_resonance:
+        chance = 1.0
     cap = effective_stack_cap(actor, EffectKey.BUFF_LUU_LY_TINH_HOA.value)
     for fire_key in fire_dot_keys:
         if actor.luu_ly_tinh_hoa_stacks >= cap:
@@ -75,3 +80,20 @@ def _process_luu_ly_tinh_hoa(ctx: TurnContext) -> None:
             f"*{removed_meta.vi if removed_meta else removed}*) "
             f"[×{actor.luu_ly_tinh_hoa_stacks}/{cap}]"
         )
+        # Resonance rider — strip one random enemy buff per cleanse.
+        if actor.vc_tinh_hoa_resonance and opponent.is_alive():
+            _enemy_buffs = [
+                k for k in list(opponent.effects)
+                if (bm := EFFECTS.get(k)) is not None
+                and bm.kind is EffectKind.BUFF
+            ]
+            if _enemy_buffs:
+                _stripped = ctx.rng.choice(_enemy_buffs)
+                _stripped_meta = EFFECTS.get(_stripped)
+                opponent.effects.pop(_stripped, None)
+                opponent.effect_overrides.pop(_stripped, None)
+                ctx.log.append(
+                    f"    🔮 Cộng hưởng — tước "
+                    f"*{_stripped_meta.vi if _stripped_meta else _stripped}* "
+                    f"của **{opponent.name}**"
+                )

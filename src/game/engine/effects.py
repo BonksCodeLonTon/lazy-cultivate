@@ -841,6 +841,62 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "heal_to_shield_pct",
     "aegis_reform_charges",
     "aegis_reform_shield_pct",
+    # Vô Cấu Lưu Ly Thể (universal purity tank) — config keys read off Combatant
+    # fields by inflict_interceptors (L1 CC / L9 negative-effect shrug) and
+    # alchemy.consume_pill (pill purity). ``magic_reflect_pct`` is NOT here —
+    # a real stat so BuffVanPhapBatTriem's scaling rule can ramp it per stack.
+    # ``vc_reflect_per_stack`` is a scaling-rule placeholder (popped by
+    # _apply_scaling_rules). ``vo_cau_stacks`` is runtime, Combatant-only.
+    "vc_cc_resist_pct",
+    "pill_toxin_immune",
+    "vc_tinh_hoa_resonance",
+    "vc_bat_triem_immune_pct",
+    "vo_cau_cap",
+    # Cửu U Ma Đế Thể (Ám soul-drain summoner) — config keys read off Combatant
+    # fields by procs.run_cuu_u_procs / apply_soul_drain / the U Minh cast
+    # synergy / the builders evolution. The generic soul_drain/stat_steal
+    # on-hit lanes and the scaling OUTPUTS (matk_pct / final_dmg_bonus via
+    # BuffCuuUMaKhi / BuffCuuUChiCanh) are real stats, not here.
+    # ``ma_khi_stacks`` / ``cu_ma_de_evolved`` are runtime, Combatant-only.
+    "cu_ma_khi_cap",
+    "cu_drain_amp_per_stack",
+    "cu_vl_follow_up_chance",
+    "cu_vl_dmg_matk_pct",
+    "cu_uminh_bonus_drains",
+    "cu_ma_de_enabled",
+    # Thôn Thiên Ma Thể (Ám devourer) — config keys read off Combatant fields
+    # by apply_reactive_damage (L6 absorb), run_thon_thien_procs (L6 strip→MP)
+    # and auras/thon_thien.py (L9 devour burst). L1's cultivation_speed_bonus /
+    # loot_luck_bonus and L9's stat_steal_on_hit_pct are real stats, not here.
+    # ``ttm_matk_absorbed`` / ``ttm_devour_turn_counter`` are runtime-only.
+    "ttm_devour_copy",
+    "ttm_absorb_matk_pct",
+    "ttm_absorb_cap_pct",
+    "ttm_strip_mp_chance",
+    "ttm_strip_mp_gain_pct",
+    "ttm_devour_interval",
+    # Thái Dương Đạo Thể (universal solar tank) — config keys read off
+    # Combatant fields by combat_hit (anti-demon), apply_reactive_damage
+    # (Thần Lô banking) and auras/thai_duong.py (solar burst). The Thần Lô
+    # scaling placeholders (td_lo_* / td_nd_*) are popped by
+    # _apply_scaling_rules; ``than_lo_stacks`` / the cadence counter are
+    # runtime-only.
+    "td_anti_demon_dmg_pct",
+    "td_than_lo_per_hit",
+    "td_than_lo_cap",
+    "td_solar_interval",
+    "td_solar_hp_pct",
+    # Thái Âm Đạo Thể (universal yin-moon) — config keys read off Combatant
+    # fields by combat_hit (vs-frozen), auras/thai_am.py (Trảm Đạo cadence +
+    # moonlight) and auras/kinh_hoa.py (resonance). The generic lanes
+    # (mp_regen / evasion / freeze_on_skill_chance / evasion-conversion) are
+    # real stats, not here. The cadence counter is runtime-only.
+    "ta_dmg_vs_frozen_pct",
+    "ta_tram_dao_interval",
+    "ta_tram_dao_strips",
+    "ta_kinh_hoa_resonance",
+    "ta_moonlight_heal_pct",
+    "ta_moonlight_freeze_chance",
     # Liệt Diễm Phần Thiên Thể (Hỏa fire nuker) — config keys read off Combatant
     # fields by periodic/lietdiem.py (ramp + avatar cadence) and apply_reactive_damage
     # (L6 fire-absorb). The ramp/absorb stat OUTPUTS (matk_pct/crit_rating/dmg_bonus_hoa)
@@ -975,6 +1031,16 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     # stats te_liet/loi_shred/phong_shred_on_hit_pct are real stats — buffs
     # contribute through get_combat_modifiers — so they are NOT listed here).
     "stun_on_hit_turns",
+    # Quang Minh Thánh Thể (Quang radiant control-purifier) — config keys read
+    # by auras/quang_minh.py (radiance aura + purification cadence) and
+    # run_quang_minh_procs. ``qm_strip_vs_blind_chance`` is deliberately NOT
+    # here — it's a real stat the Thánh Quang scaling rule boosts.
+    "qm_aura_blind_chance",
+    "qm_stack_cap",
+    "qm_purify_interval",
+    "qm_purify_strip_count",
+    "qm_purify_heal_pct",
+    "qm_purify_fast_stack_gate",
 })
 
 

@@ -436,8 +436,9 @@ def resolve_constitution_swap(
     constitution_tracker: str | None,
     target_key: str,
     owned_essence_qty: int,
+    owned_stone_qty: int = 0,
 ) -> dict:
-    """Resolve a Hoán Thể Tinh body-swap — change the PRIMARY constitution.
+    """Resolve a Hoán Thể body-swap — change the PRIMARY constitution.
 
     PURE, no RNG. Moves ``target_key`` to the front of the equipped STANDARD
     list (slot 0 = the XP-earning primary), keeping Hỗn Độn pinned last when
@@ -445,12 +446,16 @@ def resolve_constitution_swap(
     invariant lives in the per-``(player, constitution)`` storage, so the new
     primary simply reads its existing level (or defaults to L1).
 
+    Currency: 1 Hoán Thể Tinh, or 1 Thiên Mệnh Thạch (the universal ultrarare
+    world drop) as fallback. The dedicated essence is consumed first so the
+    multi-purpose stone stays available for unlocks.
+
     Guards (all reject with zero consumption):
       - ``target_key`` not currently equipped → ``NOT_EQUIPPED``
       - ``target_key`` not in the unlock tracker → ``NOT_UNLOCKED``
       - ``target_key`` already slot 0 → ``ALREADY_PRIMARY``
       - ``target_key`` is Hỗn Độn (special 9th slot) → ``INVALID_TARGET``
-      - ``owned_essence_qty < 1`` → ``NO_ESSENCE``
+      - no essence AND no stone → ``NO_ESSENCE``
 
     On success returns ``{outcome: "SWAPPED", new_constitution_type, consumed}``
     where ``new_constitution_type`` is the re-serialized equipped column.
@@ -473,15 +478,82 @@ def resolve_constitution_swap(
     if standard and standard[0] == target_key:
         return {"outcome": "ALREADY_PRIMARY"}
 
-    if owned_essence_qty < 1:
+    if owned_essence_qty < 1 and owned_stone_qty < 1:
         return {"outcome": "NO_ESSENCE"}
 
     reordered = [target_key] + [k for k in standard if k != target_key]
     if has_hon_don:
         reordered.append(HON_DON_KEY)
 
+    from src.game.constants.constitution_process import THIEN_MENH_THACH_KEY
+
+    consumed = (
+        {"ConsProcHoanTheTinh": 1}
+        if owned_essence_qty >= 1
+        else {THIEN_MENH_THACH_KEY: 1}
+    )
     return {
         "outcome": "SWAPPED",
         "new_constitution_type": set_constitutions(reordered),
-        "consumed": {"ConsProcHoanTheTinh": 1},
+        "consumed": consumed,
     }
+
+
+# ── Thôn Thiên Ma Thể — L3 Thôn Phệ Bản Nguyên (devour-copy) ──────────────────
+
+THON_THIEN_KEY = "TheChat_ThonThienMa"
+
+# Strongest-first donor ordering; ties keep tracker (unlock) order via stable
+# sort. Unknown/future rarities sort last so they never silently outrank.
+_DEVOUR_RARITY_ORDER = {"mythic": 0, "legendary": 1, "epic": 2, "rare": 3}
+
+
+def devoured_l1(char) -> tuple[str | None, dict, list[str]]:
+    """Resolve the Thôn Thiên devour-copy: (donor_key, L1 stat_bonuses, L1 effects).
+
+    Active only when Thôn Thiên Ma is the cultivated PRIMARY (slot 0) at
+    level ≥ 3 with the ``ttm_devour_copy`` milestone flag authored. The donor
+    is the STRONGEST other process body in the player's unlock tracker
+    (highest rarity, earliest unlock breaking ties) — "nuốt hấp nguyên khí
+    mạnh nhất". Only the donor's BASE Tầng-1 block is copied (stat_bonuses
+    deep-copied so callers can merge destructively; effects list for the
+    builders stamp) — never growth, never higher milestones, matching the
+    sheet's "copy passive gốc, KHÔNG copy phiên bản nâng cấp".
+
+    Returns ``(None, {}, [])`` on any gate failure — the inert default.
+    """
+    import copy
+
+    from src.data.registry import registry
+    from src.game.systems.the_chat import HON_DON_KEY, get_constitutions, get_tracker
+
+    equipped = get_constitutions(getattr(char, "constitution_type", None))
+    if not equipped or equipped[0] != THON_THIEN_KEY:
+        return None, {}, []
+    level = int((getattr(char, "constitution_levels", None) or {}).get(THON_THIEN_KEY, 0))
+    if level < 3:
+        return None, {}, []
+    holder = registry.get_constitution(THON_THIEN_KEY) or {}
+    l3 = ((holder.get("process") or {}).get("levels") or {}).get("3") or {}
+    if not (l3.get("stat_bonuses") or {}).get("ttm_devour_copy"):
+        return None, {}, []
+
+    candidates: list[tuple[int, str, dict]] = []
+    for key in get_tracker(getattr(char, "constitution_tracker", None)):
+        if key in (THON_THIEN_KEY, "ConstitutionPhamThe", HON_DON_KEY):
+            continue
+        data = registry.get_constitution(key)
+        if not data or not data.get("process"):
+            continue
+        rank = _DEVOUR_RARITY_ORDER.get(data.get("rarity", ""), 9)
+        candidates.append((rank, key, data))
+    if not candidates:
+        return None, {}, []
+    candidates.sort(key=lambda t: t[0])  # stable — tracker order breaks ties
+    _rank, donor_key, donor = candidates[0]
+    l1 = ((donor.get("process") or {}).get("levels") or {}).get("1") or {}
+    return (
+        donor_key,
+        copy.deepcopy(l1.get("stat_bonuses") or {}),
+        list(l1.get("effects") or []),
+    )

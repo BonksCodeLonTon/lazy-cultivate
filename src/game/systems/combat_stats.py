@@ -193,6 +193,65 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("heal_to_shield_pct",               "heal_to_shield_pct",               float),
     ("aegis_reform_charges",             "aegis_reform_charges",             int),
     ("aegis_reform_shield_pct",          "aegis_reform_shield_pct",          float),
+    # Vô Cấu Lưu Ly Thể (universal purity tank) — L1/L9 immunity gates live in
+    # ``inflict_interceptors``; L6 magic reflect rides ``apply_reactive_damage``.
+    # ``magic_reflect_pct`` is a REAL stat (deliberately NOT config-only) so
+    # BuffVanPhapBatTriem's scaling rule can ramp it per Vô Cấu stack.
+    # ``pill_toxin_immune`` sits in the FLAT stat_bonuses (out-of-combat read
+    # in ``alchemy.consume_pill``). ``vo_cau_stacks`` is runtime, Combatant-only.
+    ("vc_cc_resist_pct",                 "vc_cc_resist_pct",                 float),
+    ("pill_toxin_immune",                "pill_toxin_immune",                bool),
+    ("vc_tinh_hoa_resonance",            "vc_tinh_hoa_resonance",            bool),
+    ("magic_reflect_pct",                "magic_reflect_pct",                float),
+    ("vc_bat_triem_immune_pct",          "vc_bat_triem_immune_pct",          float),
+    ("vo_cau_cap",                       "vo_cau_cap",                       int),
+    # Cửu U Ma Đế Thể (Ám soul-drain summoner) — config flags. L1 rides the
+    # existing generic soul_drain/stat_steal lanes (no rows here); Ma Khí
+    # banking + the Vong Linh follow-up live in procs.run_cuu_u_procs; the
+    # L9 Ma Đế evolution resolves at build (builders, prereq = Chân Ma Chi
+    # Tâm equipped). ``ma_khi_stacks``/``cu_ma_de_evolved`` are runtime.
+    ("cu_ma_khi_cap",                    "cu_ma_khi_cap",                    int),
+    ("cu_drain_amp_per_stack",           "cu_drain_amp_per_stack",           float),
+    ("cu_vl_follow_up_chance",           "cu_vl_follow_up_chance",           float),
+    ("cu_vl_dmg_matk_pct",               "cu_vl_dmg_matk_pct",               float),
+    ("cu_uminh_bonus_drains",            "cu_uminh_bonus_drains",            int),
+    ("cu_ma_de_enabled",                 "cu_ma_de_enabled",                 bool),
+    # Thôn Thiên Ma Thể (Ám devourer) — config flags. L1 is meta-only
+    # (cultivation_speed_bonus / loot_luck_bonus — both real stats, no rows);
+    # L3 devour-copy resolves in character_stats (stats) + builders (effects);
+    # L6 absorb rides apply_reactive_damage, strip→MP rides run_thon_thien_procs;
+    # L9 devour burst is auras/thon_thien.py. ``ttm_matk_absorbed`` and the
+    # cadence counter are runtime, Combatant-only.
+    ("ttm_devour_copy",                  "ttm_devour_copy",                  bool),
+    ("ttm_absorb_matk_pct",              "ttm_absorb_matk_pct",              float),
+    ("ttm_absorb_cap_pct",               "ttm_absorb_cap_pct",               float),
+    ("ttm_strip_mp_chance",              "ttm_strip_mp_chance",              float),
+    ("ttm_strip_mp_gain_pct",            "ttm_strip_mp_gain_pct",            float),
+    ("ttm_devour_interval",              "ttm_devour_interval",              int),
+    # Thái Dương Đạo Thể (universal solar anti-demon tank) — config flags.
+    # Anti-demon bonus applies in combat_hit vs Ám-element / Beast* targets;
+    # Thần Lô banks on damage taken (apply_reactive_damage) and scales via
+    # BuffThaiDuongThanLo / BuffNhatDieuCuuThien; the solar burst cadence is
+    # auras/thai_duong.py. ``than_lo_stacks`` + the cadence counter are runtime.
+    ("td_anti_demon_dmg_pct",            "td_anti_demon_dmg_pct",            float),
+    ("td_than_lo_per_hit",               "td_than_lo_per_hit",               bool),
+    ("td_than_lo_cap",                   "td_than_lo_cap",                   int),
+    ("td_solar_interval",                "td_solar_interval",                int),
+    ("td_solar_hp_pct",                  "td_solar_hp_pct",                  float),
+    # Thái Âm Đạo Thể (universal yin-moon evasion/freeze) — config flags.
+    # vs-frozen bonus reads in combat_hit; the Trảm Đạo cadence + moonlight
+    # heal/freeze live in auras/thai_am.py; the Kính Hoa resonance upgrades
+    # the existing kinh_hoa transfer aura. Cadence counter is runtime-only.
+    ("ta_dmg_vs_frozen_pct",             "ta_dmg_vs_frozen_pct",             float),
+    ("ta_tram_dao_interval",             "ta_tram_dao_interval",             int),
+    ("ta_tram_dao_strips",               "ta_tram_dao_strips",               int),
+    ("ta_kinh_hoa_resonance",            "ta_kinh_hoa_resonance",            bool),
+    ("ta_moonlight_heal_pct",            "ta_moonlight_heal_pct",            float),
+    ("ta_moonlight_freeze_chance",       "ta_moonlight_freeze_chance",       float),
+    # Bách Thể Chú Linh (vital-essence awakening) — config flags.
+    # ``overheal_to_shield_pct`` converts the clamped-off heal remainder into
+    # shield in ``_apply_heal`` (Ngân Giác Lộc awakening: Lộc Linh).
+    ("overheal_to_shield_pct",           "overheal_to_shield_pct",           float),
     # Liệt Diễm Phần Thiên Thể (Hỏa escalating fire nuker) — config flags.
     # L1 per-turn ramp (periodic increments lietdiem_burn_stacks; the buff's
     # scaling_rules convert it to matk_pct + crit_rating). L6 fire-absorb on hoa
@@ -367,6 +426,25 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("loi_shred_on_hit_pct",             "loi_shred_on_hit_pct",             float),
     ("phong_shred_on_hit_pct",           "phong_shred_on_hit_pct",           float),
     ("stun_on_hit_turns",                "stun_on_hit_turns",                int),
+    # Quang Minh Thánh Thể (Quang radiant control-purifier) — config flags.
+    # L1 radiance aura (auras/quang_minh.py: per-turn ``qm_aura_blind_chance``
+    # Lóa Mắt + DebuffQuangMinhVuc crit shred; a landed aura blind banks +1
+    # Thánh Quang, cap ``qm_stack_cap``). L3 rides EXISTING lanes only
+    # (element_dmg_bonus.quang / blind_on_hit_pct 1.0 / the #11 self-cleanse
+    # aura at interval 1). L6 ``qm_strip_vs_blind_chance`` — a REAL stat (the
+    # Thánh Quang scaling rule boosts it; NOT config-only) rolled per hit vs a
+    # blinded target (run_quang_minh_procs). L9 purification cadence
+    # (``qm_purify_interval``, −1 turn at ``qm_purify_fast_stack_gate``
+    # stacks): full self-cleanse + strip ``qm_purify_strip_count`` buffs +
+    # heal ``qm_purify_heal_pct`` + BuffThanhKhiet ward. Runtime
+    # (qm_thanh_quang_stacks / qm_purify_turn_counter) are Combatant-only.
+    ("qm_aura_blind_chance",             "qm_aura_blind_chance",             float),
+    ("qm_stack_cap",                     "qm_stack_cap",                     int),
+    ("qm_strip_vs_blind_chance",         "qm_strip_vs_blind_chance",         float),
+    ("qm_purify_interval",               "qm_purify_interval",               int),
+    ("qm_purify_strip_count",            "qm_purify_strip_count",            int),
+    ("qm_purify_heal_pct",               "qm_purify_heal_pct",               float),
+    ("qm_purify_fast_stack_gate",        "qm_purify_fast_stack_gate",        int),
 ]
 
 
@@ -660,6 +738,43 @@ class CombatStats:
     heal_to_shield_pct: float = 0.0
     aegis_reform_charges: int = 0
     aegis_reform_shield_pct: float = 0.0
+    # Vô Cấu Lưu Ly Thể (universal purity tank)
+    vc_cc_resist_pct: float = 0.0
+    pill_toxin_immune: bool = False
+    vc_tinh_hoa_resonance: bool = False
+    magic_reflect_pct: float = 0.0
+    vc_bat_triem_immune_pct: float = 0.0
+    vo_cau_cap: int = 0
+    # Cửu U Ma Đế Thể (Ám soul-drain summoner)
+    cu_ma_khi_cap: int = 0
+    cu_drain_amp_per_stack: float = 0.0
+    cu_vl_follow_up_chance: float = 0.0
+    cu_vl_dmg_matk_pct: float = 0.0
+    cu_uminh_bonus_drains: int = 0
+    cu_ma_de_enabled: bool = False
+    # Thôn Thiên Ma Thể (Ám devourer)
+    ttm_devour_copy: bool = False
+    ttm_absorb_matk_pct: float = 0.0
+    ttm_absorb_cap_pct: float = 0.0
+    ttm_strip_mp_chance: float = 0.0
+    ttm_strip_mp_gain_pct: float = 0.0
+    ttm_devour_interval: int = 0
+    # Thái Dương Đạo Thể (universal solar anti-demon tank)
+    td_anti_demon_dmg_pct: float = 0.0
+    td_than_lo_per_hit: bool = False
+    td_than_lo_cap: int = 0
+    td_solar_interval: int = 0
+    td_solar_hp_pct: float = 0.0
+    # Thái Âm Đạo Thể (universal yin-moon evasion/freeze)
+    ta_dmg_vs_frozen_pct: float = 0.0
+    ta_tram_dao_interval: int = 0
+    ta_tram_dao_strips: int = 0
+    ta_kinh_hoa_resonance: bool = False
+    ta_moonlight_heal_pct: float = 0.0
+    ta_moonlight_freeze_chance: float = 0.0
+    # ── Bách Thể Chú Linh (vital-essence awakening) ───────────────────────────
+    # Ngân Giác Lộc "Lộc Linh": overflow healing past hp_max converts to shield.
+    overheal_to_shield_pct: float = 0.0
     # Liệt Diễm Phần Thiên Thể (Hỏa escalating fire nuker)
     lietdiem_burn_per_turn: int = 0
     lietdiem_burn_cap: int = 0
@@ -742,6 +857,14 @@ class CombatStats:
     loi_shred_on_hit_pct: float = 0.0
     phong_shred_on_hit_pct: float = 0.0
     stun_on_hit_turns: int = 0
+    # Quang Minh Thánh Thể (Quang radiant control-purifier)
+    qm_aura_blind_chance: float = 0.0
+    qm_stack_cap: int = 0
+    qm_strip_vs_blind_chance: float = 0.0
+    qm_purify_interval: int = 0
+    qm_purify_strip_count: int = 0
+    qm_purify_heal_pct: float = 0.0
+    qm_purify_fast_stack_gate: int = 0
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).

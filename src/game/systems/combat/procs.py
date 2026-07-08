@@ -30,6 +30,11 @@ from .helpers import _ON_HIT_PROCS, _propagate_dot_bonuses, _propagate_stack_bui
 # punishes attackers harder via the mirror.
 _FREEZE_MIRROR_BOOST = 1.67
 
+# Vô Cấu Kim Thân magical reflect — per-hit clamp as a fraction of the
+# ATTACKER's max HP, so the reflect scales chip damage back rather than
+# letting one huge nuke delete its caster (12%-true-dmg-rider convention).
+_VC_REFLECT_CAP_ATTACKER_HP_PCT = 0.10
+
 if TYPE_CHECKING:
     from .session import CombatSession
 
@@ -521,6 +526,144 @@ def run_cuong_phong_procs(
                 inflict_debuff(session, "DebuffCuonBay", meta, target, actor=actor)
 
 
+def run_quang_minh_procs(
+    session: "CombatSession", actor: Combatant, target: Combatant, dmg: int,
+) -> None:
+    """Quang Minh Thánh Thể on-hit rider, once per landed damaging hit.
+
+    L6 Quang Mang Trán Phóng — attacker side only: hitting a BLINDED target
+    rolls ``qm_strip_vs_blind_chance`` to strip one random buff (same
+    kind-filter as the #11 judgment strip). The chance is a REAL stat: the
+    live roll reads field + ``get_combat_modifiers`` so BuffThanhQuangTichTu's
+    per-stack +8% applies. Self-gates → no-op for every other build; a
+    negated hit (``dmg <= 0``) triggers nothing.
+    """
+    if (
+        dmg <= 0
+        or actor.qm_strip_vs_blind_chance <= 0
+        or not actor.is_alive()
+        or not target.is_alive()
+        or not target.has_effect("DebuffLoaMat")
+    ):
+        return
+    chance = actor.qm_strip_vs_blind_chance + float(
+        get_combat_modifiers(actor).get("qm_strip_vs_blind_chance", 0.0)
+    )
+    if session.rng.random() >= chance:
+        return
+    _buffs = [
+        k for k in list(target.effects)
+        if (m := EFFECTS.get(k)) is not None and m.kind is EffectKind.BUFF
+    ]
+    if not _buffs:
+        return
+    _pick = session.rng.choice(_buffs)
+    target.effects.pop(_pick, None)
+    target.effect_overrides.pop(_pick, None)
+    _pm = EFFECTS.get(_pick)
+    session.log.append(
+        f"    🔆 **{actor.name}** Quang Mang Trán Phóng — tước "
+        f"{_pm.vi if _pm else _pick} khỏi kẻ mù lòa"
+    )
+
+
+def vong_linh_drain(
+    session: "CombatSession", actor: Combatant, target: Combatant,
+) -> None:
+    """One flavored Vong Linh soul-drain proc (Cửu U Ma Đế helper).
+
+    Shared by the follow-up strike below and the L6 U Minh Quỷ Hỏa cast
+    synergy in ``casting`` — both route through the canonical
+    ``apply_soul_drain`` (world-boss / stat-mutation immunities apply).
+    """
+    name, emoji = (
+        ("Ma Đế Quỷ Vương", "👑") if actor.cu_ma_de_evolved
+        else ("Vong Linh Quỷ", "👻")
+    )
+    session.log.append(f"    {emoji} **{name}** phệ hồn:")
+    apply_soul_drain(session, actor, target)
+
+
+def run_cuu_u_procs(
+    session: "CombatSession", actor: Combatant, target: Combatant, dmg: int,
+) -> None:
+    """Cửu U Ma Đế Thể — attacker-side rider, once per landed damaging hit.
+
+    (a) L1 Ma Khí banking: +1 stack per hit up to ``cu_ma_khi_cap``.
+        BuffCuuUMaKhi's scaling rule turns stacks into live matk_pct;
+        ``apply_soul_drain`` reads ``cu_drain_amp_per_stack`` × stacks; the
+        L6 BuffCuuUChiCanh gate pays +fdb at the full 9.
+    (b) L3 Vong Linh follow-up: ``cu_vl_follow_up_chance`` to strike for
+        ``cu_vl_dmg_matk_pct`` × matk as Ám damage + one soul drain. After
+        the L9 Ma Đế evolution the strike also stat-steals. Fires per
+        landed HIT (a multi-hit skill can proc it repeatedly) — chance-gated,
+        matching the "sau mỗi đòn" design text.
+
+    Self-gates on the per-body flags — inert for every other build.
+    """
+    if dmg <= 0 or not actor.is_alive():
+        return
+    if actor.cu_ma_khi_cap > 0 and actor.ma_khi_stacks < actor.cu_ma_khi_cap:
+        actor.ma_khi_stacks += 1
+        session.log.append(
+            f"    🌑 **{actor.name}** Ma Khí Tích Tụ "
+            f"[×{actor.ma_khi_stacks}/{actor.cu_ma_khi_cap}]"
+        )
+    if (
+        actor.cu_vl_follow_up_chance > 0
+        and target.is_alive()
+        and session.rng.random() < actor.cu_vl_follow_up_chance
+    ):
+        hit = max(1, int(actor.matk * actor.cu_vl_dmg_matk_pct))
+        target.take_damage(hit)
+        name, emoji = (
+            ("Ma Đế Quỷ Vương", "👑") if actor.cu_ma_de_evolved
+            else ("Vong Linh Quỷ", "👻")
+        )
+        session.log.append(
+            f"    {emoji} **{name}** phụ kích **{target.name}** "
+            f"{colorize_damage(f'-{hit:,} HP', 'am')}"
+        )
+        apply_soul_drain(session, actor, target)
+        if actor.cu_ma_de_evolved:
+            apply_stat_steal(session, actor, target)
+
+
+def run_thon_thien_procs(
+    session: "CombatSession", actor: Combatant, target: Combatant, dmg: int,
+) -> None:
+    """Thôn Thiên Ma — L6 Hắc Động attacker rider, once per landed hit.
+
+    ``ttm_strip_mp_chance`` to STRIP (destroy, not steal) one random enemy
+    buff and convert it into ``ttm_strip_mp_gain_pct`` × mp_max of MP — the
+    abyss digests what it swallows. Self-gates → inert for other builds.
+    """
+    if (
+        dmg <= 0
+        or actor.ttm_strip_mp_chance <= 0
+        or not actor.is_alive()
+        or not target.is_alive()
+        or session.rng.random() >= actor.ttm_strip_mp_chance
+    ):
+        return
+    _buffs = [
+        k for k in list(target.effects)
+        if (m := EFFECTS.get(k)) is not None and m.kind is EffectKind.BUFF
+    ]
+    if not _buffs:
+        return
+    _pick = session.rng.choice(_buffs)
+    target.effects.pop(_pick, None)
+    target.effect_overrides.pop(_pick, None)
+    _pm = EFFECTS.get(_pick)
+    _mp_gain = int(actor.mp_max * actor.ttm_strip_mp_gain_pct)
+    actor.mp = min(actor.mp_max, actor.mp + _mp_gain)
+    session.log.append(
+        f"    🕳️ **{actor.name}** Hắc Động nuốt "
+        f"*{_pm.vi if _pm else _pick}* của **{target.name}** → +{_mp_gain:,} MP"
+    )
+
+
 def run_on_hit_procs(
     session: "CombatSession", actor: Combatant, target: Combatant, is_crit: bool,
     skill_key: str = "",
@@ -973,7 +1116,13 @@ def apply_soul_drain(
     remaining = cap - target.hp_max_drained
     if remaining <= 0:
         return
-    drain = min(remaining, max(1, int(start * SOUL_DRAIN_PER_PROC_PCT)))
+    base = max(1, int(start * SOUL_DRAIN_PER_PROC_PCT))
+    # Cửu U Ma Khí — each banked stack amps the per-proc drain (+5%/stack at
+    # authored values). The LIFETIME cap is untouched: stacks drain the same
+    # 40% ceiling faster, they never exceed it.
+    if actor.cu_drain_amp_per_stack > 0 and actor.ma_khi_stacks > 0:
+        base = int(base * (1.0 + actor.cu_drain_amp_per_stack * actor.ma_khi_stacks))
+    drain = min(remaining, base)
     target.hp_max_drained += drain
     target.hp_max = max(1, target.hp_max - drain)
     target.hp = min(target.hp, target.hp_max)
@@ -1097,6 +1246,7 @@ def apply_buff_steal(
 def apply_reactive_damage(
     session: "CombatSession", actor: Combatant, target: Combatant, dmg: int,
     skill_element: str | None = None,
+    attack_type: str | None = None,
 ) -> None:
     """Thủy reflect + Thổ thorn — defender-triggered retaliation.
 
@@ -1106,8 +1256,36 @@ def apply_reactive_damage(
 
     ``skill_element`` (the incoming hit's element, when elemental) drives the
     adaptive-elemental-resist aegis hook (Tri Hành Hợp Nhất) at the tail.
+    ``attack_type`` (the incoming skill's physical/magical/true type) gates
+    the Vô Cấu Kim Thân magical-only reflect — true damage is exempt both by
+    type ("true" ≠ "magical") and by construction (true-damage riders never
+    route through this function).
     """
     from src.game.engine.effects import get_combat_modifiers
+
+    # ── Vô Cấu Lưu Ly — L6 Vô Cấu Kim Thân: magical-hit reflect ──────────────
+    # ``magic_reflect_pct`` is a real stat so BuffVanPhapBatTriem's per-stack
+    # scaling ramps it (L6 base 0.35 → 0.56 at 7 Vô Cấu); hard engine cap
+    # 0.85 on the rate. Each reflection is additionally clamped to
+    # ``_VC_REFLECT_CAP_ATTACKER_HP_PCT`` of the ATTACKER's max HP so a big
+    # nuker chips itself instead of one-shotting itself (mirrors the 12%
+    # constitution true-damage rider cap convention).
+    if dmg > 0 and attack_type == "magical" and actor.is_alive():
+        _vc_pct = min(0.85, target.magic_reflect_pct + float(
+            get_combat_modifiers(target).get("magic_reflect_pct", 0.0)
+        ))
+        if _vc_pct > 0:
+            _vc_reflected = min(
+                int(dmg * _vc_pct),
+                int(actor.hp_max * _VC_REFLECT_CAP_ATTACKER_HP_PCT),
+            )
+            if _vc_reflected > 0:
+                actor.take_damage(_vc_reflected)
+                session.log.append(
+                    f"    🪞 **{target.name}** Vô Cấu Kim Thân phản chiếu "
+                    f"({int(_vc_pct * 100)}%) → **{actor.name}** "
+                    f"{colorize_damage(f'-{_vc_reflected:,} HP', None)}"
+                )
 
     # ── Huyền Thủy Trường Sinh — defender-side tidal counter-punch ───────────
     # ``target`` here is the DEFENDER (the holder taking ``dmg``); ``actor`` is
@@ -1149,6 +1327,42 @@ def apply_reactive_damage(
                 f"    ❄️ **{target.name}** Hàn Thủy Đóng Băng "
                 f"→ **{actor.name}** bị đông cứng!"
             )
+
+    # ── Thái Dương Đạo — L6 Thần Lô: each hit taken tempers the furnace ──────
+    # ``target`` is the defender (the holder eating ``dmg``). Stacks feed the
+    # BuffThaiDuongThanLo / BuffNhatDieuCuuThien scaling rules (all core
+    # stats per stack) — banked here, spent nowhere, capped by config.
+    if (
+        dmg > 0
+        and target.td_than_lo_per_hit
+        and target.td_than_lo_cap > 0
+        and target.than_lo_stacks < target.td_than_lo_cap
+    ):
+        target.than_lo_stacks += 1
+        session.log.append(
+            f"    ⚱️ **{target.name}** Thần Lô Luyện Thể "
+            f"[×{target.than_lo_stacks}/{target.td_than_lo_cap}]"
+        )
+
+    # ── Thôn Thiên Ma — L6 Hắc Động: damage taken feeds temporary MATK ───────
+    # ``target`` is the defender (the holder eating ``dmg``). A slice of every
+    # hit taken becomes FLAT matk for the rest of the fight, capped at
+    # ``ttm_absorb_cap_pct`` of the holder's starting matk (snapshot shares
+    # the stat-steal "matk_original" anchor, so both mechanics measure from
+    # the same pre-mutation baseline).
+    if dmg > 0 and target.ttm_absorb_matk_pct > 0:
+        _ttm_start = snapshot_original(target, "matk_original", target.matk)
+        _ttm_room = int(_ttm_start * target.ttm_absorb_cap_pct) - target.ttm_matk_absorbed
+        if _ttm_room > 0:
+            _ttm_gain = min(_ttm_room, int(dmg * target.ttm_absorb_matk_pct))
+            if _ttm_gain > 0:
+                target.ttm_matk_absorbed += _ttm_gain
+                target.matk += _ttm_gain
+                session.log.append(
+                    f"    🕳️ **{target.name}** Hắc Động nuốt lực "
+                    f"→ +{_ttm_gain:,} Pháp Công "
+                    f"[{target.ttm_matk_absorbed:,}/{int(_ttm_start * target.ttm_absorb_cap_pct):,}]"
+                )
 
     # ── Thiên Thủy Thánh Thể — defender-side damage→heal + reflect ───────────
     # Nhu Thủy Hóa Kình (L3): the holder converts a fraction of the damage it
@@ -1257,6 +1471,9 @@ def apply_reactive_damage(
     run_thien_kiep_procs(session, actor, target, dmg, skill_element)
     run_cuu_thien_procs(session, actor, target, dmg)
     run_cuong_phong_procs(session, actor, target, dmg)
+    run_quang_minh_procs(session, actor, target, dmg)
+    run_cuu_u_procs(session, actor, target, dmg)
+    run_thon_thien_procs(session, actor, target, dmg)
 
 
 def apply_reflect(

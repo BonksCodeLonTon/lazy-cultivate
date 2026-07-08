@@ -863,3 +863,173 @@ def tick_summons(
         # starts fresh.
         for vi in fired_vis:
             actor.summon_dmg_dealt.pop(vi, None)
+
+
+# ── 8. Vital-essence awakening riders (Bách Thể Chú Linh) ────────────────────
+# One opt-in ``vital_rider`` dict per awakening skill. Every sub-field is
+# independent and optional so each granted skill declares only its own
+# signature mechanic. Bonus-damage branches all route through the shared
+# ``_deal_capped_true_dmg`` tail (capped at a % of target max HP) so no rider
+# can one-shot a boss; heals route through ``session._apply_heal`` so heal
+# reductions / crits / overheal conversion apply normally.
+#
+#     "vital_rider": {
+#         "label": "🍖 Thôn Phệ",
+#         "heal_pct_of_dmg": 0.30,          # devour: heal % of damage dealt
+#         "execute_below_pct": 0.30,        # target under X% HP after the hit →
+#         "execute_bonus_pct": 1.0,         #   bonus true dmg = dealt × pct
+#         "true_dmg_pct_of_dmg": 0.30,      # portion re-dealt as true damage
+#         "detonate_stack": "burn",         # per-stack instant burst:
+#         "detonate_pct_per_stack": 0.15,   #   dealt × pct × stacks
+#         "detonate_stack_cap": 8,
+#         "mp_surge_pct_of_current": 0.25,  # burn extra MP after the cast →
+#         "mp_surge_dmg_per_mp": 2.0,       #   bonus true dmg = drained × f
+#         "mp_refund_on_kill_pct": 0.5,     #   refund a share if the cast killed
+#         "self_heal_pct_max_hp": 0.12,
+#         "cleanse_count": 1,               # strip N random debuffs from self
+#         "revenge_after_revive_pct": 0.40, # bonus dmg once phoenix revive spent
+#         "shield_pct_max_hp": 0.15,        # raise a shield (add_shield clamp)
+#         "per_debuff_bonus_pct": 0.08,     # dealt × pct × target debuff count
+#         "per_debuff_cap": 6,
+#     }
+
+_DETONATE_STACK_ATTRS: dict[str, str] = {
+    "burn":   "burn_stacks",
+    "bleed":  "bleed_stacks",
+    "poison": "poison_stacks",
+    "shock":  "shock_stacks",
+}
+
+
+def _count_cleansable(combatant: Combatant) -> int:
+    """Number of cleansable (debuff/CC) effects currently on ``combatant``."""
+    from src.game.engine.effects import EFFECTS
+    return sum(
+        1 for k in combatant.effects
+        if (m := EFFECTS.get(k)) is not None and m.cleansable
+    )
+
+
+def apply_vital_rider(
+    session: "CombatSession", actor: Combatant, target: Combatant,
+    skill_data: dict, dealt_total: int, cast_ctx: dict,
+) -> None:
+    """Run the ``vital_rider`` spec after a damaging cast (top-level only).
+
+    Called after ``apply_skill_effects`` so debuffs stamped by THIS cast
+    count for the detonate / per-debuff branches. Self-directed branches
+    (heal, cleanse, shield) fire even when the target died to the main hit;
+    bonus-damage branches gate on ``target.is_alive()`` and ``dealt > 0``.
+    """
+    spec = skill_data.get("vital_rider")
+    if not spec:
+        return
+    from .casting import _deal_capped_true_dmg
+
+    label = spec.get("label", "✨ Bí Thuật")
+    dealt = max(0, int(dealt_total))
+
+    # ── Devour heal (Thao Thiết) ─────────────────────────────────────────
+    heal_pct = float(spec.get("heal_pct_of_dmg", 0.0))
+    if heal_pct > 0 and dealt > 0 and actor.is_alive():
+        healed = session._apply_heal(actor, int(dealt * heal_pct))
+        if healed > 0:
+            session.log.append(
+                f"    {label} — nuốt chửng huyết khí: +{healed:,} HP"
+            )
+
+    # ── Execute (Thao Thiết: ăn tươi nuốt sống) ──────────────────────────
+    exec_below = float(spec.get("execute_below_pct", 0.0))
+    exec_bonus = float(spec.get("execute_bonus_pct", 0.0))
+    if (
+        exec_below > 0 and exec_bonus > 0 and dealt > 0
+        and target.is_alive() and target.hp_max > 0
+        and target.hp / target.hp_max < exec_below
+    ):
+        _deal_capped_true_dmg(
+            session, target, int(dealt * exec_bonus), f"{label} (kết liễu)",
+        )
+
+    # ── True-damage portion (Chân Long: Long Uy) ─────────────────────────
+    true_pct = float(spec.get("true_dmg_pct_of_dmg", 0.0))
+    if true_pct > 0 and dealt > 0 and target.is_alive():
+        _deal_capped_true_dmg(session, target, int(dealt * true_pct), label)
+
+    # ── DoT detonation (Tất Phương: burn burst) ──────────────────────────
+    det_kind = spec.get("detonate_stack")
+    det_pct = float(spec.get("detonate_pct_per_stack", 0.0))
+    if det_kind in _DETONATE_STACK_ATTRS and det_pct > 0 and dealt > 0 \
+            and target.is_alive():
+        stacks = int(getattr(target, _DETONATE_STACK_ATTRS[det_kind], 0))
+        stacks = min(stacks, int(spec.get("detonate_stack_cap", 8)))
+        if stacks > 0:
+            _deal_capped_true_dmg(
+                session, target, int(dealt * det_pct * stacks),
+                f"{label} ×{stacks} tầng",
+            )
+
+    # ── MP surge (Cửu Anh: damage bought with linh lực) ──────────────────
+    surge_pct = float(spec.get("mp_surge_pct_of_current", 0.0))
+    surge_factor = float(spec.get("mp_surge_dmg_per_mp", 0.0))
+    if surge_pct > 0 and surge_factor > 0 and dealt > 0:
+        drained = int(actor.mp * surge_pct)
+        if drained > 0:
+            actor.mp -= drained
+            if target.is_alive():
+                _deal_capped_true_dmg(
+                    session, target, int(drained * surge_factor),
+                    f"{label} (-{drained:,} MP)",
+                )
+            refund_pct = float(spec.get("mp_refund_on_kill_pct", 0.0))
+            if refund_pct > 0 and cast_ctx.get("killed"):
+                refund = int(drained * refund_pct)
+                actor.mp = min(actor.mp_max, actor.mp + refund)
+                session.log.append(
+                    f"    {label} — kết liễu hoàn trả +{refund:,} MP"
+                )
+
+    # ── Self heal + cleanse (Phượng Hoàng) ───────────────────────────────
+    self_heal = float(spec.get("self_heal_pct_max_hp", 0.0))
+    if self_heal > 0 and actor.is_alive():
+        healed = session._apply_heal(actor, int(actor.hp_max * self_heal))
+        if healed > 0:
+            session.log.append(f"    {label} — lửa tái sinh: +{healed:,} HP")
+    cleanse_n = int(spec.get("cleanse_count", 0))
+    if cleanse_n > 0 and actor.is_alive():
+        from src.game.engine.effects import EFFECTS
+        for _ in range(cleanse_n):
+            cleansable = [
+                k for k in list(actor.effects)
+                if (m := EFFECTS.get(k)) is not None and m.cleansable
+            ]
+            if not cleansable:
+                break
+            removed = session.rng.choice(cleansable)
+            del actor.effects[removed]
+            actor.effect_overrides.pop(removed, None)
+            session.log.append(f"    {label} — thanh tẩy *{removed}*")
+
+    # ── Post-revive vengeance (Phượng Hoàng) ─────────────────────────────
+    revenge_pct = float(spec.get("revenge_after_revive_pct", 0.0))
+    if revenge_pct > 0 and dealt > 0 and target.is_alive() \
+            and actor.phoenix_revive_used:
+        _deal_capped_true_dmg(
+            session, target, int(dealt * revenge_pct), f"{label} (phục hận)",
+        )
+
+    # ── Shield raise (Kỳ Lân) ────────────────────────────────────────────
+    shield_pct = float(spec.get("shield_pct_max_hp", 0.0))
+    if shield_pct > 0 and actor.is_alive():
+        gained = actor.add_shield(int(actor.hp_max * shield_pct))
+        if gained > 0:
+            session.log.append(f"    {label} — kết giới thụy quang +{gained:,} 🛡️")
+
+    # ── Per-debuff amp (Kỳ Lân: smite the corrupted) ─────────────────────
+    per_debuff = float(spec.get("per_debuff_bonus_pct", 0.0))
+    if per_debuff > 0 and dealt > 0 and target.is_alive():
+        count = min(_count_cleansable(target), int(spec.get("per_debuff_cap", 6)))
+        if count > 0:
+            _deal_capped_true_dmg(
+                session, target, int(dealt * per_debuff * count),
+                f"{label} ×{count} tà khí",
+            )

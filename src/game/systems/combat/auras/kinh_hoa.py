@@ -28,6 +28,10 @@ def _try_transfer_debuffs(ctx: TurnContext) -> None:
     if not actor.has_effect(EffectKey.BUFF_KINH_HOA_THUY_NGUYET):
         return
     chance = float(get_combat_modifiers(actor).get("debuff_transfer_on_turn_pct", 0.0))
+    # Thái Âm Đạo L9 (Hải Thượng Minh Nguyệt) — the moon body resonates with
+    # its namesake mirror: while the buff is up, the transfer is guaranteed.
+    if actor.ta_kinh_hoa_resonance and chance > 0:
+        chance = 1.0
     if chance <= 0:
         return
     candidates = []

@@ -80,6 +80,9 @@ from .session import (
 from . import auras as _auras  # noqa: F401
 from . import periodic as _periodic  # noqa: F401
 from . import revives as _revives  # noqa: F401
+# Registers the priority-15 ``hoa_hinh_rescue`` ON_REVIVE hook (Bách Thể
+# Chú Linh 9/9 transformation — death-rescue trigger path).
+from . import hoa_hinh as _hoa_hinh  # noqa: F401
 # Registers the priority-48 ``overheal_release`` PERIODIC hook (Mộc Linh
 # Cộng Sinh). Capture half is called from ``session._apply_heal``.
 from . import overheal_reservoir as _overheal_reservoir  # noqa: F401

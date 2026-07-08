@@ -19,6 +19,7 @@ legacy ``_take_turn`` body so existing tests stay green:
   50  bo_bo      — Bộ Bộ Sinh Liên (heal-taken → mobility refresh)
   60  phu_dao    — Phù Dao Trực Thượng (altitude tier bump)
    5  truong_xuan — Trường Xuân Linh Mộc (Undying Spring cooldown tick)
+  33  quang_minh — Quang Minh Thánh (L1 radiance aura + L9 purification cadence)
   34  cuong_phong — Cửu Thiên Cương Phong (L9 Cương Phong storm cadence)
   36  cuu_thien  — Cửu Thiên Huyền Lôi (L9 Thần Lôi Giáng Thế burst cadence)
   37  tieu_dao   — Tiêu Dao Thần (L9 Hóa Bằng / Hóa Côn form cadence)
@@ -31,12 +32,13 @@ a priority that places it correctly in the chain — no edits to session.py.
 """
 from . import (  # noqa: F401
     bo_bo, cuong_phong, cuu_thien, hoang_co, huyen_am, kinh_hoa, lietdiem,
-    lieu_nhu, luu_ly, luu_tinh, phu_dao, thai_bach, tieu_dao, tinh_quang,
-    truong_xuan, xuan_thu,
+    lieu_nhu, luu_ly, luu_tinh, phu_dao, quang_minh, thai_am, thai_bach,
+    thai_duong, thon_thien, tieu_dao, tinh_quang, truong_xuan, xuan_thu,
 )
 
 __all__ = [
     "bo_bo", "cuong_phong", "cuu_thien", "hoang_co", "huyen_am", "kinh_hoa",
-    "lietdiem", "lieu_nhu", "luu_ly", "luu_tinh", "phu_dao", "thai_bach",
-    "tieu_dao", "tinh_quang", "truong_xuan", "xuan_thu",
+    "lietdiem", "lieu_nhu", "luu_ly", "luu_tinh", "phu_dao", "quang_minh",
+    "thai_am", "thai_bach", "thai_duong", "thon_thien", "tieu_dao",
+    "tinh_quang", "truong_xuan", "xuan_thu",
 ]

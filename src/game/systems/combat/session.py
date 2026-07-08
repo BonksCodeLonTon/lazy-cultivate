@@ -221,6 +221,14 @@ class CombatSession:
         self.player.tick_cooldowns()
         self.enemy.tick_cooldowns()
 
+        # Hóa Hình — 9/9 one-bloodline transformation check, once per round
+        # BEFORE periodic ticks so the transform heal + form buff land ahead
+        # of this round's DoT/regen resolution. Inert unless the combatant
+        # was built with a ``hoa_hinh_buff_key`` (Thể Tu 9/9 only).
+        from .hoa_hinh import try_hoa_hinh
+        try_hoa_hinh(self, self.player)
+        try_hoa_hinh(self, self.enemy)
+
         # Periodic effects (DoTs, HP/MP regen, Linh Căn procs) once per round
         self._process_periodic(self.player)
         self._process_periodic(self.enemy)
@@ -798,6 +806,18 @@ class CombatSession:
         if overheal > 0:
             from src.game.systems.combat.overheal_reservoir import capture_overheal
             capture_overheal(combatant, overheal)
+            # Bách Thể Chú Linh — Ngân Giác Lộc "Lộc Linh": convert a share of
+            # the wasted overheal into shield. Independent of the reservoir
+            # buff above (different sources; overlap is a deliberate synergy).
+            if combatant.overheal_to_shield_pct > 0:
+                gained = combatant.add_shield(
+                    int(overheal * combatant.overheal_to_shield_pct)
+                )
+                if gained > 0:
+                    self.log.append(
+                        f"    🦌 Lộc Linh: dư hồi phục ngưng thành lá chắn "
+                        f"+{gained:,} 🛡️"
+                    )
         # Thiên Thủy Thánh Thể — Thánh Tuyền Tẩy Lễ (L6): every applied heal has a
         # chance (raised by Tịnh Hóa stacks) to cleanse one debuff; each cleanse
         # banks a Tịnh Hóa stack (cap). While purified, each heal also refills MP
@@ -888,6 +908,16 @@ class CombatSession:
         else:
             return []
         drop_table = registry.get_loot_table(loot_key)
+        # Vital essences NEVER drop on auto-repeat runs — mirrors the
+        # Constitution-Process rule that grades AFK farming "trash" (0 XP):
+        # body progression (Bách Thể Chú Linh) must come from deliberate,
+        # hands-on clears, not an overnight auto loop.
+        if self.auto_mode:
+            drop_table = [
+                e for e in drop_table
+                if (registry.get_item(e.get("item_key", "")) or {}).get("type")
+                != "vital_essence"
+            ]
         # Constitution / equipment loot bonuses stack on top of the session's
         # baseline (elite roll, dungeon grade). ``loot_luck_bonus`` is additive
         # on luck_pct; ``loot_qty_bonus`` is additive on the qty multiplier.

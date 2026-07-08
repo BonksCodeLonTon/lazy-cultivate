@@ -438,6 +438,16 @@ def _aggregate_bonuses(
         char.constitution_type, active_axis, char.body_realm,
         process_levels=const_process_levels,
     )
+    # Thôn Thiên Ma Thể — L3 Thôn Phệ Bản Nguyên: the devoured donor body's
+    # BASE Tầng-1 stat_bonuses merge into the constitution layer (the donor's
+    # L1 effects stamp in builders). Gated on the process flag being live so
+    # the dormant default never resolves the tracker.
+    if const_process_levels:
+        from src.game.systems.constitution_process import devoured_l1
+        from src.game.systems.cultivation import _merge_bonus_dict
+        _dv_donor, _dv_stats, _ = devoured_l1(char)
+        if _dv_stats:
+            _merge_bonus_dict(const_bonuses, _dv_stats)
     # Per-element levels drive the linh_can stat scaling. NPC-style Characters
     # that don't carry ``linh_can_levels`` (built outside the DB pipeline) fall
     # back to level 1 per element from the bare ``linh_can`` list.
@@ -475,7 +485,15 @@ def _aggregate_bonuses(
     if moc_regen:
         lc_bonuses["hp_regen_pct"] = lc_bonuses.get("hp_regen_pct", 0.0) + moc_regen
 
-    bonuses = merge_bonuses(form_bonuses, const_bonuses, lc_bonuses)
+    # Bách Thể Chú Linh — Thể Tu body-part infusions (Tinh Huyết). Inert for
+    # off-body paths and for Characters without infusions (empty dict → {}).
+    from src.game.systems.body_parts import compute_body_part_bonuses
+    bp_bonuses = compute_body_part_bonuses(
+        getattr(char, "body_part_infusions", None),
+        active_axis, char.body_realm,
+    )
+
+    bonuses = merge_bonuses(form_bonuses, const_bonuses, lc_bonuses, bp_bonuses)
     # Flatten grouped author-friendly nested keys into the flat keys the
     # rest of this function already reads. Authors can declare:
     #   ``dot_dmg_bonus_by_kind: {"burn": 0.15}``
@@ -991,6 +1009,28 @@ def compute_combat_stats(
     mp_max, mp_reserved, reserve_pct = _apply_formation_mp_reserve(
         mp_max, form_bonuses, active_formations, formation_stages,
     )
+    # Trận Hộ Thuẫn — Trận Tu identity perk: the qi locked inside active
+    # formations condenses into a protective barrier. Gated to the
+    # formation path (off-path single-slot users reserve little anyway) so
+    # the perk mirrors Khí Tu's breadth mult / Thể Tu's awakened breadth as
+    # the third archetype payoff. Sized off mp_reserved so deeper reserve
+    # investment (more slots, more gems) buys a bigger wall.
+    from src.game.systems.cultivation import is_tran_tu
+    if mp_reserved > 0 and is_tran_tu(getattr(char, "active_axis", None)):
+        from src.game.constants.balance import (
+            TRAN_TU_FDR_PER_ACTIVE_FORMATION,
+            TRAN_TU_RESERVE_SHIELD_MULT,
+            TRAN_TU_RESERVE_SHIELD_REGEN_PCT,
+        )
+        shield_max_flat += int(mp_reserved * TRAN_TU_RESERVE_SHIELD_MULT)
+        shield_regen_pct += TRAN_TU_RESERVE_SHIELD_REGEN_PCT
+        # Standing inside one's own arrays: each active formation wards
+        # its master. Same MAX_FINAL_DMG_REDUCE clamp as every other source.
+        final_dmg_reduce = min(
+            MAX_FINAL_DMG_REDUCE,
+            final_dmg_reduce
+            + TRAN_TU_FDR_PER_ACTIVE_FORMATION * len(active_formations or []),
+        )
     hp_max, shield_max_base, hp_to_shield_pct = _apply_hp_to_shield(
         hp_max, shield_max_base, hp_to_shield_pct,
     )
@@ -1004,6 +1044,24 @@ def compute_combat_stats(
         _aegis_ratio = float(bonuses.get("shield_from_hp_max_pct", 1.0))
         shield_max_base += int(hp_max * _aegis_ratio)
         hp_max = 1
+    # Thái Dương Đạo — L1 Cửu Dương Chân Khí: the body's bulk IS its fire.
+    # Hỏa element damage derived from FINAL max HP, scaled by total realm and
+    # hard-capped (authored ``td_hoa_dmg_cap`` ≈ 2.5 → the "200-300%" band).
+    #   bonus = min(cap, hp_max/1000 × per_1k_per_realm × realm_total)
+    # Computed once at build (mid-fight hp_max mutations don't re-price it).
+    _td_rate = float(bonuses.get("td_hoa_per_1k_hp_per_realm", 0.0))
+    if _td_rate > 0:
+        _td_realm_total = (
+            int(getattr(char, "body_realm", 0) or 0)
+            + int(getattr(char, "qi_realm", 0) or 0)
+            + int(getattr(char, "formation_realm", 0) or 0)
+        )
+        _td_bonus = min(
+            float(bonuses.get("td_hoa_dmg_cap", 2.5)),
+            (hp_max / 1000.0) * _td_rate * _td_realm_total,
+        )
+        if _td_bonus > 0:
+            element_dmg_bonus["hoa"] = element_dmg_bonus.get("hoa", 0.0) + _td_bonus
     spd_final, def_stat, atk = _apply_pill_buffs(
         char, spd_final, def_stat, atk, element_dmg_bonus,
     )
@@ -1091,12 +1149,18 @@ def compute_combat_stats(
         bleed_heal_reduce=bleed_heal_reduce,
         crit_amp_vs=crit_amp_vs,
         true_dmg_pct=true_dmg_pct,
-        life_steal_pct=life_steal_pct,
+        # Hard cap: stacked lifesteal sources (body-part infusions, gear,
+        # constitutions) must never out-heal the damage dealt — uncapped
+        # stacks reached 140% during the Thể Tu balance pass, which made a
+        # sustain build effectively unkillable in attrition fights.
+        life_steal_pct=min(0.60, life_steal_pct),
         crit_dmg_rating_to_dmg_pct=crit_dmg_rating_to_dmg_pct,
         dot_leech_pct=dot_leech_pct,
         damage_from_heal_pct=damage_from_heal_pct,
         damage_bonus_from_hp_pct=damage_bonus_from_hp_pct,
-        reflect_pct=reflect_pct,
+        # Reflect cap mirrors the lifesteal cap below — uncapped part
+        # stacking reached 225% (attackers killed themselves per hit).
+        reflect_pct=min(0.50, reflect_pct),
         reflect_applies_effects=reflect_applies_effects,
         damage_bonus_from_mp_pct=damage_bonus_from_mp_pct,
         mp_leech_pct=mp_leech_pct,

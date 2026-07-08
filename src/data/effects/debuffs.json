@@ -900,5 +900,26 @@
     "stat_bonus": { "res_phong": -0.20 },
     "emoji": "🔻",
     "duration": 4
+  },
+  {
+    "key": "DebuffQuangMinhVuc",
+    "vi": "Quang Minh Vực",
+    "en": "Radiant Domain",
+    "kind": "debuff",
+    "description_vi": "Đứng trong vực quang minh — ánh sáng chói làm bạo khí suy giảm (bạo kích −60).",
+    "stat_bonus": { "crit_rating": -60 },
+    "emoji": "☀️",
+    "duration": 2
+  },
+  {
+    "key": "DebuffTramDao",
+    "vi": "Trảm Đạo Ấn",
+    "en": "Dao-Severing Seal",
+    "kind": "debuff",
+    "description_vi": "Đạo cơ bị trảm — Công, Pháp Công, Phòng Thủ −10%.",
+    "stat_bonus": { "atk_pct": -0.10, "matk_pct": -0.10, "def_pct": -0.10 },
+    "cleansable": true,
+    "emoji": "🌙",
+    "duration": 3
   }
 ]

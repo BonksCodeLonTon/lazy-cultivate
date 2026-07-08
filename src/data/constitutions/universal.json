@@ -295,4 +295,165 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_VoCauLuuLy",
+    "vi": "Vô Cấu Lưu Ly Thể",
+    "en": "Spotless Lapis Lazuli Body",
+    "element": "universal",
+    "rarity": "mythic",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 120000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân như lưu ly vô cấu — tâm thanh tịnh, vạn pháp khó nhuốm. Khống chế không xâm (duy Choáng vẫn hiệu lực), kim thân phản chiếu pháp thuật, đan độc tự tiêu tán; đến kỳ Vạn Pháp Bất Triêm, mỗi hiệu ứng xấu bị chặn lại càng tôi luyện thân lưu ly thêm hoàn mỹ.",
+    "stat_bonuses": {
+      "hp_pct": 0.06,
+      "def_pct": 0.05,
+      "res_all": 0.03,
+      "crit_res_rating": 80,
+      "pill_toxin_immune": true
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "hp_pct": 0.004, "def_pct": 0.004, "crit_res_rating": 12 },
+      "levels": {
+        "1": {
+          "passive_vi": "Minh Tâm Kiến Tánh",
+          "passive_en": "Clear Mind Sees True Nature",
+          "description_vi": "Tâm thanh tịnh, huyễn thuật khó xâm: 75% kháng mọi khống chế — Câm Lặng, Ngắt Kỹ Năng, Đóng Băng, Tê Liệt, Cuốn Bay, Làm Chậm. DUY NHẤT Choáng luôn có hiệu lực — điểm chưa siêu thoát. Tiêu hóa đan dược không nhiễm đan độc.",
+          "stat_bonuses": { "vc_cc_resist_pct": 0.75, "res_all": 0.02 },
+          "effects": ["BuffMinhTamKienTanh"]
+        },
+        "3": {
+          "passive_vi": "Lưu Ly Tịnh Hỏa",
+          "passive_en": "Lapis Lazuli Pure Fire",
+          "description_vi": "Tịnh hỏa nung tâm: +8% sát thương cuối, +120 Bạo Kích DMG, giảm 10% sát thương nhận vào. Cộng hưởng kỹ năng «Lưu Ly Tịnh Hỏa»: Thanh Tẩy chắc chắn thành công, và mỗi lần Thanh Tẩy còn tước 1 buff kẻ địch.",
+          "stat_bonuses": { "final_dmg_bonus": 0.08, "crit_dmg_rating": 120, "final_dmg_reduce": 0.10, "vc_tinh_hoa_resonance": true },
+          "effects": ["BuffLuuLyCongHuong"]
+        },
+        "6": {
+          "passive_vi": "Vô Cấu Kim Thân",
+          "passive_en": "Spotless Golden Body",
+          "description_vi": "Kim thân hoàn hảo phản chiếu pháp thuật: 35% sát thương PHÉP nhận vào phản ngược về kẻ tấn công — tối đa 10% HP tối đa của kẻ tấn công mỗi đòn (Sát Thương Chuẩn không phản được). Giảm thêm 20% sát thương vật lý.",
+          "stat_bonuses": { "magic_reflect_pct": 0.35, "phys_dmg_reduce_pct": 0.20, "crit_res_rating": 60 },
+          "effects": ["BuffVoCauKimThan"]
+        },
+        "9": {
+          "passive_vi": "Vạn Pháp Bất Triêm",
+          "passive_en": "Ten-Thousand Laws Cannot Taint",
+          "description_vi": "Vạn pháp không thể nhuốm bẩn: 75% vô hiệu mọi hiệu ứng xấu KHÁC — debuff, DoT (khống chế đã thuộc Minh Tâm; Choáng luôn xuyên qua). Mỗi hiệu ứng bị chặn: +1 tầng Vô Cấu (tối đa 7), mỗi tầng phản phép +3% (35% → tối đa 56%).",
+          "stat_bonuses": { "vc_bat_triem_immune_pct": 0.75, "vo_cau_cap": 7, "hp_pct": 0.04, "res_all": 0.02 },
+          "effects": ["BuffVanPhapBatTriem"]
+        }
+      }
+    }
+  }
+,
+  {
+    "key": "TheChat_ThaiDuongDao",
+    "vi": "Thái Dương Đạo Thể",
+    "en": "Supreme Yang Dao Body",
+    "element": "universal",
+    "rarity": "mythic",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 120000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân mang cửu dương chân khí — dương cương chí thịnh, yêu ma quỷ quái khó gần. Lửa thái dương thiêu vạn tà, thần lô luyện thể càng đánh càng cường; đến kỳ Nhật Diệu Cửu Thiên, nhật quang tỏa vực thiêu rực chiến trường.",
+    "stat_bonuses": {
+      "hp_pct": 0.06,
+      "atk_pct": 0.03,
+      "matk_pct": 0.03
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "hp_pct": 0.004, "atk_pct": 0.003, "matk_pct": 0.003 },
+      "levels": {
+        "1": {
+          "passive_vi": "Cửu Dương Chân Khí",
+          "passive_en": "Nine Yang True Qi",
+          "description_vi": "Dương khí tràn thân: HP tối đa +12%. Miễn nhiễm Trúng Độc, 85% kháng Đóng Băng. Thân thể là lò lửa — sát thương hệ Hỏa tăng theo HP tối đa (mỗi 1.000 HP × tổng cảnh giới), tối đa +250%.",
+          "stat_bonuses": { "hp_pct": 0.12, "poison_immunity": true, "td_hoa_per_1k_hp_per_realm": 0.0005, "td_hoa_dmg_cap": 2.5 },
+          "effects": ["BuffCuuDuongChanKhi"]
+        },
+        "3": {
+          "passive_vi": "Thái Dương Chân Hỏa",
+          "passive_en": "Supreme Yang True Fire",
+          "description_vi": "Thái Dương Hào Quang phụ thân: mỗi lượt tự tỏa lửa thiêu địch bằng 2% HP tối đa bản thân (tối đa 10% HP tối đa của địch mỗi lượt) — hào quang được khuếch đại bởi mọi tăng ích sát thương DoT và sát thương Hỏa.",
+          "stat_bonuses": { "solar_aura_pct": 0.02 },
+          "effects": ["BuffThaiDuongChanHoa"]
+        },
+        "6": {
+          "passive_vi": "Thái Dương Thần Lô",
+          "passive_en": "Supreme Yang Divine Furnace",
+          "description_vi": "Thần lô luyện thể: mỗi đòn nhận vào +1 tầng Thần Lô (tối đa 15) — mỗi tầng +3% Công/Pháp/Phòng/Tốc. Càng bị đánh, càng cường đại.",
+          "stat_bonuses": { "hp_pct": 0.06, "td_than_lo_per_hit": true, "td_than_lo_cap": 15 },
+          "effects": ["BuffThaiDuongThanLo"]
+        },
+        "9": {
+          "passive_vi": "Nhật Diệu Cửu Thiên",
+          "passive_en": "Solar Brilliance Nine Heavens",
+          "description_vi": "Mỗi 8 lượt tỏa Nhật Quang: Sát Thương Chuẩn bằng 60% HP tối đa bản thân (có giới hạn) + Lóa Mắt địch 3 lượt. Kháng hệ Ám +50%. Mỗi tầng Thần Lô mạnh thêm +1.5%. Gây thêm 20% sát thương lên yêu ma quỷ quái.",
+          "stat_bonuses": { "res_am": 0.50, "td_anti_demon_dmg_pct": 0.20, "td_solar_interval": 8, "td_solar_hp_pct": 0.60 },
+          "effects": ["BuffNhatDieuCuuThien"]
+        }
+      }
+    }
+  }
+,
+  {
+    "key": "TheChat_ThaiAmDao",
+    "vi": "Thái Âm Đạo Thể",
+    "en": "Supreme Yin Dao Body",
+    "element": "universal",
+    "rarity": "mythic",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 120000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân ngưng cửu âm chân khí — như trăng trên biển, hư ảo khó chạm. Hàn thủy đóng băng vạn vật, trảm đạo đoạt pháp; đến kỳ Hải Thượng Minh Nguyệt, ánh nguyệt hồi sinh cơ, ảo cảnh kính hoa đẩy ngược mọi tà chú.",
+    "stat_bonuses": {
+      "mp_pct": 0.06,
+      "hp_pct": 0.04,
+      "evasion_rating": 80
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "mp_pct": 0.004, "hp_pct": 0.003, "evasion_rating": 12 },
+      "levels": {
+        "1": {
+          "passive_vi": "Cửu Âm Chân Khí",
+          "passive_en": "Nine Yin True Qi",
+          "description_vi": "Âm khí ngưng tụ: hồi 8% MP mỗi lượt, Né Tránh +180, sát thương hệ Thủy +25%. Thân pháp hư ảo hóa sát ý — sát thương cộng thêm theo Né Tránh (35% chỉ số Né thành sát thương).",
+          "stat_bonuses": { "mp_regen_pct": 0.08, "evasion_rating": 180, "element_dmg_bonus": { "thuy": 0.25 }, "damage_bonus_from_evasion_pct": 0.35 },
+          "effects": ["BuffCuuAmChanKhi"]
+        },
+        "3": {
+          "passive_vi": "Thái Âm Chân Thủy",
+          "passive_en": "Supreme Yin True Water",
+          "description_vi": "Chân thủy tuần hoàn: hồi 5% HP + 8% Khiên mỗi lượt. Mỗi kỹ năng 35% Đóng Băng địch. Đánh địch đang Đóng Băng: +30% sát thương cuối.",
+          "stat_bonuses": { "hp_regen_pct": 0.05, "shield_regen_pct": 0.08, "freeze_on_skill_chance": 0.35, "ta_dmg_vs_frozen_pct": 0.30 },
+          "effects": ["BuffThaiAmChanThuy"]
+        },
+        "6": {
+          "passive_vi": "Trảm Đạo Kiến Minh",
+          "passive_en": "Cut Dao to Reveal Clarity",
+          "description_vi": "Mỗi 4 lượt vung trảm đạo: tước tối đa 2 buff địch và khắc Trảm Đạo Ấn (Công/Pháp/Phòng −10%, 3 lượt).",
+          "stat_bonuses": { "evasion_rating": 60, "ta_tram_dao_interval": 4, "ta_tram_dao_strips": 2 },
+          "effects": ["BuffTramDaoKienMinh"]
+        },
+        "9": {
+          "passive_vi": "Hải Thượng Minh Nguyệt",
+          "passive_en": "Bright Moon Over the Sea",
+          "description_vi": "Nguyệt quang phủ hải: đầu mỗi lượt hồi 4% HP, 30% Đóng Băng địch. Cộng hưởng «Kính Hoa Thủy Nguyệt»: đẩy ngược trạng thái xấu CHẮC CHẮN thành công mỗi lượt.",
+          "stat_bonuses": { "mp_pct": 0.04, "ta_kinh_hoa_resonance": true, "ta_moonlight_heal_pct": 0.04, "ta_moonlight_freeze_chance": 0.30 },
+          "effects": ["BuffHaiThuongMinhNguyet"]
+        }
+      }
+    }
+  }
 ]

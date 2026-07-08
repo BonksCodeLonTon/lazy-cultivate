@@ -47,4 +47,110 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_CuuUMaDe",
+    "vi": "Cửu U Ma Đế Thể",
+    "en": "Nine Abyss Demon Emperor Body",
+    "element": "am",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân mang ma khí cửu u — mỗi đòn đánh phệ hồn đoạt phách, Vong Linh Quỷ theo hầu phụ kích không rời. Ma khí tích đủ chín tầng thì ma uy ngập trời; kẻ lĩnh ngộ Chân Ma Chi Tâm sẽ chứng kiến Vong Linh hóa thân Ma Đế Quỷ Vương.",
+    "stat_bonuses": {
+      "matk_pct": 0.05,
+      "hp_pct": 0.05,
+      "evasion_rating": 60
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "matk_pct": 0.004, "hp_pct": 0.003, "evasion_rating": 10 },
+      "levels": {
+        "1": {
+          "passive_vi": "Cửu U Ma Khí",
+          "passive_en": "Nine Abyss Demonic Qi",
+          "description_vi": "Mỗi đòn trúng: 25% Hút Hồn (bào mòn HP tối đa địch), và tích 1 tầng Ma Khí (tối đa 9) — mỗi tầng +2% Pháp Công.",
+          "stat_bonuses": { "soul_drain_on_hit_pct": 0.25, "cu_ma_khi_cap": 9 },
+          "effects": ["BuffCuuUMaKhi"]
+        },
+        "3": {
+          "passive_vi": "Vong Linh",
+          "passive_en": "Wraith",
+          "description_vi": "Vong Linh Quỷ theo hầu vĩnh viễn trong trận: 55% sau mỗi đòn đánh trúng, Vong Linh phụ kích (45% Pháp Công, hệ Ám) kèm một lần Hút Hồn. Hút Hồn +15% (tổng 40%).",
+          "stat_bonuses": { "matk_pct": 0.05, "evasion_rating": 60, "soul_drain_on_hit_pct": 0.15, "cu_vl_follow_up_chance": 0.55, "cu_vl_dmg_matk_pct": 0.45 },
+          "effects": ["BuffVongLinhQuy"]
+        },
+        "6": {
+          "passive_vi": "Cửu U",
+          "passive_en": "Nine Abyss",
+          "description_vi": "Khai mở Cửu U chi cảnh: mỗi đòn 35% Cướp Chỉ Số; mỗi tầng Ma Khí khiến Hút Hồn mạnh thêm 5%. Đủ 9 tầng Ma Khí → +35% sát thương cuối. Cộng hưởng «U Minh Quỷ Hỏa»: mỗi lần thi triển, Vong Linh lập tức Hút Hồn thêm 3 lần.",
+          "stat_bonuses": { "matk_pct": 0.05, "stat_steal_on_hit_pct": 0.35, "cu_drain_amp_per_stack": 0.05, "cu_uminh_bonus_drains": 3 },
+          "effects": ["BuffCuuUChiCanh"]
+        },
+        "9": {
+          "passive_vi": "Ma Lâm Thiên Hạ",
+          "passive_en": "Demon Descends Upon the World",
+          "description_vi": "【Đã trang bị Chân Ma Chi Tâm】Vong Linh tiến hóa thành Ma Đế Quỷ Vương: phụ kích 75% (80% Pháp Công) kèm Hút Hồn + Cướp Chỉ Số; bản thân +10% Pháp Công, +5% Giảm ST, +15% Miễn Debuff. 【Chưa lĩnh ngộ】Vong Linh chỉ mạnh thêm một phần (phụ kích 70%).",
+          "stat_bonuses": { "matk_pct": 0.06, "evasion_rating": 60, "cu_ma_de_enabled": true },
+          "effects": ["BuffMaLamThienHa"]
+        }
+      }
+    }
+  }
+,
+  {
+    "key": "TheChat_ThonThienMa",
+    "vi": "Thôn Thiên Ma Thể",
+    "en": "Heaven-Devouring Demon Body",
+    "element": "am",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân là hắc động nuốt trời — tu vi nuốt nhanh gấp rưỡi nhưng phúc trạch tiêu tán, nguyên khí thể chất khác bị thôn phệ làm của riêng; sát thương nhận vào hóa ma lực, đến kỳ Thôn Thiên Thực Địa thì buff lẫn chỉ số kẻ địch đều bị nuốt trọn.",
+    "stat_bonuses": {
+      "matk_pct": 0.05,
+      "hp_pct": 0.05,
+      "mp_pct": 0.05
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "matk_pct": 0.004, "hp_pct": 0.003, "mp_pct": 0.004 },
+      "levels": {
+        "1": {
+          "passive_vi": "Ma Khí Thôn Phệ",
+          "passive_en": "Demonic Qi Devours All",
+          "description_vi": "Thôn phệ linh khí trời đất: tốc độ tu luyện +50%, NHƯNG phúc trạch tiêu tán — cơ hội rơi vật phẩm từ quái −50%. Đánh đổi vĩnh viễn khi mang thể này.",
+          "stat_bonuses": { "cultivation_speed_bonus": 0.5, "loot_luck_bonus": -0.5 },
+          "effects": ["BuffMaKhiThonPhe"]
+        },
+        "3": {
+          "passive_vi": "Thôn Phệ Bản Nguyên",
+          "passive_en": "Devour Primal Origin",
+          "description_vi": "Nuốt hấp nguyên khí thể chất khác: sao chép Thiên Phú Tầng 1 (bản GỐC, không nâng cấp) của Thể Chất MẠNH NHẤT đã lĩnh ngộ (khác bản thân) — thể chất duy nhất hưởng lợi từ hai thân cùng lúc.",
+          "stat_bonuses": { "matk_pct": 0.05, "ttm_devour_copy": true },
+          "effects": ["BuffThonPheBanNguyen"]
+        },
+        "6": {
+          "passive_vi": "Hắc Động",
+          "passive_en": "Black Abyss",
+          "description_vi": "Hắc động hấp thu tất cả: 15% sát thương nhận vào chuyển thành Pháp Công tạm thời (tối đa +60% Pháp Công gốc, hết trận thì tan). Mỗi đòn đánh: 40% tước 1 buff địch — buff bị nuốt hóa thành 8% MP tối đa.",
+          "stat_bonuses": { "matk_pct": 0.05, "ttm_absorb_matk_pct": 0.15, "ttm_absorb_cap_pct": 0.60, "ttm_strip_mp_chance": 0.40, "ttm_strip_mp_gain_pct": 0.08 },
+          "effects": ["BuffHacDong"]
+        },
+        "9": {
+          "passive_vi": "Thôn Thiên Thực Địa",
+          "passive_en": "Devour Heaven Eat Earth",
+          "description_vi": "Mỗi 8 lượt, hắc động mở toang: NUỐT toàn bộ buff địch làm của mình, cướp một phần lớn chỉ số địch (Công/Pháp/Phòng — theo giới hạn cướp trọn đời), và giáng Sát Thương Chuẩn bằng 50% tổng chỉ số vừa cướp (có giới hạn). Thụ động: 65% Cướp Chỉ Số mỗi đòn.",
+          "stat_bonuses": { "matk_pct": 0.05, "hp_pct": 0.04, "stat_steal_on_hit_pct": 0.65, "ttm_devour_interval": 8 },
+          "effects": ["BuffThonThienThucDia"]
+        }
+      }
+    }
+  }
 ]

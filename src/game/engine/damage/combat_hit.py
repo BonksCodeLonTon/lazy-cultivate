@@ -155,6 +155,20 @@ def build_attack_stats(
                 actor.loi_spd_advantage_cap,
                 (_spd_gap / 10.0) * actor.loi_spd_advantage_per_10,
             )
+    # Thái Dương Đạo — Cửu Dương anti-demon: +final dmg vs "yêu ma quỷ quái".
+    # Demon = Ám-element enemy OR a Thập Vạn Đại Sơn beast (key "Beast*") —
+    # the closest existing proxies for the demon/yao/ghost/beast tag family
+    # (there is no enemy tagging system). Cross-combatant read (needs the
+    # target's identity) so it lives here. 0.0 → inert for other builds.
+    if actor.td_anti_demon_dmg_pct > 0 and (
+        target.element == "am" or str(target.key or "").startswith("Beast")
+    ):
+        final_dmg_bonus += actor.td_anti_demon_dmg_pct
+    # Thái Âm Đạo — Chân Thủy: +final dmg vs a FROZEN target (stacks with the
+    # existing frozen→auto-crit lane). Cross-combatant state read, so it
+    # lives here. 0.0 → inert for every other build.
+    if actor.ta_dmg_vs_frozen_pct > 0 and target.has_effect("DebuffDongBang"):
+        final_dmg_bonus += actor.ta_dmg_vs_frozen_pct
     # Tịnh Quang Hộ Pháp L9 — Thánh Uy: the guardian's judgment ramps its own
     # final damage by +5% per buff stripped (cap +50%, accrued in procs). 0.0 →
     # inert for every non-guardian build.

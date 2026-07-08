@@ -127,6 +127,9 @@ _CT_NAMED_SKILL = "SkillLoiCuuThienNguLoiChanQuyet"
 # resonance (Phù Dao Trực Thượng; the L3 arm / Tiêu Dao Cảnh fire on ANY
 # movement-category cast).
 _TD_RESONANCE_SKILL = "SkillMovPhuDao_R8"
+# Cửu U Ma Đế Thể — the Hỏa skill whose cast triggers the L6 Vong Linh
+# bonus-drain resonance.
+_CUU_U_SYNERGY_SKILL = "SkillAtkUMinhQuyHoa_R7"
 
 
 def _deal_capped_true_dmg(
@@ -1265,7 +1268,10 @@ def cast_skill(
 
             apply_life_steal(session, actor, dmg)
             session._apply_mana_gains(actor, dmg)
-            apply_reactive_damage(session, actor, target, dmg, skill_element=skill_elem)
+            apply_reactive_damage(
+                session, actor, target, dmg, skill_element=skill_elem,
+                attack_type=skill_data.get("attack_type", "magical"),
+            )
 
             # On-hit: Linh Căn procs (consolidated in effects.py)
             lc_effects.on_hit(actor, target, dmg, result.is_crit, session.rng, session.log)
@@ -1416,6 +1422,18 @@ def cast_skill(
                     cap, actor.thuy_tide + int(dealt_total * store_pct)
                 )
             actor.thuy_tide_casts += 1
+
+        # Bách Thể Chú Linh — awakening-skill signature riders (devour heal,
+        # execute, DoT detonation, MP surge, phoenix vengeance, qilin smite).
+        # Opt-in via ``vital_rider`` on skill_data; top-level casts only
+        # (mirrors tide_charge discipline) and placed after
+        # ``apply_skill_effects`` so debuffs stamped by THIS cast count for
+        # the detonate / per-debuff branches.
+        if not _suppress_extras and skill_data.get("vital_rider"):
+            from .skill_extras import apply_vital_rider
+            apply_vital_rider(
+                session, actor, target, skill_data, dealt_total, cast_ctx,
+            )
 
     elif skill_data.get("debuff_only"):
         # 0-damage debuff aura — bypasses the damage roll but still stamps
@@ -1574,6 +1592,20 @@ def cast_skill(
                 f"    🍃 **{actor.name}** Tiêu Dao Cảnh "
                 f"[×{actor.td_canh_stacks}/{actor.td_canh_cap}]"
             )
+    # Cửu U Ma Đế — L6 U Minh Quỷ Hỏa cast synergy (top-level casts only):
+    # the Vong Linh immediately soul-drains ``cu_uminh_bonus_drains`` times.
+    # The sheet's NghiepLuc ×2 multiplier maps to nothing on the real skill
+    # (it's a debuff-only MP-burner) — the bonus drains ARE the resonance.
+    if (
+        actor.cu_uminh_bonus_drains > 0
+        and skill_key == _CUU_U_SYNERGY_SKILL
+        and target.is_alive()
+    ):
+        from .procs import vong_linh_drain
+        for _ in range(actor.cu_uminh_bonus_drains):
+            if not target.is_alive():
+                break
+            vong_linh_drain(session, actor, target)
     # Phi Thiên Lăng Vân — L9 unevadable cadence counter. Only top-level
     # casts count (``_suppress_extras`` already short-circuits above). The
     # cast that CONSUMED the unevadable arm resets the counter to 0 and

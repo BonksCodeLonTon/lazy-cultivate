@@ -3193,5 +3193,452 @@
     "cleansable": false,
     "emoji": "🌪️",
     "duration": 3
+  },
+  {
+    "key": "BuffQuangMinhChiVuc",
+    "vi": "Quang Minh Chi Vực",
+    "en": "Domain of Radiance",
+    "kind": "buff",
+    "description_vi": "Hào quang tỏa vực — mỗi lượt có thể làm Lóa Mắt kẻ địch và làm mờ bạo khí của chúng; bản thân hồi máu không ngừng.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "☀️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThanhQuangTichTu",
+    "vi": "Thánh Quang Tích Tụ",
+    "en": "Accumulated Holy Light",
+    "kind": "buff",
+    "description_vi": "Mỗi tầng Thánh Quang (tối đa 6, tích khi hào quang làm lóa mắt): +4% sát thương Quang, +8% tỉ lệ tước buff.",
+    "stat_bonus": { "_qm_dmg": 0.04, "_qm_strip": 0.08 },
+    "scaling_rules": [
+      { "key": "_qm_dmg", "source": "stack:qm_thanh_quang", "output": "dmg_bonus_quang", "max_output": 0.24 },
+      { "key": "_qm_strip", "source": "stack:qm_thanh_quang", "output": "qm_strip_vs_blind_chance", "max_output": 0.48 }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "✨",
+    "duration": 999
+  },
+  {
+    "key": "BuffThanQuang",
+    "vi": "Thần Quang",
+    "en": "Divine Light",
+    "kind": "buff",
+    "description_vi": "Thánh quang gia trì — sát thương Quang +35%, mỗi đòn chắc chắn Lóa Mắt, mỗi lượt tự tẩy trần.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌟",
+    "duration": 999
+  },
+  {
+    "key": "BuffQuangMangTranPhong",
+    "vi": "Quang Mang Trán Phóng",
+    "en": "Radiance Forehead Emission",
+    "kind": "buff",
+    "description_vi": "Trán phóng thánh quang — kẻ mù lòa bị tước dần phúc trạch (60% tước 1 buff mỗi đòn).",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔆",
+    "duration": 999
+  },
+  {
+    "key": "BuffDaiTinhHoa",
+    "vi": "Đại Tịnh Hóa Thuật",
+    "en": "Great Purification Art",
+    "kind": "buff",
+    "description_vi": "Cứ 5 lượt (4 khi đủ 6 Thánh Quang): thanh tẩy toàn bộ debuff bản thân, tước tối đa 3 buff địch, hồi 45% HP, khoác Thanh Khiết.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🕊️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThanhKhiet",
+    "vi": "Thanh Khiết",
+    "en": "Immaculate",
+    "kind": "buff",
+    "description_vi": "Thân sau đại tịnh hóa sạch không nhiễm bụi — 75% né mọi hiệu ứng bất lợi.",
+    "stat_bonus": { "debuff_immune_pct": 0.75 },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🤍",
+    "duration": 2
+  },
+  {
+    "key": "BuffHoaHinhCuongLuc",
+    "vi": "Hóa Hình: Cuồng Thú",
+    "en": "Beast Form: Rampage",
+    "kind": "buff",
+    "description_vi": "Huyết mạch mãnh thú bùng nổ — hóa thân cuồng thú, công kích và bạo kích tăng vọt.",
+    "stat_bonus": {
+      "atk_pct": 0.35,
+      "crit_rating": 250,
+      "crit_dmg_rating": 200
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🐯",
+    "duration": 4
+  },
+  {
+    "key": "BuffHoaHinhCuongThe",
+    "vi": "Hóa Hình: Trấn Nhạc",
+    "en": "Beast Form: Mountain Guard",
+    "kind": "buff",
+    "description_vi": "Hóa thân cự thú trấn nhạc — mỗi đòn đơn lẻ không thể gây quá 15% HP tối đa.",
+    "stat_bonus": {
+      "max_dmg_per_hit_pct_hp_max": 0.15,
+      "def_pct": 0.3,
+      "final_dmg_reduce": 0.1
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🐢",
+    "duration": 4
+  },
+  {
+    "key": "BuffHoaHinhTanTiet",
+    "vi": "Hóa Hình: Tật Ảnh",
+    "en": "Beast Form: Swift Shadow",
+    "kind": "buff",
+    "description_vi": "Hóa thân tật ảnh — thân pháp như gió cuốn, bóng ảnh khó nắm bắt.",
+    "stat_bonus": {
+      "spd_pct": 0.3,
+      "evasion_rating": 250,
+      "final_dmg_bonus": 0.1
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🦅",
+    "duration": 4
+  },
+  {
+    "key": "BuffHoaHinhAmDoc",
+    "vi": "Hóa Hình: Độc Ma",
+    "en": "Beast Form: Venom Fiend",
+    "kind": "buff",
+    "description_vi": "Hóa thân độc ma — độc tố và huyết khí đối thủ đều là dưỡng chất.",
+    "stat_bonus": {
+      "matk_pct": 0.2,
+      "life_steal_pct": 0.1,
+      "dot_leech_pct": 0.1,
+      "final_dmg_bonus": 0.1
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🐍",
+    "duration": 4
+  },
+  {
+    "key": "BuffHoaHinhLinhPhap",
+    "vi": "Hóa Hình: Yêu Linh",
+    "en": "Beast Form: Spirit Fey",
+    "kind": "buff",
+    "description_vi": "Hóa thân yêu linh — pháp lực cuộn trào, linh khí bất tận.",
+    "stat_bonus": {
+      "matk_pct": 0.35,
+      "crit_rating": 150,
+      "mp_regen_pct": 0.05
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🦊",
+    "duration": 4
+  },
+  {
+    "key": "BuffHoaHinhThanhLinh",
+    "vi": "Hóa Hình: Thánh Quang",
+    "en": "Beast Form: Sacred Light",
+    "kind": "buff",
+    "description_vi": "Hóa thân thánh thú — thánh quang hộ thể, tà khí tự tan.",
+    "stat_bonus": {
+      "hp_regen_pct": 0.05,
+      "cleanse_on_turn_pct": 0.5,
+      "final_dmg_reduce": 0.15,
+      "res_all": 0.05
+    },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🦌",
+    "duration": 4
+  },
+  {
+    "key": "BuffMinhTamKienTanh",
+    "vi": "Minh Tâm Kiến Tánh",
+    "en": "Clear Mind Sees True Nature",
+    "kind": "buff",
+    "description_vi": "Tâm thanh tịnh — 75% kháng mọi khống chế trừ Choáng; đan độc không xâm.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "💠",
+    "duration": 999
+  },
+  {
+    "key": "BuffLuuLyCongHuong",
+    "vi": "Lưu Ly Cộng Hưởng",
+    "en": "Lapis Resonance",
+    "kind": "buff",
+    "description_vi": "Cộng hưởng «Lưu Ly Tịnh Hỏa»: Thanh Tẩy chắc chắn thành công, mỗi lần Thanh Tẩy tước thêm 1 buff kẻ địch.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔮",
+    "duration": 999
+  },
+  {
+    "key": "BuffVoCauKimThan",
+    "vi": "Vô Cấu Kim Thân",
+    "en": "Spotless Golden Body",
+    "kind": "buff",
+    "description_vi": "Kim thân phản chiếu pháp thuật — 50% sát thương phép phản ngược; giảm 20% sát thương vật lý.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🪞",
+    "duration": 999
+  },
+  {
+    "key": "BuffVanPhapBatTriem",
+    "vi": "Vạn Pháp Bất Triêm",
+    "en": "Ten-Thousand Laws Cannot Taint",
+    "kind": "buff",
+    "description_vi": "Vạn pháp không nhuốm — mỗi hiệu ứng xấu bị chặn tích 1 tầng Vô Cấu; mỗi tầng phản phép +3%.",
+    "stat_bonus": { "vc_reflect_per_stack": 0.03 },
+    "scaling_rules": [
+      { "key": "vc_reflect_per_stack", "source": "stat:vo_cau_stacks", "output": "magic_reflect_pct" }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🪷",
+    "duration": 999
+  },
+  {
+    "key": "BuffCuuUMaKhi",
+    "vi": "Cửu U Ma Khí",
+    "en": "Nine Abyss Demonic Qi",
+    "kind": "buff",
+    "description_vi": "Ma khí tích tầng theo đòn đánh (tối đa 9) — mỗi tầng +2% Pháp Công (đạt Cửu U: mỗi tầng còn khuếch đại Hút Hồn).",
+    "stat_bonus": { "cu_matk_per_stack": 0.02 },
+    "scaling_rules": [
+      { "key": "cu_matk_per_stack", "source": "stat:ma_khi_stacks", "output": "matk_pct" }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌑",
+    "duration": 999
+  },
+  {
+    "key": "BuffVongLinhQuy",
+    "vi": "Vong Linh Quỷ",
+    "en": "Wraith Attendant",
+    "kind": "buff",
+    "description_vi": "Vong Linh Quỷ theo hầu — có cơ hội phụ kích kèm Hút Hồn sau mỗi đòn đánh của chủ nhân.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "👻",
+    "duration": 999
+  },
+  {
+    "key": "BuffCuuUChiCanh",
+    "vi": "Cửu U Chi Cảnh",
+    "en": "Realm of the Nine Abyss",
+    "kind": "buff",
+    "description_vi": "Đủ 9 tầng Ma Khí: sát thương cuối +35%.",
+    "stat_bonus": { "cu_9stack_fdb": 0.35 },
+    "scaling_rules": [
+      { "key": "cu_9stack_fdb", "source": "constant", "gate_source": "stat:ma_khi_stacks", "min": 9, "output": "final_dmg_bonus" }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🕳️",
+    "duration": 999
+  },
+  {
+    "key": "BuffMaLamThienHa",
+    "vi": "Ma Lâm Thiên Hạ",
+    "en": "Demon Descends Upon the World",
+    "kind": "buff",
+    "description_vi": "Cửu U mở toang — Vong Linh chờ hóa thân Ma Đế Quỷ Vương khi chủ nhân mang Chân Ma Chi Tâm.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "👑",
+    "duration": 999
+  },
+  {
+    "key": "BuffMaDeQuyVuong",
+    "vi": "Ma Đế Quỷ Vương",
+    "en": "Demon Emperor Ghost King",
+    "kind": "buff",
+    "description_vi": "Vong Linh đã hóa thân Ma Đế — chủ nhân +10% Pháp Công, +5% Giảm ST, +15% Miễn Debuff.",
+    "stat_bonus": { "matk_pct": 0.10, "final_dmg_reduce": 0.05, "debuff_immune_pct": 0.15 },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "👑",
+    "duration": 999
+  },
+  {
+    "key": "BuffMaKhiThonPhe",
+    "vi": "Ma Khí Thôn Phệ",
+    "en": "Demonic Qi Devours All",
+    "kind": "buff",
+    "description_vi": "Thôn phệ linh khí — tu luyện nhanh gấp rưỡi, phúc trạch rơi đồ tiêu giảm.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🕳️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThonPheBanNguyen",
+    "vi": "Thôn Phệ Bản Nguyên",
+    "en": "Devour Primal Origin",
+    "kind": "buff",
+    "description_vi": "Đã nuốt hấp Thiên Phú Tầng 1 của một thể chất khác từng lĩnh ngộ.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🕳️",
+    "duration": 999
+  },
+  {
+    "key": "BuffHacDong",
+    "vi": "Hắc Động",
+    "en": "Black Abyss",
+    "kind": "buff",
+    "description_vi": "Hắc động hấp thu — sát thương nhận vào hóa Pháp Công; đòn đánh nuốt buff địch thành MP.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🕳️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThonThienThucDia",
+    "vi": "Thôn Thiên Thực Địa",
+    "en": "Devour Heaven Eat Earth",
+    "kind": "buff",
+    "description_vi": "Cứ 8 lượt hắc động mở toang — nuốt buff, cướp chỉ số, giáng sát thương chuẩn.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🕳️",
+    "duration": 999
+  },
+  {
+    "key": "BuffCuuDuongChanKhi",
+    "vi": "Cửu Dương Chân Khí",
+    "en": "Nine Yang True Qi",
+    "kind": "buff",
+    "description_vi": "Dương khí hộ thân — 85% kháng Đóng Băng; độc tà không xâm.",
+    "stat_bonus": { "effect_resist:DebuffDongBang": 0.85 },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "☀️",
+    "duration": 999
+  },
+  {
+    "key": "BuffThaiDuongChanHoa",
+    "vi": "Thái Dương Chân Hỏa",
+    "en": "Supreme Yang True Fire",
+    "kind": "buff",
+    "description_vi": "Chân hỏa thái dương phụ thân — mỗi đòn thiêu đốt, ánh dương làm lóa mắt tà vật.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🔥",
+    "duration": 999
+  },
+  {
+    "key": "BuffThaiDuongThanLo",
+    "vi": "Thái Dương Thần Lô",
+    "en": "Supreme Yang Divine Furnace",
+    "kind": "buff",
+    "description_vi": "Thần lô luyện thể — mỗi tầng +3% Công, Pháp Công, Phòng Thủ, Tốc Độ.",
+    "stat_bonus": { "td_lo_atk": 0.03, "td_lo_matk": 0.03, "td_lo_def": 0.03, "td_lo_spd": 0.03 },
+    "scaling_rules": [
+      { "key": "td_lo_atk",  "source": "stat:than_lo_stacks", "output": "atk_pct" },
+      { "key": "td_lo_matk", "source": "stat:than_lo_stacks", "output": "matk_pct" },
+      { "key": "td_lo_def",  "source": "stat:than_lo_stacks", "output": "def_pct" },
+      { "key": "td_lo_spd",  "source": "stat:than_lo_stacks", "output": "spd_pct" }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "⚱️",
+    "duration": 999
+  },
+  {
+    "key": "BuffNhatDieuCuuThien",
+    "vi": "Nhật Diệu Cửu Thiên",
+    "en": "Solar Brilliance Nine Heavens",
+    "kind": "buff",
+    "description_vi": "Nhật quang cửu thiên — Thần Lô mạnh thêm +1.5% mỗi tầng; cứ 8 lượt tỏa sóng nhật quang.",
+    "stat_bonus": { "td_nd_atk": 0.015, "td_nd_matk": 0.015, "td_nd_def": 0.015, "td_nd_spd": 0.015 },
+    "scaling_rules": [
+      { "key": "td_nd_atk",  "source": "stat:than_lo_stacks", "output": "atk_pct" },
+      { "key": "td_nd_matk", "source": "stat:than_lo_stacks", "output": "matk_pct" },
+      { "key": "td_nd_def",  "source": "stat:than_lo_stacks", "output": "def_pct" },
+      { "key": "td_nd_spd",  "source": "stat:than_lo_stacks", "output": "spd_pct" }
+    ],
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌞",
+    "duration": 999
+  },
+  {
+    "key": "BuffCuuAmChanKhi",
+    "vi": "Cửu Âm Chân Khí",
+    "en": "Nine Yin True Qi",
+    "kind": "buff",
+    "description_vi": "Âm khí ngưng thân — MP tuôn chảy, thân pháp hư ảo, né tránh hóa sát ý.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌙",
+    "duration": 999
+  },
+  {
+    "key": "BuffThaiAmChanThuy",
+    "vi": "Thái Âm Chân Thủy",
+    "en": "Supreme Yin True Water",
+    "kind": "buff",
+    "description_vi": "Chân thủy tuần hoàn — hồi phục không ngừng, hàn khí đóng băng vạn vật.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "❄️",
+    "duration": 999
+  },
+  {
+    "key": "BuffTramDaoKienMinh",
+    "vi": "Trảm Đạo Kiến Minh",
+    "en": "Cut Dao to Reveal Clarity",
+    "kind": "buff",
+    "description_vi": "Trảm đạo đoạt pháp — cứ 4 lượt tước buff địch và khắc Trảm Đạo Ấn.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌙",
+    "duration": 999
+  },
+  {
+    "key": "BuffHaiThuongMinhNguyet",
+    "vi": "Hải Thượng Minh Nguyệt",
+    "en": "Bright Moon Over the Sea",
+    "kind": "buff",
+    "description_vi": "Nguyệt quang phủ hải — hồi sinh cơ mỗi lượt; ảo cảnh kính hoa đẩy ngược tà chú chắc chắn.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌕",
+    "duration": 999
   }
 ]

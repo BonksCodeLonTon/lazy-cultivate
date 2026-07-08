@@ -72,5 +72,53 @@
         }
       }
     }
+  },
+  {
+    "key": "TheChat_QuangMinhThanh",
+    "vi": "Quang Minh Thánh Thể",
+    "en": "Radiant Holy Body",
+    "element": "quang",
+    "rarity": "legendary",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 60000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Thân là nguồn quang minh — hào quang tỏa khắp chiến trường làm lóa mắt kẻ địch, thánh quang tự tẩy trần mỗi lượt, tước đi phúc trạch của kẻ mù lòa; đến kỳ Đại Tịnh Hóa, vạn uế đều tan, vạn thương đều lành.",
+    "stat_bonuses": { "matk_pct": 0.05, "hp_regen_pct": 0.02, "crit_res_rating": 100 },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "matk_pct": 0.003, "hp_regen_pct": 0.002, "crit_res_rating": 15 },
+      "levels": {
+        "1": {
+          "passive_vi": "Quang Minh Chi Vực",
+          "passive_en": "Domain of Radiance",
+          "description_vi": "Hồi 5% HP mỗi lượt. Hào quang tỏa vực: mỗi lượt 35% Lóa Mắt địch và giảm 60 bạo kích của chúng. Mỗi lượt hào quang làm lóa mắt thành công: +1 tầng Thánh Quang (tối đa 6) — mỗi tầng +4% sát thương Quang, +8% tỉ lệ tước buff.",
+          "stat_bonuses": { "hp_regen_pct": 0.05, "qm_aura_blind_chance": 0.35, "qm_stack_cap": 6 },
+          "effects": ["BuffQuangMinhChiVuc", "BuffThanhQuangTichTu"]
+        },
+        "3": {
+          "passive_vi": "Thần Quang",
+          "passive_en": "Divine Light",
+          "description_vi": "Sát thương hệ Quang +35%. Mỗi đòn tấn công chắc chắn Lóa Mắt. Mỗi lượt tự thanh tẩy 1 hiệu ứng bất lợi.",
+          "stat_bonuses": { "element_dmg_bonus": { "quang": 0.35 }, "blind_on_hit_pct": 1.0, "quang_self_cleanse_interval": 1, "quang_self_cleanse_count": 1 },
+          "effects": ["BuffThanQuang"]
+        },
+        "6": {
+          "passive_vi": "Quang Mang Trán Phóng",
+          "passive_en": "Radiance Forehead Emission",
+          "description_vi": "Địch đang Lóa Mắt: mỗi đòn trúng 60% tước 1 buff của chúng.",
+          "stat_bonuses": { "crit_res_rating": 80, "qm_strip_vs_blind_chance": 0.60 },
+          "effects": ["BuffQuangMangTranPhong"]
+        },
+        "9": {
+          "passive_vi": "Đại Tịnh Hóa Thuật",
+          "passive_en": "Great Purification Art",
+          "description_vi": "Mỗi 5 lượt (4 lượt khi đủ 6 Thánh Quang) thi triển Đại Tịnh Hóa: thanh tẩy TOÀN BỘ hiệu ứng bất lợi của bản thân, tước tối đa 3 buff địch, hồi 45% HP tối đa và khoác Thanh Khiết (75% miễn debuff, 2 lượt).",
+          "stat_bonuses": { "matk_pct": 0.05, "crit_res_rating": 100, "qm_purify_interval": 5, "qm_purify_strip_count": 3, "qm_purify_heal_pct": 0.45, "qm_purify_fast_stack_gate": 6 },
+          "effects": ["BuffDaiTinhHoa"]
+        }
+      }
+    }
   }
 ]

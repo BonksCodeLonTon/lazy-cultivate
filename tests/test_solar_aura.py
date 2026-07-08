@@ -67,11 +67,13 @@ def test_aura_scales_with_owner_hp_max_not_target():
     make_session(holder, fat_target)._process_periodic(holder)
     assert 100_000 - fat_target.hp == 200
 
-    # Inverse: 100k-HP holder deals 4_000 even if target only has 5k HP.
+    # Inverse, POST-CLAMP (2026-07-08 Thái Dương rework): a 100k-HP holder's
+    # raw 4_000 tick is clamped to 10% of the SMALL target's pool (500) — the
+    # own-HP scaling holds vs boss pools, but can no longer melt small mobs.
     big_holder = make_combatant("p", hp_max=100_000, hp=100_000, solar_aura_pct=0.04)
     small_target = make_combatant("e", hp_max=5_000, hp=5_000)
     make_session(big_holder, small_target)._process_periodic(big_holder)
-    assert 5_000 - small_target.hp == 4_000
+    assert 5_000 - small_target.hp == 500  # int(5_000 × 0.10)
 
 
 def test_aura_uses_owner_current_hp_max_after_pct_buffs():

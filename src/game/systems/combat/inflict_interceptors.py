@@ -29,7 +29,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Callable
 
 from src.game.constants.effects import EffectKey
-from src.game.engine.effects import get_combat_modifiers
+from src.game.engine.effects import EffectKind, get_combat_modifiers
 
 if TYPE_CHECKING:
     from src.game.engine.effects import EffectMeta
@@ -252,5 +252,97 @@ def _slow_immune_check(
     session.log.append(
         f"    👣 **{target.name}** trong {immune_vi} — "
         f"**{meta.vi}** tan biến!"
+    )
+    return True
+
+
+def _is_vo_cau_cc(effect_key: str, meta: "EffectMeta") -> bool:
+    """Shared CC classifier for the two Vô Cấu Lưu Ly gates.
+
+    CC = turn-skip / skill-lock metas (freeze, knock-up, silence, interrupt)
+    plus the two chance/soft controls the design names explicitly (Tê Liệt's
+    per-turn skip chance, Làm Chậm). The two interceptors below split the
+    negative-effect space on this predicate so a CC never rolls twice.
+    """
+    return bool(
+        meta.skips_turn
+        or meta.prevents_skills
+        or effect_key in (EffectKey.DEBUFF_TE_LIET, EffectKey.DEBUFF_LAM_CHAM)
+    )
+
+
+def _bank_vo_cau_stack(target: "Combatant") -> str:
+    """Bank +1 Vô Cấu on a successful block; returns the log suffix.
+
+    The cap is only set by the L9 milestone, so pre-L9 blocks bank nothing.
+    """
+    if target.vo_cau_cap > 0 and target.vo_cau_stacks < target.vo_cau_cap:
+        target.vo_cau_stacks += 1
+        return f" [Vô Cấu ×{target.vo_cau_stacks}/{target.vo_cau_cap}]"
+    return ""
+
+
+@register_pre_stamp_interceptor
+def _minh_tam_cc_resist(
+    session: "CombatSession", effect_key: str, meta: "EffectMeta",
+    target: "Combatant", actor: "Combatant | None",
+    overrides: "dict | None",
+) -> bool:
+    """Vô Cấu Lưu Ly L1 (Minh Tâm Kiến Tánh) — ``vc_cc_resist_pct`` chance
+    (75%) to shrug every CC class EXCEPT stun.
+
+    ``CCStun`` deliberately bypasses — the body's "not yet fully
+    transcendent" flaw. CC is exclusively THIS gate's lane: the L9 shrug
+    below skips CC entirely so the resist chance stays exactly the authored
+    75% (no double-roll). At L9, successful CC blocks also bank Vô Cấu.
+    """
+    if target.vc_cc_resist_pct <= 0:
+        return False
+    if effect_key == EffectKey.CC_STUN:
+        return False
+    if meta.kind is EffectKind.BUFF:
+        return False
+    if not _is_vo_cau_cc(effect_key, meta):
+        return False
+    if session.rng.random() >= target.vc_cc_resist_pct:
+        return False
+    session.log.append(
+        f"    💠 **{target.name}** Minh Tâm Kiến Tánh — **{meta.vi}** "
+        f"vô hiệu!{_bank_vo_cau_stack(target)}"
+    )
+    return True
+
+
+@register_pre_stamp_interceptor
+def _van_phap_bat_triem(
+    session: "CombatSession", effect_key: str, meta: "EffectMeta",
+    target: "Combatant", actor: "Combatant | None",
+    overrides: "dict | None",
+) -> bool:
+    """Vô Cấu Lưu Ly L9 (Vạn Pháp Bất Triêm) — chance-shrug every NON-CC
+    negative effect (DoTs, shreds, marks); stun bypasses.
+
+    NOT an absolute immunity (per the no-total-immunity design rule — the
+    #24 Tiêu Dao precedent): ``vc_bat_triem_immune_pct`` rolls per
+    application. CC is excluded — that's the L1 gate's lane, so a failed
+    L1 resist means the CC lands (75% flat, no second roll here). Each
+    successful block tempers the lapis body: +1 Vô Cấu stack (cap
+    ``vo_cau_cap``) which BuffVanPhapBatTriem's scaling rule turns into
+    +magic_reflect_pct — "the more they target it, the more spotless it
+    becomes".
+    """
+    if target.vc_bat_triem_immune_pct <= 0:
+        return False
+    if effect_key == EffectKey.CC_STUN:
+        return False
+    if meta.kind is EffectKind.BUFF:
+        return False
+    if _is_vo_cau_cc(effect_key, meta):
+        return False
+    if session.rng.random() >= target.vc_bat_triem_immune_pct:
+        return False
+    session.log.append(
+        f"    🪷 **{target.name}** Vạn Pháp Bất Triêm — "
+        f"**{meta.vi}** không nhuốm!{_bank_vo_cau_stack(target)}"
     )
     return True

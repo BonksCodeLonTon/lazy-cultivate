@@ -601,6 +601,14 @@ def consume_pill(
     _speed_bonus = float(_const_bonuses.get("cultivation_speed_bonus", 0.0))
     _speed_mult = 1.0 + _speed_bonus
 
+    # Vô Cấu Lưu Ly L1 (Minh Tâm Kiến Tánh) — pill purity: the body digests
+    # pills without accumulating đan độc. The flag sits in the FLAT
+    # stat_bonuses so it applies independently of the Constitution Process
+    # flag (same out-of-combat read as cultivation_speed_bonus above).
+    if doc_delta > 0 and _const_bonuses.get("pill_toxin_immune"):
+        doc_delta = 0
+        notes.append("💠 Minh Tâm Kiến Tánh — đan độc không xâm nhập.")
+
     def _scale_xp(raw: int) -> int:
         """Apply quality + toxicity + constitution-speed scalars to a raw
         XP magnitude. Toxicity zeroes out everything at Mãn Độc, but the

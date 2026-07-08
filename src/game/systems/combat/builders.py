@@ -19,6 +19,14 @@ from src.game.constants.balance import (
 from src.game.models.character import Character
 from src.game.systems.combatant import Combatant
 
+# Cửu U Ma Đế Thể — L9 Ma Lâm Thiên Hạ evolution parameters. The prerequisite
+# passive must be in the equipped loadout; met → the Vong Linh evolves into
+# the Ma Đế Quỷ Vương at these rates, not met → partial follow-up upgrade.
+_CUU_U_PREREQ_SKILL = "SkillAmChanMaChiTam_R9"
+_MA_DE_FOLLOW_UP_CHANCE = 0.75
+_MA_DE_DMG_MATK_PCT = 0.80
+_MA_DE_PARTIAL_FOLLOW_UP = 0.70
+
 
 def build_player_combatant(
     char: Character,
@@ -63,6 +71,20 @@ def build_player_combatant(
     # rotation so multi-slot Trận Tu truly has all its formations active
     # simultaneously rather than time-sharing a single skill slot.
     final_skill_keys = list(player_skill_keys)
+
+    # Bách Thể Chú Linh — awakened legendary/mythic infusions grant their
+    # signature skill straight onto the main bar. Inert for off-body paths
+    # and non-awakened parts (empty list). These skills carry no ``passive``
+    # block, so injecting after the skill-passive merge above is lossless.
+    from src.game.systems.body_parts import granted_awakening_skills
+    for _granted in granted_awakening_skills(
+        getattr(char, "body_part_infusions", None),
+        getattr(char, "active_axis", None),
+        char.body_realm,
+    ):
+        if _granted not in final_skill_keys and registry.get_skill(_granted):
+            final_skill_keys.append(_granted)
+
     formation_skill_keys: list[str] = []
     for active_key in get_active_formations(char.active_formation):
         form_data = registry.get_formation(active_key)
@@ -106,6 +128,19 @@ def build_player_combatant(
         **cs_kwargs,
     )
     _stamp_constitution_process_effects(char, combatant)
+
+    # Hóa Hình — arm the 9/9 one-bloodline transformation (Bách Thể Chú
+    # Linh endgame). Config-only: the trigger itself lives in
+    # ``combat/hoa_hinh.try_hoa_hinh`` (round loop). None → fields stay "".
+    from src.game.systems.body_parts import hoa_hinh_form
+    _form = hoa_hinh_form(
+        getattr(char, "body_part_infusions", None),
+        getattr(char, "active_axis", None),
+        char.body_realm,
+    )
+    if _form is not None:
+        combatant.hoa_hinh_buff_key, combatant.hoa_hinh_beast_vi = _form
+
     return combatant
 
 
@@ -174,6 +209,36 @@ def _stamp_constitution_process_effects(char: Character, combatant: Combatant) -
                 "respect_target_res": True,
                 "aura_buff_key": "BuffHoPhapKimCuong", "aura_buff_overrides": None,
             })
+        # Cửu U Ma Đế L9 — resolve the Ma Lâm Thiên Hạ evolution at build.
+        # Prerequisite = the Chân Ma Chi Tâm passive is in the EQUIPPED
+        # loadout ("đã học" reads as carried into battle — the only skill
+        # set visible at build). Met → the Vong Linh evolves (higher
+        # follow-up chance + damage, the strike also stat-steals) and the
+        # holder dons BuffMaDeQuyVuong (+matk/+DR/+debuff-immune live mods).
+        # Not met → partial upgrade: follow-up chance only. The follow-up
+        # itself lives in ``procs.run_cuu_u_procs`` (Vong Linh is proc-driven,
+        # NOT a per-turn ``summons`` ticker — it must never tick 0-dmg turns).
+        if combatant.cu_ma_de_enabled:
+            if _CUU_U_PREREQ_SKILL in (combatant.skill_keys or []):
+                combatant.cu_ma_de_evolved = True
+                combatant.cu_vl_follow_up_chance = _MA_DE_FOLLOW_UP_CHANCE
+                combatant.cu_vl_dmg_matk_pct = _MA_DE_DMG_MATK_PCT
+                combatant.apply_effect("BuffMaDeQuyVuong", 999)
+            else:
+                combatant.cu_vl_follow_up_chance = max(
+                    combatant.cu_vl_follow_up_chance, _MA_DE_PARTIAL_FOLLOW_UP,
+                )
+
+    # Thôn Thiên Ma L3 — stamp the devoured donor's L1 EFFECTS (its scaling /
+    # marker buffs) so copied flag-driven mechanics get their buff half; the
+    # donor's L1 stat_bonuses already merged in character_stats. Runs after
+    # the per-body loop so the holder's own effects can't be displaced.
+    from src.game.systems.constitution_process import devoured_l1
+    _dv_donor, _dv_stats, _dv_effects = devoured_l1(char)
+    if _dv_effects:
+        for _dv_key in _dv_effects:
+            if EFFECTS.get(_dv_key) is not None and not combatant.has_effect(_dv_key):
+                combatant.apply_effect(_dv_key, default_duration(_dv_key))
 
 
 def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant | None:

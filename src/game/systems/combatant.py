@@ -319,6 +319,14 @@ class Combatant:
     phoenix_revive_pct: float = 0.0
     phoenix_revive_buff_pct: float = 0.0
     phoenix_revive_used: bool = False
+
+    # Bách Thể Chú Linh — Hóa Hình (all nine parts sharing one bloodline).
+    # Build-time config from ``body_parts.hoa_hinh_form``: once per battle,
+    # dropping below the trigger HP% transforms the holder — heals a chunk
+    # and stamps ``hoa_hinh_buff_key`` (see combat/hoa_hinh.py).
+    hoa_hinh_buff_key: str = ""
+    hoa_hinh_beast_vi: str = ""
+    hoa_hinh_used: bool = False  # runtime once-per-battle latch
     # Chân Mệnh Lôi Phù once-per-fight flag — flipped on the Lôi passive
     # destiny revival (``_try_chan_menh_loi_phu``). Independent from phoenix /
     # buff revives so a player carrying multiple revive sources gets the full
@@ -927,9 +935,102 @@ class Combatant:
     shield_only_body: bool = False
     shield_from_hp_max_pct: float = 0.0
     heal_to_shield_pct: float = 0.0
+    # Bách Thể Chú Linh — Ngân Giác Lộc awakening: overflow healing past
+    # hp_max converts into shield (consumed in CombatSession._apply_heal).
+    overheal_to_shield_pct: float = 0.0
     aegis_reform_charges: int = 0
     aegis_reform_shield_pct: float = 0.0
     aegis_reform_just_triggered: bool = False  # runtime (NOT a config key)
+
+    # ── Vô Cấu Lưu Ly Thể (universal purity tank) ─────────────────────────────
+    # L1 ``vc_cc_resist_pct`` (75% chance to shrug CC) + L9
+    # ``vc_bat_triem_immune_pct`` (75% chance to shrug every OTHER negative
+    # effect) gate incoming applications in ``inflict_interceptors``; the two
+    # lanes are disjoint (no double-roll on CC) and CCStun always bypasses
+    # both — the body's designed flaw. Each successful block banks +1
+    # ``vo_cau_stacks`` (cap ``vo_cau_cap``, set at L9); BuffVanPhapBatTriem
+    # scales stacks into ``magic_reflect_pct`` (L6 base 35% → 56% at 7),
+    # consumed in ``apply_reactive_damage`` for magical hits only and capped
+    # per hit at 10% of the attacker's max HP. ``pill_toxin_immune`` is an
+    # out-of-combat flag (alchemy.consume_pill). L3 ``vc_tinh_hoa_resonance``
+    # upgrades the Lưu Ly Tịnh Hỏa cleanse aura.
+    vc_cc_resist_pct: float = 0.0
+    pill_toxin_immune: bool = False
+    vc_tinh_hoa_resonance: bool = False
+    magic_reflect_pct: float = 0.0
+    vc_bat_triem_immune_pct: float = 0.0
+    vo_cau_cap: int = 0
+    vo_cau_stacks = _StackProxy("vo_cau", store="stack_counters")  # runtime (NOT a config key)
+
+    # ── Cửu U Ma Đế Thể (Ám soul-drain summoner) ──────────────────────────────
+    # L1: generic soul_drain/stat_steal lanes + Ma Khí banking (+1 per landed
+    # hit, cap ``cu_ma_khi_cap``; BuffCuuUMaKhi scales stacks → matk_pct, and
+    # ``cu_drain_amp_per_stack`` amps apply_soul_drain's per-proc drain).
+    # L3: Vong Linh follow-up (procs.run_cuu_u_procs — chance, % matk Ám hit
+    # + a soul drain). L6: BuffCuuUChiCanh 9-stack fdb gate + U Minh Quỷ Hỏa
+    # cast synergy (``cu_uminh_bonus_drains`` immediate drains). L9: build-time
+    # Ma Đế evolution (builders — prereq SkillAmChanMaChiTam_R9 equipped) sets
+    # ``cu_ma_de_evolved`` (follow-up also stat-steals) + BuffMaDeQuyVuong.
+    cu_ma_khi_cap: int = 0
+    cu_drain_amp_per_stack: float = 0.0
+    cu_vl_follow_up_chance: float = 0.0
+    cu_vl_dmg_matk_pct: float = 0.0
+    cu_uminh_bonus_drains: int = 0
+    cu_ma_de_enabled: bool = False
+    cu_ma_de_evolved: bool = False  # runtime (NOT a config key)
+    ma_khi_stacks = _StackProxy("ma_khi", store="stack_counters")  # runtime (NOT a config key)
+
+    # ── Thôn Thiên Ma Thể (Ám devourer) ───────────────────────────────────────
+    # L1 is meta-layer only (cultivation speed / loot luck — no combat fields).
+    # L3 ``ttm_devour_copy``: the donor body's BASE L1 stat_bonuses merge in
+    # character_stats and its L1 effects stamp in builders. L6 Hắc Động:
+    # ``ttm_absorb_matk_pct`` of damage taken becomes flat temp MATK (capped at
+    # ``ttm_absorb_cap_pct`` × starting matk; apply_reactive_damage), and each
+    # landed hit rolls ``ttm_strip_mp_chance`` to strip one enemy buff into
+    # ``ttm_strip_mp_gain_pct`` × mp_max (run_thon_thien_procs). L9: every
+    # ``ttm_devour_interval`` acted turns the aura steals ALL stealable enemy
+    # buffs + big stat-steal + capped true damage (auras/thon_thien.py).
+    ttm_devour_copy: bool = False
+    ttm_absorb_matk_pct: float = 0.0
+    ttm_absorb_cap_pct: float = 0.0
+    ttm_strip_mp_chance: float = 0.0
+    ttm_strip_mp_gain_pct: float = 0.0
+    ttm_devour_interval: int = 0
+    ttm_matk_absorbed: int = 0        # runtime (NOT a config key)
+    ttm_devour_turn_counter: int = 0  # runtime (NOT a config key)
+
+    # ── Thái Dương Đạo Thể (universal solar anti-demon tank) ──────────────────
+    # L1 ``td_anti_demon_dmg_pct``: +final dmg vs "yêu ma quỷ quái" — mapped
+    # to Ám-element enemies + the Beast* families (combat_hit). L6 Thần Lô:
+    # each damaging hit TAKEN banks +1 ``than_lo_stacks`` (cap
+    # ``td_than_lo_cap``; apply_reactive_damage); BuffThaiDuongThanLo scales
+    # stacks → +3%/stack all core stats, BuffNhatDieuCuuThien adds +1.5% at
+    # L9. L9 solar burst: every ``td_solar_interval`` acted turns, capped
+    # true dmg = ``td_solar_hp_pct`` × own hp_max + blind (auras/thai_duong).
+    td_anti_demon_dmg_pct: float = 0.0
+    td_than_lo_per_hit: bool = False
+    td_than_lo_cap: int = 0
+    td_solar_interval: int = 0
+    td_solar_hp_pct: float = 0.0
+    td_solar_turn_counter: int = 0  # runtime (NOT a config key)
+    than_lo_stacks = _StackProxy("than_lo", store="stack_counters")  # runtime (NOT a config key)
+
+    # ── Thái Âm Đạo Thể (universal yin-moon evasion/freeze) ───────────────────
+    # L1 rides generic lanes (mp_regen/evasion/element thuy +
+    # damage_bonus_from_evasion_pct). L3 ``freeze_on_skill_chance`` (generic) +
+    # ``ta_dmg_vs_frozen_pct`` final dmg vs frozen targets (combat_hit; stacks
+    # with the existing frozen→auto-crit). L6 Trảm Đạo cadence: every
+    # ``ta_tram_dao_interval`` acted turns strip ``ta_tram_dao_strips`` enemy
+    # buffs + stamp DebuffTramDao (auras/thai_am.py). L9: moonlight per-turn
+    # heal/freeze + ``ta_kinh_hoa_resonance`` makes the Kính Hoa Thủy Nguyệt
+    # debuff-transfer guaranteed while its buff is up.
+    ta_dmg_vs_frozen_pct: float = 0.0
+    ta_tram_dao_interval: int = 0
+    ta_tram_dao_strips: int = 0
+    ta_kinh_hoa_resonance: bool = False
+    ta_moonlight_heal_pct: float = 0.0
+    ta_moonlight_freeze_chance: float = 0.0
+    ta_tram_dao_turn_counter: int = 0  # runtime (NOT a config key)
 
     # ── Liệt Diễm Phần Thiên Thể (Hỏa escalating fire nuker) ──────────────────
     # L1 ramp: periodic increments ``lietdiem_burn_stacks`` (+per_turn, cap), the
@@ -1143,6 +1244,27 @@ class Combatant:
     loi_shred_on_hit_pct: float = 0.0
     phong_shred_on_hit_pct: float = 0.0
     stun_on_hit_turns: int = 0
+
+    # ── Quang Minh Thánh Thể (Quang radiant control-purifier) ─────────────────
+    # L1 radiance aura (auras/quang_minh.py): per-turn ``qm_aura_blind_chance``
+    # Lóa Mắt + DebuffQuangMinhVuc crit shred; a landed aura blind banks +1
+    # Thánh Quang (``qm_thanh_quang_stacks``, cap ``qm_stack_cap``) —
+    # BuffThanhQuangTichTu's scaling rules turn the counter into
+    # dmg_bonus_quang + qm_strip_vs_blind_chance. L6: per-hit
+    # ``qm_strip_vs_blind_chance`` (REAL stat — field + mods) to strip 1 buff
+    # from a BLINDED target (run_quang_minh_procs). L9: every
+    # ``qm_purify_interval`` acted turns (−1 at ``qm_purify_fast_stack_gate``
+    # stacks) → full self-cleanse + strip ``qm_purify_strip_count`` buffs +
+    # heal ``qm_purify_heal_pct`` + BuffThanhKhiet (75% debuff-shrug, 2t).
+    qm_aura_blind_chance: float = 0.0
+    qm_stack_cap: int = 0
+    qm_strip_vs_blind_chance: float = 0.0
+    qm_purify_interval: int = 0
+    qm_purify_strip_count: int = 0
+    qm_purify_heal_pct: float = 0.0
+    qm_purify_fast_stack_gate: int = 0
+    qm_thanh_quang_stacks = _StackProxy("qm_thanh_quang", store="stack_counters")  # runtime (NOT a config key)
+    qm_purify_turn_counter: int = 0  # runtime (NOT a config key)
 
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated

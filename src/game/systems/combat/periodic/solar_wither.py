@@ -26,6 +26,9 @@ from src.game.engine.damage.color import colorize_damage
 from ..context import TurnContext
 from ..hooks import TurnPhase, register_hook
 
+# Solar aura per-tick ceiling as a fraction of the TARGET's max HP.
+_SOLAR_AURA_TARGET_CAP_PCT = 0.10
+
 
 @register_hook(phase=TurnPhase.PERIODIC, name="solar_aura", priority=40)
 def _solar_aura(ctx: TurnContext) -> None:
@@ -41,9 +44,18 @@ def _solar_aura(ctx: TurnContext) -> None:
     base = int(combatant.hp_max * combatant.solar_aura_pct)
     if base <= 0:
         return
+    # Amplified by the holder's whole fire identity: final dmg, generic +
+    # burn-kind DoT bonuses, and Hỏa element damage (authored dict + live
+    # ``dmg_bonus_hoa`` modifiers) — Thái Dương Đạo's HP→hoa conversion
+    # feeds straight into the aura.
+    from src.game.engine.effects import get_combat_modifiers
+    _mods = get_combat_modifiers(combatant)
     mult = (
         1.0 + combatant.final_dmg_bonus
+        + combatant.dot_dmg_bonus
         + float(combatant.dot_dmg_bonus_by_kind.get("burn", 0.0))
+        + combatant.element_dmg_bonus.get("hoa", 0.0)
+        + float(_mods.get("dmg_bonus_hoa", 0.0))
     )
     if opponent.burn_stacks > 0 and combatant.bonus_dmg_vs_burn > 0:
         mult += combatant.bonus_dmg_vs_burn
@@ -55,6 +67,12 @@ def _solar_aura(ctx: TurnContext) -> None:
         ),
     )
     aura_dmg = max(1, int(base * mult * (1.0 - target_res)))
+    # Per-tick clamp vs the TARGET's pool — own-HP-scaled auras melt small
+    # enemies otherwise (a 56k-HP tank ticking 50%+ of a 9k elite per turn).
+    # Vs boss-sized pools the clamp is loose and the own-HP scaling is the
+    # real number (the 12%-true-dmg-rider convention, aura-flavored).
+    if opponent.hp_max > 0:
+        aura_dmg = min(aura_dmg, max(1, int(opponent.hp_max * _SOLAR_AURA_TARGET_CAP_PCT)))
     opponent.take_damage(aura_dmg)
     aura_tag = colorize_damage(f"-{aura_dmg:,} HP", "hoa")
     ctx.log.append(
