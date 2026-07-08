@@ -240,7 +240,29 @@ class GameRegistry:
         merged = self._merge_subdir("items", self._ITEM_FILES)
         merged.update(self._merge_subdir("gems", self._GEM_ITEM_FILES))
         merged.update(self._merge_subdir("pills", self._PILL_ITEM_FILES))
+        merged.update(self._load_heaven_treasure())
         merged.update(self._merge_subdir("equipment", self._EQUIP_ITEM_FILES))
+        return merged
+
+    def _load_heaven_treasure(self) -> dict[str, dict]:
+        """Recursively load all JSON arrays under src/data/heaventreasure/.
+
+        Files are organized by realm (realm_02/, realm_03/, …). Each file
+        contains an array of item objects keyed by "key". Merge them into
+        the generic items dict so callers can lookup by key/type normally.
+        """
+        merged: dict[str, dict] = {}
+        base = DATA_DIR / "heaventreasure"
+        if not base.exists():
+            return merged
+        for path in sorted(base.rglob("*.json")):
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+            except Exception:
+                log.exception("GameRegistry: failed to load heaventreasure file %s", path)
+                continue
+            for entry in data:
+                merged[entry["key"]] = entry
         return merged
 
     def _load_equipment_defs(self) -> tuple[dict, dict, dict]:

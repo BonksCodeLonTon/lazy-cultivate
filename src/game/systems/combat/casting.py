@@ -719,6 +719,11 @@ def cast_skill(
                             "SkillLoiBonusShock", _loi_bonus, 0,
                             _suppress_extras=True,
                         )
+            # Post-hit hooks for defender aegis-like blocks: shield grants on
+            # receiving damage. Run here after the evade branch so hits that
+            # actually landed also call the handler.
+            from src.game.systems.combat.defense_aegis import grant_shield_on_hit
+            grant_shield_on_hit(session, actor, target, dmg)
         else:
             # Target damage reduction → actor's HP/MP/evasion/shield/mana-stack scaling
             target_dr = effective_damage_reduction(target, target_mods)

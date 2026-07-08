@@ -1,5 +1,17 @@
 [
   {
+    "key": "BuffDodgeSpeedBurstTemp",
+    "vi": "Bộc Phát Tốc Độ",
+    "en": "Speed Burst (Temp)",
+    "kind": "buff",
+    "description_vi": "Tăng tốc độ tạm thời và arming bạo kích cho lượt kế.",
+    "stat_bonus": {"spd_pct": 0.12},
+    "duration": 2,
+    "stealable": false
+  }
+]
+[
+  {
     "key": "HpRegen",
     "vi": "Hồi Sinh Lực",
     "en": "HP Regen",

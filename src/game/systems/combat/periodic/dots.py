@@ -69,6 +69,25 @@ def _process_dots(ctx: TurnContext) -> None:
     siphon_elems = set(siphon_cfg.get("elements", [])) if siphon_cfg else set()
 
     for effect_key, dot_dmg, is_crit in get_periodic_damage(combatant, ctx.rng):
+        # Special-case: when the holder carries the Thiên Mộc passive that
+        # absorbs poison (PassiveLifeRegen_PoisonAbsorb), poison ticks
+        # (DebuffDocTo) convert into heals instead of damaging HP. This
+        # mirrors the passive description in the item data.
+        from src.game.constants.effects import EffectKey
+        if (
+            effect_key == EffectKey.DEBUFF_DOC_TO.value
+            and combatant.effects.get("PassiveLifeRegen_PoisonAbsorb", 0) > 0
+        ):
+            # Apply as heal (session wrapper handles healing caps/overheal)
+            healed = session._apply_heal(combatant, dot_dmg)
+            meta = EFFECTS.get("PassiveLifeRegen_PoisonAbsorb")
+            name = meta.vi if meta else "PassiveLifeRegen_PoisonAbsorb"
+            ctx.log.append(
+                f"    ❤️ **{combatant.name}** {name} — hấp thu +{healed:,} HP (thay vì -{dot_dmg:,} HP)"
+            )
+            # Skip the normal DoT damage routing for this tick.
+            continue
+
         combatant.take_damage(dot_dmg, is_dot=True)
 
         # Thiên Lôi Cường — Lôi-DoT extras (the APPLIER is ``opponent`` here).

@@ -111,6 +111,34 @@ def grant_shield_on_cast(
         )
 
 
+def grant_shield_on_hit(
+    session: "CombatSession", attacker: "Combatant", defender: "Combatant", dmg: int
+) -> None:
+    """When a defender with an aegis carrying `on_hit_shield` takes a hit,
+    grant shield to the defender based on config. Runs from the post-hit
+    hook so `dmg` reflects pre-absorb amount.
+    """
+    if dmg <= 0 or not defender.is_alive():
+        return
+    for buff_key, block in _iter_active_aegis(defender):
+        cfg = block.get("on_hit_shield")
+        if not isinstance(cfg, dict):
+            continue
+        min_dmg = int(cfg.get("min_damage", 1))
+        if dmg < min_dmg:
+            continue
+        flat = int(cfg.get("flat", 0))
+        matk_scale = float(cfg.get("matk_scale", 0.0))
+        amount = max(1, flat + int(defender.matk * matk_scale))
+        gained = defender.add_shield(amount)
+        if gained > 0:
+            emoji = cfg.get("log_emoji", "🧊")
+            name = cfg.get("log_name", buff_key)
+            session.log.append(
+                f"    {emoji} **{defender.name}** {name} — +{gained:,} Khiên"
+            )
+
+
 def accumulate_stored_charge(holder: "Combatant", pre_absorb_amount: int) -> None:
     """Bank a fraction of incoming damage into every active aegis's stored pool.
 

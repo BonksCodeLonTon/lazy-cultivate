@@ -480,9 +480,37 @@ class BreakthroughView(discord.ui.View):
                     # iterates ascending-by-grade and decrements greedily — for
                     # single-grade materials it behaves identically to a
                     # single-row remove.
-                    await inv_repo.remove_any_grade(
+                    ok = await inv_repo.remove_any_grade(
                         player.id, reqs["item_key"], reqs["quantity"]
                     )
+                    # If the consumed item grants a permanent pill-buff counter
+                    # (used by the permanent-per-pill system), increment the
+                    # player's stored counters so the stat bonus persists.
+                    if ok:
+                        try:
+                            from src.data.registry import registry as _reg
+                            from src.game.systems.pill_buffs import (
+                                parse_counts, increment_count, encode_counts,
+                            )
+                            item_def = _reg.get_item(reqs["item_key"]) or {}
+                            buff_key = item_def.get("grant_pill_buff")
+                            if buff_key:
+                                counts = parse_counts(player.pill_buff_counts)
+                                for _ in range(int(reqs.get("quantity", 0))):
+                                    did_inc, counts = increment_count(counts, buff_key)
+                                    if not did_inc:
+                                        break
+                                player.pill_buff_counts = encode_counts(counts)
+                        except Exception:
+                            # Fail silently — granting the permanent counter is
+                            # best-effort and should not block the breakthrough
+                            # flow. Log for future debugging.
+                            import logging
+
+                            logging.getLogger(__name__).exception(
+                                "Failed to apply grant_pill_buff for %s",
+                                reqs["item_key"],
+                            )
 
                 player.body_realm      = char.body_realm
                 player.body_level      = char.body_level

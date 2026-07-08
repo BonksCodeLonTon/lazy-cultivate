@@ -197,6 +197,23 @@ def _run_proc_cast(
     )
 
 
+def _run_apply_self_temp_buff(session, attacker, defender, buff_key, block):
+    cfg = block.get("apply_self")
+    if not isinstance(cfg, dict):
+        return
+    temp_key = cfg.get("temp_buff_key")
+    duration = int(cfg.get("duration", 2))
+    if not temp_key:
+        return
+    # Apply the temporary buff to defender; optionally set a flag to arm next crit
+    defender.apply_effect(temp_key, duration)
+    if cfg.get("arm_next_crit"):
+        defender.phong_crit_armed = True
+    meta = EFFECTS.get(buff_key)
+    label = meta.vi if meta else buff_key
+    session.log.append(f"    ⚡ **{defender.name}** {label} — bộc phát né → +{duration}t")
+
+
 def apply_evade_reactives(
     session: "CombatSession",
     attacker: "Combatant",
@@ -224,5 +241,7 @@ def apply_evade_reactives(
         _run_inflict(session, attacker, defender, merged_block)
         _run_extend_self(session, defender, buff_key, merged_block)
         _run_proc_cast(session, attacker, defender, buff_key, merged_block)
+            # Apply self buffs declared in evade_react blocks (e.g. dodge bursts)
+            _run_apply_self_temp_buff(session, attacker, defender, buff_key, merged_block)
         if not attacker.is_alive():
             return

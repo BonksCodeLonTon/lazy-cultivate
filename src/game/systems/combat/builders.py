@@ -129,6 +129,42 @@ def build_player_combatant(
     )
     _stamp_constitution_process_effects(char, combatant)
 
+    # Stamp permanent pill-granted passives: any pill-type counters the
+    # player has that declare a passive effect should be applied as a
+    # long-duration buff on the combatant. This mirrors how Constitution
+    # passives are stamped above.
+    from src.game.systems.pill_buffs import parse_counts
+    from src.game.engine.effects import EFFECTS, default_duration
+
+    pill_counts = getattr(char, "pill_buff_counts", None) or {}
+    # If stored as JSON string on Character, parse it (Character model
+    # mirrors Player ORM but some call sites keep raw string).
+    if isinstance(pill_counts, str):
+        pill_counts = parse_counts(pill_counts)
+    # For each stored effect_key that has a matching registry passive key,
+    # apply the corresponding effect meta recorded on the item data.
+    from src.data.registry import registry as _reg
+    for effect_key, count in (pill_counts or {}).items():
+        if not count or int(count) <= 0:
+            continue
+        # Items map pill effect key → passive effect via their JSON
+        # `grant_passive_effect` field. Look up any known item that carries
+        # this pill key and apply its passive (idempotent per-effect).
+        # This is a best-effort mapping: multiple items might reference the
+        # same pill key; we only need one passive key to apply.
+        passive_key = None
+        for item in _reg.items.values():
+            if isinstance(item, dict) and item.get("grant_pill_buff") == effect_key:
+                passive_key = item.get("grant_passive_effect")
+                if passive_key:
+                    break
+        if not passive_key:
+            continue
+        meta = EFFECTS.get(passive_key)
+        if meta is None:
+            continue
+        combatant.apply_effect(passive_key, default_duration(passive_key))
+
     # Hóa Hình — arm the 9/9 one-bloodline transformation (Bách Thể Chú
     # Linh endgame). Config-only: the trigger itself lives in
     # ``combat/hoa_hinh.try_hoa_hinh`` (round loop). None → fields stay "".

@@ -45,6 +45,32 @@ PILL_BUFF_STATS: dict[str, dict[str, float]] = {
     "buff_element_am":    {"element_dmg_bonus_am":    0.01},
 }
 
+# New heaven-treasure pill effects: these four keys map to the Thiên-tier
+# heaventreasure items. Values are per-pill increments; at PILL_BUFF_CAP
+# (20) the cumulative bonuses approximately match the design table.
+PILL_BUFF_STATS.update({
+    "pill_linh_moc": {
+        "hp_pct": 0.01,            # ×20 → +20% HP
+        "hp_regen_pct": 0.0025,    # ×20 → +5% HP/turn
+        "res_all": 0.004,          # ×20 → +8% elemental res
+    },
+    "pill_dark_ice": {
+        "hp_pct": 0.01,            # ×20 → +20% HP
+        "shield_max_pct": 0.006,   # ×20 → +12% shield cap
+        "hp_regen_pct": 0.0025,    # ×20 → +5% HP/turn
+    },
+    "pill_divine_thunder": {
+        "matk_pct": 0.0075,        # ×20 → +15% MATK
+        "spd_pct": 0.007,          # ×20 → +14% SPD
+        "crit_rating": 5.0,        # ×20 → +100 crit rating
+    },
+    "pill_wind_spirit": {
+        "spd_pct": 0.009,          # ×20 → +18% SPD
+        "evasion_rating": 11.0,    # ×20 → +220 evasion
+        "crit_rating": 5.0,        # ×20 → +100 crit rating
+    },
+})
+
 
 def parse_counts(raw: str | None) -> dict[str, int]:
     """Decode the stored JSON counter dict. Tolerates None / malformed."""

@@ -1,0 +1,46 @@
+[
+  {
+    "key": "TruongXuanLinhMocTuy",
+    "vi": "Thiên Phẩm Trường Xuân Linh Mộc Tủy",
+    "en": "Heaven-Grade Eternal Spring Spirit Wood Marrow",
+    "type": "heaven_treasure",
+    "stack_max": 999,
+    "description_vi": "Luyện chế đan dược mang lại hiệu quả ngưng thần thủ phách, tăng cường thần thức.",
+    "grant_pill_buff": "pill_linh_moc",
+    "grant_passive_effect": "PassiveLifeRegen_PoisonAbsorb",
+    "grant_passive_desc_vi": "HP +20%, Hồi +5%/lượt, Kháng toàn phần +8%. Passive: Hồi 2% max HP mỗi lượt. Đặc biệt: DebuffDocTo → hấp thu thành HP thay vì sát thương."
+  },
+  {
+    "key": "HuyenBangTinhTuy",
+    "vi": "Thiên Phẩm Huyền Băng Tinh Tủy",
+    "en": "Heaven-Grade Dark Ice Essence",
+    "type": "heaven_treasure",
+    "stack_max": 999,
+    "description_vi": "Tinh băng tửu huyền, khi dùng đột phá gia tăng hàng rào bảo vệ và hồi phục khi bị thương.",
+     "grant_pill_buff": "pill_dark_ice",
+     "grant_passive_effect": "PassiveReactiveShieldRegen",
+     "grant_passive_desc_vi": "Khi nhận đòn ≥5% max HP: 45% hồi 4% shield tối đa đột tức thì."
+  },
+  {
+    "key": "TuTieuThanLoiChau",
+    "vi": "Thiên Phẩm Tử Tiêu Thần Lôi Châu",
+    "en": "Heaven-Grade Purple Sky Divine Thunder Pearl",
+    "type": "heaven_treasure",
+    "stack_max": 999,
+    "description_vi": "Ngọc chấn lôi thần — tăng cường sát thương chớp nhoáng và tỉ lệ gây sốc khi dùng để đột phá.",
+     "grant_pill_buff": "pill_divine_thunder",
+     "grant_passive_effect": "PassiveSocDienOnHit",
+     "grant_passive_desc_vi": "Mỗi đòn: 38% gây DebuffSocDien (dot_pct 2.5%, duration 2)."
+  },
+  {
+    "key": "CuuThienPhongLinhTinh",
+    "vi": "Thiên Phẩm Cửu Thiên Phong Linh Tinh",
+    "en": "Heaven-Grade Nine Heavens Wind Spirit Crystal",
+    "type": "heaven_treasure",
+    "stack_max": 999,
+    "description_vi": "Tinh linh phong — tăng tốc độ và phản xạ né tránh cho người dùng khi đột phá.",
+     "grant_pill_buff": "pill_wind_spirit",
+     "grant_passive_effect": "PassiveDodgeSpeedBurst_plus",
+     "grant_passive_desc_vi": "Khi né thành công: 45% SPD+18% trong 1 lượt + đòn tiếp theo đảm bảo crit."
+  }
+]
