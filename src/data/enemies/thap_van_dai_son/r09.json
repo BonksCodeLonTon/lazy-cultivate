@@ -1,0 +1,222 @@
+[
+  {
+    "key": "BeastThaoThiet_R9",
+    "vi": "Thao Thiết Thái Cổ",
+    "en": "Primordial Taotie",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "tho",
+    "beast_type": "hung_thu",
+    "base_hp": 18200,
+    "base_atk": 143,
+    "base_matk": 96,
+    "base_def": 198,
+    "base_spd": 16,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "base_res": {
+      "tho": 0.03
+    },
+    "skill_keys": [
+      "EnemyTho_R9",
+      "EnemyAm_T3"
+    ],
+    "loot_table_key": "LootTVDS_thao_thiet_R9"
+  },
+  {
+    "key": "BeastCungKy_R9",
+    "vi": "Cùng Kỳ Thái Cổ",
+    "en": "Primordial Qiongqi",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "kim",
+    "beast_type": "hung_thu",
+    "base_hp": 13000,
+    "base_atk": 182,
+    "base_matk": 84,
+    "base_def": 165,
+    "base_spd": 18,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "base_res": {
+      "kim": 0.03
+    },
+    "skill_keys": [
+      "EnemyKim_R9",
+      "EnemyPhong_T3"
+    ],
+    "loot_table_key": "LootTVDS_cung_ky_R9"
+  },
+  {
+    "key": "BeastDaoNgot_R9",
+    "vi": "Đào Ngột Thái Cổ",
+    "en": "Primordial Taowu",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "am",
+    "beast_type": "hung_thu",
+    "base_hp": 13650,
+    "base_atk": 98,
+    "base_matk": 162,
+    "base_def": 173,
+    "base_spd": 17,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "base_res": {
+      "am": 0.03
+    },
+    "skill_keys": [
+      "EnemyAm_R9",
+      "EnemyTho_T3"
+    ],
+    "loot_table_key": "LootTVDS_dao_ngot_R9"
+  },
+  {
+    "key": "BeastTatPhuong_R9",
+    "vi": "Tất Phương Thái Cổ",
+    "en": "Primordial Bifang",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "hoa",
+    "beast_type": "hung_thu",
+    "base_hp": 11700,
+    "base_atk": 124,
+    "base_matk": 162,
+    "base_def": 148,
+    "base_spd": 19,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "base_res": {
+      "hoa": 0.03
+    },
+    "skill_keys": [
+      "EnemyHoa_R9",
+      "EnemyLoi_T3"
+    ],
+    "loot_table_key": "LootTVDS_tat_phuong_R9"
+  },
+  {
+    "key": "BeastCuuAnh_R9",
+    "vi": "Cửu Anh Thái Cổ",
+    "en": "Primordial Jiuying",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "thuy",
+    "beast_type": "hung_thu",
+    "base_hp": 14950,
+    "base_atk": 104,
+    "base_matk": 156,
+    "base_def": 182,
+    "base_spd": 17,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "base_res": {
+      "thuy": 0.03
+    },
+    "skill_keys": [
+      "EnemyThuy_R9",
+      "EnemyAm_T3"
+    ],
+    "loot_table_key": "LootTVDS_cuu_anh_R9"
+  },
+  {
+    "key": "BeastChanLong_R9",
+    "vi": "Chân Long Thái Cổ",
+    "en": "Primordial True Dragon",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "loi",
+    "beast_type": "than_thu",
+    "base_hp": 21060,
+    "base_atk": 195,
+    "base_matk": 180,
+    "base_def": 209,
+    "base_spd": 19,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "base_res": {
+      "loi": 0.06
+    },
+    "skill_keys": [
+      "EnemyLoi_R9",
+      "EnemyThuy_T3",
+      "EnemyApex_R9_Physical"
+    ],
+    "loot_table_key": "LootTVDS_chan_long_R9"
+  },
+  {
+    "key": "BeastPhuongHoang_R9",
+    "vi": "Phượng Hoàng Niết Bàn",
+    "en": "Nirvana Phoenix",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "hoa",
+    "beast_type": "than_thu",
+    "base_hp": 18430,
+    "base_atk": 171,
+    "base_matk": 202,
+    "base_def": 180,
+    "base_spd": 20,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "base_res": {
+      "hoa": 0.06
+    },
+    "skill_keys": [
+      "EnemyHoa_R9",
+      "EnemyPhong_T3",
+      "EnemyApex_R9_Magical"
+    ],
+    "loot_table_key": "LootTVDS_phuong_hoang_R9"
+  },
+  {
+    "key": "BeastKyLan_R9",
+    "vi": "Kỳ Lân Thánh Thú",
+    "en": "Sacred Qilin",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "quang",
+    "beast_type": "than_thu",
+    "base_hp": 20180,
+    "base_atk": 179,
+    "base_matk": 172,
+    "base_def": 209,
+    "base_spd": 19,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "base_res": {
+      "quang": 0.06
+    },
+    "skill_keys": [
+      "EnemyQuang_T3",
+      "EnemyTho_T3",
+      "EnemyApex_R9_Magical"
+    ],
+    "loot_table_key": "LootTVDS_ky_lan_R9"
+  },
+  {
+    "key": "BeastHuyenVu_R9",
+    "vi": "Huyền Vũ Thái Cổ",
+    "en": "Primordial Black Tortoise",
+    "rank": "tien_thu",
+    "realm_level": 9,
+    "element": "thuy",
+    "beast_type": "than_thu",
+    "base_hp": 25450,
+    "base_atk": 138,
+    "base_matk": 150,
+    "base_def": 275,
+    "base_spd": 17,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.1,
+    "base_res": {
+      "thuy": 0.06
+    },
+    "skill_keys": [
+      "EnemyThuy_R9",
+      "EnemyTho_T3",
+      "EnemyApex_R9_Magical"
+    ],
+    "loot_table_key": "LootTVDS_huyen_vu_R9"
+  }
+]

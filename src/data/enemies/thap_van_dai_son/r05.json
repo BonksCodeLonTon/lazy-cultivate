@@ -1,0 +1,170 @@
+[
+  {
+    "key": "BeastKimCangVien_R5",
+    "vi": "Kim Cang Cự Viên",
+    "en": "Great Vajra Ape",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "kim",
+    "beast_type": "hung_thu",
+    "base_hp": 5060,
+    "base_atk": 135,
+    "base_matk": 60,
+    "base_def": 94,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "kim": 0.03
+    },
+    "skill_keys": [
+      "EnemyKim_T3",
+      "EnemyTho_T3"
+    ],
+    "loot_table_key": "LootTVDS_kim_cang_vien_R5"
+  },
+  {
+    "key": "BeastPhongMaDieu_R5",
+    "vi": "Phong Ma Quái Điểu",
+    "en": "Storm Demon Strange Bird",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "phong",
+    "beast_type": "hung_thu",
+    "base_hp": 3910,
+    "base_atk": 120,
+    "base_matk": 95,
+    "base_def": 70,
+    "base_spd": 15,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "phong": 0.03
+    },
+    "skill_keys": [
+      "EnemyPhong_T3",
+      "EnemyLoi_T3"
+    ],
+    "loot_table_key": "LootTVDS_phong_ma_dieu_R5"
+  },
+  {
+    "key": "BeastUMinhNgoCong_R5",
+    "vi": "U Minh Ngô Công",
+    "en": "Nether Centipede",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "moc",
+    "beast_type": "hung_thu",
+    "base_hp": 4600,
+    "base_atk": 85,
+    "base_matk": 120,
+    "base_def": 82,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "moc": 0.03
+    },
+    "skill_keys": [
+      "EnemyMoc_T3",
+      "EnemyAm_T3"
+    ],
+    "loot_table_key": "LootTVDS_u_minh_ngo_cong_R5"
+  },
+  {
+    "key": "BeastNganGiacLoc_R5",
+    "vi": "Ngân Giác Linh Lộc",
+    "en": "Silver-Antler Spirit Deer",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "quang",
+    "beast_type": "hung_thu",
+    "base_hp": 4830,
+    "base_atk": 70,
+    "base_matk": 120,
+    "base_def": 82,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "quang": 0.03
+    },
+    "skill_keys": [
+      "EnemyQuang_T3",
+      "EnemyMoc_T3"
+    ],
+    "loot_table_key": "LootTVDS_ngan_giac_loc_R5"
+  },
+  {
+    "key": "BeastLoiDinhNgac_R5",
+    "vi": "Lôi Đình Cự Ngạc",
+    "en": "Great Thunder Crocodile",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "loi",
+    "beast_type": "hung_thu",
+    "base_hp": 5520,
+    "base_atk": 100,
+    "base_matk": 115,
+    "base_def": 98,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "loi": 0.03
+    },
+    "skill_keys": [
+      "EnemyLoi_T3",
+      "EnemyThuy_T3"
+    ],
+    "loot_table_key": "LootTVDS_loi_dinh_ngac_R5"
+  },
+  {
+    "key": "BeastChanLong_R5",
+    "vi": "Giao Long Thập Vạn Sơn",
+    "en": "Flood Dragon of the Myriad Mountains",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "loi",
+    "beast_type": "than_thu",
+    "base_hp": 7450,
+    "base_atk": 150,
+    "base_matk": 150,
+    "base_def": 104,
+    "base_spd": 14,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "loi": 0.06
+    },
+    "skill_keys": [
+      "EnemyLoi_T3",
+      "EnemyThuy_T3"
+    ],
+    "loot_table_key": "LootTVDS_chan_long_R5"
+  },
+  {
+    "key": "BeastPhuongHoang_R5",
+    "vi": "Hỏa Vũ Chu Điểu",
+    "en": "Flame-Feather Vermilion Bird",
+    "rank": "hung_manh",
+    "realm_level": 5,
+    "element": "hoa",
+    "beast_type": "than_thu",
+    "base_hp": 6520,
+    "base_atk": 131,
+    "base_matk": 169,
+    "base_def": 90,
+    "base_spd": 15,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.06,
+    "base_res": {
+      "hoa": 0.06
+    },
+    "skill_keys": [
+      "EnemyHoa_T3",
+      "EnemyPhong_T3"
+    ],
+    "loot_table_key": "LootTVDS_phuong_hoang_R5"
+  }
+]

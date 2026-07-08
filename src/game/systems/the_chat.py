@@ -1,21 +1,18 @@
-"""Thể Chất system — path-aware multi-slot logic.
+"""Thể Chất system — single-slot logic (post Thể Tu rework).
 
-Most cultivation paths (Qi / Formation) keep a single Thể Chất. **Thể Tu**
-(body cultivators — players whose ``active_axis == "body"``) unlock one
-additional Thể Chất slot per body realm breakthrough, capped at 8.
+Every cultivation path carries exactly **one** standard Thể Chất. The old
+Thể Tu perk (one extra slot per body realm, up to 8) has been retired —
+body realms now unlock **Bộ Vị Cơ Thể** (body parts) infused with Tinh
+Huyết from Thập Vạn Đại Sơn instead; see ``body_parts.py``.
 
-The Hỗn Độn Đạo Thể is a special *9th* slot that activates only when all 8
-standard slots already hold a Legendary Thể Chất.
+The Hỗn Độn Đạo Thể remains a special extra slot for players who already
+own it (grandfathered), but its 8-Legendary unlock requirement can no
+longer be satisfied under the single-slot cap.
 
 Storage: ``player.constitution_type`` is a single string column parsed as
-a **comma-separated list** of Thể Chất keys. A single-entry value (e.g.
-``"ConstitutionVanTuong"``) parses as a 1-slot list.
-
-Path identity follows ``Player.active_axis`` directly so a player who
-cultivates body becomes Thể Tu the moment they switch focus, and reverts
-to a single-slot Khí/Trận Tu the instant they pivot away — no realm-comparison
-desync. Bonus pipelines clamp to the current cap automatically; constitutions
-beyond the cap stay persisted but contribute nothing while off-path.
+a **comma-separated list** of Thể Chất keys (multi-entry values from the
+pre-rework era still parse; entries past the cap stay persisted but
+contribute nothing).
 """
 from __future__ import annotations
 
@@ -31,6 +28,7 @@ _BASE_SUCCESS: dict[str, float] = {
     "rare":      0.65,
     "epic":      0.50,
     "legendary": 0.35,
+    "mythic":    0.25,
 }
 THE_TU_SUCCESS_BONUS = 0.20
 
@@ -92,14 +90,13 @@ def is_the_tu(active_axis: str | None) -> bool:
 def max_slots(active_axis: str | None, body_realm: int) -> int:
     """Number of standard Thể Chất slots the player currently owns.
 
-    - Off-path (qi / formation focus): always 1.
-    - Thể Tu (active_axis == "body"): ``1 + body_realm`` (so body 0 → 1 slot,
-      body 7+ → 8 slots), hard-capped at ``MAX_BODY_SLOTS`` (8).
-    - Hỗn Độn is a special *9th* slot on top of these, not counted here.
+    Always 1 — the Thể Tu multi-slot perk was replaced by the body-part
+    infusion system (``body_parts.py``). The signature keeps its arguments
+    so every call site stays untouched and a future path-based cap can be
+    reintroduced without churn. Hỗn Độn remains a special extra slot on
+    top, not counted here.
     """
-    if not is_the_tu(active_axis):
-        return 1
-    return min(MAX_BODY_SLOTS, 1 + body_realm)
+    return 1
 
 
 def effective_constitutions(

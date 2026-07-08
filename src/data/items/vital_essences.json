@@ -1,0 +1,680 @@
+[
+  {
+    "key": "VitalEssManhHo",
+    "vi": "Tinh Huyết Mãnh Hổ",
+    "en": "Fierce Tiger Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "manh_ho",
+    "essence_tier": "normal",
+    "archetype": "cuong_luc",
+    "element": "kim",
+    "grade": 1,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "atk_pct": 0.075,
+      "crit_rating": 100,
+      "hp_pct": 0.015
+    },
+    "awakening": {
+      "threshold": 30,
+      "stat_bonuses": {
+        "atk_pct": 0.075,
+        "crit_dmg_rating": 150
+      },
+      "desc_vi": "Hổ Phách Nộ — công kích và sát thương bạo kích tăng vọt."
+    },
+    "description_vi": "Tinh huyết của Mãnh Hổ nơi Thập Vạn Đại Sơn. Chú nhập để tăng công kích và bạo kích."
+  },
+  {
+    "key": "VitalEssThietQuy",
+    "vi": "Tinh Huyết Thiết Quy",
+    "en": "Iron Turtle Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "thiet_quy",
+    "essence_tier": "normal",
+    "archetype": "cuong_the",
+    "element": "tho",
+    "grade": 1,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "hp_pct": 0.09,
+      "def_bonus": 75
+    },
+    "awakening": {
+      "threshold": 30,
+      "stat_bonuses": {
+        "endure_threshold_pct": 0.2,
+        "endure_cooldown": 8,
+        "thorn_pct": 0.05
+      },
+      "desc_vi": "Quy Tức — đòn chí mạng không thể kết liễu: gồng lại ở 20% HP (hồi 8 lượt), mai rùa mọc gai phản chấn."
+    },
+    "description_vi": "Tinh huyết của Thiết Quy nơi Thập Vạn Đại Sơn. Chú nhập để cường hóa khí huyết và phòng ngự."
+  },
+  {
+    "key": "VitalEssPhiUng",
+    "vi": "Tinh Huyết Phi Ưng",
+    "en": "Soaring Hawk Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "phi_ung",
+    "essence_tier": "normal",
+    "archetype": "tan_tiet",
+    "element": "phong",
+    "grade": 1,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "spd_bonus": 2,
+      "evasion_rating": 112,
+      "hp_pct": 0.015
+    },
+    "awakening": {
+      "threshold": 30,
+      "stat_bonuses": {
+        "evasion_rating": 112,
+        "damage_bonus_from_evasion_pct": 0.02
+      },
+      "desc_vi": "Ưng Nhãn Truy Phong — né tránh chuyển hóa thành sát thương."
+    },
+    "description_vi": "Tinh huyết của Phi Ưng nơi Thập Vạn Đại Sơn. Chú nhập để thân pháp nhanh nhẹn, né tránh siêu phàm."
+  },
+  {
+    "key": "VitalEssDocXa",
+    "vi": "Tinh Huyết Độc Xà",
+    "en": "Venom Serpent Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "doc_xa",
+    "essence_tier": "normal",
+    "archetype": "am_doc",
+    "element": "moc",
+    "grade": 1,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "poison_on_hit_pct": 0.1,
+      "dot_dmg_bonus_by_kind": {
+        "poison": 0.15
+      },
+      "hp_pct": 0.015
+    },
+    "awakening": {
+      "threshold": 30,
+      "stat_bonuses": {
+        "poison_on_hit_pct": 0.1,
+        "dot_leech_pct": 0.05
+      },
+      "desc_vi": "Xà Độc Nhập Tủy — độc tố hút sinh lực về cho bản thân."
+    },
+    "description_vi": "Tinh huyết của Độc Xà nơi Thập Vạn Đại Sơn. Chú nhập để mỗi đòn đánh có cơ hội tẩm độc."
+  },
+  {
+    "key": "VitalEssLinhHo",
+    "vi": "Tinh Huyết Linh Hồ",
+    "en": "Spirit Fox Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "linh_ho",
+    "essence_tier": "normal",
+    "archetype": "linh_phap",
+    "element": "am",
+    "grade": 1,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "matk_pct": 0.075,
+      "mp_regen_pct": 0.025,
+      "hp_pct": 0.015
+    },
+    "awakening": {
+      "threshold": 30,
+      "stat_bonuses": {
+        "matk_pct": 0.05,
+        "mp_leech_pct": 0.05
+      },
+      "desc_vi": "Hồ Mị Đoạt Linh — mỗi đòn đánh hút linh lực đối thủ."
+    },
+    "description_vi": "Tinh huyết của Linh Hồ nơi Thập Vạn Đại Sơn. Chú nhập để pháp lực thâm hậu, linh khí dồi dào."
+  },
+  {
+    "key": "VitalEssHoaBao",
+    "vi": "Tinh Huyết Hỏa Báo",
+    "en": "Flame Leopard Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "hoa_bao",
+    "essence_tier": "magic",
+    "archetype": "cuong_luc",
+    "element": "hoa",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "atk_pct": 0.1,
+      "burn_on_hit_pct": 0.125,
+      "hp_pct": 0.02
+    },
+    "awakening": {
+      "threshold": 24,
+      "stat_bonuses": {
+        "bonus_dmg_vs_burn": 0.15,
+        "dot_dmg_bonus_by_kind": {
+          "burn": 0.15
+        }
+      },
+      "desc_vi": "Liệt Diệm Cuồng Bạo — sát thương tăng mạnh lên mục tiêu đang cháy."
+    },
+    "description_vi": "Tinh huyết của Hỏa Báo nơi Thập Vạn Đại Sơn. Chú nhập để đòn đánh mang theo liệt diệm thiêu đốt."
+  },
+  {
+    "key": "VitalEssBangLang",
+    "vi": "Tinh Huyết Băng Lang",
+    "en": "Frost Wolf Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "bang_lang",
+    "essence_tier": "magic",
+    "archetype": "linh_phap",
+    "element": "thuy",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "matk_pct": 0.1,
+      "slow_on_hit_pct": 0.125,
+      "hp_pct": 0.02
+    },
+    "awakening": {
+      "threshold": 24,
+      "stat_bonuses": {
+        "matk_pct": 0.05,
+        "freeze_on_skill_chance": 0.1
+      },
+      "desc_vi": "Hàn Băng Phong Ấn — công pháp có cơ hội đóng băng đối thủ."
+    },
+    "description_vi": "Tinh huyết của Băng Lang nơi Thập Vạn Đại Sơn. Chú nhập để hàn khí làm chậm bước chân kẻ địch."
+  },
+  {
+    "key": "VitalEssLoiHau",
+    "vi": "Tinh Huyết Lôi Hầu",
+    "en": "Thunder Ape Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "loi_hau",
+    "essence_tier": "magic",
+    "archetype": "linh_phap",
+    "element": "loi",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "crit_rating": 138,
+      "shock_on_hit_pct": 0.125,
+      "hp_pct": 0.02
+    },
+    "awakening": {
+      "threshold": 24,
+      "stat_bonuses": {
+        "shock_on_hit_pct": 0.125,
+        "crit_dmg_rating": 150
+      },
+      "desc_vi": "Tử Điện Xuyên Tâm — điện giật dày hơn, bạo kích nặng hơn."
+    },
+    "description_vi": "Tinh huyết của Lôi Hầu nơi Thập Vạn Đại Sơn. Chú nhập để đòn đánh tích tụ điện quang tê dại."
+  },
+  {
+    "key": "VitalEssThachTe",
+    "vi": "Tinh Huyết Thạch Tê",
+    "en": "Stone Rhino Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "thach_te",
+    "essence_tier": "magic",
+    "archetype": "cuong_the",
+    "element": "tho",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "def_bonus": 112,
+      "hp_pct": 0.095
+    },
+    "awakening": {
+      "threshold": 24,
+      "stat_bonuses": {
+        "stun_on_hit_pct": 0.1,
+        "def_bonus": 75
+      },
+      "desc_vi": "Tê Giáp Chấn Địa — đòn đánh có cơ hội choáng kẻ địch."
+    },
+    "description_vi": "Tinh huyết của Thạch Tê nơi Thập Vạn Đại Sơn. Chú nhập để da thịt rắn như cự nham."
+  },
+  {
+    "key": "VitalEssHuyetBuc",
+    "vi": "Tinh Huyết Huyết Bức",
+    "en": "Blood Bat Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "huyet_buc",
+    "essence_tier": "magic",
+    "archetype": "tan_tiet",
+    "element": "am",
+    "grade": 2,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "life_steal_pct": 0.05,
+      "spd_bonus": 2,
+      "hp_pct": 0.02
+    },
+    "awakening": {
+      "threshold": 24,
+      "stat_bonuses": {
+        "life_steal_pct": 0.05,
+        "hp_regen_pct": 0.025
+      },
+      "desc_vi": "Huyết Dạ Trùng Sinh — hút máu mạnh hơn, huyết khí tự hồi."
+    },
+    "description_vi": "Tinh huyết của Huyết Bức nơi Thập Vạn Đại Sơn. Chú nhập để mỗi đòn đánh hút một phần huyết khí."
+  },
+  {
+    "key": "VitalEssKimCangVien",
+    "vi": "Tinh Huyết Kim Cang Viên",
+    "en": "Vajra Ape Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "kim_cang_vien",
+    "essence_tier": "rare",
+    "archetype": "cuong_luc",
+    "element": "kim",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "atk_pct": 0.15,
+      "crit_rating": 175,
+      "hp_pct": 0.025
+    },
+    "awakening": {
+      "threshold": 18,
+      "stat_bonuses": {
+        "multi_strike_pct": 0.15,
+        "atk_pct": 0.05
+      },
+      "desc_vi": "Kim Cang Liên Kích — có cơ hội tung đòn đánh bồi."
+    },
+    "description_vi": "Tinh huyết của Kim Cang Viên nơi Thập Vạn Đại Sơn. Chú nhập để nắm đấm mang sức mạnh kim cang bất hoại."
+  },
+  {
+    "key": "VitalEssPhongMaDieu",
+    "vi": "Tinh Huyết Phong Ma Điểu",
+    "en": "Storm Demon Bird Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "phong_ma_dieu",
+    "essence_tier": "rare",
+    "archetype": "tan_tiet",
+    "element": "phong",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "evasion_rating": 200,
+      "spd_bonus": 5,
+      "hp_pct": 0.025
+    },
+    "awakening": {
+      "threshold": 18,
+      "stat_bonuses": {
+        "mark_on_hit_pct": 0.15,
+        "damage_bonus_from_evasion_pct": 0.03
+      },
+      "desc_vi": "Phong Ấn Truy Sát — đòn đánh in dấu phong ấn lên con mồi."
+    },
+    "description_vi": "Tinh huyết của Phong Ma Điểu nơi Thập Vạn Đại Sơn. Chú nhập để thân pháp nhanh như cuồng phong."
+  },
+  {
+    "key": "VitalEssNgoCong",
+    "vi": "Tinh Huyết U Minh Ngô Công",
+    "en": "Nether Centipede Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "u_minh_ngo_cong",
+    "essence_tier": "rare",
+    "archetype": "am_doc",
+    "element": "moc",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "poison_on_hit_pct": 0.175,
+      "dot_dmg_bonus_by_kind": {
+        "poison": 0.25
+      },
+      "hp_pct": 0.025
+    },
+    "awakening": {
+      "threshold": 18,
+      "stat_bonuses": {
+        "dot_per_stack_pct_bonus": {
+          "poison": 0.05
+        },
+        "dot_leech_pct": 0.075
+      },
+      "desc_vi": "Vạn Độc Phệ Tâm — mỗi tầng độc cắn sâu hơn, hút sinh lực về."
+    },
+    "description_vi": "Tinh huyết của U Minh Ngô Công nơi Thập Vạn Đại Sơn. Chú nhập để kịch độc u minh ăn mòn kẻ địch."
+  },
+  {
+    "key": "VitalEssNganGiacLoc",
+    "vi": "Tinh Huyết Ngân Giác Lộc",
+    "en": "Silver-Antler Deer Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "ngan_giac_loc",
+    "essence_tier": "rare",
+    "archetype": "thanh_linh",
+    "element": "quang",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "heal_pct": 0.1,
+      "mp_regen_pct": 0.0375,
+      "hp_pct": 0.025
+    },
+    "awakening": {
+      "threshold": 18,
+      "stat_bonuses": {
+        "overheal_to_shield_pct": 0.5,
+        "shield_max_flat": 625,
+        "heal_can_crit": true,
+        "cleanse_on_turn_pct": 0.125
+      },
+      "desc_vi": "Lộc Linh — hồi phục có thể bạo kích; phần hồi dư ngưng tụ thành lá chắn thụy quang."
+    },
+    "description_vi": "Tinh huyết của Ngân Giác Lộc nơi Thập Vạn Đại Sơn. Chú nhập để linh quang thánh khiết nuôi dưỡng cơ thể."
+  },
+  {
+    "key": "VitalEssLoiDinhNgac",
+    "vi": "Tinh Huyết Lôi Đình Ngạc",
+    "en": "Thunder Crocodile Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "loi_dinh_ngac",
+    "essence_tier": "rare",
+    "archetype": "linh_phap",
+    "element": "loi",
+    "grade": 3,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "matk_pct": 0.125,
+      "shock_on_hit_pct": 0.15,
+      "hp_pct": 0.025
+    },
+    "awakening": {
+      "threshold": 18,
+      "stat_bonuses": {
+        "paralysis_on_crit": true,
+        "shock_on_hit_pct": 0.1
+      },
+      "desc_vi": "Lôi Ngục Toái Giáp — bạo kích làm tê liệt kẻ địch."
+    },
+    "description_vi": "Tinh huyết của Lôi Đình Ngạc nơi Thập Vạn Đại Sơn. Chú nhập để hàm răng mang sấm sét nghiền nát giáp trụ."
+  },
+  {
+    "key": "VitalEssThaoThiet",
+    "vi": "Tinh Huyết Thao Thiết",
+    "en": "Taotie Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "thao_thiet",
+    "essence_tier": "legendary",
+    "archetype": "cuong_the",
+    "element": "tho",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "hp_pct": 0.23,
+      "life_steal_pct": 0.05
+    },
+    "awakening": {
+      "threshold": 12,
+      "stat_bonuses": {
+        "damage_bonus_from_hp_pct": 0.04,
+        "hp_pct": 0.075
+      },
+      "desc_vi": "Thôn Phệ Vạn Vật — huyết khí càng dày, sát thương càng nặng.",
+      "granted_skill": "VitalSkill_ThonPhe"
+    },
+    "description_vi": "Tinh huyết của Thao Thiết nơi Thập Vạn Đại Sơn. Chú nhập để cơn đói vô tận chuyển hóa thành huyết khí."
+  },
+  {
+    "key": "VitalEssCungKy",
+    "vi": "Tinh Huyết Cùng Kỳ",
+    "en": "Qiongqi Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "cung_ky",
+    "essence_tier": "legendary",
+    "archetype": "cuong_luc",
+    "element": "kim",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "atk_pct": 0.25,
+      "crit_dmg_rating": 375,
+      "hp_pct": 0.03
+    },
+    "awakening": {
+      "threshold": 12,
+      "stat_bonuses": {
+        "bleed_on_hit_pct": 0.2,
+        "crit_rating": 150
+      },
+      "desc_vi": "Cùng Kỳ Liệt Trảo — đòn đánh xé rách da thịt gây chảy máu.",
+      "granted_skill": "VitalSkill_CungKyLietPhong"
+    },
+    "description_vi": "Tinh huyết của Cùng Kỳ nơi Thập Vạn Đại Sơn. Chú nhập để móng vuốt hung thú xé toạc mọi phòng tuyến."
+  },
+  {
+    "key": "VitalEssDaoNgot",
+    "vi": "Tinh Huyết Đào Ngột",
+    "en": "Taowu Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "dao_ngot",
+    "essence_tier": "legendary",
+    "archetype": "am_doc",
+    "element": "am",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "matk_pct": 0.25,
+      "soul_drain_on_hit_pct": 0.1,
+      "hp_pct": 0.03
+    },
+    "awakening": {
+      "threshold": 12,
+      "stat_bonuses": {
+        "stat_steal_on_hit_pct": 0.1,
+        "matk_pct": 0.05
+      },
+      "desc_vi": "Đào Ngột Đoạt Phách — cướp đoạt sức mạnh đối thủ qua từng đòn.",
+      "granted_skill": "VitalSkill_DaoNgotMaDiem"
+    },
+    "description_vi": "Tinh huyết của Đào Ngột nơi Thập Vạn Đại Sơn. Chú nhập để ma niệm cổ xưa gặm nhấm hồn phách kẻ địch."
+  },
+  {
+    "key": "VitalEssTatPhuong",
+    "vi": "Tinh Huyết Tất Phương",
+    "en": "Bifang Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "tat_phuong",
+    "essence_tier": "legendary",
+    "archetype": "am_doc",
+    "element": "hoa",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "element_dmg_bonus": {
+        "hoa": 0.15
+      },
+      "burn_on_hit_pct": 0.175,
+      "hp_pct": 0.03
+    },
+    "awakening": {
+      "threshold": 12,
+      "stat_bonuses": {
+        "dot_can_crit": true,
+        "dot_dmg_bonus_by_kind": {
+          "burn": 0.2
+        }
+      },
+      "desc_vi": "Tất Phương Phần Thiên — thiêu đốt có thể bạo kích.",
+      "granted_skill": "VitalSkill_TatPhuongPhanDuc"
+    },
+    "description_vi": "Tinh huyết của Tất Phương nơi Thập Vạn Đại Sơn. Chú nhập để ngọn lửa độc cước thiêu rụi vạn vật."
+  },
+  {
+    "key": "VitalEssCuuAnh",
+    "vi": "Tinh Huyết Cửu Anh",
+    "en": "Jiuying Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "cuu_anh",
+    "essence_tier": "legendary",
+    "archetype": "linh_phap",
+    "element": "thuy",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "matk_pct": 0.175,
+      "mp_regen_pct": 0.05,
+      "hp_pct": 0.03
+    },
+    "awakening": {
+      "threshold": 12,
+      "stat_bonuses": {
+        "mp_leech_pct": 0.1,
+        "damage_bonus_from_mp_pct": 0.01
+      },
+      "desc_vi": "Cửu Anh Hồng Lưu — linh lực càng đầy, sóng dữ càng mạnh.",
+      "granted_skill": "VitalSkill_CuuAnhHongLuu"
+    },
+    "description_vi": "Tinh huyết của Cửu Anh nơi Thập Vạn Đại Sơn. Chú nhập để chín đầu thủy quái cuộn trào pháp lực."
+  },
+  {
+    "key": "VitalEssChanLong",
+    "vi": "Long Huyết Chân Long",
+    "en": "True Dragon Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "chan_long",
+    "essence_tier": "mythic",
+    "archetype": "cuong_luc",
+    "element": "loi",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "atk_pct": 0.125,
+      "matk_pct": 0.125,
+      "true_dmg_pct": 0.03,
+      "final_dmg_bonus": 0.02,
+      "accuracy_rating": 88,
+      "crit_res_rating": 62,
+      "hp_pct": 0.05
+    },
+    "awakening": {
+      "threshold": 8,
+      "stat_bonuses": {
+        "final_dmg_bonus": 0.02,
+        "atk_pct": 0.05,
+        "matk_pct": 0.05,
+        "element_dmg_bonus": {
+          "loi": 0.075
+        },
+        "hp_pct": 0.05
+      },
+      "desc_vi": "Long Tức Phần Thiên — hô hấp của Chân Long thức tỉnh trong huyết mạch.",
+      "granted_skill": "VitalSkill_LongTucPhanThien"
+    },
+    "description_vi": "Một giọt long huyết của Chân Long. Bí thuật **Long Uy**: công pháp song tu, mỗi đòn mang theo chân thương xuyên thấu mọi phòng ngự."
+  },
+  {
+    "key": "VitalEssPhuongHoang",
+    "vi": "Tinh Huyết Phượng Hoàng",
+    "en": "Phoenix Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "phuong_hoang",
+    "essence_tier": "mythic",
+    "archetype": "thanh_linh",
+    "element": "hoa",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "phoenix_revive_pct": 0.35,
+      "phoenix_revive_buff_pct": 0.1,
+      "element_dmg_bonus": {
+        "hoa": 0.0875
+      },
+      "hp_regen_pct": 0.0375,
+      "accuracy_rating": 88,
+      "crit_res_rating": 62,
+      "hp_pct": 0.05
+    },
+    "awakening": {
+      "threshold": 8,
+      "stat_bonuses": {
+        "phoenix_revive_buff_pct": 0.1,
+        "hp_regen_pct": 0.0375,
+        "element_dmg_bonus": {
+          "hoa": 0.0375
+        },
+        "hp_pct": 0.05
+      },
+      "desc_vi": "Phượng Vũ Cửu Thiên — lửa niết bàn nung nóng từng bộ vị.",
+      "granted_skill": "VitalSkill_PhuongVuCuuThien"
+    },
+    "description_vi": "Tinh huyết bất diệt của Phượng Hoàng. Bí thuật **Niết Bàn Trùng Sinh**: một lần mỗi trận, chết đi sống lại trong biển lửa."
+  },
+  {
+    "key": "VitalEssKyLan",
+    "vi": "Tinh Huyết Kỳ Lân",
+    "en": "Qilin Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "ky_lan",
+    "essence_tier": "mythic",
+    "archetype": "thanh_linh",
+    "element": "quang",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "heal_pct": 0.175,
+      "cleanse_on_turn_pct": 0.15,
+      "res_all": 0.0625,
+      "loot_luck_bonus": 0.05,
+      "accuracy_rating": 88,
+      "crit_res_rating": 62,
+      "hp_pct": 0.05
+    },
+    "awakening": {
+      "threshold": 8,
+      "stat_bonuses": {
+        "barrier_on_cleanse": true,
+        "heal_pct": 0.15,
+        "res_all": 0.025,
+        "damage_from_heal_pct": 0.1,
+        "cleanse_retaliate_dmg_pct": 0.12,
+        "hp_pct": 0.05
+      },
+      "desc_vi": "Kỳ Lân Thụy Quang — mỗi lần thanh tẩy sinh ra kết giới hộ thân.",
+      "granted_skill": "VitalSkill_KyLanThuyQuang"
+    },
+    "description_vi": "Tinh huyết thánh khiết của Kỳ Lân. Bí thuật **Thánh Quang Tẩy Lễ**: thanh tẩy tà khí mỗi lượt, vận may theo chân thánh thú."
+  },
+  {
+    "key": "VitalEssHuyenVu",
+    "vi": "Tinh Huyết Huyền Vũ",
+    "en": "Black Tortoise Vital Essence",
+    "type": "vital_essence",
+    "essence_key": "huyen_vu",
+    "essence_tier": "mythic",
+    "archetype": "cuong_the",
+    "element": "thuy",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "stat_bonuses": {
+      "shield_max_pct": 0.225,
+      "reflect_pct": 0.03,
+      "final_dmg_reduce": 0.015,
+      "accuracy_rating": 88,
+      "crit_res_rating": 62,
+      "hp_pct": 0.05
+    },
+    "awakening": {
+      "threshold": 8,
+      "stat_bonuses": {
+        "reflect_pct": 0.03,
+        "shield_regen_pct": 0.075,
+        "bonus_base_dmg_per_self_def_pct": 0.05,
+        "bonus_base_dmg_per_self_shield_pct": 0.04,
+        "hp_pct": 0.05
+      },
+      "desc_vi": "Huyền Vũ Trấn Hải — lá chắn tự tái sinh; phòng ngự và lá chắn chính là vũ khí (cộng sát thương theo DEF/khiên).",
+      "granted_skill": "VitalSkill_HuyenVuTranHai"
+    },
+    "description_vi": "Tinh huyết trấn hải của Huyền Vũ. Bí thuật **Huyền Giáp Hộ Thân**: lá chắn thần quy phản chấn mọi đòn tấn công."
+  }
+]

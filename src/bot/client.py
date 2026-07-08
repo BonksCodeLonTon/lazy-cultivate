@@ -28,6 +28,7 @@ COGS = [
     "src.bot.cogs.recycle",
     "src.bot.cogs.alchemy",
     "src.bot.cogs.linh_can",
+    "src.bot.cogs.the_tu",
     "src.bot.cogs.handbook",
     "src.bot.cogs.arena",
     "src.bot.cogs.admin",

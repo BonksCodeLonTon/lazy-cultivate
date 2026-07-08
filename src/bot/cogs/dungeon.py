@@ -55,6 +55,7 @@ _CONSTITUTION_DUNGEON_GRADE: dict[str, str] = {
     "linh_can": "elite",
     "the_chat": "boss",
     "cam_dia": "boss",
+    "thap_van_dai_son": "normal",
 }
 
 
@@ -138,6 +139,18 @@ _DUNGEON_TYPE_META: dict[str, dict[str, Any]] = {
         ),
         "color": 0x1A1A1A,
     },
+    "thap_van_dai_son": {
+        "title": "🏔️ Thập Vạn Đại Sơn",
+        "intro": (
+            "Sơn mạch vạn dặm nơi hung thú và **thần thú thượng cổ** tranh "
+            "hùng. Yêu thú tại đây rớt **Tinh Huyết** theo chủng loài — "
+            "nguyên liệu để Thể Tu chú nhập **Bộ Vị Cơ Thể** (dùng lệnh "
+            "`/thetu`). Thần thú (Chân Long, Phượng Hoàng, Kỳ Lân, Huyền Vũ) "
+            "xuất hiện từ khu Thâm Sơn trở đi, rớt Tinh Huyết thần thú "
+            "cực hiếm mang theo bí thuật."
+        ),
+        "color": 0x8B4513,
+    },
 }
 
 
@@ -164,7 +177,9 @@ def _dungeon_type_embed() -> discord.Embed:
         "🌌 **Linh Căn Bí Cảnh** — 9 mạch linh khí theo nguyên tố, rớt nguyên liệu khai mở "
         "& nâng cấp **Linh Căn** (giảm tỉ lệ ở cảnh giới cao).\n"
         "🌑 **Cấm Địa** — Boss Chí Tôn từ danh sách đặc biệt. Một trận sinh tử, "
-        "phần thưởng cực hậu hĩnh.",
+        "phần thưởng cực hậu hĩnh.\n"
+        "🏔️ **Thập Vạn Đại Sơn** — Vạn thú sơn mạch, rớt **Tinh Huyết** để Thể Tu "
+        "chú nhập Bộ Vị Cơ Thể. Thần thú thượng cổ trấn giữ tầng sâu.",
         color=0x7B2D8B,
     )
 
@@ -1058,6 +1073,7 @@ class DungeonSelect(discord.ui.Select):
             "duoc_vien": "🌿 Chọn Dược Viên...",
             "the_chat":  "🧬 Chọn Thần Cốt Địa...",
             "linh_can":  "🌌 Chọn Linh Mạch...",
+            "thap_van_dai_son": "🏔️ Chọn Sơn Khu...",
         }.get(dungeon_type, "⚔️ Chọn Bí Cảnh...")
         if not options:
             options = [discord.SelectOption(label="(Không có)", value="__none__")]
@@ -1168,6 +1184,12 @@ class DungeonTypeSelectView(discord.ui.View):
         cam_dia_btn.callback = self._pick_cam_dia
         self.add_item(cam_dia_btn)
 
+        tvds_btn = discord.ui.Button(
+            label="🏔️ Thập Vạn Đại Sơn", style=discord.ButtonStyle.primary, row=1,
+        )
+        tvds_btn.callback = self._pick_thap_van_dai_son
+        self.add_item(tvds_btn)
+
         if back_fn:
             back_btn = discord.ui.Button(
                 label="◀ Trở về", style=discord.ButtonStyle.secondary, row=2,
@@ -1203,6 +1225,9 @@ class DungeonTypeSelectView(discord.ui.View):
 
     async def _pick_cam_dia(self, interaction: discord.Interaction) -> None:
         await self._open_list(interaction, "cam_dia")
+
+    async def _pick_thap_van_dai_son(self, interaction: discord.Interaction) -> None:
+        await self._open_list(interaction, "thap_van_dai_son")
 
     async def _back_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):

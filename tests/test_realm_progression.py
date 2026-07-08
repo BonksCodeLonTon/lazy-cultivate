@@ -209,6 +209,10 @@ def _top_enemy_of_realm(realm_level: int) -> dict:
         # NOT random realm encounters, so they don't belong in this generalist
         # realm-progression band.
         and not e["key"].startswith("cons_trial")
+        # Thập Vạn Đại Sơn beasts (Beast*) are themed farm-dungeon mobs
+        # behind their own entry gate — vital-essence piñatas, not the
+        # realm's apex encounter. Same reasoning as ApexDaoCot / LC.
+        and not e["key"].startswith("Beast")
         # Mechanic-gated specials (Chung Yên's Thập Nhật phase, etc.) —
         # any boss carrying ``phase_lock`` has a kill-or-die window that
         # demands specific burst tactics; not a fair "generic max player"

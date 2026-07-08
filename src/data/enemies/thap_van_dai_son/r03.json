@@ -1,0 +1,122 @@
+[
+  {
+    "key": "BeastHoaBao_R3",
+    "vi": "Liệt Diệm Hỏa Báo",
+    "en": "Blazing Flame Leopard",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "hoa",
+    "beast_type": "hung_thu",
+    "base_hp": 1760,
+    "base_atk": 72,
+    "base_matk": 44,
+    "base_def": 50,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.05,
+    "base_res": {
+      "hoa": 0.03
+    },
+    "skill_keys": [
+      "EnemyHoa_T2",
+      "EnemyKim_T2"
+    ],
+    "loot_table_key": "LootTVDS_hoa_bao_R3"
+  },
+  {
+    "key": "BeastBangLang_R3",
+    "vi": "Hàn Sương Băng Lang",
+    "en": "Rime Frost Wolf",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "thuy",
+    "beast_type": "hung_thu",
+    "base_hp": 1850,
+    "base_atk": 41,
+    "base_matk": 69,
+    "base_def": 52,
+    "base_spd": 12,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.05,
+    "base_res": {
+      "thuy": 0.03
+    },
+    "skill_keys": [
+      "EnemyThuy_T2",
+      "EnemyPhong_T2"
+    ],
+    "loot_table_key": "LootTVDS_bang_lang_R3"
+  },
+  {
+    "key": "BeastLoiHau_R3",
+    "vi": "Tử Điện Lôi Hầu",
+    "en": "Violet Lightning Thunder Ape",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "loi",
+    "beast_type": "hung_thu",
+    "base_hp": 1850,
+    "base_atk": 69,
+    "base_matk": 52,
+    "base_def": 50,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.05,
+    "base_res": {
+      "loi": 0.03
+    },
+    "skill_keys": [
+      "EnemyLoi_T2",
+      "EnemyPhong_T2"
+    ],
+    "loot_table_key": "LootTVDS_loi_hau_R3"
+  },
+  {
+    "key": "BeastThachTe_R3",
+    "vi": "Cự Giáp Thạch Tê",
+    "en": "Great Shell Stone Rhino",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "tho",
+    "beast_type": "hung_thu",
+    "base_hp": 2630,
+    "base_atk": 50,
+    "base_matk": 28,
+    "base_def": 80,
+    "base_spd": 9,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.05,
+    "base_res": {
+      "tho": 0.03
+    },
+    "skill_keys": [
+      "EnemyTho_T2",
+      "EnemyKim_T2"
+    ],
+    "loot_table_key": "LootTVDS_thach_te_R3"
+  },
+  {
+    "key": "BeastHuyetBuc_R3",
+    "vi": "U Dạ Huyết Bức",
+    "en": "Night Blood Bat",
+    "rank": "tinh_anh",
+    "realm_level": 3,
+    "element": "am",
+    "beast_type": "hung_thu",
+    "base_hp": 1660,
+    "base_atk": 58,
+    "base_matk": 58,
+    "base_def": 47,
+    "base_spd": 14,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.05,
+    "base_res": {
+      "am": 0.03
+    },
+    "skill_keys": [
+      "EnemyAm_T2",
+      "EnemyMoc_T2"
+    ],
+    "loot_table_key": "LootTVDS_huyet_buc_R3"
+  }
+]

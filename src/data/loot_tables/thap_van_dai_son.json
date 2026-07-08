@@ -1,0 +1,378 @@
+{
+  "LootTVDS_manh_ho_R1": [
+    {
+      "item_key": "VitalEssManhHo",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootTVDS_thiet_quy_R1": [
+    {
+      "item_key": "VitalEssThietQuy",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootTVDS_phi_ung_R1": [
+    {
+      "item_key": "VitalEssPhiUng",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootTVDS_doc_xa_R1": [
+    {
+      "item_key": "VitalEssDocXa",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootTVDS_linh_ho_R1": [
+    {
+      "item_key": "VitalEssLinhHo",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootTVDS_hoa_bao_R3": [
+    {
+      "item_key": "VitalEssHoaBao",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootTVDS_bang_lang_R3": [
+    {
+      "item_key": "VitalEssBangLang",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootTVDS_loi_hau_R3": [
+    {
+      "item_key": "VitalEssLoiHau",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootTVDS_thach_te_R3": [
+    {
+      "item_key": "VitalEssThachTe",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootTVDS_huyet_buc_R3": [
+    {
+      "item_key": "VitalEssHuyetBuc",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 1
+    }
+  ],
+  "LootTVDS_kim_cang_vien_R5": [
+    {
+      "item_key": "VitalEssKimCangVien",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootTVDS_phong_ma_dieu_R5": [
+    {
+      "item_key": "VitalEssPhongMaDieu",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootTVDS_u_minh_ngo_cong_R5": [
+    {
+      "item_key": "VitalEssNgoCong",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootTVDS_ngan_giac_loc_R5": [
+    {
+      "item_key": "VitalEssNganGiacLoc",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootTVDS_loi_dinh_ngac_R5": [
+    {
+      "item_key": "VitalEssLoiDinhNgac",
+      "weight": 150000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootTVDS_thao_thiet_R7": [
+    {
+      "item_key": "VitalEssThaoThiet",
+      "weight": 15000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootTVDS_thao_thiet_R9": [
+    {
+      "item_key": "VitalEssThaoThiet",
+      "weight": 15000,
+      "qty_min": 1,
+      "qty_max": 3
+    }
+  ],
+  "LootTVDS_cung_ky_R7": [
+    {
+      "item_key": "VitalEssCungKy",
+      "weight": 15000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootTVDS_cung_ky_R9": [
+    {
+      "item_key": "VitalEssCungKy",
+      "weight": 15000,
+      "qty_min": 1,
+      "qty_max": 3
+    }
+  ],
+  "LootTVDS_dao_ngot_R7": [
+    {
+      "item_key": "VitalEssDaoNgot",
+      "weight": 15000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootTVDS_dao_ngot_R9": [
+    {
+      "item_key": "VitalEssDaoNgot",
+      "weight": 15000,
+      "qty_min": 1,
+      "qty_max": 3
+    }
+  ],
+  "LootTVDS_tat_phuong_R7": [
+    {
+      "item_key": "VitalEssTatPhuong",
+      "weight": 15000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootTVDS_tat_phuong_R9": [
+    {
+      "item_key": "VitalEssTatPhuong",
+      "weight": 15000,
+      "qty_min": 1,
+      "qty_max": 3
+    }
+  ],
+  "LootTVDS_cuu_anh_R7": [
+    {
+      "item_key": "VitalEssCuuAnh",
+      "weight": 15000,
+      "qty_min": 1,
+      "qty_max": 2
+    }
+  ],
+  "LootTVDS_cuu_anh_R9": [
+    {
+      "item_key": "VitalEssCuuAnh",
+      "weight": 15000,
+      "qty_min": 1,
+      "qty_max": 3
+    }
+  ],
+  "LootTVDS_chan_long_R5": [
+    {
+      "item_key": "VitalEssChanLong",
+      "weight": 2000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "VitalEssKimCangVien",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "chan_long_fallback"
+    },
+    {
+      "item_key": "VitalEssPhongMaDieu",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "chan_long_fallback"
+    }
+  ],
+  "LootTVDS_chan_long_R9": [
+    {
+      "item_key": "VitalEssChanLong",
+      "weight": 5000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "VitalEssCungKy",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 3,
+      "pool_id": "chan_long_fallback"
+    },
+    {
+      "item_key": "VitalEssCuuAnh",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 3,
+      "pool_id": "chan_long_fallback"
+    }
+  ],
+  "LootTVDS_phuong_hoang_R5": [
+    {
+      "item_key": "VitalEssPhuongHoang",
+      "weight": 2000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "VitalEssNganGiacLoc",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "phuong_hoang_fallback"
+    },
+    {
+      "item_key": "VitalEssLoiDinhNgac",
+      "weight": 120000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "phuong_hoang_fallback"
+    }
+  ],
+  "LootTVDS_phuong_hoang_R9": [
+    {
+      "item_key": "VitalEssPhuongHoang",
+      "weight": 5000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "VitalEssTatPhuong",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 3,
+      "pool_id": "phuong_hoang_fallback"
+    },
+    {
+      "item_key": "VitalEssCungKy",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 3,
+      "pool_id": "phuong_hoang_fallback"
+    }
+  ],
+  "LootTVDS_ky_lan_R7": [
+    {
+      "item_key": "VitalEssKyLan",
+      "weight": 3500,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "VitalEssTatPhuong",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "ky_lan_fallback"
+    },
+    {
+      "item_key": "VitalEssThaoThiet",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "ky_lan_fallback"
+    }
+  ],
+  "LootTVDS_ky_lan_R9": [
+    {
+      "item_key": "VitalEssKyLan",
+      "weight": 5000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "VitalEssTatPhuong",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 3,
+      "pool_id": "ky_lan_fallback"
+    },
+    {
+      "item_key": "VitalEssThaoThiet",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 3,
+      "pool_id": "ky_lan_fallback"
+    }
+  ],
+  "LootTVDS_huyen_vu_R7": [
+    {
+      "item_key": "VitalEssHuyenVu",
+      "weight": 3500,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "VitalEssCuuAnh",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "huyen_vu_fallback"
+    },
+    {
+      "item_key": "VitalEssDaoNgot",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 2,
+      "pool_id": "huyen_vu_fallback"
+    }
+  ],
+  "LootTVDS_huyen_vu_R9": [
+    {
+      "item_key": "VitalEssHuyenVu",
+      "weight": 5000,
+      "qty_min": 1,
+      "qty_max": 1
+    },
+    {
+      "item_key": "VitalEssCuuAnh",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 3,
+      "pool_id": "huyen_vu_fallback"
+    },
+    {
+      "item_key": "VitalEssDaoNgot",
+      "weight": 12000,
+      "qty_min": 1,
+      "qty_max": 3,
+      "pool_id": "huyen_vu_fallback"
+    }
+  ]
+}

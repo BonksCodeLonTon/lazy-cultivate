@@ -75,6 +75,14 @@ class Player(Base, TimestampMixin):
     # ``pill_buffs.parse_counts`` / ``pill_buffs.encode_counts``.
     pill_buff_counts: Mapped[str] = mapped_column(String(512), default="{}", nullable=False)
 
+    # ── Bách Thể Chú Linh — body-part infusions ─────────────────────────────
+    # JSON-encoded ``{part_key: essence_key}`` — one entry per infused body
+    # part (max 9). Parsed via ``body_parts.parse_infusions``; bonuses merge
+    # in ``compute_combat_stats`` while the player cultivates the body axis.
+    body_part_infusions: Mapped[str] = mapped_column(
+        String(512), default="{}", nullable=False
+    )
+
     # ── Alchemy UX state ─────────────────────────────────────────────────────
     # Last furnace the player picked in the recipe detail view. Used as the
     # default selection when the recipe view opens; falls back to the auto-

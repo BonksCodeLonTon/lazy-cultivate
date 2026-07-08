@@ -256,6 +256,12 @@ def _parse_pill_buff_counts(raw: str | None) -> dict[str, int]:
     return parse_counts(raw)
 
 
+def _parse_body_part_infusions(raw: str | None) -> dict[str, str]:
+    """Decode the JSON-encoded body_part_infusions column into a plain dict."""
+    from src.game.systems.body_parts import parse_infusions
+    return parse_infusions(raw)
+
+
 def _player_to_model(player: Player):
     """Convert ORM Player to game Character dataclass for stat computation."""
     from src.game.models.character import Character as CharModel
@@ -273,6 +279,7 @@ def _player_to_model(player: Player):
         formation_realm=player.formation_realm,
         formation_level=player.formation_level,
         constitution_type=player.constitution_type,
+        constitution_tracker=getattr(player, "constitution_tracker", "") or "",
         dao_ti_unlocked=player.dao_ti_unlocked,
         merit=player.merit,
         karma_accum=player.karma_accum,
@@ -280,6 +287,9 @@ def _player_to_model(player: Player):
         primordial_stones=player.primordial_stones,
         dan_doc=player.dan_doc,
         pill_buff_counts=_parse_pill_buff_counts(player.pill_buff_counts),
+        body_part_infusions=_parse_body_part_infusions(
+            getattr(player, "body_part_infusions", None)
+        ),
         hp_current=player.hp_current,
         mp_current=player.mp_current,
         shield_current=player.shield_current,

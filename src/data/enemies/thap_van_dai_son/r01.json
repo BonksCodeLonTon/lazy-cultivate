@@ -1,0 +1,122 @@
+[
+  {
+    "key": "BeastManhHo_R1",
+    "vi": "Xích Nha Hổ",
+    "en": "Red Fang Tiger",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "kim",
+    "beast_type": "hung_thu",
+    "base_hp": 320,
+    "base_atk": 22,
+    "base_matk": 9,
+    "base_def": 27,
+    "base_spd": 10,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.04,
+    "base_res": {
+      "kim": 0.03
+    },
+    "skill_keys": [
+      "EnemyKim_T1",
+      "EnemyLoi_T1"
+    ],
+    "loot_table_key": "LootTVDS_manh_ho_R1"
+  },
+  {
+    "key": "BeastThietQuy_R1",
+    "vi": "Thạch Giáp Quy",
+    "en": "Stone Shell Turtle",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "tho",
+    "beast_type": "hung_thu",
+    "base_hp": 420,
+    "base_atk": 11,
+    "base_matk": 10,
+    "base_def": 38,
+    "base_spd": 8,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.04,
+    "base_res": {
+      "tho": 0.03
+    },
+    "skill_keys": [
+      "EnemyTho_T1",
+      "EnemyThuy_T1"
+    ],
+    "loot_table_key": "LootTVDS_thiet_quy_R1"
+  },
+  {
+    "key": "BeastPhiUng_R1",
+    "vi": "Thanh Vũ Ưng",
+    "en": "Azure Feather Hawk",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "phong",
+    "beast_type": "hung_thu",
+    "base_hp": 270,
+    "base_atk": 18,
+    "base_matk": 14,
+    "base_def": 23,
+    "base_spd": 13,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.04,
+    "base_res": {
+      "phong": 0.03
+    },
+    "skill_keys": [
+      "EnemyPhong_T1",
+      "EnemyLoi_T1"
+    ],
+    "loot_table_key": "LootTVDS_phi_ung_R1"
+  },
+  {
+    "key": "BeastDocXa_R1",
+    "vi": "Thanh Lân Xà",
+    "en": "Green Scale Serpent",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "moc",
+    "beast_type": "hung_thu",
+    "base_hp": 300,
+    "base_atk": 14,
+    "base_matk": 18,
+    "base_def": 26,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.04,
+    "base_res": {
+      "moc": 0.03
+    },
+    "skill_keys": [
+      "EnemyMoc_T1",
+      "EnemyAm_T1"
+    ],
+    "loot_table_key": "LootTVDS_doc_xa_R1"
+  },
+  {
+    "key": "BeastLinhHo_R1",
+    "vi": "Hôi Vĩ Linh Hồ",
+    "en": "Grey-Tail Spirit Fox",
+    "rank": "pho_thong",
+    "realm_level": 1,
+    "element": "am",
+    "beast_type": "hung_thu",
+    "base_hp": 290,
+    "base_atk": 10,
+    "base_matk": 22,
+    "base_def": 24,
+    "base_spd": 11,
+    "hp_scale": 1.5,
+    "mp_regen_pct": 0.04,
+    "base_res": {
+      "am": 0.03
+    },
+    "skill_keys": [
+      "EnemyAm_T1",
+      "EnemyQuang_T1"
+    ],
+    "loot_table_key": "LootTVDS_linh_ho_R1"
+  }
+]

@@ -64,6 +64,9 @@ class Character:
 
     # Constitution
     constitution_type: str = "ConstitutionPhamThe"  # Phàm Thể default (mortal baseline)
+    # Comma-separated unlock history (mirrors Player.constitution_tracker) —
+    # read by Thôn Thiên Ma Thể's L3 devour-copy to pick a donor body.
+    constitution_tracker: str = ""
     dao_ti_unlocked: bool = False  # True once Nhập Thánh Cấp 9 breakthrough done
 
     # Currencies
@@ -120,6 +123,11 @@ class Character:
     # only populated (inside an active session) when the feature is enabled, so
     # the dormant path stays allocation-free and byte-identical.
     constitution_levels: dict[str, int] = field(default_factory=dict)
+
+    # Bách Thể Chú Linh — body-part infusions {part_key: essence_key}.
+    # Parsed from ``Player.body_part_infusions`` (JSON column). Bonuses only
+    # apply while ``active_axis == "body"`` — see ``systems/body_parts.py``.
+    body_part_infusions: dict[str, str] = field(default_factory=dict)
 
     # HP/MP/shield current (session state — persisted on the Player row)
     hp_current: int = 0

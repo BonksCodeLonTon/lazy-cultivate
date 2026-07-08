@@ -1,0 +1,172 @@
+[
+  {
+    "key": "BeastThaoThiet_R7",
+    "vi": "Thao Thiết Hung Thú",
+    "en": "Taotie Fiend",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "tho",
+    "beast_type": "hung_thu",
+    "base_hp": 6440,
+    "base_atk": 209,
+    "base_matk": 120,
+    "base_def": 144,
+    "base_spd": 12,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.07,
+    "base_res": {
+      "tho": 0.03
+    },
+    "skill_keys": [
+      "EnemyTho_T3",
+      "EnemyAm_T3"
+    ],
+    "loot_table_key": "LootTVDS_thao_thiet_R7"
+  },
+  {
+    "key": "BeastCungKy_R7",
+    "vi": "Cùng Kỳ Hung Thú",
+    "en": "Qiongqi Fiend",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "kim",
+    "beast_type": "hung_thu",
+    "base_hp": 4600,
+    "base_atk": 266,
+    "base_matk": 105,
+    "base_def": 120,
+    "base_spd": 14,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.07,
+    "base_res": {
+      "kim": 0.03
+    },
+    "skill_keys": [
+      "EnemyKim_T3",
+      "EnemyPhong_T3"
+    ],
+    "loot_table_key": "LootTVDS_cung_ky_R7"
+  },
+  {
+    "key": "BeastDaoNgot_R7",
+    "vi": "Đào Ngột Hung Thú",
+    "en": "Taowu Fiend",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "am",
+    "beast_type": "hung_thu",
+    "base_hp": 4830,
+    "base_atk": 142,
+    "base_matk": 202,
+    "base_def": 126,
+    "base_spd": 13,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.07,
+    "base_res": {
+      "am": 0.03
+    },
+    "skill_keys": [
+      "EnemyAm_T3",
+      "EnemyTho_T3"
+    ],
+    "loot_table_key": "LootTVDS_dao_ngot_R7"
+  },
+  {
+    "key": "BeastTatPhuong_R7",
+    "vi": "Tất Phương Thần Điểu",
+    "en": "Bifang Divine Bird",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "hoa",
+    "beast_type": "hung_thu",
+    "base_hp": 4140,
+    "base_atk": 180,
+    "base_matk": 202,
+    "base_def": 108,
+    "base_spd": 15,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.07,
+    "base_res": {
+      "hoa": 0.03
+    },
+    "skill_keys": [
+      "EnemyHoa_T3",
+      "EnemyLoi_T3"
+    ],
+    "loot_table_key": "LootTVDS_tat_phuong_R7"
+  },
+  {
+    "key": "BeastCuuAnh_R7",
+    "vi": "Cửu Anh Thủy Quái",
+    "en": "Jiuying Water Fiend",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "thuy",
+    "beast_type": "hung_thu",
+    "base_hp": 5290,
+    "base_atk": 152,
+    "base_matk": 195,
+    "base_def": 132,
+    "base_spd": 13,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.07,
+    "base_res": {
+      "thuy": 0.03
+    },
+    "skill_keys": [
+      "EnemyThuy_T3",
+      "EnemyAm_T3"
+    ],
+    "loot_table_key": "LootTVDS_cuu_anh_R7"
+  },
+  {
+    "key": "BeastKyLan_R7",
+    "vi": "Thụy Quang Kỳ Lân",
+    "en": "Auspicious Light Qilin",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "quang",
+    "beast_type": "than_thu",
+    "base_hp": 7140,
+    "base_atk": 261,
+    "base_matk": 216,
+    "base_def": 152,
+    "base_spd": 15,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.07,
+    "base_res": {
+      "quang": 0.06
+    },
+    "skill_keys": [
+      "EnemyQuang_T3",
+      "EnemyTho_T3",
+      "EnemyApex_R7_Magical"
+    ],
+    "loot_table_key": "LootTVDS_ky_lan_R7"
+  },
+  {
+    "key": "BeastHuyenVu_R7",
+    "vi": "Huyền Vũ Trấn Hải",
+    "en": "Sea-Guarding Black Tortoise",
+    "rank": "dai_nang",
+    "realm_level": 7,
+    "element": "thuy",
+    "beast_type": "than_thu",
+    "base_hp": 9000,
+    "base_atk": 202,
+    "base_matk": 188,
+    "base_def": 200,
+    "base_spd": 13,
+    "hp_scale": 1.6,
+    "mp_regen_pct": 0.07,
+    "base_res": {
+      "thuy": 0.06
+    },
+    "skill_keys": [
+      "EnemyThuy_T3",
+      "EnemyTho_T3",
+      "EnemyApex_R7_Magical"
+    ],
+    "loot_table_key": "LootTVDS_huyen_vu_R7"
+  }
+]

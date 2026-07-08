@@ -1,0 +1,237 @@
+[
+  {
+    "key": "VitalSkill_ThonPhe",
+    "vi": "Thôn Phệ Vạn Vật",
+    "en": "Devour All Things",
+    "scroll_grade": 4,
+    "no_scroll": true,
+    "category": "attack",
+    "element": "tho",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.5,
+      "matk": 0.0
+    },
+    "mp_cost": 150,
+    "cooldown": 6,
+    "base_dmg": 320,
+    "formation_key": null,
+    "vital_rider": {
+      "label": "🍖 Thôn Phệ",
+      "heal_pct_of_dmg": 0.3,
+      "execute_below_pct": 0.3,
+      "execute_bonus_pct": 1.0
+    }
+  },
+  {
+    "key": "VitalSkill_CungKyLietPhong",
+    "vi": "Cùng Kỳ Liệt Phong Trảm",
+    "en": "Qiongqi Gale Slash",
+    "scroll_grade": 4,
+    "no_scroll": true,
+    "category": "attack",
+    "element": "kim",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 0.75,
+      "matk": 0.0
+    },
+    "mp_cost": 160,
+    "cooldown": 6,
+    "base_dmg": 150,
+    "formation_key": null,
+    "effects": [
+      "DebuffChayMau"
+    ],
+    "effect_chances": {
+      "DebuffChayMau": 0.45
+    },
+    "hit_count": 3
+  },
+  {
+    "key": "VitalSkill_DaoNgotMaDiem",
+    "vi": "Đào Ngột Ma Diệm",
+    "en": "Taowu Demon Flame",
+    "scroll_grade": 4,
+    "no_scroll": true,
+    "category": "attack",
+    "element": "am",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.6
+    },
+    "mp_cost": 165,
+    "cooldown": 6,
+    "base_dmg": 330,
+    "formation_key": null,
+    "effects": [
+      "DebuffSuyKhi",
+      "DebuffPhapNhuoc"
+    ],
+    "effect_chances": {
+      "DebuffSuyKhi": 0.75,
+      "DebuffPhapNhuoc": 0.75
+    }
+  },
+  {
+    "key": "VitalSkill_TatPhuongPhanDuc",
+    "vi": "Tất Phương Phần Dực",
+    "en": "Bifang Burning Wings",
+    "scroll_grade": 4,
+    "no_scroll": true,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.6
+    },
+    "mp_cost": 160,
+    "cooldown": 6,
+    "base_dmg": 330,
+    "formation_key": null,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.6
+    },
+    "vital_rider": {
+      "label": "🔥 Phần Dực Bạo Liệt",
+      "detonate_stack": "burn",
+      "detonate_pct_per_stack": 0.15,
+      "detonate_stack_cap": 8
+    }
+  },
+  {
+    "key": "VitalSkill_CuuAnhHongLuu",
+    "vi": "Cửu Anh Hồng Lưu",
+    "en": "Jiuying Deluge",
+    "scroll_grade": 4,
+    "no_scroll": true,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.55
+    },
+    "mp_cost": 155,
+    "cooldown": 6,
+    "base_dmg": 320,
+    "formation_key": null,
+    "vital_rider": {
+      "label": "🌊 Hồng Lưu",
+      "mp_surge_pct_of_current": 0.25,
+      "mp_surge_dmg_per_mp": 2.0,
+      "mp_refund_on_kill_pct": 0.5
+    }
+  },
+  {
+    "key": "VitalSkill_LongTucPhanThien",
+    "vi": "Long Tức Phần Thiên",
+    "en": "Dragon Breath Sears Heaven",
+    "scroll_grade": 4,
+    "no_scroll": true,
+    "category": "attack",
+    "element": "loi",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 1.3,
+      "matk": 1.3
+    },
+    "mp_cost": 220,
+    "cooldown": 7,
+    "base_dmg": 420,
+    "formation_key": null,
+    "effects": [
+      "DebuffSocDien"
+    ],
+    "effect_chances": {
+      "DebuffSocDien": 0.6
+    },
+    "vital_rider": {
+      "label": "🐉 Long Uy",
+      "true_dmg_pct_of_dmg": 0.3
+    }
+  },
+  {
+    "key": "VitalSkill_PhuongVuCuuThien",
+    "vi": "Phượng Vũ Cửu Thiên",
+    "en": "Phoenix Dance of Nine Heavens",
+    "scroll_grade": 4,
+    "no_scroll": true,
+    "category": "attack",
+    "element": "hoa",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.7
+    },
+    "mp_cost": 210,
+    "cooldown": 7,
+    "base_dmg": 400,
+    "formation_key": null,
+    "effects": [
+      "DebuffThieuDot"
+    ],
+    "effect_chances": {
+      "DebuffThieuDot": 0.7
+    },
+    "vital_rider": {
+      "label": "🐦‍🔥 Niết Bàn Vũ",
+      "self_heal_pct_max_hp": 0.12,
+      "cleanse_count": 1,
+      "revenge_after_revive_pct": 0.4
+    }
+  },
+  {
+    "key": "VitalSkill_KyLanThuyQuang",
+    "vi": "Kỳ Lân Thụy Quang",
+    "en": "Qilin Auspicious Light",
+    "scroll_grade": 4,
+    "no_scroll": true,
+    "category": "attack",
+    "element": "quang",
+    "attack_type": "magical",
+    "dmg_scale": {
+      "atk": 0.0,
+      "matk": 1.6
+    },
+    "mp_cost": 200,
+    "cooldown": 7,
+    "base_dmg": 380,
+    "formation_key": null,
+    "vital_rider": {
+      "label": "🌟 Thụy Quang",
+      "shield_pct_max_hp": 0.15,
+      "per_debuff_bonus_pct": 0.08,
+      "per_debuff_cap": 6
+    }
+  },
+  {
+    "key": "VitalSkill_HuyenVuTranHai",
+    "vi": "Huyền Vũ Trấn Hải",
+    "en": "Black Tortoise Quells the Sea",
+    "scroll_grade": 4,
+    "no_scroll": true,
+    "category": "attack",
+    "element": "thuy",
+    "attack_type": "physical",
+    "dmg_scale": {
+      "atk": 1.0,
+      "matk": 1.0
+    },
+    "mp_cost": 200,
+    "cooldown": 7,
+    "base_dmg": 380,
+    "formation_key": null,
+    "effects": [
+      "DebuffTroBuoc"
+    ],
+    "effect_chances": {
+      "DebuffTroBuoc": 0.5
+    }
+  }
+]

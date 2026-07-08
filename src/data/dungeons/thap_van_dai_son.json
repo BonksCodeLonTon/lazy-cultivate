@@ -1,0 +1,105 @@
+[
+  {
+    "key": "DungeonTVDS_R1",
+    "vi": "Thập Vạn Đại Sơn — Ngoại Vi",
+    "en": "Myriad Great Mountains — Tier 1",
+    "description": "Sơn mạch trùng điệp nơi vạn thú tranh hùng. Yêu thú tại đây rớt **Tinh Huyết** — nguyên liệu chú nhập Bộ Vị Cơ Thể của Thể Tu.",
+    "dungeon_type": "thap_van_dai_son",
+    "required_qi_realm": 0,
+    "wave_count": 4,
+    "boss_min_grade_idx": 2,
+    "enemy_pool": [
+      "BeastManhHo_R1",
+      "BeastThietQuy_R1",
+      "BeastPhiUng_R1",
+      "BeastDocXa_R1",
+      "BeastLinhHo_R1"
+    ],
+    "merit_reward": 150,
+    "stone_reward": 0
+  },
+  {
+    "key": "DungeonTVDS_R3",
+    "vi": "Thập Vạn Đại Sơn — Sơn Lâm",
+    "en": "Myriad Great Mountains — Tier 3",
+    "description": "Sơn mạch trùng điệp nơi vạn thú tranh hùng. Yêu thú tại đây rớt **Tinh Huyết** — nguyên liệu chú nhập Bộ Vị Cơ Thể của Thể Tu.",
+    "dungeon_type": "thap_van_dai_son",
+    "required_qi_realm": 2,
+    "wave_count": 4,
+    "boss_min_grade_idx": 2,
+    "enemy_pool": [
+      "BeastHoaBao_R3",
+      "BeastBangLang_R3",
+      "BeastLoiHau_R3",
+      "BeastThachTe_R3",
+      "BeastHuyetBuc_R3"
+    ],
+    "merit_reward": 600,
+    "stone_reward": 5
+  },
+  {
+    "key": "DungeonTVDS_R5",
+    "vi": "Thập Vạn Đại Sơn — Thâm Sơn",
+    "en": "Myriad Great Mountains — Tier 5",
+    "description": "Sơn mạch trùng điệp nơi vạn thú tranh hùng. Yêu thú tại đây rớt **Tinh Huyết** — nguyên liệu chú nhập Bộ Vị Cơ Thể của Thể Tu. Thần thú thượng cổ ẩn hiện — đánh bại mới có cơ hội thu được **Tinh Huyết thần thú**.",
+    "dungeon_type": "thap_van_dai_son",
+    "required_qi_realm": 4,
+    "wave_count": 4,
+    "boss_min_grade_idx": 2,
+    "enemy_pool": [
+      "BeastKimCangVien_R5",
+      "BeastPhongMaDieu_R5",
+      "BeastUMinhNgoCong_R5",
+      "BeastNganGiacLoc_R5",
+      "BeastLoiDinhNgac_R5",
+      "BeastChanLong_R5",
+      "BeastPhuongHoang_R5"
+    ],
+    "merit_reward": 2400,
+    "stone_reward": 20
+  },
+  {
+    "key": "DungeonTVDS_R7",
+    "vi": "Thập Vạn Đại Sơn — Cấm Sơn",
+    "en": "Myriad Great Mountains — Tier 7",
+    "description": "Sơn mạch trùng điệp nơi vạn thú tranh hùng. Yêu thú tại đây rớt **Tinh Huyết** — nguyên liệu chú nhập Bộ Vị Cơ Thể của Thể Tu. Thần thú thượng cổ ẩn hiện — đánh bại mới có cơ hội thu được **Tinh Huyết thần thú**.",
+    "dungeon_type": "thap_van_dai_son",
+    "required_qi_realm": 6,
+    "wave_count": 4,
+    "boss_min_grade_idx": 3,
+    "enemy_pool": [
+      "BeastThaoThiet_R7",
+      "BeastCungKy_R7",
+      "BeastDaoNgot_R7",
+      "BeastTatPhuong_R7",
+      "BeastCuuAnh_R7",
+      "BeastKyLan_R7",
+      "BeastHuyenVu_R7"
+    ],
+    "merit_reward": 9000,
+    "stone_reward": 80
+  },
+  {
+    "key": "DungeonTVDS_R9",
+    "vi": "Thập Vạn Đại Sơn — Sơn Tâm Thánh Địa",
+    "en": "Myriad Great Mountains — Tier 9",
+    "description": "Sơn mạch trùng điệp nơi vạn thú tranh hùng. Yêu thú tại đây rớt **Tinh Huyết** — nguyên liệu chú nhập Bộ Vị Cơ Thể của Thể Tu. Thần thú thượng cổ ẩn hiện — đánh bại mới có cơ hội thu được **Tinh Huyết thần thú**.",
+    "dungeon_type": "thap_van_dai_son",
+    "required_qi_realm": 8,
+    "wave_count": 4,
+    "boss_min_grade_idx": 3,
+    "enemy_pool": [
+      "BeastThaoThiet_R9",
+      "BeastCungKy_R9",
+      "BeastDaoNgot_R9",
+      "BeastTatPhuong_R9",
+      "BeastCuuAnh_R9",
+      "BeastChanLong_R9",
+      "BeastPhuongHoang_R9",
+      "BeastKyLan_R9",
+      "BeastHuyenVu_R9"
+    ],
+    "merit_reward": 28000,
+    "stone_reward": 200
+  }
+]
