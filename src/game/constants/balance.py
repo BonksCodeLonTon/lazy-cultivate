@@ -148,6 +148,17 @@ HEAL_CRIT_MULT:   float = 1.5           # multiplier on the pre-reduction amount
 # Both sources are scaled down by Trận Đạo reduction before merging.
 FORMATION_GEM_RESERVE_PCT: float = 0.004   # +0.4 % per inlaid gem
 FORMATION_MAX_RESERVE_PCT: float = 0.50    # hard cap — never lock more than half
+# Trận Hộ Thuẫn — Trận Tu identity perk: MP locked inside active formations
+# manifests as a protective barrier (reserved_mp × MULT flat shield, plus
+# strong per-turn shield regen). Off-path formation users reserve little and
+# get a token shield; a 3-slot Trận Tu at the 50% reserve cap walks in behind
+# a real wall. Sized so the barrier ≈ half the HP pool at endgame reserve.
+TRAN_TU_RESERVE_SHIELD_MULT: float = 14.0
+TRAN_TU_RESERVE_SHIELD_REGEN_PCT: float = 0.12
+# Each ACTIVE formation also wards its master: +final_dmg_reduce per active
+# slot (3-slot endgame Trận Tu → +0.15). The mirror of standing inside your
+# own array.
+TRAN_TU_FDR_PER_ACTIVE_FORMATION: float = 0.07
 # Trận Đạo cultivation path scales formation bonuses:
 #   multiplier = 1.0 + formation_stages * PER_STAGE   (stages = realm*9 + level)
 # At max 81 stages: 1.0 + 81 * 0.02 = 2.62×. Applied in compute_formation_bonuses.

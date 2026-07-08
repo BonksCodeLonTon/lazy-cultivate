@@ -378,6 +378,10 @@ def _passive_bonus_for_element(element: str, level: int) -> dict:
     return out
 
 
+# Cap on the SUMMED final_dmg_reduce across all roots (see the merge loop).
+LINH_CAN_FDR_STACK_CAP: float = 0.45
+
+
 def compute_linh_can_bonuses(linh_can: dict[str, int]) -> dict:
     """Return merged passive bonus dict for the player's linh_can.
 
@@ -398,6 +402,14 @@ def compute_linh_can_bonuses(linh_can: dict[str, int]) -> dict:
                 merged[k] = merged.get(k, type(v)(0)) + v
             else:
                 merged[k] = v
+    # Multi-root defensive stacking cap: several elements each carry a small
+    # final_dmg_reduce, so an all-9-roots Khí Tu summed to the 0.90 global
+    # cap and became functionally unkillable (the path-power benchmark
+    # measured 24-0 vs Trận Tu on the back of this wall alone). The linh-căn
+    # LAYER contributes at most this much — single/dual-root kits are far
+    # below the cap and unaffected.
+    if merged.get("final_dmg_reduce", 0.0) > LINH_CAN_FDR_STACK_CAP:
+        merged["final_dmg_reduce"] = LINH_CAN_FDR_STACK_CAP
     return merged
 
 
