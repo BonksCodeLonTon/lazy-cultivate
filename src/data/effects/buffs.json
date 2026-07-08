@@ -162,6 +162,155 @@
     "duration": 999,
     "stealable": false
   },
+    {
+      "key": "PassiveBurnOnHit_weak",
+      "vi": "Hỏa Hoả Ký (yếu)",
+      "en": "Burn-On-Hit (weak)",
+      "kind": "buff",
+      "description_vi": "Mỗi đòn có cơ hội gây Thiêu Đốt (nhẹ).",
+      "aura_on_hit": ["DebuffThieuDot", 0.28, 2],
+      "duration": 999,
+      "stealable": false
+    },
+    {
+      "key": "PassiveShockOnHit_weak",
+      "vi": "Sốc Điện (yếu)",
+      "en": "Shock-On-Hit (weak)",
+      "kind": "buff",
+      "description_vi": "Mỗi đòn có cơ hội gây Sốc Điện (nhẹ).",
+      "aura_on_hit": ["DebuffSocDien", 0.28, 2],
+      "duration": 999,
+      "stealable": false
+    },
+    {
+      "key": "PassiveDodgeSpeedBurst_weak",
+      "vi": "Bộc Phát Tốc Độ (yếu)",
+      "en": "Dodge Speed Burst (weak)",
+      "kind": "buff",
+      "description_vi": "Khi né thành công, nhận một bộc phát tốc độ nhỏ và lượt sau đòn tiếp theo được tăng tỉ lệ bạo kích.",
+      "stat_bonus": {
+        "spd_pct": 0.12
+      },
+      "duration": 999,
+      "evade_react": {
+        "apply_self": {
+          "temp_buff_key": "BuffDodgeSpeedBurstTemp",
+          "duration": 2,
+          "arm_next_crit": true
+        }
+      },
+      "stealable": false
+    },
+    {
+      "key": "PassiveLifeSteal_basic",
+      "vi": "Hút Sinh Lực (cơ bản)",
+      "en": "Life Steal (basic)",
+      "kind": "buff",
+      "description_vi": "Cung cấp hút máu nhẹ (tỉ lệ phần trăm sát thương được hồi).",
+      "stat_bonus": {
+        "life_steal_pct": 0.008
+      },
+      "duration": 999,
+      "stealable": false
+    },
+    {
+      "key": "PassiveEarthShield_PhysReduce",
+      "vi": "Địa Tâm Hộ Giáp",
+      "en": "Earth Core Aegis",
+      "kind": "buff",
+      "description_vi": "Tăng khiên tối đa và giảm sát thương vật lý nhận vào một lượng nhỏ.",
+      "stat_bonus": {
+        "shield_max_pct": 0.10,
+        "final_dmg_reduce": 0.04
+      },
+      "duration": 999,
+      "stealable": false
+    },
+    {
+      "key": "PassiveBleedOnHit_weak",
+      "vi": "Chảy Máu Khi Đánh (yếu)",
+      "en": "Bleed-On-Hit (weak)",
+      "kind": "buff",
+      "description_vi": "Mỗi đòn có cơ hội gây chảy máu (nhẹ).",
+      "aura_on_hit": ["DebuffChayMau", 0.28, 3],
+      "duration": 999,
+      "stealable": false
+    },
+    {
+      "key": "PassiveBurnOnHit_strong",
+      "vi": "Hỏa Hoả Ký (mạnh)",
+      "en": "Burn-On-Hit (strong)",
+      "kind": "buff",
+      "description_vi": "Mỗi đòn có cơ hội gây Thiêu Đốt (mạnh).",
+      "aura_on_hit": ["DebuffThieuDot", 0.32, 3],
+      "duration": 999,
+      "stealable": false
+    },
+    {
+      "key": "PassiveLightAura_weak",
+      "vi": "Quang Minh Dị Ảnh (yếu)",
+      "en": "Light Aura (weak)",
+      "kind": "buff",
+      "description_vi": "Aura ánh sáng yếu — có cơ hội áp Debuff Lóa Mắt lên kẻ địch khi tấn công.",
+      "aura_on_hit": ["DebuffLoaMat", 0.28, 1],
+      "duration": 999,
+      "stealable": false
+    },
+    {
+      "key": "PassivePhysDmgReduce_weak",
+      "vi": "Giảm Vật Lý (yếu)",
+      "en": "Physical Damage Reduce (weak)",
+      "kind": "buff",
+      "description_vi": "Giảm nhẹ sát thương vật lý nhận vào (vĩnh viễn).",
+      "stat_bonus": {
+        "final_dmg_reduce": 0.03
+      },
+      "duration": 999,
+      "stealable": false
+    },
+    {
+      "key": "PassiveBleedOnHit_basic",
+      "vi": "Chảy Máu Khi Đánh (cơ bản)",
+      "en": "Bleed-On-Hit (basic)",
+      "kind": "buff",
+      "description_vi": "Mỗi đòn có cơ hội gây chảy máu nhỏ (một chút).",
+      "aura_on_hit": ["DebuffChayMau", 0.20, 2],
+      "duration": 999,
+      "stealable": false
+    },
+    {
+      "key": "PassiveHpRegen_basic",
+      "vi": "Hồi Sinh Lực (cơ bản)",
+      "en": "HP Regen (basic)",
+      "kind": "buff",
+      "description_vi": "Hồi HP mỗi lượt (nhỏ).",
+      "stat_bonus": {
+        "hp_regen_pct": 0.015
+      },
+      "duration": 999,
+      "stealable": false
+    },
+    {
+      "key": "PassiveReactiveShieldRegen_weak",
+      "vi": "Huyễn Băng Hộ Giáp (yếu)",
+      "en": "Reactive Shield Regen (weak)",
+      "kind": "buff",
+      "description_vi": "Khi nhận đòn đủ mạnh, cấp một shield tương ứng nhỏ ngay lập tức.",
+      "stat_bonus": {
+        "shield_max_pct": 0.06
+      },
+      "duration": 999,
+      "_aegis": {
+        "on_hit_shield": {
+          "min_damage": 1,
+          "flat": 0,
+          "matk_scale": 0.25,
+          "log_emoji": "🧊",
+          "log_name": "Huyễn Băng Hộ Giáp (yếu)"
+        }
+      },
+      "stealable": false
+    },
   {
     "key": "PassiveReactiveShieldRegen",
     "vi": "Huyễn Băng Hộ Giáp",

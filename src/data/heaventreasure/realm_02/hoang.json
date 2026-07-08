@@ -1,0 +1,46 @@
+[
+	{
+		"key": "HoangPhamThapThoHoangThoNgoc",
+		"vi": "Hoàng Phẩm Hậu Thổ Hoàng Thổ Ngọc",
+		"en": "Yellow-Grade Great Earth Yellow Jade",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Ngọc hoàng thổ — tăng HP, DEF và Khiên; giảm sát thương vật lý nhẹ.",
+		"grant_pill_buff": "pill_hoang_earth",
+		"grant_passive_effect": "PassivePhysDmgReduce_weak",
+		"grant_passive_desc_vi": "Giảm 3% sát thương vật lý nhận vào (passive vĩnh viễn, không phải buff combat)."
+	},
+	{
+		"key": "HoangPhamHoangKimTinhSa",
+		"vi": "Hoàng Phẩm Hoàng Kim Tinh Sa",
+		"en": "Yellow-Grade Yellow Metal Star Sand",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Cát hoàng kim — tăng ATK và crit_rating, có cơ hội gây chảy máu yếu.",
+		"grant_pill_buff": "pill_hoang_metal",
+		"grant_passive_effect": "PassiveBleedOnHit_basic",
+		"grant_passive_desc_vi": "Mỗi đòn: 20% gây DebuffChayMau (dot_pct 2%, duration 2)."
+	},
+	{
+		"key": "HoangPhamTinhThaoDich",
+		"vi": "Hoàng Phẩm Hoàng Tinh Thảo Dịch",
+		"en": "Yellow-Grade Yellow Spirit Herb Essence",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Tinh thảo — tăng HP và hồi phục nhỏ mỗi lượt.",
+		"grant_pill_buff": "pill_hoang_herb",
+		"grant_passive_effect": "PassiveHpRegen_basic",
+		"grant_passive_desc_vi": "Hồi 1.5% max HP mỗi lượt (passive vĩnh viễn)."
+	},
+	{
+		"key": "HoangPhamHoangHaHuyenBang",
+		"vi": "Hoàng Phẩm Hoàng Hạ Huyễn Băng",
+		"en": "Yellow-Grade Yellow River Dark Ice",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Tinh băng hoàng — khi nhận đòn mạnh, cấp khiên nhỏ ngay lập tức.",
+		"grant_pill_buff": "pill_hoang_ice",
+		"grant_passive_effect": "PassiveReactiveShieldRegen_weak",
+		"grant_passive_desc_vi": "Khi nhận đòn ≥5% max HP: 30% hồi 2% shield tối đa đột ngột (yếu)."
+	}
+]

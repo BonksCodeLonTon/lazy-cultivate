@@ -1,0 +1,46 @@
+[
+	{
+		"key": "HuyenHoaTinhTuy",
+		"vi": "Huyền Phẩm Huyền Hỏa Linh Tinh",
+		"en": "Mysterious-Grade Mysterious Fire Spirit Crystal",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Tinh lửa huyền — tăng MATK và có cơ hội gây Thiêu Đốt khi đánh.",
+		"grant_pill_buff": "pill_huyen_fire",
+		"grant_passive_effect": "PassiveBurnOnHit_weak",
+		"grant_passive_desc_vi": "Mỗi đòn: 28% gây DebuffThieuDot (dot_pct 2%, duration 2)."
+	},
+	{
+		"key": "HuyenLoiThanThach",
+		"vi": "Huyền Phẩm Huyền Lôi Thần Thạch",
+		"en": "Mysterious-Grade Mysterious Thunder Divine Stone",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Thạch thần lôi — tăng MATK và SPD; mỗi đòn có cơ hội gây Sốc Điện.",
+		"grant_pill_buff": "pill_huyen_thunder",
+		"grant_passive_effect": "PassiveShockOnHit_weak",
+		"grant_passive_desc_vi": "Mỗi đòn: 28% gây DebuffSocDien (dot_pct 2%, duration 2)."
+	},
+	{
+		"key": "HuyenPhongLinhTinh",
+		"vi": "Huyền Phẩm Huyền Phong Linh Dực",
+		"en": "Mysterious-Grade Mysterious Wind Spirit Wing",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Tinh phong huyền — tăng SPD và phản xạ né tránh; khi né thành công nhận bộc phát tốc độ nhẹ.",
+		"grant_pill_buff": "pill_huyen_wind",
+		"grant_passive_effect": "PassiveDodgeSpeedBurst_weak",
+		"grant_passive_desc_vi": "Khi né thành công: +12% SPD trong 1 lượt; đòn tiếp theo tăng tỉ lệ bạo kích."
+	},
+	{
+		"key": "HuyenAmLien",
+		"vi": "Huyền Phẩm Huyền Mịnh Âm Liên",
+		"en": "Mysterious-Grade Dark Underworld Lotus",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Tinh âm huyền — tăng MATK; cung cấp hút máu nhẹ khi sát thương gây ra.",
+		"grant_pill_buff": "pill_huyen_dark",
+		"grant_passive_effect": "PassiveLifeSteal_basic",
+		"grant_passive_desc_vi": "Mỗi đòn: 20% cơ hội hút 0.8% HP tối đa về bản thân (triển khai qua `life_steal_pct` nhỏ)."
+	}
+]

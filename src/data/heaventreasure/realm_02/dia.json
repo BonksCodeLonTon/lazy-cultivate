@@ -1,0 +1,46 @@
+[
+	{
+		"key": "DiaTamHuyenHoangNgoc",
+		"vi": "Địa Phẩm Địa Tâm Huyền Hoàng Ngọc",
+		"en": "Earth-Grade Earth Core Dark Yellow Jade",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Ngọc địa tâm — tăng HP, DEF và Khiên; giảm sát thương vật lý nhẹ.",
+		"grant_pill_buff": "pill_dia_core",
+		"grant_passive_effect": "PassiveEarthShield_PhysReduce",
+		"grant_passive_desc_vi": "HP +16%, DEF +12%. Passive: tăng shield cap và giảm sát thương vật lý 4%."
+	},
+	{
+		"key": "DiaPhamThaiBachKimTinhSa",
+		"vi": "Địa Phẩm Thái Bạch Kim Tinh Sa",
+		"en": "Earth-Grade Venus Metal Star Sand",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Cát kim tinh — tăng ATK và tỉ lệ bạo kích; có cơ hội gây chảy máu khi đánh.",
+		"grant_pill_buff": "pill_dia_metal",
+		"grant_passive_effect": "PassiveBleedOnHit_weak",
+		"grant_passive_desc_vi": "Mỗi đòn: 28% gây DebuffChayMau (dot_pct 2%, duration 3)."
+	},
+	{
+		"key": "DiaPhamTamMuoiHoaNgoc",
+		"vi": "Địa Phẩm Tam Muội Hỏa Ngọc",
+		"en": "Earth-Grade Three Samadhi Fire Jade",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Ngọc hỏa tam muội — tăng MATK và crit_dmg; gây Thiêu Đốt mạnh hơn.",
+		"grant_pill_buff": "pill_dia_fire",
+		"grant_passive_effect": "PassiveBurnOnHit_strong",
+		"grant_passive_desc_vi": "Mỗi đòn: 32% gây DebuffThieuDot (dot_pct 3%, duration 3)."
+	},
+	{
+		"key": "DiaPhamTinhQuangNhanNgoc",
+		"vi": "Địa Phẩm Tịnh Quang Thần Ngọc",
+		"en": "Earth-Grade Pure Light Divine Jade",
+		"type": "heaven_treasure",
+		"stack_max": 999,
+		"description_vi": "Ngọc tịnh quang — tăng HP, hồi và crit_res; aura ánh sáng có thể làm rối loạn mục tiêu.",
+		"grant_pill_buff": "pill_dia_light",
+		"grant_passive_effect": "PassiveLightAura_weak",
+		"grant_passive_desc_vi": "Đầu mỗi lượt: 28% gây DebuffLoaMat lên 1 địch ngẫu nhiên (duration 1)."
+	}
+]
