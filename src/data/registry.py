@@ -4,7 +4,7 @@ import json
 import logging
 from pathlib import Path
 
-from src.game.engine.loot import inject_scroll_drops
+from src.game.engine.loot import inject_global_drops, inject_scroll_drops
 
 # Khởi tạo logger để theo dõi việc load dữ liệu
 log = logging.getLogger(__name__)
@@ -50,6 +50,7 @@ class GameRegistry:
         "mastery_materials",
         "linh_can_material",
         "world_boss_chests",
+        "vital_essences",
     )
     # All gem items (elemental + stat + unique) live in a single file under
     # ``src/data/gems/gems.json``. Each entry carries its own pre-scaled
@@ -146,7 +147,14 @@ class GameRegistry:
 
     def _synthesize_skill_scrolls(self) -> None:
         for skill_key, skill in self.skills.items():
-            if skill.get("_npc_only") or skill_key.startswith("TheChat_"):
+            # ``no_scroll`` — skills that can only be gained through a game
+            # system (e.g. vital-essence awakening), never studied from a
+            # Ngọc Giản. No shop/loot scroll is synthesized for them.
+            if (
+                skill.get("_npc_only")
+                or skill.get("no_scroll")
+                or skill_key.startswith("TheChat_")
+            ):
                 continue
             scroll_key = f"Scroll_{skill_key}"
             if scroll_key in self.items:
@@ -479,25 +487,30 @@ class GameRegistry:
         return self.dungeons.get(key)
 
     def get_loot_table(self, key: str) -> list[dict]:
-        """Return the loot table for ``key``, merging dynamic scroll drops.
+        """Return the loot table for ``key``, merging dynamic drops.
 
-        ``LootZone_<N>`` tables are the realm-N farming zones. Grade 3-4
-        skill scrolls are injected via ``game.engine.loot.inject_scroll_drops``
-        so adding a new skill or re-grading an existing one flows through
-        to drops without touching the zone JSON files. After the realm-on-
-        skills removal, every grade-3/4 scroll is eligible in every zone —
-        the share-per-grade target keeps the rarity ladder intact.
+        Two injection lanes on top of the static JSON:
+          * global world drops (``inject_global_drops``) — appended to EVERY
+            non-empty table so ultrarare "drops anywhere" items (Thiên Mệnh
+            Thạch) reach zones, dungeons, chests, and world bosses uniformly;
+          * grade 3-4 skill scrolls (``inject_scroll_drops``) — ``LootZone_<N>``
+            farming zones only, so adding or re-grading a skill flows through
+            to drops without touching the zone JSON files.
         """
         static = self.loot_tables.get(key, [])
-        if not key.startswith("LootZone_"):
+        if not static:
             return static
-        try:
-            zone_realm = int(key.removeprefix("LootZone_"))
-        except ValueError:
-            return static
-        return list(static) + inject_scroll_drops(
-            self.items, self.skills, zone_realm, static,
-        )
+        extra = inject_global_drops(static)
+        if key.startswith("LootZone_"):
+            try:
+                zone_realm = int(key.removeprefix("LootZone_"))
+            except ValueError:
+                zone_realm = None
+            if zone_realm is not None:
+                extra = inject_scroll_drops(
+                    self.items, self.skills, zone_realm, static,
+                ) + extra
+        return list(static) + extra
 
     def get_base(self, key: str) -> dict | None:
         return self.bases.get(key)
@@ -586,7 +599,7 @@ class GameRegistry:
 
     def dungeons_of_type(self, dungeon_type: str) -> list[dict]:
         """Return all dungeons matching a dungeon_type (``normal``, ``duoc_vien``,
-        ``the_chat``, ``linh_can``, ``cam_dia``)."""
+        ``the_chat``, ``linh_can``, ``cam_dia``, ``thap_van_dai_son``)."""
         return [d for d in self.dungeons.values()
                 if d.get("dungeon_type") == dungeon_type]
 

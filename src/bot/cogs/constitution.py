@@ -4,13 +4,11 @@ Entry points:
   * ``render_the_chat_hub(interaction, discord_id, back_fn)`` —
     called from the ``/status`` view to open the hub.
 
-Multi-slot rules (see ``src.game.systems.the_chat``):
-  - Non-Thể Tu paths: 1 slot total; activation replaces the single entry.
-  - Thể Tu: ``1 + body_realm`` slots (capped at 8). Activation adds into
-    the next free slot; players must remove an entry from the hub before
-    activating when slots are full.
-  - Hỗn Độn Đạo Thể: special 9th slot; activation gated by
-    ``requires_all_legendary_equipped`` + ``requires_all_dao_ti``.
+Roster (v12 per-body rework): every path carries exactly **1** standard Thể
+Chất (``the_chat.max_slots`` == 1). Bodies are element-bound legendaries plus
+a small mythic tier (``element: "universal"``); each carries a ``process``
+block (Tiến Trình 1→9) whose milestone passives are the body's real kit —
+the flat ``stat_bonuses`` are just the Tầng-1 base.
 
 Activation always rolls a success chance (rarity-based, with a Thể Tu
 bonus). On failure, materials + merit are consumed but nothing is equipped
@@ -20,6 +18,7 @@ from __future__ import annotations
 
 import logging
 import random
+import re
 
 import discord
 
@@ -57,6 +56,14 @@ HOAN_THE_TINH_KEY = "ConsProcHoanTheTinh"
 DAO_COT_KEY = "MatDaoCotTinh"
 DAO_COT_GRADE = Grade.THIEN
 
+# ── Thiên Mệnh Thạch — ultrarare "drops anywhere" unlock/swap stone ────────────
+from src.game.constants.constitution_process import THIEN_MENH_THACH_KEY
+
+# Stones required to unlock (Kích Hoạt) a body, by rarity. Merged into the
+# activation materials on top of any per-entry ``materials`` block. Unlike the
+# other attempt mats, the stone is only consumed on a SUCCESSFUL activation.
+_UNLOCK_STONE_QTY: dict[str, int] = {"legendary": 1, "mythic": 2}
+
 
 def _activation_cost(const_data: dict) -> tuple[int, int]:
     """Return ``(merit, stones)`` from the constitution's ``cost`` block."""
@@ -69,11 +76,26 @@ _FALLBACK_MATERIALS: dict[str, int] = {DAO_COT_KEY: 1}
 
 
 def _required_materials(const_data: dict) -> dict[str, int]:
-    """Return {item_key: qty} for activating this constitution."""
+    """Return {item_key: qty} for activating this constitution.
+
+    The Thiên Mệnh Thạch unlock cost (by rarity) is merged on top of the
+    per-entry ``materials`` block — every legendary/mythic body needs the
+    stone regardless of its own mats. Phàm Thể (the default state) is exempt.
+    """
     mats = const_data.get("materials")
-    if isinstance(mats, dict) and mats:
-        return {k: int(v) for k, v in mats.items() if int(v) > 0}
-    return dict(_FALLBACK_MATERIALS)
+    if isinstance(mats, dict):
+        # An explicit empty dict means "no extra materials" — v12 bodies
+        # charge merit + stone only. The fallback covers entries missing
+        # the key entirely.
+        materials = {k: int(v) for k, v in mats.items() if int(v) > 0}
+    else:
+        materials = dict(_FALLBACK_MATERIALS)
+    stone_qty = _UNLOCK_STONE_QTY.get(const_data.get("rarity", ""), 0)
+    if stone_qty and const_data.get("key") != PHAM_THE_KEY:
+        materials[THIEN_MENH_THACH_KEY] = (
+            materials.get(THIEN_MENH_THACH_KEY, 0) + stone_qty
+        )
+    return materials
 
 
 async def _inventory_counts(irepo: InventoryRepository, player_id: int, keys) -> dict[str, int]:
@@ -112,6 +134,9 @@ _RARITY_META: dict[str, dict] = {
     "rare":       {"vi": "Hiếm",          "emoji": emojis.for_rarity("rare"),      "order": 2, "color": 0x3498DB},
     "epic":       {"vi": "Sử Thi",        "emoji": emojis.for_rarity("epic"),      "order": 3, "color": 0x9B59B6},
     "legendary":  {"vi": "Truyền Thuyết", "emoji": emojis.for_rarity("legendary"), "order": 4, "color": 0xF1C40F},
+    # 🌟 matches the mythic Tinh Huyết badge in the /thetu cog — the central
+    # emoji registry has no custom mythic asset yet.
+    "mythic":     {"vi": "Thần Thoại",    "emoji": "🌟",                           "order": 5, "color": 0xE91E63},
 }
 
 _BONUS_FORMATTERS: list[tuple[str, str]] = [
@@ -213,6 +238,31 @@ _BOOL_FLAGS: list[tuple[str, str]] = [
 def _rarity_label(rarity: str) -> str:
     meta = _RARITY_META.get(rarity, {"vi": rarity, "emoji": "❔"})
     return f"{meta['emoji']} {meta['vi']}"
+
+
+def _body_description(const_data: dict) -> str:
+    """Flavor text — v12 bodies author ``description_vi``; legacy entries
+    (Phàm Thể) still use ``passive_description_vi``."""
+    return (
+        const_data.get("passive_description_vi")
+        or const_data.get("description_vi")
+        or ""
+    )
+
+
+def _browse_rarities() -> list[str]:
+    """Rarity tabs actually present in the roster (Phàm Thể excluded).
+
+    Ordered by ``_RARITY_META`` definition order; unknown rarities sort last
+    so a new data tier still gets a tab instead of vanishing.
+    """
+    present = {
+        c.get("rarity", "common")
+        for c in registry.constitutions.values()
+        if c["key"] != PHAM_THE_KEY
+    }
+    known = [r for r in _RARITY_META if r in present]
+    return known + sorted(present - set(_RARITY_META))
 
 
 _DOT_KIND_LABEL_VI: dict[str, str] = {"burn": "Thiêu Đốt", "bleed": "Chảy Máu", "poison": "Trúng Độc"}
@@ -337,10 +387,67 @@ def _milestone_passive_names(const_data: dict, level: int) -> list[str]:
     for m in process.get("milestones", []):
         if m <= level:
             block = process.get("levels", {}).get(str(m), {})
-            name = block.get("vi") or block.get("name")
+            name = block.get("passive_vi") or block.get("vi") or block.get("name")
             if name:
                 names.append(name)
     return names
+
+
+# ── Per-milestone kit rendering (v12 process bodies) ───────────────────────────
+
+_TEMPLATE_BY_KEY: dict[str, str] = dict(_BONUS_FORMATTERS)
+
+
+def _fmt_bonus_short(key: str, val) -> str | None:
+    """One-liner for a single known stat key, keeping sub-1% precision.
+
+    ``_format_bonus_lines`` renders percentages at ``.0f`` — fine for base
+    kits, but ``per_level_growth`` values are fractions of a percent (0.003)
+    that would collapse to "0%". Unknown keys return None.
+    """
+    template = _TEMPLATE_BY_KEY.get(key)
+    if template is None or isinstance(val, (dict, bool)):
+        return None
+    if "{pct" in template:  # covers both {pct:...} and {pct2:...}
+        num = f"{val * 100:.2f}".rstrip("0").rstrip(".")
+        return re.sub(r"\{pct2?:[^}]+\}", num, template)
+    if "{flat2" in template:
+        return template.format(flat2=val)
+    return template.format(flat=val)
+
+
+def _growth_line(process: dict) -> str | None:
+    """Render ``per_level_growth`` as one compact `📈 Mỗi tầng:` line."""
+    growth = process.get("per_level_growth") or {}
+    parts = [s for k, v in growth.items() if (s := _fmt_bonus_short(k, v))]
+    return ("📈 **Mỗi tầng:** " + " • ".join(parts)) if parts else None
+
+
+def _milestone_lines(const_data: dict, current_level: int | None = None) -> list[str]:
+    """Render the milestone passives — the real kit of a v12 process body.
+
+    Each ``process.levels`` block becomes a named entry with its authored
+    ``description_vi`` (which carries the mechanic text; the custom stat keys
+    inside milestone ``stat_bonuses`` are engine wiring, not display lines).
+    ``current_level`` (only known for the viewer's primary body) switches the
+    tier badges to 🔓/🔒 unlock markers.
+    """
+    process = const_data.get("process") or {}
+    levels = process.get("levels") or {}
+    lines: list[str] = []
+    for m in process.get("milestones", []):
+        block = levels.get(str(m)) or {}
+        name = block.get("passive_vi") or block.get("vi") or f"Tầng {m}"
+        if current_level is None:
+            badge = f"`T{m}`"
+        else:
+            badge = ("🔓" if current_level >= m else "🔒") + f" `T{m}`"
+        lines.append(f"{badge} **{name}**")
+        if (desc := block.get("description_vi")):
+            lines.append(f"> {desc}")
+    if lines:
+        lines.insert(0, "\n**🌟 Thiên Phú Tiến Trình:**")
+    return lines
 
 
 def _at_full_gate(snap: dict, const_data: dict | None = None) -> bool:
@@ -377,21 +484,32 @@ def _process_section_lines(const_data: dict, snap: dict) -> list[str]:
     else:
         xp_part = "MAX"
 
-    lines = [
+    # Unlocked passives are no longer listed here — the milestone section
+    # below renders the full kit with 🔓/🔒 markers instead.
+    return [
         "\n**🌀 Tiến Trình:** "
         f"*{summ['band_vi']}* `{summ['level']}/{summ['cap']}`",
         f"`{bar}` {xp_part}",
     ]
-    passives = _milestone_passive_names(const_data, snap["level"])
-    if passives:
-        lines.append("✨ " + " • ".join(passives))
-    return lines
 
 
 # ── Embeds ────────────────────────────────────────────────────────────────────
 
 
 _HUB_KEY_MATERIALS = ("MatDaoCotTinh", "MatThienDaoTuy", "MatHonNguyenCot")
+
+
+def _hub_material_keys() -> tuple[str, ...]:
+    """Hub counter items — the unlock stone, legacy bone mats, plus (when the
+    Tiến Trình flag is ON) the process economy (talismans + swap essence)."""
+    keys = (THIEN_MENH_THACH_KEY,) + _HUB_KEY_MATERIALS
+    if settings.constitution_process_enabled:
+        from src.game.constants.constitution_process import (
+            DINH_THE_CHAU_KEY,
+            HO_THE_PHU_KEY,
+        )
+        keys = keys + (HO_THE_PHU_KEY, DINH_THE_CHAU_KEY, HOAN_THE_TINH_KEY)
+    return keys
 
 
 def _render_equipped_lines(equipped: list[str]) -> str:
@@ -415,11 +533,17 @@ def _hub_embed(player, key_counts: dict[str, int]) -> discord.Embed:
     slot_cap = max_slots(player.active_axis, player.body_realm)
 
     mat_lines = []
-    for k in _HUB_KEY_MATERIALS:
+    for k in _hub_material_keys():
         item = registry.get_item(k)
         if not item:
             continue
-        mat_lines.append(f"🦴 {item['vi']}: **{key_counts.get(k, 0):,}**")
+        if k == THIEN_MENH_THACH_KEY:
+            icon = "🌠"
+        elif k in _HUB_KEY_MATERIALS:
+            icon = "🦴"
+        else:
+            icon = "💠"
+        mat_lines.append(f"{icon} {item['vi']}: **{key_counts.get(k, 0):,}**")
     mat_block = "\n".join(mat_lines)
 
     path_tag = "🥋 **Thể Tu**" if the_tu else "📿 Khí Tu / Trận Tu"
@@ -435,11 +559,13 @@ def _hub_embed(player, key_counts: dict[str, int]) -> discord.Embed:
     tracker_count = len([k for k in tracker if k != PHAM_THE_KEY])
     tracker_line = f"📚 Đã lĩnh ngộ: **{tracker_count}** Thể Chất"
     path_hint = (
-        "Thể Tu mở khóa thêm 1 slot mỗi khi đột phá Luyện Thể, tối đa 8 slot. "
-        "Khi đủ 8 slot đều là Truyền Thuyết có thể khai mở **Hỗn Độn Đạo Thể**."
+        "Mỗi con đường tu luyện chỉ mang **1 Thể Chất**. Sức mạnh Thể Tu giờ "
+        "đến từ **Bách Thể Chú Linh** — mỗi đại cảnh giới Luyện Thể mở một "
+        "Bộ Vị Cơ Thể, chú nhập **Tinh Huyết** từ 🏔️ Thập Vạn Đại Sơn "
+        "(dùng lệnh `/thetu`)."
         if the_tu else
-        "Chỉ Thể Tu mới có nhiều slot. Con đường Khí Tu / Trận Tu chỉ có thể "
-        "mang **1 Thể Chất** duy nhất."
+        "Mỗi con đường tu luyện chỉ mang **1 Thể Chất** duy nhất. "
+        "Thể Tu có thêm hệ thống **Bách Thể Chú Linh** riêng (`/thetu`)."
     )
     swap_hint = (
         "💡 Đã lĩnh ngộ rồi thì có thể trang bị / gỡ tự do qua dropdown "
@@ -466,26 +592,43 @@ def _detail_embed(
     elem = const_data.get("element")
 
     title = f"{meta['emoji']} {const_data['vi']}"
-    desc_parts: list[str] = [const_data.get("passive_description_vi", "")]
+    desc_parts: list[str] = [_body_description(const_data)]
 
+    process = const_data.get("process") or {}
     bonus_lines = _format_bonus_lines(const_data.get("stat_bonuses", {}))
     if bonus_lines:
-        desc_parts.append("\n**Chỉ số:**\n" + "\n".join(bonus_lines))
+        # For a process body the flat kit is only the Tầng-1 baseline —
+        # label it so the milestone section below reads as the real kit.
+        header = "Chỉ số gốc (Tầng 1)" if process else "Chỉ số"
+        desc_parts.append(f"\n**{header}:**\n" + "\n".join(bonus_lines))
+    if process and (growth := _growth_line(process)):
+        desc_parts.append(growth)
 
     # ── Tiến Trình (Constitution Process) — flag-gated, primary body only ──
-    # When OFF, ``process_snap`` is never passed, so this is byte-identical to
-    # the pre-Phase-6 detail embed.
-    if (
+    # When OFF, ``process_snap`` is never passed, so no progress bar renders.
+    show_progress = (
         settings.constitution_process_enabled
         and process_snap is not None
         and _is_primary_body(player, const_data["key"])
-    ):
+    )
+    if show_progress:
         desc_parts.extend(_process_section_lines(const_data, process_snap))
+
+    # Milestone kit — shown to every viewer (it's the body's identity);
+    # 🔓/🔒 markers only when the viewer's own progress is known.
+    if process:
+        desc_parts.extend(_milestone_lines(
+            const_data, process_snap["level"] if show_progress else None,
+        ))
 
     cost_merit, cost_stones = _activation_cost(const_data)
     tags = [_rarity_label(rarity)]
     if elem:
-        tags.append(f"🜁 Hệ {elem.capitalize()}")
+        elem_vi = (
+            "Phổ Quát" if elem == "universal"
+            else ELEMENT_LABELS_VI.get(elem, elem.capitalize())
+        )
+        tags.append(f"🜁 Hệ {elem_vi}")
     reqs = const_data.get("special_requirements")
     if reqs:
         tags.append(f"🔒 {reqs}")
@@ -554,9 +697,14 @@ def _detail_embed(
     # would be misleading.
     if not in_tracker:
         materials = _required_materials(const_data)
-        desc_parts.append(
-            "\n**Nguyên liệu cần:**\n" + _format_materials(materials, owned_materials)
-        )
+        if materials:
+            desc_parts.append(
+                "\n**Nguyên liệu cần:**\n" + _format_materials(materials, owned_materials)
+            )
+            if THIEN_MENH_THACH_KEY in materials:
+                desc_parts.append(
+                    "*🌠 Thiên Mệnh Thạch chỉ tiêu hao khi kích hoạt **thành công**.*"
+                )
         if cost_stones > 0:
             desc_parts.append(
                 f"\n**Hỗn Nguyên Thạch:** {emojis.for_currency('primordial_stones')} "
@@ -567,13 +715,19 @@ def _detail_embed(
                 f"\n**Công Đức:** {emojis.for_currency('merit')} {cost_merit:,} (hiện có: {player.merit:,})"
             )
 
-    return base_embed(title, "\n".join(p for p in desc_parts if p), color=meta["color"])
+    desc = "\n".join(p for p in desc_parts if p)
+    # Discord hard-caps embed descriptions at 4096 chars; wordy milestone
+    # kits + material blocks can brush against it.
+    if len(desc) > 4096:
+        desc = desc[:4093] + "…"
+    return base_embed(title, desc, color=meta["color"])
 
 
 # ── Views ─────────────────────────────────────────────────────────────────────
 
 
 _ELEMENT_FILTER_TABS: tuple[tuple[str, str], ...] = (
+    ("all",       "Tất cả hệ"),
     ("universal", "Phổ Quát (Trung)"),
     ("kim",       "Hệ Kim"),
     ("moc",       "Hệ Mộc"),
@@ -590,11 +744,11 @@ _ELEMENT_FILTER_TABS: tuple[tuple[str, str], ...] = (
 class _ElementFilterSelect(discord.ui.Select):
     """Element sub-filter shown on every rarity tab.
 
-    Every rarity bucket is over Discord's 25-option Select cap when shown
-    raw (common 41 / uncommon 40 / rare 40 / epic 40 / legendary 61), so
-    the constitution dropdown only renders entries matching the selected
-    element. ``"universal"`` means ``element is None`` — bodies not bound
-    to any of the 9 elements.
+    The v12 roster fits under Discord's 25-option Select cap per rarity, so
+    ``"all"`` (the default) shows the whole tab; the element entries slice it
+    for players hunting a specific hệ. ``"universal"`` matches bodies not
+    bound to one of the 9 elements — mythics author ``element: "universal"``,
+    legacy element-agnostic entries leave the field null.
     """
 
     def __init__(
@@ -626,12 +780,11 @@ class _ElementFilterSelect(discord.ui.Select):
 class _RaritySelect(discord.ui.Select):
     """Dropdown listing constitutions for the active (rarity, element) tab.
 
-    Every rarity bucket is over Discord's 25-option Select cap, so the pool
-    is sliced by ``element_filter`` (``"universal"`` → element=None,
-    otherwise exact element match). Per-element sub-buckets are ≤6 entries
-    everywhere; ``universal`` is the largest at 21 (legendary) — still
-    under cap. ``element_filter=None`` falls back to no slicing, matching
-    the old behaviour for any caller that hasn't migrated.
+    Phàm Thể (the "no constitution" default) is excluded from browsing.
+    ``element_filter="all"`` / ``None`` shows the whole rarity bucket — the
+    v12 roster is ≤25 entries per rarity, under Discord's Select cap;
+    ``"universal"`` matches ``element in (None, "universal")`` (mythics),
+    anything else is an exact element match.
     """
 
     def __init__(
@@ -648,23 +801,28 @@ class _RaritySelect(discord.ui.Select):
 
         pool = [
             c for c in registry.constitutions.values()
-            if c.get("rarity") == rarity
+            if c.get("rarity") == rarity and c["key"] != PHAM_THE_KEY
         ]
-        if element_filter:
-            target_elem = None if element_filter == "universal" else element_filter
-            pool = [c for c in pool if c.get("element") == target_elem]
+        if element_filter and element_filter != "all":
+            if element_filter == "universal":
+                pool = [c for c in pool if c.get("element") in (None, "universal")]
+            else:
+                pool = [c for c in pool if c.get("element") == element_filter]
         pool.sort(key=lambda c: (c.get("element") or "zz_none", c["vi"]))
 
         options: list[discord.SelectOption] = []
         for c in pool[:25]:
             elem = c.get("element")
-            elem_label = f"[{elem.capitalize()}]" if elem else "[Trung]"
+            elem_label = (
+                "[Trung]" if elem in (None, "universal")
+                else f"[{elem.capitalize()}]"
+            )
             req = c.get("special_requirements")
             emoji = "🔒" if req else _RARITY_META.get(rarity, {}).get("emoji", "❔")
             options.append(discord.SelectOption(
                 label=c["vi"][:100],
                 value=c["key"],
-                description=f"{elem_label} {c.get('passive_description_vi', '')[:80]}"[:100],
+                description=f"{elem_label} {_body_description(c)[:80]}"[:100],
                 emoji=emoji,
             ))
         if not options:
@@ -759,16 +917,16 @@ class TheChatHubView(discord.ui.View):
         self._discord_id = discord_id
         self._rarity = rarity
         self._back_fn = back_fn
-        self._element_filter = element_filter or "universal"
+        self._element_filter = element_filter or "all"
 
         # Layout (uniform across all rarity tabs):
-        #   row 0: rarity tabs            (5 buttons)
+        #   row 0: rarity tabs            (one button per rarity in the data)
         #   row 1: element sub-filter     (Select)
         #   row 2: constitution dropdown  (Select)
         #   row 3: tracker dropdown       (Select, hidden when no unlocks)
         #   row 4: back button
-        for r in ("common", "uncommon", "rare", "epic", "legendary"):
-            meta = _RARITY_META[r]
+        for r in _browse_rarities()[:5]:
+            meta = _RARITY_META.get(r, {"vi": r, "emoji": "❔"})
             style = discord.ButtonStyle.primary if r == rarity else discord.ButtonStyle.secondary
             btn = discord.ui.Button(label=meta["vi"], emoji=meta["emoji"], style=style, row=0)
             btn.callback = self._make_tab_cb(r)
@@ -1095,9 +1253,12 @@ class ConstitutionDetailView(discord.ui.View):
                 )
                 return
 
-            # ── Deduct cost first (attempt economy — pay even on failure) ──
+            # ── Deduct cost first (attempt economy — pay even on failure).
+            # Exception: Thiên Mệnh Thạch is the ultrarare unlock key — it
+            # is only spent when the activation actually lands.
             for k, need in materials.items():
-                await irepo.remove_any_grade(player.id, k, need)
+                if k != THIEN_MENH_THACH_KEY:
+                    await irepo.remove_any_grade(player.id, k, need)
             if cost_merit > 0:
                 player.merit -= cost_merit
             if cost_stones > 0:
@@ -1106,6 +1267,11 @@ class ConstitutionDetailView(discord.ui.View):
             # ── Roll the activation chance ────────────────────────────────
             chance = activation_chance(const_data, player.active_axis)
             succeeded = roll_activation(const_data, player.active_axis)
+            if succeeded and materials.get(THIEN_MENH_THACH_KEY, 0) > 0:
+                await irepo.remove_any_grade(
+                    player.id, THIEN_MENH_THACH_KEY,
+                    materials[THIEN_MENH_THACH_KEY],
+                )
 
             if succeeded:
                 # Progression chain: a Thể Chất can declare ``progresses_from``
@@ -1145,7 +1311,11 @@ class ConstitutionDetailView(discord.ui.View):
         for k, need in materials.items():
             item = registry.get_item(k)
             name = item["vi"] if item else k
-            mat_summary_lines.append(f"🦴 -{need} {name}")
+            if k == THIEN_MENH_THACH_KEY and not succeeded:
+                mat_summary_lines.append(f"🌠 {name} không tiêu hao (chỉ mất khi thành công)")
+            else:
+                icon = "🌠" if k == THIEN_MENH_THACH_KEY else "🦴"
+                mat_summary_lines.append(f"{icon} -{need} {name}")
         if cost_merit > 0:
             mat_summary_lines.append(f"{emojis.for_currency('merit')} -{cost_merit:,} Công Đức")
         if cost_stones > 0:
@@ -1157,7 +1327,7 @@ class ConstitutionDetailView(discord.ui.View):
                 f"🎉 **Kích hoạt thành công!** 🎉 (tỉ lệ {chance * 100:.0f}%)\n"
                 f"Đã trang bị **{const_data['vi']}**.\n"
                 + "\n".join(mat_summary_lines)
-                + "\n\n" + const_data.get("passive_description_vi", "")
+                + "\n\n" + _body_description(const_data)
                 + (("\n\n**Chỉ số:**\n" + "\n".join(bonus_lines)) if bonus_lines else "")
             )
             embed = success_embed(msg)
@@ -1634,26 +1804,33 @@ async def _open_swap(
             return
         targets = _swap_targets(player)
         irepo = InventoryRepository(session)
-        owned_essence = (
-            await _inventory_counts(irepo, player.id, [HOAN_THE_TINH_KEY])
-        ).get(HOAN_THE_TINH_KEY, 0)
+        counts = await _inventory_counts(
+            irepo, player.id, [HOAN_THE_TINH_KEY, THIEN_MENH_THACH_KEY],
+        )
+        owned_essence = counts.get(HOAN_THE_TINH_KEY, 0)
+        owned_stone = counts.get(THIEN_MENH_THACH_KEY, 0)
 
     item = registry.get_item(HOAN_THE_TINH_KEY)
     essence_name = item["vi"] if item else HOAN_THE_TINH_KEY
+    stone_item = registry.get_item(THIEN_MENH_THACH_KEY)
+    stone_name = stone_item["vi"] if stone_item else THIEN_MENH_THACH_KEY
     desc_parts = [
         "🔄 **Hoán Thể** — đổi Thể Chất chủ tu (slot 0) đang được tích lũy "
         "tiến trình. Thể Chất cũ giữ nguyên tiến trình đã đạt.",
-        f"\n{essence_name}: **{owned_essence}** (cần **1**).",
+        f"\nCần **1** trong hai:\n💠 {essence_name}: **{owned_essence}**\n"
+        f"🌠 {stone_name}: **{owned_stone}**",
+        f"*(ưu tiên tiêu hao {essence_name} trước)*",
     ]
-    if owned_essence < 1:
-        desc_parts.append(f"\n❌ Không đủ {essence_name}.")
+    has_currency = owned_essence >= 1 or owned_stone >= 1
+    if not has_currency:
+        desc_parts.append(f"\n❌ Không có {essence_name} lẫn {stone_name}.")
     if not targets:
         desc_parts.append(
             "\n*Chưa có Thể Chất hợp lệ để hoán đổi (cần trang bị ≥2 Thể Chất "
             "đã lĩnh ngộ).*"
         )
     embed = base_embed("🔄 Hoán Thể", "\n".join(desc_parts), color=0xB8860B)
-    view = SwapTargetView(discord_id, const_key, back_fn, targets, owned_essence >= 1)
+    view = SwapTargetView(discord_id, const_key, back_fn, targets, has_currency)
     await interaction.edit_original_response(embed=embed, view=view)
 
 
@@ -1728,10 +1905,15 @@ class SwapTargetView(discord.ui.View):
 
         if result.get("outcome") == "SWAPPED":
             target = registry.get_constitution(target_key) or {}
+            spent_lines = []
+            for k, qty in (result.get("consumed") or {}).items():
+                item = registry.get_item(k)
+                icon = "🌠" if k == THIEN_MENH_THACH_KEY else "💠"
+                spent_lines.append(f"{icon} Tiêu hao {qty} {item['vi'] if item else k}.")
             embed = success_embed(
                 f"🔄 **Hoán Thể thành công!** Chủ tu mới: "
                 f"**{target.get('vi', target_key)}** (giữ nguyên tiến trình đã đạt).\n"
-                "💠 Tiêu hao 1 Hoán Thể Tinh."
+                + "\n".join(spent_lines)
             )
         else:
             embed = error_embed(_swap_reject_msg(result.get("outcome")))
@@ -1745,7 +1927,7 @@ class SwapTargetView(discord.ui.View):
 
 def _swap_reject_msg(outcome: str | None) -> str:
     return {
-        "NO_ESSENCE": "Không đủ Hoán Thể Tinh.",
+        "NO_ESSENCE": "Cần 1 Hoán Thể Tinh hoặc 1 Thiên Mệnh Thạch.",
         "NOT_EQUIPPED": "Thể Chất đó chưa được trang bị.",
         "NOT_UNLOCKED": "Thể Chất đó chưa lĩnh ngộ.",
         "ALREADY_PRIMARY": "Thể Chất đó đã là chủ tu rồi.",
@@ -1761,7 +1943,7 @@ async def _open_hub(
     interaction: discord.Interaction,
     discord_id: int,
     back_fn,
-    rarity: str = "common",
+    rarity: str | None = None,
     element_filter: str | None = None,
 ) -> None:
     # Defensive ack — if a caller forgot to defer, we self-defer so
@@ -1778,14 +1960,17 @@ async def _open_hub(
             )
             return
         irepo = InventoryRepository(session)
-        key_counts = await _inventory_counts(irepo, player.id, _HUB_KEY_MATERIALS)
+        key_counts = await _inventory_counts(irepo, player.id, _hub_material_keys())
 
-    # The element sub-filter is required on every rarity tab — each bucket
-    # is over Discord's 25-option Select cap. Default to ``"universal"``
-    # which covers element-agnostic bodies; the user can switch via the
-    # sub-select on row 1.
+    # Land on the first rarity that actually has browsable bodies (Phàm Thể
+    # from a detail back-nav maps to "common", which has no tab anymore).
+    tabs = _browse_rarities()
+    if rarity not in tabs:
+        rarity = tabs[0] if tabs else "common"
+    # "all" shows the whole rarity bucket — the v12 roster fits the 25-option
+    # Select cap; the element sub-select on row 1 slices it on demand.
     if element_filter is None:
-        element_filter = "universal"
+        element_filter = "all"
 
     embed = _hub_embed(player, key_counts)
     equipped = get_constitutions(player.constitution_type)

@@ -21,6 +21,29 @@ from __future__ import annotations
 # holds across zones (see ``inject_scroll_drops``).
 SCROLL_DROP_TARGET_SHARE: dict[int, float] = {3: 0.003125, 4: 0.000625}
 
+# ── Global world drops ─────────────────────────────────────────────────────────
+# Entries appended to EVERY non-empty loot table by ``GameRegistry.
+# get_loot_table`` — the "can drop anywhere" lane. Independent-mode weights
+# are ABSOLUTE (out of drop.POOL_RANGE = 1,000,000), so the chance is uniform
+# per roll regardless of the host table: 100 = 0.01% ≈ one per ~10k kills —
+# roughly a week of nonstop AFK farming (1440 turns/day). Loot-luck applies.
+GLOBAL_WORLD_DROPS: list[dict] = [
+    # Thiên Mệnh Thạch — unlocks / swaps a Thể Chất (see the constitution cog).
+    {"item_key": "MatThienMenhThach", "weight": 100, "qty_min": 1, "qty_max": 1},
+]
+
+
+def inject_global_drops(static: list[dict]) -> list[dict]:
+    """Return the world-drop entries to append to a loot table.
+
+    Empty static tables stay empty — an unresolvable/placeholder table key
+    must not become a stone fountain. Entries are copied so callers can't
+    mutate the module-level template.
+    """
+    if not static:
+        return []
+    return [dict(e) for e in GLOBAL_WORLD_DROPS]
+
 
 def inject_scroll_drops(
     items: dict[str, dict],

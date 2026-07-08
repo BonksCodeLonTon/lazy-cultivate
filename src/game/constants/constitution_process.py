@@ -32,6 +32,11 @@ HO_THE_PHU_BONUS = 0.20
 HO_THE_PHU_KEY = "ConsProcHoThePhu"
 DINH_THE_CHAU_KEY = "ConsProcDinhTheChau"
 
+# Thiên Mệnh Thạch — the ultrarare world drop (injected into EVERY loot table
+# by ``GameRegistry.get_loot_table``). Unlocks a new Thể Chất (consumed only on
+# a SUCCESSFUL activation) and substitutes for Hoán Thể Tinh on a swap.
+THIEN_MENH_THACH_KEY = "MatThienMenhThach"
+
 # XP source: a constitution earns XP per completed PvE combat while active.
 XP_PER_COMBAT = 1
 XP_WIN_BONUS = 1

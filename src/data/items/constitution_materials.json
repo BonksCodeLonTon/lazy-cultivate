@@ -1,5 +1,14 @@
 [
   {
+    "key": "MatThienMenhThach",
+    "vi": "Thiên Mệnh Thạch",
+    "en": "Heaven Destiny Stone",
+    "type": "constitution_material",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Mảnh thiên thạch khắc sẵn mệnh cách — cực hiếm, có thể rơi từ BẤT KỲ nguồn chiến lợi phẩm nào trong thiên hạ. Dùng để khắc mệnh Thể Chất mới (chỉ tiêu hao khi kích hoạt thành công) hoặc thay Hoán Thể Tinh khi Hoán Thể."
+  },
+  {
     "key": "MatDaoCotTinh",
     "vi": "Đạo Cốt Tinh",
     "en": "Dao Bone Essence",

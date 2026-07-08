@@ -113,8 +113,11 @@ _GOLDEN_ENEMY_HP = 0
 _GOLDEN_TURNS = 18
 _GOLDEN_REASON = CombatEndReason.PLAYER_WIN
 _GOLDEN_LOG_LEN = 118
+# Re-pinned 2026-07-07: Thiên Mệnh Thạch global world-drop injection added an
+# entry to every loot table, shifting the post-win loot RNG stream. Combat
+# output (HP / turns / reason / log length) is unchanged — only loot lines.
 _GOLDEN_LOG_SHA256 = (
-    "1256fa069ea7f06ae850cb59f69bd4c93e3604fe0ee31d6f02541bdae21ad6ba"
+    "7f8dce69f712369a08b77c8319233278a1949703c489cb6c01234180824d0270"
 )
 
 

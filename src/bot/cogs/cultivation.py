@@ -611,8 +611,9 @@ class CultivationCog(commands.Cog, name="Cultivation"):
         else:
             linh_can_line = "*(chưa khai mở)*"
 
+        from src.bot.cogs.constitution import _body_description
         const_vi = const_data.get("vi", rolled_const)
-        const_desc = const_data.get("passive_description_vi", "")
+        const_desc = _body_description(const_data)
         bonus_lines = _format_bonus_lines(const_data.get("stat_bonuses", {}))
 
         const_value_parts = [f"**{const_vi}** {emojis.for_rarity(rarity)} *{rarity_vi}*"]
@@ -841,12 +842,12 @@ class CultivationCog(commands.Cog, name="Cultivation"):
 
             await session.commit()
 
-        from src.bot.cogs.constitution import _format_bonus_lines
+        from src.bot.cogs.constitution import _body_description, _format_bonus_lines
         old_data = registry.get_constitution(old_primary) if old_primary else None
         old_vi = old_data.get("vi", old_primary or "—") if old_data else (old_primary or "—")
         new_vi = chosen.get("vi", chosen_key)
         bonus_lines = _format_bonus_lines(chosen.get("stat_bonuses", {}))
-        passive_desc = chosen.get("passive_description_vi", "")
+        passive_desc = _body_description(chosen)
 
         body_parts = [
             f"🌟 **{old_vi}** → ✨ **{new_vi}** *(Truyền Thuyết)*",

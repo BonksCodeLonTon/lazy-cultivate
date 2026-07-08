@@ -339,6 +339,8 @@ async def apply_swap(session: AsyncSession, player, target_key: str) -> dict:
     if not settings.constitution_process_enabled:
         return {"outcome": "DISABLED"}
 
+    from src.game.constants.constitution_process import THIEN_MENH_THACH_KEY
+
     irepo = InventoryRepository(session)
     owned = await _owned_counts(irepo, player.id)
     essence_key = "ConsProcHoanTheTinh"
@@ -348,6 +350,7 @@ async def apply_swap(session: AsyncSession, player, target_key: str) -> dict:
         constitution_tracker=getattr(player, "constitution_tracker", None),
         target_key=target_key,
         owned_essence_qty=owned.get(essence_key, 0),
+        owned_stone_qty=owned.get(THIEN_MENH_THACH_KEY, 0),
     )
 
     if result["outcome"] != "SWAPPED":
