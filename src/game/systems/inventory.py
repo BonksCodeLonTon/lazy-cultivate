@@ -149,6 +149,13 @@ def apply_pill(player, item_key: str, quantity: int) -> list[str]:
                 f"✨ Công Đức ×2 thêm **{days_total}** ngày "
                 f"(hết hạn: {tt.merit_bonus_expires_at:%Y-%m-%d %H:%M} UTC)"
             )
+    elif item_key == "DaoNguyenThach":
+        # Axis unlocks need an axis CHOICE — route the player to the Tu Luyện
+        # panel where locked axes carry an unlock button. Nothing consumed here.
+        effects.append(
+            "🗿 Đạo Nguyên Thạch được tiêu hao trong giao diện **Tu Luyện** — "
+            "mở `/cultivate` và chọn trục đang bị khóa 🔒 để khai mở."
+        )
     else:
         effects.append("✨ Hiệu ứng đã được áp dụng.")
 

@@ -37,7 +37,14 @@ async def apply_offline_ticks(player, repo, axis: str) -> dict:
     ``last_tick_at`` by exactly the consumed seconds. Returns the raw
     tick-result dict so callers can render summary embeds. Returns ``{}``
     when there's no tracker yet or no time has elapsed since the last tick.
+
+    Season-2 axis lock (defense-in-depth — the cogs gate the UI): a locked
+    ``axis`` never switches the player; ticks settle on the current axis.
     """
+    from src.game.systems.cultivation import parse_unlocked_axes
+
+    if axis not in parse_unlocked_axes(getattr(player, "unlocked_axes", None)):
+        axis = player.active_axis or "qi"
     player.active_axis = axis
     tracker = player.turn_tracker
     result: dict = {}

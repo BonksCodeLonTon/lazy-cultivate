@@ -440,6 +440,10 @@ async def _apply_testbuild(session, player, cfg: dict) -> list[str]:
     for k in realm_keys:
         if k in cfg:
             setattr(player, k, int(cfg[k]))
+    if any(k in cfg for k in realm_keys):
+        # Test builds set realms across every axis — unlock all three so the
+        # season-2 axis lock never blocks a test character.
+        player.unlocked_axes = "body,qi,formation"
     if "dao_ti_unlocked" in cfg:
         player.dao_ti_unlocked = bool(cfg["dao_ti_unlocked"])
     if any(k in cfg for k in realm_keys) or "dao_ti_unlocked" in cfg:

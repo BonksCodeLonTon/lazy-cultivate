@@ -116,8 +116,10 @@ _GOLDEN_LOG_LEN = 118
 # Re-pinned 2026-07-07: Thiên Mệnh Thạch global world-drop injection added an
 # entry to every loot table, shifting the post-win loot RNG stream. Combat
 # output (HP / turns / reason / log length) is unchanged — only loot lines.
+# Re-pinned 2026-07-09: same story for Đạo Nguyên Thạch (axis-unlock stone) —
+# verified by removing the entry in-process and recovering the prior hash.
 _GOLDEN_LOG_SHA256 = (
-    "7f8dce69f712369a08b77c8319233278a1949703c489cb6c01234180824d0270"
+    "0d53a1b084289ab26e3d5154ed6831c52d521366b5ae7aad2e16b53e3155dd03"
 )
 
 

@@ -24,6 +24,7 @@ class GameRegistry:
         self.constitutions: dict[str, dict] = {}       # key → constitution data
         self.dungeons: dict[str, dict] = {}            # key → dungeon data
         self.loot_tables: dict[str, list[dict]] = {}   # key → list of drop entries
+        self.global_drops: list[dict] = []             # "drops anywhere" world-drop lane
         self.bases: dict[str, dict] = {}               # key → equipment base definition
         self.affixes: dict[str, dict] = {}             # key → affix definition
         self.uniques: dict[str, dict] = {}             # key → unique item definition
@@ -89,6 +90,7 @@ class GameRegistry:
         self.constitutions = self._load_constitution_dir()
         self.dungeons = self._load_dungeon_dir()
         self.loot_tables = self._load_loot_table_dir()
+        self.global_drops = self._load_keyed_list("global_drops.json")
         self.bases, self.affixes, self.uniques = self._load_equipment_defs()
         self.forge_recipes = self._load_forge_recipes()
         self.world_bosses = self._load_keyed("world_bosses.json")
@@ -542,7 +544,7 @@ class GameRegistry:
         static = self.loot_tables.get(key, [])
         if not static:
             return static
-        extra = inject_global_drops(static)
+        extra = inject_global_drops(static, self.global_drops)
         if key.startswith("LootZone_"):
             try:
                 zone_realm = int(key.removeprefix("LootZone_"))

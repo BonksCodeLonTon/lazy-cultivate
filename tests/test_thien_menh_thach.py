@@ -15,7 +15,7 @@ import pytest
 
 from src.data.registry import registry
 from src.game.constants.constitution_process import THIEN_MENH_THACH_KEY
-from src.game.engine.loot import GLOBAL_WORLD_DROPS, inject_global_drops
+from src.game.engine.loot import inject_global_drops
 from src.game.systems.constitution_process import resolve_constitution_swap
 
 
@@ -38,20 +38,22 @@ def test_stone_item_exists() -> None:
 
 
 def test_inject_global_drops_empty_table_stays_empty() -> None:
-    assert inject_global_drops([]) == []
+    assert inject_global_drops([], registry.global_drops) == []
 
 
 def test_inject_global_drops_returns_copies() -> None:
-    out = inject_global_drops([{"item_key": "X", "weight": 100}])
-    assert out == GLOBAL_WORLD_DROPS
+    out = inject_global_drops([{"item_key": "X", "weight": 100}], registry.global_drops)
+    assert out == registry.global_drops
     out[0]["weight"] = 999_999
-    assert GLOBAL_WORLD_DROPS[0]["weight"] != 999_999
+    assert registry.global_drops[0]["weight"] != 999_999
 
 
 def test_stone_weight_is_ultrarare_independent_entry() -> None:
     """Absolute weight out of POOL_RANGE (1M): must stay a fraction of a
     percent and roll independently (no pool_id)."""
-    (entry,) = [e for e in GLOBAL_WORLD_DROPS if e["item_key"] == THIEN_MENH_THACH_KEY]
+    (entry,) = [
+        e for e in registry.global_drops if e["item_key"] == THIEN_MENH_THACH_KEY
+    ]
     assert 0 < entry["weight"] <= 1_000  # ≤0.1% per roll
     assert "pool_id" not in entry
 

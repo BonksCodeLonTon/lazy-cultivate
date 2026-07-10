@@ -12,17 +12,21 @@ from src.db.models.reroll_tracker import RerollTracker
 from src.db.repositories.player_repo import PlayerRepository, _player_to_model
 from src.game.constants.realms import realm_label
 from src.game.systems.cultivation import (
+    AXIS_UNLOCK_ITEM_KEY,
     can_breakthrough,
     apply_breakthrough,
     effective_formation_exp_per_merit,
     formation_exp_per_merit,
     get_breakthrough_requirements,
+    parse_unlocked_axes,
     study_formation_with_merit,
+    unlock_axis,
 )
 from src.game.systems.cultivation_service import (
     apply_offline_ticks,
     pre_breakthrough_realm,
 )
+from src.game.systems.sect import attach_sect_buffs
 from src.utils import emojis
 from src.utils.embed_builder import base_embed, error_embed, success_embed
 from src.utils.assets import AXIS_LABELS, AXIS_ICONS
@@ -167,6 +171,7 @@ class StudyFormationModal(discord.ui.Modal, title="Học Trận với Công Đ�
                 return
 
             char = _player_to_model(player_orm)
+            await attach_sect_buffs(session, char)   # Tụ Linh Trận speed applies to merit→EXP
             res = study_formation_with_merit(char, amount)
             if not res["success"]:
                 await interaction.followup.send(embed=error_embed(res["error"]), ephemeral=True)
@@ -199,15 +204,27 @@ class StudyFormationModal(discord.ui.Modal, title="Học Trận với Công Đ�
 
 
 class CultivateView(discord.ui.View):
-    def __init__(self, discord_id: int, active_axis: str, back_fn=None) -> None:
+    def __init__(
+        self,
+        discord_id: int,
+        active_axis: str,
+        back_fn=None,
+        unlocked: list[str] | None = None,
+    ) -> None:
         super().__init__(timeout=120)
         self._discord_id = discord_id
         self._active_axis = active_axis
         self._back_fn = back_fn
 
         for axis_id, axis_label in _AXIS_CONFIGS:
+            # Season-2 axis lock: locked axes render with a padlock. The
+            # authoritative check lives in the click callback (views go
+            # stale); ``unlocked=None`` means "no lock info" and shows plain
+            # labels — clicks still enforce.
+            locked = unlocked is not None and axis_id not in unlocked
+            label = f"🔒 {axis_label}" if locked else axis_label
             style = discord.ButtonStyle.primary if axis_id == active_axis else discord.ButtonStyle.secondary
-            btn = discord.ui.Button(label=axis_label, style=style, row=0)
+            btn = discord.ui.Button(label=label, style=style, row=0)
             btn.callback = self._make_cb(axis_id)
             self.add_item(btn)
 
@@ -250,6 +267,7 @@ class CultivateView(discord.ui.View):
             # actually receives — otherwise R0 shows "1 Công Đức = 1 EXP"
             # but a poisoned player only gets 0.95 EXP per merit.
             char = _player_to_model(player)
+            await attach_sect_buffs(session, char)   # keep the modal placeholder rate honest
             rate = effective_formation_exp_per_merit(char)
 
         if current_merit <= 0:
@@ -272,10 +290,13 @@ class CultivateView(discord.ui.View):
             if player is None:
                 return
             result = await apply_offline_ticks(player, repo, "formation")
+            unlocked = parse_unlocked_axes(player.unlocked_axes)
             await session.commit()
 
         embed = _cultivate_embed("formation", result)
-        view = CultivateView(self._discord_id, "formation", back_fn=self._back_fn)
+        view = CultivateView(
+            self._discord_id, "formation", back_fn=self._back_fn, unlocked=unlocked,
+        )
         try:
             await interaction.edit_original_response(embed=embed, view=view)
         except discord.HTTPException:
@@ -297,6 +318,40 @@ class CultivateView(discord.ui.View):
                     await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                     return
 
+                unlocked = parse_unlocked_axes(player.unlocked_axes)
+                if axis not in unlocked:
+                    # Season-2 axis lock — offer the Đạo Nguyên Thạch unlock
+                    # when owned, otherwise explain how to get one.
+                    stones = sum(
+                        i.quantity for i in player.inventory
+                        if i.item_key == AXIS_UNLOCK_ITEM_KEY
+                    )
+                    axis_label = dict(_AXIS_CONFIGS).get(axis, axis)
+                    if stones > 0:
+                        await interaction.edit_original_response(
+                            embed=base_embed(
+                                "🔒 Trục Tu Luyện Chưa Khai Mở",
+                                f"**{axis_label}** chưa được khai mở.\n\n"
+                                f"Bạn đang có **{stones}× Đạo Nguyên Thạch** 🗿 — "
+                                "tiêu hao **1 viên** để vĩnh viễn khai mở con đường này?",
+                                color=0xF1C40F,
+                            ),
+                            view=UnlockAxisView(self._discord_id, axis, back_fn=self._back_fn),
+                        )
+                    else:
+                        await interaction.edit_original_response(
+                            embed=error_embed(
+                                f"🔒 **{axis_label}** chưa được khai mở.\n"
+                                "Cần **Đạo Nguyên Thạch** 🗿 — kỳ thạch cực hiếm có thể "
+                                "rơi từ *mọi* hoạt động (bí cảnh, boss, khoáng mạch…)."
+                            ),
+                            view=CultivateView(
+                                self._discord_id, player.active_axis or "qi",
+                                back_fn=self._back_fn, unlocked=unlocked,
+                            ),
+                        )
+                    return
+
                 char = _player_to_model(player)
 
                 from src.game.systems.tribulation import TribulationManager
@@ -308,12 +363,14 @@ class CultivateView(discord.ui.View):
                             "⚡ Bạn đã đạt cực hạn cảnh giới!\n"
                             "Hãy **đột phá (Thiên Kiếp)** để tiếp tục tu luyện."
                         ),
-                        view=CultivateView(self._discord_id, axis, back_fn=self._back_fn)
+                        view=CultivateView(
+                            self._discord_id, axis, back_fn=self._back_fn, unlocked=unlocked,
+                        )
                     )
                     return
 
                 result = await apply_offline_ticks(player, repo, axis)
-                
+
                 await session.commit()
 
             char = _player_to_model(player)
@@ -321,12 +378,16 @@ class CultivateView(discord.ui.View):
             if TribulationManager().check_needs_tribulation(char, axis):
                 await interaction.edit_original_response(
                     embed=error_embed("⚡ Đã đạt cực hạn, hãy Đột Phá để tiếp tục!"),
-                    view=CultivateView(self._discord_id, axis, back_fn=self._back_fn)
+                    view=CultivateView(
+                        self._discord_id, axis, back_fn=self._back_fn, unlocked=unlocked,
+                    )
                 )
                 return
 
             embed = _cultivate_embed(axis, result)
-            new_view = CultivateView(self._discord_id, axis, back_fn=self._back_fn)
+            new_view = CultivateView(
+                self._discord_id, axis, back_fn=self._back_fn, unlocked=unlocked,
+            )
             await interaction.edit_original_response(embed=embed, view=new_view)
 
         return _cb
@@ -366,6 +427,113 @@ class CultivateView(discord.ui.View):
         embed = _breakthrough_overview_embed(player, readiness)
         view = BreakthroughView(self._discord_id, readiness, back_fn=self._back_fn)
         await interaction.edit_original_response(embed=embed, view=view)
+
+
+class UnlockAxisView(discord.ui.View):
+    """Confirm consuming one Đạo Nguyên Thạch to open a locked axis. Stone
+    ownership and lock state re-validate inside the confirm transaction."""
+
+    def __init__(self, discord_id: int, axis: str, back_fn=None) -> None:
+        super().__init__(timeout=120)
+        self._discord_id = discord_id
+        self._axis = axis
+        self._back_fn = back_fn
+
+        yes = discord.ui.Button(
+            label="🗿 Khai Mở (tiêu hao 1 Đạo Nguyên Thạch)",
+            style=discord.ButtonStyle.danger, row=0,
+        )
+        yes.callback = self._confirm
+        self.add_item(yes)
+
+        no = discord.ui.Button(label="Hủy", style=discord.ButtonStyle.secondary, row=0)
+        no.callback = self._cancel
+        self.add_item(no)
+
+    def _guard(self, interaction: discord.Interaction) -> bool:
+        return interaction.user.id == self._discord_id
+
+    async def _confirm(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+
+        from src.db.repositories.inventory_repo import InventoryRepository
+
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            inv_repo = InventoryRepository(session)
+            player = await repo.get_by_discord_id(self._discord_id)
+            if player is None:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            unlocked = parse_unlocked_axes(player.unlocked_axes)
+            if self._axis in unlocked:
+                result = await apply_offline_ticks(player, repo, self._axis)
+                await session.commit()
+                await interaction.edit_original_response(
+                    embed=_cultivate_embed(self._axis, result),
+                    view=CultivateView(
+                        self._discord_id, self._axis, back_fn=self._back_fn, unlocked=unlocked,
+                    ),
+                )
+                return
+            # remove_any_grade sweeps whatever grade rows the stone dropped at.
+            consumed = await inv_repo.remove_any_grade(
+                player.id, AXIS_UNLOCK_ITEM_KEY, 1
+            )
+            if not consumed:
+                await interaction.edit_original_response(
+                    embed=error_embed("Không còn Đạo Nguyên Thạch trong túi."),
+                    view=CultivateView(
+                        self._discord_id, player.active_axis or "qi",
+                        back_fn=self._back_fn, unlocked=unlocked,
+                    ),
+                )
+                return
+            player.unlocked_axes = unlock_axis(player.unlocked_axes, self._axis)
+            unlocked = parse_unlocked_axes(player.unlocked_axes)
+            # Freshly unlocked → switch to it and settle pending ticks.
+            result = await apply_offline_ticks(player, repo, self._axis)
+            await session.commit()
+
+        axis_label = dict(_AXIS_CONFIGS).get(self._axis, self._axis)
+        embed = _cultivate_embed(self._axis, result)
+        embed.insert_field_at(
+            0, name="🗿 Khai Mở Thành Công",
+            value=f"Con đường **{axis_label}** đã vĩnh viễn khai mở!",
+            inline=False,
+        )
+        await interaction.edit_original_response(
+            embed=embed,
+            view=CultivateView(
+                self._discord_id, self._axis, back_fn=self._back_fn, unlocked=unlocked,
+            ),
+        )
+
+    async def _cancel(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        async with get_session() as session:
+            repo = PlayerRepository(session)
+            player = await repo.get_by_discord_id(self._discord_id)
+            if player is None:
+                await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
+                return
+            active = player.active_axis or "qi"
+            unlocked = parse_unlocked_axes(player.unlocked_axes)
+            result = await apply_offline_ticks(player, repo, active)
+        await interaction.edit_original_response(
+            embed=_cultivate_embed(active, result),
+            view=CultivateView(
+                self._discord_id, active, back_fn=self._back_fn, unlocked=unlocked,
+            ),
+        )
 
 
 class BreakthroughView(discord.ui.View):
@@ -560,9 +728,12 @@ class BreakthroughView(discord.ui.View):
                 await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                 return
             active = player.active_axis or "qi"
+            unlocked = parse_unlocked_axes(player.unlocked_axes)
             result = await apply_offline_ticks(player, repo, active)
         embed = _cultivate_embed(active, result)
-        view = CultivateView(self._discord_id, active, back_fn=self._back_fn)
+        view = CultivateView(
+            self._discord_id, active, back_fn=self._back_fn, unlocked=unlocked,
+        )
         await interaction.edit_original_response(embed=embed, view=view)
 
 
@@ -573,8 +744,18 @@ class CultivationCog(commands.Cog, name="Cultivation"):
         self.bot = bot
 
     @app_commands.command(name="register", description="Tạo nhân vật tu tiên")
-    @app_commands.describe(name="Đạo hiệu của bạn")
-    async def register(self, interaction: discord.Interaction, name: str) -> None:
+    @app_commands.describe(
+        name="Đạo hiệu của bạn",
+        con_duong="Con đường tu luyện — LỰA CHỌN CỐ ĐỊNH, mở thêm cần Đạo Nguyên Thạch cực hiếm",
+    )
+    @app_commands.choices(con_duong=[
+        app_commands.Choice(name="💪 Luyện Thể — thân thể cường hãn (tank)", value="body"),
+        app_commands.Choice(name="🔮 Luyện Khí — linh khí cân bằng (khuyến nghị)", value="qi"),
+        app_commands.Choice(name="🔯 Trận Đạo — trận pháp huyền ảo (pháp sư)", value="formation"),
+    ])
+    async def register(
+        self, interaction: discord.Interaction, name: str, con_duong: str
+    ) -> None:
         if len(name) < 2 or len(name) > 24:
             return await interaction.response.send_message(embed=error_embed("Tên từ 2–24 ký tự."), ephemeral=True)
 
@@ -582,11 +763,14 @@ class CultivationCog(commands.Cog, name="Cultivation"):
             repo = PlayerRepository(session)
             if await repo.exists(interaction.user.id):
                 return await interaction.response.send_message(embed=error_embed("Ngươi đã có nhân vật rồi."), ephemeral=True)
-            
-            player = await repo.create(discord_id=interaction.user.id, name=name)
+
+            player = await repo.create(
+                discord_id=interaction.user.id, name=name, axis=con_duong
+            )
             await session.commit()
             rolled_const = player.constitution_type
             rolled_linh_can = player.linh_can
+            chosen_axis = player.active_axis
 
         from src.data.registry import registry
         from src.game.constants.linh_can import LINH_CAN_DATA, parse_linh_can_levels
@@ -634,6 +818,16 @@ class CultivationCog(commands.Cog, name="Cultivation"):
         embed.add_field(
             name="🧬 Thể Chất Sơ Khởi",
             value="\n".join(const_value_parts),
+            inline=False,
+        )
+        axis_labels = dict(_AXIS_CONFIGS)
+        embed.add_field(
+            name="☯️ Con Đường Đã Chọn",
+            value=(
+                f"{axis_labels.get(chosen_axis, chosen_axis)}\n"
+                "*Con đường tu luyện là cố định — muốn khai mở trục khác cần "
+                "**Đạo Nguyên Thạch**, kỳ thạch cực hiếm rơi từ mọi hoạt động.*"
+            ),
             inline=False,
         )
         embed.set_footer(text="Dùng /cultivate để bắt đầu tu luyện · /status xem trạng thái")
@@ -879,10 +1073,11 @@ class CultivationCog(commands.Cog, name="Cultivation"):
                 return
 
             active = player.active_axis or "qi"
+            unlocked = parse_unlocked_axes(player.unlocked_axes)
             result = await apply_offline_ticks(player, repo, active)
 
         embed = _cultivate_embed(active, result)
-        view = CultivateView(interaction.user.id, active)
+        view = CultivateView(interaction.user.id, active, unlocked=unlocked)
         await interaction.followup.send(embed=embed, view=view, ephemeral=True)
 
     @app_commands.command(name="study_formation", description="Dùng Công Đức tăng Trận Đạo")
@@ -897,6 +1092,16 @@ class CultivationCog(commands.Cog, name="Cultivation"):
         async with get_session() as session:
             repo = PlayerRepository(session)
             player_orm = await repo.get_by_discord_id(interaction.user.id)
+            if player_orm is not None and "formation" not in parse_unlocked_axes(
+                player_orm.unlocked_axes
+            ):
+                return await interaction.followup.send(
+                    embed=error_embed(
+                        "🔒 Con đường **Trận Đạo** chưa được khai mở — cần "
+                        "**Đạo Nguyên Thạch** 🗿 (mở `/cultivate` để khai mở)."
+                    ),
+                    ephemeral=True,
+                )
             if not player_orm:
                 return await interaction.followup.send(embed=error_embed("Chưa có nhân vật."), ephemeral=True)
 
@@ -909,6 +1114,7 @@ class CultivationCog(commands.Cog, name="Cultivation"):
                 )
 
             char = _player_to_model(player_orm)
+            await attach_sect_buffs(session, char)   # Tụ Linh Trận speed applies to merit→EXP
             res = study_formation_with_merit(char, merits)
             if not res["success"]:
                 return await interaction.followup.send(embed=error_embed(res["error"]), ephemeral=True)

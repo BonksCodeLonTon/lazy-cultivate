@@ -1,0 +1,16 @@
+[
+  {
+    "item_key": "MatThienMenhThach",
+    "weight": 100,
+    "qty_min": 1,
+    "qty_max": 1,
+    "note": "Thiên Mệnh Thạch — unlock/swap Thể Chất (constitution cog). Weights here are ABSOLUTE out of 1,000,000 per roll: 100 = 0.01% ≈ one per ~10k kills ≈ a week of nonstop AFK farming. Loot-luck applies."
+  },
+  {
+    "item_key": "DaoNguyenThach",
+    "weight": 20,
+    "qty_min": 1,
+    "qty_max": 1,
+    "note": "Đạo Nguyên Thạch — unlocks an extra cultivation axis (season-2 axis lock; consumed in the Tu Luyện UI). 20 = 0.002% ≈ one per ~50k kills — deliberately 5× rarer than Thiên Mệnh Thạch."
+  }
+]

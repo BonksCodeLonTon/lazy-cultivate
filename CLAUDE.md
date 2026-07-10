@@ -109,6 +109,7 @@ src/utils/
 ## Game Domain Concepts
 
 - **3-axis cultivation**: Luyện Thể (body/tank), Luyện Khí (qi/balanced), Trận Đạo (formation/mage) — 9 realms × 9 levels each
+- **Axis lock (season 2)**: the axis is chosen at `/register` and locked; extra axes open only by consuming **Đạo Nguyên Thạch** (extremely rare global world drop — `src/data/global_drops.json` → `registry.global_drops`, weight 20 = 0.002%/roll) in the `/cultivate` UI. `players.unlocked_axes` (comma list) is the source of truth; rules in `cultivation.parse_unlocked_axes`/`unlock_axis`; `apply_offline_ticks` refuses to switch to a locked axis. `Character.unlocked_axes` defaults to all-unlocked so direct constructions (tests/benches) behave pre-lock. Adding a `global_drops.json` entry shifts the post-win loot RNG stream — expect to re-pin `test_constitution_process_guard`'s log sha
 - **Turn system**: 1440 turns/day (1 turn = 1 real minute); first 440 turns = bonus (2× Công Đức, 0 Nghiệp Lực)
 - **Currencies**: Công Đức (merit, main spend), Nghiệp Lực (karma, two pools: Tích Lũy accumulated + Khả Dụng usable), Hỗn Nguyên Thạch (premium, drop-only)
 - **Damage formula**: `DMG = BaseSkill + MPCost` (no ATK/DEF stats — skills are the only damage source)

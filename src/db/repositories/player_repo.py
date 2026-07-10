@@ -110,7 +110,13 @@ class PlayerRepository:
         )
         return {pid: name for pid, name in result.all()}
 
-    async def create(self, discord_id: int, name: str) -> Player:
+    async def create(self, discord_id: int, name: str, axis: str = "qi") -> Player:
+        # Season-2 axis lock: the registration pick is the ONLY axis the
+        # player can cultivate until they consume a Đạo Nguyên Thạch.
+        from src.game.systems.cultivation import ALL_AXES, DEFAULT_AXIS
+        if axis not in ALL_AXES:
+            axis = DEFAULT_AXIS
+
         # Randomly assign 1–3 Linh Căn at registration
         count = random.randint(1, 3)
         linh_can_list = random.sample(ALL_LINH_CAN, count)
@@ -124,6 +130,8 @@ class PlayerRepository:
             name=name,
             linh_can=format_linh_can(linh_can_list),
             constitution_type=constitution_key,
+            active_axis=axis,
+            unlocked_axes=axis,
         )
         self._session.add(player)
         await self._session.flush()  # get player.id
@@ -262,6 +270,12 @@ def _parse_body_part_infusions(raw: str | None) -> dict[str, str]:
     return parse_infusions(raw)
 
 
+def _parse_unlocked_axes(raw: str | None) -> list[str]:
+    """Decode the unlocked_axes column (season-2 axis lock)."""
+    from src.game.systems.cultivation import parse_unlocked_axes
+    return parse_unlocked_axes(raw)
+
+
 def _player_to_model(player: Player):
     """Convert ORM Player to game Character dataclass for stat computation."""
     from src.game.models.character import Character as CharModel
@@ -298,6 +312,7 @@ def _player_to_model(player: Player):
         sub_title=player.sub_title,
         evil_title=player.evil_title,
         active_axis=player.active_axis,
+        unlocked_axes=_parse_unlocked_axes(getattr(player, "unlocked_axes", None)),
         body_xp=player.body_xp,
         qi_xp=player.qi_xp,
         formation_xp=player.formation_xp,

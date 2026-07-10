@@ -17,7 +17,10 @@ from src.game.systems.character_stats import (
     active_formation_gem_map,
     compute_combat_stats,
 )
-from src.game.systems.cultivation import get_active_formations
+from src.game.systems.cultivation import (
+    get_active_formations,
+    parse_unlocked_axes as _parse_axes,
+)
 from src.game.systems.the_chat import get_constitutions
 
 
@@ -78,6 +81,7 @@ def build_status_snapshot(player) -> tuple[dict, list[str]]:
         "formation_level": player.formation_level,
         "formation_xp":    player.formation_xp,
         "active_axis":     player.active_axis,
+        "unlocked_axes":   _parse_axes(getattr(player, "unlocked_axes", None)),
         "body_realm_label":      realm_label("body",      player.body_realm,      player.body_xp),
         "qi_realm_label":        realm_label("qi",        player.qi_realm,        player.qi_xp),
         "formation_realm_label": realm_label("formation", player.formation_realm, player.formation_xp),

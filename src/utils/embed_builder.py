@@ -269,6 +269,10 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
     ]
 
     from src.utils import emojis as _emojis
+    # Season-2 axis lock — locked axes render a padlock + unlock hint instead
+    # of a progress bar. Absent key (older callers / tests) means "no lock
+    # info": every axis renders as before.
+    unlocked_axes = stats.get("unlocked_axes")
     cult_lines: list[str] = []
     for axis_key, realm_k, level_k, xp_k, label_k in axes:
         icon      = _emojis.for_axis(axis_key)
@@ -280,6 +284,12 @@ def character_embed(player_name: str, stats: dict, avatar_url: str | None = None
         realm     = get_realm(axis_key, realm_idx)
         at_max    = level >= LEVELS_PER_REALM
         marker    = " **◀**" if axis_key == active_axis else ""
+
+        if unlocked_axes is not None and axis_key not in unlocked_axes:
+            cult_lines.append(
+                f"{icon} 🔒 **Chưa khai mở**\n  *Cần Đạo Nguyên Thạch 🗿 để mở con đường này.*"
+            )
+            continue
 
         header = f"{icon} {tier_icon} **{label}**{marker}"
         if at_max or realm is None:

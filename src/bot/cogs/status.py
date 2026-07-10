@@ -145,10 +145,12 @@ class StatusView(discord.ui.View):
                 await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
                 return
             active = player.active_axis or "qi"
+            from src.game.systems.cultivation import parse_unlocked_axes
+            unlocked = parse_unlocked_axes(player.unlocked_axes)
             result = await apply_offline_ticks(player, repo, active)
 
         embed = _cultivate_embed(active, result)
-        view = CultivateView(self._discord_id, active, back_fn=_show_status)
+        view = CultivateView(self._discord_id, active, back_fn=_show_status, unlocked=unlocked)
         await interaction.edit_original_response(embed=embed, view=view)
 
     async def _inventory_cb(self, interaction: discord.Interaction) -> None:

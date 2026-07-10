@@ -169,3 +169,31 @@ async def init_db() -> None:
                 END IF;
             END$$;
         """))
+
+        # ── 0026: players.unlocked_axes column ─────────────────────────────
+        # Season-2 axis lock. Backfill mirrors the Alembic migration's
+        # grandfather clause: active axis + every axis with real progress.
+        await conn.execute(text("""
+            DO $$
+            BEGIN
+                IF NOT EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                    WHERE table_name = 'players'
+                      AND column_name = 'unlocked_axes'
+                ) THEN
+                    ALTER TABLE players
+                        ADD COLUMN unlocked_axes VARCHAR(32) NOT NULL DEFAULT 'qi';
+                    UPDATE players SET unlocked_axes = active_axis;
+                    UPDATE players SET unlocked_axes = unlocked_axes || ',body'
+                     WHERE position('body' in unlocked_axes) = 0
+                       AND (body_realm > 0 OR body_level > 1 OR body_xp > 0);
+                    UPDATE players SET unlocked_axes = unlocked_axes || ',qi'
+                     WHERE position('qi' in unlocked_axes) = 0
+                       AND (qi_realm > 0 OR qi_level > 1 OR qi_xp > 0);
+                    UPDATE players SET unlocked_axes = unlocked_axes || ',formation'
+                     WHERE position('formation' in unlocked_axes) = 0
+                       AND (formation_realm > 0 OR formation_level > 1 OR formation_xp > 0);
+                    RAISE NOTICE 'auto-patched players.unlocked_axes column';
+                END IF;
+            END$$;
+        """))

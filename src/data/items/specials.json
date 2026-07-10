@@ -16,5 +16,14 @@
     "grade": 3,
     "shop_price_merit": 0,
     "description_vi": "Phù lục thiên đạo, nhân đôi công đức nhận được trong 30 ngày."
+  },
+  {
+    "key": "DaoNguyenThach",
+    "vi": "Đạo Nguyên Thạch",
+    "en": "Dao Origin Stone",
+    "type": "special",
+    "grade": 4,
+    "shop_price_merit": 0,
+    "description_vi": "Kỳ thạch ngưng tụ bản nguyên đại đạo — cực kỳ hiếm, có thể rơi từ bất kỳ hoạt động nào. Tiêu hao để khai mở thêm một trục tu luyện (Luyện Thể / Luyện Khí / Trận Đạo) trong giao diện Tu Luyện."
   }
 ]

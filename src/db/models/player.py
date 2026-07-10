@@ -45,6 +45,10 @@ class Player(Base, TimestampMixin):
 
     # ── Cultivation XP & active axis ──────────────────────────────────────
     active_axis: Mapped[str] = mapped_column(String(16), default="qi", nullable=False)
+    # Season-2 rule: the axis is chosen at registration and locked; extra
+    # axes open only via Đạo Nguyên Thạch (see ``cultivation.unlock_axis``).
+    # Comma-separated subset of "body,qi,formation".
+    unlocked_axes: Mapped[str] = mapped_column(String(32), default="qi", nullable=False)
     body_xp: Mapped[int]      = mapped_column(Integer, default=0, nullable=False)
     qi_xp: Mapped[int]        = mapped_column(Integer, default=0, nullable=False)
     formation_xp: Mapped[int] = mapped_column(Integer, default=0, nullable=False)

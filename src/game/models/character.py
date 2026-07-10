@@ -90,6 +90,14 @@ class Character:
     # Active cultivation axis
     active_axis: str = "qi"  # "body" | "qi" | "formation"
 
+    # Season-2 axis lock — the axes this player may cultivate. Populated from
+    # ``Player.unlocked_axes`` by ``_player_to_model``; the all-unlocked
+    # default keeps direct constructions (tests, balance benches, sims)
+    # behaving like pre-lock characters.
+    unlocked_axes: list[str] = field(
+        default_factory=lambda: ["body", "qi", "formation"]
+    )
+
     # Cultivation XP — accumulated toward the current realm's bậc table.
     # body/qi advance via turns × realm.base_exp_rate; formation advances
     # only via Công Đức conversion (see study_formation_with_merit).

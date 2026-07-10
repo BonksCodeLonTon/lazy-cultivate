@@ -932,6 +932,45 @@ def effective_formation_exp_per_merit(character: Character) -> float:
     return formation_exp_per_merit(character.formation_realm) * cultivation_speed_mult(character)
 
 
+# ── Axis unlocks (season-2 rule) ──────────────────────────────────────────────
+# Players pick ONE cultivation axis at registration and cannot switch freely.
+# Additional axes unlock only by consuming Đạo Nguyên Thạch — an extremely
+# rare world drop injected into every loot table (see src/data/global_drops.json).
+# ``Player.unlocked_axes`` stores the comma-separated unlocked set; parsing is
+# defensive so garbage/legacy rows degrade to the default qi axis.
+
+ALL_AXES: tuple[str, ...] = ("body", "qi", "formation")
+DEFAULT_AXIS = "qi"
+AXIS_UNLOCK_ITEM_KEY = "DaoNguyenThach"
+
+
+def parse_unlocked_axes(raw: str | None) -> list[str]:
+    """Decode the ``unlocked_axes`` column — invalid tokens are dropped, an
+    empty/garbage value degrades to ``[DEFAULT_AXIS]`` (never an empty set,
+    a player must always have somewhere to cultivate)."""
+    axes = [a.strip() for a in (raw or "").split(",")]
+    valid = [a for a in axes if a in ALL_AXES]
+    # Dedupe preserving canonical order.
+    out = [a for a in ALL_AXES if a in valid]
+    return out or [DEFAULT_AXIS]
+
+
+def format_unlocked_axes(axes: list[str]) -> str:
+    return ",".join(a for a in ALL_AXES if a in axes) or DEFAULT_AXIS
+
+
+def is_axis_unlocked(unlocked: list[str], axis: str) -> bool:
+    return axis in unlocked
+
+
+def unlock_axis(raw: str | None, axis: str) -> str:
+    """Return the new column value with ``axis`` added (idempotent)."""
+    axes = parse_unlocked_axes(raw)
+    if axis in ALL_AXES and axis not in axes:
+        axes.append(axis)
+    return format_unlocked_axes(axes)
+
+
 def study_formation_with_merit(character: Character, merits: int) -> dict:
     """Convert Công Đức into Trận Đạo EXP and re-derive bậc on the current
     formation realm's level table.
