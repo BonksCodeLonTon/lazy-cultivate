@@ -130,6 +130,25 @@ def apply_furnace_bonus(
     return out
 
 
+def apply_sect_quality_bonus(
+    quality_chances: dict[str, float],
+    bonus: float,
+) -> dict[str, float]:
+    """Fold the Tông Môn Luyện Đan Phòng tilt into a chances map.
+
+    Same semantics as :func:`apply_furnace_bonus`: ``bonus`` weight is added
+    to Huyền and removed from Hoàng (clamped at 0), so the facility upgrades
+    bottom-tier rolls without touching the Địa/Thiên jackpot odds that
+    furnaces and comprehension own. ``roll_quality`` renormalises downstream.
+    """
+    if bonus <= 0:
+        return dict(quality_chances)
+    out = dict(quality_chances)
+    out["huyen"] = out.get("huyen", 0.0) + float(bonus)
+    out["hoan"] = max(0.0, out.get("hoan", 0.0) - float(bonus))
+    return out
+
+
 def _select_ingredient_option(
     slot: dict,
     inventory_map: dict[str, int],
@@ -253,6 +272,11 @@ def craft_pill(
     comprehension = int(getattr(char.stats, "comprehension", 0) or 0)
     # Unique furnaces tilt the roll toward higher qualities.
     effective_chances = apply_furnace_bonus(recipe["quality_chances"], furnace)
+    # Tông Môn Luyện Đan Phòng — populated by the alchemy cog via
+    # ``sect.attach_sect_buffs``; empty ⇒ no-op.
+    effective_chances = apply_sect_quality_bonus(
+        effective_chances, float(char.sect_buffs.get("alchemy_quality_bonus", 0.0))
+    )
     quality = roll_quality(effective_chances, comprehension)
     tier = quality_tier_index(quality)
 

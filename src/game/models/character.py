@@ -129,6 +129,14 @@ class Character:
     # apply while ``active_axis == "body"`` — see ``systems/body_parts.py``.
     body_part_infusions: dict[str, str] = field(default_factory=dict)
 
+    # Tông Môn facility buffs — {buff_key: value}, e.g.
+    # {"cultivation_speed_bonus": 0.09}. NOT populated by ``_player_to_model``;
+    # repo-coupled callers that need it (offline tick, formation study,
+    # alchemy craft) call ``sect.attach_sect_buffs`` explicitly. Empty for
+    # sect-less players and for every combat path — sect buffs are
+    # utility-only in v1, so ``compute_combat_stats`` never reads this.
+    sect_buffs: dict[str, float] = field(default_factory=dict)
+
     # HP/MP/shield current (session state — persisted on the Player row)
     hp_current: int = 0
     mp_current: int = 0

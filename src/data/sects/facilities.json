@@ -1,0 +1,67 @@
+[
+  {
+    "key": "tu_linh_tran",
+    "vi": "Tụ Linh Trận",
+    "emoji": "🌀",
+    "order": 1,
+    "desc": "Đại trận tụ linh khí quanh sơn môn — toàn thể thành viên tu luyện nhanh hơn.",
+    "max_level": 10,
+    "min_sect_level": 1,
+    "buff_key": "cultivation_speed_bonus",
+    "buff_per_level": 0.03,
+    "buff_display": "+{pct} tốc độ tu luyện",
+    "upgrade_costs": [20000, 40000, 80000, 140000, 220000, 320000, 450000, 620000, 830000, 1100000]
+  },
+  {
+    "key": "luyen_dan_phong",
+    "vi": "Luyện Đan Phòng",
+    "emoji": "⚗️",
+    "order": 2,
+    "desc": "Đan phòng chung với địa hỏa ổn định — nâng phẩm chất đan dược luyện chế.",
+    "max_level": 10,
+    "min_sect_level": 1,
+    "buff_key": "alchemy_quality_bonus",
+    "buff_per_level": 0.005,
+    "buff_display": "+{pct} tỉ lệ Huyền Phẩm khi luyện đan",
+    "upgrade_costs": [20000, 40000, 80000, 140000, 220000, 320000, 450000, 620000, 830000, 1100000]
+  },
+  {
+    "key": "tang_kinh_cac",
+    "vi": "Tàng Kinh Các",
+    "emoji": "📚",
+    "order": 3,
+    "desc": "Kho công pháp tông môn — mở khóa mua bí tịch bằng Cống Hiến (sắp ra mắt).",
+    "max_level": 10,
+    "min_sect_level": 1,
+    "buff_key": null,
+    "buff_per_level": 0,
+    "buff_display": null,
+    "upgrade_costs": [20000, 40000, 80000, 140000, 220000, 320000, 450000, 620000, 830000, 1100000]
+  },
+  {
+    "key": "tu_bao_cac",
+    "vi": "Tụ Bảo Các",
+    "emoji": "🏪",
+    "order": 4,
+    "desc": "Bảo các trưng bày kỳ trân — thêm ô hàng luân chuyển cho cửa hàng tông môn (sắp ra mắt).",
+    "max_level": 10,
+    "min_sect_level": 1,
+    "buff_key": null,
+    "buff_per_level": 0,
+    "buff_display": null,
+    "upgrade_costs": [20000, 40000, 80000, 140000, 220000, 320000, 450000, 620000, 830000, 1100000]
+  },
+  {
+    "key": "kho_tang",
+    "vi": "Kho Tàng",
+    "emoji": "📦",
+    "order": 5,
+    "desc": "Kho chứa chung của tông môn — mỗi cấp thêm 5 ô chứa vật phẩm.",
+    "max_level": 10,
+    "min_sect_level": 2,
+    "buff_key": null,
+    "buff_per_level": 0,
+    "buff_display": null,
+    "upgrade_costs": [20000, 40000, 80000, 140000, 220000, 320000, 450000, 620000, 830000, 1100000]
+  }
+]

@@ -855,6 +855,21 @@ async def _run_duel(
         color = 0xF1C40F
         outcome = f"⏰ Hòa — hết **{result.turns}** lượt, chưa phân thắng bại."
 
+    # Sect daily mission credit for both duelists — record_event is a no-op
+    # for sect-less players and internally failure-proof; the try only guards
+    # session acquisition so a DB hiccup can't eat the result embed below.
+    try:
+        async with get_session() as session:
+            from src.game.systems import sect_missions
+            await sect_missions.record_event(
+                session, challenger_loadout.char.player_id, sect_missions.EVENT_ARENA_DUEL
+            )
+            await sect_missions.record_event(
+                session, target_loadout.char.player_id, sect_missions.EVENT_ARENA_DUEL
+            )
+    except Exception as e:  # noqa: BLE001
+        log.warning("Sect mission credit failed (arena duel): %s", e)
+
     summary = base_embed("⚔️ Đối Chiến — Kết Quả", outcome, color=color)
     summary.add_field(
         name="Đối Thủ",

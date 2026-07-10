@@ -23,13 +23,17 @@ from src.bot.cogs.cultivation import (
 log = logging.getLogger(__name__)
 
 
-def _make_status_embed(player, avatar_url: str | None = None) -> discord.Embed:
+def _make_status_embed(
+    player, avatar_url: str | None = None, sect_tag: str | None = None
+) -> discord.Embed:
     from src.game.constants.linh_can import LINH_CAN_DATA
     from src.game.systems.the_chat import get_constitutions
     from src.data.registry import registry
 
     stats, linh_can_list = build_status_snapshot(player)
-    embed = character_embed(player.name, stats, avatar_url=avatar_url)
+    # Tông Môn tag prefixes the title — membership identity at a glance.
+    display_name = f"[{sect_tag}] {player.name}" if sect_tag else player.name
+    embed = character_embed(display_name, stats, avatar_url=avatar_url)
 
     if linh_can_list:
         # One-liner per linh-can — name + emoji only. Full description lives
@@ -72,12 +76,16 @@ async def _show_status(interaction: discord.Interaction) -> None:
     async with get_session() as session:
         repo = PlayerRepository(session)
         player = await repo.get_by_discord_id(interaction.user.id)
+        sect_tag = None
+        if player is not None:
+            from src.db.repositories.sect_repo import SectRepository
+            sect_tag = await SectRepository(session).get_tag_for_player(player.id)
 
     if player is None:
         await interaction.edit_original_response(embed=error_embed("Chưa có nhân vật."), view=None)
         return
 
-    embed = _make_status_embed(player, interaction.user.display_avatar.url)
+    embed = _make_status_embed(player, interaction.user.display_avatar.url, sect_tag=sect_tag)
     await interaction.edit_original_response(embed=embed, view=StatusView(interaction.user.id))
 
 
@@ -100,6 +108,7 @@ class StatusView(discord.ui.View):
             ("🎒 Túi Đồ",            discord.ButtonStyle.secondary, self._inventory_cb,     2),
             ("⚒️ Thiên Công Phường", discord.ButtonStyle.secondary, self._forge_cb,         2),
             ("⚗️ Luyện Đan",         discord.ButtonStyle.secondary, self._alchemy_cb,       2),
+            ("🏯 Tông Môn",          discord.ButtonStyle.secondary, self._tongmon_cb,       2),
             ("🏪 Phường Thị",        discord.ButtonStyle.secondary, self._shop_cb,          3),
             ("🏮 Đấu Thương Các",    discord.ButtonStyle.secondary, self._market_cb,        3),
             ("📖 Cẩm Nang",          discord.ButtonStyle.primary,   self._handbook_cb,      3),
@@ -111,6 +120,17 @@ class StatusView(discord.ui.View):
 
     def _guard(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self._discord_id
+
+    async def _tongmon_cb(self, interaction: discord.Interaction) -> None:
+        if not self._guard(interaction):
+            await interaction.response.send_message("Đây không phải cửa sổ của bạn.", ephemeral=True)
+            return
+        if not await safe_defer(interaction):
+            return
+        # Lazy import — tong_mon also renders back into other screens; keeping
+        # the import here avoids any load-order coupling between the two cogs.
+        from src.bot.cogs.tong_mon import _render_sect_hub
+        await _render_sect_hub(interaction, self._discord_id)
 
     async def _cultivate_cb(self, interaction: discord.Interaction) -> None:
         if not self._guard(interaction):
@@ -530,6 +550,10 @@ class StatusCog(commands.Cog, name="Status"):
         async with get_session() as session:
             repo = PlayerRepository(session)
             player = await repo.get_by_discord_id(interaction.user.id)
+            sect_tag = None
+            if player is not None:
+                from src.db.repositories.sect_repo import SectRepository
+                sect_tag = await SectRepository(session).get_tag_for_player(player.id)
 
         if player is None:
             await interaction.followup.send(
@@ -538,7 +562,7 @@ class StatusCog(commands.Cog, name="Status"):
             )
             return
 
-        embed = _make_status_embed(player, interaction.user.display_avatar.url)
+        embed = _make_status_embed(player, interaction.user.display_avatar.url, sect_tag=sect_tag)
         view = StatusView(interaction.user.id)
         await interaction.followup.send(embed=embed, view=view, ephemeral=True)
 

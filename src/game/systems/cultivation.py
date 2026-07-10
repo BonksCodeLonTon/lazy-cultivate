@@ -879,6 +879,10 @@ def advance_cultivation_xp(character: Character, turns: int) -> dict:
         character.body_realm,
     )
     speed_mult = 1.0 + float(const_bonuses.get("cultivation_speed_bonus", 0.0))
+    # Tông Môn Tụ Linh Trận — additive facility term. ``sect_buffs`` is only
+    # populated by repo-coupled callers (``sect.attach_sect_buffs``); empty
+    # for sect-less players, so this is a no-op outside sect flows.
+    speed_mult += float(character.sect_buffs.get("cultivation_speed_bonus", 0.0))
     # Đan Độc penalty — pill toxicity drags down EXP gain. Floored at
     # MIN_CULT_SPEED_MULT so a fully-poisoned player still earns *some*
     # progress instead of stalling out completely.
@@ -918,6 +922,8 @@ def cultivation_speed_mult(character: Character) -> float:
         character.body_realm,
     )
     speed = 1.0 + float(const_bonuses.get("cultivation_speed_bonus", 0.0))
+    # Tông Môn Tụ Linh Trận — same additive slot as the constitution bonus.
+    speed += float(character.sect_buffs.get("cultivation_speed_bonus", 0.0))
     return max(MIN_CULT_SPEED_MULT, speed - cult_speed_penalty(character.dan_doc))
 
 

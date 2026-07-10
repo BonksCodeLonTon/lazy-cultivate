@@ -1,0 +1,20 @@
+{
+  "fixed": [
+    {"item_key": "DanHoiHPSmall", "grade": 1, "price_ch": 50,   "weekly_limit": 0},
+    {"item_key": "DanHoiMPSmall", "grade": 1, "price_ch": 50,   "weekly_limit": 0},
+    {"item_key": "DanHoiHPMid",   "grade": 2, "price_ch": 120,  "weekly_limit": 0},
+    {"item_key": "DanHoiMPMid",   "grade": 2, "price_ch": 120,  "weekly_limit": 0},
+    {"item_key": "ChestHoang",    "grade": 1, "price_ch": 400,  "weekly_limit": 0},
+    {"item_key": "ChestHuyen",    "grade": 2, "price_ch": 1200, "weekly_limit": 1}
+  ],
+  "rotating": [
+    {"item_key": "DanHoiHPLarge", "grade": 2, "price_ch": 250,   "weekly_limit": 0, "min_tu_bao_level": 0},
+    {"item_key": "DanHoiMPLarge", "grade": 2, "price_ch": 250,   "weekly_limit": 0, "min_tu_bao_level": 0},
+    {"item_key": "DanHoiHPMP",    "grade": 2, "price_ch": 200,   "weekly_limit": 0, "min_tu_bao_level": 0},
+    {"item_key": "DanHoiFull",    "grade": 3, "price_ch": 800,   "weekly_limit": 2, "min_tu_bao_level": 0},
+    {"item_key": "ChestDanLoG1",  "grade": 1, "price_ch": 2500,  "weekly_limit": 1, "min_tu_bao_level": 0},
+    {"item_key": "ChestDuocVien", "grade": 2, "price_ch": 4000,  "weekly_limit": 1, "min_tu_bao_level": 0},
+    {"item_key": "ChestDia",      "grade": 3, "price_ch": 4000,  "weekly_limit": 1, "min_tu_bao_level": 5},
+    {"item_key": "ChestLuyenDan", "grade": 3, "price_ch": 15000, "weekly_limit": 1, "min_tu_bao_level": 5}
+  ]
+}

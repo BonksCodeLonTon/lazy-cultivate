@@ -784,6 +784,13 @@ async def _execute_dungeon(
             grant_merit(player, merit_total)
             if stone_gained:
                 player.primordial_stones = min(player.primordial_stones + stone_gained, CURRENCY_CAP)
+            # Sect daily mission credit — successful clears only. No-op for
+            # sect-less players, internally failure-proof.
+            if dungeon_success:
+                from src.game.systems import sect_missions
+                await sect_missions.record_event(
+                    session, player.id, sect_missions.EVENT_DUNGEON_CLEAR
+                )
             # Auto-heal HP / MP / shield to max after every dungeon (success
             # OR failure). Apply offline ticks first so any pending level-up
             # materializes before we re-cap, otherwise the entry-time

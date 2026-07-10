@@ -28,6 +28,7 @@ from src.game.systems.combat import (
     CombatEndReason, CombatSession,
     build_player_combatant, build_world_boss_combatant,
 )
+from src.game.systems import sect_missions
 from src.game.systems.dungeon import compute_realm_total
 from src.game.systems.world_boss import (
     ATTACK_ROUND_LIMIT, PER_ATTACK_DMG_CAP_PCT,
@@ -354,6 +355,11 @@ async def _execute_boss_attack_inner(
                     cap_hit = True
                 if applied_damage > 0:
                     await wrepo.upsert_damage(instance_id, player.id, applied_damage)
+                # Sect daily mission credit — no-op for sect-less players,
+                # internally failure-proof (never fails the attack).
+                await sect_missions.record_event(
+                    session, player.id, sect_missions.EVENT_WORLD_BOSS_ATTACK
+                )
 
             # Auto-heal HP / MP / shield to max after each world-boss attack
             # (mirror of the post-dungeon heal). Players walk away ready for

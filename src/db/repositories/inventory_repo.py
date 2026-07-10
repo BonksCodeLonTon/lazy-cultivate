@@ -98,6 +98,84 @@ class InventoryRepository:
         item = await self.get_item(player_id, item_key, grade)
         return item is not None and item.quantity >= quantity
 
+    # ── Raw-grade variants ──────────────────────────────────────────────────
+    # Inventory rows can carry historical grades outside the Grade enum
+    # (legacy material drops stored template grades up to 6). Flows that must
+    # round-trip ANY row losslessly — sect storage deposits/withdrawals — use
+    # these int-grade variants instead of the enum API.
+
+    async def get_quantity_raw(self, player_id: int, item_key: str, grade: int) -> int:
+        """Owned quantity for an exact (item_key, raw int grade) row — 0 if none."""
+        result = await self._session.execute(
+            select(InventoryItem.quantity).where(
+                InventoryItem.player_id == player_id,
+                InventoryItem.item_key == item_key,
+                InventoryItem.grade == int(grade),
+            )
+        )
+        return int(result.scalar_one_or_none() or 0)
+
+    async def add_item_raw(
+        self, player_id: int, item_key: str, grade: int, quantity: int = 1,
+    ) -> InventoryItem:
+        """``add_item`` accepting a raw int grade (bypasses the Grade enum)."""
+        result = await self._session.execute(
+            select(InventoryItem).where(
+                InventoryItem.player_id == player_id,
+                InventoryItem.item_key == item_key,
+                InventoryItem.grade == int(grade),
+            )
+        )
+        existing = result.scalar_one_or_none()
+        if existing:
+            existing.quantity += quantity
+            return existing
+
+        item = InventoryItem(
+            player_id=player_id,
+            item_key=item_key,
+            grade=int(grade),
+            quantity=quantity,
+        )
+        self._session.add(item)
+        await self._session.flush()
+        return item
+
+    async def try_remove_item_raw(
+        self, player_id: int, item_key: str, grade: int, quantity: int,
+    ) -> bool:
+        """``try_remove_item`` accepting a raw int grade — same conditional
+        UPDATE + zero-row sweep, so concurrent removals serialize safely."""
+        if quantity <= 0:
+            return False
+
+        update_stmt = (
+            update(InventoryItem)
+            .where(
+                InventoryItem.player_id == player_id,
+                InventoryItem.item_key == item_key,
+                InventoryItem.grade == int(grade),
+                InventoryItem.quantity >= quantity,
+            )
+            .values(quantity=InventoryItem.quantity - quantity)
+            .execution_options(synchronize_session=False)
+        )
+        result = await self._session.execute(update_stmt)
+        if result.rowcount == 0:
+            return False
+
+        await self._session.execute(
+            delete(InventoryItem)
+            .where(
+                InventoryItem.player_id == player_id,
+                InventoryItem.item_key == item_key,
+                InventoryItem.grade == int(grade),
+                InventoryItem.quantity == 0,
+            )
+            .execution_options(synchronize_session=False)
+        )
+        return True
+
     async def try_remove_item(
         self, player_id: int, item_key: str, grade: Grade, quantity: int,
     ) -> bool:

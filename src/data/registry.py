@@ -30,6 +30,12 @@ class GameRegistry:
         self.forge_recipes: list[dict] = []            # grade-ordered forge recipe list
         self.world_bosses: dict[str, dict] = {}        # key → world boss definition
         self.pill_recipes: dict[str, dict] = {}        # key → Luyện Đan recipe
+        self.sect_levels: list[dict] = []              # Tông Môn level curve (sorted by level)
+        self.sect_facilities: dict[str, dict] = {}     # key → Tông Môn facility definition
+        self.sect_shop: dict[str, list[dict]] = {}     # {"fixed": [...], "rotating": [...]}
+        self.sect_missions: list[dict] = []            # Tông Môn daily mission definitions
+        self.sect_bosses: dict[str, dict] = {}         # key → Trấn Sơn Thú boss definition
+        self.sect_mines: dict[str, dict] = {}          # key → Khoáng Mạch mine definition
         self._loaded = False
 
     @classmethod
@@ -87,6 +93,12 @@ class GameRegistry:
         self.forge_recipes = self._load_forge_recipes()
         self.world_bosses = self._load_keyed("world_bosses.json")
         self.pill_recipes = self._load_pill_recipes()
+        self.sect_levels = self._load_sect_levels()
+        self.sect_facilities = self._load_keyed("sects/facilities.json")
+        self.sect_shop = self._load_sect_shop()
+        self.sect_missions = self._load_keyed_list("sects/sect_missions.json")
+        self.sect_bosses = self._load_keyed("sects/sect_bosses.json")
+        self.sect_mines = self._load_keyed("sects/mines.json")
         # Derived view: per-prefix grade-1 bonus, used by the handbook gem
         # table. Built after ``_load_items`` already merged gem entries into
         # ``self.items``.
@@ -414,6 +426,36 @@ class GameRegistry:
             return {}
         data = json.loads(path.read_text(encoding="utf-8"))
         return {item["key"]: item for item in data}
+
+    def _load_sect_levels(self) -> list[dict]:
+        """Load the Tông Môn level curve from ``src/data/sects/sect_levels.json``.
+
+        Returns the rows sorted by ``level`` so ``sect.level_row`` can index
+        directly. Consumed by ``src.game.systems.sect``.
+        """
+        path = DATA_DIR / "sects" / "sect_levels.json"
+        if not path.exists():
+            log.error(f"GameRegistry: Thiếu file dữ liệu quan trọng: {path}")
+            return []
+        rows = json.loads(path.read_text(encoding="utf-8"))
+        return sorted(rows, key=lambda r: int(r["level"]))
+
+    def _load_keyed_list(self, filename: str) -> list[dict]:
+        """Load a JSON list file verbatim (order preserved)."""
+        path = DATA_DIR / filename
+        if not path.exists():
+            log.error(f"GameRegistry: Thiếu file dữ liệu quan trọng: {path}")
+            return []
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def _load_sect_shop(self) -> dict[str, list[dict]]:
+        """Load the Tông Môn shop catalog (``{"fixed": [...], "rotating": [...]}``)."""
+        path = DATA_DIR / "sects" / "sect_shop.json"
+        if not path.exists():
+            log.error(f"GameRegistry: Thiếu file dữ liệu quan trọng: {path}")
+            return {"fixed": [], "rotating": []}
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return {"fixed": data.get("fixed", []), "rotating": data.get("rotating", [])}
 
     def _load_loot_table_dir(self) -> dict[str, list[dict]]:
         """Merge all JSON files from src/data/loot_tables/ into one loot-table dict.

@@ -1068,6 +1068,93 @@ class AdminCog(commands.Cog, name="Admin"):
         )
         await interaction.followup.send(embed=success_embed(summary), ephemeral=True)
 
+    # ── Tông Môn moderation ──────────────────────────────────────────────────
+
+    @app_commands.command(
+        name="admin_sect_disband",
+        description="[Admin] Cưỡng chế giải tán một Tông Môn (tên/tag vi phạm, chủ bỏ bê...)",
+    )
+    @app_commands.default_permissions(administrator=True)
+    @_owner_only()
+    @app_commands.describe(ten="Tên Tông Môn cần giải tán")
+    async def admin_sect_disband(self, interaction: discord.Interaction, ten: str) -> None:
+        from src.db.repositories.sect_repo import SectRepository
+
+        if not await safe_defer(interaction, ephemeral=True):
+            return
+        async with get_session() as session:
+            srepo = SectRepository(session)
+            sect = await srepo.get_sect_by_name(ten)
+            if sect is None:
+                await interaction.followup.send(
+                    embed=error_embed(f"Không tìm thấy Tông Môn **{ten}**."), ephemeral=True
+                )
+                return
+            name, tag = sect.name, sect.tag
+            await srepo.delete_sect(sect)
+        await interaction.followup.send(
+            embed=success_embed(f"Đã cưỡng chế giải tán **[{tag}] {name}**."), ephemeral=True
+        )
+
+    @app_commands.command(
+        name="admin_sect_rename",
+        description="[Admin] Đổi tên / tag một Tông Môn",
+    )
+    @app_commands.default_permissions(administrator=True)
+    @_owner_only()
+    @app_commands.describe(
+        ten="Tên Tông Môn hiện tại",
+        ten_moi="Tên mới (bỏ trống = giữ nguyên)",
+        tag_moi="Tag mới (bỏ trống = giữ nguyên)",
+    )
+    async def admin_sect_rename(
+        self,
+        interaction: discord.Interaction,
+        ten: str,
+        ten_moi: str | None = None,
+        tag_moi: str | None = None,
+    ) -> None:
+        from sqlalchemy.exc import IntegrityError
+
+        from src.db.repositories.sect_repo import SectRepository
+        from src.game.systems import sect as sect_rules
+
+        if not await safe_defer(interaction, ephemeral=True):
+            return
+        async with get_session() as session:
+            srepo = SectRepository(session)
+            sect = await srepo.get_sect_by_name(ten)
+            if sect is None:
+                await interaction.followup.send(
+                    embed=error_embed(f"Không tìm thấy Tông Môn **{ten}**."), ephemeral=True
+                )
+                return
+            if ten_moi:
+                new_name, err = sect_rules.validate_sect_name(ten_moi)
+                if err:
+                    await interaction.followup.send(embed=error_embed(err), ephemeral=True)
+                    return
+                sect.name = new_name
+            if tag_moi:
+                new_tag, err = sect_rules.validate_sect_tag(tag_moi)
+                if err:
+                    await interaction.followup.send(embed=error_embed(err), ephemeral=True)
+                    return
+                sect.tag = new_tag
+            try:
+                await session.flush()
+            except IntegrityError:
+                await session.rollback()
+                await interaction.followup.send(
+                    embed=error_embed("Tên hoặc tag mới đã có Tông Môn khác sử dụng."),
+                    ephemeral=True,
+                )
+                return
+            label = f"[{sect.tag}] {sect.name}"
+        await interaction.followup.send(
+            embed=success_embed(f"Đã cập nhật thành **{label}**."), ephemeral=True
+        )
+
 
 async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(AdminCog(bot))

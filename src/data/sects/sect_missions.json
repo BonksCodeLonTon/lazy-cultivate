@@ -1,0 +1,38 @@
+[
+  {
+    "key": "dungeon_clear",
+    "vi": "Càn quét Bí Cảnh",
+    "emoji": "🗺️",
+    "desc": "Hoàn thành 2 lượt Bí Cảnh thành công.",
+    "target": 2,
+    "reward_ch": 50,
+    "reward_exp": 100
+  },
+  {
+    "key": "world_boss_attack",
+    "vi": "Thảo phạt Boss Thế Giới",
+    "emoji": "🌌",
+    "desc": "Tấn công Boss Thế Giới 1 lần.",
+    "target": 1,
+    "reward_ch": 50,
+    "reward_exp": 100
+  },
+  {
+    "key": "alchemy_craft",
+    "vi": "Luyện Đan trợ tông",
+    "emoji": "⚗️",
+    "desc": "Luyện chế 3 viên đan dược.",
+    "target": 3,
+    "reward_ch": 50,
+    "reward_exp": 100
+  },
+  {
+    "key": "arena_duel",
+    "vi": "Thí Luyện Đài luận võ",
+    "emoji": "🏯",
+    "desc": "Tham gia 1 trận Đối Chiến.",
+    "target": 1,
+    "reward_ch": 50,
+    "reward_exp": 100
+  }
+]

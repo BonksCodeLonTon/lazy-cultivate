@@ -10,10 +10,13 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from src.db.repositories.player_repo import _player_to_model
 from src.game.constants.currencies import SECONDS_PER_TURN
 from src.game.engine.tick import compute_offline_ticks
 from src.game.systems.merit import merit_multiplier
+from src.game.systems.sect import get_member_buffs
 
 
 def pre_breakthrough_realm(player, axis: str) -> int:
@@ -51,6 +54,12 @@ async def apply_offline_ticks(player, repo, axis: str) -> dict:
         return result
 
     char = _player_to_model(player)
+    # Tông Môn facility buffs (Tụ Linh Trận cultivation speed) — one indexed
+    # join, {} for sect-less players. The isinstance guard skips the lookup
+    # when callers hand in a mocked repo without a live session.
+    session = getattr(repo, "_session", None)
+    if isinstance(session, AsyncSession):
+        char.sect_buffs = await get_member_buffs(session, player.id)
     result = compute_offline_ticks(
         char, tracker.last_tick_at,
         merit_multiplier=merit_multiplier(player),

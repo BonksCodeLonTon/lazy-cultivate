@@ -1,0 +1,90 @@
+[
+  {
+    "key": "SectBossT1_TranSonThachQuy",
+    "vi": "Trấn Sơn Thạch Quỷ",
+    "en": "Mountain-Warding Stone Fiend",
+    "element": "tho",
+    "min_sect_level": 3,
+    "base_hp": 1500000,
+    "hp_per_level": 0.15,
+    "base_spd": 9,
+    "base_atk": 220,
+    "base_matk": 200,
+    "base_def": 140,
+    "base_evasion": 150,
+    "final_dmg_reduce": 0.15,
+    "immune_hard_cc": true,
+    "skill_pool": [
+      "EnemyDungeon_Tho_CuongGia_R4",
+      "EnemyDungeon_Tho_HungManh_R5",
+      "EnemyDungeon_Kim_CuongGia_R4"
+    ],
+    "description_vi": "Thạch quỷ ngàn năm trấn giữ long mạch dưới sơn môn — thân đá rắn như tinh thiết, mỗi tuần lại trồi lên thử thách đệ tử.",
+    "reward": {
+      "participation_chest": "ChestHoang",
+      "top3_chest": "ChestHuyen",
+      "participation_ch": 300,
+      "sect_exp": 5000,
+      "sect_funds": 20000
+    }
+  },
+  {
+    "key": "SectBossT2_HacPhongLangVuong",
+    "vi": "Hắc Phong Lang Vương",
+    "en": "Black Gale Wolf King",
+    "element": "phong",
+    "min_sect_level": 6,
+    "base_hp": 6000000,
+    "hp_per_level": 0.15,
+    "base_spd": 18,
+    "base_atk": 420,
+    "base_matk": 380,
+    "base_def": 220,
+    "base_evasion": 500,
+    "final_dmg_reduce": 0.18,
+    "immune_hard_cc": true,
+    "skill_pool": [
+      "EnemyDungeon_Phong_HungManh_R5",
+      "EnemyDungeon_Phong_HungManh_R6",
+      "EnemyDungeon_Phong_DaiNang_R7",
+      "EnemyDungeon_Loi_HungManh_R6"
+    ],
+    "description_vi": "Lang vương cưỡi cuồng phong đen kịt, dẫn bầy quấy phá linh điền — móng vuốt xé gió nhanh đến mức chỉ còn tiếng hú ở lại.",
+    "reward": {
+      "participation_chest": "ChestHuyen",
+      "top3_chest": "ChestDia",
+      "participation_ch": 350,
+      "sect_exp": 6000,
+      "sect_funds": 30000
+    }
+  },
+  {
+    "key": "SectBossT3_CuuUHuyetGiao",
+    "vi": "Cửu U Huyết Giao",
+    "en": "Nine-Nether Blood Flood-Dragon",
+    "element": "am",
+    "min_sect_level": 9,
+    "base_hp": 15000000,
+    "hp_per_level": 0.15,
+    "base_spd": 15,
+    "base_atk": 700,
+    "base_matk": 720,
+    "base_def": 320,
+    "base_evasion": 700,
+    "final_dmg_reduce": 0.22,
+    "immune_hard_cc": true,
+    "skill_pool": [
+      "EnemyAm_T2",
+      "EnemyAm_T3",
+      "EnemyDungeon_Am_ChiTon_R10"
+    ],
+    "description_vi": "Huyết giao trồi lên từ chín tầng u minh, thân phủ vảy máu — chỉ những tông môn đứng đầu thiên hạ mới dám khiêu chiến.",
+    "reward": {
+      "participation_chest": "ChestDia",
+      "top3_chest": "ChestDia",
+      "participation_ch": 400,
+      "sect_exp": 8000,
+      "sect_funds": 50000
+    }
+  }
+]

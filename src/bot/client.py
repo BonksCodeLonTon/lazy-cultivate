@@ -31,6 +31,7 @@ COGS = [
     "src.bot.cogs.the_tu",
     "src.bot.cogs.handbook",
     "src.bot.cogs.arena",
+    "src.bot.cogs.tong_mon",
     "src.bot.cogs.admin",
 ]
 

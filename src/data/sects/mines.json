@@ -1,0 +1,92 @@
+[
+  {
+    "key": "mo_thanh_son", "vi": "Mỏ Thanh Sơn", "tier": "thap", "element": "moc",
+    "funds_per_hour": 250,
+    "garrison": {
+      "vi": "Mộc Linh Thủ Vệ", "element": "moc", "base_hp": 800000,
+      "base_spd": 10, "base_atk": 200, "base_matk": 180, "base_def": 110, "base_evasion": 150,
+      "final_dmg_reduce": 0.12, "immune_hard_cc": true,
+      "skill_pool": ["EnemyDungeon_Tho_CuongGia_R4", "EnemyDungeon_Kim_CuongGia_R4"]
+    }
+  },
+  {
+    "key": "mo_hoang_thach", "vi": "Mỏ Hoàng Thạch", "tier": "thap", "element": "tho",
+    "funds_per_hour": 250,
+    "garrison": {
+      "vi": "Thạch Giáp Thú", "element": "tho", "base_hp": 800000,
+      "base_spd": 8, "base_atk": 210, "base_matk": 170, "base_def": 130, "base_evasion": 120,
+      "final_dmg_reduce": 0.12, "immune_hard_cc": true,
+      "skill_pool": ["EnemyDungeon_Tho_CuongGia_R4", "EnemyDungeon_Tho_HungManh_R5"]
+    }
+  },
+  {
+    "key": "mo_bach_vu", "vi": "Mỏ Bạch Vũ", "tier": "thap", "element": "kim",
+    "funds_per_hour": 250,
+    "garrison": {
+      "vi": "Kim Sa Yêu Hầu", "element": "kim", "base_hp": 800000,
+      "base_spd": 12, "base_atk": 220, "base_matk": 180, "base_def": 100, "base_evasion": 200,
+      "final_dmg_reduce": 0.12, "immune_hard_cc": true,
+      "skill_pool": ["EnemyDungeon_Kim_CuongGia_R4", "EnemyDungeon_Kim_HungManh_R5"]
+    }
+  },
+  {
+    "key": "mo_han_tuyen", "vi": "Mỏ Hàn Tuyền", "tier": "thap", "element": "thuy",
+    "funds_per_hour": 250,
+    "garrison": {
+      "vi": "Hàn Băng Giao Long", "element": "thuy", "base_hp": 800000,
+      "base_spd": 11, "base_atk": 190, "base_matk": 210, "base_def": 105, "base_evasion": 170,
+      "final_dmg_reduce": 0.12, "immune_hard_cc": true,
+      "skill_pool": ["EnemyDungeon_Tho_CuongGia_R5", "EnemyDungeon_Kim_CuongGia_R5"]
+    }
+  },
+  {
+    "key": "mo_xich_diem", "vi": "Mỏ Xích Diễm", "tier": "trung", "element": "hoa",
+    "funds_per_hour": 600,
+    "garrison": {
+      "vi": "Xích Diễm Ma Hổ", "element": "hoa", "base_hp": 2500000,
+      "base_spd": 14, "base_atk": 380, "base_matk": 360, "base_def": 190, "base_evasion": 350,
+      "final_dmg_reduce": 0.15, "immune_hard_cc": true,
+      "skill_pool": ["EnemyDungeon_Loi_HungManh_R5", "EnemyDungeon_Loi_HungManh_R6"]
+    }
+  },
+  {
+    "key": "mo_cuong_loi", "vi": "Mỏ Cuồng Lôi", "tier": "trung", "element": "loi",
+    "funds_per_hour": 600,
+    "garrison": {
+      "vi": "Lôi Đình Cự Viên", "element": "loi", "base_hp": 2500000,
+      "base_spd": 16, "base_atk": 360, "base_matk": 400, "base_def": 180, "base_evasion": 400,
+      "final_dmg_reduce": 0.15, "immune_hard_cc": true,
+      "skill_pool": ["EnemyDungeon_Loi_HungManh_R6", "EnemyDungeon_Loi_HungManh_R7"]
+    }
+  },
+  {
+    "key": "mo_phong_nha", "vi": "Mỏ Phong Nha", "tier": "trung", "element": "phong",
+    "funds_per_hour": 600,
+    "garrison": {
+      "vi": "Phong Ma Ưng Vương", "element": "phong", "base_hp": 2500000,
+      "base_spd": 18, "base_atk": 390, "base_matk": 350, "base_def": 170, "base_evasion": 480,
+      "final_dmg_reduce": 0.15, "immune_hard_cc": true,
+      "skill_pool": ["EnemyDungeon_Phong_HungManh_R5", "EnemyDungeon_Phong_HungManh_R6"]
+    }
+  },
+  {
+    "key": "mo_quang_minh", "vi": "Mỏ Quang Minh", "tier": "cao", "element": "quang",
+    "funds_per_hour": 1250,
+    "garrison": {
+      "vi": "Quang Diệu Thánh Sư", "element": "quang", "base_hp": 6000000,
+      "base_spd": 16, "base_atk": 560, "base_matk": 580, "base_def": 260, "base_evasion": 550,
+      "final_dmg_reduce": 0.18, "immune_hard_cc": true,
+      "skill_pool": ["EnemyDungeon_Phong_DaiNang_R7", "EnemyDungeon_Kim_DaiNang_R7"]
+    }
+  },
+  {
+    "key": "mo_huyen_am", "vi": "Mỏ Huyền Âm", "tier": "cuc_pham", "element": "am",
+    "funds_per_hour": 2500,
+    "garrison": {
+      "vi": "Huyền Âm Quỷ Đế", "element": "am", "base_hp": 12000000,
+      "base_spd": 15, "base_atk": 680, "base_matk": 700, "base_def": 300, "base_evasion": 650,
+      "final_dmg_reduce": 0.20, "immune_hard_cc": true,
+      "skill_pool": ["EnemyAm_T2", "EnemyAm_T3", "EnemyDungeon_Am_CuongGia_R5"]
+    }
+  }
+]

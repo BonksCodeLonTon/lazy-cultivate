@@ -1,0 +1,12 @@
+[
+  {"level": 1,  "exp_to_next": 30000,   "member_cap": 10, "donation_cap": 5000,  "unlocks": ["shop_fixed", "diemdanh"]},
+  {"level": 2,  "exp_to_next": 60000,   "member_cap": 12, "donation_cap": 6000,  "unlocks": ["kho_tang", "missions"]},
+  {"level": 3,  "exp_to_next": 110000,  "member_cap": 14, "donation_cap": 7000,  "unlocks": ["sect_boss"]},
+  {"level": 4,  "exp_to_next": 200000,  "member_cap": 16, "donation_cap": 8000,  "unlocks": ["khoang_mach"]},
+  {"level": 5,  "exp_to_next": 300000,  "member_cap": 18, "donation_cap": 9000,  "unlocks": ["shop_rotating"]},
+  {"level": 6,  "exp_to_next": 400000,  "member_cap": 20, "donation_cap": 10000, "unlocks": []},
+  {"level": 7,  "exp_to_next": 550000,  "member_cap": 22, "donation_cap": 11000, "unlocks": []},
+  {"level": 8,  "exp_to_next": 750000,  "member_cap": 24, "donation_cap": 12000, "unlocks": []},
+  {"level": 9,  "exp_to_next": 1100000, "member_cap": 26, "donation_cap": 13000, "unlocks": []},
+  {"level": 10, "exp_to_next": 0,       "member_cap": 28, "donation_cap": 14000, "unlocks": ["emblem"]}
+]

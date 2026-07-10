@@ -24,7 +24,9 @@ from src.game.systems.alchemy import (
     craft_pill,
     get_recipe,
 )
+from src.game.systems import sect_missions
 from src.game.systems.pill_buffs import is_buff_pill
+from src.game.systems.sect import attach_sect_buffs
 from src.utils import emojis
 from src.utils.discord_safe import safe_defer
 from src.utils.embed_builder import base_embed, error_embed, success_embed
@@ -987,6 +989,8 @@ async def _do_craft(
             return BulkCraftResult(False, "Không tìm thấy nhân vật.", requested=requested)
 
         char = _player_to_model(player)
+        # Tông Môn Luyện Đan Phòng — quality tilt read inside craft_pill.
+        await attach_sect_buffs(session, char)
 
         bag: dict[str, int] = {}
         owned_furnace_keys: list[str] = []
@@ -1070,6 +1074,12 @@ async def _do_craft(
                     )
 
         await player_repo.save(player)
+
+        # Sect daily mission credit — one tick per pill crafted. No-op for
+        # sect-less players, internally failure-proof.
+        await sect_missions.record_event(
+            session, player.id, sect_missions.EVENT_ALCHEMY_CRAFT, crafted
+        )
 
     return BulkCraftResult(
         success=True,
