@@ -72,7 +72,9 @@ def run_benchmark(body_key: str) -> tuple[int, float, float]:
     ``end_pool`` is (hp + shield) / (hp_max + shield_cap) so the shield-only
     aegis body measures on its real pool.
     """
-    skills = _BENCH["skills"]
+    # Restricted-path bodies (e.g. the MATK-locked chaos brute) bench with a
+    # LEGAL kit of the same statistical power — declared in kit_overrides.
+    skills = _BENCH.get("kit_overrides", {}).get(body_key, _BENCH["skills"])
     wins, ttks, pools = 0, [], []
     for seed in _BENCH["seeds"]:
         player = build_player_combatant(_bench_char(body_key), skills)

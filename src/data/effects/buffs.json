@@ -3640,5 +3640,65 @@
     "cleansable": false,
     "emoji": "🌕",
     "duration": 999
+  },
+  {
+    "key": "BuffHonDonNhucThan",
+    "vi": "Hỗn Độn Nhục Thân",
+    "en": "Chaotic Mortal Body",
+    "kind": "buff",
+    "description_vi": "Nhục thân hỗn độn — nền tảng chỉ số cao nhất vạn thể.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 999
+  },
+  {
+    "key": "BuffPhaToaiHuKhong",
+    "vi": "Phá Toái Hư Không",
+    "en": "Shatter the Void",
+    "kind": "buff",
+    "description_vi": "Thuần vật lý — phép thuật bị cự tuyệt; mỗi chiêu giáng chấn phách hư không theo HP tối đa.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "👊",
+    "duration": 999
+  },
+  {
+    "key": "BuffVanPhapQuyHon",
+    "vi": "Vạn Pháp Quy Hỗn",
+    "en": "All Laws Return to Chaos",
+    "kind": "buff",
+    "description_vi": "Ngũ hành quy hỗn — Kim Mộc Thủy Hỏa Thổ khó xâm thân.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 999
+  },
+  {
+    "key": "BuffKhaiThienTichDia",
+    "vi": "Khai Thiên Tích Địa",
+    "en": "Split Heaven, Accumulate Earth",
+    "kind": "buff",
+    "description_vi": "Cứ 9 lượt khai thiên — hóa Hỗn Độn Chân Thân 4 lượt.",
+    "stat_bonus": {},
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 999
+  },
+  {
+    "key": "BuffHonDonChanThan",
+    "vi": "Hỗn Độn Chân Thân",
+    "en": "Chaos True Body",
+    "kind": "buff",
+    "description_vi": "Chân thân hỗn độn giáng thế — Công/Phòng +50%, kháng toàn hệ +30%.",
+    "stat_bonus": { "atk_pct": 0.50, "def_pct": 0.50, "res_all": 0.30 },
+    "stealable": false,
+    "cleansable": false,
+    "emoji": "🌀",
+    "duration": 4
   }
 ]

@@ -240,6 +240,19 @@ def _stamp_constitution_process_effects(char: Character, combatant: Combatant) -
             if EFFECTS.get(_dv_key) is not None and not combatant.has_effect(_dv_key):
                 combatant.apply_effect(_dv_key, default_duration(_dv_key))
 
+    # Hỗn Độn Ma Thần L3 — Phá Toái Hư Không: the pure-physical body refuses
+    # magical arts. Filter magical ATTACK skills from the rotation
+    # (_choose_skill reads combatant.skill_keys); defenses/support stay, and
+    # an all-magical loadout falls back to basic attacks like any empty kit.
+    if combatant.hdm_lock_matk:
+        combatant.skill_keys = [
+            k for k in combatant.skill_keys
+            if not (
+                (registry.get_skill(k) or {}).get("category") == "attack"
+                and (registry.get_skill(k) or {}).get("attack_type") == "magical"
+            )
+        ]
+
 
 def build_enemy_combatant(enemy_key: str, player_realm_total: int) -> Combatant | None:
     """Build enemy Combatant scaled to player realm, using per-enemy hp_scale.

@@ -31,14 +31,15 @@ Adding a new pre-turn aura means dropping a new module here and picking
 a priority that places it correctly in the chain — no edits to session.py.
 """
 from . import (  # noqa: F401
-    bo_bo, cuong_phong, cuu_thien, hoang_co, huyen_am, kinh_hoa, lietdiem,
-    lieu_nhu, luu_ly, luu_tinh, phu_dao, quang_minh, thai_am, thai_bach,
-    thai_duong, thon_thien, tieu_dao, tinh_quang, truong_xuan, xuan_thu,
+    bo_bo, cuong_phong, cuu_thien, hoang_co, hon_don_ma, huyen_am, kinh_hoa,
+    lietdiem, lieu_nhu, luu_ly, luu_tinh, phu_dao, quang_minh, thai_am,
+    thai_bach, thai_duong, thon_thien, tieu_dao, tinh_quang, truong_xuan,
+    xuan_thu,
 )
 
 __all__ = [
-    "bo_bo", "cuong_phong", "cuu_thien", "hoang_co", "huyen_am", "kinh_hoa",
-    "lietdiem", "lieu_nhu", "luu_ly", "luu_tinh", "phu_dao", "quang_minh",
-    "thai_am", "thai_bach", "thai_duong", "thon_thien", "tieu_dao",
-    "tinh_quang", "truong_xuan", "xuan_thu",
+    "bo_bo", "cuong_phong", "cuu_thien", "hoang_co", "hon_don_ma", "huyen_am",
+    "kinh_hoa", "lietdiem", "lieu_nhu", "luu_ly", "luu_tinh", "phu_dao",
+    "quang_minh", "thai_am", "thai_bach", "thai_duong", "thon_thien",
+    "tieu_dao", "tinh_quang", "truong_xuan", "xuan_thu",
 ]

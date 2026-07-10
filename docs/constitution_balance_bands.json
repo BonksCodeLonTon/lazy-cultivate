@@ -115,6 +115,10 @@
     "seeds": [1, 2, 3, 4, 5],
     "max_turns": 60,
     "skills": ["SkillAtkKim1", "SkillAtkHoa1"],
+    "kit_overrides": {
+      "_doc": "Restricted-path bodies measure with a LEGAL kit of the same statistical power — HonDonMaThan bans magical attacks, so it benches on the physical twins of the standard kit (identical dmg/mp/cd).",
+      "TheChat_HonDonMaThan": ["SkillAtkTho1", "SkillAtkPhong1"]
+    },
     "char": { "body_realm": 6, "qi_realm": 6, "formation_realm": 6, "active_axis": "qi", "linh_can": "kim", "linh_can_level": 5 },
     "thresholds": {
       "min_wins": 5,

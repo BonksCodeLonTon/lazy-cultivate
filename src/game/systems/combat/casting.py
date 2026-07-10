@@ -1120,6 +1120,24 @@ def cast_skill(
                     "⛰️ Trọng Lực Chưởng Khống",
                 )
 
+            # Hỗn Độn Ma Thần — L3 Phá Toái Hư Không: once per landed CAST,
+            # bonus TRUE damage = ``hdm_hp_true_dmg_pct`` × own max HP, ×
+            # ``hdm_form_rider_mult`` while Hỗn Độn Chân Thân is up. Capped +
+            # applied via ``_deal_capped_true_dmg``; ``not _suppress_extras``
+            # → once per logical cast. Self-gates → inert otherwise.
+            if (
+                actor.hdm_hp_true_dmg_pct > 0
+                and not _suppress_extras
+                and target.is_alive()
+                and dmg > 0
+            ):
+                _hdm_amt = int(actor.hp_max * actor.hdm_hp_true_dmg_pct)
+                if actor.hdm_form_rider_mult > 0 and actor.has_effect("BuffHonDonChanThan"):
+                    _hdm_amt = int(_hdm_amt * actor.hdm_form_rider_mult)
+                _deal_capped_true_dmg(
+                    session, target, _hdm_amt, "👊 Phá Toái Hư Không",
+                )
+
             # Thánh Sơn Bất Động Thể — L3 Thái Sơn Áp Đỉnh: once per CAST, bonus
             # TRUE damage = shield × (base + l3_full_bonus once Kiên Cố ≥ 4),
             # capped + applied via ``_deal_capped_true_dmg``. ``not

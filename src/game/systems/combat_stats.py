@@ -248,6 +248,15 @@ _CONSTITUTION_FLAG_FIELDS: list[tuple[str, str, type]] = [
     ("ta_kinh_hoa_resonance",            "ta_kinh_hoa_resonance",            bool),
     ("ta_moonlight_heal_pct",            "ta_moonlight_heal_pct",            float),
     ("ta_moonlight_freeze_chance",       "ta_moonlight_freeze_chance",       float),
+    # Hỗn Độn Ma Thần Thể (universal pure-physical chaos brute) — config
+    # flags. The MATK lock filters magical attack skills at build (builders);
+    # the HP-shockwave rider fires per landed cast (casting, capped true dmg,
+    # × mult while Hỗn Độn Chân Thân is up); the form cadence is
+    # auras/hon_don_ma.py. Cadence counter is runtime-only.
+    ("hdm_lock_matk",                    "hdm_lock_matk",                    bool),
+    ("hdm_hp_true_dmg_pct",              "hdm_hp_true_dmg_pct",              float),
+    ("hdm_form_interval",                "hdm_form_interval",                int),
+    ("hdm_form_rider_mult",              "hdm_form_rider_mult",              float),
     # Bách Thể Chú Linh (vital-essence awakening) — config flags.
     # ``overheal_to_shield_pct`` converts the clamped-off heal remainder into
     # shield in ``_apply_heal`` (Ngân Giác Lộc awakening: Lộc Linh).

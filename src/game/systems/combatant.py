@@ -914,6 +914,16 @@ class Combatant:
     # debuff-transfer guaranteed while its buff is up.
     ta_tram_dao_turn_counter: int = 0  # runtime (NOT a config key)
 
+    # ── Hỗn Độn Ma Thần Thể (universal pure-physical chaos brute) ─────────────
+    # L3 ``hdm_lock_matk``: magical attack skills are filtered from the
+    # rotation at build (builders — _choose_skill reads combatant.skill_keys).
+    # L3 ``hdm_hp_true_dmg_pct``: per landed cast, capped TRUE dmg =
+    # pct × own hp_max (casting, the Hậu Thổ rider pattern), × ``hdm_form_
+    # rider_mult`` while BuffHonDonChanThan is up. L9: every
+    # ``hdm_form_interval`` acted turns stamp the 4-turn form buff
+    # (auras/hon_don_ma.py).
+    hdm_form_turn_counter: int = 0  # runtime (NOT a config key)
+
     # ── Liệt Diễm Phần Thiên Thể (Hỏa escalating fire nuker) ──────────────────
     # L1 ramp: periodic increments ``lietdiem_burn_stacks`` (+per_turn, cap), the
     # buff's scaling_rules convert it to matk_pct + crit_rating. L6 absorb: a hoa

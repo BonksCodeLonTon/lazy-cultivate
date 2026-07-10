@@ -905,6 +905,14 @@ _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     "ta_kinh_hoa_resonance",
     "ta_moonlight_heal_pct",
     "ta_moonlight_freeze_chance",
+    # Hỗn Độn Ma Thần Thể (universal chaos brute) — config keys read off
+    # Combatant fields by builders (MATK lock), casting (HP-shockwave rider)
+    # and auras/hon_don_ma.py (form cadence). The form buff's stat_bonus
+    # (atk/def_pct, res_all) are real stats. Cadence counter runtime-only.
+    "hdm_lock_matk",
+    "hdm_hp_true_dmg_pct",
+    "hdm_form_interval",
+    "hdm_form_rider_mult",
     # Liệt Diễm Phần Thiên Thể (Hỏa fire nuker) — config keys read off Combatant
     # fields by periodic/lietdiem.py (ramp + avatar cadence) and apply_reactive_damage
     # (L6 fire-absorb). The ramp/absorb stat OUTPUTS (matk_pct/crit_rating/dmg_bonus_hoa)

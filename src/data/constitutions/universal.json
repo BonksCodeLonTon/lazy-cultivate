@@ -456,4 +456,57 @@
       }
     }
   }
+,
+  {
+    "key": "TheChat_HonDonMaThan",
+    "vi": "Hỗn Độn Ma Thần Thể",
+    "en": "Chaotic Demon God Body",
+    "element": "universal",
+    "rarity": "mythic",
+    "roll_weight": 0,
+    "special_requirements": null,
+    "cost": { "merit": 120000, "stones": 0 },
+    "materials": {},
+    "description_vi": "Nhục thân hỗn độn ngưng từ thuở khai thiên — cự phách thuần túy, cự tuyệt pháp thuật. HP chính là vũ khí: mỗi đòn giáng kèm chấn phách hư không; ngũ hành khó xâm, đến kỳ Khai Thiên Tích Địa thì hóa Hỗn Độn Chân Thân trấn áp chiến trường.",
+    "stat_bonuses": {
+      "atk_pct": 0.06,
+      "hp_pct": 0.06,
+      "def_pct": 0.04
+    },
+    "process": {
+      "max_level": 9,
+      "milestones": [1, 3, 6, 9],
+      "per_level_growth": { "atk_pct": 0.005, "hp_pct": 0.004, "def_pct": 0.002 },
+      "levels": {
+        "1": {
+          "passive_vi": "Hỗn Độn Nhục Thân",
+          "passive_en": "Chaotic Mortal Body",
+          "description_vi": "Nhục thân hỗn độn — nền tảng chỉ số cao nhất trong vạn thể: Công +12%, HP +12%, Phòng +6%.",
+          "stat_bonuses": { "atk_pct": 0.12, "hp_pct": 0.12, "def_pct": 0.06 },
+          "effects": ["BuffHonDonNhucThan"]
+        },
+        "3": {
+          "passive_vi": "Phá Toái Hư Không",
+          "passive_en": "Shatter the Void",
+          "description_vi": "Thuần vật lý — KHÔNG thể thi triển công pháp phép thuật (kỹ năng tấn công hệ phép bị khóa). Bù lại: Công +10%, Bạo Kích +140, và mỗi lần xuất chiêu trúng đích giáng thêm Sát Thương Chuẩn bằng 8% HP tối đa bản thân (có giới hạn).",
+          "stat_bonuses": { "atk_pct": 0.10, "crit_rating": 140, "hdm_lock_matk": true, "hdm_hp_true_dmg_pct": 0.08 },
+          "effects": ["BuffPhaToaiHuKhong"]
+        },
+        "6": {
+          "passive_vi": "Vạn Pháp Quy Hỗn",
+          "passive_en": "All Laws Return to Chaos",
+          "description_vi": "Ngũ hành quy hỗn: kháng Kim/Mộc/Thủy/Hỏa/Thổ +30% mỗi hệ, kháng toàn hệ +10%. Công +8%, HP +4%, Phòng +3%, Bạo Kích DMG +200.",
+          "stat_bonuses": { "res_kim": 0.30, "res_moc": 0.30, "res_thuy": 0.30, "res_hoa": 0.30, "res_tho": 0.30, "res_all": 0.10, "atk_pct": 0.08, "hp_pct": 0.04, "def_pct": 0.03, "crit_dmg_rating": 200 },
+          "effects": ["BuffVanPhapQuyHon"]
+        },
+        "9": {
+          "passive_vi": "Khai Thiên Tích Địa",
+          "passive_en": "Split Heaven, Accumulate Earth",
+          "description_vi": "Mỗi 7 lượt hóa Hỗn Độn Chân Thân (4 lượt): Công/Phòng +50%, kháng toàn hệ +30%, chấn phách hư không mạnh gấp rưỡi (12% HP tối đa mỗi chiêu).",
+          "stat_bonuses": { "hdm_form_interval": 7, "hdm_form_rider_mult": 1.5 },
+          "effects": ["BuffKhaiThienTichDia"]
+        }
+      }
+    }
+  }
 ]
