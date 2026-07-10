@@ -109,10 +109,17 @@ def _skip_if_not_registered():
         pytest.skip(f"{_BODY!r} not in universal.json — implementation pending")
 
 
+def _combatant_supports(field_name: str) -> bool:
+    """True when Combatant exposes the name — as a dataclass field OR a
+    registry-driven flag resolved from the ``body_cfg`` bag."""
+    from src.game.systems.combat_stats import _BODY_CFG_DEFAULTS
+    from src.game.systems.combatant import Combatant
+    return field_name in _BODY_CFG_DEFAULTS or hasattr(Combatant, field_name)
+
+
 def _skip_if_no_field(field_name: str):
     """Skip if a combatant field expected by this test doesn't exist yet."""
-    from src.game.systems.combatant import Combatant
-    if not hasattr(Combatant, field_name):
+    if not _combatant_supports(field_name):
         pytest.skip(f"Combatant.{field_name} not implemented yet")
 
 
@@ -311,7 +318,7 @@ def test_l5_self_cleanse_fires_on_low_roll(monkeypatch) -> None:
     """L5 Qilin cleanse proc removes a debuff from the PLAYER on a low roll."""
     _skip_if_not_registered()
     from src.game.systems.combatant import Combatant
-    if not hasattr(Combatant, "saint_qilin_cleanse_chance"):
+    if not _combatant_supports("saint_qilin_cleanse_chance"):
         pytest.skip("saint_qilin_cleanse_chance not implemented yet")
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(5)
@@ -337,7 +344,7 @@ def test_l5_self_cleanse_skips_on_high_roll(monkeypatch) -> None:
     """L5 Qilin cleanse does NOT fire on a high roll."""
     _skip_if_not_registered()
     from src.game.systems.combatant import Combatant
-    if not hasattr(Combatant, "saint_qilin_cleanse_chance"):
+    if not _combatant_supports("saint_qilin_cleanse_chance"):
         pytest.skip("saint_qilin_cleanse_chance not implemented yet")
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(5)
@@ -361,7 +368,7 @@ def test_l8_mp_on_hit_restores_mp(monkeypatch) -> None:
     """L8 on-hit MP restore brings player.mp up by ~4% of mp_max."""
     _skip_if_not_registered()
     from src.game.systems.combatant import Combatant
-    if not hasattr(Combatant, "saint_mp_on_hit_pct"):
+    if not _combatant_supports("saint_mp_on_hit_pct"):
         pytest.skip("saint_mp_on_hit_pct not implemented yet")
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(8)
@@ -395,7 +402,7 @@ def test_l9_saint_realm_buff_applied_on_cadence(monkeypatch) -> None:
     """
     _skip_if_not_registered()
     from src.game.systems.combatant import Combatant
-    if not hasattr(Combatant, "saint_realm_interval"):
+    if not _combatant_supports("saint_realm_interval"):
         pytest.skip("saint_realm_interval not implemented yet")
     # Verify the aura module is actually loaded (imported); if not, the hook
     # is absent and this test correctly fails as a regression catch.
@@ -427,7 +434,7 @@ def test_l9_saint_realm_forces_crit(monkeypatch) -> None:
     """While BuffHoangCoThanhVuc is active, build_attack_stats force_crit is True."""
     _skip_if_not_registered()
     from src.game.systems.combatant import Combatant
-    if not hasattr(Combatant, "saint_realm_interval"):
+    if not _combatant_supports("saint_realm_interval"):
         pytest.skip("saint_realm_interval not implemented yet")
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(9)
@@ -446,7 +453,7 @@ def test_l9_saint_realm_cc_immunity(monkeypatch) -> None:
     """While BuffHoangCoThanhVuc is active, the player is immune to hard CC."""
     _skip_if_not_registered()
     from src.game.systems.combatant import Combatant
-    if not hasattr(Combatant, "saint_realm_interval"):
+    if not _combatant_supports("saint_realm_interval"):
         pytest.skip("saint_realm_interval not implemented yet")
     monkeypatch.setattr(settings, "constitution_process_enabled", True)
     player = _player(9)
@@ -519,11 +526,11 @@ def test_flag_off_no_process_effects_stamped() -> None:
         )
     # saint_* milestone flags must NOT be active on the flat path
     from src.game.systems.combatant import Combatant
-    if hasattr(Combatant, "saint_realm_enabled"):
+    if _combatant_supports("saint_realm_enabled"):
         assert player.saint_realm_enabled is False, (
             "saint_realm_enabled must be False without the process flag"
         )
-    if hasattr(Combatant, "saint_qilin_cleanse_chance"):
+    if _combatant_supports("saint_qilin_cleanse_chance"):
         assert player.saint_qilin_cleanse_chance == 0.0, (
             "saint_qilin_cleanse_chance must be 0 without the process flag"
         )

@@ -1191,10 +1191,11 @@ def compute_combat_stats(
         thorn_pct=thorn_pct,
         thorn_from_shield=thorn_from_shield,
         stun_on_hit_pct=stun_on_hit_pct,
-        # Per-constitution config flags (Kim / Ám / Quang silence) — splatted
-        # from the flag registry's single read+merge pass. See
-        # ``_CONSTITUTION_FLAG_FIELDS`` / ``_read_constitution_flags``.
-        **_constitution_flags,
+        # Per-constitution config flags — the sparse bag from the flag
+        # registry's single read+merge pass; reads resolve via
+        # ``CombatStats.__getattr__``. See ``_CONSTITUTION_FLAG_FIELDS`` /
+        # ``_read_constitution_flags``.
+        body_cfg=_constitution_flags,
         shock_per_stack_pct=_SHOCK_PCT_DEFAULT + shock_per_stack_pct_bonus,
         shock_on_hit_pct=shock_on_hit_pct,
         turn_steal_pct=turn_steal_pct,

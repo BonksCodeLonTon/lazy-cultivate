@@ -626,6 +626,14 @@ def _mastery_scalable(stat: str) -> bool:
 # them from the skill browser so it never renders "+0 <raw_key>" noise.
 # Scaling-rule placeholders are handled separately (popped by
 # ``_apply_scaling_rules``; filtered for display via each rule's ``key``).
+#
+# ⚠ FROZEN LEGACY LIST — do NOT add new entries. Any ``_``-prefixed key is
+# now treated as config-only by BOTH consumers (``get_combat_modifiers`` and
+# ``displayable_stat_bonus``), so new config keys just start with ``_`` and
+# need no registration anywhere. This list only grandfathers the keys named
+# before that convention existed. ``tests/test_config_stat_key_guard.py``
+# enforces the whole classification (real stat / placeholder / ``_`` config /
+# legacy entry) and flags dead entries.
 _CONFIG_ONLY_STAT_KEYS: frozenset[str] = frozenset({
     # Quỷ Ảnh Mê Tung — stack cap (read by the on-evade hook).
     "quy_anh_max_stacks",
@@ -1129,11 +1137,18 @@ def get_combat_modifiers(combatant: "Combatant") -> dict[str, float]:
     # Config-only keys — stamped in ``stat_bonus`` so designers can tune
     # without touching engine constants, but consumed by hooks elsewhere
     # (casting / on-evade / inflict_debuff). Drop them here so they never
-    # masquerade as real stats. Scaling-rule placeholders are popped by
-    # ``_apply_scaling_rules``; this list is only for non-scaling config.
+    # masquerade as real stats. Two lanes:
+    #   * ``_``-prefixed keys — THE convention for new config keys (zero
+    #     registration; mirrors ``displayable_stat_bonus``). Must pop AFTER
+    #     ``_apply_scaling_rules`` so ``_``-named scaling placeholders are
+    #     still readable when their rule resolves (the rule pops them itself).
+    #   * ``_CONFIG_ONLY_STAT_KEYS`` — the frozen legacy list for pre-
+    #     convention names.
     # Intersect from the (small) result side — this is THE combat hot path
-    # (~30 calls/turn) and the config-key list grows with every body, so
-    # iterating the full list per call costs millions of no-op pops.
+    # (~30 calls/turn), so iterating the full legacy list per call would
+    # cost millions of no-op pops.
+    for cfg_key in [k for k in result if k.startswith("_")]:
+        del result[cfg_key]
     for cfg_key in _CONFIG_ONLY_STAT_KEYS & result.keys():
         del result[cfg_key]
     return result

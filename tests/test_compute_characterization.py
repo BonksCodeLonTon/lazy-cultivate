@@ -124,12 +124,21 @@ def _snapshot_all() -> dict:
     """Compute every case with the constitution-process flag ON (restored after)."""
     from src.utils.config import settings
 
+    from src.game.systems.combat_stats import _BODY_CFG_DEFAULTS
+
     prev = settings.constitution_process_enabled
     settings.constitution_process_enabled = True
     try:
         out: dict = {}
         for cid, (char, kw) in _build_cases().items():
-            out[cid] = dataclasses.asdict(compute_combat_stats(char, **kw))
+            d = dataclasses.asdict(compute_combat_stats(char, **kw))
+            # The golden predates the ``body_cfg`` bag and stores every
+            # registry flag as a flat key — re-flatten so the snapshot stays
+            # byte-comparable against it (defaults fill unset flags exactly
+            # like the old dedicated-field defaults did).
+            bag = d.pop("body_cfg", {})
+            d.update({**_BODY_CFG_DEFAULTS, **bag})
+            out[cid] = d
     finally:
         settings.constitution_process_enabled = prev
     # Normalise through JSON so float reprs match the loaded golden exactly.

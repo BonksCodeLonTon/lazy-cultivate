@@ -176,6 +176,14 @@ class Combatant:
     # lifetime (own bespoke reset logic). Same descriptor mechanism, a
     # separate store so the effect-expiry sweep never touches them.
     stack_counters: dict[str, int] = field(default_factory=dict)
+    # Per-constitution config flags — the SPARSE ``{field: value}`` bag built
+    # by ``combat_stats._read_constitution_flags`` and carried over from
+    # ``CombatStats.body_cfg`` by the player builder. Reads still look like
+    # attribute access (``actor.tk_extra_hits``): ``__getattr__`` below
+    # resolves any ``_CONSTITUTION_FLAG_FIELDS`` name from this bag with its
+    # kind default. Empty for enemies / bosses / summons — every flag then
+    # reads as 0 / 0.0 / False exactly like the old dedicated fields.
+    body_cfg: dict[str, float | int | bool] = field(default_factory=dict)
     # Skill cooldowns: skill_key → turns_remaining
     cooldowns: dict[str, int] = field(default_factory=dict)
     skill_keys: list[str] = field(default_factory=list)
@@ -585,6 +593,14 @@ class Combatant:
     # On-hit: chance to stun the target (any hit, not just bạo kích).
     stun_on_hit_pct: float = 0.0
 
+    # ══ Per-body (v12 constitution) builds ════════════════════════════════════
+    # The sections below document each body's combat mechanics. Their tunable
+    # CONFIG KNOBS (the ``_CONSTITUTION_FLAG_FIELDS`` names the comments
+    # reference — chances, caps, intervals, gates) are NOT declared here:
+    # they live in the ``body_cfg`` bag and resolve through ``__getattr__``.
+    # Only each body's RUNTIME state (stack proxies, counters, armed flags)
+    # remains as real fields/descriptors in these sections.
+
     # ── Kim (Metal / Killing-Aura) build — Thiên Cương Phá Sát Thể ────────────
     # Sát Khí stacks — one added per non-Kiếm-Lãng hit while the holder carries
     # ``BuffSatKhi`` (capped at 5 via ``_STACK_EFFECT_KEY``). Each stack folds
@@ -594,16 +610,10 @@ class Combatant:
     # L3 Kim Phá Ngọc Toái — base + high-stack on-hit Phá Giáp chances. The
     # high value applies once ``sat_khi_stacks >= 3``. Both 0 → inert (enemies,
     # flag-off, non-Kim bodies).
-    kim_pha_giap_on_hit_chance: float = 0.0
-    kim_pha_giap_high_sat_khi_chance: float = 0.0
     # L9 Sát Khí Đại Thành — the Kiếm Lãng splash payoff config. Fires only at
     # exactly 5 Sát Khí stacks while ``BuffSatKhiDaiThanh`` is held. Splash
     # chance = min(cap, base + crit_coeff × effective crit chance). All-zero /
     # False defaults keep the gate a no-op everywhere else.
-    kim_sword_splash_at_max_sat_khi: bool = False
-    kim_sword_splash_base_chance: float = 0.0
-    kim_sword_splash_crit_coeff: float = 0.0
-    kim_sword_splash_chance_cap: float = 0.0
 
     # ── Kim (Metal / Evasive Crit-Bleeder) build — Thái Bạch Canh Kim Thể ─────
     # Bạch Kim Phong Vũ stacks — +1 each PERIODIC tick while the opponent is
@@ -617,9 +627,6 @@ class Combatant:
     # L9 Huyết Lạp Thái Bạch — anti-bleed crit amps applied when the target is
     # bleeding (threaded into the crit step via AttackStats), plus the
     # every-N-acted-turns guaranteed-crit cadence. All-zero → inert.
-    bleed_hunter_crit_chance_bonus: float = 0.0
-    bleed_hunter_crit_dmg_bonus: float = 0.0
-    bleed_hunter_periodic_interval: int = 0
     bleed_hunter_turn_counter: int = 0
     bleed_hunter_crit_armed: bool = False
 
@@ -630,16 +637,12 @@ class Combatant:
     shadow_stacks = _StackProxy("shadow", store="stack_counters")
     # L1 gate — set by the body's flat ``shadow_stack_on_hit``. False → the
     # POST_HIT shadow sweep is a no-op (enemies, flag-off, non-Ám bodies).
-    shadow_stack_on_hit: bool = False
     # L6 Thiên Ma Đồng Hóa — while ``BuffNhapMa`` is active, +final_dmg and an
     # on-hit Đạo Pháp Thôn Phệ (stat-steal). 0.0 → inert (only L6+ sets it).
-    nhap_ma_dmg_bonus: float = 0.0
     # L9 Ma Đạo Hóa Thần — auto-Nhập-Ma cadence: every ``nhap_ma_interval``
     # acted turns, self-apply ``BuffNhapMa`` for ``nhap_ma_duration`` turns.
     # All-zero → the PRE_TURN hook never fires.
     nhap_ma_turn_counter: int = 0
-    nhap_ma_interval: int = 0
-    nhap_ma_duration: int = 0
 
     # ── Hỏa (Fire / Phoenix Tank-Mage) build — Chân Dương Bất Diệt Thể ────────
     # L1 burning crit-ramp counter — +1 each PERIODIC tick while the opponent
@@ -652,13 +655,8 @@ class Combatant:
     # priority-5 ON_REVIVE hook fires while ``hoa_revive_upgraded`` and charges
     # remain; each revive restores ``hoa_revive_hp_pct_l9`` of hp_max. All-zero
     # / False → the hook is inert and the generic revive seams handle the death.
-    hoa_revive_charges: int = 0
-    hoa_revive_upgraded: bool = False
-    hoa_revive_hp_pct_l9: float = 0.0
     # L6 Chân Hỏa Phần Thiên — per-hit chance to amp damage vs a burning target.
     # Both 0.0 → inert (the cast-assembly roll never fires).
-    hoa_burning_amp_chance: float = 0.0
-    hoa_burning_amp_pct: float = 0.0
 
     # ── Thủy (Water / Tidal Counter-Puncher) build — Huyền Thủy Trường Sinh ───
     # The body's OWN Tide reservoir — deliberately ISOLATED from the skill
@@ -667,24 +665,14 @@ class Combatant:
     # TAKEN (L1), spent by Glacial Shatter (L6) and the Tidal Flood (L9).
     thuy_intake_reservoir: int = 0
     # L1 Nạp Triều Khố — intake fraction of damage taken + reservoir cap scale.
-    thuy_tide_intake_pct: float = 0.0
-    thuy_reservoir_cap_matk_scale: float = 0.0
     # L3 Hàn Thủy Đóng Băng — on-hit-taken chance to freeze the attacker.
-    thuy_retaliate_freeze_chance: float = 0.0
     # L6 Băng Toái Quyết — fraction of the reservoir released as a Thủy shatter
     # strike when hitting a frozen target.
-    thuy_shatter_tide_pct: float = 0.0
     # L9 Hồi Triều Nộ Hải — periodic tidal-flood config. The PERIODIC hook fires
     # every ``thuy_tidal_flood_interval`` rounds, releasing
     # ``thuy_tidal_release_pct × depth`` of the reservoir (depth grows with the
     # round count, capped) and keeping ``thuy_tidal_refill_pct``. All-zero /
     # False → the hook is inert.
-    thuy_tidal_flood_enabled: bool = False
-    thuy_tidal_flood_interval: int = 0
-    thuy_tidal_release_pct: float = 0.0
-    thuy_tidal_depth_per_turn: float = 0.0
-    thuy_tidal_depth_mult_cap: float = 0.0
-    thuy_tidal_refill_pct: float = 0.0
 
     # ── Mộc (Wood / Poison / Eternal Spring) build — Trường Xuân Linh Mộc ─────
     # L1 Linh Mộc Chi Độc — on-hit poison chance. Rides the generic on-hit proc
@@ -692,12 +680,9 @@ class Combatant:
     poison_on_hit_pct: float = 0.0
     # L3 Mộc Vương Thống Lĩnh — flat final-dmg bonus vs a Làm Chậm target
     # (mirror of bonus_dmg_vs_burn). 0.0 → inert.
-    moc_vs_slowed_dmg_bonus: float = 0.0
     # L6 Trường Xuân Hồi Nguyên — heal hp_max × per-debuff each periodic phase,
     # one tick per active enemy debuff up to ``moc_regen_debuff_cap``. Both 0 →
     # the PERIODIC hook is inert.
-    moc_regen_per_enemy_debuff: float = 0.0
-    moc_regen_debuff_cap: int = 0
     # L9 Trường Xuân Bất Tử — guaranteed poison on every attack (on top of the
     # L1 proc) + the Undying Spring cheat-death. The ON_REVIVE hook fires while
     # ``moc_undying_spring_enabled`` AND the cooldown is ready AND healing isn't
@@ -705,12 +690,6 @@ class Combatant:
     # leaves the body at ``moc_undying_min_hp`` and re-arms after
     # ``moc_undying_cooldown_turns`` of the body's own turns. All-zero / False →
     # every arm is inert.
-    moc_guaranteed_poison_on_attack: bool = False
-    moc_guaranteed_poison_stacks: int = 0
-    moc_undying_spring_enabled: bool = False
-    moc_undying_cooldown_turns: int = 0
-    moc_undying_min_hp: int = 1
-    moc_undying_heal_reduce_gate: float = 0.0
     # Runtime-only cooldown counter (NOT a config key, NOT in CombatStats): set
     # to ``moc_undying_cooldown_turns`` when the revive fires, decremented each
     # PRE_TURN by the truong_xuan aura.
@@ -720,7 +699,6 @@ class Combatant:
     # L1 Đại Địa Căn Cơ — flag: bank a Địa Mạch stack each time the shield
     # regen tick actually grants HP to the shield. False → the regen hook
     # skips the increment entirely (every other body, flag-off path).
-    dia_mach_per_regen: bool = False
     # Runtime counter for Địa Mạch stacks (NOT a config key, NOT in
     # CombatStats / _CONSTITUTION_FLAG_FIELDS). Hard-capped at 6 by the regen
     # hook. Each stack contributes +4% shield_max_pct + +0.8% shield_regen_pct
@@ -728,34 +706,23 @@ class Combatant:
     dia_mach_stacks = _StackProxy("dia_mach", store="stack_counters")
     # L3 Kim Thân Hộ Pháp — base physical-negate chance (rolls when shield is
     # at or below the gate). 0.0 → inert (enemies, flag-off, non-Tho bodies).
-    tho_phys_immune_chance: float = 0.0
     # L3 elevated negate chance when shield fraction > gate.
-    tho_phys_immune_high_shield_chance: float = 0.0
     # L3 shield-fraction threshold (e.g. 0.50 = 50% of shield_cap).
-    tho_phys_immune_shield_gate: float = 0.0
     # L6 Trọng Địa Khống Chế — when True, the PERIODIC hook auto-applies
     # DebuffTroBuoc + DebuffLunDat to the opponent each turn. False → no-op.
-    tho_auto_slow_enabled: bool = False
     # L9 Đại Địa Phản Phệ — per-turn damage dealt = actor.shield × this pct.
     # 0.0 → the PERIODIC hook is inert (every non-Tho-L9 build).
-    tho_earth_aura_shield_pct: float = 0.0
 
     # ── Hoàng Cổ Thánh Thể (Universal Saint Body) build ──────────────────────
     # L5 Lân Tủy Thánh Hòa — per-hit chance to self-cleanse one debuff.
     # 0.0 → inert (the on-hit proc block is a no-op).
-    saint_qilin_cleanse_chance: float = 0.0
     # L6 Thiên Tinh Quán Đỉnh — every-N-acted-turns guaranteed crit. Mirrors
     # body #2's ``bleed_hunter_periodic_interval`` pattern exactly; a parallel
     # counter + armed flag live below. 0 → the PRE_TURN hook is inert.
-    saint_periodic_crit_interval: int = 0
     # L8 Đạo Văn Quy Nhất — fraction of mp_max restored per landed hit.
     # 0.0 → no MP gain on hit.
-    saint_mp_on_hit_pct: float = 0.0
     # L9 Thần Tâm Thánh Cốt — realm config. All-False/zero → the PRE_TURN
     # hook never fires (enemies, flag-off, non-saint builds stay inert).
-    saint_realm_enabled: bool = False
-    saint_realm_interval: int = 0
-    saint_realm_duration: int = 0
     # Runtime-only: acted-turn counter for the L6 guaranteed-crit cadence
     # (NOT a config key, NOT in CombatStats / _CONSTITUTION_FLAG_FIELDS).
     saint_crit_turn_counter: int = 0
@@ -781,26 +748,21 @@ class Combatant:
     # ── Phong (Phi Thiên Lăng Vân) build ─────────────────────────────────────
     # L1 Phong Thể Tiêu Dao — every 300 evasion_rating converts to +phong dmg.
     # 0.0 → inert (every non-Phong-body and flag-off path).
-    phong_eva_phong_dmg_per_300: float = 0.0
     # L1 Phong Vân stack gate — enables +1 stack on each successful dodge.
     # False → the on-evade block skips the increment entirely.
-    phong_van_dodge_stack: bool = False
     # Runtime counter for Phong Vân stacks (NOT a config key, NOT in
     # CombatStats / _CONSTITUTION_FLAG_FIELDS). Hard-capped at 6 by the
     # on-evade hook; decremented by 2 on each non-DoT hit taken.
     phong_van_stacks = _StackProxy("phong_van", store="stack_counters")
     # L6 Phi Thiên Hư Ảnh — arm a guaranteed crit after each successful dodge.
     # False → the on-evade block skips the arm entirely.
-    phong_dodge_arms_crit: bool = False
     # L6 — when the armed crit lands, apply DebuffAnPhong to the target.
-    phong_dodge_crit_applies_an_phong: bool = False
     # Runtime armed flag for the L6 guaranteed crit (consumed on first
     # landed damaging hit, mirrors saint_crit_armed / bleed_hunter_crit_armed).
     # NOT a config key, NOT in CombatStats.
     phong_crit_armed: bool = False
     # L9 Thiên Phong Vô Ảnh — every N top-level casts, the next cast bypasses
     # evasion entirely. 0 → the cadence hook is inert.
-    phong_unevadable_interval: int = 0
     # Runtime armed flag — set when the counter modulo triggers; consumed on
     # the first subsequent top-level cast. NOT a config key.
     phong_unevadable_armed: bool = False
@@ -808,41 +770,28 @@ class Combatant:
     phong_skill_cast_counter: int = 0
     # L9 — per-crit chance to inflict DebuffCuonBay on the target.
     # 0.0 → inert.
-    phong_cuon_bay_on_crit_chance: float = 0.0
 
     # ── Lôi (Thiên Lôi Cường) build — shock/speed nuker ──────────────────────
     # L1: per-crit chance to inflict DebuffTeLiet (paralysis). 0.0 → inert.
-    loi_te_liet_on_crit_chance: float = 0.0
     # L1 Lôi Điện Tích Trữ — each Lôi DoT tick the applier causes banks a charge
     # (cap 10); at 10 the applier auto-fires a 70%-matk TRUE burst + resets.
-    loi_charge_enabled: bool = False
     loi_charge: int = 0  # runtime counter (NOT a config key)
     # L3 Lôi Khí Bạo Phát — +per_10 final-dmg for every 10 effective SPD over the
     # target, capped at loi_spd_advantage_cap. Both 0 → inert.
-    loi_spd_advantage_per_10: float = 0.0
-    loi_spd_advantage_cap: float = 0.0
     # L6 Điện Quang Phản Ứng — on crit OR dodge, auto-fire a bonus shock attack.
-    loi_reflex_bonus_attack: bool = False
     # L9 Lôi Điện Hóa Thần — deal +this fraction of Lôi-element damage (skill hits
     # + DoT ticks) as TRUE damage (pierces resistance). 0.0 → inert.
-    loi_bonus_true_dmg_pct: float = 0.0
 
     # ── Tịnh Quang Hộ Pháp Thể (Quang guardian) build ────────────────────────
     # L1 Thánh Quang — each landed blind banks a stack (cap 5); BuffHoPhapThanhQuang's
     # scaling_rules turn the stacks into +blind chance + DR. Both inert by default.
-    quang_blind_stack: bool = False
     thanh_quang_stacks = _StackProxy("thanh_quang", store="stack_counters")  # runtime counter (NOT a config key)
     # L3 Tịnh Quang Tẩy Trần — every N acted turns, self-cleanse M debuffs.
-    quang_self_cleanse_interval: int = 0
-    quang_self_cleanse_count: int = 0
     quang_cleanse_turn_counter: int = 0  # runtime (NOT a config key)
     # L6 Hộ Pháp Thiên Giáp — spawn a permanent Holy Guardian summon dealing
     # this fraction of matk/turn (Quang) + granting BuffHoPhapKimCuong. 0 → none.
-    quang_guardian_summon_matk_pct: float = 0.0
     # L9 Thiên Quang Thẩm Phán — on hitting a buffed enemy, chance to strip a
     # buff + apply Phá Giáp. 0.0 → inert.
-    quang_judgment_strip_chance: float = 0.0
-    quang_judgment_applies_pha_giap: bool = False
     # L9 buff: each successful strip deals a 200% atk + 200% matk burst AND
     # accumulates +5% final_dmg here (cap +50%). Runtime-only; read in combat_hit.
     quang_judgment_dmg_bonus: float = 0.0
@@ -853,8 +802,6 @@ class Combatant:
     # Quy Nhất (a fire skill is paid the sum of every element's bonus, counted as
     # fire damage). ``omni_res_ignore_chance`` is the per-cast chance to treat the
     # target's elemental resistance as 0% (pen_pct → 1.0 in casting.py).
-    omni_sum_element_dmg: bool = False
-    omni_res_ignore_chance: float = 0.0
 
     # ── Thiên Địa Nhân Hòa Thể (Universal Hòa Khí stack-scaler) ───────────────
     # Hòa Khí climbs +``harmony_stack_per_turn`` each periodic phase up to
@@ -864,11 +811,6 @@ class Combatant:
     # (``harmony_backlash_pct_per_stack`` × stacks × (atk+matk)) once stacks
     # reach ``harmony_backlash_min_stacks``; L9 cleanses ``harmony_l9_cleanse``
     # debuffs/turn at max stacks.
-    harmony_stack_per_turn: int = 0
-    harmony_stack_cap: int = 0
-    harmony_backlash_pct_per_stack: float = 0.0
-    harmony_backlash_min_stacks: int = 0
-    harmony_l9_cleanse: int = 0
     harmony_stacks = _StackProxy("harmony", store="stack_counters")  # runtime (NOT a config key)
 
     # ── Bắc Minh Băng Phách Thể (Thủy ice/freeze/MP-drain disruptor) ──────────
@@ -877,14 +819,6 @@ class Combatant:
     # banks +1 per successful MP drain (cap ``bm_han_khi_cap``); at cap the next
     # attack fires the Cực Hàn burst (3-turn freeze + dmg = bm_burst_drain_pct ×
     # ``han_khi_mp_drained_total``, the running tally of all MP drained this fight).
-    bm_cold_aura_enabled: bool = False
-    bm_mp_drain_pct: float = 0.0
-    bm_mp_drain_heal_pct: float = 0.0
-    bm_han_khi_cap: int = 0
-    bm_heal_reduce_chance: float = 0.0
-    bm_heal_reduce_vs_frozen_chance: float = 0.0
-    bm_burst_freeze_turns: int = 0
-    bm_burst_drain_pct: float = 0.0
     han_khi_stacks = _StackProxy("han_khi", store="stack_counters")  # runtime (NOT a config key)
     han_khi_mp_drained_total: int = 0  # runtime (NOT a config key)
 
@@ -896,14 +830,6 @@ class Combatant:
     # run_huyen_minh_procs / casting.py. ``hm_uyen_stacks`` banks +1 per dry-siphon
     # or successful dodge (cap ``hm_uyen_cap``); at cap the next attack fires the
     # drown burst (dmg = hm_drown_burst_drain_pct × ``hm_mp_drained_total``).
-    phys_dmg_reduce_pct: float = 0.0
-    hm_mp_drain_pct: float = 0.0
-    hm_mp_drain_heal_pct: float = 0.0
-    hm_hp_siphon_pct: float = 0.0
-    hm_uyen_cap: int = 0
-    hm_corrode_poison_stacks: int = 0
-    hm_corrode_bleed_stacks: int = 0
-    hm_drown_burst_drain_pct: float = 0.0
     hm_uyen_stacks = _StackProxy("hm_uyen", store="stack_counters")  # runtime (NOT a config key)
     hm_mp_drained_total: int = 0  # runtime (NOT a config key)
 
@@ -914,15 +840,6 @@ class Combatant:
     # Quy Khư abyss-swallow (spend ``tt_tinh_hoa_stacks`` to soak one hit 80%,
     # heal it, reflect, reset) lives in the casting defender block.
     # ``tt_tinh_hoa_stacks`` banks +1 per L6 cleanse (cap ``tt_tinh_hoa_cap``).
-    tt_dmg_convert_heal_pct: float = 0.0
-    tt_reflect_remainder_pct: float = 0.0
-    tt_heal_cleanse_chance: float = 0.0
-    tt_tinh_hoa_cap: int = 0
-    tt_tinh_hoa_per_stack_cleanse: float = 0.0
-    tt_tinh_hoa_mp_on_heal_pct: float = 0.0
-    tt_abyss_threshold: int = 0
-    tt_abyss_reduce_pct: float = 0.0
-    tt_abyss_reflect_pct: float = 0.0
     tt_tinh_hoa_stacks = _StackProxy("tt_tinh_hoa", store="stack_counters")  # runtime (NOT a config key)
 
     # ── Lưu Ly Thuẫn Thân Thể (universal shield-only aegis body) ──────────────
@@ -932,14 +849,8 @@ class Combatant:
     # routes heals into shield (_apply_heal); L6 reuses ``damage_bonus_from_shield_pct``;
     # L9 ``aegis_reform_charges`` is a once-per-fight shield reform consumed in
     # take_damage when a hit would breach the broken shield.
-    shield_only_body: bool = False
-    shield_from_hp_max_pct: float = 0.0
-    heal_to_shield_pct: float = 0.0
     # Bách Thể Chú Linh — Ngân Giác Lộc awakening: overflow healing past
     # hp_max converts into shield (consumed in CombatSession._apply_heal).
-    overheal_to_shield_pct: float = 0.0
-    aegis_reform_charges: int = 0
-    aegis_reform_shield_pct: float = 0.0
     aegis_reform_just_triggered: bool = False  # runtime (NOT a config key)
 
     # ── Vô Cấu Lưu Ly Thể (universal purity tank) ─────────────────────────────
@@ -954,12 +865,6 @@ class Combatant:
     # per hit at 10% of the attacker's max HP. ``pill_toxin_immune`` is an
     # out-of-combat flag (alchemy.consume_pill). L3 ``vc_tinh_hoa_resonance``
     # upgrades the Lưu Ly Tịnh Hỏa cleanse aura.
-    vc_cc_resist_pct: float = 0.0
-    pill_toxin_immune: bool = False
-    vc_tinh_hoa_resonance: bool = False
-    magic_reflect_pct: float = 0.0
-    vc_bat_triem_immune_pct: float = 0.0
-    vo_cau_cap: int = 0
     vo_cau_stacks = _StackProxy("vo_cau", store="stack_counters")  # runtime (NOT a config key)
 
     # ── Cửu U Ma Đế Thể (Ám soul-drain summoner) ──────────────────────────────
@@ -971,12 +876,6 @@ class Combatant:
     # cast synergy (``cu_uminh_bonus_drains`` immediate drains). L9: build-time
     # Ma Đế evolution (builders — prereq SkillAmChanMaChiTam_R9 equipped) sets
     # ``cu_ma_de_evolved`` (follow-up also stat-steals) + BuffMaDeQuyVuong.
-    cu_ma_khi_cap: int = 0
-    cu_drain_amp_per_stack: float = 0.0
-    cu_vl_follow_up_chance: float = 0.0
-    cu_vl_dmg_matk_pct: float = 0.0
-    cu_uminh_bonus_drains: int = 0
-    cu_ma_de_enabled: bool = False
     cu_ma_de_evolved: bool = False  # runtime (NOT a config key)
     ma_khi_stacks = _StackProxy("ma_khi", store="stack_counters")  # runtime (NOT a config key)
 
@@ -990,12 +889,6 @@ class Combatant:
     # ``ttm_strip_mp_gain_pct`` × mp_max (run_thon_thien_procs). L9: every
     # ``ttm_devour_interval`` acted turns the aura steals ALL stealable enemy
     # buffs + big stat-steal + capped true damage (auras/thon_thien.py).
-    ttm_devour_copy: bool = False
-    ttm_absorb_matk_pct: float = 0.0
-    ttm_absorb_cap_pct: float = 0.0
-    ttm_strip_mp_chance: float = 0.0
-    ttm_strip_mp_gain_pct: float = 0.0
-    ttm_devour_interval: int = 0
     ttm_matk_absorbed: int = 0        # runtime (NOT a config key)
     ttm_devour_turn_counter: int = 0  # runtime (NOT a config key)
 
@@ -1007,11 +900,6 @@ class Combatant:
     # stacks → +3%/stack all core stats, BuffNhatDieuCuuThien adds +1.5% at
     # L9. L9 solar burst: every ``td_solar_interval`` acted turns, capped
     # true dmg = ``td_solar_hp_pct`` × own hp_max + blind (auras/thai_duong).
-    td_anti_demon_dmg_pct: float = 0.0
-    td_than_lo_per_hit: bool = False
-    td_than_lo_cap: int = 0
-    td_solar_interval: int = 0
-    td_solar_hp_pct: float = 0.0
     td_solar_turn_counter: int = 0  # runtime (NOT a config key)
     than_lo_stacks = _StackProxy("than_lo", store="stack_counters")  # runtime (NOT a config key)
 
@@ -1024,12 +912,6 @@ class Combatant:
     # buffs + stamp DebuffTramDao (auras/thai_am.py). L9: moonlight per-turn
     # heal/freeze + ``ta_kinh_hoa_resonance`` makes the Kính Hoa Thủy Nguyệt
     # debuff-transfer guaranteed while its buff is up.
-    ta_dmg_vs_frozen_pct: float = 0.0
-    ta_tram_dao_interval: int = 0
-    ta_tram_dao_strips: int = 0
-    ta_kinh_hoa_resonance: bool = False
-    ta_moonlight_heal_pct: float = 0.0
-    ta_moonlight_freeze_chance: float = 0.0
     ta_tram_dao_turn_counter: int = 0  # runtime (NOT a config key)
 
     # ── Liệt Diễm Phần Thiên Thể (Hỏa escalating fire nuker) ──────────────────
@@ -1039,13 +921,6 @@ class Combatant:
     # dmg_bonus_hoa. L9 avatar: the periodic increments ``lietdiem_avatar_counter``
     # and stamps BuffHoaThanHoaThan every ``interval`` turns; L9 also grants
     # dot_can_crit (a real stat, not here).
-    lietdiem_burn_per_turn: int = 0
-    lietdiem_burn_cap: int = 0
-    lietdiem_van_hoa_absorb: bool = False
-    lietdiem_van_hoa_cap: int = 0
-    lietdiem_avatar_enabled: bool = False
-    lietdiem_avatar_interval: int = 0
-    lietdiem_avatar_duration: int = 0
     lietdiem_burn_stacks = _StackProxy("lietdiem_burn", store="stack_counters")  # runtime (NOT a config key)
     lietdiem_van_hoa_stacks = _StackProxy("lietdiem_van_hoa", store="stack_counters")  # runtime (NOT a config key)
     lietdiem_avatar_counter: int = 0  # runtime (NOT a config key)
@@ -1061,13 +936,6 @@ class Combatant:
     # into ``nb_nghiep_progress``; every 10 rolls a ``nb_nghiep_tier`` (cap 3) and
     # monotonically bumps element_dmg_bonus.hoa / dot_dmg_bonus (fields read live
     # by combat_hit / dot.py). ``niet_ban_revive_used`` is the once-per-fight latch.
-    hoa_overcap_to_dmg: bool = False
-    nb_nghiep_accumulate: bool = False
-    nb_nghiep_revive_pct_per_tier: float = 0.0
-    niet_ban_revive_enabled: bool = False
-    niet_ban_revive_pct: float = 0.0
-    niet_ban_revive_clear_debuffs: bool = False
-    niet_ban_post_revive_boost: bool = False
     nb_nghiep_tier: int = 0  # runtime (NOT a config key) — 0..3 accumulated tiers
     nb_nghiep_progress: int = 0  # runtime (NOT a config key) — 0..9 micro-progress
     niet_ban_revive_used: bool = False  # runtime (NOT a config key)
@@ -1084,11 +952,6 @@ class Combatant:
     # + tier×_HAU_THO_SHIELD_PCT_PER_TIER)), capped per _CONSTITUTION_TRUE_DMG_CAP_PCT.
     # L9 ``hau_tho_rebirth_enabled`` → revives.py survives one lethal
     # hit at HP = ``hau_tho_stolen_total`` (``hau_tho_rebirth_used`` latch).
-    hau_tho_hp_steal_pct: float = 0.0
-    hau_tho_accumulate: bool = False
-    hau_tho_dmg_from_maxhp_pct: float = 0.0
-    hau_tho_dmg_from_shield_pct: float = 0.0
-    hau_tho_rebirth_enabled: bool = False
     hau_tho_stolen_total: int = 0  # runtime (NOT a config key)
     hau_tho_tier: int = 0  # runtime (NOT a config key) — 0..10 Địa Mạch tiers
     hau_tho_steal_progress: float = 0.0  # runtime (NOT a config key) — frac toward next tier
@@ -1107,13 +970,6 @@ class Combatant:
     # ``thanh_son_immovable_just_triggered`` for the periodic announcer). Any landed
     # turn-skip CC strips 1 Kiên Cố (in ``apply_effect``, the single stamp site, so
     # direct-apply freeze/stun procs crack too) → drops below cap → mortal again.
-    thanh_son_kien_co_on_hit: bool = False
-    thanh_son_kien_co_cap: int = 0
-    thanh_son_dmg_from_shield_pct: float = 0.0
-    thanh_son_l3_full_bonus: float = 0.0
-    thanh_son_bao_mon_chance: float = 0.0
-    thanh_son_immovable_enabled: bool = False
-    thanh_son_survive_shield_pct: float = 0.0
     thanh_son_kien_co_stacks = _StackProxy("thanh_son_kien_co", store="stack_counters")  # runtime (NOT a config key)
     thanh_son_immovable_just_triggered: bool = False  # runtime (NOT a config key)
     thanh_son_kien_co_just_cracked: bool = False  # runtime (NOT a config key)
@@ -1132,18 +988,6 @@ class Combatant:
     # common-rank foes (``tk_execute_chance`` roll when target ≤
     # ``tk_execute_hp_pct`` of max HP; at ``tk_execute_stack_gate`` stacks the
     # roll is skipped and stacks reset).
-    tk_stack_on_cast: int = 0
-    tk_stack_on_struck: int = 0
-    tk_van_loi_cap: int = 0
-    tk_te_liet_chance: float = 0.0
-    tk_stun_chance: float = 0.0
-    tk_stun_stack_gate: int = 0
-    tk_stun_turns: int = 0
-    tk_evasion_shred_pct: float = 0.0
-    tk_extra_hits: int = 0
-    tk_execute_chance: float = 0.0
-    tk_execute_hp_pct: float = 0.0
-    tk_execute_stack_gate: int = 0
     tk_van_loi_stacks = _StackProxy("tk_van_loi", store="stack_counters")  # runtime (NOT a config key)
 
     # ── Cửu Thiên Huyền Lôi Thể (Lôi signature-art channeler) ─────────────────
@@ -1159,14 +1003,6 @@ class Combatant:
     # ``ct_burst_duration`` (+1 at ``ct_burst_bonus_turn_gate`` stacks) via
     # auras/cuu_thien.py; window = spd/loi-amp buff + force-crit (combat_hit)
     # + auto Sốc Điện/Sét Đánh (shock/te-liet boosts via the buff stat_bonus).
-    ct_skill_dmg_amp: float = 0.0
-    ct_nang_luong_cap: int = 0
-    ct_nang_luong_dmg_per_stack: float = 0.0
-    ct_dodge_loi_amp: float = 0.0
-    ct_skill_extra_hits: int = 0
-    ct_burst_interval: int = 0
-    ct_burst_duration: int = 0
-    ct_burst_bonus_turn_gate: int = 0
     ct_nang_luong_stacks = _StackProxy("ct_nang_luong", store="stack_counters")  # runtime (NOT a config key)
     ct_burst_turn_counter: int = 0  # runtime (NOT a config key)
 
@@ -1186,19 +1022,6 @@ class Combatant:
     # releases × ``td_con_release_mult`` as capped true dmg + heals
     # ``td_con_heal_pct``), else BuffHoaBang (+``td_bang_extra_hits`` hits,
     # force-crit via combat_hit, unevadable via casting).
-    td_resonance_enabled: bool = False
-    td_canh_cap: int = 0
-    td_canh_per_turn: int = 0
-    td_post_mov_arm: bool = False
-    td_pierce_def_pct: float = 0.0
-    td_mov_cd_reduce_pct: float = 0.0
-    td_cc_shrug_pct: float = 0.0
-    td_form_interval: int = 0
-    td_form_duration: int = 0
-    td_con_hp_gate: float = 0.0
-    td_con_release_mult: float = 0.0
-    td_con_heal_pct: float = 0.0
-    td_bang_extra_hits: int = 0
     td_canh_stacks = _StackProxy("td_canh", store="stack_counters")  # runtime (NOT a config key)
     td_form_turn_counter: int = 0  # runtime (NOT a config key)
     td_strike_armed: bool = False  # runtime (NOT a config key)
@@ -1222,16 +1045,6 @@ class Combatant:
     # full Tích the next hit fires Cương Phong Xuyên
     # (``cp_tich_execute_atk_scale`` × ATK via the shared capped true-dmg
     # rider + guaranteed Cuốn Bay; Tích resets).
-    cp_tich_cap: int = 0
-    cp_pierce_def_pct: float = 0.0
-    cp_pierce_def_pct_high: float = 0.0
-    cp_pierce_tich_gate: int = 0
-    cp_bonus_strike_chance: float = 0.0
-    cp_storm_interval: int = 0
-    cp_storm_duration: int = 0
-    cp_storm_cuon_bay_chance: float = 0.0
-    cp_storm_extra_hits: int = 0
-    cp_tich_execute_atk_scale: float = 0.0
     cp_tich_stacks = _StackProxy("cp_tich", store="stack_counters")  # runtime (NOT a config key)
     cp_storm_turn_counter: int = 0  # runtime (NOT a config key)
 
@@ -1240,10 +1053,6 @@ class Combatant:
     # the two elemental-shred chances are real stats — buff/gear contributions
     # aggregate via get_combat_modifiers in the proc table's chance read.
     # ``stun_on_hit_turns`` overrides the generic stun proc's default duration.
-    te_liet_on_hit_pct: float = 0.0
-    loi_shred_on_hit_pct: float = 0.0
-    phong_shred_on_hit_pct: float = 0.0
-    stun_on_hit_turns: int = 0
 
     # ── Quang Minh Thánh Thể (Quang radiant control-purifier) ─────────────────
     # L1 radiance aura (auras/quang_minh.py): per-turn ``qm_aura_blind_chance``
@@ -1256,20 +1065,12 @@ class Combatant:
     # ``qm_purify_interval`` acted turns (−1 at ``qm_purify_fast_stack_gate``
     # stacks) → full self-cleanse + strip ``qm_purify_strip_count`` buffs +
     # heal ``qm_purify_heal_pct`` + BuffThanhKhiet (75% debuff-shrug, 2t).
-    qm_aura_blind_chance: float = 0.0
-    qm_stack_cap: int = 0
-    qm_strip_vs_blind_chance: float = 0.0
-    qm_purify_interval: int = 0
-    qm_purify_strip_count: int = 0
-    qm_purify_heal_pct: float = 0.0
-    qm_purify_fast_stack_gate: int = 0
     qm_thanh_quang_stacks = _StackProxy("qm_thanh_quang", store="stack_counters")  # runtime (NOT a config key)
     qm_purify_turn_counter: int = 0  # runtime (NOT a config key)
 
     # ── Quang (Light / Silence / Anti-Heal) build ────────────────────────────
     # On-crit: chance the actor applies CCMuted (silence) to the target. Gated
     # on crit so it rewards the crit-heavy setup Quang uniques push toward.
-    silence_on_crit_pct: float = 0.0
     # On-hit: chance the actor applies DebuffCatDut (anti-heal / hp_regen shred)
     # to the target. Integrates into the generic on-hit proc table.
     heal_reduce_on_hit_pct: float = 0.0
@@ -1586,6 +1387,28 @@ class Combatant:
     # the passive sees no boost; flows through equip_stats via
     # ``passive.sword_summon_dmg_amp`` on the skill JSON.
     sword_summon_dmg_amp: float = 0.0
+
+    def __getattr__(self, name: str):
+        """Resolve per-constitution config flags from ``body_cfg``.
+
+        Only fires for names not found normally — declared fields and any
+        instance attribute set at runtime keep full-speed access (and a
+        runtime write like ``combatant.flag = x`` simply shadows the bag).
+        Registry-known names fall back to their kind default so enemies /
+        summons built without a bag read 0 / 0.0 / False, exactly like the
+        old dedicated-field defaults. Anything else raises AttributeError,
+        keeping typos as loud as they were with declared fields.
+        """
+        # Lazy import: combat_stats pulls in combat.helpers, which must be
+        # importable before this module finishes loading — resolving at call
+        # time keeps the import graph acyclic.
+        from src.game.systems.combat_stats import _BODY_CFG_DEFAULTS
+
+        if name in _BODY_CFG_DEFAULTS:
+            return self.body_cfg.get(name, _BODY_CFG_DEFAULTS[name])
+        raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute {name!r}"
+        )
 
     def is_alive(self) -> bool:
         return self.hp > 0

@@ -456,8 +456,10 @@ def _read_constitution_flags(
     Reproduces the old per-line reads byte-for-byte: each flag is coerced to its
     ``kind`` from ``bonuses[bonus_key]`` (default 0 / False), then, when
     ``equip_stats`` is present, merged from ``equip_stats[bonus_key]`` — numeric
-    kinds add, bool kinds OR. Returns a ``{combatstats_field: value}`` map ready
-    to splat into the ``CombatStats(...)`` constructor.
+    kinds add, bool kinds OR. Returns the SPARSE ``{field: value}`` map for
+    ``CombatStats.body_cfg`` — default values are omitted (``__getattr__``
+    supplies them on read), so a body carrying 8 flags stores 8 entries,
+    not one per registry row.
     """
     out: dict[str, float | int | bool] = {}
     for field_name, bonus_key, kind in _CONSTITUTION_FLAG_FIELDS:
@@ -473,8 +475,19 @@ def _read_constitution_flags(
             value = float(bonuses.get(bonus_key, 0.0))
             if equip_stats:
                 value += float(equip_stats.get(bonus_key, 0.0))
-        out[field_name] = value
+        if value != kind():
+            out[field_name] = value
     return out
+
+
+# ``{field: kind()}`` — read-side defaults for every registry flag. The
+# ``__getattr__`` fallbacks on CombatStats / Combatant resolve bag-backed
+# names through this map, so reading a flag a body never set returns
+# 0 / 0.0 / False exactly like the old dedicated-field defaults, while
+# unknown names still raise AttributeError (typos stay loud).
+_BODY_CFG_DEFAULTS: dict[str, float | int | bool] = {
+    field_name: kind() for field_name, _, kind in _CONSTITUTION_FLAG_FIELDS
+}
 
 
 @dataclass
@@ -613,258 +626,14 @@ class CombatStats:
     thorn_from_shield: bool = False
     stun_on_hit_pct: float = 0.0
     # ── Per-constitution config flags (registry-driven) ───────────────────
-    # These fields are populated via ``_read_constitution_flags`` /
-    # ``_CONSTITUTION_FLAG_FIELDS`` — a new body adds ONE field here plus ONE
-    # registry row (alias + kind), not four scattered edits. Read by
-    # procs / hooks / combat_hit, not applied as raw stats.
-    #   Thiên Cương Phá Sát Thể (Kim killing-aura)
-    kim_pha_giap_on_hit_chance: float = 0.0
-    kim_pha_giap_high_sat_khi_chance: float = 0.0
-    kim_sword_splash_at_max_sat_khi: bool = False
-    kim_sword_splash_base_chance: float = 0.0
-    kim_sword_splash_crit_coeff: float = 0.0
-    kim_sword_splash_chance_cap: float = 0.0
-    #   Thái Bạch Canh Kim Thể (Kim crit-bleeder)
-    bleed_hunter_crit_chance_bonus: float = 0.0
-    bleed_hunter_crit_dmg_bonus: float = 0.0
-    bleed_hunter_periodic_interval: int = 0
-    #   Huyền Âm Thiên Ma Thể (Ám shadow-mage)
-    shadow_stack_on_hit: bool = False
-    nhap_ma_dmg_bonus: float = 0.0
-    nhap_ma_interval: int = 0
-    nhap_ma_duration: int = 0
-    #   Chân Dương Bất Diệt Thể (Hỏa phoenix tank-mage)
-    hoa_burning_amp_chance: float = 0.0
-    hoa_burning_amp_pct: float = 0.0
-    hoa_revive_upgraded: bool = False
-    hoa_revive_charges: int = 0
-    hoa_revive_hp_pct_l9: float = 0.0
-    #   Huyền Thủy Trường Sinh Thể (Thủy tidal counter-puncher)
-    thuy_tide_intake_pct: float = 0.0
-    thuy_reservoir_cap_matk_scale: float = 0.0
-    thuy_retaliate_freeze_chance: float = 0.0
-    thuy_shatter_tide_pct: float = 0.0
-    thuy_tidal_flood_enabled: bool = False
-    thuy_tidal_flood_interval: int = 0
-    thuy_tidal_release_pct: float = 0.0
-    thuy_tidal_depth_per_turn: float = 0.0
-    thuy_tidal_depth_mult_cap: float = 0.0
-    thuy_tidal_refill_pct: float = 0.0
-    #   Trường Xuân Linh Mộc Thể (Mộc poison / eternal-spring tank)
-    moc_vs_slowed_dmg_bonus: float = 0.0
-    moc_regen_per_enemy_debuff: float = 0.0
-    moc_regen_debuff_cap: int = 0
-    moc_guaranteed_poison_on_attack: bool = False
-    moc_guaranteed_poison_stacks: int = 0
-    moc_undying_spring_enabled: bool = False
-    moc_undying_cooldown_turns: int = 0
-    moc_undying_min_hp: int = 0
-    moc_undying_heal_reduce_gate: float = 0.0
-    #   Kim Cang Bất Hoại Thể (Thổ indestructible shield body)
-    dia_mach_per_regen: bool = False
-    tho_phys_immune_chance: float = 0.0
-    tho_phys_immune_high_shield_chance: float = 0.0
-    tho_phys_immune_shield_gate: float = 0.0
-    tho_auto_slow_enabled: bool = False
-    tho_earth_aura_shield_pct: float = 0.0
-    #   Phi Thiên Lăng Vân Thể (Phong dodge-counter bruiser)
-    phong_eva_phong_dmg_per_300: float = 0.0
-    phong_van_dodge_stack: bool = False
-    phong_dodge_arms_crit: bool = False
-    phong_dodge_crit_applies_an_phong: bool = False
-    phong_unevadable_interval: int = 0
-    phong_cuon_bay_on_crit_chance: float = 0.0
-    #   Thiên Lôi Cường Thể (Lôi shock/speed nuker)
-    loi_te_liet_on_crit_chance: float = 0.0
-    loi_charge_enabled: bool = False
-    loi_spd_advantage_per_10: float = 0.0
-    loi_spd_advantage_cap: float = 0.0
-    loi_reflex_bonus_attack: bool = False
-    loi_bonus_true_dmg_pct: float = 0.0
-    #   Tịnh Quang Hộ Pháp Thể (Quang guardian)
-    quang_blind_stack: bool = False
-    quang_self_cleanse_interval: int = 0
-    quang_self_cleanse_count: int = 0
-    quang_guardian_summon_matk_pct: float = 0.0
-    quang_judgment_strip_chance: float = 0.0
-    quang_judgment_applies_pha_giap: bool = False
-    #   Hoàng Cổ Thánh Thể (Universal Saint Body)
-    saint_qilin_cleanse_chance: float = 0.0
-    saint_periodic_crit_interval: int = 0
-    saint_mp_on_hit_pct: float = 0.0
-    saint_realm_enabled: bool = False
-    saint_realm_interval: int = 0
-    saint_realm_duration: int = 0
-    #   Hỗn Nguyên Vô Cực Thể (Universal omni-element amplifier)
-    omni_sum_element_dmg: bool = False
-    omni_res_ignore_chance: float = 0.0
-    #   Thiên Địa Nhân Hòa Thể (Universal Hòa Khí stack-scaler)
-    harmony_stack_per_turn: int = 0
-    harmony_stack_cap: int = 0
-    harmony_backlash_pct_per_stack: float = 0.0
-    harmony_backlash_min_stacks: int = 0
-    harmony_l9_cleanse: int = 0
-    #   Bắc Minh Băng Phách Thể (Thủy ice/freeze/MP-drain disruptor)
-    bm_cold_aura_enabled: bool = False
-    bm_mp_drain_pct: float = 0.0
-    bm_mp_drain_heal_pct: float = 0.0
-    bm_han_khi_cap: int = 0
-    bm_heal_reduce_chance: float = 0.0
-    bm_heal_reduce_vs_frozen_chance: float = 0.0
-    bm_burst_freeze_turns: int = 0
-    bm_burst_drain_pct: float = 0.0
-    # Huyền Minh Nhược Thể (Thủy anti-physical attrition disruptor)
-    phys_dmg_reduce_pct: float = 0.0
-    hm_mp_drain_pct: float = 0.0
-    hm_mp_drain_heal_pct: float = 0.0
-    hm_hp_siphon_pct: float = 0.0
-    hm_uyen_cap: int = 0
-    hm_corrode_poison_stacks: int = 0
-    hm_corrode_bleed_stacks: int = 0
-    hm_drown_burst_drain_pct: float = 0.0
-    # Thiên Thủy Thánh Thể (Thủy holy-spring sustain tank)
-    tt_dmg_convert_heal_pct: float = 0.0
-    tt_reflect_remainder_pct: float = 0.0
-    tt_heal_cleanse_chance: float = 0.0
-    tt_tinh_hoa_cap: int = 0
-    tt_tinh_hoa_per_stack_cleanse: float = 0.0
-    tt_tinh_hoa_mp_on_heal_pct: float = 0.0
-    tt_abyss_threshold: int = 0
-    tt_abyss_reduce_pct: float = 0.0
-    tt_abyss_reflect_pct: float = 0.0
-    # Lưu Ly Thuẫn Thân Thể (universal shield-only aegis body)
-    shield_only_body: bool = False
-    shield_from_hp_max_pct: float = 0.0
-    heal_to_shield_pct: float = 0.0
-    aegis_reform_charges: int = 0
-    aegis_reform_shield_pct: float = 0.0
-    # Vô Cấu Lưu Ly Thể (universal purity tank)
-    vc_cc_resist_pct: float = 0.0
-    pill_toxin_immune: bool = False
-    vc_tinh_hoa_resonance: bool = False
-    magic_reflect_pct: float = 0.0
-    vc_bat_triem_immune_pct: float = 0.0
-    vo_cau_cap: int = 0
-    # Cửu U Ma Đế Thể (Ám soul-drain summoner)
-    cu_ma_khi_cap: int = 0
-    cu_drain_amp_per_stack: float = 0.0
-    cu_vl_follow_up_chance: float = 0.0
-    cu_vl_dmg_matk_pct: float = 0.0
-    cu_uminh_bonus_drains: int = 0
-    cu_ma_de_enabled: bool = False
-    # Thôn Thiên Ma Thể (Ám devourer)
-    ttm_devour_copy: bool = False
-    ttm_absorb_matk_pct: float = 0.0
-    ttm_absorb_cap_pct: float = 0.0
-    ttm_strip_mp_chance: float = 0.0
-    ttm_strip_mp_gain_pct: float = 0.0
-    ttm_devour_interval: int = 0
-    # Thái Dương Đạo Thể (universal solar anti-demon tank)
-    td_anti_demon_dmg_pct: float = 0.0
-    td_than_lo_per_hit: bool = False
-    td_than_lo_cap: int = 0
-    td_solar_interval: int = 0
-    td_solar_hp_pct: float = 0.0
-    # Thái Âm Đạo Thể (universal yin-moon evasion/freeze)
-    ta_dmg_vs_frozen_pct: float = 0.0
-    ta_tram_dao_interval: int = 0
-    ta_tram_dao_strips: int = 0
-    ta_kinh_hoa_resonance: bool = False
-    ta_moonlight_heal_pct: float = 0.0
-    ta_moonlight_freeze_chance: float = 0.0
-    # ── Bách Thể Chú Linh (vital-essence awakening) ───────────────────────────
-    # Ngân Giác Lộc "Lộc Linh": overflow healing past hp_max converts to shield.
-    overheal_to_shield_pct: float = 0.0
-    # Liệt Diễm Phần Thiên Thể (Hỏa escalating fire nuker)
-    lietdiem_burn_per_turn: int = 0
-    lietdiem_burn_cap: int = 0
-    lietdiem_van_hoa_absorb: bool = False
-    lietdiem_van_hoa_cap: int = 0
-    lietdiem_avatar_enabled: bool = False
-    lietdiem_avatar_interval: int = 0
-    lietdiem_avatar_duration: int = 0
-    # Niết Bàn Bất Diệt Thể (Hỏa lifesteal-res nirvana berserker)
-    hoa_overcap_to_dmg: bool = False
-    nb_nghiep_accumulate: bool = False
-    nb_nghiep_revive_pct_per_tier: float = 0.0
-    niet_ban_revive_enabled: bool = False
-    niet_ban_revive_pct: float = 0.0
-    niet_ban_revive_clear_debuffs: bool = False
-    niet_ban_post_revive_boost: bool = False
-    # Hậu Thổ Thần Thể (Thổ HP-vampire growth juggernaut)
-    hau_tho_hp_steal_pct: float = 0.0
-    hau_tho_accumulate: bool = False
-    hau_tho_dmg_from_maxhp_pct: float = 0.0
-    hau_tho_dmg_from_shield_pct: float = 0.0
-    hau_tho_rebirth_enabled: bool = False
-    # Thánh Sơn Bất Động Thể (Thổ immovable fortress)
-    thanh_son_kien_co_on_hit: bool = False
-    thanh_son_kien_co_cap: int = 0
-    thanh_son_dmg_from_shield_pct: float = 0.0
-    thanh_son_l3_full_bonus: float = 0.0
-    thanh_son_bao_mon_chance: float = 0.0
-    thanh_son_immovable_enabled: bool = False
-    thanh_son_survive_shield_pct: float = 0.0
-    # Thiên Kiếp Vạn Lôi Thể (Lôi tribulation CC-lockdown executioner)
-    tk_stack_on_cast: int = 0
-    tk_stack_on_struck: int = 0
-    tk_van_loi_cap: int = 0
-    tk_te_liet_chance: float = 0.0
-    tk_stun_chance: float = 0.0
-    tk_stun_stack_gate: int = 0
-    tk_stun_turns: int = 0
-    tk_evasion_shred_pct: float = 0.0
-    tk_extra_hits: int = 0
-    tk_execute_chance: float = 0.0
-    tk_execute_hp_pct: float = 0.0
-    tk_execute_stack_gate: int = 0
-    # Cửu Thiên Huyền Lôi Thể (Lôi signature-art channeler)
-    ct_skill_dmg_amp: float = 0.0
-    ct_nang_luong_cap: int = 0
-    ct_nang_luong_dmg_per_stack: float = 0.0
-    ct_dodge_loi_amp: float = 0.0
-    ct_skill_extra_hits: int = 0
-    ct_burst_interval: int = 0
-    ct_burst_duration: int = 0
-    ct_burst_bonus_turn_gate: int = 0
-    # Tiêu Dao Thần Thể (Phong movement-dancer / dual-form transformer)
-    td_resonance_enabled: bool = False
-    td_canh_cap: int = 0
-    td_canh_per_turn: int = 0
-    td_post_mov_arm: bool = False
-    td_pierce_def_pct: float = 0.0
-    td_mov_cd_reduce_pct: float = 0.0
-    td_cc_shrug_pct: float = 0.0
-    td_form_interval: int = 0
-    td_form_duration: int = 0
-    td_con_hp_gate: float = 0.0
-    td_con_release_mult: float = 0.0
-    td_con_heal_pct: float = 0.0
-    td_bang_extra_hits: int = 0
-    # Cửu Thiên Cương Phong Thể (Phong anti-evasion wind-blade shredder)
-    cp_tich_cap: int = 0
-    cp_pierce_def_pct: float = 0.0
-    cp_pierce_def_pct_high: float = 0.0
-    cp_pierce_tich_gate: int = 0
-    cp_bonus_strike_chance: float = 0.0
-    cp_storm_interval: int = 0
-    cp_storm_duration: int = 0
-    cp_storm_cuon_bay_chance: float = 0.0
-    cp_storm_extra_hits: int = 0
-    cp_tich_execute_atk_scale: float = 0.0
-    # Generic on-hit lane extensions (shared, like mark/bleed/stun_on_hit_pct)
-    te_liet_on_hit_pct: float = 0.0
-    loi_shred_on_hit_pct: float = 0.0
-    phong_shred_on_hit_pct: float = 0.0
-    stun_on_hit_turns: int = 0
-    # Quang Minh Thánh Thể (Quang radiant control-purifier)
-    qm_aura_blind_chance: float = 0.0
-    qm_stack_cap: int = 0
-    qm_strip_vs_blind_chance: float = 0.0
-    qm_purify_interval: int = 0
-    qm_purify_strip_count: int = 0
-    qm_purify_heal_pct: float = 0.0
-    qm_purify_fast_stack_gate: int = 0
+    # Every ``_CONSTITUTION_FLAG_FIELDS`` value lands in this bag instead of a
+    # dedicated field — a new body adds ONE registry row and nothing else.
+    # Reads still look like attribute access: ``__getattr__`` resolves any
+    # registry-known name from the bag (unknown names still raise
+    # AttributeError, so typos stay loud). Only non-default values are
+    # stored, keeping the dict tiny. Consumed by procs / hooks / combat_hit,
+    # never applied as raw stats.
+    body_cfg: dict[str, float | int | bool] = field(default_factory=dict)
     # ── Lôi (lightning/shock/speed) build ─────────────────────────────────
     # Stack cap routed through ``stack_cap_bonuses`` (gear adds
     # ``shock_stack_cap_bonus``).
@@ -879,10 +648,8 @@ class CombatStats:
     mark_on_hit_pct: float = 0.0
     damage_bonus_from_evasion_pct: float = 0.0
     # ── Quang (light/silence/anti-heal) build ─────────────────────────────
-    # ``silence_on_crit_pct`` is also registry-driven (see
-    # ``_CONSTITUTION_FLAG_FIELDS``) — it stays here with its Quang kin for
-    # locality, but its read / equip-merge / passthrough run via the flag helper.
-    silence_on_crit_pct: float = 0.0
+    # ``silence_on_crit_pct`` is registry-driven — it lives in ``body_cfg``
+    # like every other ``_CONSTITUTION_FLAG_FIELDS`` entry.
     heal_reduce_on_hit_pct: float = 0.0
     # Tịnh Quang (guardian) on-hit blind chance — rides the generic _ON_HIT_PROCS
     # table (DEBUFF_LOA_MAT). Was previously a Combatant-only field with no data
@@ -1052,3 +819,17 @@ class CombatStats:
         """
         flat = self.shield_max_base + self.shield_max_flat
         return max(0, int(flat * (1.0 + self.shield_max_pct)))
+
+    def __getattr__(self, name: str):
+        """Resolve registry-driven config flags from ``body_cfg``.
+
+        Only fires for names not found normally (real fields keep full-speed
+        attribute access). Registry-known names fall back to their kind
+        default; anything else raises AttributeError like any other typo.
+        """
+        defaults = _BODY_CFG_DEFAULTS
+        if name in defaults:
+            return self.body_cfg.get(name, defaults[name])
+        raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute {name!r}"
+        )

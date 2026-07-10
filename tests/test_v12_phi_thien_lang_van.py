@@ -138,8 +138,15 @@ def _session(player, enemy, *, seed: int = 0) -> CombatSession:
 def _has_phong_field(field_name: str) -> bool:
     """Return True if Combatant has the given phong-specific field."""
     from dataclasses import fields as dc_fields
+    from src.game.systems.combat_stats import _BODY_CFG_DEFAULTS
     from src.game.systems.combatant import Combatant
-    return (hasattr(Combatant, field_name) or any(f.name == field_name for f in dc_fields(Combatant)))
+    # Registry-driven flags live in the ``body_cfg`` bag now, not as
+    # dataclass fields — bag-known names count as supported.
+    return (
+        field_name in _BODY_CFG_DEFAULTS
+        or hasattr(Combatant, field_name)
+        or any(f.name == field_name for f in dc_fields(Combatant))
+    )
 
 
 # ── 1. Composition (pure seam — JSON only) ────────────────────────────────────

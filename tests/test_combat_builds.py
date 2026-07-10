@@ -26,7 +26,14 @@ def _load_registry():
 
 
 def make_combatant(key: str = "p", **overrides) -> Combatant:
-    """Minimal combatant seeded to non-zero HP/MP/ATK/MATK."""
+    """Minimal combatant seeded to non-zero HP/MP/ATK/MATK.
+
+    Registry-driven config flags (``_CONSTITUTION_FLAG_FIELDS``) are no
+    longer dataclass fields — route those overrides into ``body_cfg``.
+    """
+    from src.game.systems.combat_stats import _BODY_CFG_DEFAULTS
+
+    cfg = {k: overrides.pop(k) for k in list(overrides) if k in _BODY_CFG_DEFAULTS}
     defaults = dict(
         name=key,
         hp=1_000, hp_max=1_000,
@@ -35,7 +42,9 @@ def make_combatant(key: str = "p", **overrides) -> Combatant:
         atk=100, matk=100, def_stat=20,
     )
     defaults.update(overrides)
-    return Combatant(key=key, **defaults)
+    combatant = Combatant(key=key, **defaults)
+    combatant.body_cfg.update(cfg)
+    return combatant
 
 
 def make_session(player: Combatant, enemy: Combatant, *, seed: int = 0) -> CombatSession:
